@@ -45,6 +45,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        mapping_types:
+            enum:       string
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
@@ -58,10 +60,10 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-fos_facebook:
-    file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
-    alias:  facebook
-    app_id: "%facebook_id%"
-    secret: "%facebook_secret%"
-    cookie: true
-    permissions: [email, friends]
+#fos_facebook:
+#    file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
+#    alias:  facebook
+#    app_id: "%facebook_id%"
+#    secret: "%facebook_secret%"
+#    cookie: true
+#    permissions: [email, friends]

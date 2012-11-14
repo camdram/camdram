@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsSupport" table="acts_support">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="supportid" type="integer" column="supportid" nullable="false"/>
+    <field name="from" type="text" column="from" nullable="false"/>
+    <field name="to" type="text" column="to" nullable="false"/>
+    <field name="cc" type="text" column="cc" nullable="false"/>
+    <field name="subject" type="text" column="subject" nullable="false"/>
+    <field name="body" type="text" column="body" nullable="false"/>
+    <field name="ownerid" type="integer" column="ownerid" nullable="false"/>
+    <field name="state" type="string" column="state" nullable="false"/>
+    <field name="datetime" type="datetime" column="datetime" nullable="false"/>
+  </entity>
+</doctrine-mapping>

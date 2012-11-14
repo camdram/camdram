@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsAuditions" table="acts_auditions">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="date" type="date" column="date" nullable="false"/>
+    <field name="starttime" type="time" column="starttime" nullable="false"/>
+    <field name="endtime" type="time" column="endtime" nullable="false"/>
+    <field name="location" type="text" column="location" nullable="false"/>
+    <field name="showid" type="integer" column="showid" nullable="false"/>
+    <field name="display" type="boolean" column="display" nullable="false"/>
+    <field name="nonscheduled" type="boolean" column="nonscheduled" nullable="false"/>
+  </entity>
+</doctrine-mapping>

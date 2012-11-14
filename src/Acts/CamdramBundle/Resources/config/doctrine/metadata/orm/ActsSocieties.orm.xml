@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsSocieties" table="acts_societies">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="text" column="name" nullable="false"/>
+    <field name="description" type="text" column="description" nullable="false"/>
+    <field name="shortname" type="text" column="shortname" nullable="false"/>
+    <field name="college" type="text" column="college" nullable="true"/>
+    <field name="type" type="boolean" column="type" nullable="false"/>
+    <field name="affiliate" type="boolean" column="affiliate" nullable="false"/>
+    <field name="logourl" type="text" column="logourl" nullable="true"/>
+    <field name="expires" type="date" column="expires" nullable="false"/>
+  </entity>
+</doctrine-mapping>

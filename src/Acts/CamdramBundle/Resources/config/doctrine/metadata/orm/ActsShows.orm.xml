@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsShows" table="acts_shows">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dates" type="text" column="dates" nullable="false"/>
+    <field name="title" type="text" column="title" nullable="false"/>
+    <field name="author" type="text" column="author" nullable="false"/>
+    <field name="prices" type="text" column="prices" nullable="false"/>
+    <field name="description" type="text" column="description" nullable="false"/>
+    <field name="photourl" type="text" column="photourl" nullable="true"/>
+    <field name="venue" type="text" column="venue" nullable="false"/>
+    <field name="excludedate" type="date" column="excludedate" nullable="false"/>
+    <field name="society" type="text" column="society" nullable="true"/>
+    <field name="techsend" type="boolean" column="techsend" nullable="false"/>
+    <field name="actorsend" type="boolean" column="actorsend" nullable="false"/>
+    <field name="audextra" type="text" column="audextra" nullable="true"/>
+    <field name="socid" type="integer" column="socid" nullable="false"/>
+    <field name="venid" type="integer" column="venid" nullable="false"/>
+    <field name="authorizeid" type="integer" column="authorizeid" nullable="false"/>
+    <field name="entered" type="boolean" column="entered" nullable="false"/>
+    <field name="entryexpiry" type="date" column="entryexpiry" nullable="false"/>
+    <field name="category" type="string" column="category" nullable="false"/>
+    <field name="bookingcode" type="text" column="bookingcode" nullable="false"/>
+    <field name="primaryref" type="integer" column="primaryref" nullable="false"/>
+    <field name="timestamp" type="datetime" column="timestamp" nullable="false"/>
+  </entity>
+</doctrine-mapping>

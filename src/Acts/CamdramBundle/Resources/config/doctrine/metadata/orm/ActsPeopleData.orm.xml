@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsPeopleData" table="acts_people_data">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="text" column="name" nullable="false"/>
+    <field name="mapto" type="integer" column="mapto" nullable="false"/>
+    <field name="norobots" type="boolean" column="norobots" nullable="false"/>
+  </entity>
+</doctrine-mapping>

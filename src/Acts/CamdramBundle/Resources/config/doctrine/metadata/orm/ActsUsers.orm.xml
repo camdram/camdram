@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsUsers" table="acts_users">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="text" column="name" nullable="false"/>
+    <field name="email" type="text" column="email" nullable="false"/>
+    <field name="pass" type="text" column="pass" nullable="false"/>
+    <field name="registered" type="date" column="registered" nullable="false"/>
+    <field name="login" type="date" column="login" nullable="false"/>
+    <field name="contact" type="boolean" column="contact" nullable="false"/>
+    <field name="alumni" type="boolean" column="alumni" nullable="false"/>
+    <field name="publishemail" type="boolean" column="publishemail" nullable="false"/>
+    <field name="forumnotify" type="boolean" column="forumnotify" nullable="false"/>
+    <field name="hearabout" type="text" column="hearabout" nullable="false"/>
+    <field name="occupation" type="text" column="occupation" nullable="false"/>
+    <field name="graduation" type="text" column="graduation" nullable="false"/>
+    <field name="tel" type="text" column="tel" nullable="false"/>
+    <field name="dbemail" type="boolean" column="dbemail" nullable="false"/>
+    <field name="dbphone" type="boolean" column="dbphone" nullable="false"/>
+    <field name="threadmessages" type="boolean" column="threadmessages" nullable="false"/>
+    <field name="reversetime" type="boolean" column="reversetime" nullable="false"/>
+    <field name="resetcode" type="text" column="resetcode" nullable="false"/>
+  </entity>
+</doctrine-mapping>

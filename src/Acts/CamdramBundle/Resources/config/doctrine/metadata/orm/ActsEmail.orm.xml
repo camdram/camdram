@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsEmail" table="acts_email">
+    <id name="emailid" type="integer" column="emailid">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="userid" type="integer" column="userid" nullable="false"/>
+    <field name="title" type="text" column="title" nullable="false"/>
+    <field name="publicAdd" type="boolean" column="public_add" nullable="false"/>
+    <field name="summary" type="text" column="summary" nullable="false"/>
+    <field name="from" type="integer" column="from" nullable="false"/>
+    <field name="listid" type="text" column="listid" nullable="false"/>
+    <field name="deleteonsend" type="boolean" column="deleteonsend" nullable="false"/>
+  </entity>
+</doctrine-mapping>

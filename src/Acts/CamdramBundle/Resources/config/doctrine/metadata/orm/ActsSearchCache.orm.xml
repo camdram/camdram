@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsSearchCache" table="acts_search_cache">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="keyword" type="string" column="keyword" length="200" nullable="false"/>
+    <field name="text" type="text" column="text" nullable="false"/>
+    <field name="type" type="string" column="type" nullable="false"/>
+    <field name="url" type="text" column="url" nullable="false"/>
+    <field name="sindex" type="integer" column="sindex" nullable="false"/>
+    <field name="obsolete" type="boolean" column="obsolete" nullable="false"/>
+    <field name="linkcode" type="string" column="linkcode" length="2000" nullable="true"/>
+  </entity>
+</doctrine-mapping>

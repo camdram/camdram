@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsPerformances" table="acts_performances">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="sid" type="integer" column="sid" nullable="false"/>
+    <field name="startdate" type="date" column="startdate" nullable="false"/>
+    <field name="enddate" type="date" column="enddate" nullable="false"/>
+    <field name="excludedate" type="date" column="excludedate" nullable="false"/>
+    <field name="time" type="time" column="time" nullable="false"/>
+    <field name="venid" type="integer" column="venid" nullable="false"/>
+    <field name="venue" type="text" column="venue" nullable="false"/>
+  </entity>
+</doctrine-mapping>

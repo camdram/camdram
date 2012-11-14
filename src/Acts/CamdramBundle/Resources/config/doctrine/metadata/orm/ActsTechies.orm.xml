@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsTechies" table="acts_techies">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="showid" type="integer" column="showid" nullable="false"/>
+    <field name="positions" type="text" column="positions" nullable="false"/>
+    <field name="contact" type="text" column="contact" nullable="false"/>
+    <field name="deadline" type="boolean" column="deadline" nullable="false"/>
+    <field name="deadlinetime" type="text" column="deadlinetime" nullable="false"/>
+    <field name="expiry" type="date" column="expiry" nullable="false"/>
+    <field name="display" type="boolean" column="display" nullable="false"/>
+    <field name="remindersent" type="boolean" column="remindersent" nullable="false"/>
+    <field name="techextra" type="text" column="techextra" nullable="false"/>
+    <field name="lastupdated" type="datetime" column="lastupdated" nullable="false"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="ActsKnowledgebase" table="acts_knowledgebase">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="pageid" type="integer" column="pageid" nullable="false"/>
+    <field name="text" type="text" column="text" nullable="false"/>
+    <field name="userid" type="integer" column="userid" nullable="false"/>
+    <field name="date" type="datetime" column="date" nullable="false"/>
+  </entity>
+</doctrine-mapping>
