@@ -29,9 +29,12 @@ class ActsAccess
     private $rid;
 
     /**
-     * @var integer
+     * @var \ActsUsers
      *
-     * @ORM\Column(name="uid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
+     * })
      */
     private $uid;
 
@@ -43,9 +46,12 @@ class ActsAccess
     private $type;
 
     /**
-     * @var integer
+     * @var \ActsUsers
      *
-     * @ORM\Column(name="issuerid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
+     * })
      */
     private $issuerid;
 
@@ -57,9 +63,12 @@ class ActsAccess
     private $creationdate;
 
     /**
-     * @var integer
+     * @var \ActsUsers
      *
-     * @ORM\Column(name="revokeid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="revokeid", referencedColumnName="id")
+     * })
      */
     private $revokeid;
 

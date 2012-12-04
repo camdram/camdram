@@ -22,9 +22,12 @@ class ActsPerformances
     private $id;
 
     /**
-     * @var integer
+     * @var \ActsShows
      *
-     * @ORM\Column(name="sid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
+     * })
      */
     private $sid;
 
@@ -57,9 +60,12 @@ class ActsPerformances
     private $time;
 
     /**
-     * @var integer
+     * @var \ActsSocieties
      *
-     * @ORM\Column(name="venid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsSocieties")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="venid", referencedColumnName="id")
+     * })
      */
     private $venid;
 

@@ -22,9 +22,12 @@ class ActsTechies
     private $id;
 
     /**
-     * @var integer
+     * @var \ActsShows
      *
-     * @ORM\Column(name="showid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
+     * })
      */
     private $showid;
 

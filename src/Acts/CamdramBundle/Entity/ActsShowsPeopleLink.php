@@ -22,9 +22,12 @@ class ActsShowsPeopleLink
     private $id;
 
     /**
-     * @var integer
+     * @var \ActsShows
      *
-     * @ORM\Column(name="sid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
+     * })
      */
     private $sid;
 
@@ -50,9 +53,12 @@ class ActsShowsPeopleLink
     private $order;
 
     /**
-     * @var integer
+     * @var \ActsPeopleData
      *
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsPeopleData")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pid", referencedColumnName="id")
+     * })
      */
     private $pid;
 

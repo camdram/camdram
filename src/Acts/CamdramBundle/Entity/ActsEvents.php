@@ -64,9 +64,12 @@ class ActsEvents
     private $linkid;
 
     /**
-     * @var integer
+     * @var \ActsSocieties
      *
-     * @ORM\Column(name="socid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsSocieties")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     * })
      */
     private $socid;
 

@@ -22,16 +22,22 @@ class ActsApplications
     private $id;
 
     /**
-     * @var integer
+     * @var \ActsShows
      *
-     * @ORM\Column(name="showid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
+     * })
      */
     private $showid;
 
     /**
-     * @var integer
+     * @var \ActsSocieties
      *
-     * @ORM\Column(name="socid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsSocieties")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     * })
      */
     private $socid;
 

@@ -22,9 +22,12 @@ class ActsEmail
     private $emailid;
 
     /**
-     * @var integer
+     * @var \ActsUsers
      *
-     * @ORM\Column(name="userid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
+     * })
      */
     private $userid;
 
