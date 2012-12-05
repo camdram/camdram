@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsUsers
+ * User
  *
  * @ORM\Table(name="acts_users")
  * @ORM\Entity
@@ -75,21 +75,21 @@ class User
      *
      * @ORM\Column(name="publishemail", type="boolean", nullable=false)
      */
-    private $publishemail;
+    private $publish_email;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="forumnotify", type="boolean", nullable=false)
      */
-    private $forumnotify;
+    private $forum_notify;
 
     /**
      * @var string
      *
      * @ORM\Column(name="hearabout", type="text", nullable=false)
      */
-    private $hearabout;
+    private $hear_about;
 
     /**
      * @var string
@@ -117,36 +117,35 @@ class User
      *
      * @ORM\Column(name="dbemail", type="boolean", nullable=false)
      */
-    private $dbemail;
+    private $db_email;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="dbphone", type="boolean", nullable=false)
      */
-    private $dbphone;
+    private $db_phone;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="threadmessages", type="boolean", nullable=false)
      */
-    private $threadmessages;
+    private $thread_messages;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="reversetime", type="boolean", nullable=false)
      */
-    private $reversetime;
+    private $reverse_time;
 
     /**
      * @var string
      *
      * @ORM\Column(name="resetcode", type="text", nullable=false)
      */
-    private $resetcode;
-
+    private $reset_code;
 
 
     /**
@@ -163,7 +162,7 @@ class User
      * Set name
      *
      * @param string $name
-     * @return ActsUsers
+     * @return User
      */
     public function setName($name)
     {
@@ -186,7 +185,7 @@ class User
      * Set email
      *
      * @param string $email
-     * @return ActsUsers
+     * @return User
      */
     public function setEmail($email)
     {
@@ -209,7 +208,7 @@ class User
      * Set pass
      *
      * @param string $pass
-     * @return ActsUsers
+     * @return User
      */
     public function setPass($pass)
     {
@@ -232,7 +231,7 @@ class User
      * Set registered
      *
      * @param \DateTime $registered
-     * @return ActsUsers
+     * @return User
      */
     public function setRegistered($registered)
     {
@@ -255,7 +254,7 @@ class User
      * Set login
      *
      * @param \DateTime $login
-     * @return ActsUsers
+     * @return User
      */
     public function setLogin($login)
     {
@@ -278,7 +277,7 @@ class User
      * Set contact
      *
      * @param boolean $contact
-     * @return ActsUsers
+     * @return User
      */
     public function setContact($contact)
     {
@@ -301,7 +300,7 @@ class User
      * Set alumni
      *
      * @param boolean $alumni
-     * @return ActsUsers
+     * @return User
      */
     public function setAlumni($alumni)
     {
@@ -321,79 +320,79 @@ class User
     }
 
     /**
-     * Set publishemail
+     * Set publish_email
      *
-     * @param boolean $publishemail
-     * @return ActsUsers
+     * @param boolean $publishEmail
+     * @return User
      */
-    public function setPublishemail($publishemail)
+    public function setPublishEmail($publishEmail)
     {
-        $this->publishemail = $publishemail;
+        $this->publish_email = $publishEmail;
     
         return $this;
     }
 
     /**
-     * Get publishemail
+     * Get publish_email
      *
      * @return boolean 
      */
-    public function getPublishemail()
+    public function getPublishEmail()
     {
-        return $this->publishemail;
+        return $this->publish_email;
     }
 
     /**
-     * Set forumnotify
+     * Set forum_notify
      *
-     * @param boolean $forumnotify
-     * @return ActsUsers
+     * @param boolean $forumNotify
+     * @return User
      */
-    public function setForumnotify($forumnotify)
+    public function setForumNotify($forumNotify)
     {
-        $this->forumnotify = $forumnotify;
+        $this->forum_notify = $forumNotify;
     
         return $this;
     }
 
     /**
-     * Get forumnotify
+     * Get forum_notify
      *
      * @return boolean 
      */
-    public function getForumnotify()
+    public function getForumNotify()
     {
-        return $this->forumnotify;
+        return $this->forum_notify;
     }
 
     /**
-     * Set hearabout
+     * Set hear_about
      *
-     * @param string $hearabout
-     * @return ActsUsers
+     * @param string $hearAbout
+     * @return User
      */
-    public function setHearabout($hearabout)
+    public function setHearAbout($hearAbout)
     {
-        $this->hearabout = $hearabout;
+        $this->hear_about = $hearAbout;
     
         return $this;
     }
 
     /**
-     * Get hearabout
+     * Get hear_about
      *
      * @return string 
      */
-    public function getHearabout()
+    public function getHearAbout()
     {
-        return $this->hearabout;
+        return $this->hear_about;
     }
 
     /**
      * Set occupation
      *
      * @param string $occupation
-     * @return ActsUsers
+     * @return User
      */
     public function setOccupation($occupation)
     {
@@ -416,7 +415,7 @@ class User
      * Set graduation
      *
      * @param string $graduation
-     * @return ActsUsers
+     * @return User
      */
     public function setGraduation($graduation)
     {
@@ -439,7 +438,7 @@ class User
      * Set tel
      *
      * @param string $tel
-     * @return ActsUsers
+     * @return User
      */
     public function setTel($tel)
     {
@@ -459,117 +458,117 @@ class User
     }
 
     /**
-     * Set dbemail
+     * Set db_email
      *
-     * @param boolean $dbemail
-     * @return ActsUsers
+     * @param boolean $dbEmail
+     * @return User
      */
-    public function setDbemail($dbemail)
+    public function setDbEmail($dbEmail)
     {
-        $this->dbemail = $dbemail;
+        $this->db_email = $dbEmail;
     
         return $this;
     }
 
     /**
-     * Get dbemail
+     * Get db_email
      *
      * @return boolean 
      */
-    public function getDbemail()
+    public function getDbEmail()
     {
-        return $this->dbemail;
+        return $this->db_email;
     }
 
     /**
-     * Set dbphone
+     * Set db_phone
      *
-     * @param boolean $dbphone
-     * @return ActsUsers
+     * @param boolean $dbPhone
+     * @return User
      */
-    public function setDbphone($dbphone)
+    public function setDbPhone($dbPhone)
     {
-        $this->dbphone = $dbphone;
+        $this->db_phone = $dbPhone;
     
         return $this;
     }
 
     /**
-     * Get dbphone
+     * Get db_phone
      *
      * @return boolean 
      */
-    public function getDbphone()
+    public function getDbPhone()
     {
-        return $this->dbphone;
+        return $this->db_phone;
     }
 
     /**
-     * Set threadmessages
+     * Set thread_messages
      *
-     * @param boolean $threadmessages
-     * @return ActsUsers
+     * @param boolean $threadMessages
+     * @return User
      */
-    public function setThreadmessages($threadmessages)
+    public function setThreadMessages($threadMessages)
     {
-        $this->threadmessages = $threadmessages;
+        $this->thread_messages = $threadMessages;
     
         return $this;
     }
 
     /**
-     * Get threadmessages
+     * Get thread_messages
      *
      * @return boolean 
      */
-    public function getThreadmessages()
+    public function getThreadMessages()
     {
-        return $this->threadmessages;
+        return $this->thread_messages;
     }
 
     /**
-     * Set reversetime
+     * Set reverse_time
      *
-     * @param boolean $reversetime
-     * @return ActsUsers
+     * @param boolean $reverseTime
+     * @return User
      */
-    public function setReversetime($reversetime)
+    public function setReverseTime($reverseTime)
     {
-        $this->reversetime = $reversetime;
+        $this->reverse_time = $reverseTime;
     
         return $this;
     }
 
     /**
-     * Get reversetime
+     * Get reverse_time
      *
      * @return boolean 
      */
-    public function getReversetime()
+    public function getReverseTime()
     {
-        return $this->reversetime;
+        return $this->reverse_time;
     }
 
     /**
-     * Set resetcode
+     * Set reset_code
      *
-     * @param string $resetcode
-     * @return ActsUsers
+     * @param string $resetCode
+     * @return User
      */
-    public function setResetcode($resetcode)
+    public function setResetCode($resetCode)
     {
-        $this->resetcode = $resetcode;
+        $this->reset_code = $resetCode;
     
         return $this;
     }
 
     /**
-     * Get resetcode
+     * Get reset_code
      *
      * @return string 
      */
-    public function getResetcode()
+    public function getResetCode()
     {
-        return $this->resetcode;
+        return $this->reset_code;
     }
 }

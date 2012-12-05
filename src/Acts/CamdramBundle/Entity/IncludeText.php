@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsIncludes
+ * IncludeText
  *
  * @ORM\Table(name="acts_includes")
  * @ORM\Entity
@@ -36,7 +36,6 @@ class IncludeText
     private $text;
 
 
-
     /**
      * Get id
      *
@@ -51,7 +50,7 @@ class IncludeText
      * Set name
      *
      * @param string $name
-     * @return ActsIncludes
+     * @return IncludeText
      */
     public function setName($name)
     {
@@ -74,7 +73,7 @@ class IncludeText
      * Set text
      *
      * @param string $text
-     * @return ActsIncludes
+     * @return IncludeText
      */
     public function setText($text)
     {

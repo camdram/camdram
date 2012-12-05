@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsConfig
+ * Config
  *
  * @ORM\Table(name="acts_config")
  * @ORM\Entity
@@ -29,7 +29,6 @@ class Config
     private $value;
 
 
-
     /**
      * Get name
      *
@@ -44,7 +43,7 @@ class Config
      * Set value
      *
      * @param string $value
-     * @return ActsConfig
+     * @return Config
      */
     public function setValue($value)
     {

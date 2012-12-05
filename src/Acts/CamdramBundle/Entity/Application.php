@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsApplications
+ * Application
  *
  * @ORM\Table(name="acts_applications")
  * @ORM\Entity
@@ -22,24 +22,38 @@ class Application
     private $id;
 
     /**
-     * @var \ActsShows
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\Column(name="showid", type="integer", nullable=false)
+     */
+    private $show_id;
+    
+    /**
+     * @var \Show
+     *
+     * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })
      */
-    private $showid;
+    private $show;
 
     /**
-     * @var \ActsSocieties
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsSocieties")
+     * @ORM\Column(name="socid", type="integer", nullable=false)
+     */
+    private $society_id;
+
+    /**
+     * @var \Society
+     *
+     * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="socid", referencedColumnName="id")
      * })
      */
-    private $socid;
+    private $society;
 
     /**
      * @var string
@@ -53,22 +67,21 @@ class Application
      *
      * @ORM\Column(name="deadlinedate", type="date", nullable=false)
      */
-    private $deadlinedate;
+    private $deadline_date;
 
     /**
      * @var string
      *
      * @ORM\Column(name="furtherinfo", type="text", nullable=false)
      */
-    private $furtherinfo;
+    private $further_info;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      */
-    private $deadlinetime;
-
+    private $deadline_time;
 
 
     /**
@@ -82,10 +95,56 @@ class Application
     }
 
     /**
+     * Set show_id
+     *
+     * @param integer $showId
+     * @return Application
+     */
+    public function setShowId($showId)
+    {
+        $this->show_id = $showId;
+    
+        return $this;
+    }
+
+    /**
+     * Get show_id
+     *
+     * @return integer 
+     */
+    public function getShowId()
+    {
+        return $this->show_id;
+    }
+
+    /**
+     * Set society_id
+     *
+     * @param integer $societyId
+     * @return Application
+     */
+    public function setSocietyId($societyId)
+    {
+        $this->society_id = $societyId;
+    
+        return $this;
+    }
+
+    /**
+     * Get society_id
+     *
+     * @return integer 
+     */
+    public function getSocietyId()
+    {
+        return $this->society_id;
+    }
+
+    /**
      * Set text
      *
      * @param string $text
-     * @return ActsApplications
+     * @return Application
      */
     public function setText($text)
     {
@@ -105,117 +164,117 @@ class Application
     }
 
     /**
-     * Set deadlinedate
+     * Set deadline_date
      *
-     * @param \DateTime $deadlinedate
-     * @return ActsApplications
+     * @param \DateTime $deadlineDate
+     * @return Application
      */
-    public function setDeadlinedate($deadlinedate)
+    public function setDeadlineDate($deadlineDate)
     {
-        $this->deadlinedate = $deadlinedate;
+        $this->deadline_date = $deadlineDate;
     
         return $this;
     }
 
     /**
-     * Get deadlinedate
+     * Get deadline_date
      *
      * @return \DateTime 
      */
-    public function getDeadlinedate()
+    public function getDeadlineDate()
     {
-        return $this->deadlinedate;
+        return $this->deadline_date;
     }
 
     /**
-     * Set furtherinfo
+     * Set further_info
      *
-     * @param string $furtherinfo
-     * @return ActsApplications
+     * @param string $furtherInfo
+     * @return Application
      */
-    public function setFurtherinfo($furtherinfo)
+    public function setFurtherInfo($furtherInfo)
     {
-        $this->furtherinfo = $furtherinfo;
+        $this->further_info = $furtherInfo;
     
         return $this;
     }
 
     /**
-     * Get furtherinfo
+     * Get further_info
      *
      * @return string 
      */
-    public function getFurtherinfo()
+    public function getFurtherInfo()
     {
-        return $this->furtherinfo;
+        return $this->further_info;
     }
 
     /**
-     * Set deadlinetime
+     * Set deadline_time
      *
-     * @param \DateTime $deadlinetime
-     * @return ActsApplications
+     * @param \DateTime $deadlineTime
+     * @return Application
      */
-    public function setDeadlinetime($deadlinetime)
+    public function setDeadlineTime($deadlineTime)
     {
-        $this->deadlinetime = $deadlinetime;
+        $this->deadline_time = $deadlineTime;
     
         return $this;
     }
 
     /**
-     * Get deadlinetime
+     * Get deadline_time
      *
      * @return \DateTime 
      */
-    public function getDeadlinetime()
+    public function getDeadlineTime()
     {
-        return $this->deadlinetime;
+        return $this->deadline_time;
     }
 
     /**
-     * Set showid
+     * Set show
      *
-     * @param \Acts\CamdramBundle\Entity\ActsShows $showid
-     * @return ActsApplications
+     * @param \Acts\CamdramBundle\Entity\Show $show
+     * @return Application
      */
-    public function setShowid(\Acts\CamdramBundle\Entity\ActsShows $showid = null)
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
-        $this->showid = $showid;
+        $this->show = $show;
     
         return $this;
     }
 
     /**
-     * Get showid
+     * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\ActsShows 
+     * @return \Acts\CamdramBundle\Entity\Show 
      */
-    public function getShowid()
+    public function getShow()
     {
-        return $this->showid;
+        return $this->show;
     }
 
     /**
-     * Set socid
+     * Set society
      *
-     * @param \Acts\CamdramBundle\Entity\ActsSocieties $socid
-     * @return ActsApplications
+     * @param \Acts\CamdramBundle\Entity\Society $society
+     * @return Application
      */
-    public function setSocid(\Acts\CamdramBundle\Entity\ActsSocieties $socid = null)
+    public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
     {
-        $this->socid = $socid;
+        $this->society = $society;
     
         return $this;
     }
 
     /**
-     * Get socid
+     * Get society
      *
-     * @return \Acts\CamdramBundle\Entity\ActsSocieties 
+     * @return \Acts\CamdramBundle\Entity\Society 
      */
-    public function getSocid()
+    public function getSociety()
     {
-        return $this->socid;
+        return $this->society;
     }
 }

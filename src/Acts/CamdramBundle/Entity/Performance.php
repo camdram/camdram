@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsPerformances
+ * Performance
  *
  * @ORM\Table(name="acts_performances")
  * @ORM\Entity
@@ -22,35 +22,42 @@ class Performance
     private $id;
 
     /**
-     * @var \ActsShows
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\Column(name="sid", type="integer", nullable=false)
+     */
+    private $show_id;
+
+    /**
+     * @var \Show
+     *
+     * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
      * })
      */
-    private $sid;
+    private $show;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="startdate", type="date", nullable=false)
      */
-    private $startdate;
+    private $start_date;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="enddate", type="date", nullable=false)
      */
-    private $enddate;
+    private $end_date;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="excludedate", type="date", nullable=false)
      */
-    private $excludedate;
+    private $exclude_date;
 
     /**
      * @var \DateTime
@@ -60,22 +67,28 @@ class Performance
     private $time;
 
     /**
-     * @var \ActsSocieties
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsSocieties")
+     * @ORM\Column(name="venid", type="integer", nullable=false)
+     */
+    private $venue_id;
+
+    /**
+     * @var \Society
+     *
+     * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="venid", referencedColumnName="id")
      * })
      */
-    private $venid;
+    private $venue;
 
     /**
      * @var string
      *
      * @ORM\Column(name="venue", type="text", nullable=false)
      */
-    private $venue;
-
+    private $venue_name;
 
 
     /**
@@ -89,79 +102,102 @@ class Performance
     }
 
     /**
-     * Set startdate
+     * Set show_id
      *
-     * @param \DateTime $startdate
-     * @return ActsPerformances
+     * @param integer $showId
+     * @return Performance
      */
-    public function setStartdate($startdate)
+    public function setShowId($showId)
     {
-        $this->startdate = $startdate;
+        $this->show_id = $showId;
     
         return $this;
     }
 
     /**
-     * Get startdate
+     * Get show_id
      *
-     * @return \DateTime 
+     * @return integer 
      */
-    public function getStartdate()
+    public function getShowId()
     {
-        return $this->startdate;
+        return $this->show_id;
     }
 
     /**
-     * Set enddate
+     * Set start_date
      *
-     * @param \DateTime $enddate
-     * @return ActsPerformances
+     * @param \DateTime $startDate
+     * @return Performance
      */
-    public function setEnddate($enddate)
+    public function setStartDate($startDate)
     {
-        $this->enddate = $enddate;
+        $this->start_date = $startDate;
     
         return $this;
     }
 
     /**
-     * Get enddate
+     * Get start_date
      *
      * @return \DateTime 
      */
-    public function getEnddate()
+    public function getStartDate()
     {
-        return $this->enddate;
+        return $this->start_date;
     }
 
     /**
-     * Set excludedate
+     * Set end_date
      *
-     * @param \DateTime $excludedate
-     * @return ActsPerformances
+     * @param \DateTime $endDate
+     * @return Performance
      */
-    public function setExcludedate($excludedate)
+    public function setEndDate($endDate)
     {
-        $this->excludedate = $excludedate;
+        $this->end_date = $endDate;
     
         return $this;
     }
 
     /**
-     * Get excludedate
+     * Get end_date
      *
      * @return \DateTime 
      */
-    public function getExcludedate()
+    public function getEndDate()
     {
-        return $this->excludedate;
+        return $this->end_date;
+    }
+
+    /**
+     * Set exclude_date
+     *
+     * @param \DateTime $excludeDate
+     * @return Performance
+     */
+    public function setExcludeDate($excludeDate)
+    {
+        $this->exclude_date = $excludeDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get exclude_date
+     *
+     * @return \DateTime 
+     */
+    public function getExcludeDate()
+    {
+        return $this->exclude_date;
     }
 
     /**
      * Set time
      *
      * @param \DateTime $time
-     * @return ActsPerformances
+     * @return Performance
      */
     public function setTime($time)
     {
@@ -181,12 +217,81 @@ class Performance
     }
 
     /**
+     * Set venue_id
+     *
+     * @param integer $venueId
+     * @return Performance
+     */
+    public function setVenueId($venueId)
+    {
+        $this->venue_id = $venueId;
+    
+        return $this;
+    }
+
+    /**
+     * Get venue_id
+     *
+     * @return integer 
+     */
+    public function getVenueId()
+    {
+        return $this->venue_id;
+    }
+
+    /**
+     * Set venue_name
+     *
+     * @param string $venueName
+     * @return Performance
+     */
+    public function setVenueName($venueName)
+    {
+        $this->venue_name = $venueName;
+    
+        return $this;
+    }
+
+    /**
+     * Get venue_name
+     *
+     * @return string 
+     */
+    public function getVenueName()
+    {
+        return $this->venue_name;
+    }
+
+    /**
+     * Set show
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $show
+     * @return Performance
+     */
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
+    {
+        $this->show = $show;
+    
+        return $this;
+    }
+
+    /**
+     * Get show
+     *
+     * @return \Acts\CamdramBundle\Entity\Show 
+     */
+    public function getShow()
+    {
+        return $this->show;
+    }
+
+    /**
      * Set venue
      *
-     * @param string $venue
-     * @return ActsPerformances
+     * @param \Acts\CamdramBundle\Entity\Society $venue
+     * @return Performance
      */
-    public function setVenue($venue)
+    public function setVenue(\Acts\CamdramBundle\Entity\Society $venue = null)
     {
         $this->venue = $venue;
     
@@ -196,56 +301,10 @@ class Performance
     /**
      * Get venue
      *
-     * @return string 
+     * @return \Acts\CamdramBundle\Entity\Society 
      */
     public function getVenue()
     {
         return $this->venue;
-    }
-
-    /**
-     * Set sid
-     *
-     * @param \Acts\CamdramBundle\Entity\ActsShows $sid
-     * @return ActsPerformances
-     */
-    public function setSid(\Acts\CamdramBundle\Entity\ActsShows $sid = null)
-    {
-        $this->sid = $sid;
-    
-        return $this;
-    }
-
-    /**
-     * Get sid
-     *
-     * @return \Acts\CamdramBundle\Entity\ActsShows 
-     */
-    public function getSid()
-    {
-        return $this->sid;
-    }
-
-    /**
-     * Set venid
-     *
-     * @param \Acts\CamdramBundle\Entity\ActsSocieties $venid
-     * @return ActsPerformances
-     */
-    public function setVenid(\Acts\CamdramBundle\Entity\ActsSocieties $venid = null)
-    {
-        $this->venid = $venid;
-    
-        return $this;
-    }
-
-    /**
-     * Get venid
-     *
-     * @return \Acts\CamdramBundle\Entity\ActsSocieties 
-     */
-    public function getVenid()
-    {
-        return $this->venid;
     }
 }

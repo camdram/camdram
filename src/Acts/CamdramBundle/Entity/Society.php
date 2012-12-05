@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsSocieties
+ * Society
  *
  * @ORM\Table(name="acts_societies")
  * @ORM\Entity
@@ -40,7 +40,7 @@ class Society
      *
      * @ORM\Column(name="shortname", type="text", nullable=false)
      */
-    private $shortname;
+    private $short_name;
 
     /**
      * @var string
@@ -68,7 +68,7 @@ class Society
      *
      * @ORM\Column(name="logourl", type="text", nullable=true)
      */
-    private $logourl;
+    private $logo_url;
 
     /**
      * @var \DateTime
@@ -76,7 +76,6 @@ class Society
      * @ORM\Column(name="expires", type="date", nullable=false)
      */
     private $expires;
-
 
 
     /**
@@ -93,7 +92,7 @@ class Society
      * Set name
      *
      * @param string $name
-     * @return ActsSocieties
+     * @return Society
      */
     public function setName($name)
     {
@@ -116,7 +115,7 @@ class Society
      * Set description
      *
      * @param string $description
-     * @return ActsSocieties
+     * @return Society
      */
     public function setDescription($description)
     {
@@ -136,33 +135,33 @@ class Society
     }
 
     /**
-     * Set shortname
+     * Set short_name
      *
-     * @param string $shortname
-     * @return ActsSocieties
+     * @param string $shortName
+     * @return Society
      */
-    public function setShortname($shortname)
+    public function setShortName($shortName)
     {
-        $this->shortname = $shortname;
+        $this->short_name = $shortName;
     
         return $this;
     }
 
     /**
-     * Get shortname
+     * Get short_name
      *
      * @return string 
      */
-    public function getShortname()
+    public function getShortName()
     {
-        return $this->shortname;
+        return $this->short_name;
     }
 
     /**
      * Set college
      *
      * @param string $college
-     * @return ActsSocieties
+     * @return Society
      */
     public function setCollege($college)
     {
@@ -185,7 +184,7 @@ class Society
      * Set type
      *
      * @param boolean $type
-     * @return ActsSocieties
+     * @return Society
      */
     public function setType($type)
     {
@@ -208,7 +207,7 @@ class Society
      * Set affiliate
      *
      * @param boolean $affiliate
-     * @return ActsSocieties
+     * @return Society
      */
     public function setAffiliate($affiliate)
     {
@@ -228,33 +227,33 @@ class Society
     }
 
     /**
-     * Set logourl
+     * Set logo_url
      *
-     * @param string $logourl
-     * @return ActsSocieties
+     * @param string $logoUrl
+     * @return Society
      */
-    public function setLogourl($logourl)
+    public function setLogoUrl($logoUrl)
     {
-        $this->logourl = $logourl;
+        $this->logo_url = $logoUrl;
     
         return $this;
     }
 
     /**
-     * Get logourl
+     * Get logo_url
      *
      * @return string 
      */
-    public function getLogourl()
+    public function getLogoUrl()
     {
-        return $this->logourl;
+        return $this->logo_url;
     }
 
     /**
      * Set expires
      *
      * @param \DateTime $expires
-     * @return ActsSocieties
+     * @return Society
      */
     public function setExpires($expires)
     {

@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsAuditions
+ * Audition
  *
  * @ORM\Table(name="acts_auditions")
  * @ORM\Entity
@@ -33,14 +33,14 @@ class Audition
      *
      * @ORM\Column(name="starttime", type="time", nullable=false)
      */
-    private $starttime;
+    private $start_time;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="endtime", type="time", nullable=false)
      */
-    private $endtime;
+    private $end_time;
 
     /**
      * @var string
@@ -50,14 +50,21 @@ class Audition
     private $location;
 
     /**
-     * @var \ActsShows
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\Column(name="showid", type="integer", nullable=false)
+     */
+    private $show_id;
+
+    /**
+     * @var \Show
+     *
+     * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })
      */
-    private $showid;
+    private $show;
 
     /**
      * @var boolean
@@ -71,9 +78,7 @@ class Audition
      *
      * @ORM\Column(name="nonscheduled", type="boolean", nullable=false)
      */
-    private $nonscheduled;
-
-
+    private $non_scheduled;
 
     /**
      * Get id
@@ -89,7 +94,7 @@ class Audition
      * Set date
      *
      * @param \DateTime $date
-     * @return ActsAuditions
+     * @return Audition
      */
     public function setDate($date)
     {
@@ -109,56 +114,56 @@ class Audition
     }
 
     /**
-     * Set starttime
+     * Set start_time
      *
-     * @param \DateTime $starttime
-     * @return ActsAuditions
+     * @param \DateTime $startTime
+     * @return Audition
      */
-    public function setStarttime($starttime)
+    public function setStartTime($startTime)
     {
-        $this->starttime = $starttime;
+        $this->start_time = $startTime;
     
         return $this;
     }
 
     /**
-     * Get starttime
+     * Get start_time
      *
      * @return \DateTime 
      */
-    public function getStarttime()
+    public function getStartTime()
     {
-        return $this->starttime;
+        return $this->start_time;
     }
 
     /**
-     * Set endtime
+     * Set end_time
      *
-     * @param \DateTime $endtime
-     * @return ActsAuditions
+     * @param \DateTime $endTime
+     * @return Audition
      */
-    public function setEndtime($endtime)
+    public function setEndTime($endTime)
     {
-        $this->endtime = $endtime;
+        $this->end_time = $endTime;
     
         return $this;
     }
 
     /**
-     * Get endtime
+     * Get end_time
      *
      * @return \DateTime 
      */
-    public function getEndtime()
+    public function getEndTime()
     {
-        return $this->endtime;
+        return $this->end_time;
     }
 
     /**
      * Set location
      *
      * @param string $location
-     * @return ActsAuditions
+     * @return Audition
      */
     public function setLocation($location)
     {
@@ -178,10 +183,33 @@ class Audition
     }
 
     /**
+     * Set show_id
+     *
+     * @param integer $showId
+     * @return Audition
+     */
+    public function setShowId($showId)
+    {
+        $this->show_id = $showId;
+    
+        return $this;
+    }
+
+    /**
+     * Get show_id
+     *
+     * @return integer 
+     */
+    public function getShowId()
+    {
+        return $this->show_id;
+    }
+
+    /**
      * Set display
      *
      * @param boolean $display
-     * @return ActsAuditions
+     * @return Audition
      */
     public function setDisplay($display)
     {
@@ -201,48 +229,48 @@ class Audition
     }
 
     /**
-     * Set nonscheduled
+     * Set non_scheduled
      *
-     * @param boolean $nonscheduled
-     * @return ActsAuditions
+     * @param boolean $nonScheduled
+     * @return Audition
      */
-    public function setNonscheduled($nonscheduled)
+    public function setNonScheduled($nonScheduled)
     {
-        $this->nonscheduled = $nonscheduled;
+        $this->non_scheduled = $nonScheduled;
     
         return $this;
     }
 
     /**
-     * Get nonscheduled
+     * Get non_scheduled
      *
      * @return boolean 
      */
-    public function getNonscheduled()
+    public function getNonScheduled()
     {
-        return $this->nonscheduled;
+        return $this->non_scheduled;
     }
 
     /**
-     * Set showid
+     * Set show
      *
-     * @param \Acts\CamdramBundle\Entity\ActsShows $showid
-     * @return ActsAuditions
+     * @param \Acts\CamdramBundle\Entity\Show $show
+     * @return Audition
      */
-    public function setShowid(\Acts\CamdramBundle\Entity\ActsShows $showid = null)
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
-        $this->showid = $showid;
+        $this->show = $show;
     
         return $this;
     }
 
     /**
-     * Get showid
+     * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\ActsShows 
+     * @return \Acts\CamdramBundle\Entity\Show 
      */
-    public function getShowid()
+    public function getShow()
     {
-        return $this->showid;
+        return $this->show;
     }
 }

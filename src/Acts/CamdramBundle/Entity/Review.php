@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsReviews
+ * Review
  *
  * @ORM\Table(name="acts_reviews")
  * @ORM\Entity
@@ -22,14 +22,21 @@ class Review
     private $id;
 
     /**
-     * @var \ActsShows
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\Column(name="showid", type="integer", nullable=false)
+     */
+    private $show_id;
+
+    /**
+     * @var \Show
+     *
+     * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })
      */
-    private $showid;
+    private $show;
 
     /**
      * @var string
@@ -46,14 +53,21 @@ class Review
     private $from;
 
     /**
-     * @var \ActsUsers
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\Column(name="uid", type="integer", nullable=false)
+     */
+    private $user_id;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
      * })
      */
-    private $uid;
+    private $user;
 
     /**
      * @var \DateTime
@@ -75,10 +89,33 @@ class Review
     }
 
     /**
+     * Set show_id
+     *
+     * @param integer $showId
+     * @return Review
+     */
+    public function setShowId($showId)
+    {
+        $this->show_id = $showId;
+    
+        return $this;
+    }
+
+    /**
+     * Get show_id
+     *
+     * @return integer 
+     */
+    public function getShowId()
+    {
+        return $this->show_id;
+    }
+
+    /**
      * Set review
      *
      * @param string $review
-     * @return ActsReviews
+     * @return Review
      */
     public function setReview($review)
     {
@@ -101,7 +138,7 @@ class Review
      * Set from
      *
      * @param string $from
-     * @return ActsReviews
+     * @return Review
      */
     public function setFrom($from)
     {
@@ -121,10 +158,33 @@ class Review
     }
 
     /**
+     * Set user_id
+     *
+     * @param integer $userId
+     * @return Review
+     */
+    public function setUserId($userId)
+    {
+        $this->user_id = $userId;
+    
+        return $this;
+    }
+
+    /**
+     * Get user_id
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
      * Set created
      *
      * @param \DateTime $created
-     * @return ActsReviews
+     * @return Review
      */
     public function setCreated($created)
     {
@@ -144,48 +204,48 @@ class Review
     }
 
     /**
-     * Set showid
+     * Set show
      *
-     * @param \Acts\CamdramBundle\Entity\ActsShows $showid
-     * @return ActsReviews
+     * @param \Acts\CamdramBundle\Entity\Show $show
+     * @return Review
      */
-    public function setShowid(\Acts\CamdramBundle\Entity\ActsShows $showid = null)
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
-        $this->showid = $showid;
+        $this->show = $show;
     
         return $this;
     }
 
     /**
-     * Get showid
+     * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\ActsShows 
+     * @return \Acts\CamdramBundle\Entity\Show 
      */
-    public function getShowid()
+    public function getShow()
     {
-        return $this->showid;
+        return $this->show;
     }
 
     /**
-     * Set uid
+     * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\ActsUsers $uid
-     * @return ActsReviews
+     * @param \Acts\CamdramBundle\Entity\User $user
+     * @return Review
      */
-    public function setUid(\Acts\CamdramBundle\Entity\ActsUsers $uid = null)
+    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
     {
-        $this->uid = $uid;
+        $this->user = $user;
     
         return $this;
     }
 
     /**
-     * Get uid
+     * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\ActsUsers 
+     * @return \Acts\CamdramBundle\Entity\User 
      */
-    public function getUid()
+    public function getUser()
     {
-        return $this->uid;
+        return $this->user;
     }
 }

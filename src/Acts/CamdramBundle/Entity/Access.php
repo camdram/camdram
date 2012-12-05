@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsAccess
+ * Access
  *
  * @ORM\Table(name="acts_access")
  * @ORM\Entity
@@ -29,14 +29,21 @@ class Access
     private $rid;
 
     /**
-     * @var \ActsUsers
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\Column(name="uid", type="integer", nullable=false)
+     */
+    private $uid;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
      * })
      */
-    private $uid;
+    private $user;
 
     /**
      * @var string
@@ -46,38 +53,52 @@ class Access
     private $type;
 
     /**
-     * @var \ActsUsers
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\Column(name="issuerid", type="integer", nullable=false)
+     */
+    private $issuer_id;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
      * })
      */
-    private $issuerid;
+    private $issuer;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="creationdate", type="date", nullable=false)
      */
-    private $creationdate;
+    private $creation_date;
 
     /**
-     * @var \ActsUsers
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\Column(name="revokeid", type="integer", nullable=false)
+     */
+    private $revoke_id;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="revokeid", referencedColumnName="id")
      * })
      */
-    private $revokeid;
+    private $revoker;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="revokedate", type="date", nullable=false)
      */
-    private $revokedate;
+    private $revoke_date;
 
     /**
      * @var boolean
@@ -85,8 +106,6 @@ class Access
      * @ORM\Column(name="contact", type="boolean", nullable=false)
      */
     private $contact;
-
-
 
     /**
      * Get id
@@ -102,7 +121,7 @@ class Access
      * Set rid
      *
      * @param integer $rid
-     * @return ActsAccess
+     * @return Access
      */
     public function setRid($rid)
     {
@@ -122,10 +141,33 @@ class Access
     }
 
     /**
+     * Set uid
+     *
+     * @param integer $uid
+     * @return Access
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    
+        return $this;
+    }
+
+    /**
+     * Get uid
+     *
+     * @return integer 
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    /**
      * Set type
      *
      * @param string $type
-     * @return ActsAccess
+     * @return Access
      */
     public function setType($type)
     {
@@ -145,56 +187,102 @@ class Access
     }
 
     /**
-     * Set creationdate
+     * Set issuer_id
      *
-     * @param \DateTime $creationdate
-     * @return ActsAccess
+     * @param integer $issuerId
+     * @return Access
      */
-    public function setCreationdate($creationdate)
+    public function setIssuerId($issuerId)
     {
-        $this->creationdate = $creationdate;
+        $this->issuer_id = $issuerId;
     
         return $this;
     }
 
     /**
-     * Get creationdate
+     * Get issuer_id
      *
-     * @return \DateTime 
+     * @return integer 
      */
-    public function getCreationdate()
+    public function getIssuerId()
     {
-        return $this->creationdate;
+        return $this->issuer_id;
     }
 
     /**
-     * Set revokedate
+     * Set creation_date
      *
-     * @param \DateTime $revokedate
-     * @return ActsAccess
+     * @param \DateTime $creationDate
+     * @return Access
      */
-    public function setRevokedate($revokedate)
+    public function setCreationDate($creationDate)
     {
-        $this->revokedate = $revokedate;
+        $this->creation_date = $creationDate;
     
         return $this;
     }
 
     /**
-     * Get revokedate
+     * Get creation_date
      *
      * @return \DateTime 
      */
-    public function getRevokedate()
+    public function getCreationDate()
     {
-        return $this->revokedate;
+        return $this->creation_date;
+    }
+
+    /**
+     * Set revoke_id
+     *
+     * @param integer $revokeId
+     * @return Access
+     */
+    public function setRevokeId($revokeId)
+    {
+        $this->revoke_id = $revokeId;
+    
+        return $this;
+    }
+
+    /**
+     * Get revoke_id
+     *
+     * @return integer 
+     */
+    public function getRevokeId()
+    {
+        return $this->revoke_id;
+    }
+
+    /**
+     * Set revoke_date
+     *
+     * @param \DateTime $revokeDate
+     * @return Access
+     */
+    public function setRevokeDate($revokeDate)
+    {
+        $this->revoke_date = $revokeDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get revoke_date
+     *
+     * @return \DateTime 
+     */
+    public function getRevokeDate()
+    {
+        return $this->revoke_date;
     }
 
     /**
      * Set contact
      *
      * @param boolean $contact
-     * @return ActsAccess
+     * @return Access
      */
     public function setContact($contact)
     {
@@ -214,71 +302,71 @@ class Access
     }
 
     /**
-     * Set uid
+     * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\ActsUsers $uid
-     * @return ActsAccess
+     * @param \Acts\CamdramBundle\Entity\User $user
+     * @return Access
      */
-    public function setUid(\Acts\CamdramBundle\Entity\ActsUsers $uid = null)
+    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
     {
-        $this->uid = $uid;
+        $this->user = $user;
     
         return $this;
     }
 
     /**
-     * Get uid
+     * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\ActsUsers 
+     * @return \Acts\CamdramBundle\Entity\User 
      */
-    public function getUid()
+    public function getUser()
     {
-        return $this->uid;
+        return $this->user;
     }
 
     /**
-     * Set issuerid
+     * Set issuer
      *
-     * @param \Acts\CamdramBundle\Entity\ActsUsers $issuerid
-     * @return ActsAccess
+     * @param \Acts\CamdramBundle\Entity\User $issuer
+     * @return Access
      */
-    public function setIssuerid(\Acts\CamdramBundle\Entity\ActsUsers $issuerid = null)
+    public function setIssuer(\Acts\CamdramBundle\Entity\User $issuer = null)
     {
-        $this->issuerid = $issuerid;
+        $this->issuer = $issuer;
     
         return $this;
     }
 
     /**
-     * Get issuerid
+     * Get issuer
      *
-     * @return \Acts\CamdramBundle\Entity\ActsUsers 
+     * @return \Acts\CamdramBundle\Entity\User 
      */
-    public function getIssuerid()
+    public function getIssuer()
     {
-        return $this->issuerid;
+        return $this->issuer;
     }
 
     /**
-     * Set revokeid
+     * Set revoker
      *
-     * @param \Acts\CamdramBundle\Entity\ActsUsers $revokeid
-     * @return ActsAccess
+     * @param \Acts\CamdramBundle\Entity\User $revoker
+     * @return Access
      */
-    public function setRevokeid(\Acts\CamdramBundle\Entity\ActsUsers $revokeid = null)
+    public function setRevoker(\Acts\CamdramBundle\Entity\User $revoker = null)
     {
-        $this->revokeid = $revokeid;
+        $this->revoker = $revoker;
     
         return $this;
     }
 
     /**
-     * Get revokeid
+     * Get revoker
      *
-     * @return \Acts\CamdramBundle\Entity\ActsUsers 
+     * @return \Acts\CamdramBundle\Entity\User 
      */
-    public function getRevokeid()
+    public function getRevoker()
     {
-        return $this->revokeid;
+        return $this->revoker;
     }
 }

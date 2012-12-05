@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsKeywords
+ * Keyword
  *
  * @ORM\Table(name="acts_keywords")
  * @ORM\Entity
@@ -26,14 +26,24 @@ class Keyword
      *
      * @ORM\Column(name="pageid", type="integer", nullable=false)
      */
-    private $pageid;
+    private $page_id;
+    
+    /**
+     * @var \Page
+     *
+     * @ORM\ManyToOne(targetEntity="Page")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pageid", referencedColumnName="id")
+     * })
+     */
+    private $page;
 
     /**
      * @var string
      *
      * @ORM\Column(name="kw", type="text", nullable=false)
      */
-    private $kw;
+    private $keyword;
 
 
 
@@ -48,48 +58,71 @@ class Keyword
     }
 
     /**
-     * Set pageid
+     * Set page_id
      *
-     * @param integer $pageid
-     * @return ActsKeywords
+     * @param integer $pageId
+     * @return Keyword
      */
-    public function setPageid($pageid)
+    public function setPageId($pageId)
     {
-        $this->pageid = $pageid;
+        $this->page_id = $pageId;
     
         return $this;
     }
 
     /**
-     * Get pageid
+     * Get page_id
      *
      * @return integer 
      */
-    public function getPageid()
+    public function getPageId()
     {
-        return $this->pageid;
+        return $this->page_id;
     }
 
     /**
-     * Set kw
+     * Set keyword
      *
-     * @param string $kw
-     * @return ActsKeywords
+     * @param string $keyword
+     * @return Keyword
      */
-    public function setKw($kw)
+    public function setKeyword($keyword)
     {
-        $this->kw = $kw;
+        $this->keyword = $keyword;
     
         return $this;
     }
 
     /**
-     * Get kw
+     * Get keyword
      *
      * @return string 
      */
-    public function getKw()
+    public function getKeyword()
     {
-        return $this->kw;
+        return $this->keyword;
+    }
+
+    /**
+     * Set page
+     *
+     * @param \Acts\CamdramBundle\Entity\Page $page
+     * @return Keyword
+     */
+    public function setPage(\Acts\CamdramBundle\Entity\Page $page = null)
+    {
+        $this->page = $page;
+    
+        return $this;
+    }
+
+    /**
+     * Get page
+     *
+     * @return \Acts\CamdramBundle\Entity\Page 
+     */
+    public function getPage()
+    {
+        return $this->page;
     }
 }

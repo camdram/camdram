@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsShowsRefs
+ * ShowsRef
  *
  * @ORM\Table(name="acts_shows_refs")
  * @ORM\Entity
@@ -19,17 +19,17 @@ class ShowRef
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $refid;
+    private $id;
 
     /**
-     * @var \ActsShows
+     * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })
      */
-    private $showid;
+    private $show_id;
 
     /**
      * @var string
@@ -39,22 +39,21 @@ class ShowRef
     private $ref;
 
 
-
     /**
-     * Get refid
+     * Get id
      *
      * @return integer 
      */
-    public function getRefid()
+    public function getId()
     {
-        return $this->refid;
+        return $this->id;
     }
 
     /**
      * Set ref
      *
      * @param string $ref
-     * @return ActsShowsRefs
+     * @return ShowRef
      */
     public function setRef($ref)
     {
@@ -74,25 +73,25 @@ class ShowRef
     }
 
     /**
-     * Set showid
+     * Set show_id
      *
-     * @param \Acts\CamdramBundle\Entity\ActsShows $showid
-     * @return ActsShowsRefs
+     * @param \Acts\CamdramBundle\Entity\Show $showId
+     * @return ShowRef
      */
-    public function setShowid(\Acts\CamdramBundle\Entity\ActsShows $showid = null)
+    public function setShowId(\Acts\CamdramBundle\Entity\Show $showId = null)
     {
-        $this->showid = $showid;
+        $this->show_id = $showId;
     
         return $this;
     }
 
     /**
-     * Get showid
+     * Get show_id
      *
-     * @return \Acts\CamdramBundle\Entity\ActsShows 
+     * @return \Acts\CamdramBundle\Entity\Show 
      */
-    public function getShowid()
+    public function getShowId()
     {
-        return $this->showid;
+        return $this->show_id;
     }
 }

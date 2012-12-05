@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsSearchCache
+ * SearchCache
  *
  * @ORM\Table(name="acts_search_cache")
  * @ORM\Entity
@@ -54,7 +54,7 @@ class SearchCache
      *
      * @ORM\Column(name="sindex", type="integer", nullable=false)
      */
-    private $sindex;
+    private $s_index;
 
     /**
      * @var boolean
@@ -68,8 +68,7 @@ class SearchCache
      *
      * @ORM\Column(name="linkcode", type="string", length=2000, nullable=true)
      */
-    private $linkcode;
-
+    private $link_code;
 
 
     /**
@@ -86,7 +85,7 @@ class SearchCache
      * Set keyword
      *
      * @param string $keyword
-     * @return ActsSearchCache
+     * @return SearchCache
      */
     public function setKeyword($keyword)
     {
@@ -109,7 +108,7 @@ class SearchCache
      * Set text
      *
      * @param string $text
-     * @return ActsSearchCache
+     * @return SearchCache
      */
     public function setText($text)
     {
@@ -132,7 +131,7 @@ class SearchCache
      * Set type
      *
      * @param string $type
-     * @return ActsSearchCache
+     * @return SearchCache
      */
     public function setType($type)
     {
@@ -155,7 +154,7 @@ class SearchCache
      * Set url
      *
      * @param string $url
-     * @return ActsSearchCache
+     * @return SearchCache
      */
     public function setUrl($url)
     {
@@ -175,33 +174,33 @@ class SearchCache
     }
 
     /**
-     * Set sindex
+     * Set s_index
      *
-     * @param integer $sindex
-     * @return ActsSearchCache
+     * @param integer $sIndex
+     * @return SearchCache
      */
-    public function setSindex($sindex)
+    public function setSIndex($sIndex)
     {
-        $this->sindex = $sindex;
+        $this->s_index = $sIndex;
     
         return $this;
     }
 
     /**
-     * Get sindex
+     * Get s_index
      *
      * @return integer 
      */
-    public function getSindex()
+    public function getSIndex()
     {
-        return $this->sindex;
+        return $this->s_index;
     }
 
     /**
      * Set obsolete
      *
      * @param boolean $obsolete
-     * @return ActsSearchCache
+     * @return SearchCache
      */
     public function setObsolete($obsolete)
     {
@@ -221,25 +220,25 @@ class SearchCache
     }
 
     /**
-     * Set linkcode
+     * Set link_code
      *
-     * @param string $linkcode
-     * @return ActsSearchCache
+     * @param string $linkCode
+     * @return SearchCache
      */
-    public function setLinkcode($linkcode)
+    public function setLinkCode($linkCode)
     {
-        $this->linkcode = $linkcode;
+        $this->link_code = $linkCode;
     
         return $this;
     }
 
     /**
-     * Get linkcode
+     * Get link_code
      *
      * @return string 
      */
-    public function getLinkcode()
+    public function getLinkCode()
     {
-        return $this->linkcode;
+        return $this->link_code;
     }
 }

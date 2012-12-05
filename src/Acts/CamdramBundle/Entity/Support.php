@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsSupport
+ * Support
  *
  * @ORM\Table(name="acts_support")
  * @ORM\Entity
@@ -26,7 +26,7 @@ class Support
      *
      * @ORM\Column(name="supportid", type="integer", nullable=false)
      */
-    private $supportid;
+    private $support_id;
 
     /**
      * @var string
@@ -68,7 +68,7 @@ class Support
      *
      * @ORM\Column(name="ownerid", type="integer", nullable=false)
      */
-    private $ownerid;
+    private $owner_id;
 
     /**
      * @var string
@@ -82,8 +82,7 @@ class Support
      *
      * @ORM\Column(name="datetime", type="datetime", nullable=false)
      */
-    private $datetime;
-
+    private $date_time;
 
 
     /**
@@ -97,33 +96,33 @@ class Support
     }
 
     /**
-     * Set supportid
+     * Set support_id
      *
-     * @param integer $supportid
-     * @return ActsSupport
+     * @param integer $supportId
+     * @return Support
      */
-    public function setSupportid($supportid)
+    public function setSupportId($supportId)
     {
-        $this->supportid = $supportid;
+        $this->support_id = $supportId;
     
         return $this;
     }
 
     /**
-     * Get supportid
+     * Get support_id
      *
      * @return integer 
      */
-    public function getSupportid()
+    public function getSupportId()
     {
-        return $this->supportid;
+        return $this->support_id;
     }
 
     /**
      * Set from
      *
      * @param string $from
-     * @return ActsSupport
+     * @return Support
      */
     public function setFrom($from)
     {
@@ -146,7 +145,7 @@ class Support
      * Set to
      *
      * @param string $to
-     * @return ActsSupport
+     * @return Support
      */
     public function setTo($to)
     {
@@ -169,7 +168,7 @@ class Support
      * Set cc
      *
      * @param string $cc
-     * @return ActsSupport
+     * @return Support
      */
     public function setCc($cc)
     {
@@ -192,7 +191,7 @@ class Support
      * Set subject
      *
      * @param string $subject
-     * @return ActsSupport
+     * @return Support
      */
     public function setSubject($subject)
     {
@@ -215,7 +214,7 @@ class Support
      * Set body
      *
      * @param string $body
-     * @return ActsSupport
+     * @return Support
      */
     public function setBody($body)
     {
@@ -235,33 +234,33 @@ class Support
     }
 
     /**
-     * Set ownerid
+     * Set owner_id
      *
-     * @param integer $ownerid
-     * @return ActsSupport
+     * @param integer $ownerId
+     * @return Support
      */
-    public function setOwnerid($ownerid)
+    public function setOwnerId($ownerId)
     {
-        $this->ownerid = $ownerid;
+        $this->owner_id = $ownerId;
     
         return $this;
     }
 
     /**
-     * Get ownerid
+     * Get owner_id
      *
      * @return integer 
      */
-    public function getOwnerid()
+    public function getOwnerId()
     {
-        return $this->ownerid;
+        return $this->owner_id;
     }
 
     /**
      * Set state
      *
      * @param string $state
-     * @return ActsSupport
+     * @return Support
      */
     public function setState($state)
     {
@@ -281,25 +280,25 @@ class Support
     }
 
     /**
-     * Set datetime
+     * Set date_time
      *
-     * @param \DateTime $datetime
-     * @return ActsSupport
+     * @param \DateTime $dateTime
+     * @return Support
      */
-    public function setDatetime($datetime)
+    public function setDateTime($dateTime)
     {
-        $this->datetime = $datetime;
+        $this->date_time = $dateTime;
     
         return $this;
     }
 
     /**
-     * Get datetime
+     * Get date_time
      *
      * @return \DateTime 
      */
-    public function getDatetime()
+    public function getDateTime()
     {
-        return $this->datetime;
+        return $this->date_time;
     }
 }

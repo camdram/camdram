@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsExternalsites
+ * ExternalSite
  *
  * @ORM\Table(name="acts_externalsites")
  * @ORM\Entity
@@ -36,7 +36,6 @@ class ExternalSite
     private $name;
 
 
-
     /**
      * Get id
      *
@@ -51,7 +50,7 @@ class ExternalSite
      * Set url
      *
      * @param string $url
-     * @return ActsExternalsites
+     * @return ExternalSite
      */
     public function setUrl($url)
     {
@@ -74,7 +73,7 @@ class ExternalSite
      * Set name
      *
      * @param string $name
-     * @return ActsExternalsites
+     * @return ExternalSite
      */
     public function setName($name)
     {

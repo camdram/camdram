@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsTermdates
+ * TermDate
  *
  * @ORM\Table(name="acts_termdates")
  * @ORM\Entity
@@ -33,42 +33,42 @@ class TermDate
      *
      * @ORM\Column(name="friendlyname", type="text", nullable=false)
      */
-    private $friendlyname;
+    private $friendly_name;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="startdate", type="date", nullable=false)
      */
-    private $startdate;
+    private $start_date;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="enddate", type="date", nullable=false)
      */
-    private $enddate;
+    private $end_date;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="firstweek", type="boolean", nullable=false)
      */
-    private $firstweek;
+    private $first_week;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="lastweek", type="boolean", nullable=false)
      */
-    private $lastweek;
+    private $last_week;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="displayweek", type="boolean", nullable=false)
      */
-    private $displayweek;
+    private $display_week;
 
     /**
      * @var string
@@ -76,7 +76,6 @@ class TermDate
      * @ORM\Column(name="vacation", type="text", nullable=false)
      */
     private $vacation;
-
 
 
     /**
@@ -93,7 +92,7 @@ class TermDate
      * Set name
      *
      * @param string $name
-     * @return ActsTermdates
+     * @return TermDate
      */
     public function setName($name)
     {
@@ -113,148 +112,148 @@ class TermDate
     }
 
     /**
-     * Set friendlyname
+     * Set friendly_name
      *
-     * @param string $friendlyname
-     * @return ActsTermdates
+     * @param string $friendlyName
+     * @return TermDate
      */
-    public function setFriendlyname($friendlyname)
+    public function setFriendlyName($friendlyName)
     {
-        $this->friendlyname = $friendlyname;
+        $this->friendly_name = $friendlyName;
     
         return $this;
     }
 
     /**
-     * Get friendlyname
+     * Get friendly_name
      *
      * @return string 
      */
-    public function getFriendlyname()
+    public function getFriendlyName()
     {
-        return $this->friendlyname;
+        return $this->friendly_name;
     }
 
     /**
-     * Set startdate
+     * Set start_date
      *
-     * @param \DateTime $startdate
-     * @return ActsTermdates
+     * @param \DateTime $startDate
+     * @return TermDate
      */
-    public function setStartdate($startdate)
+    public function setStartDate($startDate)
     {
-        $this->startdate = $startdate;
+        $this->start_date = $startDate;
     
         return $this;
     }
 
     /**
-     * Get startdate
+     * Get start_date
      *
      * @return \DateTime 
      */
-    public function getStartdate()
+    public function getStartDate()
     {
-        return $this->startdate;
+        return $this->start_date;
     }
 
     /**
-     * Set enddate
+     * Set end_date
      *
-     * @param \DateTime $enddate
-     * @return ActsTermdates
+     * @param \DateTime $endDate
+     * @return TermDate
      */
-    public function setEnddate($enddate)
+    public function setEndDate($endDate)
     {
-        $this->enddate = $enddate;
+        $this->end_date = $endDate;
     
         return $this;
     }
 
     /**
-     * Get enddate
+     * Get end_date
      *
      * @return \DateTime 
      */
-    public function getEnddate()
+    public function getEndDate()
     {
-        return $this->enddate;
+        return $this->end_date;
     }
 
     /**
-     * Set firstweek
+     * Set first_week
      *
-     * @param boolean $firstweek
-     * @return ActsTermdates
+     * @param boolean $firstWeek
+     * @return TermDate
      */
-    public function setFirstweek($firstweek)
+    public function setFirstWeek($firstWeek)
     {
-        $this->firstweek = $firstweek;
+        $this->first_week = $firstWeek;
     
         return $this;
     }
 
     /**
-     * Get firstweek
+     * Get first_week
      *
      * @return boolean 
      */
-    public function getFirstweek()
+    public function getFirstWeek()
     {
-        return $this->firstweek;
+        return $this->first_week;
     }
 
     /**
-     * Set lastweek
+     * Set last_week
      *
-     * @param boolean $lastweek
-     * @return ActsTermdates
+     * @param boolean $lastWeek
+     * @return TermDate
      */
-    public function setLastweek($lastweek)
+    public function setLastWeek($lastWeek)
     {
-        $this->lastweek = $lastweek;
+        $this->last_week = $lastWeek;
     
         return $this;
     }
 
     /**
-     * Get lastweek
+     * Get last_week
      *
      * @return boolean 
      */
-    public function getLastweek()
+    public function getLastWeek()
     {
-        return $this->lastweek;
+        return $this->last_week;
     }
 
     /**
-     * Set displayweek
+     * Set display_week
      *
-     * @param boolean $displayweek
-     * @return ActsTermdates
+     * @param boolean $displayWeek
+     * @return TermDate
      */
-    public function setDisplayweek($displayweek)
+    public function setDisplayWeek($displayWeek)
     {
-        $this->displayweek = $displayweek;
+        $this->display_week = $displayWeek;
     
         return $this;
     }
 
     /**
-     * Get displayweek
+     * Get display_week
      *
      * @return boolean 
      */
-    public function getDisplayweek()
+    public function getDisplayWeek()
     {
-        return $this->displayweek;
+        return $this->display_week;
     }
 
     /**
      * Set vacation
      *
      * @param string $vacation
-     * @return ActsTermdates
+     * @return TermDate
      */
     public function setVacation($vacation)
     {

@@ -5,12 +5,12 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsTechies
+ * TechieAdvert
  *
  * @ORM\Table(name="acts_techies")
  * @ORM\Entity
  */
-class Techie
+class TechieAdvert
 {
     /**
      * @var integer
@@ -22,14 +22,14 @@ class Techie
     private $id;
 
     /**
-     * @var \ActsShows
+     * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="ActsShows")
+     * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })
      */
-    private $showid;
+    private $show_id;
 
     /**
      * @var string
@@ -57,7 +57,7 @@ class Techie
      *
      * @ORM\Column(name="deadlinetime", type="text", nullable=false)
      */
-    private $deadlinetime;
+    private $deadline_time;
 
     /**
      * @var \DateTime
@@ -78,22 +78,21 @@ class Techie
      *
      * @ORM\Column(name="remindersent", type="boolean", nullable=false)
      */
-    private $remindersent;
+    private $reminder_sent;
 
     /**
      * @var string
      *
      * @ORM\Column(name="techextra", type="text", nullable=false)
      */
-    private $techextra;
+    private $tech_extra;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="lastupdated", type="datetime", nullable=false)
      */
-    private $lastupdated;
-
+    private $last_updated;
 
 
     /**
@@ -110,7 +109,7 @@ class Techie
      * Set positions
      *
      * @param string $positions
-     * @return ActsTechies
+     * @return TechieAdvert
      */
     public function setPositions($positions)
     {
@@ -133,7 +132,7 @@ class Techie
      * Set contact
      *
      * @param string $contact
-     * @return ActsTechies
+     * @return TechieAdvert
      */
     public function setContact($contact)
     {
@@ -156,7 +155,7 @@ class Techie
      * Set deadline
      *
      * @param boolean $deadline
-     * @return ActsTechies
+     * @return TechieAdvert
      */
     public function setDeadline($deadline)
     {
@@ -176,33 +175,33 @@ class Techie
     }
 
     /**
-     * Set deadlinetime
+     * Set deadline_time
      *
-     * @param string $deadlinetime
-     * @return ActsTechies
+     * @param string $deadlineTime
+     * @return TechieAdvert
      */
-    public function setDeadlinetime($deadlinetime)
+    public function setDeadlineTime($deadlineTime)
     {
-        $this->deadlinetime = $deadlinetime;
+        $this->deadline_time = $deadlineTime;
     
         return $this;
     }
 
     /**
-     * Get deadlinetime
+     * Get deadline_time
      *
      * @return string 
      */
-    public function getDeadlinetime()
+    public function getDeadlineTime()
     {
-        return $this->deadlinetime;
+        return $this->deadline_time;
     }
 
     /**
      * Set expiry
      *
      * @param \DateTime $expiry
-     * @return ActsTechies
+     * @return TechieAdvert
      */
     public function setExpiry($expiry)
     {
@@ -225,7 +224,7 @@ class Techie
      * Set display
      *
      * @param boolean $display
-     * @return ActsTechies
+     * @return TechieAdvert
      */
     public function setDisplay($display)
     {
@@ -245,94 +244,94 @@ class Techie
     }
 
     /**
-     * Set remindersent
+     * Set reminder_sent
      *
-     * @param boolean $remindersent
-     * @return ActsTechies
+     * @param boolean $reminderSent
+     * @return TechieAdvert
      */
-    public function setRemindersent($remindersent)
+    public function setReminderSent($reminderSent)
     {
-        $this->remindersent = $remindersent;
+        $this->reminder_sent = $reminderSent;
     
         return $this;
     }
 
     /**
-     * Get remindersent
+     * Get reminder_sent
      *
      * @return boolean 
      */
-    public function getRemindersent()
+    public function getReminderSent()
     {
-        return $this->remindersent;
+        return $this->reminder_sent;
     }
 
     /**
-     * Set techextra
+     * Set tech_extra
      *
-     * @param string $techextra
-     * @return ActsTechies
+     * @param string $techExtra
+     * @return TechieAdvert
      */
-    public function setTechextra($techextra)
+    public function setTechExtra($techExtra)
     {
-        $this->techextra = $techextra;
+        $this->tech_extra = $techExtra;
     
         return $this;
     }
 
     /**
-     * Get techextra
+     * Get tech_extra
      *
      * @return string 
      */
-    public function getTechextra()
+    public function getTechExtra()
     {
-        return $this->techextra;
+        return $this->tech_extra;
     }
 
     /**
-     * Set lastupdated
+     * Set last_updated
      *
-     * @param \DateTime $lastupdated
-     * @return ActsTechies
+     * @param \DateTime $lastUpdated
+     * @return TechieAdvert
      */
-    public function setLastupdated($lastupdated)
+    public function setLastUpdated($lastUpdated)
     {
-        $this->lastupdated = $lastupdated;
+        $this->last_updated = $lastUpdated;
     
         return $this;
     }
 
     /**
-     * Get lastupdated
+     * Get last_updated
      *
      * @return \DateTime 
      */
-    public function getLastupdated()
+    public function getLastUpdated()
     {
-        return $this->lastupdated;
+        return $this->last_updated;
     }
 
     /**
-     * Set showid
+     * Set show_id
      *
-     * @param \Acts\CamdramBundle\Entity\ActsShows $showid
-     * @return ActsTechies
+     * @param \Acts\CamdramBundle\Entity\Show $showId
+     * @return TechieAdvert
      */
-    public function setShowid(\Acts\CamdramBundle\Entity\ActsShows $showid = null)
+    public function setShowId(\Acts\CamdramBundle\Entity\Show $showId = null)
     {
-        $this->showid = $showid;
+        $this->show_id = $showId;
     
         return $this;
     }
 
     /**
-     * Get showid
+     * Get show_id
      *
-     * @return \Acts\CamdramBundle\Entity\ActsShows 
+     * @return \Acts\CamdramBundle\Entity\Show 
      */
-    public function getShowid()
+    public function getShowId()
     {
-        return $this->showid;
+        return $this->show_id;
     }
 }

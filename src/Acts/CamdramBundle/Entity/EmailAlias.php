@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsEmailAliases
+ * EmailAlias
  *
  * @ORM\Table(name="acts_email_aliases")
  * @ORM\Entity
@@ -22,14 +22,21 @@ class EmailAlias
     private $id;
 
     /**
-     * @var \ActsUsers
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\Column(name="uid", type="integer", nullable=false)
+     */
+    private $user_id;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
      * })
      */
-    private $uid;
+    private $user;
 
     /**
      * @var string
@@ -46,7 +53,6 @@ class EmailAlias
     private $email;
 
 
-
     /**
      * Get id
      *
@@ -58,10 +64,33 @@ class EmailAlias
     }
 
     /**
+     * Set user_id
+     *
+     * @param integer $userId
+     * @return EmailAlias
+     */
+    public function setUserId($userId)
+    {
+        $this->user_id = $userId;
+    
+        return $this;
+    }
+
+    /**
+     * Get user_id
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
      * Set name
      *
      * @param string $name
-     * @return ActsEmailAliases
+     * @return EmailAlias
      */
     public function setName($name)
     {
@@ -84,7 +113,7 @@ class EmailAlias
      * Set email
      *
      * @param string $email
-     * @return ActsEmailAliases
+     * @return EmailAlias
      */
     public function setEmail($email)
     {
@@ -104,25 +133,25 @@ class EmailAlias
     }
 
     /**
-     * Set uid
+     * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\ActsUsers $uid
-     * @return ActsEmailAliases
+     * @param \Acts\CamdramBundle\Entity\User $user
+     * @return EmailAlias
      */
-    public function setUid(\Acts\CamdramBundle\Entity\ActsUsers $uid = null)
+    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
     {
-        $this->uid = $uid;
+        $this->user = $user;
     
         return $this;
     }
 
     /**
-     * Get uid
+     * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\ActsUsers 
+     * @return \Acts\CamdramBundle\Entity\User 
      */
-    public function getUid()
+    public function getUser()
     {
-        return $this->uid;
+        return $this->user;
     }
 }

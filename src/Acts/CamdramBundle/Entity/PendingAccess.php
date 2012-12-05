@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsPendingaccess
+ * PendingAccess
  *
  * @ORM\Table(name="acts_pendingaccess")
  * @ORM\Entity
@@ -47,15 +47,14 @@ class PendingAccess
      *
      * @ORM\Column(name="issuerid", type="integer", nullable=false)
      */
-    private $issuerid;
+    private $issuer_id;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="creationdate", type="date", nullable=false)
      */
-    private $creationdate;
-
+    private $creation_date;
 
 
     /**
@@ -72,7 +71,7 @@ class PendingAccess
      * Set rid
      *
      * @param integer $rid
-     * @return ActsPendingaccess
+     * @return PendingAccess
      */
     public function setRid($rid)
     {
@@ -95,7 +94,7 @@ class PendingAccess
      * Set email
      *
      * @param string $email
-     * @return ActsPendingaccess
+     * @return PendingAccess
      */
     public function setEmail($email)
     {
@@ -118,7 +117,7 @@ class PendingAccess
      * Set type
      *
      * @param string $type
-     * @return ActsPendingaccess
+     * @return PendingAccess
      */
     public function setType($type)
     {
@@ -138,48 +137,48 @@ class PendingAccess
     }
 
     /**
-     * Set issuerid
+     * Set issuer_id
      *
-     * @param integer $issuerid
-     * @return ActsPendingaccess
+     * @param integer $issuerId
+     * @return PendingAccess
      */
-    public function setIssuerid($issuerid)
+    public function setIssuerId($issuerId)
     {
-        $this->issuerid = $issuerid;
+        $this->issuer_id = $issuerId;
     
         return $this;
     }
 
     /**
-     * Get issuerid
+     * Get issuer_id
      *
      * @return integer 
      */
-    public function getIssuerid()
+    public function getIssuerId()
     {
-        return $this->issuerid;
+        return $this->issuer_id;
     }
 
     /**
-     * Set creationdate
+     * Set creation_date
      *
-     * @param \DateTime $creationdate
-     * @return ActsPendingaccess
+     * @param \DateTime $creationDate
+     * @return PendingAccess
      */
-    public function setCreationdate($creationdate)
+    public function setCreationDate($creationDate)
     {
-        $this->creationdate = $creationdate;
+        $this->creation_date = $creationDate;
     
         return $this;
     }
 
     /**
-     * Get creationdate
+     * Get creation_date
      *
      * @return \DateTime 
      */
-    public function getCreationdate()
+    public function getCreationDate()
     {
-        return $this->creationdate;
+        return $this->creation_date;
     }
 }

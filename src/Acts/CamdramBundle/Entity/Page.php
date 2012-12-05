@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsPages
+ * Page
  *
  * @ORM\Table(name="acts_pages")
  * @ORM\Entity
@@ -33,21 +33,21 @@ class Page
      *
      * @ORM\Column(name="parentid", type="integer", nullable=false)
      */
-    private $parentid;
+    private $parent_id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="sortcode", type="integer", nullable=false)
      */
-    private $sortcode;
+    private $sort_code;
 
     /**
      * @var string
      *
      * @ORM\Column(name="fulltitle", type="text", nullable=false)
      */
-    private $fulltitle;
+    private $full_title;
 
     /**
      * @var boolean
@@ -89,56 +89,56 @@ class Page
      *
      * @ORM\Column(name="allowsubpage", type="integer", nullable=false)
      */
-    private $allowsubpage;
+    private $allow_sub_page;
 
     /**
      * @var string
      *
      * @ORM\Column(name="intertitle", type="text", nullable=false)
      */
-    private $intertitle;
+    private $inter_title;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="knowledgebase", type="boolean", nullable=false)
      */
-    private $knowledgebase;
+    private $knowledge_base;
 
     /**
      * @var string
      *
      * @ORM\Column(name="getvars", type="text", nullable=false)
      */
-    private $getvars;
+    private $get_vars;
 
     /**
      * @var string
      *
      * @ORM\Column(name="postvars", type="text", nullable=false)
      */
-    private $postvars;
+    private $post_vars;
 
     /**
      * @var string
      *
      * @ORM\Column(name="usepage", type="text", nullable=false)
      */
-    private $usepage;
+    private $use_page;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="kbid", type="integer", nullable=false)
      */
-    private $kbid;
+    private $kb_id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="rssfeeds", type="text", nullable=false)
      */
-    private $rssfeeds;
+    private $rss_feeds;
 
     /**
      * @var boolean
@@ -159,21 +159,21 @@ class Page
      *
      * @ORM\Column(name="param_parser", type="boolean", nullable=false)
      */
-    private $paramParser;
+    private $param_parser;
 
     /**
      * @var string
      *
      * @ORM\Column(name="access_php", type="text", nullable=false)
      */
-    private $accessPhp;
+    private $access_php;
 
     /**
      * @var string
      *
      * @ORM\Column(name="subpagetemplate", type="text", nullable=false)
      */
-    private $subpagetemplate;
+    private $subpage_template;
 
     /**
      * @var boolean
@@ -181,7 +181,6 @@ class Page
      * @ORM\Column(name="searchable", type="boolean", nullable=false)
      */
     private $searchable;
-
 
 
     /**
@@ -198,7 +197,7 @@ class Page
      * Set title
      *
      * @param string $title
-     * @return ActsPages
+     * @return Page
      */
     public function setTitle($title)
     {
@@ -218,79 +217,79 @@ class Page
     }
 
     /**
-     * Set parentid
+     * Set parent_id
      *
-     * @param integer $parentid
-     * @return ActsPages
+     * @param integer $parentId
+     * @return Page
      */
-    public function setParentid($parentid)
+    public function setParentId($parentId)
     {
-        $this->parentid = $parentid;
+        $this->parent_id = $parentId;
     
         return $this;
     }
 
     /**
-     * Get parentid
+     * Get parent_id
      *
      * @return integer 
      */
-    public function getParentid()
+    public function getParentId()
     {
-        return $this->parentid;
+        return $this->parent_id;
     }
 
     /**
-     * Set sortcode
+     * Set sort_code
      *
-     * @param integer $sortcode
-     * @return ActsPages
+     * @param integer $sortCode
+     * @return Page
      */
-    public function setSortcode($sortcode)
+    public function setSortCode($sortCode)
     {
-        $this->sortcode = $sortcode;
+        $this->sort_code = $sortCode;
     
         return $this;
     }
 
     /**
-     * Get sortcode
+     * Get sort_code
      *
      * @return integer 
      */
-    public function getSortcode()
+    public function getSortCode()
     {
-        return $this->sortcode;
+        return $this->sort_code;
     }
 
     /**
-     * Set fulltitle
+     * Set full_title
      *
-     * @param string $fulltitle
-     * @return ActsPages
+     * @param string $fullTitle
+     * @return Page
      */
-    public function setFulltitle($fulltitle)
+    public function setFullTitle($fullTitle)
     {
-        $this->fulltitle = $fulltitle;
+        $this->full_title = $fullTitle;
     
         return $this;
     }
 
     /**
-     * Get fulltitle
+     * Get full_title
      *
      * @return string 
      */
-    public function getFulltitle()
+    public function getFullTitle()
     {
-        return $this->fulltitle;
+        return $this->full_title;
     }
 
     /**
      * Set secure
      *
      * @param boolean $secure
-     * @return ActsPages
+     * @return Page
      */
     public function setSecure($secure)
     {
@@ -313,7 +312,7 @@ class Page
      * Set micro
      *
      * @param boolean $micro
-     * @return ActsPages
+     * @return Page
      */
     public function setMicro($micro)
     {
@@ -336,7 +335,7 @@ class Page
      * Set help
      *
      * @param string $help
-     * @return ActsPages
+     * @return Page
      */
     public function setHelp($help)
     {
@@ -359,7 +358,7 @@ class Page
      * Set ghost
      *
      * @param boolean $ghost
-     * @return ActsPages
+     * @return Page
      */
     public function setGhost($ghost)
     {
@@ -382,7 +381,7 @@ class Page
      * Set mode
      *
      * @param string $mode
-     * @return ActsPages
+     * @return Page
      */
     public function setMode($mode)
     {
@@ -402,194 +401,194 @@ class Page
     }
 
     /**
-     * Set allowsubpage
+     * Set allow_sub_page
      *
-     * @param integer $allowsubpage
-     * @return ActsPages
+     * @param integer $allowSubPage
+     * @return Page
      */
-    public function setAllowsubpage($allowsubpage)
+    public function setAllowSubPage($allowSubPage)
     {
-        $this->allowsubpage = $allowsubpage;
+        $this->allow_sub_page = $allowSubPage;
     
         return $this;
     }
 
     /**
-     * Get allowsubpage
+     * Get allow_sub_page
      *
      * @return integer 
      */
-    public function getAllowsubpage()
+    public function getAllowSubPage()
     {
-        return $this->allowsubpage;
+        return $this->allow_sub_page;
     }
 
     /**
-     * Set intertitle
+     * Set inter_title
      *
-     * @param string $intertitle
-     * @return ActsPages
+     * @param string $interTitle
+     * @return Page
      */
-    public function setIntertitle($intertitle)
+    public function setInterTitle($interTitle)
     {
-        $this->intertitle = $intertitle;
+        $this->inter_title = $interTitle;
     
         return $this;
     }
 
     /**
-     * Get intertitle
+     * Get inter_title
      *
      * @return string 
      */
-    public function getIntertitle()
+    public function getInterTitle()
     {
-        return $this->intertitle;
+        return $this->inter_title;
     }
 
     /**
-     * Set knowledgebase
+     * Set knowledge_base
      *
-     * @param boolean $knowledgebase
-     * @return ActsPages
+     * @param boolean $knowledgeBase
+     * @return Page
      */
-    public function setKnowledgebase($knowledgebase)
+    public function setKnowledgeBase($knowledgeBase)
     {
-        $this->knowledgebase = $knowledgebase;
+        $this->knowledge_base = $knowledgeBase;
     
         return $this;
     }
 
     /**
-     * Get knowledgebase
+     * Get knowledge_base
      *
      * @return boolean 
      */
-    public function getKnowledgebase()
+    public function getKnowledgeBase()
     {
-        return $this->knowledgebase;
+        return $this->knowledge_base;
     }
 
     /**
-     * Set getvars
+     * Set get_vars
      *
-     * @param string $getvars
-     * @return ActsPages
+     * @param string $getVars
+     * @return Page
      */
-    public function setGetvars($getvars)
+    public function setGetVars($getVars)
     {
-        $this->getvars = $getvars;
+        $this->get_vars = $getVars;
     
         return $this;
     }
 
     /**
-     * Get getvars
+     * Get get_vars
      *
      * @return string 
      */
-    public function getGetvars()
+    public function getGetVars()
     {
-        return $this->getvars;
+        return $this->get_vars;
     }
 
     /**
-     * Set postvars
+     * Set post_vars
      *
-     * @param string $postvars
-     * @return ActsPages
+     * @param string $postVars
+     * @return Page
      */
-    public function setPostvars($postvars)
+    public function setPostVars($postVars)
     {
-        $this->postvars = $postvars;
+        $this->post_vars = $postVars;
     
         return $this;
     }
 
     /**
-     * Get postvars
+     * Get post_vars
      *
      * @return string 
      */
-    public function getPostvars()
+    public function getPostVars()
     {
-        return $this->postvars;
+        return $this->post_vars;
     }
 
     /**
-     * Set usepage
+     * Set use_page
      *
-     * @param string $usepage
-     * @return ActsPages
+     * @param string $usePage
+     * @return Page
      */
-    public function setUsepage($usepage)
+    public function setUsePage($usePage)
     {
-        $this->usepage = $usepage;
+        $this->use_page = $usePage;
     
         return $this;
     }
 
     /**
-     * Get usepage
+     * Get use_page
      *
      * @return string 
      */
-    public function getUsepage()
+    public function getUsePage()
     {
-        return $this->usepage;
+        return $this->use_page;
     }
 
     /**
-     * Set kbid
+     * Set kb_id
      *
-     * @param integer $kbid
-     * @return ActsPages
+     * @param integer $kbId
+     * @return Page
      */
-    public function setKbid($kbid)
+    public function setKbId($kbId)
     {
-        $this->kbid = $kbid;
+        $this->kb_id = $kbId;
     
         return $this;
     }
 
     /**
-     * Get kbid
+     * Get kb_id
      *
      * @return integer 
      */
-    public function getKbid()
+    public function getKbId()
     {
-        return $this->kbid;
+        return $this->kb_id;
     }
 
     /**
-     * Set rssfeeds
+     * Set rss_feeds
      *
-     * @param string $rssfeeds
-     * @return ActsPages
+     * @param string $rssFeeds
+     * @return Page
      */
-    public function setRssfeeds($rssfeeds)
+    public function setRssFeeds($rssFeeds)
     {
-        $this->rssfeeds = $rssfeeds;
+        $this->rss_feeds = $rssFeeds;
     
         return $this;
     }
 
     /**
-     * Get rssfeeds
+     * Get rss_feeds
      *
      * @return string 
      */
-    public function getRssfeeds()
+    public function getRssFeeds()
     {
-        return $this->rssfeeds;
+        return $this->rss_feeds;
     }
 
     /**
      * Set locked
      *
      * @param boolean $locked
-     * @return ActsPages
+     * @return Page
      */
     public function setLocked($locked)
     {
@@ -612,7 +611,7 @@ class Page
      * Set virtual
      *
      * @param boolean $virtual
-     * @return ActsPages
+     * @return Page
      */
     public function setVirtual($virtual)
     {
@@ -632,79 +631,79 @@ class Page
     }
 
     /**
-     * Set paramParser
+     * Set param_parser
      *
      * @param boolean $paramParser
-     * @return ActsPages
+     * @return Page
      */
     public function setParamParser($paramParser)
     {
-        $this->paramParser = $paramParser;
+        $this->param_parser = $paramParser;
     
         return $this;
     }
 
     /**
-     * Get paramParser
+     * Get param_parser
      *
      * @return boolean 
      */
     public function getParamParser()
     {
-        return $this->paramParser;
+        return $this->param_parser;
     }
 
     /**
-     * Set accessPhp
+     * Set access_php
      *
      * @param string $accessPhp
-     * @return ActsPages
+     * @return Page
      */
     public function setAccessPhp($accessPhp)
     {
-        $this->accessPhp = $accessPhp;
+        $this->access_php = $accessPhp;
     
         return $this;
     }
 
     /**
-     * Get accessPhp
+     * Get access_php
      *
      * @return string 
      */
     public function getAccessPhp()
     {
-        return $this->accessPhp;
+        return $this->access_php;
     }
 
     /**
-     * Set subpagetemplate
+     * Set subpage_template
      *
-     * @param string $subpagetemplate
-     * @return ActsPages
+     * @param string $subpageTemplate
+     * @return Page
      */
-    public function setSubpagetemplate($subpagetemplate)
+    public function setSubpageTemplate($subpageTemplate)
     {
-        $this->subpagetemplate = $subpagetemplate;
+        $this->subpage_template = $subpageTemplate;
     
         return $this;
     }
 
     /**
-     * Get subpagetemplate
+     * Get subpage_template
      *
      * @return string 
      */
-    public function getSubpagetemplate()
+    public function getSubpageTemplate()
     {
-        return $this->subpagetemplate;
+        return $this->subpage_template;
     }
 
     /**
      * Set searchable
      *
      * @param boolean $searchable
-     * @return ActsPages
+     * @return Page
      */
     public function setSearchable($searchable)
     {

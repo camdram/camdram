@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
 
 /**
- * ActsShows
+ * Show
  *
  * @ORM\Table(name="acts_shows")
  * @ORM\Entity
@@ -62,7 +62,7 @@ class Show
      *
      * @ORM\Column(name="photourl", type="text", nullable=true)
      */
-    private $photourl;
+    private $photo_url;
 
     /**
      * @var string
@@ -76,7 +76,7 @@ class Show
      *
      * @ORM\Column(name="excludedate", type="date", nullable=false)
      */
-    private $excludedate;
+    private $exclude_date;
 
     /**
      * @var string
@@ -90,14 +90,14 @@ class Show
      *
      * @ORM\Column(name="techsend", type="boolean", nullable=false)
      */
-    private $techsend;
+    private $tech_send;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="actorsend", type="boolean", nullable=false)
      */
-    private $actorsend;
+    private $actor_send;
 
     /**
      * @var string
@@ -111,21 +111,21 @@ class Show
      *
      * @ORM\Column(name="socid", type="integer", nullable=false)
      */
-    private $socid;
+    private $society_id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="venid", type="integer", nullable=false)
      */
-    private $venid;
+    private $venue_id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="authorizeid", type="integer", nullable=false)
      */
-    private $authorizeid;
+    private $authorize_id;
 
     /**
      * @var boolean
@@ -139,7 +139,7 @@ class Show
      *
      * @ORM\Column(name="entryexpiry", type="date", nullable=false)
      */
-    private $entryexpiry;
+    private $entry_expiry;
 
     /**
      * @var string
@@ -153,14 +153,14 @@ class Show
      *
      * @ORM\Column(name="bookingcode", type="text", nullable=false)
      */
-    private $bookingcode;
+    private $booking_code;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="primaryref", type="integer", nullable=false)
      */
-    private $primaryref;
+    private $primary_ref;
 
     /**
      * @var \DateTime
@@ -189,7 +189,15 @@ class Show
      */
     private $roles;
 
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->people = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -204,7 +212,7 @@ class Show
      * Set dates
      *
      * @param string $dates
-     * @return ActsShows
+     * @return Show
      */
     public function setDates($dates)
     {
@@ -227,7 +235,7 @@ class Show
      * Set title
      *
      * @param string $title
-     * @return ActsShows
+     * @return Show
      */
     public function setTitle($title)
     {
@@ -250,7 +258,7 @@ class Show
      * Set author
      *
      * @param string $author
-     * @return ActsShows
+     * @return Show
      */
     public function setAuthor($author)
     {
@@ -273,7 +281,7 @@ class Show
      * Set prices
      *
      * @param string $prices
-     * @return ActsShows
+     * @return Show
      */
     public function setPrices($prices)
     {
@@ -296,7 +304,7 @@ class Show
      * Set description
      *
      * @param string $description
-     * @return ActsShows
+     * @return Show
      */
     public function setDescription($description)
     {
@@ -316,33 +324,33 @@ class Show
     }
 
     /**
-     * Set photourl
+     * Set photo_url
      *
-     * @param string $photourl
-     * @return ActsShows
+     * @param string $photoUrl
+     * @return Show
      */
-    public function setPhotourl($photourl)
+    public function setPhotoUrl($photoUrl)
     {
-        $this->photourl = $photourl;
+        $this->photo_url = $photoUrl;
     
         return $this;
     }
 
     /**
-     * Get photourl
+     * Get photo_url
      *
      * @return string 
      */
-    public function getPhotourl()
+    public function getPhotoUrl()
     {
-        return $this->photourl;
+        return $this->photo_url;
     }
 
     /**
      * Set venue
      *
      * @param string $venue
-     * @return ActsShows
+     * @return Show
      */
     public function setVenue($venue)
     {
@@ -362,33 +370,33 @@ class Show
     }
 
     /**
-     * Set excludedate
+     * Set exclude_date
      *
-     * @param \DateTime $excludedate
-     * @return ActsShows
+     * @param \DateTime $excludeDate
+     * @return Show
      */
-    public function setExcludedate($excludedate)
+    public function setExcludeDate($excludeDate)
     {
-        $this->excludedate = $excludedate;
+        $this->exclude_date = $excludeDate;
     
         return $this;
     }
 
     /**
-     * Get excludedate
+     * Get exclude_date
      *
      * @return \DateTime 
      */
-    public function getExcludedate()
+    public function getExcludeDate()
     {
-        return $this->excludedate;
+        return $this->exclude_date;
     }
 
     /**
      * Set society
      *
      * @param string $society
-     * @return ActsShows
+     * @return Show
      */
     public function setSociety($society)
     {
@@ -408,56 +416,56 @@ class Show
     }
 
     /**
-     * Set techsend
+     * Set tech_send
      *
-     * @param boolean $techsend
-     * @return ActsShows
+     * @param boolean $techSend
+     * @return Show
      */
-    public function setTechsend($techsend)
+    public function setTechSend($techSend)
     {
-        $this->techsend = $techsend;
+        $this->tech_send = $techSend;
     
         return $this;
     }
 
     /**
-     * Get techsend
+     * Get tech_send
      *
      * @return boolean 
      */
-    public function getTechsend()
+    public function getTechSend()
     {
-        return $this->techsend;
+        return $this->tech_send;
     }
 
     /**
-     * Set actorsend
+     * Set actor_send
      *
-     * @param boolean $actorsend
-     * @return ActsShows
+     * @param boolean $actorSend
+     * @return Show
      */
-    public function setActorsend($actorsend)
+    public function setActorSend($actorSend)
     {
-        $this->actorsend = $actorsend;
+        $this->actor_send = $actorSend;
     
         return $this;
     }
 
     /**
-     * Get actorsend
+     * Get actor_send
      *
      * @return boolean 
      */
-    public function getActorsend()
+    public function getActorSend()
     {
-        return $this->actorsend;
+        return $this->actor_send;
     }
 
     /**
      * Set audextra
      *
      * @param string $audextra
-     * @return ActsShows
+     * @return Show
      */
     public function setAudextra($audextra)
     {
@@ -477,79 +485,79 @@ class Show
     }
 
     /**
-     * Set socid
+     * Set society_id
      *
-     * @param integer $socid
-     * @return ActsShows
+     * @param integer $societyId
+     * @return Show
      */
-    public function setSocid($socid)
+    public function setSocietyId($societyId)
     {
-        $this->socid = $socid;
+        $this->society_id = $societyId;
     
         return $this;
     }
 
     /**
-     * Get socid
+     * Get society_id
      *
      * @return integer 
      */
-    public function getSocid()
+    public function getSocietyId()
     {
-        return $this->socid;
+        return $this->society_id;
     }
 
     /**
-     * Set venid
+     * Set venue_id
      *
-     * @param integer $venid
-     * @return ActsShows
+     * @param integer $venueId
+     * @return Show
      */
-    public function setVenid($venid)
+    public function setVenueId($venueId)
     {
-        $this->venid = $venid;
+        $this->venue_id = $venueId;
     
         return $this;
     }
 
     /**
-     * Get venid
+     * Get venue_id
      *
      * @return integer 
      */
-    public function getVenid()
+    public function getVenueId()
     {
-        return $this->venid;
+        return $this->venue_id;
     }
 
     /**
-     * Set authorizeid
+     * Set authorize_id
      *
-     * @param integer $authorizeid
-     * @return ActsShows
+     * @param integer $authorizeId
+     * @return Show
      */
-    public function setAuthorizeid($authorizeid)
+    public function setAuthorizeId($authorizeId)
     {
-        $this->authorizeid = $authorizeid;
+        $this->authorize_id = $authorizeId;
     
         return $this;
     }
 
     /**
-     * Get authorizeid
+     * Get authorize_id
      *
      * @return integer 
      */
-    public function getAuthorizeid()
+    public function getAuthorizeId()
     {
-        return $this->authorizeid;
+        return $this->authorize_id;
     }
 
     /**
      * Set entered
      *
      * @param boolean $entered
-     * @return ActsShows
+     * @return Show
      */
     public function setEntered($entered)
     {
@@ -569,33 +577,33 @@ class Show
     }
 
     /**
-     * Set entryexpiry
+     * Set entry_expiry
      *
-     * @param \DateTime $entryexpiry
-     * @return ActsShows
+     * @param \DateTime $entryExpiry
+     * @return Show
      */
-    public function setEntryexpiry($entryexpiry)
+    public function setEntryExpiry($entryExpiry)
     {
-        $this->entryexpiry = $entryexpiry;
+        $this->entry_expiry = $entryExpiry;
     
         return $this;
     }
 
     /**
-     * Get entryexpiry
+     * Get entry_expiry
      *
      * @return \DateTime 
      */
-    public function getEntryexpiry()
+    public function getEntryExpiry()
     {
-        return $this->entryexpiry;
+        return $this->entry_expiry;
     }
 
     /**
      * Set category
      *
      * @param string $category
-     * @return ActsShows
+     * @return Show
      */
     public function setCategory($category)
     {
@@ -615,56 +623,56 @@ class Show
     }
 
     /**
-     * Set bookingcode
+     * Set booking_code
      *
-     * @param string $bookingcode
-     * @return ActsShows
+     * @param string $bookingCode
+     * @return Show
      */
-    public function setBookingcode($bookingcode)
+    public function setBookingCode($bookingCode)
     {
-        $this->bookingcode = $bookingcode;
+        $this->booking_code = $bookingCode;
     
         return $this;
     }
 
     /**
-     * Get bookingcode
+     * Get booking_code
      *
      * @return string 
      */
-    public function getBookingcode()
+    public function getBookingCode()
     {
-        return $this->bookingcode;
+        return $this->booking_code;
     }
 
     /**
-     * Set primaryref
+     * Set primary_ref
      *
-     * @param integer $primaryref
-     * @return ActsShows
+     * @param integer $primaryRef
+     * @return Show
      */
-    public function setPrimaryref($primaryref)
+    public function setPrimaryRef($primaryRef)
     {
-        $this->primaryref = $primaryref;
+        $this->primary_ref = $primaryRef;
     
         return $this;
     }
 
     /**
-     * Get primaryref
+     * Get primary_ref
      *
      * @return integer 
      */
-    public function getPrimaryref()
+    public function getPrimaryRef()
     {
-        return $this->primaryref;
+        return $this->primary_ref;
     }
 
     /**
      * Set timestamp
      *
      * @param \DateTime $timestamp
-     * @return ActsShows
+     * @return Show
      */
     public function setTimestamp($timestamp)
     {
@@ -682,14 +690,7 @@ class Show
     {
         return $this->timestamp;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->people = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+
     /**
      * Add people
      *

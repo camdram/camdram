@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Footprints
+ * Footprint
  *
  * @ORM\Table(name="footprints")
  * @ORM\Entity

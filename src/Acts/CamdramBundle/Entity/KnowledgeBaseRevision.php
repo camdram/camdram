@@ -5,12 +5,12 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * AuthToken
+ * KnowledgeBaseRevision
  *
- * @ORM\Table(name="acts_authtokens")
+ * @ORM\Table(name="acts_knowledgebase")
  * @ORM\Entity
  */
-class AuthToken
+class KnowledgeBaseRevision
 {
     /**
      * @var integer
@@ -22,18 +22,28 @@ class AuthToken
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="token", type="string", length=50, nullable=false)
-     */
-    private $token;
-
-    /**
      * @var integer
      *
-     * @ORM\Column(name="siteid", type="integer", nullable=false)
+     * @ORM\Column(name="pageid", type="integer", nullable=false)
      */
-    private $site_id;
+    private $page_id;
+
+    /**
+     * @var \Page
+     *
+     * @ORM\ManyToOne(targetEntity="Page")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="pageid", referencedColumnName="id")
+     * })
+     */
+    private $page;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="text", type="text", nullable=false)
+     */
+    private $text;
 
     /**
      * @var integer
@@ -55,9 +65,9 @@ class AuthToken
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="issued", type="datetime", nullable=false)
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
-    private $issued;
+    private $date;
 
 
     /**
@@ -71,56 +81,56 @@ class AuthToken
     }
 
     /**
-     * Set token
+     * Set page_id
      *
-     * @param string $token
-     * @return AuthToken
+     * @param integer $pageId
+     * @return KnowledgeBaseRevision
      */
-    public function setToken($token)
+    public function setPageId($pageId)
     {
-        $this->token = $token;
+        $this->page_id = $pageId;
     
         return $this;
     }
 
     /**
-     * Get token
-     *
-     * @return string 
-     */
-    public function getToken()
-    {
-        return $this->token;
-    }
-
-    /**
-     * Set site_id
-     *
-     * @param integer $siteId
-     * @return AuthToken
-     */
-    public function setSiteId($siteId)
-    {
-        $this->site_id = $siteId;
-    
-        return $this;
-    }
-
-    /**
-     * Get site_id
+     * Get page_id
      *
      * @return integer 
      */
-    public function getSiteId()
+    public function getPageId()
     {
-        return $this->site_id;
+        return $this->page_id;
+    }
+
+    /**
+     * Set text
+     *
+     * @param string $text
+     * @return KnowledgeBaseRevision
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+    
+        return $this;
+    }
+
+    /**
+     * Get text
+     *
+     * @return string 
+     */
+    public function getText()
+    {
+        return $this->text;
     }
 
     /**
      * Set user_id
      *
      * @param integer $userId
-     * @return AuthToken
+     * @return KnowledgeBaseRevision
      */
     public function setUserId($userId)
     {
@@ -140,33 +150,56 @@ class AuthToken
     }
 
     /**
-     * Set issued
+     * Set date
      *
-     * @param \DateTime $issued
-     * @return AuthToken
+     * @param \DateTime $date
+     * @return KnowledgeBaseRevision
      */
-    public function setIssued($issued)
+    public function setDate($date)
     {
-        $this->issued = $issued;
+        $this->date = $date;
     
         return $this;
     }
 
     /**
-     * Get issued
+     * Get date
      *
      * @return \DateTime 
      */
-    public function getIssued()
+    public function getDate()
     {
-        return $this->issued;
+        return $this->date;
+    }
+
+    /**
+     * Set page
+     *
+     * @param \Acts\CamdramBundle\Entity\Page $page
+     * @return KnowledgeBaseRevision
+     */
+    public function setPage(\Acts\CamdramBundle\Entity\Page $page = null)
+    {
+        $this->page = $page;
+    
+        return $this;
+    }
+
+    /**
+     * Get page
+     *
+     * @return \Acts\CamdramBundle\Entity\Page 
+     */
+    public function getPage()
+    {
+        return $this->page;
     }
 
     /**
      * Set user
      *
      * @param \Acts\CamdramBundle\Entity\User $user
-     * @return AuthToken
+     * @return KnowledgeBaseRevision
      */
     public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
     {

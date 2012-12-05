@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsPeopleData
+ * Person
  *
  * @ORM\Table(name="acts_people_data")
  * @ORM\Entity
@@ -33,14 +33,14 @@ class Person
      *
      * @ORM\Column(name="mapto", type="integer", nullable=false)
      */
-    private $mapto;
+    private $map_to;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="norobots", type="boolean", nullable=false)
      */
-    private $norobots;
+    private $no_robots;
 
    /**
      *
@@ -59,7 +59,15 @@ class Person
      */
     private $roles;
 
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -74,7 +82,7 @@ class Person
      * Set name
      *
      * @param string $name
-     * @return ActsPeopleData
+     * @return Person
      */
     public function setName($name)
     {
@@ -94,58 +102,51 @@ class Person
     }
 
     /**
-     * Set mapto
+     * Set map_to
      *
-     * @param integer $mapto
-     * @return ActsPeopleData
+     * @param integer $mapTo
+     * @return Person
      */
-    public function setMapto($mapto)
+    public function setMapTo($mapTo)
     {
-        $this->mapto = $mapto;
+        $this->map_to = $mapTo;
     
         return $this;
     }
 
     /**
-     * Get mapto
+     * Get map_to
      *
      * @return integer 
      */
-    public function getMapto()
+    public function getMapTo()
     {
-        return $this->mapto;
+        return $this->map_to;
     }
 
     /**
-     * Set norobots
+     * Set no_robots
      *
-     * @param boolean $norobots
-     * @return ActsPeopleData
+     * @param boolean $noRobots
+     * @return Person
      */
-    public function setNorobots($norobots)
+    public function setNoRobots($noRobots)
     {
-        $this->norobots = $norobots;
+        $this->no_robots = $noRobots;
     
         return $this;
     }
 
     /**
-     * Get norobots
+     * Get no_robots
      *
      * @return boolean 
      */
-    public function getNorobots()
+    public function getNoRobots()
     {
-        return $this->norobots;
+        return $this->no_robots;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+
     /**
      * Add shows
      *

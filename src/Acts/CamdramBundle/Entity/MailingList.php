@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsMailinglists
+ * MailingList
  *
  * @ORM\Table(name="acts_mailinglists")
  * @ORM\Entity
@@ -33,7 +33,7 @@ class MailingList
      *
      * @ORM\Column(name="shortname", type="text", nullable=false)
      */
-    private $shortname;
+    private $short_name;
 
     /**
      * @var string
@@ -54,8 +54,7 @@ class MailingList
      *
      * @ORM\Column(name="defaultsubscribe", type="boolean", nullable=false)
      */
-    private $defaultsubscribe;
-
+    private $default_subscribe;
 
 
     /**
@@ -72,7 +71,7 @@ class MailingList
      * Set name
      *
      * @param string $name
-     * @return ActsMailinglists
+     * @return MailingList
      */
     public function setName($name)
     {
@@ -92,33 +91,33 @@ class MailingList
     }
 
     /**
-     * Set shortname
+     * Set short_name
      *
-     * @param string $shortname
-     * @return ActsMailinglists
+     * @param string $shortName
+     * @return MailingList
      */
-    public function setShortname($shortname)
+    public function setShortName($shortName)
     {
-        $this->shortname = $shortname;
+        $this->short_name = $shortName;
     
         return $this;
     }
 
     /**
-     * Get shortname
+     * Get short_name
      *
      * @return string 
      */
-    public function getShortname()
+    public function getShortName()
     {
-        return $this->shortname;
+        return $this->short_name;
     }
 
     /**
      * Set description
      *
      * @param string $description
-     * @return ActsMailinglists
+     * @return MailingList
      */
     public function setDescription($description)
     {
@@ -141,7 +140,7 @@ class MailingList
      * Set public
      *
      * @param boolean $public
-     * @return ActsMailinglists
+     * @return MailingList
      */
     public function setPublic($public)
     {
@@ -161,25 +160,25 @@ class MailingList
     }
 
     /**
-     * Set defaultsubscribe
+     * Set default_subscribe
      *
-     * @param boolean $defaultsubscribe
-     * @return ActsMailinglists
+     * @param boolean $defaultSubscribe
+     * @return MailingList
      */
-    public function setDefaultsubscribe($defaultsubscribe)
+    public function setDefaultSubscribe($defaultSubscribe)
     {
-        $this->defaultsubscribe = $defaultsubscribe;
+        $this->default_subscribe = $defaultSubscribe;
     
         return $this;
     }
 
     /**
-     * Get defaultsubscribe
+     * Get default_subscribe
      *
      * @return boolean 
      */
-    public function getDefaultsubscribe()
+    public function getDefaultSubscribe()
     {
-        return $this->defaultsubscribe;
+        return $this->default_subscribe;
     }
 }

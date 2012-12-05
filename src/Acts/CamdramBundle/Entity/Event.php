@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsEvents
+ * Event
  *
  * @ORM\Table(name="acts_events")
  * @ORM\Entity
@@ -33,14 +33,14 @@ class Event
      *
      * @ORM\Column(name="endtime", type="time", nullable=false)
      */
-    private $endtime;
+    private $end_time;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="starttime", type="time", nullable=false)
      */
-    private $starttime;
+    private $start_time;
 
     /**
      * @var \DateTime
@@ -61,18 +61,24 @@ class Event
      *
      * @ORM\Column(name="linkid", type="integer", nullable=false)
      */
-    private $linkid;
+    private $link_id;
 
     /**
-     * @var \ActsSocieties
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsSocieties")
+     * @ORM\Column(name="socid", type="integer", nullable=false)
+     */
+    private $society_id;
+
+    /**
+     * @var \Society
+     *
+     * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="socid", referencedColumnName="id")
      * })
      */
-    private $socid;
-
+    private $society;
 
 
     /**
@@ -89,7 +95,7 @@ class Event
      * Set text
      *
      * @param string $text
-     * @return ActsEvents
+     * @return Event
      */
     public function setText($text)
     {
@@ -109,56 +115,56 @@ class Event
     }
 
     /**
-     * Set endtime
+     * Set end_time
      *
-     * @param \DateTime $endtime
-     * @return ActsEvents
+     * @param \DateTime $endTime
+     * @return Event
      */
-    public function setEndtime($endtime)
+    public function setEndTime($endTime)
     {
-        $this->endtime = $endtime;
+        $this->end_time = $endTime;
     
         return $this;
     }
 
     /**
-     * Get endtime
+     * Get end_time
      *
      * @return \DateTime 
      */
-    public function getEndtime()
+    public function getEndTime()
     {
-        return $this->endtime;
+        return $this->end_time;
     }
 
     /**
-     * Set starttime
+     * Set start_time
      *
-     * @param \DateTime $starttime
-     * @return ActsEvents
+     * @param \DateTime $startTime
+     * @return Event
      */
-    public function setStarttime($starttime)
+    public function setStartTime($startTime)
     {
-        $this->starttime = $starttime;
+        $this->start_time = $startTime;
     
         return $this;
     }
 
     /**
-     * Get starttime
+     * Get start_time
      *
      * @return \DateTime 
      */
-    public function getStarttime()
+    public function getStartTime()
     {
-        return $this->starttime;
+        return $this->start_time;
     }
 
     /**
      * Set date
      *
      * @param \DateTime $date
-     * @return ActsEvents
+     * @return Event
      */
     public function setDate($date)
     {
@@ -181,7 +187,7 @@ class Event
      * Set description
      *
      * @param string $description
-     * @return ActsEvents
+     * @return Event
      */
     public function setDescription($description)
     {
@@ -201,48 +207,71 @@ class Event
     }
 
     /**
-     * Set linkid
+     * Set link_id
      *
-     * @param integer $linkid
-     * @return ActsEvents
+     * @param integer $linkId
+     * @return Event
      */
-    public function setLinkid($linkid)
+    public function setLinkId($linkId)
     {
-        $this->linkid = $linkid;
+        $this->link_id = $linkId;
     
         return $this;
     }
 
     /**
-     * Get linkid
+     * Get link_id
      *
      * @return integer 
      */
-    public function getLinkid()
+    public function getLinkId()
     {
-        return $this->linkid;
+        return $this->link_id;
     }
 
     /**
-     * Set socid
+     * Set society_id
      *
-     * @param \Acts\CamdramBundle\Entity\ActsSocieties $socid
-     * @return ActsEvents
+     * @param integer $societyId
+     * @return Event
      */
-    public function setSocid(\Acts\CamdramBundle\Entity\ActsSocieties $socid = null)
+    public function setSocietyId($societyId)
     {
-        $this->socid = $socid;
+        $this->society_id = $societyId;
     
         return $this;
     }
 
     /**
-     * Get socid
+     * Get society_id
      *
-     * @return \Acts\CamdramBundle\Entity\ActsSocieties 
+     * @return integer 
      */
-    public function getSocid()
+    public function getSocietyId()
     {
-        return $this->socid;
+        return $this->society_id;
+    }
+
+    /**
+     * Set society
+     *
+     * @param \Acts\CamdramBundle\Entity\Society $society
+     * @return Event
+     */
+    public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
+    {
+        $this->society = $society;
+    
+        return $this;
+    }
+
+    /**
+     * Get society
+     *
+     * @return \Acts\CamdramBundle\Entity\Society 
+     */
+    public function getSociety()
+    {
+        return $this->society;
     }
 }

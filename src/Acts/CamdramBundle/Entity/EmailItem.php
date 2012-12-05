@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsEmailItems
+ * EmailItem
  *
  * @ORM\Table(name="acts_email_items")
  * @ORM\Entity
@@ -47,14 +47,14 @@ class EmailItem
      *
      * @ORM\Column(name="orderid", type="float", nullable=false)
      */
-    private $orderid;
+    private $order_id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="creatorid", type="integer", nullable=false)
      */
-    private $creatorid;
+    private $creator_id;
 
     /**
      * @var \DateTime
@@ -71,7 +71,6 @@ class EmailItem
     private $protect;
 
 
-
     /**
      * Get id
      *
@@ -86,7 +85,7 @@ class EmailItem
      * Set emailid
      *
      * @param integer $emailid
-     * @return ActsEmailItems
+     * @return EmailItem
      */
     public function setEmailid($emailid)
     {
@@ -109,7 +108,7 @@ class EmailItem
      * Set title
      *
      * @param string $title
-     * @return ActsEmailItems
+     * @return EmailItem
      */
     public function setTitle($title)
     {
@@ -132,7 +131,7 @@ class EmailItem
      * Set text
      *
      * @param string $text
-     * @return ActsEmailItems
+     * @return EmailItem
      */
     public function setText($text)
     {
@@ -152,56 +151,56 @@ class EmailItem
     }
 
     /**
-     * Set orderid
+     * Set order_id
      *
-     * @param float $orderid
-     * @return ActsEmailItems
+     * @param float $orderId
+     * @return EmailItem
      */
-    public function setOrderid($orderid)
+    public function setOrderId($orderId)
     {
-        $this->orderid = $orderid;
+        $this->order_id = $orderId;
     
         return $this;
     }
 
     /**
-     * Get orderid
+     * Get order_id
      *
      * @return float 
      */
-    public function getOrderid()
+    public function getOrderId()
     {
-        return $this->orderid;
+        return $this->order_id;
     }
 
     /**
-     * Set creatorid
+     * Set creator_id
      *
-     * @param integer $creatorid
-     * @return ActsEmailItems
+     * @param integer $creatorId
+     * @return EmailItem
      */
-    public function setCreatorid($creatorid)
+    public function setCreatorId($creatorId)
     {
-        $this->creatorid = $creatorid;
+        $this->creator_id = $creatorId;
     
         return $this;
     }
 
     /**
-     * Get creatorid
+     * Get creator_id
      *
      * @return integer 
      */
-    public function getCreatorid()
+    public function getCreatorId()
     {
-        return $this->creatorid;
+        return $this->creator_id;
     }
 
     /**
      * Set created
      *
      * @param \DateTime $created
-     * @return ActsEmailItems
+     * @return EmailItem
      */
     public function setCreated($created)
     {
@@ -224,7 +223,7 @@ class EmailItem
      * Set protect
      *
      * @param boolean $protect
-     * @return ActsEmailItems
+     * @return EmailItem
      */
     public function setProtect($protect)
     {

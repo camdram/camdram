@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsStores
+ * Store
  *
  * @ORM\Table(name="acts_stores")
  * @ORM\Entity
@@ -33,8 +33,7 @@ class Store
      *
      * @ORM\Column(name="shortname", type="text", nullable=false)
      */
-    private $shortname;
-
+    private $short_name;
 
 
     /**
@@ -51,7 +50,7 @@ class Store
      * Set name
      *
      * @param string $name
-     * @return ActsStores
+     * @return Store
      */
     public function setName($name)
     {
@@ -71,25 +70,25 @@ class Store
     }
 
     /**
-     * Set shortname
+     * Set short_name
      *
-     * @param string $shortname
-     * @return ActsStores
+     * @param string $shortName
+     * @return Store
      */
-    public function setShortname($shortname)
+    public function setShortName($shortName)
     {
-        $this->shortname = $shortname;
+        $this->short_name = $shortName;
     
         return $this;
     }
 
     /**
-     * Get shortname
+     * Get short_name
      *
      * @return string 
      */
-    public function getShortname()
+    public function getShortName()
     {
-        return $this->shortname;
+        return $this->short_name;
     }
 }

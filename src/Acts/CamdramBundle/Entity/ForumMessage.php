@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsForumsMessages
+ * ForumsMessage
  *
  * @ORM\Table(name="acts_forums_messages")
  * @ORM\Entity
@@ -26,28 +26,28 @@ class ForumMessage
      *
      * @ORM\Column(name="replyid", type="integer", nullable=false)
      */
-    private $replyid;
+    private $reply_id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="forumid", type="integer", nullable=false)
      */
-    private $forumid;
+    private $forum_id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="uid", type="integer", nullable=false)
      */
-    private $uid;
+    private $user_id;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="datetime", type="datetime", nullable=false)
      */
-    private $datetime;
+    private $date_time;
 
     /**
      * @var string
@@ -68,22 +68,21 @@ class ForumMessage
      *
      * @ORM\Column(name="resourceid", type="integer", nullable=false)
      */
-    private $resourceid;
+    private $resource_id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="ancestorid", type="integer", nullable=false)
      */
-    private $ancestorid;
+    private $ancestor_id;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="lastpost", type="datetime", nullable=false)
      */
-    private $lastpost;
-
+    private $last_post;
 
 
     /**
@@ -97,102 +96,102 @@ class ForumMessage
     }
 
     /**
-     * Set replyid
+     * Set reply_id
      *
-     * @param integer $replyid
-     * @return ActsForumsMessages
+     * @param integer $replyId
+     * @return ForumMessage
      */
-    public function setReplyid($replyid)
+    public function setReplyId($replyId)
     {
-        $this->replyid = $replyid;
+        $this->reply_id = $replyId;
     
         return $this;
     }
 
     /**
-     * Get replyid
+     * Get reply_id
      *
      * @return integer 
      */
-    public function getReplyid()
+    public function getReplyId()
     {
-        return $this->replyid;
+        return $this->reply_id;
     }
 
     /**
-     * Set forumid
+     * Set forum_id
      *
-     * @param integer $forumid
-     * @return ActsForumsMessages
+     * @param integer $forumId
+     * @return ForumMessage
      */
-    public function setForumid($forumid)
+    public function setForumId($forumId)
     {
-        $this->forumid = $forumid;
+        $this->forum_id = $forumId;
     
         return $this;
     }
 
     /**
-     * Get forumid
+     * Get forum_id
      *
      * @return integer 
      */
-    public function getForumid()
+    public function getForumId()
     {
-        return $this->forumid;
+        return $this->forum_id;
     }
 
     /**
-     * Set uid
+     * Set user_id
      *
-     * @param integer $uid
-     * @return ActsForumsMessages
+     * @param integer $userId
+     * @return ForumMessage
      */
-    public function setUid($uid)
+    public function setUserId($userId)
     {
-        $this->uid = $uid;
+        $this->user_id = $userId;
     
         return $this;
     }
 
     /**
-     * Get uid
+     * Get user_id
      *
      * @return integer 
      */
-    public function getUid()
+    public function getUserId()
     {
-        return $this->uid;
+        return $this->user_id;
     }
 
     /**
-     * Set datetime
+     * Set date_time
      *
-     * @param \DateTime $datetime
-     * @return ActsForumsMessages
+     * @param \DateTime $dateTime
+     * @return ForumMessage
      */
-    public function setDatetime($datetime)
+    public function setDateTime($dateTime)
     {
-        $this->datetime = $datetime;
+        $this->date_time = $dateTime;
     
         return $this;
     }
 
     /**
-     * Get datetime
+     * Get date_time
      *
      * @return \DateTime 
      */
-    public function getDatetime()
+    public function getDateTime()
     {
-        return $this->datetime;
+        return $this->date_time;
     }
 
     /**
      * Set subject
      *
      * @param string $subject
-     * @return ActsForumsMessages
+     * @return ForumMessage
      */
     public function setSubject($subject)
     {
@@ -215,7 +214,7 @@ class ForumMessage
      * Set message
      *
      * @param string $message
-     * @return ActsForumsMessages
+     * @return ForumMessage
      */
     public function setMessage($message)
     {
@@ -235,71 +234,71 @@ class ForumMessage
     }
 
     /**
-     * Set resourceid
+     * Set resource_id
      *
-     * @param integer $resourceid
-     * @return ActsForumsMessages
+     * @param integer $resourceId
+     * @return ForumMessage
      */
-    public function setResourceid($resourceid)
+    public function setResourceId($resourceId)
     {
-        $this->resourceid = $resourceid;
+        $this->resource_id = $resourceId;
     
         return $this;
     }
 
     /**
-     * Get resourceid
+     * Get resource_id
      *
      * @return integer 
      */
-    public function getResourceid()
+    public function getResourceId()
     {
-        return $this->resourceid;
+        return $this->resource_id;
     }
 
     /**
-     * Set ancestorid
+     * Set ancestor_id
      *
-     * @param integer $ancestorid
-     * @return ActsForumsMessages
+     * @param integer $ancestorId
+     * @return ForumMessage
      */
-    public function setAncestorid($ancestorid)
+    public function setAncestorId($ancestorId)
     {
-        $this->ancestorid = $ancestorid;
+        $this->ancestor_id = $ancestorId;
     
         return $this;
     }
 
     /**
-     * Get ancestorid
+     * Get ancestor_id
      *
      * @return integer 
      */
-    public function getAncestorid()
+    public function getAncestorId()
     {
-        return $this->ancestorid;
+        return $this->ancestor_id;
     }
 
     /**
-     * Set lastpost
+     * Set last_post
      *
-     * @param \DateTime $lastpost
-     * @return ActsForumsMessages
+     * @param \DateTime $lastPost
+     * @return ForumMessage
      */
-    public function setLastpost($lastpost)
+    public function setLastPost($lastPost)
     {
-        $this->lastpost = $lastpost;
+        $this->last_post = $lastPost;
     
         return $this;
     }
 
     /**
-     * Get lastpost
+     * Get last_post
      *
      * @return \DateTime 
      */
-    public function getLastpost()
+    public function getLastPost()
     {
-        return $this->lastpost;
+        return $this->last_post;
     }
 }

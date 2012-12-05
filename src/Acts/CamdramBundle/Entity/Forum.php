@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsForums
+ * Forum
  *
  * @ORM\Table(name="acts_forums")
  * @ORM\Entity
@@ -40,8 +40,7 @@ class Forum
      *
      * @ORM\Column(name="orderid", type="integer", nullable=false)
      */
-    private $orderid;
-
+    private $order_id;
 
 
     /**
@@ -58,7 +57,7 @@ class Forum
      * Set name
      *
      * @param string $name
-     * @return ActsForums
+     * @return Forum
      */
     public function setName($name)
     {
@@ -81,7 +80,7 @@ class Forum
      * Set description
      *
      * @param string $description
-     * @return ActsForums
+     * @return Forum
      */
     public function setDescription($description)
     {
@@ -101,25 +100,25 @@ class Forum
     }
 
     /**
-     * Set orderid
+     * Set order_id
      *
-     * @param integer $orderid
-     * @return ActsForums
+     * @param integer $orderId
+     * @return Forum
      */
-    public function setOrderid($orderid)
+    public function setOrderId($orderId)
     {
-        $this->orderid = $orderid;
+        $this->order_id = $orderId;
     
         return $this;
     }
 
     /**
-     * Get orderid
+     * Get order_id
      *
      * @return integer 
      */
-    public function getOrderid()
+    public function getOrderId()
     {
-        return $this->orderid;
+        return $this->order_id;
     }
 }

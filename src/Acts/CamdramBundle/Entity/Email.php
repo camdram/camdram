@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsEmail
+ * Email
  *
  * @ORM\Table(name="acts_email")
  * @ORM\Entity
@@ -19,17 +19,24 @@ class Email
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $emailid;
+    private $email_id;
 
     /**
-     * @var \ActsUsers
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ActsUsers")
+     * @ORM\Column(name="userid", type="integer", nullable=false)
+     */
+    private $user_id;
+    
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
      */
-    private $userid;
+    private $user;
 
     /**
      * @var string
@@ -43,7 +50,7 @@ class Email
      *
      * @ORM\Column(name="public_add", type="boolean", nullable=false)
      */
-    private $publicAdd;
+    private $public_add;
 
     /**
      * @var string
@@ -64,32 +71,54 @@ class Email
      *
      * @ORM\Column(name="listid", type="text", nullable=false)
      */
-    private $listid;
+    private $list_id;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="deleteonsend", type="boolean", nullable=false)
      */
-    private $deleteonsend;
-
+    private $delete_on_send;
 
 
     /**
-     * Get emailid
+     * Get email_id
      *
      * @return integer 
      */
-    public function getEmailid()
+    public function getEmailId()
     {
-        return $this->emailid;
+        return $this->email_id;
+    }
+
+    /**
+     * Set user_id
+     *
+     * @param integer $userId
+     * @return Email
+     */
+    public function setUserId($userId)
+    {
+        $this->user_id = $userId;
+    
+        return $this;
+    }
+
+    /**
+     * Get user_id
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
     }
 
     /**
      * Set title
      *
      * @param string $title
-     * @return ActsEmail
+     * @return Email
      */
     public function setTitle($title)
     {
@@ -109,33 +138,33 @@ class Email
     }
 
     /**
-     * Set publicAdd
+     * Set public_add
      *
      * @param boolean $publicAdd
-     * @return ActsEmail
+     * @return Email
      */
     public function setPublicAdd($publicAdd)
     {
-        $this->publicAdd = $publicAdd;
+        $this->public_add = $publicAdd;
     
         return $this;
     }
 
     /**
-     * Get publicAdd
+     * Get public_add
      *
      * @return boolean 
      */
     public function getPublicAdd()
     {
-        return $this->publicAdd;
+        return $this->public_add;
     }
 
     /**
      * Set summary
      *
      * @param string $summary
-     * @return ActsEmail
+     * @return Email
      */
     public function setSummary($summary)
     {
@@ -158,7 +187,7 @@ class Email
      * Set from
      *
      * @param integer $from
-     * @return ActsEmail
+     * @return Email
      */
     public function setFrom($from)
     {
@@ -178,71 +207,71 @@ class Email
     }
 
     /**
-     * Set listid
+     * Set list_id
      *
-     * @param string $listid
-     * @return ActsEmail
+     * @param string $listId
+     * @return Email
      */
-    public function setListid($listid)
+    public function setListId($listId)
     {
-        $this->listid = $listid;
+        $this->list_id = $listId;
     
         return $this;
     }
 
     /**
-     * Get listid
+     * Get list_id
      *
      * @return string 
      */
-    public function getListid()
+    public function getListId()
     {
-        return $this->listid;
+        return $this->list_id;
     }
 
     /**
-     * Set deleteonsend
+     * Set delete_on_send
      *
-     * @param boolean $deleteonsend
-     * @return ActsEmail
+     * @param boolean $deleteOnSend
+     * @return Email
      */
-    public function setDeleteonsend($deleteonsend)
+    public function setDeleteOnSend($deleteOnSend)
     {
-        $this->deleteonsend = $deleteonsend;
+        $this->delete_on_send = $deleteOnSend;
     
         return $this;
     }
 
     /**
-     * Get deleteonsend
+     * Get delete_on_send
      *
      * @return boolean 
      */
-    public function getDeleteonsend()
+    public function getDeleteOnSend()
     {
-        return $this->deleteonsend;
+        return $this->delete_on_send;
     }
 
     /**
-     * Set userid
+     * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\ActsUsers $userid
-     * @return ActsEmail
+     * @param \Acts\CamdramBundle\Entity\User $user
+     * @return Email
      */
-    public function setUserid(\Acts\CamdramBundle\Entity\ActsUsers $userid = null)
+    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
     {
-        $this->userid = $userid;
+        $this->user = $user;
     
         return $this;
     }
 
     /**
-     * Get userid
+     * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\ActsUsers 
+     * @return \Acts\CamdramBundle\Entity\User 
      */
-    public function getUserid()
+    public function getUser()
     {
-        return $this->userid;
+        return $this->user;
     }
 }

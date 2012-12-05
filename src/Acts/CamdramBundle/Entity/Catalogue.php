@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsCatalogue
+ * Catalogue
  *
  * @ORM\Table(name="acts_catalogue")
  * @ORM\Entity
@@ -26,7 +26,7 @@ class Catalogue
      *
      * @ORM\Column(name="storeid", type="integer", nullable=false)
      */
-    private $storeid;
+    private $store_id;
 
     /**
      * @var string
@@ -34,7 +34,6 @@ class Catalogue
      * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
-
 
 
     /**
@@ -48,33 +47,33 @@ class Catalogue
     }
 
     /**
-     * Set storeid
+     * Set store_id
      *
-     * @param integer $storeid
-     * @return ActsCatalogue
+     * @param integer $storeId
+     * @return Catalogue
      */
-    public function setStoreid($storeid)
+    public function setStoreId($storeId)
     {
-        $this->storeid = $storeid;
+        $this->store_id = $storeId;
     
         return $this;
     }
 
     /**
-     * Get storeid
+     * Get store_id
      *
      * @return integer 
      */
-    public function getStoreid()
+    public function getStoreId()
     {
-        return $this->storeid;
+        return $this->store_id;
     }
 
     /**
      * Set description
      *
      * @param string $description
-     * @return ActsCatalogue
+     * @return Catalogue
      */
     public function setDescription($description)
     {

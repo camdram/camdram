@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsShowsPeopleLink
+ * Role
  *
  * @ORM\Table(name="acts_shows_people_link")
  * @ORM\Entity
@@ -26,7 +26,7 @@ class Role
      *
      * @ORM\Column(name="sid", type="integer", nullable=false)
      */
-    private $sid;
+    private $show_id;
 
     /**
      * @var string
@@ -54,7 +54,7 @@ class Role
      *
      * @ORM\Column(name="pid", type="integer", nullable=false)
      */
-    private $pid;
+    private $person_id;
 
     /**
      *
@@ -75,7 +75,6 @@ class Role
     private $person;
 
 
-
     /**
      * Get id
      *
@@ -84,6 +83,29 @@ class Role
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set show_id
+     *
+     * @param integer $showId
+     * @return Role
+     */
+    public function setShowId($showId)
+    {
+        $this->show_id = $showId;
+    
+        return $this;
+    }
+
+    /**
+     * Get show_id
+     *
+     * @return integer 
+     */
+    public function getShowId()
+    {
+        return $this->show_id;
     }
 
     /**
@@ -156,6 +178,29 @@ class Role
     }
 
     /**
+     * Set person_id
+     *
+     * @param integer $personId
+     * @return Role
+     */
+    public function setPersonId($personId)
+    {
+        $this->person_id = $personId;
+    
+        return $this;
+    }
+
+    /**
+     * Get person_id
+     *
+     * @return integer 
+     */
+    public function getPersonId()
+    {
+        return $this->person_id;
+    }
+
+    /**
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $show
@@ -199,51 +244,5 @@ class Role
     public function getPerson()
     {
         return $this->person;
-    }
-
-    /**
-     * Set sid
-     *
-     * @param integer $sid
-     * @return Role
-     */
-    public function setSid($sid)
-    {
-        $this->sid = $sid;
-    
-        return $this;
-    }
-
-    /**
-     * Get sid
-     *
-     * @return integer 
-     */
-    public function getSid()
-    {
-        return $this->sid;
-    }
-
-    /**
-     * Set pid
-     *
-     * @param integer $pid
-     * @return Role
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-    
-        return $this;
-    }
-
-    /**
-     * Get pid
-     *
-     * @return integer 
-     */
-    public function getPid()
-    {
-        return $this->pid;
     }
 }

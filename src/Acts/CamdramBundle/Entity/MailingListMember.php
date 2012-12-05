@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsMailinglistsMembers
+ * MailingListMember
  *
  * @ORM\Table(name="acts_mailinglists_members")
  * @ORM\Entity
@@ -19,7 +19,7 @@ class MailingListMember
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $listid;
+    private $list_id;
 
     /**
      * @var integer
@@ -28,53 +28,52 @@ class MailingListMember
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $uid;
-
+    private $user_id;
 
 
     /**
-     * Set listid
+     * Set list_id
      *
-     * @param integer $listid
-     * @return ActsMailinglistsMembers
+     * @param integer $listId
+     * @return MailingListMember
      */
-    public function setListid($listid)
+    public function setListId($listId)
     {
-        $this->listid = $listid;
+        $this->list_id = $listId;
     
         return $this;
     }
 
     /**
-     * Get listid
+     * Get list_id
      *
      * @return integer 
      */
-    public function getListid()
+    public function getListId()
     {
-        return $this->listid;
+        return $this->list_id;
     }
 
     /**
-     * Set uid
+     * Set user_id
      *
-     * @param integer $uid
-     * @return ActsMailinglistsMembers
+     * @param integer $userId
+     * @return MailingListMember
      */
-    public function setUid($uid)
+    public function setUserId($userId)
     {
-        $this->uid = $uid;
+        $this->user_id = $userId;
     
         return $this;
     }
 
     /**
-     * Get uid
+     * Get user_id
      *
      * @return integer 
      */
-    public function getUid()
+    public function getUserId()
     {
-        return $this->uid;
+        return $this->user_id;
     }
 }

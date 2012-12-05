@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActsTechiesPositions
+ * TechiePosition
  *
  * @ORM\Table(name="acts_techies_positions")
  * @ORM\Entity
@@ -33,8 +33,7 @@ class TechiePosition
      *
      * @ORM\Column(name="orderid", type="float", nullable=false)
      */
-    private $orderid;
-
+    private $order_id;
 
 
     /**
@@ -51,7 +50,7 @@ class TechiePosition
      * Set position
      *
      * @param string $position
-     * @return ActsTechiesPositions
+     * @return TechiePosition
      */
     public function setPosition($position)
     {
@@ -71,25 +70,25 @@ class TechiePosition
     }
 
     /**
-     * Set orderid
+     * Set order_id
      *
-     * @param float $orderid
-     * @return ActsTechiesPositions
+     * @param float $orderId
+     * @return TechiePosition
      */
-    public function setOrderid($orderid)
+    public function setOrderId($orderId)
     {
-        $this->orderid = $orderid;
+        $this->order_id = $orderId;
     
         return $this;
     }
 
     /**
-     * Get orderid
+     * Get order_id
      *
      * @return float 
      */
-    public function getOrderid()
+    public function getOrderId()
     {
-        return $this->orderid;
+        return $this->order_id;
     }
 }
