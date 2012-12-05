@@ -4,7 +4,9 @@ acts_camdram_homepage:
 acts_camdram_shows:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\ShowController"
-    
+acts_camdram_people:
+    type:     rest
+    resource: Acts\CamdramBundle\Controller\PersonController
 acts_camdram_login_fb:
     pattern: /login/facebook
     defaults: { _controller: ActsCamdramBundle:Account:facebook }

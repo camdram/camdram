@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+        <title>Person: {{ person.name }}</title>
+</head>
+
+<body>
+<h1>camdram.net</h1>
+
+<h2>{{ person.name }}</h2>
+
+<ul>
+{% for role in person.roles %}
+<li><a href="{{ path('get_show', {id: role.show.id}) }}">{{ role.show.title }}</a> - {{ role.role }}</li>
+{% endfor %}
+</ul>
+</body>
+</html>

@@ -13,7 +13,7 @@
 
 <ul>
 {% for role in show.roles %}
-<li>{{ role.role }} - {{ role.person.name }}</li>
+<li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
 {% endfor %}
 </ul>
 </body>

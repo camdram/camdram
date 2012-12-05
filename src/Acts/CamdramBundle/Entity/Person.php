@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Person
@@ -49,13 +50,14 @@ class Person
      *   joinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id")},
      *   inverseJoinColumns={@ORM\JoinColumn(name="sid", referencedColumnName="id")}
      * )
+     * @Exclude
      */
     private $shows;
     
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
-     * 
+     * @Exclude
      */
     private $roles;
 

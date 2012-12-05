@@ -5,7 +5,7 @@ php:
   - 5.4
 
 before_script: 
-  - cp app/config/paramaters.test.yml app/config/parameters.yml
+  - cp app/config/parameters.test.yml app/config/parameters.yml
   - composer install
 
 script: phpunit -c app
