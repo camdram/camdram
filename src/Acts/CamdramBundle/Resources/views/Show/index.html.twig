@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+        <title>Show: {{ show.title }}</title>
+</head>
+
+<body>
+<h1>camdram.net</h1>
+
+<h2>{{ show.title }}</h2>
+<h3>{{ show.author }}</h3>
+{{ show.description | nl2br }}
+
+<ul>
+{% for role in show.roles %}
+<li>{{ role.role }} - {{ role.person.name }}</li>
+{% endfor %}
+</ul>
+</body>
+</html>
