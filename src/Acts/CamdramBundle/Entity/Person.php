@@ -45,11 +45,8 @@ class Person
 
    /**
      *
-     * @ORM\ManyToMany(targetEntity="Show")
-     * @ORM\JoinTable(name="acts_shows_people_link",
-     *   joinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id")},
-     *   inverseJoinColumns={@ORM\JoinColumn(name="sid", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity="Show", mappedBy="people")
+
      * @Exclude
      */
     private $shows;

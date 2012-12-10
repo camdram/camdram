@@ -69,7 +69,7 @@ class Performance
     /**
      * @var integer
      *
-     * @ORM\Column(name="venid", type="integer", nullable=false)
+     * @ORM\Column(name="venid", type="integer", nullable=true)
      */
     private $venue_id;
 

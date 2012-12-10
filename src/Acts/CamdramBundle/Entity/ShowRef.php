@@ -26,7 +26,7 @@ class ShowRef
      *
      * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=false)
      * })
      */
     private $show_id;

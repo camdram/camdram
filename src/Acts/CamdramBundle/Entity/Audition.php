@@ -52,7 +52,7 @@ class Audition
     /**
      * @var integer
      *
-     * @ORM\Column(name="showid", type="integer", nullable=false)
+     * @ORM\Column(name="showid", type="integer", nullable=true)
      */
     private $show_id;
 

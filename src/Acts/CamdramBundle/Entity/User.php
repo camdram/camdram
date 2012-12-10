@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="acts_users")
  * @ORM\Entity
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var integer
@@ -40,7 +41,7 @@ class User
      *
      * @ORM\Column(name="pass", type="text", nullable=false)
      */
-    private $pass;
+    private $password;
 
     /**
      * @var \DateTime
@@ -76,13 +77,6 @@ class User
      * @ORM\Column(name="publishemail", type="boolean", nullable=false)
      */
     private $publish_email;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="forumnotify", type="boolean", nullable=false)
-     */
-    private $forum_notify;
 
     /**
      * @var string
@@ -125,28 +119,6 @@ class User
      * @ORM\Column(name="dbphone", type="boolean", nullable=false)
      */
     private $db_phone;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="threadmessages", type="boolean", nullable=false)
-     */
-    private $thread_messages;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="reversetime", type="boolean", nullable=false)
-     */
-    private $reverse_time;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="resetcode", type="text", nullable=false)
-     */
-    private $reset_code;
-
 
     /**
      * Get id
@@ -202,29 +174,6 @@ class User
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Set pass
-     *
-     * @param string $pass
-     * @return User
-     */
-    public function setPass($pass)
-    {
-        $this->pass = $pass;
-    
-        return $this;
-    }
-
-    /**
-     * Get pass
-     *
-     * @return string 
-     */
-    public function getPass()
-    {
-        return $this->pass;
     }
 
     /**
@@ -570,5 +519,46 @@ class User
     public function getResetCode()
     {
         return $this->reset_code;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string 
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getUsername()
+    {
+        return $this->getEmail();
+    }
+
+    public function getSalt()
+    {
+        return '';
+    }
+    public function getRoles()
+    {
+        return array();
+    }
+    public function eraseCredentials()
+    {
+
     }
 }

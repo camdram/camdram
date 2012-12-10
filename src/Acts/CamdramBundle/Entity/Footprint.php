@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Footprint
  *
- * @ORM\Table(name="footprints")
+ * @ORM\Table(name="footprints", indexes={@ORM\Index(name="to", columns={"to"})})
  * @ORM\Entity
  */
 class Footprint

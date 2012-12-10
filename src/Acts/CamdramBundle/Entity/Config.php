@@ -17,7 +17,6 @@ class Config
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $name;
 

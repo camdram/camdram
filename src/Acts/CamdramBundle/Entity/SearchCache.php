@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SearchCache
  *
- * @ORM\Table(name="acts_search_cache")
+ * @ORM\Table(name="acts_search_cache", indexes={@ORM\Index(name="keyword", columns={"keyword"})})
  * @ORM\Entity
  */
 class SearchCache

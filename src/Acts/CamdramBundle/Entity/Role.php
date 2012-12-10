@@ -24,7 +24,7 @@ class Role
     /**
      * @var integer
      *
-     * @ORM\Column(name="sid", type="integer", nullable=false)
+     * @ORM\Column(name="sid", type="integer", nullable=true)
      */
     private $show_id;
 
@@ -52,7 +52,7 @@ class Role
     /**
      * @var integer
      *
-     * @ORM\Column(name="pid", type="integer", nullable=false)
+     * @ORM\Column(name="pid", type="integer", nullable=true)
      */
     private $person_id;
 

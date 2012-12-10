@@ -24,7 +24,7 @@ class Email
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer", nullable=false)
+     * @ORM\Column(name="userid", type="integer", nullable=true)
      */
     private $user_id;
     

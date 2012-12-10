@@ -84,6 +84,7 @@ class Version20121209224636 extends AbstractMigration
         $this->addSql("ALTER TABLE `acts_keywords` CHANGE `pageid` pageid INT NOT NULL");
         $this->addSql("ALTER TABLE acts_keywords ADD CONSTRAINT FK_B2CE00DB8BF4141 FOREIGN KEY (pageid) REFERENCES acts_pages (id)");
         $this->addSql("CREATE INDEX IDX_B2CE00DB8BF4141 ON acts_keywords (pageid)");
+        $this->addSql("ALTER TABLE `acts_shows_refs` CHANGE `showid` showid INT NOT NULL");
         $this->addSql("DELETE acts_shows_refs FROM acts_shows_refs LEFT JOIN acts_shows ON  acts_shows_refs.showid = acts_shows.id WHERE acts_shows.id IS NULL");
         $this->addSql("ALTER TABLE acts_shows_refs ADD CONSTRAINT FK_86C0B071592D0E6F FOREIGN KEY (showid) REFERENCES acts_shows (id)");
         $this->addSql("CREATE INDEX IDX_86C0B071592D0E6F ON acts_shows_refs (showid)");
