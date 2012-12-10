@@ -25,7 +25,7 @@ class Person
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
@@ -57,6 +57,13 @@ class Person
      * @Exclude
      */
     private $roles;
+
+    /**
+     * @var User
+     *
+     * @ORM\OneToOne(targetEntity="User", mappedBy="person")
+     */
+    private $user;
 
     /**
      * Constructor
@@ -210,5 +217,28 @@ class Person
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Acts\CamdramBundle\Entity\User $user
+     * @return Person
+     */
+    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Acts\CamdramBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

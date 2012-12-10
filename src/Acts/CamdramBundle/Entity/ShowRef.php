@@ -34,7 +34,7 @@ class ShowRef
     /**
      * @var string
      *
-     * @ORM\Column(name="ref", type="text", nullable=false)
+     * @ORM\Column(name="ref", type="string", length=255, nullable=false)
      */
     private $ref;
 

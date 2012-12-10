@@ -25,28 +25,28 @@ class Show
     /**
      * @var string
      *
-     * @ORM\Column(name="dates", type="text", nullable=false)
+     * @ORM\Column(name="dates", type="string", length=255, nullable=false)
      */
     private $dates;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="text", nullable=false)
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="author", type="text", nullable=false)
+     * @ORM\Column(name="author", type="string", length=255, nullable=false)
      */
     private $author;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prices", type="text", nullable=false)
+     * @ORM\Column(name="prices", type="string", length=255, nullable=false)
      */
     private $prices;
 
@@ -67,21 +67,21 @@ class Show
     /**
      * @var string
      *
-     * @ORM\Column(name="venue", type="text", nullable=false)
+     * @ORM\Column(name="venue", type="string", length=255, nullable=false)
      */
     private $venue;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="excludedate", type="date", nullable=false)
+     * @ORM\Column(name="excludedate", type="date", length=255, nullable=false)
      */
     private $exclude_date;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="society", type="text", nullable=true)
+     * @ORM\Column(name="society", type="string", length=255, nullable=true)
      */
     private $society;
 
@@ -144,14 +144,14 @@ class Show
     /**
      * @var string
      *
-     * @ORM\Column(name="category", type="string", nullable=false)
+     * @ORM\Column(name="category", type="string", length=255, nullable=false)
      */
     private $category;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bookingcode", type="text", nullable=false)
+     * @ORM\Column(name="bookingcode", type="string", length=255, nullable=false)
      */
     private $booking_code;
 

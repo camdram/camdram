@@ -45,7 +45,7 @@ class Audition
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="text", nullable=false)
+     * @ORM\Column(name="location", type="string", nullable=false)
      */
     private $location;
 

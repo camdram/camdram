@@ -25,21 +25,21 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="text", nullable=false)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pass", type="text", nullable=false)
+     * @ORM\Column(name="pass", type="string", length=32, nullable=false)
      */
     private $password;
 
@@ -88,21 +88,21 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="occupation", type="text", nullable=false)
+     * @ORM\Column(name="occupation", type="string", length=255, nullable=false)
      */
     private $occupation;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="graduation", type="text", nullable=false)
+     * @ORM\Column(name="graduation", type="string", length=255, nullable=false)
      */
     private $graduation;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tel", type="text", nullable=false)
+     * @ORM\Column(name="tel", type="string", length=50, nullable=false)
      */
     private $tel;
 
@@ -119,6 +119,56 @@ class User implements UserInterface
      * @ORM\Column(name="dbphone", type="boolean", nullable=false)
      */
     private $db_phone;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="forumnotify", type="boolean", nullable=false)
+     */
+    private $forum_notify;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="threadmessages", type="boolean", nullable=false)
+     */
+    private $thread_messages;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="reversetime", type="boolean", nullable=false)
+     */
+    private $reverse_time;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="resetcode", type="string", length=32, nullable=false)
+     */
+    private $reset_code;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="person_id", type="integer", nullable=true)
+     */
+    private $person_id;
+
+    /**
+     * @var Person
+     *
+     * @ORM\OneToOne(targetEntity="Person", inversedBy="user")
+     */
+    private $person;
+
+    /**
+     * @var \User
+     *
+     *  @ORM\OneToMany(targetEntity="UserIdentity", mappedBy="user")
+     */
+    private $identities;
+
 
     /**
      * Get id
@@ -561,4 +611,91 @@ class User implements UserInterface
     {
 
     }
+
+    /**
+     * Set person_id
+     *
+     * @param integer $personId
+     * @return User
+     */
+    public function setPersonId($personId)
+    {
+        $this->person_id = $personId;
+    
+        return $this;
+    }
+
+    /**
+     * Get person_id
+     *
+     * @return integer 
+     */
+    public function getPersonId()
+    {
+        return $this->person_id;
+    }
+
+    /**
+     * Set person
+     *
+     * @param \Acts\CamdramBundle\Entity\Person $person
+     * @return User
+     */
+    public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
+    {
+        $this->person = $person;
+    
+        return $this;
+    }
+
+    /**
+     * Get person
+     *
+     * @return \Acts\CamdramBundle\Entity\Person 
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->identities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add identities
+     *
+     * @param \Acts\CamdramBundle\Entity\UserIdentity $identities
+     * @return User
+     */
+    public function addIdentity(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    {
+        $this->identities[] = $identities;
+    
+        return $this;
+    }
+
+    /**
+     * Remove identities
+     *
+     * @param \Acts\CamdramBundle\Entity\UserIdentity $identities
+     */
+    public function removeIdentity(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    {
+        $this->identities->removeElement($identities);
+    }
+
+    /**
+     * Get identities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdentities()
+    {
+        return $this->identities;
+    }
+
 }

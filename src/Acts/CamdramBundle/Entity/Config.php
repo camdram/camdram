@@ -60,4 +60,17 @@ class Config
     {
         return $this->value;
     }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Config
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
 }

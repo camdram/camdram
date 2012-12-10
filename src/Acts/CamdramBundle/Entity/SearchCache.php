@@ -45,7 +45,7 @@ class SearchCache
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="text", nullable=false)
+     * @ORM\Column(name="url", type="string", nullable=false)
      */
     private $url;
 
@@ -66,7 +66,7 @@ class SearchCache
     /**
      * @var string
      *
-     * @ORM\Column(name="linkcode", type="string", length=2000, nullable=true)
+     * @ORM\Column(name="linkcode", type="string", length=255, nullable=true)
      */
     private $link_code;
 

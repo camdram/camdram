@@ -24,7 +24,7 @@ class Society
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
@@ -38,14 +38,14 @@ class Society
     /**
      * @var string
      *
-     * @ORM\Column(name="shortname", type="text", nullable=false)
+     * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
      */
     private $short_name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="college", type="text", nullable=true)
+     * @ORM\Column(name="college", type="string", length=100, nullable=true)
      */
     private $college;
 
@@ -66,7 +66,7 @@ class Society
     /**
      * @var string
      *
-     * @ORM\Column(name="logourl", type="text", nullable=true)
+     * @ORM\Column(name="logourl", type="string", length=255, nullable=true)
      */
     private $logo_url;
 

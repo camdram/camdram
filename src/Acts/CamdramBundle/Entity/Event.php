@@ -24,9 +24,9 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="text", nullable=false)
+     * @ORM\Column(name="text", type="string", length=255, nullable=false)
      */
-    private $text;
+    private $title;
 
     /**
      * @var \DateTime
@@ -89,29 +89,6 @@ class Event
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set text
-     *
-     * @param string $text
-     * @return Event
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-    
-        return $this;
-    }
-
-    /**
-     * Get text
-     *
-     * @return string 
-     */
-    public function getText()
-    {
-        return $this->text;
     }
 
     /**

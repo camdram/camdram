@@ -86,7 +86,7 @@ class Performance
     /**
      * @var string
      *
-     * @ORM\Column(name="venue", type="text", nullable=false)
+     * @ORM\Column(name="venue", type="string", length=255, nullable=false)
      */
     private $venue_name;
 

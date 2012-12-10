@@ -31,14 +31,14 @@ class Role
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", nullable=false)
+     * @ORM\Column(name="type", type="string", length=20, nullable=false)
      */
     private $type;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="text", nullable=false)
+     * @ORM\Column(name="role", type="string", length=255, nullable=false)
      */
     private $role;
 

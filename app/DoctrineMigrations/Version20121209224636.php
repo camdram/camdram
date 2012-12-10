@@ -120,7 +120,7 @@ class Version20121209224636 extends AbstractMigration
         $this->addSql("ALTER TABLE acts_reviews ADD CONSTRAINT FK_4F8219D8539B0606 FOREIGN KEY (uid) REFERENCES acts_users (id)");
         $this->addSql("CREATE INDEX IDX_4F8219D8592D0E6F ON acts_reviews (showid)");
         $this->addSql("CREATE INDEX IDX_4F8219D8539B0606 ON acts_reviews (uid)");
-        $this->addSql("ALTER TABLE `acts_users` DROP forumnotify, DROP threadmessages, DROP reversetime, DROP resetcode, CHANGE `registered` registered DATE NOT NULL, CHANGE `login` login DATE NOT NULL, CHANGE `contact` contact TINYINT(1) NOT NULL, CHANGE `alumni` alumni TINYINT(1) NOT NULL, CHANGE `publishemail` publishemail TINYINT(1) NOT NULL, CHANGE `dbemail` dbemail TINYINT(1) NOT NULL, CHANGE `dbphone` dbphone TINYINT(1) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_users` CHANGE `registered` registered DATE NOT NULL, CHANGE `login` login DATE NOT NULL, CHANGE `contact` contact TINYINT(1) NOT NULL, CHANGE `alumni` alumni TINYINT(1) NOT NULL, CHANGE `publishemail` publishemail TINYINT(1) NOT NULL, CHANGE `dbemail` dbemail TINYINT(1) NOT NULL, CHANGE `dbphone` dbphone TINYINT(1) NOT NULL, CHANGE `forumnotify` forumnotify TINYINT(1) NOT NULL, CHANGE `threadmessages` threadmessages TINYINT(1) NOT NULL, CHANGE `reversetime` reversetime TINYINT(1) NOT NULL");
         $this->addSql("ALTER TABLE `acts_people_data` CHANGE `mapto` mapto INT NOT NULL, CHANGE `norobots` norobots TINYINT(1) NOT NULL");
         $this->addSql("ALTER TABLE `acts_techies` DROP INDEX `showid`, ADD INDEX `IDX_4D00DAC2592D0E6F` (`showid`)");
         $this->addSql("ALTER TABLE `acts_techies` CHANGE `showid` showid INT DEFAULT NULL, CHANGE `deadline` deadline TINYINT(1) NOT NULL, CHANGE `expiry` expiry DATE NOT NULL, CHANGE `display` display TINYINT(1) NOT NULL, CHANGE `remindersent` remindersent TINYINT(1) NOT NULL, CHANGE `lastupdated` lastupdated DATETIME NOT NULL");
@@ -150,12 +150,65 @@ class Version20121209224636 extends AbstractMigration
         $this->addSql("ALTER TABLE acts_applications ADD CONSTRAINT FK_95ED3F0FAF648A81 FOREIGN KEY (socid) REFERENCES acts_societies (id)");
         $this->addSql("CREATE INDEX IDX_95ED3F0F592D0E6F ON acts_applications (showid)");
         $this->addSql("CREATE INDEX IDX_95ED3F0FAF648A81 ON acts_applications (socid)");
+
+        $this->addSql("ALTER TABLE `acts_stores` CHANGE `name` name VARCHAR(255) NOT NULL, CHANGE `shortname` shortname VARCHAR(100) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_techies_positions` CHANGE `position` position VARCHAR(255) NOT NULL, CHANGE `orderid` orderid INT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_email` CHANGE `title` title VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_societies` CHANGE `name` name VARCHAR(255) NOT NULL, CHANGE `shortname` shortname VARCHAR(100) NOT NULL, CHANGE `college` college VARCHAR(100) DEFAULT NULL, CHANGE `logourl` logourl VARCHAR(255) DEFAULT NULL");
+        $this->addSql("ALTER TABLE `acts_performances` CHANGE `venue` venue VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_keywords` CHANGE `kw` kw VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_shows_refs` CHANGE `ref` ref VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_mailinglists` CHANGE `name` name VARCHAR(255) NOT NULL, CHANGE `shortname` shortname VARCHAR(100) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_pages` CHANGE `title` title VARCHAR(255) NOT NULL, CHANGE `fulltitle` fulltitle VARCHAR(255) NOT NULL, CHANGE `mode` mode VARCHAR(50) DEFAULT NULL, CHANGE `allowsubpage` allowsubpage TINYINT(1) NOT NULL, CHANGE `usepage` usepage VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_forums` CHANGE `name` name VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_includes` CHANGE `name` name VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_pendingaccess` CHANGE `email` email VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_shows_people_link` CHANGE `type` type VARCHAR(20) NOT NULL, CHANGE `role` role VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_termdates` CHANGE `name` name VARCHAR(100) NOT NULL, CHANGE `friendlyname` friendlyname VARCHAR(100) NOT NULL, CHANGE `vacation` vacation VARCHAR(100) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_search_cache` CHANGE `url` url VARCHAR(255) NOT NULL, CHANGE `linkcode` linkcode VARCHAR(255) DEFAULT NULL");
+        $this->addSql("ALTER TABLE `acts_events` CHANGE `text` text VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_email_items` CHANGE `text` text VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_email_aliases` CHANGE `name` name VARCHAR(255) NOT NULL, CHANGE `email` email VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_reviews` CHANGE `from` `from` VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_users` CHANGE `name` name VARCHAR(255) NOT NULL, CHANGE `email` email VARCHAR(255) NOT NULL, CHANGE `pass` pass VARCHAR(32) NOT NULL, CHANGE `occupation` occupation VARCHAR(255) NOT NULL, CHANGE `graduation` graduation VARCHAR(255) NOT NULL, CHANGE `tel` tel VARCHAR(50) NOT NULL, CHANGE `resetcode` resetcode VARCHAR(32) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_people_data` CHANGE `name` name VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_techies` CHANGE `deadlinetime` deadlinetime VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_support` CHANGE `from` `from` VARCHAR(255) NOT NULL, CHANGE `to` `to` VARCHAR(255) NOT NULL, CHANGE `cc` cc VARCHAR(255) NOT NULL, CHANGE `subject` subject VARCHAR(255) NOT NULL, CHANGE `state` state VARCHAR(20) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_shows` CHANGE `dates` dates VARCHAR(255) NOT NULL, CHANGE `title` title VARCHAR(255) NOT NULL, CHANGE `author` author VARCHAR(255) NOT NULL, CHANGE `prices` prices VARCHAR(255) NOT NULL, CHANGE `venue` venue VARCHAR(255) NOT NULL, CHANGE `society` society VARCHAR(255) DEFAULT NULL, CHANGE `bookingcode` bookingcode VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_auditions` CHANGE `location` location VARCHAR(255) NOT NULL");
     }
 
     public function down(Schema $schema)
     {
         // this down() migration is autogenerated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
+
+        $this->addSql("ALTER TABLE `acts_auditions` CHANGE `location` location LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_email` CHANGE `title` title LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_email_aliases` CHANGE `name` name LONGTEXT NOT NULL, CHANGE `email` email LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_email_items` CHANGE `text` text LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_events` CHANGE `text` text LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_forums` CHANGE `name` name LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_includes` CHANGE `name` name LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_keywords` CHANGE `kw` kw LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_mailinglists` CHANGE `name` name LONGTEXT NOT NULL, CHANGE `shortname` shortname LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_pages` CHANGE `title` title LONGTEXT NOT NULL, CHANGE `fulltitle` fulltitle LONGTEXT NOT NULL, CHANGE `mode` mode VARCHAR(255) DEFAULT NULL, CHANGE `allowsubpage` allowsubpage INT NOT NULL, CHANGE `usepage` usepage LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_pendingaccess` CHANGE `email` email LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_people_data` CHANGE `name` name LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_performances` CHANGE `venue` venue LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_reviews` CHANGE `from` `from` LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_search_cache` CHANGE `url` url LONGTEXT NOT NULL, CHANGE `linkcode` linkcode VARCHAR(2000) DEFAULT NULL");
+        $this->addSql("ALTER TABLE `acts_shows` CHANGE `dates` dates LONGTEXT NOT NULL, CHANGE `title` title LONGTEXT NOT NULL, CHANGE `author` author LONGTEXT NOT NULL, CHANGE `prices` prices LONGTEXT NOT NULL, CHANGE `venue` venue LONGTEXT NOT NULL, CHANGE `society` society LONGTEXT DEFAULT NULL, CHANGE `bookingcode` bookingcode LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_shows_people_link` CHANGE `type` type VARCHAR(255) NOT NULL, CHANGE `role` role LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_shows_refs` CHANGE `ref` ref LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_societies` CHANGE `name` name LONGTEXT NOT NULL, CHANGE `shortname` shortname LONGTEXT NOT NULL, CHANGE `college` college LONGTEXT DEFAULT NULL, CHANGE `logourl` logourl LONGTEXT DEFAULT NULL");
+        $this->addSql("ALTER TABLE `acts_stores` CHANGE `name` name LONGTEXT NOT NULL, CHANGE `shortname` shortname LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_support` CHANGE `from` `from` LONGTEXT NOT NULL, CHANGE `to` `to` LONGTEXT NOT NULL, CHANGE `cc` cc LONGTEXT NOT NULL, CHANGE `subject` subject LONGTEXT NOT NULL, CHANGE `state` state VARCHAR(255) NOT NULL");
+        $this->addSql("ALTER TABLE `acts_techies` CHANGE `deadlinetime` deadlinetime LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_techies_positions` CHANGE `position` position LONGTEXT NOT NULL, CHANGE `orderid` orderid DOUBLE PRECISION NOT NULL");
+        $this->addSql("ALTER TABLE `acts_termdates` CHANGE `name` name LONGTEXT NOT NULL, CHANGE `friendlyname` friendlyname LONGTEXT NOT NULL, CHANGE `vacation` vacation LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_user_identities` CHANGE `remote_id` remote_id LONGTEXT NOT NULL, CHANGE `remote_user` remote_user LONGTEXT NOT NULL");
+        $this->addSql("ALTER TABLE `acts_users` CHANGE `name` name LONGTEXT NOT NULL, CHANGE `email` email LONGTEXT NOT NULL, CHANGE `pass` pass LONGTEXT NOT NULL, CHANGE `occupation` occupation LONGTEXT NOT NULL, CHANGE `graduation` graduation LONGTEXT NOT NULL, CHANGE `tel` tel LONGTEXT NOT NULL, CHANGE `resetcode` resetcode LONGTEXT NOT NULL");
 
         $this->addSql("ALTER TABLE acts_access DROP FOREIGN KEY FK_2DAB5064539B0606");
         $this->addSql("ALTER TABLE acts_access DROP FOREIGN KEY FK_2DAB50646EEF703F");
@@ -235,7 +288,7 @@ class Version20121209224636 extends AbstractMigration
         $this->addSql("ALTER TABLE `acts_techies_positions` DROP PRIMARY KEY, DROP id, CHANGE `orderid` orderid DOUBLE PRECISION DEFAULT '0' NOT NULL");
         $this->addSql("ALTER TABLE `acts_termdates` DROP INDEX `primary`, ADD INDEX `id` (`id`)");
         $this->addSql("ALTER TABLE `acts_termdates` CHANGE `startdate` startdate DATE DEFAULT '0000-00-00' NOT NULL, CHANGE `enddate` enddate DATE DEFAULT '0000-00-00' NOT NULL, CHANGE `firstweek` firstweek TINYINT(1) DEFAULT '0' NOT NULL, CHANGE `lastweek` lastweek TINYINT(1) DEFAULT '8' NOT NULL, CHANGE `displayweek` displayweek TINYINT(1) DEFAULT '1' NOT NULL");
-        $this->addSql("ALTER TABLE `acts_users` ADD forumnotify TINYINT(1) DEFAULT '0' NOT NULL, ADD threadmessages TINYINT(1) DEFAULT '0' NOT NULL, ADD reversetime TINYINT(1) DEFAULT '1' NOT NULL, ADD resetcode LONGTEXT NOT NULL, CHANGE `registered` registered DATE DEFAULT '0000-00-00' NOT NULL, CHANGE `login` login DATE DEFAULT '0000-00-00' NOT NULL, CHANGE `contact` contact TINYINT(1) DEFAULT '1' NOT NULL, CHANGE `alumni` alumni TINYINT(1) DEFAULT '0' NOT NULL, CHANGE `publishemail` publishemail TINYINT(1) DEFAULT '0' NOT NULL, CHANGE `dbemail` dbemail TINYINT(1) DEFAULT '0' NOT NULL, CHANGE `dbphone` dbphone TINYINT(1) DEFAULT '0' NOT NULL");
+        $this->addSql("ALTER TABLE `acts_users` CHANGE `registered` registered DATE DEFAULT '0000-00-00' NOT NULL, CHANGE `login` login DATE DEFAULT '0000-00-00' NOT NULL, CHANGE `contact` contact TINYINT(1) DEFAULT '1' NOT NULL, CHANGE `alumni` alumni TINYINT(1) DEFAULT '0' NOT NULL, CHANGE `publishemail` publishemail TINYINT(1) DEFAULT '0' NOT NULL, CHANGE `dbemail` dbemail TINYINT(1) DEFAULT '0' NOT NULL, CHANGE `dbphone` dbphone TINYINT(1) DEFAULT '0' NOT NULL");
         $this->addSql("ALTER TABLE `footprints` DROP INDEX `primary`, ADD INDEX `from` (`from`)");
         $this->addSql("ALTER TABLE `footprints` CHANGE `from` `from` INT DEFAULT 0 NOT NULL, CHANGE `to` `to` INT DEFAULT 0 NOT NULL, CHANGE `time` time INT DEFAULT 0 NOT NULL");
 
