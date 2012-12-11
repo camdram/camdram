@@ -10,4 +10,14 @@ class DefaultController extends Controller
     {
         return $this->render('ActsCamdramBundle:Default:index.html.twig');
     }
+
+    public function settingsAction()
+    {
+        return $this->render('ActsCamdramBundle:Default:index.html.twig');
+    }
+
+    public function loginAction()
+    {
+        return $this->render('ActsCamdramBundle:Default:login.html.twig');
+    }
 }

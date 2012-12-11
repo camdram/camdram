@@ -79,10 +79,14 @@ fos_rest:
     format_listener: true
     access_denied_listener: true
 
-fos_facebook:
-    file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
-    alias:  facebook
-    app_id: "%facebook_id%"
-    secret: "%facebook_secret%"
-    cookie: true
-    permissions: [email]
+acts_camdram_security:
+    services:
+        facebook:
+            app_id: %facebook_id%
+            secret: %facebook_secret%
+            file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
+        raven: ~
+        twitter:
+            file: %kernel.root_dir%/../vendor/kertz/twitteroauth/twitteroauth/twitteroauth.php
+            consumer_key: %twitter_key%
+            consumer_secret: %twitter_secret%

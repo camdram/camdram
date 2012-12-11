@@ -169,20 +169,10 @@ class Show
      */
     private $timestamp;
 
-
-    /**
-     *
-     * @ORM\ManyToMany(targetEntity="Person", mappedBy="shows")
-
-     * @Exclude
-     */
-    private $people;
-
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @Exclude
-     * 
      */
     private $roles;
 

@@ -1,0 +1,23 @@
+camdram_security_redirect:
+    pattern: /connect/{service}
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:redirect }
+
+camdram_security_login:
+    pattern: /login/{service}
+    defaults: { service: ~ }
+
+camdram_security_confirm_add_identity:
+    pattern: /auth/confirm-add-identity
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:confirmAddIdentity }
+
+camdram_security_connect_users:
+    pattern: /auth/connect-users
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:connectUsers }
+
+camdram_security_connect_users_process:
+    pattern: /auth/connect-users-process
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:connectUsersProcess }
+
+camdram_security_no_existing_user:
+    pattern: /auth/new-user
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:noExistingUser }

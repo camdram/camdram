@@ -7,6 +7,9 @@ acts_camdram_shows:
 acts_camdram_people:
     type:     rest
     resource: Acts\CamdramBundle\Controller\PersonController
-acts_camdram_login_fb:
-    pattern: /login/facebook
-    defaults: { _controller: ActsCamdramBundle:Account:facebook }
+acts_camdram_settings:
+    pattern: /settings
+    defaults: { _controller: ActsCamdramBundle:Default:settings }
+acts_camdram_login:
+    pattern: /login
+    defaults: { _controller: ActsCamdramBundle:Default:login }

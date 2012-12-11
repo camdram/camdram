@@ -4,14 +4,15 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * User
  *
  * @ORM\Table(name="acts_users")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @var integer
@@ -158,7 +159,8 @@ class User implements UserInterface
     /**
      * @var Person
      *
-     * @ORM\OneToOne(targetEntity="Person", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="Person", inversedBy="users")
+     *
      */
     private $person;
 
@@ -168,6 +170,13 @@ class User implements UserInterface
      *  @ORM\OneToMany(targetEntity="UserIdentity", mappedBy="user")
      */
     private $identities;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="upgraded", type="boolean", nullable=false)
+     */
+    private $upgraded;
 
 
     /**
@@ -596,7 +605,7 @@ class User implements UserInterface
 
     public function getUsername()
     {
-        return $this->getEmail();
+        return $this->getId();
     }
 
     public function getSalt()
@@ -698,4 +707,64 @@ class User implements UserInterface
         return $this->identities;
     }
 
+    public function getIdentityByServiceName($service_name)
+    {
+        if (!is_string($service_name)) {
+            throw new \InvalidArgumentException('The service name given to User::getIdentityByServiceName() must be a string');
+        }
+
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("service", $service_name))
+        ;
+        $res = $this->getIdentities()->matching($criteria);
+        if (count($res) > 0) {
+            return $res[0];
+        }
+        else return false;
+    }
+
+
+    //Two stub methods because Doctrine can't deal with the irregular singularisation of 'identities'...
+    public function addIdentitie(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    {
+    }
+    public function removeIdentitie(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    {
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+                $this->id, $this->name, $this->email, $this->password, $this->registered,
+                $this->login, $this->person_id
+        ));
+    }
+    public function unserialize($serialized)
+    {
+        list( $this->id, $this->name, $this->email, $this->password, $this->registered,
+            $this->login, $this->person_id) = unserialize($serialized);
+    }
+
+    /**
+     * Set upgraded
+     *
+     * @param boolean $upgraded
+     * @return User
+     */
+    public function setUpgraded($upgraded)
+    {
+        $this->upgraded = $upgraded;
+    
+        return $this;
+    }
+
+    /**
+     * Get upgraded
+     *
+     * @return boolean 
+     */
+    public function getUpgraded()
+    {
+        return $this->upgraded;
+    }
 }

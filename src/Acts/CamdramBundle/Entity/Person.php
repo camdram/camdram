@@ -43,14 +43,6 @@ class Person
      */
     private $no_robots;
 
-   /**
-     *
-     * @ORM\ManyToMany(targetEntity="Show", mappedBy="people")
-
-     * @Exclude
-     */
-    private $shows;
-    
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
@@ -61,9 +53,9 @@ class Person
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="User", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="person")
      */
-    private $user;
+    private $users;
 
     /**
      * Constructor
@@ -240,5 +232,38 @@ class Person
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \Acts\CamdramBundle\Entity\User $users
+     * @return Person
+     */
+    public function addUser(\Acts\CamdramBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+    
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \Acts\CamdramBundle\Entity\User $users
+     */
+    public function removeUser(\Acts\CamdramBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }
