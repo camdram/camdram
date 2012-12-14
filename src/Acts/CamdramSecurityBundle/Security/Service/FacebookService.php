@@ -5,40 +5,37 @@ use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class FacebookService extends AbstractService
+
+class FacebookService extends OAuth2Service
 {
     public function getName()
     {
         return 'facebook';
     }
 
-    public function getAuthorizationUrl($redirect_uri, array $extraParameters = array())
+    /**
+     * {@inheritDoc}
+     */
+    protected $options = array(
+        'authorization_url'   => 'https://www.facebook.com/dialog/oauth',
+        'access_token_url'    => 'https://graph.facebook.com/oauth/access_token',
+        'info_url'           => 'https://graph.facebook.com/me',
+        'scope'               => 'email',
+        'user_response_class' => '\HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse',
+    );
+
+    /**
+     * Facebook unfortunately breaks the spec by using commas instead of spaces
+     * to separate scopes
+     */
+    public function configure()
     {
-        return $this->api->getLoginUrl(
-            array(
-                'display' => 'page',
-                'scope' => 'email',
-                'redirect_uri' => $redirect_uri,
-            ));
+        $this->options['scope'] = str_replace(',', ' ', $this->options['scope']);
     }
 
-    public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())
+    public function parseUserInfo($content)
     {
-        return $this->api->getAccessToken();
+        return array('id' => $content['id'], 'name' => $content['name'], 'username' => $content['username']);
     }
-
-    public function handles(Request $request)
-    {
-        return $request->query->has('code');
-    }
-
-    public function getUserInfo($access_token = null)
-    {
-        $info = $this->api->api('/me');
-        return array('id' => $info['id'], 'username' => $info['username'], 'name' => $info['name']);
-    }
-
-
-
 
 }

@@ -15,6 +15,7 @@
                     {% for i in user.identities %}
                         <li><a href="{{ path("camdram_security_redirect", {service: i.service}) }}">Login with {{ i.service | capitalize }}</a></li>
                     {% endfor %}
+                    <li><a href="{{ path("camdram_security_local_login", {email: user.email}) }}">Login with old camdram password</a></li>
                 </ul>
             {% else %}
                 {{ user.email }}

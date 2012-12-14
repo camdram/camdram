@@ -11,7 +11,7 @@
 
 <ul>
 {% for role in person.roles %}
-<li><a href="{{ path('get_show', {id: role.show.id}) }}">{{ role.show.title }}</a> - {{ role.role }}</li>
+<li><a href="{{ path('get_show', {id: role.show.id}) }}">{{ role.show.name }}</a> - {{ role.role }}</li>
 {% endfor %}
 </ul>
 </body>

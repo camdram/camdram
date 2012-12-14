@@ -1,5 +1,5 @@
 <?php
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +30,7 @@ class UserIdentity
     /**
      * @var \User
      *
-     *  @ORM\ManyToOne(targetEntity="User", inversedBy="identities")
+     *  @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\User", inversedBy="identities")
      *  @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
@@ -47,7 +47,7 @@ class UserIdentity
     /**
     * @var integer
     *
-    * @ORM\Column(name="remote_id", type="integer", nullable=true)
+    * @ORM\Column(name="remote_id", type="string", length=100, nullable=true)
     */
     private $remote_id;
 

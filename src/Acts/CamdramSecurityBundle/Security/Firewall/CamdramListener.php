@@ -91,7 +91,7 @@ class CamdramListener extends AbstractAuthenticationListener
                 return true;
             }
         }
-        if ($this->httpUtils->checkRequestPath($request, "/login")) return true;
+        if ($this->httpUtils->checkRequestPath($request, "/login/complete")) return true;
         return false;
     }
 
@@ -112,6 +112,7 @@ class CamdramListener extends AbstractAuthenticationListener
 
         list($service, $checkPath) = $this->serviceMap->getServiceByRequest($request);
         if ($service) {
+
             if (!$service->handles($request)) {
                 // Can't use AuthenticationException below, as it leads to infinity loop
                 throw new \RuntimeException('No oauth code in the request.');
@@ -136,7 +137,7 @@ class CamdramListener extends AbstractAuthenticationListener
         }
         catch (IdentityNotFoundException $e) {
             if (isset($this->newIdentityHandler)) {
-                return $this->newIdentityHandler->handle($e->getToken());
+                return $this->newIdentityHandler->handle($e->getToken(), $e->getServiceName());
             }
             else throw $e;
         }

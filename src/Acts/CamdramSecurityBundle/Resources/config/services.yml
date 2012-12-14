@@ -18,21 +18,36 @@ services:
     camdram.security.service.facebook:
         class: Acts\CamdramSecurityBundle\Security\Service\FacebookService
         parent: camdram.security.service.abstract
-        calls:
-              - [setApi, [@camdram.security.api.facebook] ]
+
+    camdram.security.service.google:
+        class: Acts\CamdramSecurityBundle\Security\Service\GoogleService
+        parent: camdram.security.service.abstract
+
+    camdram.security.service.windows_live:
+        class: Acts\CamdramSecurityBundle\Security\Service\WindowsLiveService
+        parent: camdram.security.service.abstract
 
     camdram.security.service.twitter:
-            class: Acts\CamdramSecurityBundle\Security\Service\TwitterService
+        class: Acts\CamdramSecurityBundle\Security\Service\TwitterService
+        parent: camdram.security.service.abstract
+        calls:
+              - [setSession, [@session] ]
+
+    camdram.security.service.yahoo:
+        class: Acts\CamdramSecurityBundle\Security\Service\YahooService
+        parent: camdram.security.service.abstract
+        calls:
+              - [setSession, [@session] ]
+
+    camdram.security.service.local:
+            class: Acts\CamdramSecurityBundle\Security\Service\LocalService
             parent: camdram.security.service.abstract
             calls:
-                  - [setApi, [@camdram.security.api.twitter] ]
-                  - [setSession, [@session] ]
+                  - [setRouter, [@router] ]
 
     camdram.security.service.raven:
         class: Acts\CamdramSecurityBundle\Security\Service\RavenService
         parent: camdram.security.service.abstract
-        calls:
-              - [setApi, [@camdram.security.api.raven] ]
 
     camdram.security.new_identity_handler:
         class: Acts\CamdramSecurityBundle\Security\Firewall\NewIdentityHandler
@@ -63,23 +78,3 @@ services:
 
     camdram.security.name_utils:
         class: Acts\CamdramSecurityBundle\Security\NameUtils
-
-    camdram.security.api.facebook:
-        class: Acts\CamdramSecurityBundle\Security\Api\FacebookApi
-        arguments:
-              - appId: %camdram.security.facebook.app_id%
-                secret: %camdram.security.facebook.secret%
-                cookie: %camdram.security.facebook.cookie%
-                domain: %camdram.security.facebook.domain%
-              - @session
-
-    camdram.security.api.twitter:
-        class: TwitterOAuth
-        arguments:
-            consumer_key: %camdram.security.twitter.consumer_key%
-            consumer_secret: %camdram.security.twitter.consumer_secret%
-            oauth_token: %camdram.security.twitter.access_token%
-            oauth_token_secret: %camdram.security.twitter.access_token_secret%
-
-    camdram.security.api.raven:
-        class: Acts\CamdramSecurityBundle\Security\Api\RavenApi

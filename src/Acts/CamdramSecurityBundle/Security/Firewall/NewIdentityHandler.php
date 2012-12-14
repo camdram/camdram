@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use Acts\CamdramBundle\Entity\UserIdentity;
+use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 
 class NewIdentityHandler
@@ -66,10 +66,10 @@ class NewIdentityHandler
         $this->router = $router;
     }
 
-    public function handle(CamdramUserToken $new_token) {
+    public function handle(CamdramUserToken $new_token, $last_service_name) {
         if (($t = $this->security_context->getToken()) && $t->getUser()) {
             //User is already logged in - add identity to existing account, perhaps after asking for confirmation
-            return $this->handleAlreadyLoggedIn($new_token, $t->getUser());
+            return $this->handleAlreadyLoggedIn($new_token, $t->getUser(), $last_service_name);
         }
         else {
             // User isn't logged in - try and find existing camdram account or create new one
@@ -78,12 +78,12 @@ class NewIdentityHandler
 
     }
 
-    public function handleAlreadyLoggedIn(CamdramUserToken $new_token, UserInterface $existing_user)
+    public function handleAlreadyLoggedIn(CamdramUserToken $new_token, UserInterface $existing_user, $last_service_name)
     {
         $service = $this->service_map->getServiceByName($new_token->getLastService()->getName());
 
         //if ($existing_user) $new_token->addPotentialUser($existing_user);
-        $service = $new_token->getFirstService();
+        $service = $new_token->getService($last_service_name);
 
         if ($this->name_utils->isSamePerson($existing_user->getName(), $service->getUserInfo('name'))) {
             //The name on the service's user info and the name on the user account are sufficiently similar

@@ -3,7 +3,10 @@
 namespace Acts\CamdramSecurityBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Symfony\Component\HttpFoundation\RedirectResponse;
+    Symfony\Component\HttpFoundation\RedirectResponse,
+    Symfony\Component\HttpFoundation\Request;
+
+use Acts\CamdramSecurityBundle\Form\LoginType;
 
 class DefaultController extends Controller
 {
@@ -11,6 +14,28 @@ class DefaultController extends Controller
     public function redirectAction($service)
     {
         return new RedirectResponse($this->container->get('camdram.security.utils')->getAuthorizationUrl($service));
+    }
+
+    public function loginFormAction(Request $request)
+    {
+        $form = $this->createForm(new LoginType(), array('email' => $request->get('email')));
+
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $user = $this->getDoctrine()->getRepository('ActsCamdramBundle:User')->findByEmailAndPassword($data['email'], $data['password']);
+                if ($user) {
+                    $this->get('session')->set('new_local_user_id', $user->getId());
+                    return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'local')));
+                }
+                else {
+                    $form->addError(new \Symfony\Component\Form\FormError('That username and password are incorrect'));
+                }
+            }
+        }
+
+        return $this->render('ActsCamdramSecurityBundle:Default:login.html.twig', array('form' => $form->createView()));
     }
 
     public function connectUsersAction()
@@ -85,7 +110,7 @@ class DefaultController extends Controller
             $token->setPotentialUsers(array());
             $token->setUser($users[0]);
             $token->setAuthenticated(true);
-            return $this->redirect($this->generateUrl('camdram_security_login'));
+            return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'complete')));
         }
 
         return $this->render('ActsCamdramSecurityBundle:Default:connect_users_process.html.twig', array(

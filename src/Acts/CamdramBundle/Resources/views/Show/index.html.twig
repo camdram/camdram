@@ -1,20 +1,36 @@
 <!doctype html>
 <html>
 <head>
-        <title>Show: {{ show.title }}</title>
+        <title>Show: {{ show.name }}</title>
 </head>
 
 <body>
 <h1>camdram.net</h1>
 
-<h2>{{ show.title }}</h2>
+<h2>{{ show.name }}</h2>
 <h3>{{ show.author }}</h3>
 {{ show.description | nl2br }}
 
+<h3>Cast</h3>
 <ul>
-{% for role in show.roles %}
+{% for role in show.getRolesByType('cast') %}
 <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
 {% endfor %}
 </ul>
+
+<h3>Band</h3>
+<ul>
+    {% for role in show.getRolesByType('band') %}
+        <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+    {% endfor %}
+</ul>
+
+<h3>Production Team</h3>
+<ul>
+    {% for role in show.getRolesByType('prod') %}
+        <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+    {% endfor %}
+</ul>
+
 </body>
 </html>

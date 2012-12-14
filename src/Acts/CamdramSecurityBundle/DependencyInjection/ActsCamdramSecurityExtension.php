@@ -41,14 +41,6 @@ class ActsCamdramSecurityExtension extends Extension
     {
         $definition = $container->getDefinition('camdram.security.service.'.$name);
 
-        foreach ($options as $key => $val) {
-            $container->setParameter('camdram.security.'.$name.'.'.$key, $val);
-        }
-        if (isset($options['file']) && $container->hasDefinition('camdram.security.api.'.$name)) {
-            $facebookApi = $container->getDefinition('camdram.security.api.'.$name);
-            $facebookApi->setFile($options['file']);
-        }
-
         $definition->addArgument( $name)
             ->addArgument($options);
     }

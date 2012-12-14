@@ -11,24 +11,8 @@ use JMS\Serializer\Annotation\Exclude;
  * @ORM\Table(name="acts_people_data")
  * @ORM\Entity
  */
-class Person
+class Person extends Entity
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
-    private $name;
-
     /**
      * @var integer
      *
@@ -58,47 +42,22 @@ class Person
     private $users;
 
     /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="NameAlias", mappedBy="person")
+     */
+    private $aliases;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->aliases = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Person
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
     /**
      * Set map_to
      *
@@ -146,39 +105,6 @@ class Person
     }
 
     /**
-     * Add shows
-     *
-     * @param \Acts\CamdramBundle\Entity\Show $shows
-     * @return Person
-     */
-    public function addShow(\Acts\CamdramBundle\Entity\Show $shows)
-    {
-        $this->shows[] = $shows;
-    
-        return $this;
-    }
-
-    /**
-     * Remove shows
-     *
-     * @param \Acts\CamdramBundle\Entity\Show $shows
-     */
-    public function removeShow(\Acts\CamdramBundle\Entity\Show $shows)
-    {
-        $this->shows->removeElement($shows);
-    }
-
-    /**
-     * Get shows
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getShows()
-    {
-        return $this->shows;
-    }
-
-    /**
      * Add roles
      *
      * @param \Acts\CamdramBundle\Entity\Role $roles
@@ -212,29 +138,6 @@ class Person
     }
 
     /**
-     * Set user
-     *
-     * @param \Acts\CamdramBundle\Entity\User $user
-     * @return Person
-     */
-    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-    
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \Acts\CamdramBundle\Entity\User 
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
      * Add users
      *
      * @param \Acts\CamdramBundle\Entity\User $users
@@ -265,5 +168,48 @@ class Person
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Add aliases
+     *
+     * @param \Acts\CamdramBundle\Entity\NameAlias $aliases
+     * @return Person
+     */
+    public function addAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
+    {
+        $this->aliases[] = $aliases;
+    
+        return $this;
+    }
+
+    /**
+     * Remove aliases
+     *
+     * @param \Acts\CamdramBundle\Entity\NameAlias $aliases
+     */
+    public function removeAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
+    {
+        $this->aliases->removeElement($aliases);
+    }
+
+    /**
+     * Get aliases
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAliases()
+    {
+        return $this->aliases;
+    }
+
+    public function addAliase(\Acts\CamdramBundle\Entity\NameAlias $aliases)
+    {
+        //Required by Doctrine as it can't handle irregular plurals...
+    }
+
+    public function removeAliase(\Acts\CamdramBundle\Entity\NameAlias $aliases)
+    {
+        //Required by Doctrine as it can't handle irregular plurals...
     }
 }

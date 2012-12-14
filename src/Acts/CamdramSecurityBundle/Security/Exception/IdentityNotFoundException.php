@@ -5,7 +5,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class IdentityNotFoundException extends AuthenticationException
 {
-    private $token;
+    private $token, $name;
 
     public function setToken($token)
     {
@@ -15,5 +15,15 @@ class IdentityNotFoundException extends AuthenticationException
     public function getToken()
     {
         return $this->token;
+    }
+
+    public function setServiceName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getServiceName()
+    {
+        return $this->name;
     }
 }

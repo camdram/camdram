@@ -63,12 +63,14 @@ class CamdramProvider implements AuthenticationProviderInterface
         //TODO: Check if different services load multiple different users...
         $user = null;
         $e = null;
+
         foreach ($token->getServices() as $service) {
             try {
                 $user = $this->userProvider->loadUserByServiceAndUser($service->getName(), $service->getUserInfo());
                 $this->userProvider->updateAccessToken($user, $service->getName(), $service->getAccessToken());
             } catch (IdentityNotFoundException $e) {
                 $e->setToken($token);
+                $e->setServiceName($service->getName());
             }
         }
 
@@ -76,7 +78,6 @@ class CamdramProvider implements AuthenticationProviderInterface
             $token->setUserValidated($user);
         }
         else if ($e) {
-            $e->setToken($token);
             throw $e;
         }
         else {

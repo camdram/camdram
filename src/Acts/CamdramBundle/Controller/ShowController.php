@@ -17,7 +17,7 @@ class ShowController extends FOSRestController
     {
         $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Show');
         $show = $repo->findOneById($id);
-        
+
         $view = $this->view($show, 200)
             ->setTemplate("ActsCamdramBundle:Show:index.html.twig")
             ->setTemplateVar('show')

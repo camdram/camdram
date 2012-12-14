@@ -6,9 +6,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use  Acts\CamdramBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Exception\IdentityNotFoundException;
+use Doctrine\ORM\EntityManager;
 
 class CamdramUserProvider implements UserProviderInterface
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager;
+     */
     protected $em;
 
     public function __construct($em)
@@ -32,11 +36,16 @@ class CamdramUserProvider implements UserProviderInterface
 
     public function loadUserByServiceAndUser($service, $info)
     {
+        if ($service == 'local') {
+            return $this->em->getRepository('ActsCamdramBundle:User')->findOneById($info['id']);
+        }
+
         $res = $this->em->createQuery('SELECT u FROM ActsCamdramBundle:User u JOIN u.identities i WHERE i.service = :service AND (i.remote_id = :id OR i.remote_user = :username)')
                 ->setParameter('service', $service)
                 ->setParameter('id', $info['id'])
                 ->setParameter('username', $info['username'])
                 ->getResult();
+
         if (count($res) > 0) {
             return $res[0];
         }
@@ -65,6 +74,6 @@ class CamdramUserProvider implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $class === 'Acts\CamdramBundle\Entity\User';
+        return $class === 'Acts\CamdramSecurityBundle\Entity\User';
     }
 }

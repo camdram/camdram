@@ -64,13 +64,6 @@ class Event
     private $link_id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="socid", type="integer", nullable=false)
-     */
-    private $society_id;
-
-    /**
      * @var \Society
      *
      * @ORM\ManyToOne(targetEntity="Society")
@@ -204,29 +197,6 @@ class Event
     public function getLinkId()
     {
         return $this->link_id;
-    }
-
-    /**
-     * Set society_id
-     *
-     * @param integer $societyId
-     * @return Event
-     */
-    public function setSocietyId($societyId)
-    {
-        $this->society_id = $societyId;
-    
-        return $this;
-    }
-
-    /**
-     * Get society_id
-     *
-     * @return integer 
-     */
-    public function getSocietyId()
-    {
-        return $this->society_id;
     }
 
     /**

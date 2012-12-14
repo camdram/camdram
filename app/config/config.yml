@@ -82,11 +82,20 @@ fos_rest:
 acts_camdram_security:
     services:
         facebook:
-            app_id: %facebook_id%
-            secret: %facebook_secret%
-            file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
-        raven: ~
+            client_id: %facebook_id%
+            client_secret: %facebook_secret%
+        raven:
+            description: "camdram.net"
         twitter:
-            file: %kernel.root_dir%/../vendor/kertz/twitteroauth/twitteroauth/twitteroauth.php
-            consumer_key: %twitter_key%
-            consumer_secret: %twitter_secret%
+            client_id: %twitter_key%
+            client_secret: %twitter_secret%
+        google:
+            client_id: %google_client_id%
+            client_secret: %google_client_secret%
+        windows_live:
+            client_id: %windows_live_client_id%
+            client_secret: %windows_live_client_secret%
+        yahoo:
+            client_id: %yahoo_key%
+            client_secret: %yahoo_secret%
+        local: ~

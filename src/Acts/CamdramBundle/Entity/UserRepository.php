@@ -22,4 +22,15 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findByEmailAndPassword($email, $password)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->andWhere('u.password = :password')
+            ->setParameter('email', $email)
+            ->setParameter('password', md5($password))
+            ->getQuery();
+        return $query->getOneOrNullResult();
+    }
+
 }

@@ -2,6 +2,10 @@ camdram_security_redirect:
     pattern: /connect/{service}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:redirect }
 
+camdram_security_local_login:
+    pattern: /login/form
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:loginForm }
+
 camdram_security_login:
     pattern: /login/{service}
     defaults: { service: ~ }

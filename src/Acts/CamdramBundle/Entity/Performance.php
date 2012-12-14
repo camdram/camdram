@@ -74,9 +74,9 @@ class Performance
     private $venue_id;
 
     /**
-     * @var \Society
+     * @var \Venue
      *
-     * @ORM\ManyToOne(targetEntity="Society")
+     * @ORM\ManyToOne(targetEntity="Venue")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="venid", referencedColumnName="id")
      * })

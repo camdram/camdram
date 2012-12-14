@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\Criteria;
 
+use Acts\CamdramBundle\Entity\Person;
+use \Acts\CamdramSecurityBundle\Entity\UserIdentity;
+
 /**
  * User
  *
@@ -167,16 +170,23 @@ class User implements UserInterface, \Serializable
     /**
      * @var \User
      *
-     *  @ORM\OneToMany(targetEntity="UserIdentity", mappedBy="user")
+     *  @ORM\OneToMany(targetEntity="\Acts\CamdramSecurityBundle\Entity\UserIdentity", mappedBy="user")
      */
     private $identities;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="upgraded", type="boolean", nullable=false)
+     * @ORM\Column(name="upgraded_at", type="datetime", nullable=true)
      */
-    private $upgraded;
+    private $upgraded_at;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\Group", mappedBy="users")
+     */
+    private $groups;
 
 
     /**
@@ -650,7 +660,7 @@ class User implements UserInterface, \Serializable
      * @param \Acts\CamdramBundle\Entity\Person $person
      * @return User
      */
-    public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
+    public function setPerson(Person $person = null)
     {
         $this->person = $person;
     
@@ -677,10 +687,10 @@ class User implements UserInterface, \Serializable
     /**
      * Add identities
      *
-     * @param \Acts\CamdramBundle\Entity\UserIdentity $identities
+     * @param \Acts\CamdramSecurityBundle\Entity\UserIdentity $identities
      * @return User
      */
-    public function addIdentity(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    public function addIdentity(UserIdentity $identities)
     {
         $this->identities[] = $identities;
     
@@ -690,9 +700,9 @@ class User implements UserInterface, \Serializable
     /**
      * Remove identities
      *
-     * @param \Acts\CamdramBundle\Entity\UserIdentity $identities
+     * @param \Acts\CamdramSecurityBundle\Entity\UserIdentity $identities
      */
-    public function removeIdentity(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    public function removeIdentity(UserIdentity $identities)
     {
         $this->identities->removeElement($identities);
     }
@@ -725,10 +735,10 @@ class User implements UserInterface, \Serializable
 
 
     //Two stub methods because Doctrine can't deal with the irregular singularisation of 'identities'...
-    public function addIdentitie(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    public function addIdentitie(UserIdentity $identities)
     {
     }
-    public function removeIdentitie(\Acts\CamdramBundle\Entity\UserIdentity $identities)
+    public function removeIdentitie(UserIdentity $identities)
     {
     }
 
@@ -766,5 +776,61 @@ class User implements UserInterface, \Serializable
     public function getUpgraded()
     {
         return $this->upgraded;
+    }
+
+    /**
+     * Set upgraded_at
+     *
+     * @param \DateTime $upgradedAt
+     * @return User
+     */
+    public function setUpgradedAt($upgradedAt)
+    {
+        $this->upgraded_at = $upgradedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get upgraded_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpgradedAt()
+    {
+        return $this->upgraded_at;
+    }
+
+    /**
+     * Add groups
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\Group $groups
+     * @return User
+     */
+    public function addGroup(\Acts\CamdramSecurityBundle\Entity\Group $groups)
+    {
+        $this->groups[] = $groups;
+    
+        return $this;
+    }
+
+    /**
+     * Remove groups
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\Group $groups
+     */
+    public function removeGroup(\Acts\CamdramSecurityBundle\Entity\Group $groups)
+    {
+        $this->groups->removeElement($groups);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }
