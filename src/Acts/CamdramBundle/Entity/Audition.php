@@ -45,14 +45,14 @@ class Audition
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="string", nullable=false)
+     * @ORM\Column(name="location", type="text", nullable=false)
      */
     private $location;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="showid", type="integer", nullable=true)
+     * @ORM\Column(name="showid", type="integer", nullable=false)
      */
     private $show_id;
 

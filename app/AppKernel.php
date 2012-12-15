@@ -20,19 +20,17 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new Misd\RavenBundle\MisdRavenBundle(),
             new Acts\CamdramBundle\ActsCamdramBundle(),
-            new Acts\CamdramSecurityBundle\ActsCamdramSecurityBundle(),
-           // new FOS\TwitterBundle\FOSTwitterBundle(),
+            new FOS\FacebookBundle\FOSFacebookBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
-            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new Zenstruck\Bundle\MigrationsBundle\ZenstruckMigrationsBundle();
         }
 
         return $bundles;

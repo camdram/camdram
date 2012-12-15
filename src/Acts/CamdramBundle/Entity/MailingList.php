@@ -24,14 +24,14 @@ class MailingList
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="text", nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
+     * @ORM\Column(name="shortname", type="text", nullable=false)
      */
     private $short_name;
 

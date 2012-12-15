@@ -24,21 +24,21 @@ class Role
     /**
      * @var integer
      *
-     * @ORM\Column(name="sid", type="integer", nullable=true)
+     * @ORM\Column(name="sid", type="integer", nullable=false)
      */
     private $show_id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=20, nullable=false)
+     * @ORM\Column(name="type", type="string", nullable=false)
      */
     private $type;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", length=255, nullable=false)
+     * @ORM\Column(name="role", type="text", nullable=false)
      */
     private $role;
 
@@ -52,13 +52,13 @@ class Role
     /**
      * @var integer
      *
-     * @ORM\Column(name="pid", type="integer", nullable=true)
+     * @ORM\Column(name="pid", type="integer", nullable=false)
      */
     private $person_id;
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
+     * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
      * })
@@ -67,7 +67,7 @@ class Role
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Person", inversedBy="roles")
+     * @ORM\ManyToOne(targetEntity="Person")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="pid", referencedColumnName="id")
      * })

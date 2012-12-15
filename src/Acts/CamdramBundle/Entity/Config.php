@@ -17,6 +17,7 @@ class Config
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $name;
 
@@ -59,18 +60,5 @@ class Config
     public function getValue()
     {
         return $this->value;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Config
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
     }
 }

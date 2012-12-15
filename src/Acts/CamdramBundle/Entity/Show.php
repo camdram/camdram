@@ -4,7 +4,6 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
-use Doctrine\Common\Collections\Criteria;
 
 /**
  * Show
@@ -12,28 +11,51 @@ use Doctrine\Common\Collections\Criteria;
  * @ORM\Table(name="acts_shows")
  * @ORM\Entity
  */
-class Show extends Entity
+class Show
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
     /**
      * @var string
      *
-     * @ORM\Column(name="dates", type="string", length=255, nullable=false)
+     * @ORM\Column(name="dates", type="text", nullable=false)
      */
     private $dates;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="author", type="string", length=255, nullable=false)
+     * @ORM\Column(name="title", type="text", nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="author", type="text", nullable=false)
      */
     private $author;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prices", type="string", length=255, nullable=false)
+     * @ORM\Column(name="prices", type="text", nullable=false)
      */
     private $prices;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=false)
+     */
+    private $description;
 
     /**
      * @var string
@@ -45,23 +67,23 @@ class Show extends Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="venue", type="string", length=255, nullable=false)
+     * @ORM\Column(name="venue", type="text", nullable=false)
      */
-    private $venue_name;
+    private $venue;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="excludedate", type="date", length=255, nullable=false)
+     * @ORM\Column(name="excludedate", type="date", nullable=false)
      */
     private $exclude_date;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="society", type="string", length=255, nullable=true)
+     * @ORM\Column(name="society", type="text", nullable=true)
      */
-    private $society_name;
+    private $society;
 
     /**
      * @var boolean
@@ -85,20 +107,18 @@ class Show extends Entity
     private $audextra;
 
     /**
-     * @var Society
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Society")
-     * @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     * @ORM\Column(name="socid", type="integer", nullable=false)
      */
-    private $society;
+    private $society_id;
 
     /**
-     * @var Venue
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Venue")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id")
+     * @ORM\Column(name="venid", type="integer", nullable=false)
      */
-    private $venue;
+    private $venue_id;
 
     /**
      * @var integer
@@ -124,14 +144,14 @@ class Show extends Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="category", type="string", length=255, nullable=false)
+     * @ORM\Column(name="category", type="string", nullable=false)
      */
     private $category;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bookingcode", type="string", length=255, nullable=false)
+     * @ORM\Column(name="bookingcode", type="text", nullable=false)
      */
     private $booking_code;
 
@@ -149,11 +169,23 @@ class Show extends Entity
      */
     private $timestamp;
 
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="Person")
+     * @ORM\JoinTable(name="acts_shows_people_link",
+     *   joinColumns={@ORM\JoinColumn(name="sid", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id")}
+     * )
+     * @Exclude
+     */
+    private $people;
+
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
-     * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
      * @Exclude
+     * 
      */
     private $roles;
 
@@ -166,6 +198,16 @@ class Show extends Entity
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
     /**
      * Set dates
      *
@@ -187,6 +229,29 @@ class Show extends Entity
     public function getDates()
     {
         return $this->dates;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Show
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**
@@ -236,6 +301,29 @@ class Show extends Entity
     }
 
     /**
+     * Set description
+     *
+     * @param string $description
+     * @return Show
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Set photo_url
      *
      * @param string $photoUrl
@@ -258,29 +346,27 @@ class Show extends Entity
         return $this->photo_url;
     }
 
-
-
     /**
-     * Set venue_name
+     * Set venue
      *
-     * @param string $venueName
+     * @param string $venue
      * @return Show
      */
-    public function setVenueName($venueName)
+    public function setVenue($venue)
     {
-        $this->venue_name = $venueName;
+        $this->venue = $venue;
     
         return $this;
     }
 
     /**
-     * Get venue_name
+     * Get venue
      *
      * @return string 
      */
-    public function getVenueName()
+    public function getVenue()
     {
-        return $this->venue_name;
+        return $this->venue;
     }
 
     /**
@@ -307,26 +393,26 @@ class Show extends Entity
     }
 
     /**
-     * Set society_name
+     * Set society
      *
-     * @param string $societyName
+     * @param string $society
      * @return Show
      */
-    public function setSocietyName($societyName)
+    public function setSociety($society)
     {
-        $this->society_name = $societyName;
+        $this->society = $society;
     
         return $this;
     }
 
     /**
-     * Get society_name
+     * Get society
      *
      * @return string 
      */
-    public function getSocietyName()
+    public function getSociety()
     {
-        return $this->society_name;
+        return $this->society;
     }
 
     /**
@@ -396,6 +482,52 @@ class Show extends Entity
     public function getAudextra()
     {
         return $this->audextra;
+    }
+
+    /**
+     * Set society_id
+     *
+     * @param integer $societyId
+     * @return Show
+     */
+    public function setSocietyId($societyId)
+    {
+        $this->society_id = $societyId;
+    
+        return $this;
+    }
+
+    /**
+     * Get society_id
+     *
+     * @return integer 
+     */
+    public function getSocietyId()
+    {
+        return $this->society_id;
+    }
+
+    /**
+     * Set venue_id
+     *
+     * @param integer $venueId
+     * @return Show
+     */
+    public function setVenueId($venueId)
+    {
+        $this->venue_id = $venueId;
+    
+        return $this;
+    }
+
+    /**
+     * Get venue_id
+     *
+     * @return integer 
+     */
+    public function getVenueId()
+    {
+        return $this->venue_id;
     }
 
     /**
@@ -560,26 +692,36 @@ class Show extends Entity
     }
 
     /**
-     * Set venue
+     * Add people
      *
-     * @param \Acts\CamdramBundle\Entity\Venue $venue
+     * @param \Acts\CamdramBundle\Entity\Person $people
      * @return Show
      */
-    public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
+    public function addPeople(\Acts\CamdramBundle\Entity\Person $people)
     {
-        $this->venue = $venue;
+        $this->people[] = $people;
     
         return $this;
     }
 
     /**
-     * Get venue
+     * Remove people
      *
-     * @return \Acts\CamdramBundle\Entity\Venue 
+     * @param \Acts\CamdramBundle\Entity\Person $people
      */
-    public function getVenue()
+    public function removePeople(\Acts\CamdramBundle\Entity\Person $people)
     {
-        return $this->venue;
+        $this->people->removeElement($people);
+    }
+
+    /**
+     * Get people
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPeople()
+    {
+        return $this->people;
     }
 
     /**
@@ -613,41 +755,5 @@ class Show extends Entity
     public function getRoles()
     {
         return $this->roles;
-    }
-
-    public function getRolesByType($type)
-    {
-        if (!is_string($type)) {
-            throw new \InvalidArgumentException('The service name given to Show::getRolesByType() must be a string');
-        }
-
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("type", $type))
-
-        ;
-        return $this->getRoles()->matching($criteria);
-    }
-
-    /**
-     * Set society
-     *
-     * @param \Acts\CamdramBundle\Entity\Society $society
-     * @return Show
-     */
-    public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
-    {
-        $this->society = $society;
-    
-        return $this;
-    }
-
-    /**
-     * Get society
-     *
-     * @return \Acts\CamdramBundle\Entity\Society 
-     */
-    public function getSociety()
-    {
-        return $this->society;
     }
 }

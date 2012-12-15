@@ -79,23 +79,10 @@ fos_rest:
     format_listener: true
     access_denied_listener: true
 
-acts_camdram_security:
-    services:
-        facebook:
-            client_id: %facebook_id%
-            client_secret: %facebook_secret%
-        raven:
-            description: "camdram.net"
-        twitter:
-            client_id: %twitter_key%
-            client_secret: %twitter_secret%
-        google:
-            client_id: %google_client_id%
-            client_secret: %google_client_secret%
-        windows_live:
-            client_id: %windows_live_client_id%
-            client_secret: %windows_live_client_secret%
-        yahoo:
-            client_id: %yahoo_key%
-            client_secret: %yahoo_secret%
-        local: ~
+fos_facebook:
+    file:   %kernel.root_dir%/../vendor/facebook/php-sdk/src/base_facebook.php
+    alias:  facebook
+    app_id: "%facebook_id%"
+    secret: "%facebook_secret%"
+    cookie: true
+    permissions: [email]

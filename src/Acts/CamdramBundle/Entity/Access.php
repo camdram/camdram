@@ -55,7 +55,7 @@ class Access
     /**
      * @var integer
      *
-     * @ORM\Column(name="issuerid", type="integer", nullable=true)
+     * @ORM\Column(name="issuerid", type="integer", nullable=false)
      */
     private $issuer_id;
 
@@ -79,7 +79,7 @@ class Access
     /**
      * @var integer
      *
-     * @ORM\Column(name="revokeid", type="integer", nullable=true)
+     * @ORM\Column(name="revokeid", type="integer", nullable=false)
      */
     private $revoke_id;
 

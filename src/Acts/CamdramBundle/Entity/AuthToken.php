@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AuthToken
  *
- * @ORM\Table(name="acts_authtokens", indexes={@ORM\Index(name="token", columns={"token"})})
+ * @ORM\Table(name="acts_authtokens")
  * @ORM\Entity
  */
 class AuthToken

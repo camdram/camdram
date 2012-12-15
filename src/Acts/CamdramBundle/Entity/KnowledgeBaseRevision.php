@@ -24,7 +24,7 @@ class KnowledgeBaseRevision
     /**
      * @var integer
      *
-     * @ORM\Column(name="pageid", type="integer", nullable=true)
+     * @ORM\Column(name="pageid", type="integer", nullable=false)
      */
     private $page_id;
 
@@ -48,7 +48,7 @@ class KnowledgeBaseRevision
     /**
      * @var integer
      *
-     * @ORM\Column(name="userid", type="integer", nullable=true)
+     * @ORM\Column(name="userid", type="integer", nullable=false)
      */
     private $user_id;
 

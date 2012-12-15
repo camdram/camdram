@@ -24,7 +24,7 @@ class Page
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @ORM\Column(name="title", type="text", nullable=false)
      */
     private $title;
 
@@ -45,7 +45,7 @@ class Page
     /**
      * @var string
      *
-     * @ORM\Column(name="fulltitle", type="string", length=255, nullable=false)
+     * @ORM\Column(name="fulltitle", type="text", nullable=false)
      */
     private $full_title;
 
@@ -80,14 +80,14 @@ class Page
     /**
      * @var string
      *
-     * @ORM\Column(name="mode", type="string", length=50, nullable=true)
+     * @ORM\Column(name="mode", type="string", nullable=true)
      */
     private $mode;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="allowsubpage", type="boolean", nullable=false)
+     * @ORM\Column(name="allowsubpage", type="integer", nullable=false)
      */
     private $allow_sub_page;
 
@@ -122,7 +122,7 @@ class Page
     /**
      * @var string
      *
-     * @ORM\Column(name="usepage", type="string", length=255, nullable=false)
+     * @ORM\Column(name="usepage", type="text", nullable=false)
      */
     private $use_page;
 

@@ -11,8 +11,24 @@ use JMS\Serializer\Annotation\Exclude;
  * @ORM\Table(name="acts_people_data")
  * @ORM\Entity
  */
-class Person extends Entity
+class Person
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="text", nullable=false)
+     */
+    private $name;
+
     /**
      * @var integer
      *
@@ -27,6 +43,17 @@ class Person extends Entity
      */
     private $no_robots;
 
+   /**
+     *
+     * @ORM\ManyToMany(targetEntity="Show")
+     * @ORM\JoinTable(name="acts_shows_people_link",
+     *   joinColumns={@ORM\JoinColumn(name="pid", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="sid", referencedColumnName="id")}
+     * )
+     * @Exclude
+     */
+    private $shows;
+    
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
@@ -35,29 +62,47 @@ class Person extends Entity
     private $roles;
 
     /**
-     * @var User
-     *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="person")
-     */
-    private $users;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="NameAlias", mappedBy="person")
-     */
-    private $aliases;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
+        $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->aliases = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Person
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
     /**
      * Set map_to
      *
@@ -105,6 +150,39 @@ class Person extends Entity
     }
 
     /**
+     * Add shows
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $shows
+     * @return Person
+     */
+    public function addShow(\Acts\CamdramBundle\Entity\Show $shows)
+    {
+        $this->shows[] = $shows;
+    
+        return $this;
+    }
+
+    /**
+     * Remove shows
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $shows
+     */
+    public function removeShow(\Acts\CamdramBundle\Entity\Show $shows)
+    {
+        $this->shows->removeElement($shows);
+    }
+
+    /**
+     * Get shows
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShows()
+    {
+        return $this->shows;
+    }
+
+    /**
      * Add roles
      *
      * @param \Acts\CamdramBundle\Entity\Role $roles
@@ -135,81 +213,5 @@ class Person extends Entity
     public function getRoles()
     {
         return $this->roles;
-    }
-
-    /**
-     * Add users
-     *
-     * @param \Acts\CamdramBundle\Entity\User $users
-     * @return Person
-     */
-    public function addUser(\Acts\CamdramBundle\Entity\User $users)
-    {
-        $this->users[] = $users;
-    
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param \Acts\CamdramBundle\Entity\User $users
-     */
-    public function removeUser(\Acts\CamdramBundle\Entity\User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * Add aliases
-     *
-     * @param \Acts\CamdramBundle\Entity\NameAlias $aliases
-     * @return Person
-     */
-    public function addAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        $this->aliases[] = $aliases;
-    
-        return $this;
-    }
-
-    /**
-     * Remove aliases
-     *
-     * @param \Acts\CamdramBundle\Entity\NameAlias $aliases
-     */
-    public function removeAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        $this->aliases->removeElement($aliases);
-    }
-
-    /**
-     * Get aliases
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAliases()
-    {
-        return $this->aliases;
-    }
-
-    public function addAliase(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        //Required by Doctrine as it can't handle irregular plurals...
-    }
-
-    public function removeAliase(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        //Required by Doctrine as it can't handle irregular plurals...
     }
 }

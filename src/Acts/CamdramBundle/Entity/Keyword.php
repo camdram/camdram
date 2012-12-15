@@ -41,7 +41,7 @@ class Keyword
     /**
      * @var string
      *
-     * @ORM\Column(name="kw", type="string", length=255, nullable=false)
+     * @ORM\Column(name="kw", type="text", nullable=false)
      */
     private $keyword;
 
