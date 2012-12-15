@@ -1,0 +1,28 @@
+<h2>Connect to user accounts</h2>
+
+{% set counter = 1 %}
+
+{% for user in users %}
+    <div class="connect_step_{{ user_status[user.id] }}">
+        {% if users|length > 1  %}<h3>Step {{ counter }}</h3>{% endif %}
+        <p>
+
+            {% if user_status[user.id] == 'validated' %}
+                {{ user.email }} validated
+            {% elseif user_status[user.id] == 'next' %}
+                How would you like to validate {{ user.email }} ?
+                <ul>
+                    {% for i in user.identities %}
+                        <li><a href="{{ path("camdram_security_redirect", {service: i.service}) }}">Login with {{ i.service | capitalize }}</a></li>
+                    {% endfor %}
+                    <li><a href="{{ path("camdram_security_local_login", {email: user.email}) }}">Login with old camdram password</a></li>
+                </ul>
+            {% else %}
+                {{ user.email }}
+            {% endif %}
+
+        </p>
+    </div>
+
+    {% set counter = counter + 1 %}
+{% endfor %}

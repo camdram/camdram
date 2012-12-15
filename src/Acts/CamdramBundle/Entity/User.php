@@ -3,14 +3,19 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Criteria;
+
+use Acts\CamdramBundle\Entity\Person;
+use \Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 /**
  * User
  *
  * @ORM\Table(name="acts_users")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var integer
@@ -24,23 +29,23 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="text", nullable=false)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pass", type="text", nullable=false)
+     * @ORM\Column(name="pass", type="string", length=32, nullable=false)
      */
-    private $pass;
+    private $password;
 
     /**
      * @var \DateTime
@@ -78,13 +83,6 @@ class User
     private $publish_email;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="forumnotify", type="boolean", nullable=false)
-     */
-    private $forum_notify;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="hearabout", type="text", nullable=false)
@@ -94,21 +92,21 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="occupation", type="text", nullable=false)
+     * @ORM\Column(name="occupation", type="string", length=255, nullable=false)
      */
     private $occupation;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="graduation", type="text", nullable=false)
+     * @ORM\Column(name="graduation", type="string", length=255, nullable=false)
      */
     private $graduation;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tel", type="text", nullable=false)
+     * @ORM\Column(name="tel", type="string", length=50, nullable=false)
      */
     private $tel;
 
@@ -129,6 +127,13 @@ class User
     /**
      * @var boolean
      *
+     * @ORM\Column(name="forumnotify", type="boolean", nullable=false)
+     */
+    private $forum_notify;
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="threadmessages", type="boolean", nullable=false)
      */
     private $thread_messages;
@@ -143,9 +148,45 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="resetcode", type="text", nullable=false)
+     * @ORM\Column(name="resetcode", type="string", length=32, nullable=false)
      */
     private $reset_code;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="person_id", type="integer", nullable=true)
+     */
+    private $person_id;
+
+    /**
+     * @var Person
+     *
+     * @ORM\ManyToOne(targetEntity="Person", inversedBy="users")
+     *
+     */
+    private $person;
+
+    /**
+     * @var \User
+     *
+     *  @ORM\OneToMany(targetEntity="\Acts\CamdramSecurityBundle\Entity\UserIdentity", mappedBy="user")
+     */
+    private $identities;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="upgraded_at", type="datetime", nullable=true)
+     */
+    private $upgraded_at;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\Group", mappedBy="users")
+     */
+    private $groups;
 
 
     /**
@@ -202,29 +243,6 @@ class User
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Set pass
-     *
-     * @param string $pass
-     * @return User
-     */
-    public function setPass($pass)
-    {
-        $this->pass = $pass;
-    
-        return $this;
-    }
-
-    /**
-     * Get pass
-     *
-     * @return string 
-     */
-    public function getPass()
-    {
-        return $this->pass;
     }
 
     /**
@@ -570,5 +588,249 @@ class User
     public function getResetCode()
     {
         return $this->reset_code;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string 
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getUsername()
+    {
+        return $this->getId();
+    }
+
+    public function getSalt()
+    {
+        return '';
+    }
+    public function getRoles()
+    {
+        return array();
+    }
+    public function eraseCredentials()
+    {
+
+    }
+
+    /**
+     * Set person_id
+     *
+     * @param integer $personId
+     * @return User
+     */
+    public function setPersonId($personId)
+    {
+        $this->person_id = $personId;
+    
+        return $this;
+    }
+
+    /**
+     * Get person_id
+     *
+     * @return integer 
+     */
+    public function getPersonId()
+    {
+        return $this->person_id;
+    }
+
+    /**
+     * Set person
+     *
+     * @param \Acts\CamdramBundle\Entity\Person $person
+     * @return User
+     */
+    public function setPerson(Person $person = null)
+    {
+        $this->person = $person;
+    
+        return $this;
+    }
+
+    /**
+     * Get person
+     *
+     * @return \Acts\CamdramBundle\Entity\Person 
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->identities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add identities
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\UserIdentity $identities
+     * @return User
+     */
+    public function addIdentity(UserIdentity $identities)
+    {
+        $this->identities[] = $identities;
+    
+        return $this;
+    }
+
+    /**
+     * Remove identities
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\UserIdentity $identities
+     */
+    public function removeIdentity(UserIdentity $identities)
+    {
+        $this->identities->removeElement($identities);
+    }
+
+    /**
+     * Get identities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdentities()
+    {
+        return $this->identities;
+    }
+
+    public function getIdentityByServiceName($service_name)
+    {
+        if (!is_string($service_name)) {
+            throw new \InvalidArgumentException('The service name given to User::getIdentityByServiceName() must be a string');
+        }
+
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("service", $service_name))
+        ;
+        $res = $this->getIdentities()->matching($criteria);
+        if (count($res) > 0) {
+            return $res[0];
+        }
+        else return false;
+    }
+
+
+    //Two stub methods because Doctrine can't deal with the irregular singularisation of 'identities'...
+    public function addIdentitie(UserIdentity $identities)
+    {
+    }
+    public function removeIdentitie(UserIdentity $identities)
+    {
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+                $this->id, $this->name, $this->email, $this->password, $this->registered,
+                $this->login, $this->person_id
+        ));
+    }
+    public function unserialize($serialized)
+    {
+        list( $this->id, $this->name, $this->email, $this->password, $this->registered,
+            $this->login, $this->person_id) = unserialize($serialized);
+    }
+
+    /**
+     * Set upgraded
+     *
+     * @param boolean $upgraded
+     * @return User
+     */
+    public function setUpgraded($upgraded)
+    {
+        $this->upgraded = $upgraded;
+    
+        return $this;
+    }
+
+    /**
+     * Get upgraded
+     *
+     * @return boolean 
+     */
+    public function getUpgraded()
+    {
+        return $this->upgraded;
+    }
+
+    /**
+     * Set upgraded_at
+     *
+     * @param \DateTime $upgradedAt
+     * @return User
+     */
+    public function setUpgradedAt($upgradedAt)
+    {
+        $this->upgraded_at = $upgradedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get upgraded_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpgradedAt()
+    {
+        return $this->upgraded_at;
+    }
+
+    /**
+     * Add groups
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\Group $groups
+     * @return User
+     */
+    public function addGroup(\Acts\CamdramSecurityBundle\Entity\Group $groups)
+    {
+        $this->groups[] = $groups;
+    
+        return $this;
+    }
+
+    /**
+     * Remove groups
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\Group $groups
+     */
+    public function removeGroup(\Acts\CamdramSecurityBundle\Entity\Group $groups)
+    {
+        $this->groups->removeElement($groups);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }

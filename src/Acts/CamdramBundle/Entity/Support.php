@@ -31,28 +31,28 @@ class Support
     /**
      * @var string
      *
-     * @ORM\Column(name="from", type="text", nullable=false)
+     * @ORM\Column(name="from", type="string", nullable=false)
      */
     private $from;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="to", type="text", nullable=false)
+     * @ORM\Column(name="to", type="string", nullable=false)
      */
     private $to;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cc", type="text", nullable=false)
+     * @ORM\Column(name="cc", type="string", nullable=false)
      */
     private $cc;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="subject", type="text", nullable=false)
+     * @ORM\Column(name="subject", type="string", nullable=false)
      */
     private $subject;
 
@@ -73,7 +73,7 @@ class Support
     /**
      * @var string
      *
-     * @ORM\Column(name="state", type="string", nullable=false)
+     * @ORM\Column(name="state", type="string", length=20, nullable=false)
      */
     private $state;
 

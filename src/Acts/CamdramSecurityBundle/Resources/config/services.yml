@@ -1,0 +1,80 @@
+parameters:
+#    acts_camdram.example.class: Acts\CamdramBundle\Example
+
+services:
+    camdram.security.authentication.listener:
+        class:  Acts\CamdramSecurityBundle\Security\Firewall\CamdramListener
+        parent: security.authentication.listener.abstract
+        public: false
+        abstract: true
+        calls:
+            - [setRouter, [@router]]
+
+    camdram.security.service.abstract:
+        class: Acts\CamdramSecurityBundle\Security\Service\AbstractService
+        arguments: [@buzz.client, @security.http_utils]
+        abstract: true
+
+    camdram.security.service.facebook:
+        class: Acts\CamdramSecurityBundle\Security\Service\FacebookService
+        parent: camdram.security.service.abstract
+
+    camdram.security.service.google:
+        class: Acts\CamdramSecurityBundle\Security\Service\GoogleService
+        parent: camdram.security.service.abstract
+
+    camdram.security.service.windows_live:
+        class: Acts\CamdramSecurityBundle\Security\Service\WindowsLiveService
+        parent: camdram.security.service.abstract
+
+    camdram.security.service.twitter:
+        class: Acts\CamdramSecurityBundle\Security\Service\TwitterService
+        parent: camdram.security.service.abstract
+        calls:
+              - [setSession, [@session] ]
+
+    camdram.security.service.yahoo:
+        class: Acts\CamdramSecurityBundle\Security\Service\YahooService
+        parent: camdram.security.service.abstract
+        calls:
+              - [setSession, [@session] ]
+
+    camdram.security.service.local:
+            class: Acts\CamdramSecurityBundle\Security\Service\LocalService
+            parent: camdram.security.service.abstract
+            calls:
+                  - [setRouter, [@router] ]
+
+    camdram.security.service.raven:
+        class: Acts\CamdramSecurityBundle\Security\Service\RavenService
+        parent: camdram.security.service.abstract
+
+    camdram.security.new_identity_handler:
+        class: Acts\CamdramSecurityBundle\Security\Firewall\NewIdentityHandler
+        arguments: [@security.context, @doctrine.orm.entity_manager, @camdram.security.service_map, @security.user_checker, @camdram.security.name_utils, @session, @router]
+        abstract: true
+
+    camdram.security.authentication.provider:
+        class:  Acts\CamdramSecurityBundle\Security\Authentication\Provider\CamdramProvider
+        arguments: [@camdram.security.user.provider, @camdram.security.service_map, @router, @security.user_checker]
+        abstract: true
+
+    camdram.security.service_map:
+        class: Acts\CamdramSecurityBundle\Security\ServiceMap
+        arguments: [@service_container, @security.http_utils, %camdram.security.services%, ~]
+        abstract: true
+
+    camdram.security.user.provider:
+        class: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
+        arguments: [@doctrine.orm.entity_manager]
+
+    camdram.security.entry_point:
+        class: Acts\CamdramSecurityBundle\Security\EntryPoint\CamdramEntryPoint
+        arguments: [@security.http_utils]
+
+    camdram.security.utils:
+        class: Acts\CamdramSecurityBundle\Security\SecurityUtils
+        arguments: [@service_container]
+
+    camdram.security.name_utils:
+        class: Acts\CamdramSecurityBundle\Security\NameUtils

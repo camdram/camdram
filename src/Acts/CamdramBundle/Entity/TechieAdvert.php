@@ -55,7 +55,7 @@ class TechieAdvert
     /**
      * @var string
      *
-     * @ORM\Column(name="deadlinetime", type="text", nullable=false)
+     * @ORM\Column(name="deadlinetime", type="string", nullable=false)
      */
     private $deadline_time;
 

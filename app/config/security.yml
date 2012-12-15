@@ -11,9 +11,8 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        chain_provider:
-            chain:
-                providers: []
+        camdram:
+            id: camdram.security.user.provider
         in_memory:
             memory:
                 users:
@@ -23,20 +22,25 @@ security:
     firewalls:
         public:
             pattern: ^/.*
-            fos_facebook:
-                app_url: "http://apps.facebook.com/camdram"
-                server_url: %baseurl%
             anonymous: true
             logout:
-                handlers: ["fos_facebook.logout_handler"]
-        facebook:
-            pattern: ^/login/facebook
-            fos_facebook:
-                app_url: "http://apps.facebook.com/camdram"
-                server_url: %baseurl%
-            anonymous: false
-            logout:
-                handlers: ["fos_facebook.logout_handler"]
+                path: /logout
+                target: /
+            camdram:
+                services:
+                    facebook: /login/facebook
+                    twitter: /login/twitter
+                    raven: /login/raven
+                    google: /login/google
+                    windows_live: /login/windows_live
+                    yahoo: /login/yahoo
+                    local: /login/local
+            remember_me:
+                key:      Vns2DsEhoEC5EZIHUs4Qz28BER6f2AeP0V
+                lifetime: 31536000 # 365 days in seconds
+                path:     /
+                domain:   ~
+
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -54,5 +58,6 @@ security:
             #    realm: "Secured Demo Area"
 
     access_control:
-        - { path: ^/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path ^/login.*, roles: IS_AUTHENTICATED_FULLY }
+        - { path ^/settings.*, roles: IS_AUTHENTICATED_FULLY }
+    acl:
+        connection: default

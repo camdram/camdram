@@ -16,5 +16,8 @@ parameters:
 
     facebook_id:       1234
     facebook_secret:   s3cr3t
+
+    twitter_key:        1234
+    twitter_secret:     s3cr3t
     
     baseurl: http://www.camdram.net
