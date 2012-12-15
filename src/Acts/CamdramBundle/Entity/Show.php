@@ -158,14 +158,14 @@ class Show extends Entity
     private $roles;
 
     /**
-     * Constructor
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Performance", mappedBy="show")
+     * @ORM\OrderBy({"startdate" = "ASC"})
+     * @Exclude
      */
-    public function __construct()
-    {
-        $this->people = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+    private $performances;
+
     /**
      * Set dates
      *
@@ -650,4 +650,46 @@ class Show extends Entity
     {
         return $this->society;
     }
+
+    /**
+     * Add performances
+     *
+     * @param \Acts\CamdramBundle\Entity\Performance $performances
+     * @return Show
+     */
+    public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performances)
+    {
+        $this->performances[] = $performances;
+    
+        return $this;
+    }
+
+    /**
+     * Remove performances
+     *
+     * @param \Acts\CamdramBundle\Entity\Performance $performances
+     */
+    public function removePerformance(\Acts\CamdramBundle\Entity\Performance $performances)
+    {
+        $this->performances->removeElement($performances);
+    }
+
+    /**
+     * Get performances
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPerformances()
+    {
+        return $this->performances;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
 }

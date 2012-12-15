@@ -99,3 +99,14 @@ acts_camdram_security:
             client_id: %yahoo_key%
             client_secret: %yahoo_secret%
         local: ~
+
+#acts_social_api:
+#      apis:
+#          facebook:
+#              client_id: %facebook_id%
+#              client_secret: %facebook_secret%
+#          twitter:
+#              client_id: %twitter_key%
+#              client_secret: %twitter_secret%
+#              access_token: %twitter_token%
+#              access_token_secret: %twitter_token_secret%

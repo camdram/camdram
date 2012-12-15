@@ -22,16 +22,9 @@ class Performance
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="sid", type="integer", nullable=false)
-     */
-    private $show_id;
-
-    /**
      * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="Show")
+     * @ORM\ManyToOne(targetEntity="Show", inversedBy="performances")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
      * })

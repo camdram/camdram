@@ -37,16 +37,24 @@ abstract class Entity
     /**
      * @var int
      *
-     * @ORM\Column(name="facebook_id", type="integer", nullable=true)
+     * @ORM\Column(name="facebook_id", type="string", length=50,, nullable=true)
      */
     private $facebook_id;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="twitter_id", type="integer", nullable=true)
+     * @ORM\Column(name="twitter_id", type="string" length=50, nullable=true)
      */
     private $twitter_id;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="public", type="boolean", nullable=false)
+     */
+    private $public;
+
 
     /**
      * Get id
@@ -79,52 +87,6 @@ abstract class Entity
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set facebook_id
-     *
-     * @param integer $facebookId
-     * @return Entity
-     */
-    public function setFacebookId($facebookId)
-    {
-        $this->facebook_id = $facebookId;
-    
-        return $this;
-    }
-
-    /**
-     * Get facebook_id
-     *
-     * @return integer 
-     */
-    public function getFacebookId()
-    {
-        return $this->facebook_id;
-    }
-
-    /**
-     * Set twitter_id
-     *
-     * @param integer $twitterId
-     * @return Entity
-     */
-    public function setTwitterId($twitterId)
-    {
-        $this->twitter_id = $twitterId;
-    
-        return $this;
-    }
-
-    /**
-     * Get twitter_id
-     *
-     * @return integer 
-     */
-    public function getTwitterId()
-    {
-        return $this->twitter_id;
     }
 
     /**

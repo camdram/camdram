@@ -21,7 +21,6 @@ class FacebookService extends OAuth2Service
         'access_token_url'    => 'https://graph.facebook.com/oauth/access_token',
         'info_url'           => 'https://graph.facebook.com/me',
         'scope'               => 'email',
-        'user_response_class' => '\HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse',
     );
 
     /**

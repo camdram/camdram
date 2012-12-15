@@ -78,3 +78,4 @@ services:
 
     camdram.security.name_utils:
         class: Acts\CamdramSecurityBundle\Security\NameUtils
+        arguments: [@doctrine.orm.entity_manager]

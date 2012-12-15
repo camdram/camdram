@@ -3,7 +3,7 @@ namespace Acts\CamdramSecurityBundle\Tests\Security;
 
 use Acts\CamdramSecurityBundle\Security\NamesUtils;
 
-class CalculatorTest extends \PHPUnit_Framework_TestCase
+class NameUtilsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\NamesUtils
@@ -11,7 +11,10 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function getNameUtils()
     {
-        return new \Acts\CamdramSecurityBundle\Security\NameUtils();
+        $em = $this->getMockBuilder('\Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        return new \Acts\CamdramSecurityBundle\Security\NameUtils($em);
     }
 
     public function testSamePerson()

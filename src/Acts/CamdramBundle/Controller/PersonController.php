@@ -15,9 +15,10 @@ class PersonController extends FOSRestController
 
     public function getAction($id)
     {
-        $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Person');
+        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Person');
+
         $person = $repo->findOneById($id);
-        
+
         $view = $this->view($person, 200)
             ->setTemplate("ActsCamdramBundle:Person:index.html.twig")
             ->setTemplateVar('person')

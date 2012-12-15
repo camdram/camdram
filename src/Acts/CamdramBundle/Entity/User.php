@@ -710,7 +710,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get identities
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection | null
      */
     public function getIdentities()
     {
@@ -730,7 +730,7 @@ class User implements UserInterface, \Serializable
         if (count($res) > 0) {
             return $res[0];
         }
-        else return false;
+        else return null;
     }
 
 

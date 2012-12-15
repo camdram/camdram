@@ -212,4 +212,9 @@ class Person extends Entity
     {
         //Required by Doctrine as it can't handle irregular plurals...
     }
+
+    public function __toString()
+    {
+        return 'Person ('.$this->getId().':'.$this->getName().')';
+    }
 }

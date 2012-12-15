@@ -22,10 +22,11 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Acts\CamdramBundle\ActsCamdramBundle(),
             new Acts\CamdramSecurityBundle\ActsCamdramSecurityBundle(),
-           // new FOS\TwitterBundle\FOSTwitterBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
+            new Acts\CamdramBackendBundle\ActsCamdramBackendBundle(),
+            new Acts\SocialApiBundle\ActsSocialApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

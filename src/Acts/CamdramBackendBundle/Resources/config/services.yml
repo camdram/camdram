@@ -1,0 +1,7 @@
+parameters:
+#    acts_camdram_backend.example.class: Acts\CamdramBackendBundle\Example
+
+services:
+#    acts_camdram_backend.example:
+#        class: %acts_camdram_backend.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

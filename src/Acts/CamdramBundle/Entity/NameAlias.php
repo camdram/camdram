@@ -59,4 +59,37 @@ class NameAlias
         return $this->name;
     }
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set person
+     *
+     * @param \Acts\CamdramBundle\Entity\Person $person
+     * @return NameAlias
+     */
+    public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
+    {
+        $this->person = $person;
+    
+        return $this;
+    }
+
+    /**
+     * Get person
+     *
+     * @return \Acts\CamdramBundle\Entity\Person 
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
 }
