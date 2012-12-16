@@ -7,7 +7,11 @@ acts_camdram_shows:
 acts_camdram_people:
     type:     rest
     resource: Acts\CamdramBundle\Controller\PersonController
+<<<<<<< HEAD
 acts_camdram_societies:
+=======
+acts_camdram_shows:
+>>>>>>> d85b8092a83851489d0ef21e548f352ee862298a
     type:     rest
     resource: "Acts\CamdramBundle\Controller\SocietyController"
 acts_camdram_login_fb:
