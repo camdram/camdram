@@ -1,0 +1,17 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Society: {{ society.name }}{% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class="twelve columns">
+      <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
+    <div>
+  </div>
+{{ society.description | nl2br }}
+
+{# {% for role in society.roles %}
+<li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+{% endfor %}
+#}
+{% endblock %}
