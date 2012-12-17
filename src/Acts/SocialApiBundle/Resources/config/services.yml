@@ -1,0 +1,31 @@
+parameters:
+    acts.social_api.apis.abstract.rest.class: Acts\SocialApiBundle\Service\RestApi
+    acts.social_api.apis.abstract.oauth1.class: Acts\SocialApiBundle\Service\OAuth1Api
+    acts.social_api.apis.abstract.oauth2.class: Acts\SocialApiBundle\Service\OAuth2Api
+    acts.social_api.provider.class: Acts\SocialApiBundle\Service\ApiProvider
+    acts.social_api.inflector.class: Acts\SocialApiBundle\Utils\Inflector
+
+services:
+    acts.social_api.apis.abstract.rest:
+        class: %acts.social_api.apis.abstract.rest.class%
+        arguments: [@buzz.client, @acts.social_api.inflector]
+        abstract: true
+
+    acts.social_api.apis.abstract.oauth1:
+        class: %acts.social_api.apis.abstract.oauth1.class%
+        parent: acts.social_api.apis.abstract.rest
+        abstract: true
+        calls:
+          - [setSession, [@session]]
+
+    acts.social_api.apis.abstract.oauth2:
+        class: %acts.social_api.apis.abstract.oauth2.class%
+        parent: acts.social_api.apis.abstract.rest
+        abstract: true
+
+    acts.social_api.provider:
+        class: %acts.social_api.provider.class%
+        arguments: [@service_container]
+
+    acts.social_api.inflector:
+        class: %acts.social_api.inflector.class%

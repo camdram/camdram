@@ -1,0 +1,3 @@
+acts_camdram_social_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: ActsCamdramSocialBundle:Default:index }

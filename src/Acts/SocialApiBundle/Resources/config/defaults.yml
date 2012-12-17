@@ -1,0 +1,36 @@
+facebook:
+    base_url: https://graph.facebook.com
+    class: oauth2
+    login_url: https://www.facebook.com/dialog/oauth
+    paths:
+        access_token:
+            path: /oauth/access_token
+            arguments: [client_id, client_secret, code, grant_type, redirect_uri]
+            requires_authentication: false
+        search:
+            path: /search
+            arguments: [q, type]
+            response: {root: 'data'}
+        current_user:
+            path: /me
+
+twitter:
+    base_url: https://api.twitter.com/1.1
+    class: oauth1
+    login_url: https://api.twitter.com/oauth/authenticate
+    paths:
+        search:
+            path: /users/search.json
+            arguments: [q]
+            response: {map: {screen_name: username}}
+        access_token:
+            path: /oauth/access_token
+            arguments: [oauth_verifier]
+            requires_authentication: false
+        request_token:
+            path: /oauth/request_token
+            arguments: [oauth_callback]
+            requires_authentication: false
+        current_user:
+            path: /account/verify_credentials.json
+            response: {map: {screen_name: username}}

@@ -37,14 +37,14 @@ abstract class Entity
     /**
      * @var int
      *
-     * @ORM\Column(name="facebook_id", type="string", length=50,, nullable=true)
+     * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      */
     private $facebook_id;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="twitter_id", type="string" length=50, nullable=true)
+     * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      */
     private $twitter_id;
 
@@ -53,7 +53,7 @@ abstract class Entity
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
-    private $public;
+   // private $public;
 
 
     /**
@@ -110,5 +110,61 @@ abstract class Entity
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return Entity
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * Set twitter_id
+     *
+     * @param string $twitterId
+     * @return Entity
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitter_id = $twitterId;
+    
+        return $this;
+    }
+
+    /**
+     * Get twitter_id
+     *
+     * @return string 
+     */
+    public function getTwitterId()
+    {
+        return $this->twitter_id;
+    }
+
+    public function getSocialId($service_name)
+    {
+        return call_user_func(array($this, 'get'.ucfirst($service_name).'Id'));
+    }
+
+    public function setSocialId($service_name, $value)
+    {
+        return call_user_func(array($this, 'set'.ucfirst($service_name).'Id'), $value);
     }
 }
