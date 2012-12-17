@@ -87,7 +87,8 @@ class Show extends Entity
     /**
      * @var Society
      *
-     * @ORM\ManyToOne(targetEntity="Society")
+     * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
+     * @Exclude
      * @ORM\JoinColumn(name="socid", referencedColumnName="id")
      */
     private $society;
@@ -96,6 +97,7 @@ class Show extends Entity
      * @var Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue")
+     * @Exclude
      * @ORM\JoinColumn(name="venid", referencedColumnName="id")
      */
     private $venue;
@@ -153,7 +155,6 @@ class Show extends Entity
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
-     * @Exclude
      */
     private $roles;
 
@@ -161,7 +162,7 @@ class Show extends Entity
      * @var array
      *
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show")
-     * @ORM\OrderBy({"startdate" = "ASC"})
+     * @ORM\OrderBy({"start_date" = "ASC"})
      * @Exclude
      */
     private $performances;

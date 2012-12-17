@@ -1,36 +1,45 @@
-<!doctype html>
-<html>
-<head>
-        <title>Show: {{ show.name }}</title>
-</head>
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
 
-<body>
-<h1>camdram.net</h1>
+{% block title %}Show: {{ show.name }}{% endblock %}
 
-<h2>{{ show.name }}</h2>
-<h3>{{ show.author }}</h3>
-{{ show.description | nl2br }}
+{% block body %}
 
-<h3>Cast</h3>
-<ul>
-{% for role in show.getRolesByType('cast') %}
-<li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
-{% endfor %}
-</ul>
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <div class="twelve columns">
+        {% if show.society %}
+            <p><a href="{{ path('get_society', {id: show.society.id}) }}">{{ show.society.name }}</a></p>
+        {% endif %}
 
-<h3>Band</h3>
-<ul>
-    {% for role in show.getRolesByType('band') %}
+        <h2>{{ show.name }} - <small>{{ show.author }}</small></h2>
+
+        {{ show.description | nl2br }}
+
+    </div>
+    <div class="four columns">
+        <h3>Cast</h3>
+        <ul>
+        {% for role in show.getRolesByType('cast') %}
         <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
-    {% endfor %}
-</ul>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="four columns">
+        <h3>Band</h3>
+        <ul>
+            {% for role in show.getRolesByType('band') %}
+                <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="four columns">
+        <h3>Production Team</h3>
+        <ul>
+            {% for role in show.getRolesByType('prod') %}
+                <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 
-<h3>Production Team</h3>
-<ul>
-    {% for role in show.getRolesByType('prod') %}
-        <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
-    {% endfor %}
-</ul>
+</div>
 
-</body>
-</html>
+{% endblock %}

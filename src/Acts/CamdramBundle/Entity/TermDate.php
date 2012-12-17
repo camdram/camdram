@@ -24,14 +24,14 @@ class TermDate
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @ORM\Column(name="name", type="text", nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="friendlyname", type="string", length=100, nullable=false)
+     * @ORM\Column(name="friendlyname", type="text", nullable=false)
      */
     private $friendly_name;
 
@@ -73,7 +73,7 @@ class TermDate
     /**
      * @var string
      *
-     * @ORM\Column(name="vacation", type="string", length=100, nullable=false)
+     * @ORM\Column(name="vacation", type="text", nullable=false)
      */
     private $vacation;
 

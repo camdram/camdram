@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * SearchCache
  *
- * @ORM\Table(name="acts_search_cache", indexes={@ORM\Index(name="keyword", columns={"keyword"})})
+ * @ORM\Table(name="acts_search_cache")
  * @ORM\Entity
  */
 class SearchCache
@@ -45,7 +45,7 @@ class SearchCache
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", nullable=false)
+     * @ORM\Column(name="url", type="text", nullable=false)
      */
     private $url;
 
@@ -66,7 +66,7 @@ class SearchCache
     /**
      * @var string
      *
-     * @ORM\Column(name="linkcode", type="string", length=255, nullable=true)
+     * @ORM\Column(name="linkcode", type="string", length=2000, nullable=true)
      */
     private $link_code;
 

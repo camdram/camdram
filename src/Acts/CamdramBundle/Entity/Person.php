@@ -30,7 +30,7 @@ class Person extends Entity
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
-     * @Exclude
+
      */
     private $roles;
 

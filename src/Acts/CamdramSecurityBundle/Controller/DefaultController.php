@@ -30,7 +30,7 @@ class DefaultController extends Controller
                     return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'local')));
                 }
                 else {
-                    $form->addError(new \Symfony\Component\Form\FormError('That username and password are incorrect'));
+                    $form->addError(new \Symfony\Component\Form\FormError('That username and/or password are incorrect'));
                 }
             }
         }

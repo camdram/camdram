@@ -38,7 +38,7 @@ class EmailItem
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="string", length=255, nullable=false)
+     * @ORM\Column(name="text", type="text", nullable=false)
      */
     private $text;
 

@@ -1,18 +1,19 @@
-<!doctype html>
-<html>
-<head>
-        <title>Person: {{ person.name }}</title>
-</head>
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
 
-<body>
-<h1>camdram.net</h1>
+{% block title %}Person: {{ person.name }}{% endblock %}
 
-<h2>{{ person.name }}</h2>
+{% block body %}
+<div class="row">
+    <div class="twelve columns">
 
-<ul>
-{% for role in person.roles %}
-<li><a href="{{ path('get_show', {id: role.show.id}) }}">{{ role.show.name }}</a> - {{ role.role }}</li>
-{% endfor %}
-</ul>
-</body>
-</html>
+    <h2>{{ person.name }}</h2>
+
+    <ul>
+    {% for role in person.roles %}
+        {% if role.show %}
+         <li><a href="{{ path('get_show', {id: role.show.id}) }}">{{ role.show.name }}</a> - {{ role.role }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+{% endblock %}

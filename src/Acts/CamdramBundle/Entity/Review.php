@@ -48,7 +48,7 @@ class Review
     /**
      * @var string
      *
-     * @ORM\Column(name="from", type="string", length=255, nullable=false)
+     * @ORM\Column(name="from", type="text", nullable=false)
      */
     private $from;
 

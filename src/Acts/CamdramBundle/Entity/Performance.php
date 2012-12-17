@@ -62,14 +62,14 @@ class Performance
     /**
      * @var integer
      *
-     * @ORM\Column(name="venid", type="integer", nullable=true)
+     * @ORM\Column(name="venid", type="integer", nullable=false)
      */
     private $venue_id;
 
     /**
-     * @var \Venue
+     * @var \Society
      *
-     * @ORM\ManyToOne(targetEntity="Venue")
+     * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="venid", referencedColumnName="id")
      * })
@@ -79,7 +79,7 @@ class Performance
     /**
      * @var string
      *
-     * @ORM\Column(name="venue", type="string", length=255, nullable=false)
+     * @ORM\Column(name="venue", type="text", nullable=false)
      */
     private $venue_name;
 

@@ -24,14 +24,14 @@ class TechiePosition
     /**
      * @var string
      *
-     * @ORM\Column(name="position", type="string", length=255, nullable=false)
+     * @ORM\Column(name="position", type="text", nullable=false)
      */
     private $position;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="orderid", type="integer", nullable=false)
+     * @ORM\Column(name="orderid", type="float", nullable=false)
      */
     private $order_id;
 

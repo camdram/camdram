@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <meta name="keywords" content="cambridge,theatre,drama,comedy,shows,society,societies,ACTS,association" />
+  <meta name="description" content="ACTS: Association of Cambridge Theatre Societies. Our website contains details of forthcoming shows and miscellaneous information on Cambridge Drama." /> 
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>{% block title %}Welcome to Foundation{% endblock %}</title>
+  
+  <!-- Included CSS Files -->
+  <!-- H5BP stylesheets -->
+{% stylesheets 'bundles/actscamdram/stylesheets/h5bp/*' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
+  <!-- Foundation stylesheets -->
+{% stylesheets 'bundles/actscamdram/stylesheets/*.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
+
+{% javascripts '@ActsCamdramBundle/Resources/public/javascripts/modernizr.foundation.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+</head>
+<body>
+  <!--[if lt IE 7]>
+    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+  <![endif]-->
+
+
+  <!-- Navigation -->
+  <nav class="top-bar fixed">
+    <ul>
+      <li class="name"><h1><a href="#">Camdram.net</a></h1></li>
+      <li class="toggle-topbar"><a href="#"></a></li>
+    </ul>
+
+    <section>
+      <ul class="left">
+        <li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+      </ul>
+
+      <ul class="right">
+        <li class="has-dropdown">
+          <a href="#">Link</a>
+
+          <ul class="dropdown">
+            <li><a href="#">Dropdown Link</a></li>
+            <li><a href="#">Dropdown Link</a></li>
+            <li><a href="#">Dropdown Link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </nav><br><br>
+  <!-- End Navigation -->
+
+  <header>
+    <div class="row">
+      <div class="twelve columns">
+        <h1>Welcome to Camdram</h1>
+        <h4></h4>
+      </div>
+    </div>
+  </header>
+
+{% block body %}
+{% endblock %}
+  
+  <!-- Footer --> 
+  <!-- We probably should be generating the sitemap from Symfony's route in the future -->
+  <footer class="row">
+  <div class="twelve columns"><hr />
+      <div class="row">
+        <div class="four columns">
+          <h5>Site Map</h5>
+          <a href="#">Shows</a><br/>
+          <a href="#">Societies</a><br/>
+          <a href="#">Venues</a><br/>
+        </div>
+        <div class="four columns">
+          <h5>Vacant Positions</h5>
+          <a href="#">Technical</a><br/>
+          <a href="#">Actors</a><br/>
+          <a href="#">Directors/Producers</a><br/>
+        </div>
+        <div class="four columns">
+          <h5>About</h5>
+          <a href="#">Privacy policy</a><br/>
+          <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="twelve columns"><hr/>
+            <p>&copy; Association of Cambridge Theatre Societies and contributing groups 2004 &#8212; 2012.
+Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@camdram.net</a>
+            </p>
+        </div>
+
+      </div>
+  </div>
+  </footer>
+  
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  <script src="javascripts/jquery.js"></script><script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script><script src="javascripts/jquery.foundation.forms.js"></script><script src="javascripts/jquery.foundation.reveal.js"></script><script src="javascripts/jquery.foundation.orbit.js"></script><script src="javascripts/jquery.foundation.navigation.js"></script><script src="javascripts/jquery.foundation.buttons.js"></script><script src="javascripts/jquery.foundation.tabs.js"></script><script src="javascripts/jquery.foundation.tooltips.js"></script><script src="javascripts/jquery.foundation.accordion.js"></script><script src="javascripts/jquery.placeholder.js"></script><script src="javascripts/jquery.foundation.alerts.js"></script><script src="javascripts/jquery.foundation.topbar.js"></script><script src="javascripts/jquery.foundation.joyride.js"></script><script src="javascripts/jquery.foundation.clearing.js"></script><script src="javascripts/jquery.foundation.magellan.js"></script>
+  -->
+  
+  <!-- Initialize JS Plugins -->
+{% javascripts 
+    '@ActsCamdramBundle/Resources/public/javascripts/jquery.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/foundation.min.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/app.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+  
+    <script>
+    $(window).load(function(){
+      $("#featured").orbit();
+    });
+    </script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+</body>
+</html>
