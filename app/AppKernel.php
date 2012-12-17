@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
             new Acts\CamdramBackendBundle\ActsCamdramBackendBundle(),
             new Acts\SocialApiBundle\ActsSocialApiBundle(),
+           // new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

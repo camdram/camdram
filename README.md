@@ -1,111 +1,100 @@
 Camdram.net
 ========================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony2
-application that you can use as the skeleton for your new applications.
+The instructions below should fairly accurately describe how to go from creating a
+checkout to getting a working site
 
-This document contains information on how to download, install, and start
-using Symfony. For a more detailed explanation, see the [Installation][1]
-chapter of the Symfony Documentation.
+1) Create a checkout of the camdram repository
+----------------------------------------------
 
-1) Installing the Standard Edition
-----------------------------------
+Run `git clone https://github.com/camdram/camdram.git`, which will pull a copy of
+the code into a new folder called 'camdram'
 
-When it comes to installing the Symfony Standard Edition, you have the
-following options.
+2) Install dependencies
+-----------------------
 
-### Use Composer (*recommended*)
+Camdram is built upon Symfony, which uses [Composer][2] to manage its dependencies
+on other software libraries. It is recommened that you install Composer into the
+camdram directory:
 
-As Symfony uses [Composer][2] to manage its dependencies, the recommended way
-to create a new project is to use it.
+'cd camdram`
+`curl -s https://getcomposer.org/installer | php`
 
-If you don't have Composer yet, download it following the instructions on
-http://getcomposer.org/ or just run the following command:
-
-    curl -s https://getcomposer.org/installer | php
-
-Then, use the `create-project` command to generate a new Symfony application:
-
-    php composer.phar create-project symfony/framework-standard-edition path/to/install 2.1.x-dev
-
-For an exact version, replace 2.1.x-dev with the latest Symfony version (e.g. 2.1.1).
-
-Composer will install Symfony and all its dependencies under the
-`path/to/install` directory.
-
-### Download an Archive File
-
-To quickly test Symfony, you can also download an [archive][3] of the Standard
-Edition and unpack it somewhere under your web server root directory.
-
-If you downloaded an archive "without vendors", you also need to install all
-the necessary dependencies. Download composer (see above) and run the
-following command:
+Then run the following command, which will automatically download all camdram's
+PHP dependencies
 
     php composer.phar install
 
-2) Checking your System Configuration
+3) Checking your System Configuration
 -------------------------------------
 
-Before starting coding, make sure that your local system is properly
-configured for Symfony.
-
-Execute the `check.php` script from the command line:
+Make sure that your local system is properly configured for Symfony by running
+the `check.php` script from the command line:
 
     php app/check.php
 
-Access the `config.php` script from a browser:
+Correct any problems it finds...
 
-    http://localhost/path/to/symfony/app/web/config.php
+4) Create a database
+--------------------
 
-If you get any warnings or recommendations, fix them before moving on.
+Using your database administration tool of choice (e.g. phpMyAdmin), create
+a database with its own username and password, and start with importing a copy
+of the existing camdram database.
 
-3) Browsing the Demo Application
---------------------------------
 
-Congratulations! You're now ready to use Symfony.
+5) Configure camdram
+--------------------
 
-From the `config.php` page, click the "Bypass configuration and go to the
-Welcome page" link to load up your first Symfony page.
+Camdram expects to find a configuration file is at app/config/parameters.yml.
+app/config/parameters.dist.yml contains some default values and can be used as
+a staring point.
 
-You can also use a web-based configurator by clicking on the "Configure your
-Symfony Application online" link of the `config.php` page.
+`cp app/config/parameters.dist.ini app/config/parameters.ini`
 
-To see a real-live Symfony page in action, access the following page:
+Enter the database configuration details chosen above. The API keys are used
+by the authentication system and are optional (there's a wiki page about
+how to obtain them). The Raven and local (password-based) login systems work
+without an API key.
 
-    web/app_dev.php/demo/hello/Fabien
+6) Create a virtual host
+------------------------
+Create an Apache vhost similar to the following:
 
-4) Getting started with Symfony
--------------------------------
+        <VirtualHost *:80>
 
-This distribution is meant to be the starting point for your Symfony
-applications, but it also contains some sample code that you can learn from
-and play with.
+                DocumentRoot /var/www/camdram/web
+                ServerName local.camdram.net
 
-A great way to start learning Symfony is via the [Quick Tour][4], which will
-take you through all the basic features of Symfony2.
+                <Directory /var/www/camdram>
+                        Options Indexes FollowSymLinks MultiViews
+                        AllowOverride All
+                        Order allow,deny
+                        allow from all
+                </Directory>
 
-Once you're feeling good, you can move onto reading the official
-[Symfony2 book][5].
+        </VirtualHost>
 
-A default bundle, `AcmeDemoBundle`, shows you Symfony2 in action. After
-playing with it, you can remove it by following these steps:
+7) Migrate database schema
+--------------------------
 
-  * delete the `src/Acme` directory;
+Run the following command to make the necessary changes to the database:
 
-  * remove the routing entries referencing AcmeBundle in
-    `app/config/routing_dev.yml`;
+`php app/console doctrine:migrations:migrate`
 
-  * remove the AcmeBundle from the registered bundles in `app/AppKernel.php`;
+8) (Optional) Run console tools to tidy up database
+---------------------------------------------------
 
-  * remove the `web/bundles/acmedemo` directory;
+It is recommended that you run `php app/console camdram:users:identities`, which
+detects and logs external accounts (e.g. on Google, Yahoo etc) for all the users
+in the database.
 
-  * remove the `security.providers`, `security.firewalls.login` and
-    `security.firewalls.secured_area` entries in the `security.yml` file or
-    tweak the security configuration to fit your needs.
+There are a number of other tools which can be run which can be run, which are
+detailed on a Wiki page
 
-What's inside?
----------------
+
+Introduction to Symfony
+-----------------------
 
 The Symfony Standard Edition is configured with the following defaults:
 

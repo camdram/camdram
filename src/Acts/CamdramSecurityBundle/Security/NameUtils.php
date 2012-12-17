@@ -34,7 +34,7 @@ class NameUtils
     /**
      * @return \Acts\CamdramSecurityBundle\Entity\SimilarNameRepository
      */
-    private function getRepository()
+    protected function getRepository()
     {
         return $this->em->getRepository('ActsCamdramSecurityBundle:SimilarName');
     }

@@ -95,7 +95,8 @@ class ApiResponse implements \ArrayAccess, \Iterator, \Countable
 
     public function current()
     {
-        return $this->convertValue(current($this->data));
+        $current = current($this->data);
+        return $this->convertValue($current);
     }
 
     public function key()
