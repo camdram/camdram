@@ -24,7 +24,7 @@ class SecurityUtils
     {
         $this->container = $container;
         if (!$firewall_name) $firewall_name = $container->getParameter('camdram.security.default_firewall');
-        $this->ownerMap  = $this->container->get('camdram.security.service_map.'.$firewall_name);
+        $this->serviceMap  = $this->container->get('camdram.security.service_map.'.$firewall_name);
     }
 
     /**
@@ -32,9 +32,9 @@ class SecurityUtils
      */
     public function getServices()
     {
-        $resourceOwners = $this->ownerMap->getServices();
+        $services = $this->serviceMap->getServices();
 
-        return array_keys($resourceOwners);
+        return array_keys($services);
     }
 
     /**
@@ -47,7 +47,7 @@ class SecurityUtils
         $hasUser = false; //$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED');
 
         $service = $this->getService($name);
-        $checkPath = $this->ownerMap->getServiceCheckPath($name);
+        $checkPath = $this->serviceMap->getServiceCheckPath($name);
 
         $redirect_uri =  $hasUser
             ? $this->generateUrl('camdram_security_login', array('service' => $name), true)
@@ -128,7 +128,7 @@ class SecurityUtils
      */
     private function getService($name)
     {
-        $service = $this->ownerMap->getServiceByName($name);
+        $service = $this->serviceMap->getServiceByName($name);
         if (!$service instanceof ServiceInterface) {
             throw new \RuntimeException(sprintf("No service with name '%s'.", $name));
         }

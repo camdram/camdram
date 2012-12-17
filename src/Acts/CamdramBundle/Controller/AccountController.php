@@ -7,9 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccountController extends Controller
 {
-    public function facebookAction()
+    public function settingsAction()
     {
- //       return $this->render('ActsCamdramBundle:Default:index.html.twig');
-        return new Response();
+        return $this->render('ActsCamdramBundle:Account:settings.html.twig');
     }
 }

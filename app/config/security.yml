@@ -20,6 +20,21 @@ security:
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
     firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            camdram:
+                services:
+                    facebook: /login/facebook
+                    twitter: /login/twitter
+                    raven: /login/raven
+                    google: /login/google
+                    windows_live: /login/windows_live
+                    yahoo: /login/yahoo
+                    local: /login/local
         public:
             pattern: ^/.*
             anonymous: true
@@ -58,6 +73,7 @@ security:
             #    realm: "Secured Demo Area"
 
     access_control:
+        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
         - { path ^/settings.*, roles: IS_AUTHENTICATED_FULLY }
     acl:
         connection: default

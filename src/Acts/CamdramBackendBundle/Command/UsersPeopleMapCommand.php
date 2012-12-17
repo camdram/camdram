@@ -32,7 +32,6 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
 
         foreach ($users as $user) {
             $surname = $utils->extractSurname($user->getName());
-            $first_names = $utils->extractFirstNames($user->getName());
 
             $people = $em->createQuery('SELECT p FROM ActsCamdramBundle:Person p WHERE p.name LIKE :name')
                 ->setParameter('name', '% '.$surname.'%')->getResult();
@@ -74,11 +73,28 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
 
     private function buildQuestion($user, $person, $score) {
         $question = '<question>Link user "'.$user->getName().'" to person "'.$person->getName()
-            .'" (similarity: '.$score.'/100) ?';
+            .'" (similarity: '.$score.'/100) ';
 
         $question .= "\r\n    ".$user->getName().': last active in '
             .$user->getLogin()->format('Y');
-       // $question .= "\r\n    ".$u
+
+        $question .= "\r\n    ".$person->getName().': ';
+        foreach ($person->getRoles() as $role) {
+            $show = $role->getShow();
+            if ($show && $show->getDates()) {
+                $question .= $role->getRole().' '.$show->getDates().', ';
+            }
+            elseif ($show && $show->getTimestamp()->format('U') > 0) {
+                $question .= $role->getRole().' in '.$show->getTimestamp()->format('Y').', ';
+            }
+            else {
+                $question .= $role->getRole().', ';
+            }
+
+        }
+
+        $question .= "\r\n  ?  ";
+        return $question;
     }
 
     private function linkUserAndPerson($user, $person, OutputInterface $output)

@@ -50,15 +50,28 @@
       </ul>
 
       <ul class="right">
+          {% if app.user %}
         <li class="has-dropdown">
-          <a href="#">Link</a>
+          <a href="{{ path('get_person', {id: app.user.person.id }) }}">{{ app.user.name }}</a>
 
           <ul class="dropdown">
-            <li><a href="#">Dropdown Link</a></li>
-            <li><a href="#">Dropdown Link</a></li>
-            <li><a href="#">Dropdown Link</a></li>
+            <li><a href="{{ path('get_person', {id: app.user.person.id }) }}">My profile</a></li>
+            <li><a href="{{ path('acts_camdram_settings') }}">Settings</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ path('_security_logout') }}">Log out</a></li>
           </ul>
         </li>
+          {% else %}
+          <li class="has-dropdown">
+              <a href="#">Sign in</a>
+              <ul class="dropdown">
+                  <li><label>Sign in using</label></li>
+                {% for service in camdram_security_services() %}
+                  <li><a href="{{ path('camdram_security_entry_point', {service: service}) }}">{{ service | capitalize }}</a></li>
+                {% endfor %}
+              </ul>
+          </li>
+          {% endif %}
       </ul>
     </section>
   </nav><br><br>

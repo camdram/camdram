@@ -42,7 +42,7 @@ class DefaultController extends Controller
     {
         $token = $this->get('security.context')->getToken();
         $name = $token->getLastService()->getUserInfo('name');
-
+        if (!$name) return $this->redirect($this->generateUrl('camdram_security_no_existing_user'));
 
         $possible_users = $this->getDoctrine()->getRepository('ActsCamdramBundle:User')
             ->findUsersWithSimilarName($name);

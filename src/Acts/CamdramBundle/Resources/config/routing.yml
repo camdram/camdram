@@ -12,7 +12,7 @@ acts_camdram_societies:
     resource: "Acts\CamdramBundle\Controller\SocietyController"
 acts_camdram_settings:
     pattern: /settings
-    defaults: { _controller: ActsCamdramBundle:Default:settings }
+    defaults: { _controller: ActsCamdramBundle:Account:settings }
 acts_camdram_login:
     pattern: /login
     defaults: { _controller: ActsCamdramBundle:Default:login }

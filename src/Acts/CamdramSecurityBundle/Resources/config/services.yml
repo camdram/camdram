@@ -79,3 +79,8 @@ services:
     camdram.security.name_utils:
         class: Acts\CamdramSecurityBundle\Security\NameUtils
         arguments: [@doctrine.orm.entity_manager]
+
+    camdram.security.twig.extension:
+        class: Acts\CamdramSecurityBundle\Twig\Extension\CamdramSecurityExtension
+        arguments: [@camdram.security.utils]
+        tags: [{ name: twig.extension }]

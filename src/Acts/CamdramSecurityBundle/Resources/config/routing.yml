@@ -1,4 +1,4 @@
-camdram_security_redirect:
+camdram_security_entry_point:
     pattern: /connect/{service}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:redirect }
 

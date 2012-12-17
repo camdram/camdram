@@ -1,0 +1,23 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Camdram.net - your account settings{% endblock %}
+
+{% block body %}
+  <div class="row">
+      <h2>Account settings</h2>
+
+      <div class="row">
+        <div class="eight columns">
+          <div class="panel">
+              Your account is currently linked to:
+              <ul>
+            {% for i in app.user.identities %}
+                <li>{{ i.service | capitalize }}</li>
+            {% endfor %}
+              </ul>
+          </div>
+        </div>
+      </div>
+
+  </div>
+{% endblock %}

@@ -110,3 +110,10 @@ acts_social_api:
               client_secret: %twitter_secret%
               access_token: %twitter_token%
               access_token_secret: %twitter_token_secret%
+
+fos_oauth_server:
+    db_driver:            orm
+    client_class:        Acts\CamdramSecurityBundle\Entity\ExternalClient
+    access_token_class:  Acts\CamdramSecurityBundle\Entity\AccessToken
+    refresh_token_class: Acts\CamdramSecurityBundle\Entity\RefreshToken
+    auth_code_class:     Acts\CamdramSecurityBundle\Entity\AuthCode
