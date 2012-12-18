@@ -2,6 +2,8 @@
 namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="acts_entities")
@@ -53,8 +55,14 @@ abstract class Entity
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
-   // private $public;
+    private $public;
 
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, unique=true, nullable=true)
+     */
+    private $slug;
 
     /**
      * Get id
@@ -166,5 +174,51 @@ abstract class Entity
     public function setSocialId($service_name, $value)
     {
         return call_user_func(array($this, 'set'.ucfirst($service_name).'Id'), $value);
+    }
+
+    /**
+     * Set public
+     *
+     * @param boolean $public
+     * @return Entity
+     */
+    public function setPublic($public)
+    {
+        $this->public = $public;
+    
+        return $this;
+    }
+
+    /**
+     * Get public
+     *
+     * @return boolean 
+     */
+    public function getPublic()
+    {
+        return $this->public;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Entity
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

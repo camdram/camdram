@@ -19,7 +19,7 @@
         <h3>Cast</h3>
         <ul>
         {% for role in show.getRolesByType('cast') %}
-        <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+        <li>{{ role.role }} - <a href="{{ path('get_person', {slug: role.person.slug}) }}">{{ role.person.name }}</a></li>
         {% endfor %}
         </ul>
     </div>
@@ -27,7 +27,7 @@
         <h3>Band</h3>
         <ul>
             {% for role in show.getRolesByType('band') %}
-                <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+                <li>{{ role.role }} - <a href="{{ path('get_person', {slug: role.person.slug}) }}">{{ role.person.name }}</a></li>
             {% endfor %}
         </ul>
     </div>
@@ -35,7 +35,7 @@
         <h3>Production Team</h3>
         <ul>
             {% for role in show.getRolesByType('prod') %}
-                <li>{{ role.role }} - <a href="{{ path('get_person', {id: role.person.id}) }}">{{ role.person.name }}</a></li>
+                <li>{{ role.role }} - <a href="{{ path('get_person', {slug: role.person.slug}) }}">{{ role.person.name }}</a></li>
             {% endfor %}
         </ul>
     </div>

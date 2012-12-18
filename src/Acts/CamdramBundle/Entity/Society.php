@@ -10,42 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="acts_societies_new")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SocietyRepository")
  */
-class Society
+class Society extends Organisation
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", nullable=false)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=false)
-     */
-    private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="shortname", type="text", nullable=false)
+     * @ORM\Column(name="shortname", type="string", length=255, nullable=false)
      */
     private $short_name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="college", type="text", nullable=true)
+     * @ORM\Column(name="college", type="string", length=255, nullable=true)
      */
     private $college;
 
@@ -81,63 +58,6 @@ class Society
      * @ORM\OneToMany(targetEntity="Show", mappedBy="society")
      */
     private $shows;
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Society
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Society
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
 
     /**
      * Set short_name

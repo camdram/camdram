@@ -13,10 +13,14 @@ use Acts\CamdramBundle\Entity\Show;
 class ShowController extends FOSRestController
 {
 
-    public function getAction($id)
+    public function getAction($slug)
     {
-        $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Show');
-        $show = $repo->findOneById($id);
+        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
+        $show = $repo->findOneBySlug($slug);
+
+        if (!$show) {
+            throw $this->createNotFoundException('That show does not exist');
+        }
         
         $view = $this->view($show, 200)
             ->setTemplate("ActsCamdramBundle:Show:index.html.twig")
