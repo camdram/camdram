@@ -3,8 +3,10 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Exclude;
 use Doctrine\Common\Collections\Criteria;
+
+use JMS\Serializer\Annotation\Exclude;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Show
@@ -692,5 +694,5 @@ class Show extends Entity
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
 }

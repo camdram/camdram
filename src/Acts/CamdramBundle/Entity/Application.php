@@ -24,7 +24,7 @@ class Application
     /**
      * @var integer
      *
-     * @ORM\Column(name="showid", type="integer", nullable=false)
+     * @ORM\Column(name="showid", type="integer", nullable=true)
      */
     private $show_id;
     
@@ -41,7 +41,7 @@ class Application
     /**
      * @var integer
      *
-     * @ORM\Column(name="socid", type="integer", nullable=false)
+     * @ORM\Column(name="socid", type="integer", nullable=true)
      */
     private $society_id;
 

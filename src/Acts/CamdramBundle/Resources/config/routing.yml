@@ -7,7 +7,7 @@ acts_camdram_shows:
 acts_camdram_people:
     type:     rest
     resource: Acts\CamdramBundle\Controller\PersonController
-acts_camdram_socities:
+acts_camdram_societies:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\SocietyController"
 acts_camdram_settings:

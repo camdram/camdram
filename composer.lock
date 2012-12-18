@@ -1,5 +1,5 @@
 {
-    "hash": "6127c840732a3c737d688ef7fe844b78",
+    "hash": "78d05ef784b664faf91aec1c9fd0f9e6",
     "packages": [
         {
             "name": "doctrine/common",
@@ -75,19 +75,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal",
-                "reference": "f63af1948a609a96b8ea1c1302c7cdf2f9f51468"
+                "reference": "00f9575d24a15931c2ccfafd888b3d1d0bb5bd03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/doctrine/dbal/archive/f63af1948a609a96b8ea1c1302c7cdf2f9f51468.zip",
-                "reference": "f63af1948a609a96b8ea1c1302c7cdf2f9f51468",
+                "url": "https://github.com/doctrine/dbal/archive/00f9575d24a15931c2ccfafd888b3d1d0bb5bd03.zip",
+                "reference": "00f9575d24a15931c2ccfafd888b3d1d0bb5bd03",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
                 "doctrine/common": "2.3.*"
             },
-            "time": "2012-12-04 21:06:56",
+            "time": "2012-12-17 15:35:54",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -100,6 +100,7 @@
                     "Doctrine\\DBAL": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -614,6 +615,75 @@
             ]
         },
         {
+            "name": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/l3pp4rd/DoctrineExtensions.git",
+                "reference": "b525f3bc72d143546460348e9009e6593b0ec054"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/l3pp4rd/DoctrineExtensions/archive/b525f3bc72d143546460348e9009e6593b0ec054.zip",
+                "reference": "b525f3bc72d143546460348e9009e6593b0ec054",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "doctrine/common": ">=2.2,<2.5-dev"
+            },
+            "require-dev": {
+                "doctrine/mongodb": ">=1.0.0-BETA1",
+                "doctrine/mongodb-odm": ">=1.0.0-BETA6",
+                "doctrine/orm": ">=2.2",
+                "doctrine/dbal": ">=2.2"
+            },
+            "suggest": {
+                "doctrine/mongodb": ">=1.0.0-BETA1",
+                "doctrine/mongodb-odm": ">=1.0.0-BETA6",
+                "doctrine/orm": ">=2.2",
+                "doctrine/dbal": ">=2.2"
+            },
+            "time": "2012-12-17 20:25:04",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3.x-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Gedmo": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gediminas Morkevicius",
+                    "email": "gediminas.morkevicius@gmail.com"
+                }
+            ],
+            "description": "Doctrine2 behavioral extensions",
+            "homepage": "http://gediminasm.org/",
+            "keywords": [
+                "tree",
+                "behaviors",
+                "doctrine2",
+                "extensions",
+                "gedmo",
+                "sluggable",
+                "loggable",
+                "translatable",
+                "nestedset",
+                "sortable",
+                "timestampable"
+            ]
+        },
+        {
             "name": "jdorn/sql-formatter",
             "version": "dev-master",
             "source": {
@@ -762,12 +832,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSDiExtraBundle",
-                "reference": "d9a18c6758f384f1cb6ad169494f437f88456ef3"
+                "reference": "aff6f3da3c866ef06d13e7c9043e1253f11932a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/schmittjoh/JMSDiExtraBundle/archive/d9a18c6758f384f1cb6ad169494f437f88456ef3.zip",
-                "reference": "d9a18c6758f384f1cb6ad169494f437f88456ef3",
+                "url": "https://github.com/schmittjoh/JMSDiExtraBundle/archive/aff6f3da3c866ef06d13e7c9043e1253f11932a0.zip",
+                "reference": "aff6f3da3c866ef06d13e7c9043e1253f11932a0",
                 "shasum": ""
             },
             "require": {
@@ -791,7 +861,7 @@
                 "doctrine/orm": "*",
                 "phpcollection/phpcollection": "0.1.*@dev"
             },
-            "time": "2012-12-13 16:56:35",
+            "time": "2012-12-17 20:06:01",
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
@@ -812,7 +882,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -829,12 +899,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/metadata",
-                "reference": "a965c62e73891ec324d9e1fc8b0389dd42ade09d"
+                "reference": "ddc24ae556915c2148e47889215efa39f39e7de0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/schmittjoh/metadata/archive/a965c62e73891ec324d9e1fc8b0389dd42ade09d.zip",
-                "reference": "a965c62e73891ec324d9e1fc8b0389dd42ade09d",
+                "url": "https://github.com/schmittjoh/metadata/archive/ddc24ae556915c2148e47889215efa39f39e7de0.zip",
+                "reference": "ddc24ae556915c2148e47889215efa39f39e7de0",
                 "shasum": ""
             },
             "require": {
@@ -846,7 +916,7 @@
             "suggest": {
                 "doctrine/common": ">=2.0"
             },
-            "time": "2012-10-12 10:13:17",
+            "time": "2012-12-17 22:50:41",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -859,6 +929,7 @@
                     "Metadata\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -991,12 +1062,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/schmittjoh/serializer",
-                "reference": "160cad9ed8a0a246317f14c6ccbed88d174d410d"
+                "reference": "29d466596ed64fac8adf6a68a310d77656c4e3cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/schmittjoh/serializer/archive/160cad9ed8a0a246317f14c6ccbed88d174d410d.zip",
-                "reference": "160cad9ed8a0a246317f14c6ccbed88d174d410d",
+                "url": "https://github.com/schmittjoh/serializer/archive/29d466596ed64fac8adf6a68a310d77656c4e3cd.zip",
+                "reference": "29d466596ed64fac8adf6a68a310d77656c4e3cd",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1089,7 @@
             "suggest": {
                 "symfony/yaml": "Required if you'd like to serialize data to YAML format."
             },
-            "time": "2012-12-13 16:23:56",
+            "time": "2012-12-17 15:47:56",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1039,7 +1110,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
+                    "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -1583,6 +1654,69 @@
             "description": "This bundle generates code for you"
         },
         {
+            "name": "stof/doctrine-extensions-bundle",
+            "version": "dev-master",
+            "target-dir": "Stof/DoctrineExtensionsBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stof/StofDoctrineExtensionsBundle",
+                "reference": "4a17550d8b101c5aafc56c9950149aa189b8402d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/stof/StofDoctrineExtensionsBundle/archive/4a17550d8b101c5aafc56c9950149aa189b8402d.zip",
+                "reference": "4a17550d8b101c5aafc56c9950149aa189b8402d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": ">=2.1,<2.3-dev",
+                "gedmo/doctrine-extensions": "2.3.*"
+            },
+            "suggest": {
+                "doctrine/doctrine-bundle": "*",
+                "doctrine/mongodb-odm-bundle": "2.1.*"
+            },
+            "time": "2012-12-13 17:58:07",
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Stof\\DoctrineExtensionsBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                }
+            ],
+            "description": "Integration of the gedmo/doctrine-extensions with Symfony2",
+            "homepage": "https://github.com/stof/StofDoctrineExtensionsBundle",
+            "keywords": [
+                "tree",
+                "behaviors",
+                "doctrine2",
+                "extensions",
+                "gedmo",
+                "sluggable",
+                "loggable",
+                "translatable",
+                "nestedset",
+                "sortable",
+                "timestampable"
+            ]
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v4.2.2",
             "source": {
@@ -2000,6 +2134,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "doctrine/doctrine-migrations-bundle": 20,
+        "stof/doctrine-extensions-bundle": 20,
         "friendsofsymfony/rest-bundle": 20,
         "sensio/buzz-bundle": 20,
         "friendsofsymfony/oauth-server-bundle": 20

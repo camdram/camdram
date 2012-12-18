@@ -1,46 +1,46 @@
 <?php
+// src/Acme/ApiBundle/Entity/AccessToken.php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramSecurityBundle\Entity;
 
+use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Forum
- *
- * @ORM\Table(name="acts_forums")
  * @ORM\Entity
+ * @ORM\Table(name="acts_external_apps")
  */
-class Forum
+class ExternalApp extends BaseClient
 {
+
+
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", nullable=false)
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="orderid", type="integer", nullable=false)
+     * @ORM\Column(name="scope", type="string", length=20)
      */
-    private $order_id;
+    private $scope;
 
 
     /**
@@ -57,7 +57,7 @@ class Forum
      * Set name
      *
      * @param string $name
-     * @return Forum
+     * @return ExternalApp
      */
     public function setName($name)
     {
@@ -80,7 +80,7 @@ class Forum
      * Set description
      *
      * @param string $description
-     * @return Forum
+     * @return ExternalApp
      */
     public function setDescription($description)
     {
@@ -100,25 +100,25 @@ class Forum
     }
 
     /**
-     * Set order_id
+     * Set scope
      *
-     * @param integer $orderId
-     * @return Forum
+     * @param string $scope
+     * @return ExternalApp
      */
-    public function setOrderId($orderId)
+    public function setScope($scope)
     {
-        $this->order_id = $orderId;
+        $this->scope = $scope;
     
         return $this;
     }
 
     /**
-     * Get order_id
+     * Get scope
      *
-     * @return integer 
+     * @return string 
      */
-    public function getOrderId()
+    public function getScope()
     {
-        return $this->order_id;
+        return $this->scope;
     }
 }

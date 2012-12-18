@@ -24,9 +24,9 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="text", nullable=false)
+     * @ORM\Column(name="text", type="string", length=255, nullable=false)
      */
-    private $text;
+    private $title;
 
     /**
      * @var \DateTime
@@ -64,13 +64,6 @@ class Event
     private $link_id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="socid", type="integer", nullable=false)
-     */
-    private $society_id;
-
-    /**
      * @var \Society
      *
      * @ORM\ManyToOne(targetEntity="Society")
@@ -89,29 +82,6 @@ class Event
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set text
-     *
-     * @param string $text
-     * @return Event
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-    
-        return $this;
-    }
-
-    /**
-     * Get text
-     *
-     * @return string 
-     */
-    public function getText()
-    {
-        return $this->text;
     }
 
     /**
@@ -230,29 +200,6 @@ class Event
     }
 
     /**
-     * Set society_id
-     *
-     * @param integer $societyId
-     * @return Event
-     */
-    public function setSocietyId($societyId)
-    {
-        $this->society_id = $societyId;
-    
-        return $this;
-    }
-
-    /**
-     * Get society_id
-     *
-     * @return integer 
-     */
-    public function getSocietyId()
-    {
-        return $this->society_id;
-    }
-
-    /**
      * Set society
      *
      * @param \Acts\CamdramBundle\Entity\Society $society
@@ -273,5 +220,28 @@ class Event
     public function getSociety()
     {
         return $this->society;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Event
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

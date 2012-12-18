@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="acts_authtokens")
  * @ORM\Entity
+ *
  */
 class AuthToken
 {

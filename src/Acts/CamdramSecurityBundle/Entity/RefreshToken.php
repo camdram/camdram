@@ -5,15 +5,15 @@ namespace Acts\CamdramSecurityBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
+use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="acts_access_tokens")
+ * @ORM\Table(name="acts_refresh_tokens")
  */
-class AccessToken extends BaseAccessToken
+class RefreshToken extends BaseRefreshToken
 {
     /**
      * @ORM\Id
@@ -47,7 +47,7 @@ class AccessToken extends BaseAccessToken
      * Set client
      *
      * @param \Acts\CamdramSecurityBundle\Entity\ExternalApp $client
-     * @return AccessToken
+     * @return RefreshToken
      */
     public function setClient(ClientInterface $client)
     {
@@ -70,7 +70,7 @@ class AccessToken extends BaseAccessToken
      * Set user
      *
      * @param \Acts\CamdramBundle\Entity\User $user
-     * @return AccessToken
+     * @return RefreshToken
      */
     public function setUser(UserInterface $user)
     {

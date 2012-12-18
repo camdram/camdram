@@ -11,4 +11,9 @@ class AccountController extends Controller
     {
         return $this->render('ActsCamdramBundle:Account:settings.html.twig');
     }
+
+    public function loginAction()
+    {
+        return $this->render('ActsCamdramBundle:Account:login.html.twig');
+    }
 }

@@ -113,7 +113,7 @@ acts_social_api:
 
 fos_oauth_server:
     db_driver:            orm
-    client_class:        Acts\CamdramSecurityBundle\Entity\ExternalClient
+    client_class:        Acts\CamdramSecurityBundle\Entity\ExternalApp
     access_token_class:  Acts\CamdramSecurityBundle\Entity\AccessToken
     refresh_token_class: Acts\CamdramSecurityBundle\Entity\RefreshToken
     auth_code_class:     Acts\CamdramSecurityBundle\Entity\AuthCode
