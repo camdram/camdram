@@ -10,7 +10,7 @@
         {{ society.description | nl2br }}
 
         {% for show in society.shows %}
-        <li><a href="{{ path('get_show', {id: show.id}) }}">{{ show.name }}</a></li>
+        <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
         {% endfor %}
     </div>
   </div>
