@@ -29,6 +29,19 @@ class SocietyRepository extends EntityRepository
     }
 
     /**
+     * findAllOrderedByCollegeName
+     *
+     * Finds all societies and order them by college, followed by name.
+     */
+    public function findAllOrderedByCollegeName()
+    {
+        /* Do we care about affiliation to ACTS anymore? */
+        return $this->getEntityManager()
+            ->createQuery('SELECT s FROM ActsCamdramBundle:Society s WHERE s.type=0 ORDER BY s.college, s.name')
+            ->getResult();
+    }
+
+    /**
      * findOneByShortName
      *
      * Finds a society based on the 'URL-friendly' version of the short name.
@@ -40,7 +53,7 @@ class SocietyRepository extends EntityRepository
         $results = $this->getEntityManager()
             ->createQuery('SELECT s FROM ActsCamdramBundle:Society s')
             ->getResult();
-        $slug = strtolower($slug);
+        $slug = $this->string_to_url($slug);
         /* Allow for hyphen-delimeted words */
         $slug = preg_replace ("/-/", "_", $slug);
         foreach ($results as $result) {

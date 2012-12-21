@@ -1,18 +1,49 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
-{% block title %}Society: {{ society.name }}{% endblock %}
+{% block title %}Societies{% endblock %}
 
 {% block body %}
   <div class="row">
-    <div class="twelve columns">
-      <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
+      {% if societies|length > 0 %}
+        {% set value = 'no spaces' %}
+        {% set i = 1  %}
+        {% set seen_college = false %} 
+        {% for society in societies %}
+          {% if (society.college is not empty) and not seen_college %}
+            {% set seen_college = true %}
+              <hr>
+              <h3>College Societies</h3>
+          {% endif %}
 
-        {{ society.description | nl2br }}
+          <div class="six columns">
+          <h5><a href="{{ path('get_society', {slug: society.shortname}) }}">{{ society.name }}</a>
+          {% if society.shortname is not empty %}
+            <small>- {{ society.shortname }}</small>
+          {% endif %}
+          </h5>
+          {% if society.college is not empty %}
+            <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
+          {% endif %}
+          <p>{{ society.description|slice(0, 200)|trim }}
+          {% if society.description|length > 200 %}
+          ...<br>[<a href="{{ path('get_society', {slug: society.shortname}) }}">Read More</a>]
+          {% endif %}
+          </p>
+          </div>
 
-        {% for show in society.shows %}
-        <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
+          {% if (i < societies|length) and (i is divisibleby(2)) %}
+            </div><!-- endrow -->
+            <div class="row">
+          {% endif %}
+          {% set i = i + 1 %}
         {% endfor %}
+      {% else %}
+        <div class="twelve columns">
+        <p>There are no societies.</p>
+      {% endif %}
+        </div>
     </div>
   </div>
 
 {% endblock %}
+

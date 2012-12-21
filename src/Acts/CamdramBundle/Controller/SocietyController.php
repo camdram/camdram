@@ -8,21 +8,33 @@ use Acts\CamdramBundle\Entity\Society;
 
 
 /**
- * @RouteResource("Society")
  */
 class SocietyController extends FOSRestController
 {
 
-    public function getAction($id)
+    public function getSocietiesAction()
     {
         $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Society');
-        $society = $repo->findOneByShortName($id);
+        $societies = $repo->findAllOrderedByCollegeName();
+
+        $view = $this->view($societies, 200)
+            ->setTemplate("ActsCamdramBundle:Society:index.html.twig")
+            ->setTemplateVar('societies')
+        ;
+        
+        return $view;
+    }
+
+    public function getSocietyAction($slug)
+    {
+        $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Society');
+        $society = $repo->findOneByShortName($slug);
         if (!$society) {
         throw $this->createNotFoundException(
             'No society found with the name '.$society);
         }
         $view = $this->view($society, 200)
-            ->setTemplate("ActsCamdramBundle:Society:index.html.twig")
+            ->setTemplate("ActsCamdramBundle:Society:show.html.twig")
             ->setTemplateVar('society')
         ;
         
