@@ -4,10 +4,11 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 
 use Acts\CamdramBundle\Entity\Person;
-use \Acts\CamdramSecurityBundle\Entity\UserIdentity;
+use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 /**
  * User
@@ -30,6 +31,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -37,13 +39,14 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @Assert\Email(checkMX = true)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="pass", type="string", length=32, nullable=false)
+     * @ORM\Column(name="pass", type="string", length=32, nullable=true)
      */
     private $password;
 
@@ -93,6 +96,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="occupation", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $occupation;
 
@@ -100,6 +104,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="graduation", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $graduation;
 
@@ -148,7 +153,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="resetcode", type="string", length=32, nullable=false)
+     * @ORM\Column(name="resetcode", type="string", length=32, nullable=true)
      */
     private $reset_code;
 
@@ -682,6 +687,19 @@ class User implements UserInterface, \Serializable
     public function __construct()
     {
         $this->identities = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contact = false;
+        $this->alumni = false;
+        $this->publish_email = false;
+        $this->forum_notify = false;
+        $this->hear_about = '';
+        $this->tel = '';
+        $this->db_email = false;
+        $this->db_phone = false;
+        $this->thread_messages = false;
+        $this->reverse_time = true;
+
+        $this->registered = new \DateTime;
+        $this->login = new \DateTime;
     }
     
     /**
@@ -832,5 +850,10 @@ class User implements UserInterface, \Serializable
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    public function __toString()
+    {
+        return $this->getId().'/'.$this->getName().'/'.$this->getEmail();
     }
 }

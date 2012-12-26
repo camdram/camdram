@@ -127,9 +127,15 @@ class RestApi
 
         $keys = $config['arguments'];
         $num_args = min(count($arguments), count($keys));
-        $keys = array_splice($keys,0,$num_args);
-        $arguments = array_splice($arguments,0,$num_args);
-        $params = array_combine($keys, $arguments);
+        if ($num_args > 0) {
+            $keys = array_splice($keys,0,$num_args);
+            $arguments = array_splice($arguments,0,$num_args);
+            $params = array_combine($keys, $arguments);
+        }
+        else {
+            $params = array();
+        }
+
 
         $url = $this->config['base_url'].$config['path'];
 

@@ -28,13 +28,7 @@ security:
             pattern:    ^/oauth/v2/auth
             camdram:
                 services:
-                    facebook: /login/facebook
-                    twitter: /login/twitter
-                    raven: /login/raven
-                    google: /login/google
-                    windows_live: /login/windows_live
-                    yahoo: /login/yahoo
-                    local: /login/local
+                  facebook: {display_name: Facebook}
         public:
             pattern: ^/.*
             anonymous: true
@@ -43,13 +37,9 @@ security:
                 target: /
             camdram:
                 services:
-                    facebook: /login/facebook
-                    twitter: /login/twitter
-                    raven: /login/raven
-                    google: /login/google
-                    windows_live: /login/windows_live
-                    yahoo: /login/yahoo
-                    local: /login/local
+                    raven: ~
+                    facebook: ~
+                    local: {display_name: 'Password'}
             remember_me:
                 key:      Vns2DsEhoEC5EZIHUs4Qz28BER6f2AeP0V
                 lifetime: 31536000 # 365 days in seconds
@@ -73,7 +63,7 @@ security:
             #    realm: "Secured Demo Area"
 
     access_control:
-        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
+#        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
         - { path ^/settings.*, roles: IS_AUTHENTICATED_FULLY }
     acl:
         connection: default

@@ -23,5 +23,21 @@ camdram_security_connect_users_process:
     defaults: { _controller: ActsCamdramSecurityBundle:Default:connectUsersProcess }
 
 camdram_security_no_existing_user:
-    pattern: /auth/new-user
+    pattern: /auth/check-new-user
     defaults: { _controller: ActsCamdramSecurityBundle:Default:noExistingUser }
+
+camdram_security_new_user:
+    pattern: /auth/new-user
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:newUser }
+
+camdram_security_setup:
+    pattern: /auth/setup
+    defaults: { _controller: ActsCamdramSecurityBundle:Setup:default }
+
+camdram_security_setup_link_person:
+    pattern: /auth/setup/person
+    defaults: { _controller: ActsCamdramSecurityBundle:Setup:linkPerson }
+
+camdram_security_setup_roles:
+    pattern: /auth/setup/roles
+    defaults: { _controller: ActsCamdramSecurityBundle:Setup:roles }

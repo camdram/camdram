@@ -6,7 +6,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="acts_entities")
+ * @ORM\Table(name="acts_entities", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"entity_type"})})
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="entity_type", type="string")
  * @ORM\DiscriminatorMap({"person" = "Person", "show" = "Show", "society" = "Society", "venue" = "Venue"})
@@ -60,9 +60,9 @@ abstract class Entity
 
     /**
      * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=128, unique=true, nullable=true)
+     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      */
-    private $slug;
+    protected $slug;
 
     /**
      * Get id

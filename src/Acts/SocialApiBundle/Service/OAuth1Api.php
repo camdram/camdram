@@ -21,9 +21,9 @@ class OAuth1Api extends OAuthApi
 
     protected function authenticateRequest(&$url, &$method, &$params)
     {
-        if (is_null($this->getToken()) || is_null($this->getTokenSecret())) {
-            throw new OAuthException('Unable to authenticate as no credentials have been supplied');
-        }
+       // if (is_null($this->getToken()) || is_null($this->getTokenSecret())) {
+         //   throw new OAuthException('Unable to authenticate as no credentials have been supplied');
+        //}
 
         $params = array_merge($params, array(
             'oauth_consumer_key'     => $this->config['client_id'],
@@ -130,5 +130,10 @@ class OAuth1Api extends OAuthApi
         // @codeCoverageIgnoreStart
         return time();
         // @codeCoverageIgnoreEnd
+    }
+
+    public function canAuthenticateRequest(Request $request)
+    {
+        return $request->query->has('oauth_token');
     }
 }

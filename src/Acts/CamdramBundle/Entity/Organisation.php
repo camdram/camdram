@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Organisation
@@ -53,6 +54,7 @@ abstract class Organisation extends Entity
      * @ORM\Column(name="expires", type="date", nullable=false)
      */
     private $expires;
+
 
     public function setName($name)
     {

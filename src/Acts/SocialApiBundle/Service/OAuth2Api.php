@@ -57,4 +57,9 @@ class OAuth2Api extends OAuthApi
         return $this->config['login_url'].'?'.http_build_query($params);
     }
 
+    public function canAuthenticateRequest(Request $request)
+    {
+        return $request->query->has('code');
+    }
+
 }

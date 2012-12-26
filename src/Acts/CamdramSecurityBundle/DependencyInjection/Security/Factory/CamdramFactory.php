@@ -22,8 +22,12 @@ class CamdramFactory extends AbstractFactory
     protected function createServiceMap(ContainerBuilder $container, $id, array $config)
     {
         $servicesMap = array();
-        foreach ($config['services'] as $name => $checkPath) {
-            $servicesMap[$name] = $checkPath;
+
+        foreach ($config['services'] as $name => $options) {
+            if (!isset($options['login_url'])) $options['login_url'] = '/login/'.$name;
+            if (!isset($options['connect_url'])) $options['connect_url'] = '/connect/'.$name;
+            if (!isset($options['display_name'])) $options['display_name'] = ucfirst($name);
+            $servicesMap[$name] = $options;
         }
         $container->setParameter('camdram.security.service_map.configuration.'.$id, $servicesMap);
 
@@ -76,10 +80,14 @@ class CamdramFactory extends AbstractFactory
     {
         $listenerId = parent::createListener($container, $id, $config, $userProvider);
 
+        $service_config = $container->getParameter('camdram.security.service_map.configuration.'.$id);
+
         $checkPaths = array();
-        foreach ($config['services'] as $name => $checkPath) {
-            $checkPaths[] = $checkPath;
+        foreach ($service_config as $name => $options) {
+            $checkPaths[] = $options['login_url'];
         }
+
+
 
         $container->getDefinition($listenerId)
             ->addMethodCall('setServiceMap', array($this->getServiceMapReference($id)))
@@ -115,12 +123,15 @@ class CamdramFactory extends AbstractFactory
     {
         parent::addConfiguration($builder);
 
-        $childBuilder = $builder->children()
+        $builder->children()
             ->scalarNode('login_path')->defaultValue('/login')->end()
             ->arrayNode('services')
                 ->isRequired()
-                ->useAttributeAsKey('name')
-                ->prototype('scalar')
+                ->prototype('array')
+                ->children()
+                    ->scalarNode('login_url')->end()
+                    ->scalarNode('connect_url')->end()
+                    ->scalarNode('display_name')->end()
                 ->end();
     }
 

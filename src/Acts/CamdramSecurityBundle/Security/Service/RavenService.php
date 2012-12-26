@@ -67,7 +67,13 @@ class RavenService extends AbstractService
 
     public function getUserInfo($token = null)
     {
-        return array('id' => null, 'username' => $token['principal'], 'name' => null);
+        return array(
+            'id' => null,
+            'username' => $token['principal'],
+            'name' => null,
+            'email' => $token['principal'].'@cam.ac.uk',
+
+        );
     }
 
     /**

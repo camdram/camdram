@@ -22,9 +22,5 @@ parameters:
     twitter_token_secret:       s3cr3t
     google_client_id:           1234
     google_client_secret:       s3cr3t
-    windows_live_client_id:     1234
-    windows_live_client_secret: s3cr3t
-    yahoo_key:                  1234
-    yahoo_secret:               s3cr3t
     
     baseurl: http://www.camdram.net

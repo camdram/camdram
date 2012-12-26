@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Acts\CamdramSecurityBundle\DependencyInjection\Security\Factory\CamdramFactory;
 
@@ -39,10 +40,22 @@ class ActsCamdramSecurityExtension extends Extension
 
     public function createAuthService(ContainerBuilder $container, $name, array $options)
     {
-        $definition = $container->getDefinition('camdram.security.service.'.$name);
+        if ($name == $options['class']) {
+            $definition = $container->getDefinition('camdram.security.service.'.$name);
+        }
+        else {
+            $definition = $container->setDefinition('camdram.security.service.'.$name,
+                new DefinitionDecorator('camdram.security.service.'.$options['class']));
+        }
 
-        $definition->addArgument( $name)
+        $definition->addArgument($name)
             ->addArgument($options);
+
+        switch ($options['class']) {
+            case 'social_api':
+                $definition->addMethodCall('setApi', array(new Reference('acts.social_api.apis.'.$options['id'])));
+                break;
+        }
     }
 
 }

@@ -25,6 +25,8 @@ abstract class AbstractService implements ServiceInterface
 
     protected $api;
 
+    protected $name;
+
     public function __construct(HttpClientInterface $httpClient, HttpUtils $httpUtils, $name, array $options)
     {
         $this->options = array_merge($this->options, $options);

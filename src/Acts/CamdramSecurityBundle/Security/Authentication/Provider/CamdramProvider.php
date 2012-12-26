@@ -80,7 +80,7 @@ class CamdramProvider implements AuthenticationProviderInterface
         else if ($e) {
             throw $e;
         }
-        else {
+        elseif ($user) {
             $token->setUser($user);
             $token->setAuthenticated(true);
             $this->userChecker->checkPostAuth($user);

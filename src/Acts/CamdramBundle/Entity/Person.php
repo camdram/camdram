@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation\Exclude;
  * Person
  *
  * @ORM\Table(name="acts_people_data")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="PersonRepository")
  */
 class Person extends Entity
 {
@@ -30,7 +30,6 @@ class Person extends Entity
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
-
      */
     private $roles;
 
@@ -56,6 +55,9 @@ class Person extends Entity
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->aliases = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->map_to = 0;
+        $this->no_robots = 0;
     }
     
     /**

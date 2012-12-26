@@ -10,12 +10,12 @@
             {% if user_status[user.id] == 'validated' %}
                 {{ user.email }} validated
             {% elseif user_status[user.id] == 'next' %}
-                How would you like to validate {{ user.email }} ?
+                How would you like to validate that you own the account {{ user.email }} ?
                 <ul>
                     {% for i in user.identities %}
                         <li><a href="{{ path("camdram_security_entry_point", {service: i.service}) }}">Login with {{ i.service | capitalize }}</a></li>
                     {% endfor %}
-                    <li><a href="{{ path("camdram_security_local_login", {email: user.email}) }}">Login with old camdram password</a></li>
+                   {% if user.password %} <li><a href="{{ path("camdram_security_local_login", {email: user.email}) }}">Login with old camdram password</a></li>{% endif %}
                 </ul>
             {% else %}
                 {{ user.email }}

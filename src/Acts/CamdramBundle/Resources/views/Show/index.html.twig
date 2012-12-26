@@ -7,7 +7,7 @@
 <div class="row" xmlns="http://www.w3.org/1999/html">
     <div class="twelve columns">
         {% if show.society %}
-            <p><a href="{{ path('get_society', {id: show.society.id}) }}">{{ show.society.name }}</a></p>
+            <p><a href="{{ path('get_society', {slug: show.society.slug}) }}">{{ show.society.name }}</a></p>
         {% endif %}
 
         <h2>{{ show.name }} - <small>{{ show.author }}</small></h2>

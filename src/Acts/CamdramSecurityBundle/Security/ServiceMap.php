@@ -78,9 +78,9 @@ class ServiceMap
      */
     public function getServiceByRequest(Request $request)
     {
-        foreach ($this->services as $name => $checkPath) {
-            if ($this->httpUtils->checkRequestPath($request, $checkPath)) {
-                return array($this->getServiceByName($name), $checkPath);
+        foreach ($this->services as $name => $options) {
+            if ($this->httpUtils->checkRequestPath($request, $options['login_url'])) {
+                return array($this->getServiceByName($name), $options['login_url']);
             }
         }
 
@@ -97,7 +97,7 @@ class ServiceMap
     public function getServiceCheckPath($name)
     {
         if (isset($this->services[$name])) {
-            return $this->services[$name];
+            return $this->services[$name]['login_url'];
         }
 
         return null;

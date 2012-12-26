@@ -12,23 +12,6 @@ class CamdramUserToken extends AbstractToken
     private $services = array();
 
     /**
-     * An array of all the services to which the user has expressed an intent to connect
-     *
-     * @var array
-     */
-    private $connect_to = array();
-
-    /**
-     * @var string
-     */
-    private $first_service_name;
-
-    /**
-     * @var string
-     */
-    private $last_service_name;
-
-    /**
      * @var array
      */
     private $potential_users = array();
@@ -45,7 +28,6 @@ class CamdramUserToken extends AbstractToken
     public function __construct(array $roles = array())
     {
         parent::__construct($roles);
-
         parent::setAuthenticated(count($roles) > 0);
     }
 
@@ -60,9 +42,7 @@ class CamdramUserToken extends AbstractToken
 
     public function addService($service_name, $access_token, $user_info = array())
     {
-        $this->services[$service_name] = new CamdramUserTokenService($service_name, $access_token, $user_info);
-        $this->last_service_name = $service_name;
-        if (empty($this->first_service_name)) $this->first_service_name = $service_name;
+        $this->services[] = new CamdramUserTokenService($service_name, $access_token, $user_info);
     }
 
     public function getServices()
@@ -75,19 +55,35 @@ class CamdramUserToken extends AbstractToken
         return $this->services[$name];
     }
 
+    public function getServiceByName($name)
+    {
+        foreach ($this->services as $service) {
+            if ($service->getName() == $name) return $service;
+        }
+    }
+
     public function getLastService()
     {
-        if (!empty($this->last_service_name)) return $this->services[$this->last_service_name];
+        return end($this->services);
     }
 
     public function getFirstService()
     {
-        if (!empty($this->first_service_name)) return $this->services[$this->first_service_name];
+        return reset($this->services);
     }
 
     public function getPotentialUsers()
     {
         return $this->potential_users;
+    }
+
+    public function removeService($service)
+    {
+        foreach ($this->services as $id => $s) {
+            if ($service == $s) {
+                unset($this->services[$id]);
+            }
+        }
     }
 
     public function setPotentialUsers(array $users)
@@ -103,6 +99,12 @@ class CamdramUserToken extends AbstractToken
     public function getPotentialUserCount()
     {
         return count($this->potential_users);
+    }
+
+    public function removeLastService()
+    {
+        array_pop($this->services);
+        $this->last_service_name = null;
     }
 
     public function isPotentialUser(UserInterface $user)
@@ -124,6 +126,18 @@ class CamdramUserToken extends AbstractToken
         $this->validated_users[$user->getUsername()] = true;
     }
 
+    public function cleanIdentities()
+    {
+        //Delete any services that don't correspond to this user
+        foreach ($this->services as $id => $service) {
+            $i = $this->getUser()->getIdentityByServiceName($service->getName());
+            if (!$i || $i->getRemoteId() == $service->getUserInfo('id')
+                || $i->getRemoteUser() == $service->getUserInfo('username')) {
+                unset($this->services[$id]);
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -131,9 +145,6 @@ class CamdramUserToken extends AbstractToken
     {
         return serialize(array(
             $this->services,
-            $this->connect_to,
-            $this->first_service_name,
-            $this->last_service_name,
             $this->potential_users,
             $this->validated_users,
             parent::serialize()
@@ -147,9 +158,6 @@ class CamdramUserToken extends AbstractToken
     {
         list(
             $this->services,
-            $this->connect_to,
-            $this->first_service_name,
-            $this->last_service_name,
             $this->potential_users,
             $this->validated_users,
             $parent,

@@ -3,7 +3,7 @@
     {% set user = possible_users.0 %}
 
     <p>We have found an existing user with the name {{ name }} and the email address {{ user.email }}, which last
-        logged in on{{ user.login | date('jS F Y') }}.</p>
+        logged in on {{ user.login | date('jS F Y') }}.</p>
     <p>Do you wish to associate your {{ service_name | capitalize }} account with it?</p>
     <p>
         <button type="submit" name="link_users[{{ user.id }}]" value="1">Yes</button>

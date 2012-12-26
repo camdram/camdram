@@ -3,15 +3,7 @@ namespace Acts\SocialApiBundle\Service;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Buzz\Client\ClientInterface as HttpClientInterface,
-    Buzz\Message\RequestInterface as HttpRequestInterface,
-    Buzz\Message\MessageInterface as HttpMessageInterface,
-    Buzz\Message\Request as HttpRequest,
-    Buzz\Message\Response as HttpResponse;
-
-use Acts\SocialApiBundle\Utils\Inflector,
-    Acts\SocialApiBundle\Exception\InvalidApiMethodException,
-    Acts\SocialApiBundle\Api\ApiResponse;
+use Buzz\Message\Request as HttpRequest;
 
 abstract class OAuthApi extends RestApi
 {
@@ -42,5 +34,6 @@ abstract class OAuthApi extends RestApi
 
     abstract public function getLoginUrl($redirectUri);
 
+    abstract public function canAuthenticateRequest(Request $request);
 
 }

@@ -76,4 +76,103 @@ class CamdramUserProvider implements UserProviderInterface
     {
         return $class === 'Acts\CamdramSecurityBundle\Entity\User';
     }
+
+    public function mergeUsers($user1, $user2)
+    {
+        //Merge old camdram auth tokens
+        $tokens = $this->em->getRepository('ActsCamdramBundle:Access')->findBy(array('uid' => $user2->getId()));
+        foreach ($tokens as $token) {
+            $token->setUid($user1->getId());
+        }
+        $this->em->flush();
+
+        $tokens = $this->em->getRepository('ActsCamdramBundle:Access')->findBy(array('issuer_id' => $user2->getId()));
+        foreach ($tokens as $token) {
+            $token->setIssuerId($user1->getId());
+        }
+        $this->em->flush();
+
+        $tokens = $this->em->getRepository('ActsCamdramBundle:Access')->findBy(array('revoke_id' => $user2->getId()));
+        foreach ($tokens as $token) {
+            $token->setRevokeId($user1->getId());
+        }
+        $this->em->flush();
+
+        //Merge emails
+        $emails = $this->em->getRepository('ActsCamdramBundle:Email')->findBy(array('user_id' => $user2->getId()));
+        foreach ($emails as $email) {
+            $email->setUserId($user1->getId());
+        }
+        $this->em->flush();
+
+        //Merge email aliases
+        $aliases = $this->em->getRepository('ActsCamdramBundle:EmailAlias')->findBy(array('user_id' => $user2->getId()));
+        foreach ($aliases as $alias) {
+            $alias->setUserId($user1->getId());
+        }
+        $this->em->flush();
+
+        //Merge email sigs
+        $sigs = $this->em->getRepository('ActsCamdramBundle:EmailSig')->findBy(array('user_id' => $user2->getId()));
+        foreach ($sigs as $sig) {
+            $sig->setUserId($user1->getId());
+        }
+        $this->em->flush();
+
+        //Merge forum messages
+        $msgs = $this->em->getRepository('ActsCamdramBundle:EmailSig')->findBy(array('user_id' => $user2->getId()));
+        foreach ($msgs as $msg) {
+            $msg->setUserId($user1->getId());
+        }
+        $this->em->flush();
+
+        //Merge knowledge base
+        $kbs = $this->em->getRepository('ActsCamdramBundle:KnowledgeBaseRevision')->findBy(array('user_id' => $user2->getId()));
+        foreach ($kbs as $kb) {
+            $kb->setUserId($user1->getId());
+        }
+        $this->em->flush();
+
+        //Merge mailing list members
+        $r = $this->em->getRepository('ActsCamdramBundle:MailingListMember');
+        $members = $r->findBy(array('user_id' => $user2->getId()));
+        foreach ($members as $member) {
+            if ($m2 = $r->findOneBy(array('list_id' => $member->getListId(), 'user_id' => $user1->getId()))) {
+                $this->em->remove($member);
+            }
+            else {
+                $member->setUserId($user1->getId());
+            }
+        }
+        $this->em->flush();
+
+        //Merge reviews
+        $reviews = $this->em->getRepository('ActsCamdramBundle:Review')->findBy(array('user_id' => $user2->getId()));
+        foreach ($reviews as $review) {
+            $review->setUserId($user1->getId());
+        }
+        $this->em->flush();
+
+        //Merge user identities
+        $identities = $this->em->getRepository('ActsCamdramSecurityBundle:UserIdentity')->findBy(array('user' => $user2));
+        foreach ($identities as $identity) {
+            $identity->setUser($user1);
+        }
+        $this->em->flush();
+
+        //Merge user groups
+        $groups = $this->em->getRepository('ActsCamdramSecurityBundle:Group')->findByUser($user2);
+        foreach ($groups as $group) {
+            $group->addUser($user1);
+            $group->removeUser($user2);
+        }
+        $this->em->flush();
+
+        if ($user2->getPerson() && !$user1->getPerson()) {
+            $user1->setPerson($user2->getPerson());
+        }
+
+        $this->em->remove($user2);
+        $this->em->flush();
+    }
 }

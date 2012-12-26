@@ -83,23 +83,19 @@ fos_rest:
 acts_camdram_security:
     services:
         facebook:
-            client_id: %facebook_id%
-            client_secret: %facebook_secret%
-        raven:
-            description: "camdram.net"
+            class: social_api
+            id: facebook
         twitter:
-            client_id: %twitter_key%
-            client_secret: %twitter_secret%
+            class: social_api
+            id: twitter
         google:
-            client_id: %google_client_id%
-            client_secret: %google_client_secret%
-        windows_live:
-            client_id: %windows_live_client_id%
-            client_secret: %windows_live_client_secret%
-        yahoo:
-            client_id: %yahoo_key%
-            client_secret: %yahoo_secret%
-        local: ~
+            class: social_api
+            id: google
+        raven:
+            class: raven
+            description: "camdram.net"
+        local:
+            class: local
 
 acts_social_api:
       apis:
@@ -111,9 +107,12 @@ acts_social_api:
               client_secret: %twitter_secret%
               access_token: %twitter_token%
               access_token_secret: %twitter_token_secret%
+          google:
+              client_id: %google_client_id%
+              client_secret: %google_client_secret%
 
 fos_oauth_server:
-    db_driver:            orm
+    db_driver:           orm
     client_class:        Acts\CamdramSecurityBundle\Entity\ExternalApp
     access_token_class:  Acts\CamdramSecurityBundle\Entity\AccessToken
     refresh_token_class: Acts\CamdramSecurityBundle\Entity\RefreshToken

@@ -2,6 +2,7 @@ facebook:
     base_url: https://graph.facebook.com
     class: oauth2
     login_url: https://www.facebook.com/dialog/oauth
+    scope: email
     paths:
         access_token:
             path: /oauth/access_token
@@ -13,24 +14,56 @@ facebook:
             response: {root: 'data'}
         current_user:
             path: /me
+            arguments: []
 
 twitter:
-    base_url: https://api.twitter.com/1.1
+    base_url: https://api.twitter.com
     class: oauth1
     login_url: https://api.twitter.com/oauth/authenticate
+    scope: ~
     paths:
         search:
-            path: /users/search.json
+            path: /1.1/users/search.json
             arguments: [q]
             response: {map: {screen_name: username}}
         access_token:
             path: /oauth/access_token
             arguments: [oauth_verifier]
-            requires_authentication: false
         request_token:
             path: /oauth/request_token
             arguments: [oauth_callback]
+        current_user:
+            path: /1.1/account/verify_credentials.json
+            arguments: []
+            response: {map: {screen_name: username}}
+
+google:
+    base_url: ~
+    class: oauth2
+    login_url: https://accounts.google.com/o/oauth2/auth
+    scope: https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
+    paths:
+        access_token:
+            path: https://accounts.google.com/o/oauth2/token
+            arguments: [client_id, client_secret, code, grant_type, redirect_uri]
+            requires_authentication: false
+            method: POST
+        current_user:
+            path: https://www.googleapis.com/oauth2/v1/userinfo
+            arguments: []
+            response: {map: {email: username}}
+
+windows_live:
+    base_url: ~
+    class: oauth2
+    login_url: https://login.live.com/oauth20_authorize.srf
+    scope: wl.basic wl.emails wl.signin
+    paths:
+        access_token:
+            path: https://login.live.com/oauth20_token.srf
+            arguments: [client_id, client_secret, code, grant_type, redirect_uri]
             requires_authentication: false
         current_user:
-            path: /account/verify_credentials.json
-            response: {map: {screen_name: username}}
+            path: https://apis.live.net/v5.0/me
+            arguments: []
+            response: {map: {emails.account: username}}

@@ -136,6 +136,7 @@ class CamdramListener extends AbstractAuthenticationListener
             }
         }
         catch (IdentityNotFoundException $e) {
+            $this->securityContext->setToken($e->getToken());
             if (isset($this->newIdentityHandler)) {
                 return $this->newIdentityHandler->handle($e->getToken(), $e->getServiceName());
             }

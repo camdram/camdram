@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Society
@@ -15,6 +16,7 @@ class Society extends Organisation
 
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="society")
+     * @Exclude
      */
     private $shows;
 

@@ -25,7 +25,12 @@ class CamdramUserTokenService
     public function getUserInfo($key = null)
     {
         if (is_string($key)) {
-            return $this->user_info[$key];
+            if (isset($this->user_info[$key])) {
+                return $this->user_info[$key];
+            }
+            else {
+                return null;
+            }
         }
         return $this->user_info;
     }

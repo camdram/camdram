@@ -52,10 +52,11 @@
       <ul class="right">
           {% if app.user %}
         <li class="has-dropdown">
-          <a href="{{ path('get_person', {id: app.user.person.id }) }}">{{ app.user.name }}</a>
+          {% if app.user.person %}<a href="{{ path('get_person', {slug: app.user.person.slug }) }}">{{ app.user.name }}</a>
+          {% else %}<a href="#">{{ app.user.name }}</a>{% endif %}
 
           <ul class="dropdown">
-            <li><a href="{{ path('get_person', {id: app.user.person.id }) }}">My profile</a></li>
+              {% if app.user.person %} <li><a href="{{ path('get_person', {slug: app.user.person.slug }) }}">My profile</a></li>{% endif %}
             <li><a href="{{ path('acts_camdram_settings') }}">Settings</a></li>
             <li class="divider"></li>
             <li><a href="{{ path('_security_logout') }}">Log out</a></li>

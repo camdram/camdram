@@ -30,6 +30,13 @@ class RestApiTest extends \PHPUnit_Framework_TestCase
                 'requires_authentication' => true,
                 'method' => 'GET',
                 'response' => array('root' => null, 'map' => array())
+            ),
+            'current_user' => array(
+                'path' => '/me',
+                'arguments' => array(),
+                'requires_authentication' => true,
+                'method' => 'GET',
+                'response' => array('root' => null, 'map' => array())
             )
         )
     );
@@ -92,6 +99,22 @@ class RestApiTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('facebook', $e->getApiName());
             $this->assertEquals('invalid_method', $e->getMethod());
         }
+    }
+
+    public function testZeroArguments()
+    {
+        $response = ApiResponse::factory(array('test' => 'data'));
+
+        $api = $this->getMockBuilder('Acts\SocialApiBundle\Service\RestApi')
+            ->setMethods(array('httpRequest'))
+            ->setConstructorArgs(array($this->httpClient, new Inflector, 'facebook', $this->config))
+            ->getMock();
+        $api->expects($this->once())->method('httpRequest')
+            ->with('https://graph.facebook.com/me', 'GET', array())
+            ->will($this->returnValue(array('test' => 'data')));
+
+        $data = $api->doCurrentUser();
+        $this->assertEquals($response, $data);
     }
 
     public function testMagicInvalidMethod()

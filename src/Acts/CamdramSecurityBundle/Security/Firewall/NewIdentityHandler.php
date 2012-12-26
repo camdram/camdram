@@ -83,7 +83,7 @@ class NewIdentityHandler
         $service = $this->service_map->getServiceByName($new_token->getLastService()->getName());
 
         //if ($existing_user) $new_token->addPotentialUser($existing_user);
-        $service = $new_token->getService($last_service_name);
+        $service = $new_token->getServiceByName($last_service_name);
 
         if ($this->name_utils->isSamePerson($existing_user->getName(), $service->getUserInfo('name'))) {
             //The name on the service's user info and the name on the user account are sufficiently similar
