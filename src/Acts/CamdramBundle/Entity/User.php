@@ -193,7 +193,6 @@ class User implements UserInterface, \Serializable
      */
     private $groups;
 
-
     /**
      * Get id
      *
@@ -668,7 +667,18 @@ class User implements UserInterface, \Serializable
     public function setPerson(Person $person = null)
     {
         $this->person = $person;
-    
+
+        foreach ($this->getIdentities() as $identity) {
+            switch ($identity->getService()) {
+                case 'facebook':
+                    $this->person->setFacebookId($identity->getRemoteId());
+                    break;
+                case 'twitter':
+                    $this->person->setTwitterId($identity->getRemoteId());
+                    break;
+            }
+        }
+
         return $this;
     }
 
@@ -708,10 +718,21 @@ class User implements UserInterface, \Serializable
      * @param \Acts\CamdramSecurityBundle\Entity\UserIdentity $identities
      * @return User
      */
-    public function addIdentity(UserIdentity $identities)
+    public function addIdentity(UserIdentity $identity)
     {
-        $this->identities[] = $identities;
-    
+        $this->identities[] = $identity;
+
+        if ($this->getPerson()) {
+            switch ($identity->getService()) {
+                case 'facebook':
+                    $this->person->setFacebookId($identity->getRemoteId());
+                    break;
+                case 'twitter':
+                    $this->person->setTwitterId($identity->getRemoteId());
+                    break;
+            }
+        }
+
         return $this;
     }
 

@@ -28,36 +28,33 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $venues_rep = $em->getRepository('ActsCamdramBundle:Venue');
-        foreach ($venues_rep->findAll() as $venue) {
-
-            foreach (array('facebook', 'twitter') as $api) {
-                if (is_null($venue->getSocialId($api))) {
-                    $data = $social->get($api)->doSearch($venue->getName(), 'page');
-
-                    if (count($data) > 0) {
-                        $venue->setSocialId($api, $data[0]['id']);
-                        $output->writeln('Added '.ucfirst($api).' page "'.$data[0]['name'].'" for venue '.$venue->getName());
-                        $em->flush();
-                    }
-                }
-            }
-        }
+        $this->linkEntities($venues_rep->findAll(), $output);
 
         $societies_rep = $em->getRepository('ActsCamdramBundle:Society');
-        foreach ($societies_rep->findAll() as $soc) {
+        $this->linkEntities($societies_rep->findAll(), $output);
+    }
 
+    private function linkEntities(array $entities, OutputInterface $output)
+    {
+        $social = $this->getContainer()->get('acts.social_api.provider');
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        foreach ($entities as $entity) {
             foreach (array('facebook', 'twitter') as $api) {
-                if (is_null($soc->getSocialId($api))) {
-                    $data = $social->get($api)->doSearch($soc->getName(), 'page');
+                if (is_null($entity->getSocialId($api))) {
+                    $data = $social->get($api)->doSearch($entity->getName(), 'page');
 
                     if (count($data) > 0) {
-                        $soc->setSocialId($api, $data[0]['id']);
-                        $output->writeln('Added '.ucfirst($api).' page "'.$data[0]['name'].'" for society '.$soc->getName());
-                        $em->flush();
+                        similar_text($data[0]['name'], $entity->getName(), $percent);
+                        if ($percent > 70) {
+                            $entity->setSocialId($api, $data[0]['id']);
+                            $output->writeln('Added '.ucfirst($api).' page/account "'.$data[0]['name'].'" for entity '.$entity->getName());
+                            $em->flush();
+                        }
                     }
                 }
+
             }
         }
     }
-
 }

@@ -1,0 +1,27 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Venue: {{ venue.name }}{% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class="twelve columns">
+      <h2>{{ venue.name }} <small>- {{ venue.shortname }}</small></h2>
+
+        {{ venue.description | nl2br }}
+
+        <ul>
+        {% for item in venue.news %}
+        <li>
+            {% include 'ActsCamdramBundle:News:item.html.twig' %}
+        </li>
+        {% endfor %}
+        </ul>
+
+        {% for show in venue.shows %}
+        <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
+        {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}
+

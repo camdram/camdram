@@ -97,7 +97,7 @@ class Show extends Entity
     /**
      * @var Venue
      *
-     * @ORM\ManyToOne(targetEntity="Venue")
+     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
      * @Exclude
      * @ORM\JoinColumn(name="venid", referencedColumnName="id")
      */

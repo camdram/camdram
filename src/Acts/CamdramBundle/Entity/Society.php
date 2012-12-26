@@ -60,4 +60,5 @@ class Society extends Organisation
     {
         return $this->shows;
     }
+
 }

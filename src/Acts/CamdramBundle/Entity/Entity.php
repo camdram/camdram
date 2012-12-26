@@ -5,8 +5,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="acts_entities", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"entity_type"})})
+ * @ORM\Entity(repositoryClass="CamdramEntityRepository")
+ * @ORM\Table(name="acts_entities", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"entity_type", "slug"})})
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="entity_type", type="string")
  * @ORM\DiscriminatorMap({"person" = "Person", "show" = "Show", "society" = "Society", "venue" = "Venue"})
@@ -62,7 +62,22 @@ abstract class Entity
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      */
-    protected $slug;
+    private $slug;
+
+    /**
+     * @var array
+     *
+     *  @ORM\OneToMany(targetEntity="NewsMention", mappedBy="entity")
+     */
+    private $mentions;
+
+    /**
+     * @var array
+     *
+     *  @ORM\OneToMany(targetEntity="News", mappedBy="entity")
+     */
+    private $news;
+
 
     /**
      * Get id
@@ -220,5 +235,78 @@ abstract class Entity
     public function getSlug()
     {
         return $this->slug;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->mentions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add mentions
+     *
+     * @param \Acts\CamdramBundle\Entity\NewsMention $mentions
+     * @return Entity
+     */
+    public function addMention(\Acts\CamdramBundle\Entity\NewsMention $mentions)
+    {
+        $this->mentions[] = $mentions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove mentions
+     *
+     * @param \Acts\CamdramBundle\Entity\NewsMention $mentions
+     */
+    public function removeMention(\Acts\CamdramBundle\Entity\NewsMention $mentions)
+    {
+        $this->mentions->removeElement($mentions);
+    }
+
+    /**
+     * Get mentions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMentions()
+    {
+        return $this->mentions;
+    }
+
+    /**
+     * Add news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     * @return Entity
+     */
+    public function addNew(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news[] = $news;
+    
+        return $this;
+    }
+
+    /**
+     * Remove news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     */
+    public function removeNew(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news->removeElement($news);
+    }
+
+    /**
+     * Get news
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNews()
+    {
+        return $this->news;
     }
 }

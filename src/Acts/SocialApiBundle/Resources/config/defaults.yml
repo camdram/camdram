@@ -15,6 +15,12 @@ facebook:
         current_user:
             path: /me
             arguments: []
+        posts:
+            path: /{id}/posts
+            arguments: [id, limit]
+            defaults: {count: 50}
+            response: {root: 'data', map: {text: message, created_at: created_time, mentions: message_tags}}
+            url_has_params: true
 
 twitter:
     base_url: https://api.twitter.com
@@ -36,6 +42,12 @@ twitter:
             path: /1.1/account/verify_credentials.json
             arguments: []
             response: {map: {screen_name: username}}
+        posts:
+            path: /1.1/statuses/user_timeline.json
+            arguments: [user_id, count]
+            defaults: {count: 50, trim_user: true, include_rts: false}
+            response: {map: {urls: entities.urls, mentions: entities.user_mentions }}
+            url_has_params: true
 
 google:
     base_url: ~
@@ -52,18 +64,12 @@ google:
             path: https://www.googleapis.com/oauth2/v1/userinfo
             arguments: []
             response: {map: {email: username}}
-
-windows_live:
+google_simple:
+    class: simple
     base_url: ~
-    class: oauth2
-    login_url: https://login.live.com/oauth20_authorize.srf
-    scope: wl.basic wl.emails wl.signin
     paths:
-        access_token:
-            path: https://login.live.com/oauth20_token.srf
-            arguments: [client_id, client_secret, code, grant_type, redirect_uri]
-            requires_authentication: false
-        current_user:
-            path: https://apis.live.net/v5.0/me
-            arguments: []
-            response: {map: {emails.account: username}}
+        place_search:
+            path: https://maps.googleapis.com/maps/api/place/nearbysearch/json
+            arguments: [keyword, location, radius]
+            defaults: {sensor: 'false'}
+            response: {root: 'results'}

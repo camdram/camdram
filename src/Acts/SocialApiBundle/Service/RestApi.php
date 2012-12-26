@@ -117,6 +117,16 @@ class RestApi
         //do nothing by default
     }
 
+    private function replaceParams(&$url, &$params)
+    {
+        foreach ($params as $key => $val) {
+            $url = str_replace('{'.$key.'}', urlencode($val), $url, $count);
+            if ($count > 0) {
+                unset($params[$key]);
+            }
+        }
+    }
+
     public function callMethod($name, $arguments)
     {
         if (!isset($this->config['paths'][$name])) {
@@ -135,9 +145,10 @@ class RestApi
         else {
             $params = array();
         }
-
+        $params = array_merge($config['defaults'], $params);
 
         $url = $this->config['base_url'].$config['path'];
+        if ($config['url_has_params']) $this->replaceParams($url, $params);
 
         if ($config['requires_authentication'] == true) {
             $this->authenticateRequest($url, $config['method'], $params);

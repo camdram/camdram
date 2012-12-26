@@ -9,6 +9,14 @@
 
         {{ society.description | nl2br }}
 
+        <ul>
+            {% for item in society.news %}
+                <li>
+                    {% include 'ActsCamdramBundle:News:item.html.twig' %}
+                </li>
+            {% endfor %}
+        </ul>
+
         {% for show in society.shows %}
         <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
         {% endfor %}

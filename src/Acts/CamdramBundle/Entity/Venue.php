@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 
 
 /**
@@ -13,6 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Venue extends Organisation
 {
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="text", nullable=true)
+     */
+    private $address;
+
     /**
      * @var float
      *
@@ -26,6 +34,12 @@ class Venue extends Organisation
      * @ORM\Column(name="longitude", type="float", nullable=true)
      */
     private $longitude;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Show", mappedBy="venue")
+     * @Exclude
+     */
+    private $shows;
 
     /**
      * Set latitude
@@ -71,5 +85,69 @@ class Venue extends Organisation
     public function getLongitude()
     {
         return $this->longitude;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add shows
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $shows
+     * @return Venue
+     */
+    public function addShow(\Acts\CamdramBundle\Entity\Show $shows)
+    {
+        $this->shows[] = $shows;
+    
+        return $this;
+    }
+
+    /**
+     * Remove shows
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $shows
+     */
+    public function removeShow(\Acts\CamdramBundle\Entity\Show $shows)
+    {
+        $this->shows->removeElement($shows);
+    }
+
+    /**
+     * Get shows
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShows()
+    {
+        return $this->shows;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     * @return Venue
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string 
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

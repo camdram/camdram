@@ -43,6 +43,13 @@ class ApiResponse implements \ArrayAccess, \Iterator, \Countable
         else return $key;
     }
 
+    private function decompose($key)
+    {
+        $parts = explode($key,'.',2);
+        if (count($parts) == 2) return $parts;
+        else return false;
+    }
+
     private function convertValue(&$val)
     {
         if (is_array($val)) {
@@ -55,22 +62,42 @@ class ApiResponse implements \ArrayAccess, \Iterator, \Countable
 
     public function offsetGet($key)
     {
-        return $this->convertValue($this->data[$this->convertKey($key)]);
+        $key = $this->convertKey($key);
+        $composite = $this->decompose($key);
+        if ($composite) {
+            return $this->convertValue($this->data[$composite[0]][$composite[1]]);
+        }
+        else return $this->convertValue($this->data[$key]);
     }
 
     public function offsetSet($key, $value)
     {
-        $this->data[$this->convertKey($key)] = $value;
+        $key = $this->convertKey($key);
+        $composite = $this->decompose($key);
+        if ($composite) {
+            $this->data[$composite[0]][$composite[1]] = $this->convertValue($value);
+        }
+        else $this->data[$key] = $value;
     }
 
     public function offsetExists($key)
     {
-        return isset($this->data[$this->convertKey($key)]);
+        $key = $this->convertKey($key);
+        $composite = $this->decompose($key);
+        if ($composite) {
+            return isset($this->data[$composite[0]][$composite[1]]);
+        }
+        else return isset($this->data[$key]);
     }
 
     public function offsetUnset($key)
     {
-        unset($this->data[$this->convertKey($key)]);
+        $key = $this->convertKey($key);
+        $composite = $this->decompose($key);
+        if ($composite) {
+            unset($this->data[$composite[0]][$composite[1]]);
+        }
+        else unset($this->data[$key]);
     }
 
     public function count()

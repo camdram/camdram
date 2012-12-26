@@ -199,5 +199,4 @@ abstract class Organisation extends Entity
     {
         return $this->expires;
     }
-
 }

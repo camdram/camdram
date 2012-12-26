@@ -110,6 +110,8 @@ acts_social_api:
           google:
               client_id: %google_client_id%
               client_secret: %google_client_secret%
+          google_simple:
+              key: %google_key%
 
 fos_oauth_server:
     db_driver:           orm

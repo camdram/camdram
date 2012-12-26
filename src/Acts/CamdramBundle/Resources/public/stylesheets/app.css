@@ -13,13 +13,69 @@
    Shared Styles
 ----------------------------------------- */
 
+.top-bar.attached {
+    width:1000px;
+    max-width:100%;
+    margin:auto;
+}
+
+.nav-bar input[type=search] {
+
+    padding:4px;
+    min-width:200px;
+    height:22px;
+    margin:0;
+}
+
+.row .nav-bar form .row {
+    margin:4px;
+}
+
+@media only screen and (max-width: 767px) {
+    .nav-bar form .row {
+        padding-top:17px;
+    }
+}
+
+.nav-bar button {
+    padding:8px;
+}
+
+.news_link p {
+    font-size:80%;
+}
+.row .news_link.panel {
+    padding:10px;
+    margin-bottom:10px;
+}
+
+.news_link h6 {
+    margin:0;
+}
+
+.news_link .columns {
+    padding:0 3px;
+    margin-top:5px;
+    margin-bottom:7px;
+}
 
 
 /* -----------------------------------------
-   Page Name 1
+   Home Page
 ----------------------------------------- */
 
+#this_week dd a {
+    padding: 0 5px;
+}
 
+#home_statistics {
+    text-align:right;
+    font-style:italic;
+    line-height:150%;
+}
+#home_statistics strong {
+    font-size:150%;
+}
 
 
 /* -----------------------------------------

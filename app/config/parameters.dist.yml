@@ -22,5 +22,6 @@ parameters:
     twitter_token_secret:       s3cr3t
     google_client_id:           1234
     google_client_secret:       s3cr3t
+    google_key:                 s3cr3t
 
     baseurl: http://www.camdram.net
