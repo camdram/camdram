@@ -24,7 +24,7 @@
                    <h5><a href="{{ path('get_venue', {slug: venue.slug}) }}">{{ venue.name }}</a></h5>
                    {% if venue.college %}<h6>{{ venue.college }} College, Cambridge</h6>
                    {% elseif venue.address %}<h6>{{ venue.address }}</h6>{% endif %}
-                   <p>{{ venue.description | slice(0, 200) }}
+                   <p>{{ venue.description | slice(0, 200) | strip_new_lines | camdram_markdown }}
                        {% if venue.description|length > 200 %}
                            ...<br>[<a href="{{ path('get_venue', {slug: venue.slug}) }}">Read More</a>]
                        {% endif %}

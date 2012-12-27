@@ -7,7 +7,7 @@
     <div class="twelve columns">
       <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
 
-        {{ society.description | nl2br }}
+        {{ society.description | camdram_markdown }}
 
         <ul>
             {% for item in society.news %}

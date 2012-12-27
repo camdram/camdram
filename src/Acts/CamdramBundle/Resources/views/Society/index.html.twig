@@ -24,7 +24,7 @@
           {% if society.college is not empty %}
             <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
           {% endif %}
-          <p>{{ society.description|slice(0, 200)|trim }}
+          <p>{{ society.description|slice(0, 200)|strip_new_lines|camdram_markdown }}
           {% if society.description|length > 200 %}
           ...<br>[<a href="{{ path('get_society', {slug: society.shortname}) }}">Read More</a>]
           {% endif %}
