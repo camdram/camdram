@@ -24,6 +24,7 @@
 {% stylesheets '@ActsCamdramBundle/Resources/public/stylesheets/*.css' filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
+{% block stylesheets %}{% endblock %}
 
 {% javascripts '@ActsCamdramBundle/Resources/public/javascripts/modernizr.foundation.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -102,7 +103,7 @@
           <li><a href="#">Shows</a></li>
           <li><a href="#">People</a></li>
           <li><a href="{{ path('get_societies') }}">Societies</a></li>
-          <li><a href="#">Venues</a></li>
+          <li><a href="{{ path('get_venues') }}">Venues</a></li>
           <li class="divider"></li>
       </ul>
   </nav>
@@ -120,7 +121,7 @@
           <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
           <a href="#">Shows</a><br/>
           <a href="{{ path('get_societies') }}">Societies</a><br/>
-          <a href="#">Venues</a><br/>
+          <a href="{{ path('get_venues') }}">Venues</a><br/>
         </div>
         <div class="four columns">
           <h5>Vacant Positions</h5>
@@ -156,16 +157,12 @@ Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@cam
     '@ActsCamdramBundle/Resources/public/javascripts/jquery.js'
     '@ActsCamdramBundle/Resources/public/javascripts/foundation.min.js'
     '@ActsCamdramBundle/Resources/public/javascripts/app.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/camdram.js'
     '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
-  
-    <script>
-    $(window).load(function(){
-      $("#featured").orbit();
-    });
-    </script>
+  {% block javascripts %}{% endblock %}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

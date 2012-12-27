@@ -5,23 +5,47 @@
 {% block body %}
   <div class="row">
     <div class="twelve columns">
-      <h2>{{ venue.name }} <small>- {{ venue.shortname }}</small></h2>
+      <h2>{{ venue.name }}</h2>
+        <h5> {% if venue.college %}{{ venue.college }} College, Cambridge<
+            {% elseif venue.address %}{{ venue.address }}{% endif %}</h5>
 
-        {{ venue.description | nl2br }}
+     </div>
+     <div class="row">
+         {% if venue.latitude and venue.longitude %}
+         <div class="four columns small_map">
+             {% render url('acts_camdram_venues_map', {slug: venue.slug}) %}
+         </div>
+         <div class="eight columns">
+         {% else %}
+         <div class="twelve columns">
+         {% endif %}
+             {{ venue.description | nl2br }}
+         </div>
+     </div>
 
-        <ul>
-        {% for item in venue.news %}
-        <li>
-            {% include 'ActsCamdramBundle:News:item.html.twig' %}
-        </li>
-        {% endfor %}
-        </ul>
+     <div class="row">
+         <div class="seven columns">
+             <h5>Shows</h5>
+             {% for show in venue.shows %}
+                 <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
+             {% endfor %}
+         </div>
 
-        {% for show in venue.shows %}
-        <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
-        {% endfor %}
-    </div>
-  </div>
-
+         <div class="five columns" id="news_container">
+             <h5>
+                 Latest News
+                 <ul class="link-list right news_social_links">
+                     {% if venue.getFacebookId() %}<li><a href="{{ venue.getFacebookUrl() }}" rel="ext" target="_blank">Facebook</a></li>{% endif %}
+                     {% if venue.getTwitterId() %}<li><a href="{{ venue.getTwitterUrl() }}" rel="ext" target="_blank">Twitter</a></li>{% endif %}
+                 </ul>
+             </h5>
+             <div id="entity_news">
+             {% for item in venue.news %}
+                 {% include 'ActsCamdramBundle:News:item.html.twig' %}
+             {% endfor %}
+             </div>
+         </div>
+     </div>
+</div>
 {% endblock %}
 

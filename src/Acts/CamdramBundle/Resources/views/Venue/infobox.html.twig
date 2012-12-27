@@ -1,0 +1,2 @@
+<h6>{{ venue.name }}</h6>
+{% if not one_venue %}<p><a href="{{ path('get_venue', {slug: venue.slug}) }}">Go to venue page</a></p>{% endif %}

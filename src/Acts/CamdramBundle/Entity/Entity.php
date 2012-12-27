@@ -309,4 +309,18 @@ abstract class Entity
     {
         return $this->news;
     }
+
+    public function getFacebookUrl()
+    {
+        if ($this->getFacebookId()) {
+            return 'http://www.facebook.com/'.$this->getFacebookId();
+        }
+    }
+
+    public function getTwitterUrl()
+    {
+        if ($this->getTwitterId()) {
+            return 'https://twitter.com/account/redirect_by_id?id='.$this->getTwitterId();
+        }
+    }
 }

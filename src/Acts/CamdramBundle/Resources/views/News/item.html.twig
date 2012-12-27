@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row news_item">
     {% if item.picture and item.links|length == 0 %}
     <div class="two columns mobile-one">
             <img src="{{ item.picture }}"/>
@@ -14,6 +14,7 @@
         <p><em>{{ item.getPostedAt() | date('jS F Y g:i a') }}</em></p>
         {% for link in item.links %}
             <div class="news_link panel row">
+
                 {% if link.picture %}
                 <div class="three columns mobile-one">
                     <img src="{{ link.picture }}"/>
@@ -22,15 +23,16 @@
                 {% else %}
                 <div class="twelve columns">
                 {% endif %}
-                    <h6><a href="{{ link.link }}">{{ link.name }}</a></h6>
-                    {% if link.description %}<p>{{ link.description }}</p>
-                    {% if link.source and link.mediaType == 'video' %}
-                        <div class="flex-video">
-                            <embed type="application/x-shockwave-flash" src="{{ link.source }}" width="400" height="350" style="display: block;" bgcolor="#FFFFFF" quality="high" scale="scale" allowfullscreen="true" allowscriptaccess="never" salign="tl" wmode="opaque" flashvars="width=400&amp;height=350">
-                        </div>
-                    {% endif %}
+                        <h6><a href="{{ link.link }}">{{ link.name }}</a></h6>
+                        {% if link.description %}<p>{{ link.description }}</p>
+                            {% if link.source and link.mediaType == 'video' %}
+                                <div class="flex-video news_media">
+                                    <embed type="application/x-shockwave-flash" src="{{ link.source }}" width="400" height="350" style="display: block;" bgcolor="#FFFFFF" quality="high" scale="scale" allowfullscreen="true" allowscriptaccess="never" salign="tl" wmode="opaque" flashvars="width=400&amp;height=350">
+                                </div>
+                            {% endif %}
+                        {% endif %}
                 </div>
-            {% endif %}
+
             </div>
         {% endfor %}
     </div>

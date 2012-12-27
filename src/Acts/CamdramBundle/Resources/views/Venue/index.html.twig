@@ -1,0 +1,46 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Venues{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="twelve columns">
+        <div class="large_map">
+            {% render url('acts_camdram_venues_map') %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <ul class="block-grid two-up mobile" id="venues_list">
+    {% for venue in venues %}
+       <li id="venue-{{ venue.slug }}">
+           <div class="row">
+               <div class="two columns mobile-one marker_column">
+
+               </div>
+               <div class="ten columns mobile-three">
+                   <h5><a href="{{ path('get_venue', {slug: venue.slug}) }}">{{ venue.name }}</a></h5>
+                   {% if venue.college %}<h6>{{ venue.college }} College, Cambridge</h6>
+                   {% elseif venue.address %}<h6>{{ venue.address }}</h6>{% endif %}
+                   <p>{{ venue.description | slice(0, 200) }}
+                       {% if venue.description|length > 200 %}
+                           ...<br>[<a href="{{ path('get_venue', {slug: venue.slug}) }}">Read More</a>]
+                       {% endif %}
+                   </p>
+               </div>
+           </div>
+       </li>
+   {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $('#venues_list').addMarkers(venue_info_boxes);
+</script>
+{% endblock %}
+

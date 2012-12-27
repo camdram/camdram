@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new Acts\CamdramBackendBundle\ActsCamdramBackendBundle(),
             new Acts\SocialApiBundle\ActsSocialApiBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
+            new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -10,7 +10,7 @@ use JMS\Serializer\Annotation\Exclude;
  * Society
  *
  * @ORM\Table(name="acts_venues")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="VenueRepository")
  */
 class Venue extends Organisation
 {

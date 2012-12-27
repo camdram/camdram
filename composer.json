@@ -23,7 +23,8 @@
         "friendsofsymfony/rest-bundle": "dev-master",
         "jms/serializer-bundle": "1.0.*",
         "sensio/buzz-bundle": "dev-master",
-        "friendsofsymfony/oauth-server-bundle": "dev-master"
+        "friendsofsymfony/oauth-server-bundle": "dev-master",
+        "egeloen/google-map-bundle" : "dev-master"
 
     },
     "scripts": {
