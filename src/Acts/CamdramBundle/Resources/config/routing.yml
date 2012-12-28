@@ -19,6 +19,9 @@ acts_camdram_venues_map:
 acts_camdram_venues:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\VenueController"
+acts_camdram_entity_toolbar:
+    pattern: /entities/toolbar
+    defaults: { _controller: ActsCamdramBundle:Entity:toolbar }
 acts_camdram_entities:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\EntityController"

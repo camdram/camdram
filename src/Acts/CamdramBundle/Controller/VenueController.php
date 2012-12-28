@@ -2,9 +2,13 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Acts\CamdramBundle\Entity\Venue;
+use Acts\CamdramBundle\Entity\Venue,
+    Acts\CamdramBundle\Form\Type\VenueType;
+
 use Ivory\GoogleMapBundle\Model\Events\MouseEvent,
     Ivory\GoogleMapBundle\Model\Overlays\Animation;
 
@@ -13,6 +17,68 @@ use Ivory\GoogleMapBundle\Model\Events\MouseEvent,
  */
 class VenueController extends FOSRestController
 {
+    public function newAction()
+    {
+        $form = $this->getForm();
+        return $this->view($form, 200)
+            ->setTemplateVar('form')
+            ->setTemplate('ActsCamdramBundle:Venue:new.html.twig');
+    }
+
+    public function postAction(Request $request)
+    {
+        $form = $this->getForm();
+        $form->bind($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
+            return $this->routeRedirectView('get_venue', array('slug' => $form->getData()->getSlug()));
+        }
+        else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form')
+                ->setTemplate('ActsCamdramBundle:Venue:new.html.twig');
+        }
+        return $this->render('ActsCamdramBundle:Venue:new.html.twig', array('form' => $form));
+    }
+
+    public function editAction($slug)
+    {
+        $venue = $this->getVenue($slug);
+        $form = $this->getForm($venue);
+        return $this->view($form, 200)
+            ->setTemplateVar('form')
+            ->setTemplate('ActsCamdramBundle:Venue:edit.html.twig');
+    }
+
+    public function putAction(Request $request, $slug)
+    {
+        $venue = $this->getVenue($slug);
+        $form = $this->getForm($venue);
+        $form->bind($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->routeRedirectView('get_venue', array('slug' => $form->getData()->getSlug()));
+        }
+        else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form')
+                ->setTemplate('ActsCamdramBundle:Venue:edit.html.twig');
+        }
+        return $this->render('ActsCamdramBundle:Venue:edit.html.twig', array('form' => $form));
+    }
+
+    public function removeAction($slug)
+    {
+        $venue = $this->getVenue($slug);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($venue);
+        $em->flush();
+        return $this->routeRedirectView('get_venues');
+    }
+
     public function cgetAction()
     {
         $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
@@ -40,6 +106,23 @@ class VenueController extends FOSRestController
         ;
         
         return $view;
+    }
+
+    protected function getVenue($slug)
+    {
+        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
+        $venue = $repo->findOneBySlug($slug);
+
+        if (!$venue) {
+            throw $this->createNotFoundException('That venue does not exist');
+        }
+
+        return $venue;
+    }
+
+    protected function getForm($venue = null)
+    {
+        return $this->createForm(new VenueType(), $venue);
     }
 
     public function mapAction($slug = null)

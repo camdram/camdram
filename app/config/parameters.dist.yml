@@ -25,3 +25,5 @@ parameters:
     google_key:                 s3cr3t
 
     baseurl: http://www.camdram.net
+
+    map_center: [52.20531,0.12179]

@@ -25,7 +25,6 @@ class OAuth2Api extends OAuthApi
             null,
             'client_credentials'
         );
-        var_dump($this->config);
         if (isset($response['access_token'])) {
             $this->authenticateWithCredentials($response['access_token']);
         }

@@ -5,11 +5,12 @@ parameters:
     acts.social_api.apis.abstract.simple.class: Acts\SocialApiBundle\Service\SimpleApi
     acts.social_api.provider.class: Acts\SocialApiBundle\Service\ApiProvider
     acts.social_api.inflector.class: Acts\SocialApiBundle\Utils\Inflector
+    buzz.client.class: Buzz\Client\Curl
 
 services:
     acts.social_api.apis.abstract.rest:
         class: %acts.social_api.apis.abstract.rest.class%
-        arguments: [@buzz.client, @acts.social_api.inflector]
+        arguments: [@acts.social_api.http_client, @acts.social_api.inflector]
         abstract: true
 
     acts.social_api.apis.abstract.oauth1:
@@ -35,3 +36,7 @@ services:
 
     acts.social_api.inflector:
         class: %acts.social_api.inflector.class%
+
+    buzz.client:
+        class: %buzz.client.class%
+        public: false

@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -26,6 +27,7 @@ abstract class Entity
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -55,7 +57,7 @@ abstract class Entity
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
-    private $public;
+    private $public = false;
 
 
     /**
@@ -322,5 +324,10 @@ abstract class Entity
         if ($this->getTwitterId()) {
             return 'https://twitter.com/account/redirect_by_id?id='.$this->getTwitterId();
         }
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }

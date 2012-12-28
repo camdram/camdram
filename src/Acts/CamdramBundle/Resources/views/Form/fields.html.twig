@@ -1,0 +1,91 @@
+{% block map_location_widget %}
+    {% spaceless %}
+        <div id="{{ id }}_container" class="form_map_container">
+            {{ block('form_widget') }}
+            <small>Click to create a marker, drag/drop to move it</small>
+            <div class="form_map">
+                {{ google_map_container(location_map) }}
+                {{ google_map_js(location_map) }}
+                <script>window.onload = function(){ $('#{{ id }}_container').formMap({{ location_map.getJavascriptVariable() }}); }</script>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block entity_plus_other_row %}
+    <div {{ block('widget_container_attributes') }} class="row">
+        <div class="three columns">
+            {{ form_label(form) }}
+       </div>
+       <div class="four columns">
+           <div>
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+           </div>
+        </div>
+        {##<div class="five columns">
+            {{ form_row(form.children[text_field]) }}
+        </div> #}
+    </div>
+{% endblock %}
+
+{% block form_option_box %}
+    {% if not compound %} {% set label_attr = {for: id} %}{% endif %}
+    {% if not label %} {% set label = name|humanize %}{% endif %}
+    <label{% for k,v in label_attr %} {{ k }}={{ v }}{% endfor %}>
+        {{ form_widget(form) }}
+        {{ label | trans({}, translation_domain) }}
+    </label>
+{% endblock %}
+
+{% block form_row %}
+    <div class="row">
+        {% if 'checkbox' in form.vars.block_prefixes %}
+            <div class="nine columns push-three">
+                {{ block('form_option_box') }}
+            </div>
+        {% else %}
+            <div class="three columns">
+            {{ form_label(form) }}
+            </div>
+            <div class="nine columns">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block form_errors %}
+    {% if errors %}
+            {% for error in errors %}
+            <small class="error">{% if error.getMessagePluralization() is null %}
+                    {{ error.getMessageTemplate() | trans(error.getMessageParameters(), 'validators') }},
+                {% else %}
+                    {{ error.getMessageTemplate() | transchoice(error.getMessagePluralization(), error.getMessageParameters(), 'validators') }},
+                {% endif %}
+                </small>
+            {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block form_widget_compound %}
+    {% if not form.parent and errors is defined %}
+        <div class="row">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <div class="row"{{ block('widget_container_attributes') }}>
+    {{ block('form_rows') }}
+    {{ form_rest(form) }}
+    </div>
+{% endblock %}
+
+{% block form_rows %}
+    {% for child in form %}
+        <div class="{% if child_class is defined %}{{ child_class }}{% else %}row{% endif %}">
+         {{ form_row(child) }}
+        </div>
+    {% endfor %}
+{% endblock %}

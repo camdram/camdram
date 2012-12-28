@@ -3,6 +3,10 @@
 {% block title %}Societies{% endblock %}
 
 {% block body %}
+ <div class="row">
+     {% render url('acts_camdram_entity_toolbar', {type: 'society'}) %}
+ </div>
+
   <div class="row">
       {% if societies|length > 0 %}
         {% set value = 'no spaces' %}

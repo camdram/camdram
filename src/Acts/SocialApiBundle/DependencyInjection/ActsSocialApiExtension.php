@@ -29,6 +29,13 @@ class ActsSocialApiExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $httpClient = $container->getDefinition('buzz.client');
+        $httpClient->addMethodCall('setVerifyPeer', array($config['http_client']['verify_peer']));
+        $httpClient->addMethodCall('setTimeout', array($config['http_client']['timeout']));
+        $httpClient->addMethodCall('setMaxRedirects', array($config['http_client']['max_redirects']));
+        $httpClient->addMethodCall('setIgnoreErrors', array($config['http_client']['ignore_errors']));
+        $container->setDefinition('acts.social_api.http_client', $httpClient);
+
         $api_names = array();
 
         $authServices = array();

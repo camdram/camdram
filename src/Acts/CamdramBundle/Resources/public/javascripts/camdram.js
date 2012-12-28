@@ -55,6 +55,44 @@ $.fn.newsFeedMedia = function() {
     });
 }
 
+$.fn.formMap = function(map) {
+    $(this).each(function() {
+        var $self = $(this);
+        var $lat = $self.find('input').eq(0);
+        var $long = $self.find('input').eq(1);
+        $self.children().first().hide();
+
+        var marker = new google.maps.Marker({
+            map: map,
+            title:"Selected Location",
+            draggable: true
+        });;
+        if ($lat.val() && $long.val()) {
+            var pos = new google.maps.LatLng($lat.val(), $long.val());
+            marker.setPosition(pos);
+            map.setCenter(pos);
+            map.setZoom(17);
+        }
+
+        var updatePosition = function(animate) {
+            return function(e) {
+                if (animate) marker.setMap(null);
+                marker.setPosition(e.latLng);
+                if (animate) {
+                    marker.setAnimation(google.maps.Animation.DROP);
+                    marker.setMap(map);
+                }
+                $lat.val(e.latLng.lat());
+                $long.val(e.latLng.lng());
+            }
+        }
+
+        google.maps.event.addListener(map, 'click', updatePosition(true));
+        google.maps.event.addListener(marker, 'dragend', updatePosition(false));
+
+    })
+}
+
 $(function() {
    $('.news_media').newsFeedMedia();
 });

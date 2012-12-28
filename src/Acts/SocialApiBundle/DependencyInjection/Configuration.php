@@ -25,8 +25,16 @@ class Configuration implements ConfigurationInterface
 
         $apiNode = $rootNode
             ->isRequired()
-            ->cannotBeEmpty()
             ->children()
+                ->arrayNode('http_client')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('timeout')->defaultValue(10)->cannotBeEmpty()->end()
+                        ->booleanNode('verify_peer')->defaultTrue()->end()
+                        ->scalarNode('max_redirects')->defaultValue(5)->cannotBeEmpty()->end()
+                        ->booleanNode('ignore_errors')->defaultTrue()->end()
+                    ->end()
+                ->end()
                 ->arrayNode('apis')
                 ->isRequired()
                 ->useAttributeAsKey('')

@@ -21,6 +21,15 @@ facebook:
             defaults: {count: 50}
             response: {root: 'data', map: {text: message, created_at: created_time, mentions: message_tags}}
             url_has_params: true
+        get_by_id:
+            path: /{id}
+            arguments: [id]
+            url_has_params: true
+        get_by_username:
+            path: /{username}
+            arguments: [username]
+            url_has_params: true
+
 
 twitter:
     base_url: https://api.twitter.com
@@ -31,7 +40,7 @@ twitter:
         search:
             path: /1.1/users/search.json
             arguments: [q]
-            response: {map: {screen_name: username}}
+            response: {map: {username: screen_name}}
         access_token:
             path: /oauth/access_token
             arguments: [oauth_verifier]
@@ -41,13 +50,23 @@ twitter:
         current_user:
             path: /1.1/account/verify_credentials.json
             arguments: []
-            response: {map: {screen_name: username}}
+            response: {map: {username: screen_name}}
         posts:
             path: /1.1/statuses/user_timeline.json
             arguments: [user_id, count]
             defaults: {count: 50, trim_user: true, include_rts: false}
             response: {map: {urls: entities.urls, mentions: entities.user_mentions }}
             url_has_params: true
+        get_by_id:
+            path: /1.1/users/show.json
+            arguments: [user_id]
+            defaults: {include_entities: 'false'}
+            response: { map: {username: screen_name}}
+        get_by_username:
+            path: /1.1/users/show.json
+            arguments: [screen_name]
+            defaults: {include_entities: 'false'}
+            response: { map: {username: screen_name}}
 
 google:
     base_url: ~

@@ -10,3 +10,43 @@ services:
 
     acts.camdram.service.text:
         class: Acts\CamdramBundle\Service\TextService
+
+    acts.camdram.type.college:
+        class: Acts\CamdramBundle\Form\Type\CollegeType
+        arguments: ~
+        tags:
+            - { name: form.type, alias: college }
+
+    acts.camdram.type.facebook_link:
+        class: Acts\CamdramBundle\Form\Type\FacebookLinkType
+        arguments: [@acts.social_api.apis.facebook]
+        tags:
+            - { name: form.type, alias: facebook_link }
+
+    acts.camdram.type.twitter_link:
+        class: Acts\CamdramBundle\Form\Type\TwitterLinkType
+        arguments: [@acts.social_api.apis.twitter]
+        tags:
+            - { name: form.type, alias: twitter_link }
+
+    acts.camdram.type.map_location:
+        class: Acts\CamdramBundle\Form\Type\MapLocationType
+        arguments: [@ivory_google_map.map=, %map_center%]
+        tags:
+            - { name: form.type, alias: map_location }
+
+    acts.camdram.type.entity_search:
+        class: Acts\CamdramBundle\Form\Type\EntitySearchType
+        tags:
+            - { name: form.type, alias: entity_search }
+
+    acts.camdarm.type.guesser:
+        class: Acts\CamdramBundle\Form\CamdramTypeGuesser
+        arguments: ~
+        tags:
+            - { name: form.type_guesser }
+
+    acts.camdram.type.form_extension:
+        class: Acts\CamdramBundle\Form\CamdramFormTypeExtension
+        tags:
+            - { name: form.type_extension, alias: form }

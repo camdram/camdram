@@ -1,19 +1,15 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
-{% block title %}Person: {{ person.name }}{% endblock %}
+{% block title %}People{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="twelve columns">
+    <div class="row">
+        {% render url('acts_camdram_entity_toolbar', {type: 'person'}) %}
+    </div>
 
-    <h2>{{ person.name }}</h2>
+    <div class="row">
 
-    <ul>
-    {% for role in person.roles %}
-        {% if role.show %}
-         <li><a href="{{ path('get_show', {slug: role.show.slug}) }}">{{ role.show.name }}</a> - {{ role.role }}</li>
-        {% endif %}
-    {% endfor %}
-    </ul>
+    </div>
 
 {% endblock %}
+

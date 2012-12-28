@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Organisation
@@ -17,6 +18,7 @@ abstract class Organisation extends Entity
      * @var string
      *
      * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
+     * @Assert\NotBlank()
      */
     private $short_name;
 
@@ -39,7 +41,7 @@ abstract class Organisation extends Entity
      *
      * @ORM\Column(name="affiliate", type="boolean", nullable=false)
      */
-    private $affiliate;
+    private $affiliate = 0;
 
     /**
      * @var string
@@ -55,6 +57,11 @@ abstract class Organisation extends Entity
      */
     private $expires;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->expires = new \DateTime('0000-00-00');
+    }
 
     public function setName($name)
     {

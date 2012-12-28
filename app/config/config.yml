@@ -1,4 +1,5 @@
 imports:
+    - { resource: parameters.dist.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
@@ -22,6 +23,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - 'ActsCamdramBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -98,6 +102,8 @@ acts_camdram_security:
             class: local
 
 acts_social_api:
+      http_client:
+          timeout: 30
       apis:
           facebook:
               client_id: %facebook_id%

@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 
@@ -20,7 +22,7 @@ class Show extends Entity
      *
      * @ORM\Column(name="dates", type="string", length=255, nullable=false)
      */
-    private $dates;
+    private $dates = '';
 
     /**
      * @var string
@@ -34,21 +36,21 @@ class Show extends Entity
      *
      * @ORM\Column(name="prices", type="string", length=255, nullable=false)
      */
-    private $prices;
+    private $prices = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="photourl", type="text", nullable=true)
      */
-    private $photo_url;
+    private $photo_url = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=false)
      */
-    private $venue_name;
+    private $venue_name = '';
 
     /**
      * @var \DateTime
@@ -62,21 +64,21 @@ class Show extends Entity
      *
      * @ORM\Column(name="society", type="string", length=255, nullable=true)
      */
-    private $society_name;
+    private $society_name = '';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="techsend", type="boolean", nullable=false)
      */
-    private $tech_send;
+    private $tech_send = false;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="actorsend", type="boolean", nullable=false)
      */
-    private $actor_send;
+    private $actor_send = false;
 
     /**
      * @var string
@@ -690,6 +692,7 @@ class Show extends Entity
      */
     public function __construct()
     {
+        parent::__construct();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
     }

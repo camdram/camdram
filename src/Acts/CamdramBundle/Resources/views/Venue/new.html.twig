@@ -1,0 +1,17 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Venue - New{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <h3>New Venue</h3>
+    <form action="{{ path("post_venue") }}" method="post" class="custom">
+        {{ form_widget(form) }}
+        <div class="text-right">
+            <input type="submit" value="Create" class="button"/>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

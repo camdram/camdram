@@ -1,0 +1,47 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Show: {{ show.name }}{% endblock %}
+
+{% block body %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    {% render url('acts_camdram_entity_toolbar', {slug: show.slug}) %}
+
+    <div class="twelve columns">
+        {% if show.society %}
+            <p><a href="{{ path('get_society', {slug: show.society.slug}) }}">{{ show.society.name }}</a></p>
+        {% endif %}
+
+        <h2>{{ show.name }} - <small>{{ show.author }}</small></h2>
+
+        {{ show.description | camdram_markdown }}
+
+    </div>
+    <div class="four columns">
+        <h3>Cast</h3>
+        <ul>
+        {% for role in show.getRolesByType('cast') %}
+        <li>{{ role.role }} - <a href="{{ path('get_person', {slug: role.person.slug}) }}">{{ role.person.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="four columns">
+        <h3>Band</h3>
+        <ul>
+            {% for role in show.getRolesByType('band') %}
+                <li>{{ role.role }} - <a href="{{ path('get_person', {slug: role.person.slug}) }}">{{ role.person.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="four columns">
+        <h3>Production Team</h3>
+        <ul>
+            {% for role in show.getRolesByType('prod') %}
+                <li>{{ role.role }} - <a href="{{ path('get_person', {slug: role.person.slug}) }}">{{ role.person.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}

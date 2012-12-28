@@ -92,7 +92,9 @@ class Venue extends Organisation
      */
     public function __construct()
     {
+        parent::__construct();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setType(true);
     }
     
     /**
@@ -149,5 +151,22 @@ class Venue extends Organisation
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * @param MapLocation $location
+     */
+    public function setLocation(MapLocation $location)
+    {
+        $this->latitude = $location->getLatitude();
+        $this->longitude = $location->getLongitude();
+    }
+
+    /**
+     * @return MapLocation
+     */
+    public function getLocation()
+    {
+        return new MapLocation($this->latitude, $this->longitude);
     }
 }

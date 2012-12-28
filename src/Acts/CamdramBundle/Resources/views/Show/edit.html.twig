@@ -1,0 +1,17 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Show - {{ form.vars.value.name }} - Edit{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <h3>Edit Show</h3>
+    <form action="{{ path("put_show", {slug: form.vars.value.slug, _method: 'put'}) }}" method="post" class="custom">
+        {{ form_widget(form) }}
+        <div class="text-right">
+            <input type="submit" value="Save" class="button"/>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

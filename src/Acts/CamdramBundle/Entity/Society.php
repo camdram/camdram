@@ -25,7 +25,9 @@ class Society extends Organisation
      */
     public function __construct()
     {
+        parent::__construct();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setType(false);
     }
 
     /**

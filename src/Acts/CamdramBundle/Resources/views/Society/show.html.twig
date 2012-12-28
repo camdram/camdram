@@ -5,6 +5,8 @@
 {% block body %}
   <div class="row">
     <div class="twelve columns">
+        {% render url('acts_camdram_entity_toolbar', {slug: society.slug}) %}
+
       <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
 
         {{ society.description | camdram_markdown }}

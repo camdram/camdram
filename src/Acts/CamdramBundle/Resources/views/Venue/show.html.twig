@@ -5,10 +5,10 @@
 {% block body %}
   <div class="row">
     <div class="twelve columns">
+        {% render url('acts_camdram_entity_toolbar', {slug: venue.slug}) %}
       <h2>{{ venue.name }}</h2>
-        <h5> {% if venue.college %}{{ venue.college }} College, Cambridge<
-            {% elseif venue.address %}{{ venue.address }}{% endif %}</h5>
-
+        <h5>{% if venue.address %}{{ venue.address }}{% endif %}</h5>
+        {% if venue.college %}<p>College: {{ venue.college }}</p>{% endif %}
      </div>
      <div class="row">
          {% if venue.latitude and venue.longitude %}

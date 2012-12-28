@@ -28,6 +28,11 @@ abstract class OAuthApi extends RestApi
         $this->token_secret = $token_secret;
     }
 
+    public function isAuthenticated()
+    {
+        return !is_null($this->token);
+    }
+
     abstract public function authenticateAsSelf();
 
     abstract public function authenticateWithRequest(Request $request, $redirectUri);

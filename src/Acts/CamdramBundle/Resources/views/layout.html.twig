@@ -100,8 +100,8 @@
               </li>
           </ul>
           <li class="active"><a href="{{ path('acts_camdram_homepage') }}">Home</a></li>
-          <li><a href="#">Shows</a></li>
-          <li><a href="#">People</a></li>
+          <li><a href="{{ path('get_shows') }}">Shows</a></li>
+          <li><a href="{{ path('get_people') }}">People</a></li>
           <li><a href="{{ path('get_societies') }}">Societies</a></li>
           <li><a href="{{ path('get_venues') }}">Venues</a></li>
           <li class="divider"></li>
@@ -119,7 +119,8 @@
         <div class="four columns">
           <h5>Site Map</h5>
           <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
-          <a href="#">Shows</a><br/>
+          <a href="{{ path('get_shows') }}">Shows</a><br/>
+            <a href="{{ path('get_people') }}">People</a><br/>
           <a href="{{ path('get_societies') }}">Societies</a><br/>
           <a href="{{ path('get_venues') }}">Venues</a><br/>
         </div>
@@ -163,7 +164,11 @@ Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@cam
 {% endjavascripts %}
 
   {% block javascripts %}{% endblock %}
-
+<script>
+    $(function() {
+        $('form.custom').foundationCustomForms();
+    })
+</script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
