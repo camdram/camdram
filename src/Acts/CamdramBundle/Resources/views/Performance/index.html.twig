@@ -1,0 +1,64 @@
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <!-- div class="twelve columns" -->
+    {% set numWeeks = ((endDate - startDate) / 604800) + 1 %}
+    {% set headerDate = startDate %}
+    {% set i = 0 %}
+
+    {% set columnIdx = 0 %}
+    {% set columnDate =  startDate %}
+    {% for p in performances %}
+        {% for entry in p.diaryentries %}
+            {% spaceless %}
+            {% set columnDate = startDate|date_modify("+#{columnIdx} day") %}
+
+            {% set runStart = (entry.startdate > startDate|date_modify("0 days")) ?
+                entry.startdate : startDate|date_modify("0 days") %}
+            {% set runEnd = (entry.enddate < startDate|date_modify("+6 days")) ?
+                entry.enddate : startDate|date_modify("+6 days") %}
+
+            {% for i in range(0,6) %}
+                {% if entry.startdate != columnDate %}
+                    {# Pad until we're in the right column #}
+                    {% if columnIdx == 0 %}
+                        <tr>
+                    {% endif %}
+                    <td></td>
+                    {% set columnIdx = columnIdx + 1 %}
+                    {% if columnIdx > 6 %}
+                        </tr>
+                        {% set columnIdx = 0 %}
+                    {% endif %}
+                    {% set columnDate = startDate|date_modify("+#{columnIdx} day") %}
+
+                {% endif %}
+            {% endfor %}
+
+            {% if columnIdx == 0 %}
+                <tr>
+            {% endif %}
+            {% endspaceless %}
+                {% set colSpan = entry.numdays < (7 - columnIdx) ? entry.numdays : (7 - columnIdx) %}
+                <td colspan={{ colSpan }}>
+                    <strong>{{ p.time|date('g:ia') }}</strong> 
+                     <a href="{{ path('get_show', {slug: p.show.slug}) }}">{{ p.show.name }}</a> <i>{{ p.venuename is not empty ? p.venuename|e : p.venue.name|e }}</i>
+                </td>
+            
+            {% set columnIdx = columnIdx + colSpan %}
+            {% if columnIdx > 6 %}
+                </tr>
+                {% set columnIdx = 0 %}
+            {% endif %}
+
+        {% endfor %}
+    {% endfor %}
+    
+    {# Make sure the last row is complete  #}
+    {% for i in range(0,6) %}
+        {% if columnIdx != 0 %}
+            <td></td>
+            {% set columnIdx = (columnIdx + 1) % 7 %}
+        {% endif %}
+    {% endfor %}
+    <!-- /div -->
+</div>
+

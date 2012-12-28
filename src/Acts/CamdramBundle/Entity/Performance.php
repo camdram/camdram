@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Performance
  *
  * @ORM\Table(name="acts_performances")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PerformanceRepository")
  */
 class Performance
 {
@@ -279,6 +279,16 @@ class Performance
     }
 
     /**
+     * Get venue
+     *
+     * @return \Acts\CamdramBundle\Entity\Venue
+     */
+    public function getVenue()
+    {
+        return $this->venue;
+    }
+
+    /**
      * Set venue
      *
      * @param \Acts\CamdramBundle\Entity\Society $venue
@@ -292,12 +302,43 @@ class Performance
     }
 
     /**
-     * Get venue
+     * Generate a more useful view of the performance dates, making it easier
+     * to render the diary page. 
      *
-     * @return \Acts\CamdramBundle\Entity\Society 
+     * @return 
      */
-    public function getVenue()
+    public function getDiaryEntries()
     {
-        return $this->venue;
+        $entries = array();
+        $entry = array();
+
+        if (($this->exclude_date > $this->start_date) && 
+            ($this->exclude_date < $this->end_date))
+        {
+            /* If there's a valid exclude date then they'll be two entries */
+            $entry['startdate'] = $this->start_date;
+            $entry['enddate'] = $this->exclude_date->modify('-1 day');
+            /* Dates are inclusive */
+            $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
+
+            $entries[] = $entry;
+            
+            $entry['startdate'] = $this->exclude_date->modify('+1 day');
+            $entry['enddate'] = $this->end_date;
+            $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
+
+            $entries[] = $entry;
+        }
+        else
+        {
+            /* Just one simple entry */
+            $entry['startdate'] = $this->start_date;
+            $entry['enddate'] = $this->end_date;
+            $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
+
+            $entries[] = $entry;
+        }
+
+        return $entries;
     }
 }

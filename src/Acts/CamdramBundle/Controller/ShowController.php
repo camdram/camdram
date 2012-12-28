@@ -29,4 +29,4 @@ class ShowController extends FOSRestController
         
         return $view;
     }
-}
+ }

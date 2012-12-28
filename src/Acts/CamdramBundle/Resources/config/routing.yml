@@ -10,6 +10,9 @@ acts_camdram_people:
 acts_camdram_societies:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\SocietyController"
+acts_camdram_termdates:
+    type:     rest
+    resource: "Acts\CamdramBundle\Controller\TermDateController"
 acts_camdram_venues_map:
     pattern: /venues/map/{slug}
     defaults: { _controller: ActsCamdramBundle:Venue:map, slug: ~ }

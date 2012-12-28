@@ -50,16 +50,16 @@ class TermDate
     private $end_date;
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="firstweek", type="boolean", nullable=false)
+     * @ORM\Column(name="firstweek", type="integer", nullable=false)
      */
     private $first_week;
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="lastweek", type="boolean", nullable=false)
+     * @ORM\Column(name="lastweek", type="integer", nullable=false)
      */
     private $last_week;
 
