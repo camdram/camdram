@@ -16,7 +16,7 @@ class VenueType extends AbstractType
             ->add('college')
             ->add('description')
             ->add('address')
-            ->add('location', 'map_location', array('required' => true))
+            ->add('location', 'map_location')
             ->add('facebook_id')
             ->add('twitter_id')
         ;

@@ -25,8 +25,8 @@ class MapLocationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('latitude')
-            ->add('longitude');
+        $builder->add('latitude', 'text', array('error_bubbling' => true))
+            ->add('longitude', 'text', array('error_bubbling' => true));
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -41,13 +41,15 @@ class MapLocationType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\MapLocation',
             'compound' => true,
-            'class' => 'error'
+            'class' => 'error',
+            'required' => false,
+            'error_bubbling' => false,
         ));
     }
 
     public function getParent()
     {
-        return 'text';
+        return 'form';
     }
 
     public function getName()

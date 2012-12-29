@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
 
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Society
@@ -154,16 +155,19 @@ class Venue extends Organisation
     }
 
     /**
-     * @param MapLocation $location
+     * @param MapLocation|null $location
      */
-    public function setLocation(MapLocation $location)
+    public function setLocation($location)
     {
-        $this->latitude = $location->getLatitude();
-        $this->longitude = $location->getLongitude();
+        if ($location instanceof MapLocation) {
+            $this->latitude = $location->getLatitude();
+            $this->longitude = $location->getLongitude();
+        }
     }
 
     /**
-     * @return MapLocation
+     * @return MapLocation|null
+     * @Assert\Valid()
      */
     public function getLocation()
     {

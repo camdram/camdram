@@ -1,7 +1,7 @@
 {% block map_location_widget %}
     {% spaceless %}
         <div id="{{ id }}_container" class="form_map_container">
-            {{ block('form_widget') }}
+            {{ form_widget(form) }}
             <small>Click to create a marker, drag/drop to move it</small>
             <div class="form_map">
                 {{ google_map_container(location_map) }}
@@ -12,29 +12,13 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block entity_plus_other_row %}
-    <div {{ block('widget_container_attributes') }} class="row">
-        <div class="three columns">
-            {{ form_label(form) }}
-       </div>
-       <div class="four columns">
-           <div>
-            {{ form_widget(form) }}
-            {{ form_errors(form) }}
-           </div>
-        </div>
-        {##<div class="five columns">
-            {{ form_row(form.children[text_field]) }}
-        </div> #}
-    </div>
-{% endblock %}
-
 {% block form_option_box %}
     {% if not compound %} {% set label_attr = {for: id} %}{% endif %}
     {% if not label %} {% set label = name|humanize %}{% endif %}
     <label{% for k,v in label_attr %} {{ k }}={{ v }}{% endfor %}>
         {{ form_widget(form) }}
         {{ label | trans({}, translation_domain) }}
+        {{ form_errors(form) }}
     </label>
 {% endblock %}
 
