@@ -18,17 +18,17 @@
   <!-- Included CSS Files -->
   <!-- H5BP stylesheets -->
 {% stylesheets filter='cssrewrite'
-    '@ActsCamdramBundle/Resources/public/stylesheets/h5bp/*'
-    '@ActsCamdramBundle/Resources/public/stylesheets/foundation.css'
-    '@ActsCamdramBundle/Resources/public/stylesheets/app.css'
-    '@ActsCamdramBundle/Resources/public/stylesheets/cupertino/jquery-ui.custom.css' %}
+    'bundles/actscamdram/stylesheets/h5bp/*'
+    'bundles/actscamdram/stylesheets/foundation/*.css'
+    'bundles/actscamdram/stylesheets/jquery/*.css'
+    'bundles/actscamdram/stylesheets/app/*.css' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
   <!-- Foundation stylesheets -->
 
 {% block stylesheets %}{% endblock %}
 
-{% javascripts '@ActsCamdramBundle/Resources/public/javascripts/modernizr.foundation.js' %}
+{% javascripts '@ActsCamdramBundle/Resources/public/javascripts/modernizr/modernizr.foundation.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 </head>
@@ -156,15 +156,14 @@ Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@cam
   -->
   
   <!-- Initialize JS Plugins -->
-{% javascripts 
-
-    '@ActsCamdramBundle/Resources/public/javascripts/foundation.min.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/jquery-ui.custom.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/app.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
-    '@FOSJsRoutingBundle/Resources/public/js/router.js'
-    'js/fos_js_routes.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/camdram.js' %}
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+{% javascripts
+        '@ActsCamdramBundle/Resources/public/javascripts/foundation/*.js'
+        '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
+        '@FOSJsRoutingBundle/Resources/public/js/router.js'
+        'js/fos_js_routes.js'
+        '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
