@@ -1,0 +1,15 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Diary{% endblock %}
+
+{% block body %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <!-- div class="twelve columns" -->
+    {% set columnIdx = 0 %}
+    {% set columnDate =  startDate %}
+    {{ dump(auditions) }}
+    <!-- /div -->
+</div>
+{% endblock %}
+

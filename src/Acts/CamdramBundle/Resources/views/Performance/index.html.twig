@@ -1,9 +1,5 @@
 <div class="row" xmlns="http://www.w3.org/1999/html">
     <!-- div class="twelve columns" -->
-    {% set numWeeks = ((endDate - startDate) / 604800) + 1 %}
-    {% set headerDate = startDate %}
-    {% set i = 0 %}
-
     {% set columnIdx = 0 %}
     {% set columnDate =  startDate %}
     {% for p in performances %}
@@ -38,7 +34,7 @@
             {% endif %}
             {% endspaceless %}
                 {% set colSpan = entry.numdays < (7 - columnIdx) ? entry.numdays : (7 - columnIdx) %}
-                <td colspan={{ colSpan }}>
+                <td colspan="{{ colSpan }}">
                     <strong>{{ p.time|date('g:ia') }}</strong> 
                      <a href="{{ path('get_show', {slug: p.show.slug}) }}">{{ p.show.name }}</a> <i>{{ p.venuename is not empty ? p.venuename|e : p.venue.name|e }}</i>
                 </td>

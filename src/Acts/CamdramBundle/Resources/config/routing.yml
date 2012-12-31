@@ -1,6 +1,9 @@
 acts_camdram_homepage:
     pattern:  /
     defaults: { _controller: ActsCamdramBundle:Default:index }
+acts_camdram_auditions:
+    type:     rest
+    resource: "Acts\CamdramBundle\Controller\AuditionController"
 acts_camdram_shows:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\ShowController"
