@@ -17,13 +17,15 @@
   
   <!-- Included CSS Files -->
   <!-- H5BP stylesheets -->
-{% stylesheets '@ActsCamdramBundle/Resources/public/stylesheets/h5bp/*' filter='cssrewrite' %}
+{% stylesheets filter='cssrewrite'
+    '@ActsCamdramBundle/Resources/public/stylesheets/h5bp/*'
+    '@ActsCamdramBundle/Resources/public/stylesheets/foundation.css'
+    '@ActsCamdramBundle/Resources/public/stylesheets/app.css'
+    '@ActsCamdramBundle/Resources/public/stylesheets/cupertino/jquery-ui.custom.css' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
   <!-- Foundation stylesheets -->
-{% stylesheets '@ActsCamdramBundle/Resources/public/stylesheets/*.css' filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %}
+
 {% block stylesheets %}{% endblock %}
 
 {% javascripts '@ActsCamdramBundle/Resources/public/javascripts/modernizr.foundation.js' %}
@@ -91,9 +93,9 @@
       <ul class="nav-bar">
           <ul class="right">
               <li>
-                  <form method="get" action="#">
+                  <form method="get" action="{{ path('get_entities') }}">
                       <div class="row">
-                          <div class="mobile-three columns"><input type="search" /></div>
+                          <div class="mobile-three columns"><input type="search" name="q" id="main_search_box" /></div>
                           <div class="mobile-one three columns"><button class="button">Search</button></div>
                       </div>
                   </form>
@@ -155,18 +157,21 @@ Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@cam
   
   <!-- Initialize JS Plugins -->
 {% javascripts 
-    '@ActsCamdramBundle/Resources/public/javascripts/jquery.js'
+
     '@ActsCamdramBundle/Resources/public/javascripts/foundation.min.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/jquery-ui.custom.js'
     '@ActsCamdramBundle/Resources/public/javascripts/app.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/camdram.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js' %}
+    '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
+    '@FOSJsRoutingBundle/Resources/public/js/router.js'
+    'js/fos_js_routes.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/camdram.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
   {% block javascripts %}{% endblock %}
 <script>
     $(function() {
-        $('form.custom').foundationCustomForms();
+   //     $('form.custom').foundationCustomForms();
     })
 </script>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

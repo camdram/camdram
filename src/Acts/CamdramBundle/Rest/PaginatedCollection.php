@@ -1,0 +1,60 @@
+<?php
+namespace Acts\CamdramBundle\Rest;
+
+use Pagerfanta\PagerfantaInterface;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\HttpFoundation\Request;
+
+use Acts\CamdramBundle\Rest\ResponseQueryParams;
+use Acts\CamdramBundle\Rest\ResponseUrls;
+
+class PaginatedCollection
+{
+    public $data;
+
+    public $page;
+
+    public $total_count;
+
+    public $count;
+
+    /**
+     * @var array
+     * @Serializer\XmlKeyValuePairs
+     */
+    public $urls;
+
+    /**
+     * @var array
+     * @Serializer\XmlKeyValuePairs
+     */
+    public $query;
+
+    public function __construct(PagerfantaInterface $paginator, Request $request, $base_url)
+    {
+        $this->data = $paginator->getCurrentPageResults();
+        $this->total_count = $paginator->getNbResults();
+        $this->count = count($this->data);
+
+        $query = array(
+            'q' => $request->get('q'),
+            'limit' => $request->get('limit'),
+            'page' => $request->get('page'),
+        );
+        $this->query = $query;
+
+        $this->urls['current'] = $base_url.'?'.http_build_query($query);
+        if ($paginator->hasPreviousPage()) {
+            $query['page'] = $paginator->getPreviousPage();
+            $this->urls['previous'] = $base_url.'?'.http_build_query($query);
+            if ($paginator->getCurrentPage() > 2) {
+                $query['page'] = 1;
+                $this->urls['start'] = $base_url.'?'.http_build_query($query);
+            }
+        }
+        if ($paginator->hasNextPage()) {
+            $query['page'] = $paginator->getNextPage();
+            $this->urls['next'] = $base_url.'?'.http_build_query($query);
+        }
+    }
+}

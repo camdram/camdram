@@ -1,5 +1,5 @@
 <ul class="link-list right">
     <li><a href="{{ path(routes.new) }}">Create a new {{ label }}</a></li>
-    {% if routes.edit is defined %}<li><a href="{{ path(routes.edit, {slug: entity.slug}) }}">Edit &quot;{{ entity.name }}&quot;</a></li>{% endif %}
-    {% if routes.delete is defined %}<li><a href="{{ path(routes.delete, {slug: entity.slug}) }}">Delete &quot;{{ entity.name }}&quot;</a></li>{% endif %}
+    {% if routes.edit is defined %}<li><a href="{{ path(routes.edit, {slug: entity.slug}) }}">Edit this {{ type }}</a></li>{% endif %}
+    {% if routes.delete is defined %}<li><a href="{{ path(routes.delete, {slug: entity.slug}) }}">Delete this {{ type }}</a></li>{% endif %}
 </ul>

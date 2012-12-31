@@ -17,6 +17,7 @@ class Person extends Entity
      * @var integer
      *
      * @ORM\Column(name="mapto", type="integer", nullable=false)
+     * @Exclude
      */
     private $map_to;
 
@@ -24,12 +25,14 @@ class Person extends Entity
      * @var boolean
      *
      * @ORM\Column(name="norobots", type="boolean", nullable=false)
+     * @Exclude
      */
     private $no_robots;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
+     * @Exclude
      */
     private $roles;
 
@@ -37,6 +40,7 @@ class Person extends Entity
      * @var User
      *
      * @ORM\OneToMany(targetEntity="User", mappedBy="person")
+     * @Exclude
      */
     private $users;
 
@@ -44,8 +48,11 @@ class Person extends Entity
      * @var array
      *
      * @ORM\OneToMany(targetEntity="NameAlias", mappedBy="person")
+     * @Exclude
      */
     private $aliases;
+
+    protected $entity_type = 'person';
 
     /**
      * Constructor
@@ -215,9 +222,9 @@ class Person extends Entity
         //Required by Doctrine as it can't handle irregular plurals...
     }
 
-    public function __toString()
+    public function getEntityType()
     {
-        return 'Person ('.$this->getId().':'.$this->getName().')';
+        return 'person';
     }
 
 }

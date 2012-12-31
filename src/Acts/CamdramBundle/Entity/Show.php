@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 
-use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Show
@@ -42,6 +42,7 @@ class Show extends Entity
      * @var string
      *
      * @ORM\Column(name="photourl", type="text", nullable=true)
+     * @Serializer\Exclude
      */
     private $photo_url = '';
 
@@ -56,6 +57,7 @@ class Show extends Entity
      * @var \DateTime
      *
      * @ORM\Column(name="excludedate", type="date", length=255, nullable=false)
+     * @Serializer\Exclude
      */
     private $exclude_date;
 
@@ -70,6 +72,7 @@ class Show extends Entity
      * @var boolean
      *
      * @ORM\Column(name="techsend", type="boolean", nullable=false)
+     * @Serializer\Exclude
      */
     private $tech_send = false;
 
@@ -77,6 +80,7 @@ class Show extends Entity
      * @var boolean
      *
      * @ORM\Column(name="actorsend", type="boolean", nullable=false)
+     * @Serializer\Exclude
      */
     private $actor_send = false;
 
@@ -84,6 +88,7 @@ class Show extends Entity
      * @var string
      *
      * @ORM\Column(name="audextra", type="text", nullable=true)
+     * @Serializer\Exclude
      */
     private $audextra;
 
@@ -91,7 +96,7 @@ class Show extends Entity
      * @var Society
      *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
-     * @Exclude
+     * @Serializer\Exclude
      * @ORM\JoinColumn(name="socid", referencedColumnName="id")
      */
     private $society;
@@ -100,7 +105,7 @@ class Show extends Entity
      * @var Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
-     * @Exclude
+     * @Serializer\Exclude
      * @ORM\JoinColumn(name="venid", referencedColumnName="id")
      */
     private $venue;
@@ -158,6 +163,7 @@ class Show extends Entity
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
+     * @Serializer\Exclude
      */
     private $roles;
 
@@ -166,9 +172,11 @@ class Show extends Entity
      *
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show")
      * @ORM\OrderBy({"start_date" = "ASC"})
-     * @Exclude
+     * @Serializer\Exclude
      */
     private $performances;
+
+    protected $entity_type = 'show';
 
     /**
      * Set dates
@@ -697,4 +705,8 @@ class Show extends Entity
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    public function getEntityType()
+    {
+        return 'show';
+    }
 }

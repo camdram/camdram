@@ -12,15 +12,17 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Entity\Entity;
 
+use FOS\RestBundle\Controller\Annotations\NoRoute;
+
 /**
  * @RouteResource("Entity")
  */
 class EntityController extends FOSRestController
 {
 
-    public function getAction($slug)
+    public function getAction($id)
     {
-        $entity = $this->getEntity($slug);
+        $entity = $this->getEntity($id);
 
         if ($entity instanceof Show) {
             $route = 'get_show';
@@ -41,11 +43,35 @@ class EntityController extends FOSRestController
         return $this->redirect($this->generateUrl($route, array('slug' => $entity->getSlug())));
     }
 
+    public function cgetAction(Request $request)
+    {
+        /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
+        $search_provider = $this->get('acts.camdram.search_provider');
+
+
+        if ($request->query->has('autocomplete')) {
+            $data = $search_provider->executeAutocomplete('entity', $request->get('q'), $request->get('limit'));
+        }
+        else {
+            $data = $search_provider->executeTextSearch('entity', $request->get('q'));
+        }
+
+        return $this->view($data, 200)
+            ->setTemplate('ActsCamdramBundle:Entity:index.html.twig')
+            ->setTemplateVar('result');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @NoRoute
+     */
     public function toolbarAction(Request $request)
     {
         $entity = null;
-        if ($request->query->has('slug')) {
-            $entity = $this->getEntity($request->get('slug'));
+        if ($request->query->has('id')) {
+            $entity = $this->getEntity($request->get('id'));
         }
         if ($request->query->has('type')) {
             $type = $request->get('type');
@@ -73,6 +99,7 @@ class EntityController extends FOSRestController
             'routes' => $routes,
             'entity' => $entity,
             'label' => $label,
+            'type' => $type,
         ));
     }
 
@@ -108,11 +135,11 @@ class EntityController extends FOSRestController
      * @return \Acts\CamdramBundle\Entity\Entity;
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    protected function getEntity($slug)
+    protected function getEntity($id)
     {
         $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Entity');
 
-        $entity = $repo->findOneBySlug($slug);
+        $entity = $repo->findOneById($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('That entity does not exist');
@@ -121,16 +148,4 @@ class EntityController extends FOSRestController
         return $entity;
     }
 
-    protected function getUserObj($id)
-    {
-        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User');
-
-        $entity = $repo->findOneById($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('That user does not exist');
-        }
-
-        return $entity;
-    }
 }

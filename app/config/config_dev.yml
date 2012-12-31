@@ -24,3 +24,6 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+fos_js_routing:
+    request_context_base_url: /app_dev.php

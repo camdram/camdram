@@ -30,6 +30,8 @@ class AppKernel extends Kernel
             new Acts\SocialApiBundle\ActsSocialApiBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
+            new FOQ\ElasticaBundle\FOQElasticaBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

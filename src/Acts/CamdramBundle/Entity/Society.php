@@ -20,6 +20,8 @@ class Society extends Organisation
      */
     private $shows;
 
+    protected $entity_type = 'society';
+
     /**
      * Constructor
      */
@@ -61,6 +63,11 @@ class Society extends Organisation
     public function getShows()
     {
         return $this->shows;
+    }
+
+    public function getEntityType()
+    {
+        return 'society';
     }
 
 }

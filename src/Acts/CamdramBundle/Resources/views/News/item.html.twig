@@ -8,7 +8,7 @@
     <div class="twelve columns">
     {% endif %}
         <p>
-            <strong><a href="{{ path('get_entity', {slug: item.entity.slug}) }}">{{ item.entity.name }}</a> posted:</strong>
+            <strong><a href="{{ path('get_entity', {id: item.entity.id}) }}">{{ item.entity.name }}</a> posted:</strong>
             {{ item.body }}
         </p>
         <p><em>{{ item.getPostedAt() | date('jS F Y g:i a') }}</em></p>

@@ -84,6 +84,9 @@ fos_rest:
     format_listener: true
     access_denied_listener: true
 
+acts_camdram:
+    search_provider: %search_provider%
+
 acts_camdram_security:
     services:
         facebook:
@@ -125,3 +128,42 @@ fos_oauth_server:
     access_token_class:  Acts\CamdramSecurityBundle\Entity\AccessToken
     refresh_token_class: Acts\CamdramSecurityBundle\Entity\RefreshToken
     auth_code_class:     Acts\CamdramSecurityBundle\Entity\AuthCode
+
+foq_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        camdram:
+            client: default
+            settings:
+               index:
+                  analysis:
+                      analyzer:
+                          autocomplete:
+                              type: custom
+                              tokenizer: lowercase
+                              filter   : [stop, autocomplete_ngram]
+                      filter:
+                          autocomplete_ngram:
+                              type: edgeNGram
+                              min_gram: 2
+                              max_gram: 6
+                              side: front
+                      tokenizer:
+                          autocomplete_tokenizer:
+
+            types:
+               entity:
+                  mappings:
+                      name: { boost: 20, analyzer: autocomplete }
+                      description:
+                      entity_type: { analyzer: keyword }
+                  persistence:
+                      driver: orm
+                      model: Acts\CamdramBundle\Entity\Entity
+                      provider:
+                      listener:
+                      finder:
+
+fos_js_routing:
+    routes_to_expose: [ "get_[a-z]+" ]

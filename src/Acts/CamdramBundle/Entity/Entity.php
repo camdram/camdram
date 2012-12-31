@@ -2,6 +2,7 @@
 namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -11,6 +12,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="entity_type", type="string")
  * @ORM\DiscriminatorMap({"person" = "Person", "show" = "Show", "society" = "Society", "venue" = "Venue"})
+ *
+ * @Serializer\XmlRoot("entity")
  */
 abstract class Entity
 {
@@ -20,6 +23,7 @@ abstract class Entity
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
      */
     private $id;
 
@@ -56,6 +60,7 @@ abstract class Entity
      * @var bool
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
+     * @Serializer\Exclude
      */
     private $public = false;
 
@@ -63,6 +68,7 @@ abstract class Entity
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @Serializer\Expose
      */
     private $slug;
 
@@ -70,16 +76,23 @@ abstract class Entity
      * @var array
      *
      *  @ORM\OneToMany(targetEntity="NewsMention", mappedBy="entity")
+     *  @Serializer\Exclude
      */
     private $mentions;
 
     /**
      * @var array
      *
-     *  @ORM\OneToMany(targetEntity="News", mappedBy="entity")
+     * @ORM\OneToMany(targetEntity="News", mappedBy="entity")
+     * @Serializer\Exclude
      */
     private $news;
 
+    /**
+     * @var string
+     * @Serializer\Expose
+     */
+    protected $entity_type;
 
     /**
      * Get id
@@ -329,5 +342,13 @@ abstract class Entity
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityType()
+    {
+        return $this->entity_type;
     }
 }

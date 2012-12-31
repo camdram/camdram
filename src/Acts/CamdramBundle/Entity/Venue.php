@@ -42,6 +42,8 @@ class Venue extends Organisation
      */
     private $shows;
 
+    protected $entity_type = 'venue';
+
     /**
      * Set latitude
      *
@@ -172,5 +174,10 @@ class Venue extends Organisation
     public function getLocation()
     {
         return new MapLocation($this->latitude, $this->longitude);
+    }
+
+    public function getEntityType()
+    {
+        return 'venue';
     }
 }

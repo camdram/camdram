@@ -50,3 +50,17 @@ services:
         class: Acts\CamdramBundle\Form\CamdramFormTypeExtension
         tags:
             - { name: form.type_extension, alias: form }
+
+    acts.camdram.paginator_response_listener:
+        class: Acts\CamdramBundle\Rest\EventListener\ViewPaginatorListener
+        arguments: [@router]
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 105 }
+
+    acts.camdram.search_provider.doctrine:
+        class: Acts\CamdramBundle\Service\Search\DoctrineProvider
+        arguments: [@service_container]
+
+    acts.camdram.search_provider.elasticsearch:
+        class: Acts\CamdramBundle\Service\Search\ElasticsearchProvider
+        arguments: [@service_container]
