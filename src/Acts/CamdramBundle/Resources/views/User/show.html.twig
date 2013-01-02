@@ -1,0 +1,42 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}User - {{ user.name }}{% endblock %}
+
+{% block body %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+
+
+    <div class="twelve columns">
+
+        <h2>{{ user.name }}</h2>
+
+        <p><a href="{{ path('edit_user', {identifier: user.id}) }}">Edit</a></p>
+
+        {% if user.person %}
+            <p>Linked to person <a href="{{ path('get_person', {identifier: user.person.slug}) }}">{{ user.person.name }}</a></p>
+        {% endif %}
+
+        {% if user.groups | length > 0 %}
+            <h4>Groups</h4>
+            <ul>
+                {% for group in user.groups %}
+                    <li><a href="{{ path('get_group', {identifier: group.shortName}) }}">{{ group.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if user.roles | length > 0 %}
+        <h4>Roles</h4>
+        <ul>
+        {% for role in user.roles %}
+            <li>{{ role }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

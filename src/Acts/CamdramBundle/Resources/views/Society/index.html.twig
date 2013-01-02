@@ -8,11 +8,11 @@
  </div>
 
   <div class="row">
-      {% if societies|length > 0 %}
+      {% if result.count > 0 %}
         {% set value = 'no spaces' %}
         {% set i = 1  %}
         {% set seen_college = false %} 
-        {% for society in societies %}
+        {% for society in result.data %}
           {% if (society.college is not empty) and not seen_college %}
             {% set seen_college = true %}
               <hr>
@@ -20,7 +20,7 @@
           {% endif %}
 
           <div class="six columns">
-          <h5><a href="{{ path('get_society', {slug: society.shortname}) }}">{{ society.name }}</a>
+          <h5><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
           {% if society.shortname is not empty %}
             <small>- {{ society.shortname }}</small>
           {% endif %}
@@ -30,12 +30,12 @@
           {% endif %}
           <p>{{ society.description|slice(0, 200)|strip_new_lines|camdram_markdown }}
           {% if society.description|length > 200 %}
-          ...<br>[<a href="{{ path('get_society', {slug: society.shortname}) }}">Read More</a>]
+          ...<br>[<a href="{{ path('get_society', {identifier: society.slug}) }}">Read More</a>]
           {% endif %}
           </p>
           </div>
 
-          {% if (i < societies|length) and (i is divisibleby(2)) %}
+          {% if (i < result.count) and (i is divisibleby(2)) %}
             </div><!-- endrow -->
             <div class="row">
           {% endif %}

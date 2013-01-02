@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -40,7 +41,7 @@ class EntityController extends FOSRestController
             throw $this->createNotFoundException('Entity has an invalid type');
         }
 
-        return $this->redirect($this->generateUrl($route, array('slug' => $entity->getSlug())));
+        return $this->redirect($this->generateUrl($route, array('identifier' => $entity->getSlug())));
     }
 
     public function cgetAction(Request $request)
@@ -70,6 +71,7 @@ class EntityController extends FOSRestController
     public function toolbarAction(Request $request)
     {
         $entity = null;
+
         if ($request->query->has('id')) {
             $entity = $this->getEntity($request->get('id'));
         }
@@ -77,7 +79,7 @@ class EntityController extends FOSRestController
             $type = $request->get('type');
         }
         else {
-            $type = $this->getEntityType($entity);
+            $type = $entity->getEntityType();
         }
         if ($type == 'user') {
             $entity = $this->getUserObj($request->get('id'));
@@ -94,13 +96,20 @@ class EntityController extends FOSRestController
             $routes = array('new' => 'new_'.$type);
         }
         $label = $type;
+        $class = $this->getClass($type);
 
         return $this->render('ActsCamdramBundle:Entity:toolbar.html.twig', array(
             'routes' => $routes,
             'entity' => $entity,
             'label' => $label,
             'type' => $type,
+            'identity' => $this->getIdentity($type),
         ));
+    }
+
+    protected function getIdentity($type)
+    {
+        return new ObjectIdentity('class', $this->getClass($type));
     }
 
     /**
@@ -108,27 +117,24 @@ class EntityController extends FOSRestController
      * @return string
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    protected function getEntityType($entity)
+    protected function getClass($type)
     {
-        if ($entity instanceof Show) {
-            $type = 'show';
+        switch ($type) {
+            case 'show':
+                return 'Acts\\CamdramBundle\\Entity\\Show';
+                break;
+            case 'person':
+                return 'Acts\\CamdramBundle\\Entity\\Person';
+                break;
+            case 'society':
+                return 'Acts\\CamdramBundle\\Entity\\Society';
+                break;
+            case 'venue':
+                return 'Acts\\CamdramBundle\\Entity\\Venue';
+                break;
+            default:
+                throw $this->createNotFoundException('Entity has an invalid type');
         }
-        elseif ($entity instanceof  Person) {
-            $type = 'person';
-        }
-        elseif ($entity instanceof Society) {
-            $type = 'society';
-        }
-        elseif ($entity instanceof Venue) {
-            $type = 'venue';
-        }
-        elseif ($entity instanceof User) {
-            $type = 'user';
-        }
-        else {
-            throw $this->createNotFoundException('Entity has an invalid type');
-        }
-        return $type;
     }
 
     /**

@@ -4,7 +4,8 @@ namespace Acts\CamdramSecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ContainerInterface,
     Symfony\Component\HttpFoundation\Request;
 
-use Acts\CamdramSecurityBundle\Security\Service\ServiceInterface;
+use Acts\CamdramSecurityBundle\Security\Service\ServiceInterface,
+    Acts\CamdramSecurityBundle\Security\Acl\Dbal\AclListProvider;
 
 class SecurityUtils
 {
@@ -166,5 +167,29 @@ class SecurityUtils
     private function generateUrl($route, array $params = array(), $absolute = false)
     {
         return $this->container->get('router')->generate($route, $params, $absolute);
+    }
+
+    public function getAclEntries($class_name, $role, $mask)
+    {
+        /** @var $aclProvider AclListProvider */
+        $aclProvider = $this->container->get('camdram.security.acl.list_provider');
+
+        if ($role instanceof \Acts\CamdramSecurityBundle\Entity\Group) $role = new GroupRole($role);
+        $role = (string) $role;
+
+        $ids = $aclProvider->getAllowedEntitiesIds($class_name, array($role), $mask);
+        if (count($ids) > 0) {
+            /** @var $repo \Doctrine\ORM\EntityRepository */
+            $repo = $this->container->get('doctrine.orm.entity_manager')->getRepository($class_name);
+            $qb = $repo->createQueryBuilder('e');
+            $result = $qb->where($qb->expr()->in('e.id', $ids))->getQuery()->getResult();
+            return $result;
+        }
+        else return array();
+    }
+
+    public function isGranted($attributes, $object)
+    {
+        return $this->container->get('camdram.security.acl.helper')->isGranted($attributes, $object);
     }
 }

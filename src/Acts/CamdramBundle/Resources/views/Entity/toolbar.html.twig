@@ -1,5 +1,5 @@
 <ul class="link-list right">
-   {% if is_granted('CREATE', class) %} <li><a href="{{ path(routes.new) }}">Create a new {{ label }}</a></li>{% endif %}
-    {% if is_granted('EDIT', class) and routes.edit is defined %}<li><a href="{{ path(routes.edit, {slug: entity.slug}) }}">Edit this {{ type }}</a></li>{% endif %}
-    {% if is_granted('DELETE', class) and routes.delete is defined %}<li><a href="{{ path(routes.delete, {slug: entity.slug}) }}">Delete this {{ type }}</a></li>{% endif %}
+   {% if is_granted('CREATE', identity) %} <li><a href="{{ path(routes.new) }}">Create a new {{ label }}</a></li>{% endif %}
+    {% if routes.edit is defined and (is_granted('EDIT', identity) or is_granted('EDIT', entity)) %}<li><a href="{{ path(routes.edit, {identifier: entity.slug}) }}">Edit this {{ type }}</a></li>{% endif %}
+    {% if routes.delete is defined and (is_granted('DELETE', identity) or is_granted('DELETE', entity)) %}<li><a href="{{ path(routes.delete, {identifier: entity.slug}) }}">Delete this {{ type }}</a></li>{% endif %}
 </ul>

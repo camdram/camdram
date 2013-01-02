@@ -1,0 +1,49 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <h3>Manage Users</h3>
+
+        <form action="{{ path('get_users') }}" method="get">
+            <div class="row">
+                <div class="three columns">
+                    <label for="user_search_box" class="right inline">Search</label>
+                </div>
+                <div class="three columns">
+                    <input id="user_search_box"  type="text" name="q"/>
+                </div>
+                <div class="six columns">
+                    <input type="submit" class="button"/>
+                </div>
+            </div>
+        </form>
+
+        {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
+        <hr/>
+        {% for user in result.data %}
+            <div class="panel">
+                <h5>{{ user.name }}</h5>
+                <p><a href="{{ path('get_user', {identifier: user.id}) }}">View</a> |
+                    <a href="{{ path('edit_user', {identifier: user.id}) }}">Edit</a> |
+                    <a href="{{ path('remove_user', {identifier: user.id}) }}">Delete</a></p>
+            </div>
+        {% endfor %}
+        <hr/>
+        {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function() {
+        $('#user_search_box').camdramAutocomplete({
+            route: 'get_users',
+            select: function(item) { document.location = Routing.generate('get_user', {identifier: item.id}) }
+        });
+    })
+</script>
+{% endblock %}

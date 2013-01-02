@@ -105,7 +105,10 @@
         var options = $.extend({
             route: 'get_entities',
             minLength: 2,
-            delay: 100
+            delay: 100,
+            select: function(item) {},
+            display: function(li, item) {},
+            placeholder: '',
         }, options);
 
         var cache = {};
@@ -114,7 +117,7 @@
             var $self = $(this);
             var url = '';
 
-            $self.autocomplete({
+            $self.attr('placeholder', options.placeholder).autocomplete({
                 minLength: options.minLength,
                 delay: options.delay,
                 source: function(req, resp) {
@@ -136,23 +139,72 @@
                 },
                 select: function(event, ui) {
                     $self.val( ui.item.name );
-                    document.location = Routing.generate('get_entity', {id: ui.item.id});
-
+                    options.select.apply($self, [ui.item]);
                     return false;
                 }
 
             }).data( "autocomplete" )._renderItem = function( ul, item ) {
                 ul.attr('id', 'main_search_autocomplete');
-                return $( "<li>" )
+                var li = $( "<li>" )
                     .data( "item.autocomplete", item )
-                    .append( "<a><small>"+item.entity_type+"</small>" + item.name + "</a>" )
+                    .append( "<a>" + item.name + "</a>" )
                     .addClass('autocomplete_item')
-                    .appendTo( ul );
+                options.display(li, item);
+                return li.appendTo( ul );
             };;
         })
     }
 
-   $('.news_media').newsFeedMedia();
-   $('#main_search_box').camdramAutocomplete();
+    $.fn.entitySearch = function(options) {
+       var options = $.extend({
+           select: function(item) {
+               $(this).siblings('input[type=hidden]').val(item.id);
+           },
+           placeholder: 'start typing to search'
+       }, options)
+        console.log(options);
+       $(this).camdramAutocomplete(options)
+
+       $(this).each(function() {
+           $(this).change(function() {
+               $(this).siblings('input[type=hidden]').val('');
+           })
+       })
+    }
+
+    $.fn.entityCollection = function(options) {
+
+        var options = $.extend({
+            select: function(item) {
+                var container = $(this).parents('.entity_collection_container');
+                $(this).val('');
+
+                if ($('input[value=' + item.id + ']', container).length > 0) return;
+
+                var $input = $('.autocomplete_input', container);
+                var new_li = $('.template', container).clone();
+                new_li.find('.collection_name').html(item.name);
+                new_li.find('.collection_id').val(item.id);
+                new_li.removeClass('template');
+                $('ul', container).append(new_li);
+            },
+            placeholder: 'start typing to search'
+        }, options);
+
+        $('.autocomplete_input', this).camdramAutocomplete(options);
+
+        $(this).each(function() {
+            $('ul', this).find('.entity_collection_remove').live('click', function() {
+                $(this).parent().remove();
+                return false;
+            })
+        })
+    }
+
+    $('.news_media').newsFeedMedia();
+    $('#main_search_box').camdramAutocomplete({
+       select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
+       display: function(li, item) { li.children().prepend('<small>'+item.entity_type+'</small>') }
+    });
 
 })(jQuery, window);

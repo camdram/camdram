@@ -1,0 +1,10 @@
+
+<fieldset>
+    <legend>Add new entry</legend>
+<form action="{{ path("post_group_ace", {identifier: form.vars.data.identifier}) }}" method="post" class="custom">
+    {{ form_widget(form) }}
+    <div class="text-right">
+        <input type="submit" value="Add" class="button"/>
+    </div>
+</form>
+</fieldset>

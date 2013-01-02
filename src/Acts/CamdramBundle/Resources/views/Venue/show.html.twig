@@ -13,7 +13,7 @@
      <div class="row">
          {% if venue.latitude and venue.longitude %}
          <div class="four columns small_map">
-             {% render url('acts_camdram_venues_map', {slug: venue.slug}) %}
+             {% render url('acts_camdram_venues_map', {identifier: venue.slug}) %}
          </div>
          <div class="eight columns">
          {% else %}
@@ -27,7 +27,7 @@
          <div class="seven columns">
              <h5>Shows</h5>
              {% for show in venue.shows %}
-                 <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
+                 <li><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></li>
              {% endfor %}
          </div>
 

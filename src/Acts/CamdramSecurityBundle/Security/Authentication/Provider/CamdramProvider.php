@@ -81,6 +81,7 @@ class CamdramProvider implements AuthenticationProviderInterface
             throw $e;
         }
         elseif ($user) {
+            $token = new CamdramUserToken($user->getRoles());
             $token->setUser($user);
             $token->setAuthenticated(true);
             $this->userChecker->checkPostAuth($user);

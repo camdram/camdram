@@ -87,23 +87,6 @@ fos_rest:
 acts_camdram:
     search_provider: %search_provider%
 
-acts_camdram_security:
-    services:
-        facebook:
-            class: social_api
-            id: facebook
-        twitter:
-            class: social_api
-            id: twitter
-        google:
-            class: social_api
-            id: google
-        raven:
-            class: raven
-            description: "camdram.net"
-        local:
-            class: local
-
 acts_social_api:
       http_client:
           timeout: 30
@@ -161,6 +144,24 @@ foq_elastica:
                   persistence:
                       driver: orm
                       model: Acts\CamdramBundle\Entity\Entity
+                      provider:
+                      listener:
+                      finder:
+               user:
+                  mappings:
+                      name: { analyzer: autocomplete }
+                  persistence:
+                      driver: orm
+                      model: Acts\CamdramBundle\Entity\User
+                      provider:
+                      listener:
+                      finder:
+               group:
+                  mappings:
+                      name: { analyzer: autocomplete }
+                  persistence:
+                      driver: orm
+                      model: Acts\CamdramSecurityBundle\Entity\Group
                       provider:
                       listener:
                       finder:

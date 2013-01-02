@@ -18,7 +18,7 @@ abstract class Organisation extends Entity
      * @var string
      *
      * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"new"})
      */
     private $short_name;
 

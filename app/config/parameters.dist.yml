@@ -27,4 +27,4 @@ parameters:
     baseurl: http://www.camdram.net
 
     map_center: [52.20531,0.12179]
-    search_provider: elasticsearch
+    search_provider: doctrine

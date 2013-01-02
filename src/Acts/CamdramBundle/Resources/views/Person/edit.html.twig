@@ -6,7 +6,7 @@
 
 <div class="row">
     <h3>Edit Person</h3>
-    <form action="{{ path("put_person", {slug: form.vars.value.slug, _method: 'put'}) }}" method="post" class="custom">
+    <form action="{{ path("put_person", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post" class="custom">
         {{ form_widget(form) }}
         <div class="text-right">
             <input type="submit" value="Save" class="button"/>

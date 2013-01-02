@@ -24,12 +24,12 @@ class  ElasticsearchProvider implements ProviderInterface
     {
         if (empty($q)) return array();
 
-        $index = $this->container->get('foq_elastica.index.camdram.entity');
+        $index = $this->container->get('foq_elastica.index.camdram.'.$repository);
 
         $query = new \Elastica_Query();
         $query->setQuery(new \Elastica_Query_Field('name', $q));
         $query->setHighlight(array('fields' => array('name' => new \stdClass())))->setLimit($limit);
-       // var_dump($query->toArray());
+
         $results = $index->search($query);
 
         $data = array();
@@ -51,7 +51,7 @@ class  ElasticsearchProvider implements ProviderInterface
      */
     public function executeTextSearch($repository, $q)
     {
-        $finder = $this->container->get('foq_elastica.finder.camdram.entity');
+        $finder = $this->container->get('foq_elastica.finder.camdram.'.$repository);
         $query = new \Elastica_Query_QueryString($q);
         return $finder->findPaginated($query);
     }

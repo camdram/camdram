@@ -34,8 +34,6 @@ class ViewPaginatorListener
      */
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
-
-
         $request = $event->getRequest();
         $configuration = $request->attributes->get('_view');
 

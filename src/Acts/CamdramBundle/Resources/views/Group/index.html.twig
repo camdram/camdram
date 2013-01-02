@@ -1,0 +1,26 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Groups{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% render url('acts_camdram_group_toolbar') %}
+
+        <h3>Manage Groups</h3>
+
+        {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
+        <hr/>
+        {% for group in result.data %}
+            <div class="panel">
+                <h5>{{ group.name }} - <small>{{ group.shortName }}</small></h5>
+                <p><a href="{{ path('get_group', {identifier: group.shortName}) }}">View</a> |
+                    <a href="{{ path('edit_group', {identifier: group.shortName}) }}">Edit</a> |
+                    <a href="{{ path('remove_group', {identifier: group.shortName}) }}">Delete</a></p>
+            </div>
+        {% endfor %}
+        <hr/>
+        {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
+
+    </div>
+
+{% endblock %}

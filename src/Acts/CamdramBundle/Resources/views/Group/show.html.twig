@@ -1,0 +1,46 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Group - {{ group.name }}{% endblock %}
+
+{% block body %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+
+
+    <div class="twelve columns">
+
+        <h2>{{ group.name }}</h2>
+
+        {% if is_granted('EDIT', group) %}<p><a href="{{ path('edit_group', {identifier: group.shortName}) }}">Edit</a></p>{% endif %}
+
+        <h4>Members</h4>
+        <ul>
+            {% for user in group.users %}
+                <li><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        {% if group.roles | length > 0 %}
+        <h4>Roles</h4>
+        <ul>
+        {% for role in group.roles %}
+            <li>{{ role }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+
+        <h4>{{ group.name }} is the owner of:</h4>
+        <ul>
+        {% for venue in acl_entries('Acts\\CamdramBundle\\Entity\\Venue', group, 255) %}
+            <li><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a> (venue)</li>
+        {% endfor %}
+        {% for society in acl_entries('Acts\\CamdramBundle\\Entity\\Society', group, 255) %}
+            <li><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }} (society)</a></li>
+        {% endfor %}
+        </ul>
+        {% render url('new_group_ace', {identifier: group.shortName}) %}
+    </div>
+
+</div>
+
+{% endblock %}

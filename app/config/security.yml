@@ -32,6 +32,7 @@ security:
         public:
             pattern: ^/.*
             anonymous: true
+            switch_user: { role: ROLE_ADMIN, parameter: _switch_to_user }
             logout:
                 path: /logout
                 target: /
@@ -65,5 +66,30 @@ security:
     access_control:
 #        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
         - { path ^/settings.*, roles: IS_AUTHENTICATED_FULLY }
+        - { path ^/admin.*, roles: ROLE_ADMIN }
     acl:
         connection: default
+        voter:
+            allow_if_object_identity_unavailable: false
+
+acts_camdram_security:
+    groups:
+        admin:
+            roles: [ROLE_ADMIN]
+        editor:
+            roles: [ROLE_EDITOR]
+    services:
+        facebook:
+            class: social_api
+            id: facebook
+        twitter:
+            class: social_api
+            id: twitter
+        google:
+            class: social_api
+            id: google
+        raven:
+            class: raven
+            description: "camdram.net"
+        local:
+            class: local

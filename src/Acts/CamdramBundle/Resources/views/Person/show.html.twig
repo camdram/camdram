@@ -12,7 +12,7 @@
     <ul>
     {% for role in person.roles %}
         {% if role.show %}
-         <li><a href="{{ path('get_show', {slug: role.show.slug}) }}">{{ role.show.name }}</a> - {{ role.role }}</li>
+         <li><a href="{{ path('get_show', {identifier: role.show.slug}) }}">{{ role.show.name }}</a> - {{ role.role }}</li>
         {% endif %}
     {% endfor %}
     </ul>

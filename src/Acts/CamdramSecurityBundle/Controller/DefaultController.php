@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request;
 
 use Acts\CamdramSecurityBundle\Form\Type\LoginType,
-    Acts\CamdramSecurityBundle\Form\Type\UserType,
+    Acts\CamdramSecurityBundle\Form\Type\RegistrationType,
     Acts\CamdramSecurityBundle\Entity\UserIdentity,
     Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserTokenService,
     Acts\CamdramBundle\Entity\User;
@@ -200,7 +200,7 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'complete')));
         }
         else {
-            $form = $this->createForm(new UserType(), $user);
+            $form = $this->createForm(new RegistrationType(), $user);
 
             if ($request->getMethod() == 'POST') {
                 $form->bind($request);

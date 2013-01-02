@@ -82,3 +82,35 @@ services:
         arguments: ~
         tags:
             - { name: form.type, alias: occupation }
+
+    camdram.security.event_listener.group:
+        class: Acts\CamdramSecurityBundle\EventListener\GroupListener
+        arguments: ~
+        tags:
+            - { name: doctrine.event_listener, event: postLoad }
+
+    camdram.security.acl.helper:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Helper
+        arguments: [@security.context, @security.acl.provider]
+
+
+    camdram.security.voter.profile:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter
+        tags:
+            - { name: security.voter }
+
+    camdram.security.voter.own_user:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\OwnUserVoter
+        tags:
+            - { name: security.voter }
+
+    camdram.security.voter.show:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter
+        arguments: [@security.acl.voter.basic_permissions, @security.acl.permission.map]
+        tags:
+            - { name: security.voter }
+
+    camdram.security.acl.list_provider:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Dbal\AclListProvider
+        parent: security.acl.dbal.provider
+        public: true

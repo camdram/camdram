@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Criteria;
 
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\UserIdentity;
+use Acts\CamdramSecurityBundle\Security\GroupRole;
 
 /**
  * User
@@ -95,7 +96,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="occupation", type="string", length=255, nullable=false)
+     * @ORM\Column(name="occupation", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      */
     private $occupation;
@@ -103,7 +104,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="graduation", type="string", length=255, nullable=false)
+     * @ORM\Column(name="graduation", type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      */
     private $graduation;
@@ -111,35 +112,35 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="tel", type="string", length=50, nullable=false)
+     * @ORM\Column(name="tel", type="string", length=50, nullable=true)
      */
     private $tel;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="dbemail", type="boolean", nullable=false)
+     * @ORM\Column(name="dbemail", type="boolean", nullable=true)
      */
     private $db_email;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="dbphone", type="boolean", nullable=false)
+     * @ORM\Column(name="dbphone", type="boolean", nullable=true)
      */
     private $db_phone;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="forumnotify", type="boolean", nullable=false)
+     * @ORM\Column(name="forumnotify", type="boolean", nullable=true)
      */
     private $forum_notify;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="threadmessages", type="boolean", nullable=false)
+     * @ORM\Column(name="threadmessages", type="boolean", nullable=true)
      */
     private $thread_messages;
 
@@ -626,10 +627,18 @@ class User implements UserInterface, \Serializable
     {
         return '';
     }
+
     public function getRoles()
     {
-        return array();
+        $roles = array();
+        foreach ($this->getGroups() as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+            $roles[] = (string) new GroupRole($group);
+        }
+
+        return $roles;
     }
+
     public function eraseCredentials()
     {
 
@@ -846,10 +855,10 @@ class User implements UserInterface, \Serializable
      * @param \Acts\CamdramSecurityBundle\Entity\Group $groups
      * @return User
      */
-    public function addGroup(\Acts\CamdramSecurityBundle\Entity\Group $groups)
+    public function addGroup(\Acts\CamdramSecurityBundle\Entity\Group $group)
     {
-        $this->groups[] = $groups;
-    
+        $group->addUser($this);
+        $this->groups[] = $group;
         return $this;
     }
 
@@ -875,6 +884,6 @@ class User implements UserInterface, \Serializable
 
     public function __toString()
     {
-        return $this->getId().'/'.$this->getName().'/'.$this->getEmail();
+        return $this->getName().' ('.$this->getEmail().')';
     }
 }

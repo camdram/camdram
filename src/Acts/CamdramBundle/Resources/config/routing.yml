@@ -1,33 +1,11 @@
 acts_camdram_homepage:
     pattern:  /
     defaults: { _controller: ActsCamdramBundle:Default:index }
-acts_camdram_auditions:
-    type:     rest
-    resource: "Acts\CamdramBundle\Controller\AuditionController"
-acts_camdram_shows:
-    type:     rest
-    resource: "Acts\CamdramBundle\Controller\ShowController"
-acts_camdram_people:
-    type:     rest
-    resource: Acts\CamdramBundle\Controller\PersonController
-acts_camdram_societies:
-    type:     rest
-    resource: "Acts\CamdramBundle\Controller\SocietyController"
-acts_camdram_termdates:
-    type:     rest
-    resource: "Acts\CamdramBundle\Controller\TermDateController"
-acts_camdram_venues_map:
-    pattern: /venues/map/{slug}
-    defaults: { _controller: ActsCamdramBundle:Venue:map, slug: ~ }
-acts_camdram_venues:
-    type:     rest
-    resource: "Acts\CamdramBundle\Controller\VenueController"
-acts_camdram_entity_toolbar:
-    pattern: /entities/toolbar
-    defaults: { _controller: ActsCamdramBundle:Entity:toolbar }
-acts_camdram_entities:
-    type:     rest
-    resource: "Acts\CamdramBundle\Controller\EntityController"
+acts_camdram_entities_res:
+    resource: "routing/entities.yml"
+acts_camdram_admin_res:
+    resource: "routing/admin.yml"
+    prefix: /admin
 acts_camdram_settings:
     pattern: /settings
     defaults: { _controller: ActsCamdramBundle:Account:settings }

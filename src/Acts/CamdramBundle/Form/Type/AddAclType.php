@@ -1,32 +1,31 @@
 <?php
 
-namespace Acts\CamdramSecurityBundle\Form\Type;
+namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class UserType extends AbstractType
+class AddAclType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
-            ->add('name')
-            ->add('email')
-            ->add('occupation', 'occupation')
-            ->add('graduation', 'graduation_year')
+            ->add('entity', 'entity_search', array('class' => 'Acts\\CamdramBundle\\Entity\\Entity'))
+            ->add('grant_type', 'grant_type')
         ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acts\CamdramBundle\Entity\User'
+
         ));
     }
 
     public function getName()
     {
-        return 'acts_camdrambundle_usertype';
+        return 'acts_camdrambundle_addacltype';
     }
 }

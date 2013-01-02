@@ -25,6 +25,8 @@ class CamdramSecurityExtension extends \Twig_Extension
     {
         return array(
             'camdram_security_services' => new \Twig_Function_Method($this, 'getServices'),
+            'acl_entries' => new \Twig_Function_Method($this, 'getAclEntries'),
+            'is_granted' => new \Twig_Function_Method($this, 'isGranted'),
         );
     }
 
@@ -35,6 +37,17 @@ class CamdramSecurityExtension extends \Twig_Extension
     {
         return $this->utils->getServices();
     }
+
+    public function getAclEntries($class, $role, $mask)
+    {
+        return $this->utils->getAclEntries($class, $role, $mask);
+    }
+
+    public function isGranted($attributes, $object)
+    {
+        return $this->utils->isGranted($attributes, $object);
+    }
+
     /**
      * Returns the name of the extension.
      *

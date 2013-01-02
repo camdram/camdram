@@ -20,7 +20,7 @@
         </ul>
 
         {% for show in society.shows %}
-        <li><a href="{{ path('get_show', {slug: show.slug}) }}">{{ show.name }}</a></li>
+        <li><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></li>
             {% for p in show.performances %}
             {{ p.startdate|date("m/d/Y") }}
             {% endfor %}

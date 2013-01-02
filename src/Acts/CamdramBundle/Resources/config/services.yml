@@ -37,8 +37,20 @@ services:
 
     acts.camdram.type.entity_search:
         class: Acts\CamdramBundle\Form\Type\EntitySearchType
+        arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: form.type, alias: entity_search }
+
+    acts.camdram.type.entity_collection:
+        class: Acts\CamdramBundle\Form\Type\EntityCollectionType
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: form.type, alias: entity_collection }
+
+    acts.camdram.type.grant_type:
+        class: Acts\CamdramBundle\Form\Type\GrantType
+        tags:
+            - { name: form.type, alias: grant_type }
 
     acts.camdarm.type.guesser:
         class: Acts\CamdramBundle\Form\CamdramTypeGuesser

@@ -54,12 +54,31 @@
 
       <ul class="right">
           {% if app.user %}
+              {% for group in app.user.groups %}
+                  <li class="has-dropdown">
+                      <a href="#">{{ group.menuName }}</a>
+                      <ul class="dropdown">
+                          <li><a href="{{ path('get_group', {identifier: group.shortName}) }}">View {{ group.menuName }} group</a></li>
+                          {% for venue in acl_entries('Acts\\CamdramBundle\\Entity\\Venue', group, 255) %}
+                              <li><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></li>
+                          {% endfor %}
+                          {% for society in acl_entries('Acts\\CamdramBundle\\Entity\\Society', group, 255) %}
+                              <li><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a></li>
+                          {% endfor %}
+                          {% if 'ROLE_ADMIN' in group.roles %}
+                              <li class="divider"></li>
+                              <li><a href="{{ path('get_users') }}">Manage Users</a></li>
+                              <li><a href="{{ path('get_groups') }}">Manage Groups</a></li>
+                          {% endif %}
+                      </ul>
+                  </li>
+              {% endfor %}
         <li class="has-dropdown">
-          {% if app.user.person %}<a href="{{ path('get_person', {slug: app.user.person.slug }) }}">{{ app.user.name }}</a>
+          {% if app.user.person %}<a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">{{ app.user.name }}</a>
           {% else %}<a href="#">{{ app.user.name }}</a>{% endif %}
 
           <ul class="dropdown">
-              {% if app.user.person %} <li><a href="{{ path('get_person', {slug: app.user.person.slug }) }}">My profile</a></li>{% endif %}
+              {% if app.user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">My profile</a></li>{% endif %}
             <li><a href="{{ path('acts_camdram_settings') }}">Settings</a></li>
             <li class="divider"></li>
             <li><a href="{{ path('_security_logout') }}">Log out</a></li>

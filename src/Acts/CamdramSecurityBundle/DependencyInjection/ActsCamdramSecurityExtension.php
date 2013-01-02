@@ -36,6 +36,8 @@ class ActsCamdramSecurityExtension extends Extension
         $container->setParameter('camdram.security.services', $authServices);
         $container->setParameter('camdram.security.default_firewall', $config['default_firewall']);
 
+        $container->getDefinition('camdram.security.event_listener.group')
+            ->addArgument($config['groups']);
     }
 
     public function createAuthService(ContainerBuilder $container, $name, array $options)

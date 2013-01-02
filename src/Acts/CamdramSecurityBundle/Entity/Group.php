@@ -3,6 +3,7 @@
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * UserGroup
@@ -25,8 +26,23 @@ class Group
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
+
+    /**
+     * @var string
+     * @ORM\Column(name="short_name", type="string", length=30)
+     * @Assert\NotBlank
+     */
+    private $short_name;
+
+    /**
+     * @var string
+     * @ORM\Column(name="menu_name", type="string", length=30)
+     * @Assert\NotBlank
+     */
+    private $menu_name;
 
     /**
      * @var array
@@ -36,6 +52,8 @@ class Group
      */
     private $users;
 
+
+    private $roles = array();
 
     /**
      * Get id
@@ -108,5 +126,56 @@ class Group
     public function getUsers()
     {
         return $this->users;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set short_name
+     *
+     * @param string $shortName
+     * @return Group
+     */
+    public function setShortName($shortName)
+    {
+        $this->short_name = $shortName;
+    
+        return $this;
+    }
+
+    /**
+     * Get short_name
+     *
+     * @return string 
+     */
+    public function getShortName()
+    {
+        return $this->short_name;
+    }
+
+    /**
+     * Set menu_name
+     *
+     * @param string $menuName
+     * @return Group
+     */
+    public function setMenuName($menuName)
+    {
+        $this->menu_name = $menuName;
+    
+        return $this;
+    }
+
+    /**
+     * Get menu_name
+     *
+     * @return string 
+     */
+    public function getMenuName()
+    {
+        return $this->menu_name;
     }
 }
