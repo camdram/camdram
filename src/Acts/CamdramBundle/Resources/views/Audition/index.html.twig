@@ -10,7 +10,7 @@
         {% for i in range(0,6) %}
             {% if audition.date != columnDate %}
                 {# Pad until we're in the right column #}
-                {% if columnIdx == 0 %}
+                {% if columnIdx == 0 and not in_list %}
                     <tr>
                 {% endif %}
                 {% if in_list == true %}
