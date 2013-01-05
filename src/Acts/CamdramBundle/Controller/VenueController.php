@@ -35,6 +35,18 @@ class VenueController extends AbstractRestController
     {
         return $this->createForm(new VenueType(), $venue);
     }
+    
+    public function cgetAction(Request $request)
+    {
+        $venues = $this->getRepository()->findAllOrderedByName();
+ 
+        $view = $this->view($venues, 200)
+            ->setTemplateVar('venues')
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+        ;
+
+        return $view;
+    }
 
     public function mapAction($identifier = null)
     {

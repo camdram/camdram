@@ -33,4 +33,16 @@ class SocietyController extends AbstractRestController
     {
         return $this->createForm(new SocietyType(), $society);
     }
+
+    public function cgetAction(Request $request)
+    {
+        $societies = $this->getRepository()->findAllOrderedByCollegeName();
+ 
+        $view = $this->view($societies, 200)
+            ->setTemplateVar('societies')
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+        ;
+
+        return $view;
+    }
 }

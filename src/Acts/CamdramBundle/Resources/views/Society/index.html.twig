@@ -8,11 +8,11 @@
  </div>
 
   <div class="row">
-      {% if result.count > 0 %}
+      {% if societies | length > 0 %}
         {% set value = 'no spaces' %}
         {% set i = 1  %}
         {% set seen_college = false %} 
-        {% for society in result.data %}
+        {% for society in societies %}
           {% if (society.college is not empty) and not seen_college %}
             {% set seen_college = true %}
               <hr>
@@ -35,7 +35,7 @@
           </p>
           </div>
 
-          {% if (i < result.count) and (i is divisibleby(2)) %}
+          {% if (i < societies | length) and (i is divisibleby(2)) %}
             </div><!-- endrow -->
             <div class="row">
           {% endif %}
