@@ -27,8 +27,8 @@
 		</thead>
 
 		<tbody>
-		{# TODO add rendering of application deadlines #}
 		{% render "ActsCamdramBundle:Audition:weeksAuditions" with {'startOfWeek': startOfWeek} %}
+		{% render "ActsCamdramBundle:Application:weeksApplications" with {'startOfWeek': startOfWeek} %}
 		{% render "ActsCamdramBundle:Performance:weeksPerformances" with {'startOfWeek': startOfWeek} %}
 		</tr>
 		</tbody>

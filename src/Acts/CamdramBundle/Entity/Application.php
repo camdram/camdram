@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Application
  *
  * @ORM\Table(name="acts_applications")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ApplicationRepository")
  */
 class Application
 {
@@ -278,3 +278,4 @@ class Application
         return $this->society;
     }
 }
+
