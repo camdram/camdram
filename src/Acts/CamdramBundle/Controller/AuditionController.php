@@ -26,4 +26,29 @@ class AuditionController extends FOSRestController
         ;
         return $view;
     }
+    
+    /**
+     * weeksPerformancesAction
+     *
+     * Generates the table data for displaying the show perofrmances in 
+     * the week beggining with $startOfWeek
+     *
+     * @param DateTime $startOfWeek The start date of the week.
+     */
+    public function weeksAuditionsAction($startOfWeek)
+    {
+        $startDate = $startOfWeek->getTimestamp();        
+        $endDate = $startOfWeek->modify("+6 days")->getTimestamp();
+
+        $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
+        
+        $auditions = $repo->findScheduledJoinedToShow($startDate, $endDate);
+
+        $view = $this->view(array('startDate' => $startDate, 'endDate' => $endDate, 'auditions' => $auditions), 200)
+            ->setTemplate("ActsCamdramBundle:Audition:index.html.twig")
+            ->setTemplateVar('auditions')
+        ;
+        
+        return $view;
+    }
 }
