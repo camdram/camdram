@@ -23,7 +23,8 @@ class PerformanceController extends FOSRestController
     public function weeksPerformancesAction($startOfWeek)
     {
         $startDate = $startOfWeek->getTimestamp();        
-        $endDate = $startOfWeek->modify("+6 days")->getTimestamp();
+        $endDate = clone $startOfWeek;
+        $endDate = $endDate->modify("+6 days")->getTimestamp();
 
         $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Performance');
         

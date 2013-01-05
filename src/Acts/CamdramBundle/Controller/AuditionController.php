@@ -30,15 +30,16 @@ class AuditionController extends FOSRestController
     /**
      * weeksPerformancesAction
      *
-     * Generates the table data for displaying the show perofrmances in 
+     * Generates the table data for displaying the show performances in 
      * the week beggining with $startOfWeek
      *
      * @param DateTime $startOfWeek The start date of the week.
      */
     public function weeksAuditionsAction($startOfWeek)
     {
-        $startDate = $startOfWeek->getTimestamp();        
-        $endDate = $startOfWeek->modify("+6 days")->getTimestamp();
+        $startDate = $startOfWeek->getTimestamp();
+        $endDate = clone $startOfWeek;
+        $endDate = $endDate->modify("+6 days")->getTimestamp();
 
         $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
         
