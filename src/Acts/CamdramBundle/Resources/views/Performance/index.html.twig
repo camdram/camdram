@@ -36,7 +36,7 @@
                 {% set colSpan = entry.numdays < (7 - columnIdx) ? entry.numdays : (7 - columnIdx) %}
                 <td colspan="{{ colSpan }}">
                     <strong>{{ p.time|date('g:ia') }}</strong> 
-                     <a href="{{ path('get_show', {slug: p.show.slug}) }}">{{ p.show.name }}</a> <i>{{ p.venuename is not empty ? p.venuename|e : p.venue.name|e }}</i>
+                     <a href="{{ path('get_show', {identifier: p.show.slug}) }}">{{ p.show.name }}</a> <i>{{ p.venuename is not empty ? p.venuename|e : p.venue.name|e }}</i>
                 </td>
             
             {% set columnIdx = columnIdx + colSpan %}
