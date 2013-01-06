@@ -15,6 +15,32 @@ use Doctrine\ORM\Query\Expr;
 class AuditionRepository extends EntityRepository
 {
     /**
+     * CurrentOrderedByNameDate
+     *
+     * Find all auditions between two dates that should be shown on the
+     * diary page, joined to the corresponding show.
+     *
+     * @param integer $startDate start date expressed as a Unix timestamp
+     * @param integer $endDate emd date expressed as a Unix timestamp
+     *
+     * @return array of auditions
+     */
+    public function findCurrentOrderedByNameDate()
+    {
+        $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
+        $query = $query_res->createQueryBuilder('a')
+            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+            ->where('a.date >= CURRENT_DATE()')
+            ->andWhere('a.display = 0')
+            ->andWhere('a.non_scheduled = 0')
+            //->andWhere('s.authorize_id > 0')
+            ->orderBy('s.name, a.date, a.start_time')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
      * findScheduledJoinedToShow
      *
      * Find all auditions between two dates that should be shown on the

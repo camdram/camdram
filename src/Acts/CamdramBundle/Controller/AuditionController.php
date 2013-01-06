@@ -16,11 +16,9 @@ class AuditionController extends FOSRestController
 {
     public function cgetAction()
     {
- 
-        //$auditions = $repo->findScheduledJoinedToShow($startDate, $endDate);
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findById(72);
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate();
 
-        $view = $this->view(array('startDate' => null, 'auditions' => $auditions), 200)
+        $view = $this->view($auditions, 200)
                   ->setTemplate("ActsCamdramBundle:Audition:index.html.twig")
                   ->setTemplateVar('auditions')
         ;
@@ -46,7 +44,7 @@ class AuditionController extends FOSRestController
         $auditions = $repo->findScheduledJoinedToShow($startDate, $endDate);
 
         $view = $this->view(array('startDate' => $startDate, 'endDate' => $endDate, 'auditions' => $auditions), 200)
-            ->setTemplate("ActsCamdramBundle:Audition:index.html.twig")
+            ->setTemplate("ActsCamdramBundle:Audition:diary.html.twig")
             ->setTemplateVar('auditions')
         ;
         
