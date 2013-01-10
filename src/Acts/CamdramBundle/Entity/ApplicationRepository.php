@@ -36,7 +36,7 @@ class ApplicationRepository extends EntityRepository
                 'startdate' => date("Y/m/d", $startDate),
                 'enddate' => date("Y/m/d", $endDate)
                 ))
-            ->orderBy('a.deadline_date', 'DESC')
+            ->orderBy('a.deadline_date')
             ->getQuery();
 
         return $query->getResult();
