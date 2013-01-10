@@ -25,6 +25,10 @@ acts_camdram_entities:
 acts_camdram_termdates:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\TermDateController"
+acts_camdram_applications:
+    type:     rest
+    resource: "Acts\CamdramBundle\Controller\ApplicationController"
 acts_camdram_auditions:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\AuditionController"
+

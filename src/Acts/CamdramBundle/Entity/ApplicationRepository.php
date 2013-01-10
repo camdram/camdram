@@ -13,23 +13,22 @@ use Doctrine\ORM\Query\Expr;
  * repository methods below.
  */
 class ApplicationRepository extends EntityRepository
-{
+{    
     /**
-     * findScheduledJoinedToSociety
+     * findScheduledOrderedByDeadline
      *
      * Find all applications between two dates that should be shown on the
-     * diary page, joined to the corresponding society..
+     * diary page.
      *
      * @param integer $startDate start date expressed as a Unix timestamp
      * @param integer $endDate emd date expressed as a Unix timestamp
      *
      * @return array of applications
      */
-    public function findScheduledJoinedToSociety($startDate, $endDate)
+    public function findScheduledOrderedByDeadline($startDate, $endDate)
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Application');
         $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Society', 's', Expr\Join::WITH, 'a.society = s.id')
             ->where('a.deadline_date <= :enddate')
             ->andWhere('a.deadline_date >= :startdate')
             ->andWhere('a.deadline_date >= CURRENT_DATE()')
@@ -37,7 +36,7 @@ class ApplicationRepository extends EntityRepository
                 'startdate' => date("Y/m/d", $startDate),
                 'enddate' => date("Y/m/d", $endDate)
                 ))
-            ->orderBy('a.deadline_date')
+            ->orderBy('a.deadline_date', 'DESC')
             ->getQuery();
 
         return $query->getResult();

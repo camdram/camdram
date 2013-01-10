@@ -1,66 +1,36 @@
-<div class="row" xmlns="http://www.w3.org/1999/html">
-    <!-- div class="twelve columns" -->
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Applications{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="twelve columns">
     {% spaceless %}
-    {% set columnIdx = 0 %}
-    {% set columnDate =  startDate %}
-    {% set in_list = false %}
-    {% for application in applications %}
-        {% set columnDate = startDate|date_modify("+#{columnIdx} day") %}
-
-        {% for i in range(0,6) %}
-            {% if application.deadlinedate != columnDate %}
-                {# Pad until we're in the right column #}
-                {% if columnIdx == 0 and not in_list %}
-                    <tr>
-                {% endif %}
-                {% if in_list == true %}
-                    </td>
-                    {% set in_list = false %}
-                {% else %}
-                    <td></td>
-                {% endif %}
-                {% set columnIdx = columnIdx + 1 %}
-                {% if columnIdx > 6 %}
-                    </tr>
-                    {% set columnIdx = 0 %}
-                {% endif %}
-                {% set columnDate = startDate|date_modify("+#{columnIdx} day") %}
-
+    {% set current = null %}
+    {% for a in applications %}
+        {% set entity = a.society ? a.society : a.show %}
+        {% if entity.name != current%}
+            {% if current != null %}
+                </div>
             {% endif %}
-        {% endfor %}
-
-        {% if columnIdx == 0 %}
-            <tr>
+            {% set current = entity.name %}
+            <div class="row">
         {% endif %}
-        {% if not in_list %}
-            <td><strong>Applications Deadline</strong><br>
-            {% set in_list = true %}
+        <h4><a href="{{ path((a.show ? 'get_show' : 'get_society'),
+            {identifier: entity.slug}) }}">{{ current }}</a></h4>
+        <h5>{{ a.text }}</h5>
+        {% if a.furtherinfo %}
+            <p>{{ a.furtherinfo|nl2br }}</p>
         {% endif %}
-        {% if application.society %}
-            {{ application.society.name }}
-        {% else %}
-            {{ application.show.name }}
+        <strong>Deadline:</strong> {{ a.deadlinedate|date('l jS F') }}
+        {% if a.deadlinetime %}
+            {{ a.deadlinetime|date('g:ia') }}
         {% endif %}
-            <br>
+        <br>
+        <hr>
     {% endfor %}
-    
-    {# Make sure the last row is complete  #}
-    {% if in_list %}
-        </td>
-        {% set columnIdx = columnIdx + 1 %}
-        {% if columnIdx > 6 %}
-            </tr>
-            {% set columnIdx = 0 %}
-        {% endif %}
-    {% endif %}
-    {% for i in range(0,6) %}
-        {% if columnIdx != 0 %}
-            <td></td>
-            {% set columnIdx = (columnIdx + 1) % 7 %}
-        {% endif %}
-    {% endfor %}
-    </tr>
     {% endspaceless %}
-    <!-- /div -->
+    </div>
+    </div>
 </div>
-
+{% endblock %}

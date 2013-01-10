@@ -13,7 +13,25 @@ use Doctrine\Common\Collections\Criteria;
  * @RouteResource("Application")
  */
 class ApplicationController extends FOSRestController
-{    
+{
+    /**
+     * cgetAction
+     *
+     * Display application deadlines from now until the end of (camdram) time
+     */
+    public function cgetAction()
+    {
+        $startDate = 
+        $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
+            ->findScheduledOrderedByDeadline(mktime(0,0,0), mktime(0, 0, 0, 1, 1, 2034));
+
+        $view = $this->view($applications, 200)
+            ->setTemplate("ActsCamdramBundle:Application:index.html.twig")
+            ->setTemplateVar('applications')
+        ;
+        return $view;
+    }
+        
     /**
      * weeksApplicationsAction
      *
@@ -30,10 +48,10 @@ class ApplicationController extends FOSRestController
 
         $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Application');
         
-        $applications = $repo->findScheduledJoinedToSociety($startDate, $endDate);
+        $applications = $repo->findScheduledOrderedByDeadline($startDate, $endDate);
 
         $view = $this->view(array('startDate' => $startDate, 'endDate' => $endDate, 'applications' => $applications), 200)
-            ->setTemplate("ActsCamdramBundle:Application:index.html.twig")
+            ->setTemplate("ActsCamdramBundle:Application:diary.html.twig")
             ->setTemplateVar('applications')
         ;
         
