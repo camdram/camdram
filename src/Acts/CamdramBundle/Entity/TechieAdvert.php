@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * TechieAdvert
  *
  * @ORM\Table(name="acts_techies")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\TechieAdvertRepository")
  */
 class TechieAdvert
 {
@@ -29,7 +29,7 @@ class TechieAdvert
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })
      */
-    private $show_id;
+    private $show;
 
     /**
      * @var string
@@ -313,25 +313,26 @@ class TechieAdvert
     }
 
     /**
-     * Set show_id
+     * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $showId
      * @return TechieAdvert
      */
-    public function setShowId(\Acts\CamdramBundle\Entity\Show $showId = null)
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
-        $this->show_id = $showId;
+        $this->show = $show;
     
         return $this;
     }
 
     /**
-     * Get show_id
+     * Get show
      *
      * @return \Acts\CamdramBundle\Entity\Show 
      */
-    public function getShowId()
+    public function getShow()
     {
-        return $this->show_id;
+        return $this->show;
     }
 }
+

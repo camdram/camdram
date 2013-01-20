@@ -31,4 +31,7 @@ acts_camdram_applications:
 acts_camdram_auditions:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\AuditionController"
+acts_camdram_techieadverts:
+    type:     rest
+    resource: "Acts\CamdramBundle\Controller\TechieAdvertController"
 

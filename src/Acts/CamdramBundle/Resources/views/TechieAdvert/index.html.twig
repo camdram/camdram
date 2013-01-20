@@ -1,0 +1,35 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Applications{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="twelve columns">
+    {% spaceless %}
+    {% for a in techieadverts %}
+        <h4><a href="{{ path('get_show',
+            {identifier: a.show.slug}) }}">{{ a.show.name }}</a></h4>
+        <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with { 'performances' : a.show.performances} %}</p>
+        <p><strong>Looking for</strong>
+        <ul>
+        {% for p in a.positions|split("\n") %}
+        <li>{{ p }}</li>
+        {% endfor %}
+        </ul>
+        </p>
+        {% if a.techextra %}
+            <p>{{ a.techextra|nl2br }}</p>
+        {% endif %}
+        <p><strong>Contact:</strong> {{ a.contact|camdram_markdown }}</strong><br/>
+        <strong>Deadline for applications:</strong> {{ a.expiry|date('l jS F') }}
+        {% if a.deadlinetime %}
+            {{ a.deadlinetime }}
+        {% endif %}
+        </p>
+        <hr>
+    {% endfor %}
+    {% endspaceless %}
+    </div>
+    </div>
+</div>
+{% endblock %}
