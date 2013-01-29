@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                 ->isRequired()
                 ->useAttributeAsKey('')
                 ->prototype('array')
+                ->treatNullLike(array())
                 ->children()
                     ->scalarNode('client_id')->end()
                     ->scalarNode('client_secret')->end()

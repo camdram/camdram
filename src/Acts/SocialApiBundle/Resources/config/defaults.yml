@@ -92,3 +92,18 @@ google_simple:
             arguments: [keyword, location, radius]
             defaults: {sensor: 'false'}
             response: {root: 'results'}
+
+github:
+    class: oauth2
+    base_url: https://api.github.com
+    paths:
+        repo:
+            path: /repos/{owner}/{repo}
+            url_has_params: true
+            arguments: [owner, repo]
+            requires_authentication: false
+        issues:
+            path: /repos/{owner}/{repo}/issues
+            url_has_params: true
+            arguments: [owner, repo, state, sort, labels]
+            requires_authentication: false

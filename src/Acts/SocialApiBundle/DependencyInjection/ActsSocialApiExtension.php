@@ -56,6 +56,7 @@ class ActsSocialApiExtension extends Extension
         if (isset($configs[0]['apis'])) {
             foreach ($configs[0]['apis'] as $name => &$api) {
                 if  (isset($defaults[$name])) {
+                    if (is_null($api)) $api = array();
                     $api = array_replace_recursive($api, $defaults[$name]);
                 }
             }
