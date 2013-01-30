@@ -6,12 +6,12 @@ acts_camdram_admin_res:
 acts_camdram_default:
     resource: "routing/default.yml"
     prefix: /
+acts_camdram_development:
+    resource: "routing/development.yml"
+    prefix: /development
 acts_camdram_settings:
     pattern: /settings
     defaults: { _controller: ActsCamdramBundle:Account:settings }
 acts_camdram_login:
     pattern: /login
     defaults: { _controller: ActsCamdramBundle:Default:login }
-acts_camdram_development:
-    pattern: /development
-    defaults: { _controller: ActsCamdramBundle:Development:index }

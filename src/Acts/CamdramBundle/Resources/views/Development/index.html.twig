@@ -10,47 +10,28 @@
         <p>Camdram is an <a href="http://opensource.org/docs/osd" target="_blank" rel="ext">open source</a> project developed by a team of volunteers
             for the benefit of the Cambridge student theatre community.</p>
         <p>We use <a href="https://github.com/" target="_blank" rel="ext">Github</a> to co-ordinate our work. On our
-            <a href="{{ repo.html_url }}" target="_blank" rel="ext">project page</a>
+            <a href="https://github.com/camdram/camdram" target="_blank" rel="ext">project page</a>
         you can find a copy of the code that runs this site, as well details about bugs that have been submitted and our future roadmap for
         the site.</p>
 
         <p>If you're a programmer and would like to contribute to camdram, we invite you to 'fork' the
-            <a href="{{ repo.html_url }}" target="_blank" rel="ext">camdram</a> repository on github. You can then fix any open issue (see
-            the list of <a href="{{ repo.html_url }}/issues?state=open" target="_blank" rel="ext">open issues</a>), or create a new one.
+            <a href="https://github.com/camdram/camdram" target="_blank" rel="ext">camdram</a> repository on github. You can then fix any open issue (see
+            the list of <a href="https://github.com/camdram/camdram/issues?state=open" target="_blank" rel="ext">open issues</a>), or create a new one.
             Once you've fixed a bug or created some new functionality, you can then submit a 'pull request' to be
             reviewed by the development team. In order to avoid wasting effort, it may be useful to first discuss your ideas in
-            our <a href="{{ repo.html_url }}/issues" target="_blank" rel="ext">issue tracker</a> before carrying out any
+            our <a href="https://github.com/camdram/camdram/issues" target="_blank" rel="ext">issue tracker</a> before carrying out any
         significant development work.</p>
 
         <p>We hope to run camdram as a meritocracy, in that anyone who has a number of pull requests accepted will be
         given access rights to commit straight to the camdram repository.</p>
 
         <p>If you don't have programming skills, but you think you've found a bug or have an idea for a cool new feature for camdram,
-        you can still <a href="{{ repo.html_url }}/issues/new" target="_blank" rel="ext">create a new issue</a> on
+        you can still <a href="https://github.com/camdram/camdram/issues/new" target="_blank" rel="ext">create a new issue</a> on
         Github, and one of our developers will get back to you.</p>
 
         <p>Below is a summary of recent development activity on camdram.</p>
 
-        <h3>Issues currently being worked on</h3>
-        <ul>
-            {% for issue in inprogress %}
-            <li><a href="{{ issue.html_url }}" target="_blank" rel="ext">{{ issue.title }}</a></li>
-            {% endfor %}
-        </ul>
-
-        <h3>Issues recently fixed</h3>
-        <ul>
-            {% for issue in fixed %}
-                <li><a href="{{ issue.html_url }}" target="_blank" rel="ext">{{ issue.title }}</a></li>
-            {% endfor %}
-        </ul>
-
-        <h3>Issues recently created</h3>
-        <ul>
-            {% for issue in recent %}
-                <li><a href="{{ issue.html_url }}" target="_blank" rel="ext">{{ issue.title }}</a></li>
-            {% endfor %}
-        </ul>
+        {% render url('acts_camdram_development_activity') with {}, {'standalone': true} %}
     </div>
 </div>
 {% endblock %}

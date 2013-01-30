@@ -1,0 +1,6 @@
+acts_camdram_development:
+    pattern: /
+    defaults: { _controller: ActsCamdramBundle:Development:index }
+acts_camdram_development_activity:
+    pattern: /activity
+    defaults: { _controller: ActsCamdramBundle:Development:activity }

@@ -50,7 +50,7 @@ class DefaultController extends Controller
             'people_num' => $people_num,
             'venue_num' => $v_num,
         ));
-        $response->setSharedMaxAge(8*3600);
+        $response->setSharedMaxAge(4*3600);
         return $response;
     }
 }

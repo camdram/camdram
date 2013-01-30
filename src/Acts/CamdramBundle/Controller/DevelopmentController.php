@@ -7,6 +7,12 @@ class DevelopmentController extends Controller
 {
     public function indexAction()
     {
+        $response = $this->render('ActsCamdramBundle:Development:index.html.twig');
+        return $response;
+    }
+
+    public function activityAction()
+    {
         $api = $this->get('acts.social_api.apis.github');
         $owner = 'camdram';
         $repo = 'camdram';
@@ -18,6 +24,8 @@ class DevelopmentController extends Controller
             'fixed' => $api->doIssues($owner, $repo, 'closed', 'updated'),
         );
 
-        return $this->render('ActsCamdramBundle:Development:index.html.twig', $data);
+        $response = $this->render('ActsCamdramBundle:Development:activity.html.twig', $data);
+        $response->setSharedMaxAge(60*15);
+        return $response;
     }
 }
