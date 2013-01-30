@@ -13,6 +13,9 @@ use Acts\CamdramBundle\Rest\PaginatedCollection;
 use Acts\CamdramBundle\Rest\ResponseQueryParams;
 use Acts\CamdramBundle\Rest\ResponseUrls;
 
+use Acts\DiaryBundle\Diary\Diary;
+use Acts\DiaryBundle\Diary\Renderer\HtmlRenderer;
+
 
 class ViewPaginatorListener
 {
@@ -22,9 +25,15 @@ class ViewPaginatorListener
      */
     private $router;
 
-    public function __construct(RouterInterface $router)
+    /**
+     * @var \Acts\DiaryBundle\Diary\Renderer\HtmlRenderer
+     */
+    private $diary_renderer;
+
+    public function __construct(RouterInterface $router, HtmlRenderer $diary_renderer)
     {
         $this->router = $router;
+        $this->diary_renderer = $diary_renderer;
     }
 
     /**
@@ -57,6 +66,9 @@ class ViewPaginatorListener
 
                 $view->setData(new PaginatedCollection($paginator, $request, $url));
             }
+        }
+        elseif ($view instanceof Diary) {
+            $event->setResponse($this->diary_renderer->render($view));
         }
     }
 }

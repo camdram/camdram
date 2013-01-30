@@ -65,7 +65,7 @@ services:
 
     acts.camdram.paginator_response_listener:
         class: Acts\CamdramBundle\Rest\EventListener\ViewPaginatorListener
-        arguments: [@router]
+        arguments: [@router, @acts.diary.renderer.html]
         tags:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 105 }
 

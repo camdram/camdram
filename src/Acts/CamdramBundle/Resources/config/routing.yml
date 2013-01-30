@@ -1,11 +1,11 @@
-acts_camdram_homepage:
-    pattern:  /
-    defaults: { _controller: ActsCamdramBundle:Default:index }
 acts_camdram_entities_res:
     resource: "routing/entities.yml"
 acts_camdram_admin_res:
     resource: "routing/admin.yml"
     prefix: /admin
+acts_camdram_default:
+    resource: "routing/default.yml"
+    prefix: /
 acts_camdram_settings:
     pattern: /settings
     defaults: { _controller: ActsCamdramBundle:Account:settings }

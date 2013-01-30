@@ -1,0 +1,9 @@
+acts_camdram_homepage:
+    pattern:  /
+    defaults: { _controller: ActsCamdramBundle:Default:index }
+acts_camdram_homepage_this_week:
+    pattern:  /this-week
+    defaults: { _controller: ActsCamdramBundle:Default:thisWeek }
+acts_camdram_homepage_next_week:
+    pattern:  /this-week
+    defaults: { _controller: ActsCamdramBundle:Default:nextWeek }

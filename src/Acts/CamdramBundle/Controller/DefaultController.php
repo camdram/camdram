@@ -13,4 +13,18 @@ class DefaultController extends Controller
 
         return $this->render('ActsCamdramBundle:Default:index.html.twig', array('news' => $news));
     }
+
+    public function thisWeekAction()
+    {
+        $diary = $this->get('acts.diary');
+        //$diary->addEvent($blah);
+        return $diary;
+    }
+
+    public function nextWeekAction()
+    {
+        $diary = $this->get('acts.diary');
+        //$diary->addEvent($blah);
+        return $diary;
+    }
 }

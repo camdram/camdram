@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
             new Acts\CamdramBackendBundle\ActsCamdramBackendBundle(),
             new Acts\SocialApiBundle\ActsSocialApiBundle(),
+            new Acts\DiaryBundle\ActsDiaryBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new FOQ\ElasticaBundle\FOQElasticaBundle(),

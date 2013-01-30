@@ -1,0 +1,14 @@
+parameters:
+    acts.diary.class: Acts\DiaryBundle\Diary\Diary
+    acts.diary.factory.class: Acts\DiaryBundle\Diary\DiaryFactory
+    acts.diary.renderer.html.class: Acts\DiaryBundle\Diary\Renderer\HtmlRenderer
+
+services:
+    acts.diary:
+        class: %acts.diary.class%
+        factory_class:  %acts.diary.factory.class%
+        factory_method: create
+
+    acts.diary.renderer.html:
+        class: %acts.diary.renderer.html.class%
+        arguments: [@twig]
