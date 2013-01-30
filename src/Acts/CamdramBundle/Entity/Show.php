@@ -13,7 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Show
  *
  * @ORM\Table(name="acts_shows")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  */
 class Show extends Entity
 {

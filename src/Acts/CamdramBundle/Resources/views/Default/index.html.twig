@@ -25,11 +25,7 @@
     </div>
 
       <div class="three columns hide-for-medium-down" id="home_statistics">
-        <h5>This week:</h5>
-          <strong>7</strong> shows are taking place<br/>
-          in <strong>3</strong> different venues<br/>
-          involving <strong>47</strong> people
-      </div>
+        {% render url('acts_camdram_homepage_statistics') with {}, {'standalone': true} %}
     </div>
   
     <div class="row">

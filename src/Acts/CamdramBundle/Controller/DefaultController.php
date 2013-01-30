@@ -27,4 +27,30 @@ class DefaultController extends Controller
         //$diary->addEvent($blah);
         return $diary;
     }
+
+    public function statisticsAction()
+    {
+        $now = new \DateTime;
+        $day = $now->format('N');
+        if ($day == 7) $day = 0;
+
+        $interval = new \DateInterval('P'.$day.'DT'.$now->format('H\\Hi\\Ms\\S'));
+        $start = $now->sub($interval);
+        $end = clone $start;
+        $end->add(new \DateInterval('P7D'));
+
+        $perf_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance')->getNumberInDateRange($start, $end);
+        $s_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getNumberInDateRange($start, $end);
+        $people_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Person')->getNumberInDateRange($start, $end);
+        $v_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Venue')->getNumberInDateRange($start, $end);
+
+        $response = $this->render('ActsCamdramBundle:Default:statistics.html.twig', array(
+            'show_num' => $s_num,
+            'performance_num' => $perf_num,
+            'people_num' => $people_num,
+            'venue_num' => $v_num,
+        ));
+        $response->setSharedMaxAge(8*3600);
+        return $response;
+    }
 }

@@ -42,4 +42,23 @@ class PerformanceRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function getNumberInDateRange(\DateTime $start, \DateTime $end)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where($qb->expr()->andX('p.end_date > :start', 'p.end_date < :end'))
+            ->orWhere($qb->expr()->andX('p.start_date > :start', 'p.start_date < :end'))
+            ->orWhere($qb->expr()->andX('p.start_date < :start', 'p.end_date > :end'))
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
+
+        $result = $qb->getQuery()->getResult();
+        $count = 0;
+        foreach ($result as $p) {
+            $count += $p->getEndDate()->diff($p->getStartDate())->d + 1;
+            if ($p->getExcludeDate()->format('u') > 0) $count--;
+        }
+
+        return $count;
+    }
 }

@@ -1,25 +1,21 @@
 <?php
+
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr as Expr;
 
-class VenueRepository extends EntityRepository
+/**
+ * ShowRepository
+ *
+ */
+class ShowRepository extends EntityRepository
 {
-    public function findAllOrderedByName()
-    {
-        $query = $this->createQueryBuilder('v')
-            ->orderBy('v.name')
-            ->where('v.type = 1')
-            ->getQuery();
-        return $query->getResult();
-    }
 
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
-        $qb = $this->createQueryBuilder('v')->select('DISTINCT(v.name)');
-        $qb->innerJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 's.venue = v')
-            ->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
+        $qb = $this->createQueryBuilder('s')->select('COUNT(s.id)');
+        $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
                 'p.show = s',
                 $qb->expr()->orX(
                     $qb->expr()->andX('p.end_date > :start', 'p.end_date < :end'),
@@ -30,8 +26,8 @@ class VenueRepository extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end);
 
-        $result = $qb->getQuery()->getResult();
-        return count($result);
+        $result = $qb->getQuery()->getOneOrNullResult();
+        return current($result);
     }
 
 }
