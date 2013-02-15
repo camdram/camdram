@@ -17,7 +17,8 @@ Camdram is built upon Symfony, which uses [Composer][2] to manage its dependenci
 on other software libraries. It is recommened that you install Composer into the
 camdram directory:
 
-'cd camdram`
+`cd camdram`
+
 `curl -s https://getcomposer.org/installer | php`
 
 Then run the following command, which will automatically download all camdram's
