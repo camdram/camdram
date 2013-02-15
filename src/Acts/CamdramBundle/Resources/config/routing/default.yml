@@ -8,5 +8,8 @@ acts_camdram_homepage_next_week:
     pattern:  /this-week
     defaults: { _controller: ActsCamdramBundle:Default:nextWeek }
 acts_camdram_homepage_statistics:
-    pattern:  /statistics
+    pattern:  /home/statistics
     defaults: { _controller: ActsCamdramBundle:Default:statistics }
+acts_camdram_homepage_vacancies:
+    pattern:  /home/vacancies
+    defaults: { _controller: ActsCamdramBundle:Default:vacancies }

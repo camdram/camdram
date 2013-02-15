@@ -8,15 +8,19 @@
     {% spaceless %}
     {% set currentName = null %}
     {% for a in auditions %}
-        {% if currentName != a.show.name %}
-            </ul>
-            {% if currentName is not empty %}
-                <hr>
+        {% if a.show %}
+            {% if currentName != a.show.name %}
+                </ul>
+                {% if currentName is not empty %}
+                    </div>
+                    <hr>
+                {% endif %}
+                {% set currentName = a.show.name %}
+                <div id="auditions-{{ a.show.id }}">
+                <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5><ul>
             {% endif %}
-            {% set currentName = a.show.name %}
-            <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5><ul>
+            <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
         {% endif %}
-        <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
     {% endfor %}
     </ul>
     {% endspaceless %}

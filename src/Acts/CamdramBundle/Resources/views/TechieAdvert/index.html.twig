@@ -7,6 +7,7 @@
     <div class="twelve columns">
     {% spaceless %}
     {% for a in techieadverts %}
+        <div id="advert-{{ a.id }}">
         <h4><a href="{{ path('get_show',
             {identifier: a.show.slug}) }}">{{ a.show.name }}</a></h4>
         <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with { 'performances' : a.show.performances} %}</p>
@@ -26,6 +27,7 @@
             {{ a.deadlinetime }}
         {% endif %}
         </p>
+        </div>
         <hr>
     {% endfor %}
     {% endspaceless %}

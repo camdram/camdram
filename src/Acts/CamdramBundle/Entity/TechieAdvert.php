@@ -128,6 +128,11 @@ class TechieAdvert
         return $this->positions;
     }
 
+    public function getPositionsOneLine()
+    {
+        return preg_replace('/\r?\n/',", ",$this->positions);
+    }
+
     /**
      * Set contact
      *

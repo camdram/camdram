@@ -40,4 +40,17 @@ class TechieAdvertRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findLatest($limit)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+            ->where('a.expiry >= CURRENT_DATE()')
+            ->andWhere('s.authorize_id > 0')
+            ->andWhere('s.entered = 1')
+            ->orderBy('a.last_updated')
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->getResult();
+    }
+
 }

@@ -69,4 +69,17 @@ class AuditionRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function findUpcoming($limit)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+            ->where('a.date >= CURRENT_DATE()')
+            ->andWhere('a.non_scheduled = 0')
+            ->orderBy('a.date')
+            ->addOrderBy('a.start_time')
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->getResult();
+    }
 }

@@ -53,4 +53,20 @@ class DefaultController extends Controller
         $response->setSharedMaxAge(4*3600);
         return $response;
     }
+
+    public function vacanciesAction()
+    {
+        $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
+        $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
+        $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+
+        $response = $this->render('ActsCamdramBundle:Default:vacancies.html.twig', array(
+            'auditions' => $auditions_repo->findUpcoming(3),
+            'techie_ads' => $techie_repo->findLatest(3),
+            'app_ads' => $applications_repo->findLatest(3),
+        ));
+        $response->setSharedMaxAge(60);
+        return $response;
+
+    }
 }

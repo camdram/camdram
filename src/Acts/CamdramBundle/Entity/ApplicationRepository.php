@@ -41,4 +41,14 @@ class ApplicationRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function findLatest($limit)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->where('a.deadline_date >= CURRENT_DATE()')
+            ->orderBy('a.deadline_date', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->getResult();
+    }
 }
