@@ -32,7 +32,6 @@ class VenuesLocationCommand extends ContainerAwareCommand
         foreach ($venues as $venue) {
             $results = $api->doPlaceSearch($venue->getName(), '52.20531,0.12179', 5000);
             if (count($results) > 0) {
-                var_dump($results[0]);
                 $venue->setLatitude($results[0]['geometry']['location']['lat']);
                 $venue->setLongitude($results[0]['geometry']['location']['lng']);
                 $venue->setAddress($results[0]['vicinity']);

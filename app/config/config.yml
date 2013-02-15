@@ -147,27 +147,27 @@ foq_elastica:
                   persistence:
                       driver: orm
                       model: Acts\CamdramBundle\Entity\Entity
-                      provider:
-                      listener:
-                      finder:
+                      provider: ~
+                      listener: ~
+                      finder: ~
                user:
                   mappings:
                       name: { analyzer: autocomplete }
                   persistence:
                       driver: orm
                       model: Acts\CamdramBundle\Entity\User
-                      provider:
-                      listener:
-                      finder:
+                      provider: ~
+                      listener: ~
+                      finder: ~
                group:
                   mappings:
                       name: { analyzer: autocomplete }
                   persistence:
                       driver: orm
                       model: Acts\CamdramSecurityBundle\Entity\Group
-                      provider:
-                      listener:
-                      finder:
+                      provider: ~
+                      listener: ~
+                      finder: ~
 
 fos_js_routing:
     routes_to_expose: [ "get_[a-z]+" ]

@@ -24,6 +24,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->executeForService('twitter', $output);
+        $this->executeForService('facebook', $output);
     }
 
     private function executeForService($service_name, OutputInterface $output)

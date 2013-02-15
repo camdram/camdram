@@ -38,7 +38,6 @@ class  ElasticsearchProvider implements ProviderInterface
             $item['id'] = $result->getId();
             $data[] = $item;
         }
-
         return $data;
     }
 

@@ -13,7 +13,7 @@
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title>Camdram - {% block title %}{% endblock %}</title>
+  <title>{% block title %}{% endblock %} - Camdram</title>
   
   <!-- Included CSS Files -->
   <!-- H5BP stylesheets -->
@@ -41,11 +41,6 @@
   <!-- Navigation -->
   <nav class="top-bar">
 <div class="row">
-    <ul>
-      <li class="name"><a href="{{ path('acts_camdram_homepage') }}">Camdram.net</a></li>
-      <li class="toggle-topbar"><a href="#"></a></li>
-    </ul>
-
 
       <ul class="left">
         <li><a href="#">About Us</a></li>
@@ -103,71 +98,64 @@
 
   <header>
     <div class="row">
-      <div class="twelve columns">
-        <h1>camdram.net</h1>
+      <div class="three columns logo">
+        <h1><a href="{{ path('acts_camdram_homepage') }}"><img src="{{ asset('bundles/actscamdram/images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
+      </div>
+      <div class="nine columns search">
+          <form method="get" action="{{ path('get_entities') }}">
+              <input type="search" name="q" id="main_search_box" placeholder="search for a show, person, society or venue" /></div>
+          </form>
       </div>
     </div>
   </header>
 
-  <nav class="row">
+  <nav>
       <ul class="nav-bar">
-          <ul class="right">
-              <li>
-                  <form method="get" action="{{ path('get_entities') }}">
-                      <div class="row">
-                          <div class="mobile-three columns"><input type="search" name="q" id="main_search_box" /></div>
-                          <div class="mobile-one three columns"><button class="button">Search</button></div>
-                      </div>
-                  </form>
-              </li>
-          </ul>
           <li class="active"><a href="{{ path('acts_camdram_homepage') }}">Home</a></li>
-          <li><a href="{{ path('get_shows') }}">Shows</a></li>
-          <li><a href="{{ path('get_people') }}">People</a></li>
+          <li><a href="{{ path('get_shows') }}">Diary</a></li>
+          <li><a href="{{ path('get_auditions') }}">Vacancies</a></li>
           <li><a href="{{ path('get_societies') }}">Societies</a></li>
           <li><a href="{{ path('get_venues') }}">Venues</a></li>
-          <li class="divider"></li>
       </ul>
   </nav>
 
+  <section>
+
 {% block body %}
 {% endblock %}
+  </section>
   
   <!-- Footer --> 
   <!-- We probably should be generating the sitemap from Symfony's route in the future -->
-  <footer class="row">
-  <div class="twelve columns"><hr />
-      <div class="row">
-        <div class="four columns">
-          <h5>Site Map</h5>
-          <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
-          <a href="{{ path('get_shows') }}">Shows</a><br/>
-            <a href="{{ path('get_people') }}">People</a><br/>
-          <a href="{{ path('get_societies') }}">Societies</a><br/>
-          <a href="{{ path('get_venues') }}">Venues</a><br/>
-        </div>
-        <div class="four columns">
-          <h5>Vacant Positions</h5>
-          <a href="#">Technical</a><br/>
-          <a href="#">Actors</a><br/>
-          <a href="#">Directors/Producers</a><br/>
-        </div>
-        <div class="four columns">
-          <h5>About</h5>
-          <a href="#">Privacy policy</a><br/>
-          <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
-        </div>
+  <footer>
+      <div id="sitemap">
+          <div class="row">
+            <div class="four columns">
+              <h5>Site Map</h5>
+              <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
+              <a href="{{ path('get_shows') }}">Shows</a><br/>
+                <a href="{{ path('get_people') }}">People</a><br/>
+              <a href="{{ path('get_societies') }}">Societies</a><br/>
+              <a href="{{ path('get_venues') }}">Venues</a><br/>
+            </div>
+            <div class="four columns">
+              <h5>Vacant Positions</h5>
+              <a href="#">Technical</a><br/>
+              <a href="#">Actors</a><br/>
+              <a href="#">Directors/Producers</a><br/>
+            </div>
+            <div class="four columns">
+              <h5>About</h5>
+              <a href="#">Privacy policy</a><br/>
+              <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
+            </div>
+          </div>
       </div>
-      <div class="row">
-
-        <div class="twelve columns"><hr/>
+      <div id="copyright">
             <p>&copy; Association of Cambridge Theatre Societies and contributing groups 2004 &#8212; 2012.
 Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@camdram.net</a>
             </p>
-        </div>
-
       </div>
-  </div>
   </footer>
   
   <!-- Included JS Files (Uncompressed) -->

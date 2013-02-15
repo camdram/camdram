@@ -108,7 +108,6 @@
             delay: 100,
             select: function(item) {},
             display: function(li, item) {},
-            placeholder: '',
         }, options);
 
         var cache = {};
@@ -117,7 +116,7 @@
             var $self = $(this);
             var url = '';
 
-            $self.attr('placeholder', options.placeholder).autocomplete({
+            $self.autocomplete({
                 minLength: options.minLength,
                 delay: options.delay,
                 source: function(req, resp) {

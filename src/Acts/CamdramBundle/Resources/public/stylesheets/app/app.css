@@ -13,18 +13,9 @@
    Shared Styles
 ----------------------------------------- */
 
-.top-bar.attached {
-    width:1000px;
-    max-width:100%;
-    margin:auto;
-}
 
-.nav-bar input[type=search] {
-
-    padding:4px;
-    min-width:200px;
-    height:22px;
-    margin:0;
+body {
+    background:#fff9e3;
 }
 
 .row .nav-bar form .row {
@@ -35,6 +26,11 @@
     .nav-bar form .row {
         padding-top:17px;
     }
+}
+
+section {
+    background:#fff;
+
 }
 
 .nav-bar button {
@@ -134,6 +130,96 @@ ul.entity_collection_list .template {
 
 a.entity_collection_remove {
     margin-left:10px;
+}
+
+header {
+    background:#fe5c1f;
+}
+
+.top-bar {
+    margin-top:0;
+    margin-bottom:0;
+    background: #3a393a;
+}
+
+nav {
+    background:#3a393a;
+}
+nav .nav-bar {
+    max-width:960px;
+    margin:auto;
+    background:inherit;
+}
+
+.nav-bar > li, .nav-bar > li:last-child {
+    border:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+}
+
+.nav-bar > li:hover {
+    background:#222222;
+}
+
+.nav-bar > li.active {
+    background:#000000;
+    border-color:#000000;
+}
+.nav-bar > li.active:hover {
+    background:#000000;
+}
+
+header .logo {
+    background:url('../../images/header_separator.png') center right no-repeat;
+    height:80px;
+}
+
+header .search {
+    height:80px;
+    background:url('../../images/header_separator2.png') center right no-repeat #fff;
+}
+
+header .search input {
+    border:none;
+    height:28px;
+    margin: 22px 0 0 22px;
+    padding:5px 15px 5px 45px;
+    width: 562px;
+    outline:none;
+    background:url('../../images/search_background.png') center no-repeat;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+}
+header .search input:focus {
+    outline:none;
+    background:url('../../images/search_background.png') center no-repeat;
+    border:none;
+}
+
+section {
+    max-width:960px;
+    margin:auto;
+}
+
+footer #sitemap {
+    background:#fff;
+    max-width:960px;
+    margin:auto;
+    padding:0 30px 15px 30px;
+}
+
+footer #copyright {
+    background:#3a393a;
+    margin:0;
+}
+footer #copyright p {
+    max-width:960px;
+    text-align:center;
+    margin:auto;
+    color:white;
+    padding:10px 0;
 }
 
 /* -----------------------------------------
