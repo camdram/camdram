@@ -18,6 +18,7 @@
   <!-- Included CSS Files -->
   <!-- H5BP stylesheets -->
 {% stylesheets filter='cssrewrite'
+    'bundles/actsdiary/css/diary.css'
     'bundles/actscamdram/stylesheets/h5bp/*'
     'bundles/actscamdram/stylesheets/foundation/*.css'
     'bundles/actscamdram/stylesheets/jquery/*.css'
@@ -112,7 +113,7 @@
   <nav>
       <ul class="nav-bar">
           <li class="active"><a href="{{ path('acts_camdram_homepage') }}">Home</a></li>
-          <li><a href="{{ path('get_shows') }}">Diary</a></li>
+          <li><a href="{{ path('acts_camdram_diary') }}">Diary</a></li>
           <li><a href="{{ path('get_auditions') }}">Vacancies</a></li>
           <li><a href="{{ path('get_societies') }}">Societies</a></li>
           <li><a href="{{ path('get_venues') }}">Venues</a></li>
@@ -133,8 +134,8 @@
             <div class="four columns">
               <h5>Site Map</h5>
               <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
-              <a href="{{ path('get_shows') }}">Shows</a><br/>
-                <a href="{{ path('get_people') }}">People</a><br/>
+              <a href="{{ path('acts_camdram_diary') }}">Diary</a><br/>
+                <a href="{{ path('get_auditions') }}">Vacancies</a><br/>
               <a href="{{ path('get_societies') }}">Societies</a><br/>
               <a href="{{ path('get_venues') }}">Venues</a><br/>
             </div>

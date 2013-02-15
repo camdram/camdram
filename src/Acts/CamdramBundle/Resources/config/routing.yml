@@ -6,6 +6,9 @@ acts_camdram_admin_res:
 acts_camdram_default:
     resource: "routing/default.yml"
     prefix: /
+acts_camdram_diary:
+    resource: "routing/diary.yml"
+    prefix: /diary
 acts_camdram_development:
     resource: "routing/development.yml"
     prefix: /development

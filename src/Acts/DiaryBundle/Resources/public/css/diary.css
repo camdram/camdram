@@ -1,0 +1,65 @@
+.diary-week:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+ul.diary-header {
+    list-style:none;
+    margin:0;
+    clear:both;
+}
+
+ul.diary-header > li {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width:14.28%;
+    float:left;
+    text-align: center;
+    font-weight:bold;
+    font-size:0.8em;
+}
+
+.diary-row {
+    clear:both;
+    padding-top:2px;
+}
+
+.diary-item {
+    border:1px solid  #ddd;
+    background: #fafafa;
+
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    float:left;
+    padding:3px;
+}
+
+.diary-item .diary-time {
+    font-weight:bold;
+}
+
+.diary-item .diary-venue {
+    float:right;
+    font-style:italic;
+    font-size:0.7em;
+}
+
+.diary-1-days, .diary-1-day { width:14.28%; }
+.diary-2-days { width: 28.57% }
+.diary-3-days { width: 42.85% }
+.diary-4-days { width: 57.14% }
+.diary-5-days { width: 71.42% }
+.diary-6-days { width: 85.71% }
+.diary-7-days { width: 100% }
+
+.diary-skip-left-1 { margin-left: 14.28% }
+.diary-skip-left-2 { margin-left: 28.57% }
+.diary-skip-left-3 { margin-left: 42.85% }
+.diary-skip-left-4 { margin-left: 57.14% }
+.diary-skip-left-5 { margin-left: 71.42% }
+.diary-skip-left-6 { margin-left: 85.71% }

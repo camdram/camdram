@@ -31,6 +31,8 @@ class Performance
      */
     private $show;
 
+    private $name;
+
     /**
      * @var \DateTime
      *
@@ -341,4 +343,5 @@ class Performance
 
         return $entries;
     }
+
 }

@@ -6,7 +6,7 @@ use Acts\DiaryBundle\Diary\Diary;
 class DiaryFactory
 {
 
-    public static function create()
+    public function createDiary()
     {
         return new Diary;
     }

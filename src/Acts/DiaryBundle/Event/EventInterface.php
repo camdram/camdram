@@ -1,5 +1,5 @@
 <?php
-namespace Acts\DiaryBundle\Diary;
+namespace Acts\DiaryBundle\Event;
 
 interface EventInterface
 {
@@ -10,4 +10,8 @@ interface EventInterface
     public function getStartTime();
 
     public function getEndTime();
+
+    public function getLink();
+
+    public function getVenueLink();
 }

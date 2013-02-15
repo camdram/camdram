@@ -1,20 +1,35 @@
 <?php
 namespace Acts\DiaryBundle\Diary;
 
-use Acts\DiaryBundle\Diary\EventInterface;
+use Acts\DiaryBundle\Event\EventInterface;
 
 class Diary
 {
-    private $weeks;
+    private $events = array();
+
+    private $start_date;
+
+    private $end_date;
 
     public function addEvent(EventInterface $event)
     {
-        //Create a new week if necessary
-        //Add event to appropriate week
+        $this->events[] = $event;
     }
 
-    public function getWeeks()
+    public function setDateRange(\DateTime $start_date, \DateTime $end_date)
     {
-        return $this->weeks;
+        $this->start_date = $start_date;
+        $this->end_date = $end_date;
+    }
+
+    public function createView()
+    {
+        $view = new DiaryView();
+        if ($this->start_date && $this->end_date) {
+            $view->setDateRange($this->start_date, $this->end_date);
+        }
+        $view->addEvents($this->events);
+        $view->sort();
+        return $view;
     }
 }

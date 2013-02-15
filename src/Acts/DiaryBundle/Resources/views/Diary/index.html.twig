@@ -1,6 +1,28 @@
-<p>Sample diary</p>
 {% for week in diary.weeks %}
-    {% for event in week.events %}
-
+    <div class="diary-week">
+    <ul class="diary-header">
+    {% for date in week.headerDates %}
+        <li>{{ date | date('D j M') }}</li>
     {% endfor %}
+    </ul>
+
+    {% for row in week.rows %}
+        <div class="diary-row">
+        {% set last_index = 0 %}
+        {% for item in row.items %}
+        <div class="diary-item diary-{{ item.numberOfDays }}-days{% if item.startIndex != last_index + 1 %} diary-skip-left-{{ item.startIndex - last_index }}{% endif %}">
+            <span class="diary-time">{{ item.startAt | date('g:ia') }}{% if item.endAt %}-{{ item.endAt | date('g:ia') }}{% endif %}</span>
+            {% if item.event.link %}<a href="{{ item.event.link }}">{{ item.event.name }}</a>
+            {% else %}{{ item.name }}{% endif %}
+            {% if item.event.venue %}<span class="diary-venue">
+                    {% if item.event.venueLink %}<a href="{{ item.event.venueLink }}">{{ item.event.venue }}</a>
+                    {% else %}{{ item.event.venue }}
+                    {% endif %}
+            </span>{% endif %}
+        </div>
+         {% set last_index = item.endIndex %}
+        {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
 {% endfor %}

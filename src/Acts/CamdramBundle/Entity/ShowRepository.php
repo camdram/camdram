@@ -30,4 +30,13 @@ class ShowRepository extends EntityRepository
         return current($result);
     }
 
+    public function findByTimePeriod($id)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.time_periods', 'p')
+        ->where('p.id = :id')
+            ->setParameter('id', $id);
+        return $qb->getQuery()->getResult();
+    }
+
 }

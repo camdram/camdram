@@ -13,12 +13,20 @@
 <div class="row">
     <div class="nine columns">
         <dl class="tabs contained">
-            <dd class="active"><a href="#thisWeek">This week</a></dd>
-            <dd><a href="#nextWeek">Next week</a></dd>
+            {% for period in periods %}
+            <dd{% if loop.first %} class="active"{% endif %}>
+                <a href="#period{{ period.id }}">
+                {% if loop.first %}{{ period.name }}
+                {% else %}{{ period.shortName }}
+                {% endif %}
+                </a>
+            </dd>
+            {% endfor %}
         </dl>
         <ul class="tabs-content contained">
-            <li class="active" id="thisWeekTab">{% render url('acts_camdram_homepage_this_week') %}</li>
-            <li id="nextWeekTab">{% render url('acts_camdram_homepage_next_week') %}</li>
+            {% for period in periods %}
+            <li{% if loop.first %} class="active" {% endif %} id="period{{ period.id }}Tab">{% render url('acts_camdram_homepage_period', {id: period.id}) %}</li>
+            {% endfor %}
         </ul>
     </div>
 
