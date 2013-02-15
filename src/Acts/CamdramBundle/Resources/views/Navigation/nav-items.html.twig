@@ -1,0 +1,3 @@
+{% for id, item in items %}
+<li{% if id == current_id %} class="active"{% endif %}><a href="{% if item.route is defined %}{{ path(item.route) }}{% else %}#{% endif %}">{{ item.text }}</a></li>
+{% endfor %}

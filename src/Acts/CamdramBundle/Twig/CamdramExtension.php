@@ -27,7 +27,7 @@ class CamdramExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'entity_toolbar' => new \Twig_Function_Method($this, 'entityToolbar', array('is_safe' => array('html'), 'needs_environment' => true))
+            'entity_toolbar' => new \Twig_Function_Method($this, 'entityToolbar', array('is_safe' => array('html'), 'needs_environment' => true)),
         );
     }
 
@@ -70,4 +70,5 @@ class CamdramExtension extends \Twig_Extension
             'label' => $label,
         ));
     }
+
 }

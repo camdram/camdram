@@ -1,3 +1,4 @@
+{% if current_navigation_id is not defined %}{% set current_navigation_id = '' %}{% endif %}
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -44,9 +45,11 @@
 <div class="row">
 
       <ul class="left">
-        <li><a href="#">About Us</a></li>
-        <li><a href="{{ path('acts_camdram_development') }}">Development</a></li>
-        <li><a href="#">Contact Us</a></li>
+          {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
+              'about-us': {'text': 'About Us'},
+              'development': {'text': 'Development', 'route': 'acts_camdram_development'},
+              'contact-us': {'text': 'Contact Us'},
+          }, current_id: current_navigation_id} %}
       </ul>
 
       <ul class="right">
@@ -112,11 +115,13 @@
 
   <nav>
       <ul class="nav-bar">
-          <li class="active"><a href="{{ path('acts_camdram_homepage') }}">Home</a></li>
-          <li><a href="{{ path('acts_camdram_diary') }}">Diary</a></li>
-          <li><a href="{{ path('get_auditions') }}">Vacancies</a></li>
-          <li><a href="{{ path('get_societies') }}">Societies</a></li>
-          <li><a href="{{ path('get_venues') }}">Venues</a></li>
+          {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
+          'home': {'text': 'Home', 'route': 'acts_camdram_homepage'},
+          'diary': {'text': 'Diary', 'route': 'acts_camdram_diary'},
+          'vacancies': {'text': 'Vacancies', 'route': 'get_auditions'},
+          'societies': {'text': 'Societies', 'route': 'get_societies'},
+          'venues': {'text': 'Venues', 'route': 'get_venues'},
+          }, current_id: current_navigation_id} %}
       </ul>
   </nav>
 
