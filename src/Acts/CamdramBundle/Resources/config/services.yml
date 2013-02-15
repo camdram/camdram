@@ -11,6 +11,10 @@ services:
     acts.camdram.service.text:
         class: Acts\CamdramBundle\Service\TextService
 
+    acts.camdram.diary_helper:
+            class: Acts\CamdramBundle\Service\DiaryHelper
+            arguments: [@router]
+
     acts.camdram.type.college:
         class: Acts\CamdramBundle\Form\Type\CollegeType
         arguments: ~

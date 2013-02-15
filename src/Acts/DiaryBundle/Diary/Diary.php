@@ -16,6 +16,14 @@ class Diary
         $this->events[] = $event;
     }
 
+    public function addEvents(array $events)
+    {
+        foreach ($events as $event) {
+            $this->addEvent($event);
+        }
+    }
+
+
     public function setDateRange(\DateTime $start_date, \DateTime $end_date)
     {
         $this->start_date = $start_date;

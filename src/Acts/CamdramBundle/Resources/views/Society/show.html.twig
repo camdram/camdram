@@ -19,12 +19,8 @@
             {% endfor %}
         </ul>
 
-        {% for show in society.shows %}
-        <li><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></li>
-            {% for p in show.performances %}
-            {{ p.startdate|date("m/d/Y") }}
-            {% endfor %}
-        {% endfor %}
+        <h5>Shows</h5>
+        {% render url('get_society_shows', {identifier: society.slug}) %}
     </div>
   </div>
 

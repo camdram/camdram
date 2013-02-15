@@ -129,4 +129,17 @@ class VenueController extends AbstractRestController
     {
         return 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='.$letter.'|4499DD|000000';
     }
+
+    public function getShowsAction($identifier)
+    {
+        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $shows = $show_repo->getUpcomingByVenue($this->getEntity($identifier));
+
+        $diary = $this->get('acts.diary.factory')->createDiary();
+
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromShows($shows);
+        $diary->addEvents($events);
+
+        return $diary;
+    }
 }

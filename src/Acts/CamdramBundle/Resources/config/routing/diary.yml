@@ -3,5 +3,5 @@ acts_camdram_diary:
     defaults: { _controller: ActsCamdramBundle:Diary:index }
 
 acts_camdram_diary_period:
-    pattern:  /period
-    defaults: { _controller: ActsCamdramBundle:Diary:period }
+    pattern:  /period/{id}
+    defaults: { _controller: ActsCamdramBundle:Diary:periodDiary }

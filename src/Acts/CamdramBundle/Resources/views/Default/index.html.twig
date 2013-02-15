@@ -25,7 +25,9 @@
         </dl>
         <ul class="tabs-content contained">
             {% for period in periods %}
-            <li{% if loop.first %} class="active" {% endif %} id="period{{ period.id }}Tab">{% render url('acts_camdram_homepage_period', {id: period.id}) %}</li>
+            <li{% if loop.first %} class="active" {% endif %} id="period{{ period.id }}Tab">
+                {% render url('acts_camdram_diary_period', {id: period.id}) with {}, {'standalone': true} %}
+            </li>
             {% endfor %}
         </ul>
     </div>

@@ -29,7 +29,7 @@ class DiaryController extends FOSRestController
         return $this->render('ActsCamdramBundle:Diary:period.html.twig', array('period' => $period));
     }
 
-    public function diaryAction($id)
+    public function periodDiaryAction($id)
     {
         /** @var $diary \Acts\DiaryBundle\Diary\Diary */
         $diary = $this->get('acts.diary.factory')->createDiary();
@@ -40,23 +40,10 @@ class DiaryController extends FOSRestController
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
         $shows = $repo->findByTimePeriod($id);
-        foreach($shows as $show) {
-            foreach ($show->getPerformances() as $perf) {
-                $event = new MultiDayEvent();
-                $event->setName($show->getName());
-                $event->setStartDate($perf->getStartDate());
-                $event->setEndDate($perf->getEndDate());
-                $event->setStartTime($perf->getTime());
-                $event->setVenue($perf->getVenue());
 
-                $event->setLink($this->generateUrl('get_show', array('identifier' => $show->getSlug())));
-                if ($show->getVenue() && $perf->getVenue() == $show->getVenue()->getName()) {
-                    $event->setVenueLink($this->generateUrl('get_venue', array('identifier' => $show->getVenue()->getSlug())));
-                }
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromShows($shows);
+        $diary->addEvents($events);
 
-                $diary->addEvent($event);
-            }
-        }
 
         return $diary;
     }

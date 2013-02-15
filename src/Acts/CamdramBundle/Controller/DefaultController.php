@@ -19,38 +19,6 @@ class DefaultController extends Controller
         return $this->render('ActsCamdramBundle:Default:index.html.twig', array('news' => $news, 'periods' => $periods));
     }
 
-    public function periodAction($id)
-    {
-        /** @var $diary \Acts\DiaryBundle\Diary\Diary */
-        $diary = $this->get('acts.diary.factory')->createDiary();
-
-        $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $period = $time_repo->findOneById($id);
-        $diary->setDateRange($period->getStartAt(), $period->getEndAt());
-
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $shows = $repo->findByTimePeriod($id);
-        foreach($shows as $show) {
-            foreach ($show->getPerformances() as $perf) {
-                $event = new MultiDayEvent();
-                $event->setName($show->getName());
-                $event->setStartDate($perf->getStartDate());
-                $event->setEndDate($perf->getEndDate());
-                $event->setStartTime($perf->getTime());
-                $event->setVenue($perf->getVenue());
-
-                $event->setLink($this->generateUrl('get_show', array('identifier' => $show->getSlug())));
-                if ($show->getVenue() && $perf->getVenue() == $show->getVenue()->getName()) {
-                    $event->setVenueLink($this->generateUrl('get_venue', array('identifier' => $show->getVenue()->getSlug())));
-                }
-
-                $diary->addEvent($event);
-            }
-        }
-
-        return $diary;
-    }
-
     public function statisticsAction()
     {
         $now = new \DateTime;

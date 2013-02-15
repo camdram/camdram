@@ -45,4 +45,17 @@ class SocietyController extends AbstractRestController
 
         return $view;
     }
+
+    public function getShowsAction($identifier)
+    {
+        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $shows = $show_repo->getUpcomingBySociety($this->getEntity($identifier));
+
+        $diary = $this->get('acts.diary.factory')->createDiary();
+
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromShows($shows);
+        $diary->addEvents($events);
+
+        return $diary;
+    }
 }

@@ -68,7 +68,9 @@ class ViewPaginatorListener
             }
         }
         elseif ($view instanceof Diary) {
-            $event->setResponse($this->diary_renderer->render($view));
+            $response = $this->diary_renderer->render($view);
+            $response->setSharedMaxAge(60);
+            $event->setResponse($response);
         }
     }
 }

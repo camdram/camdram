@@ -1,2 +1,2 @@
 <h5>{{ period.longName }}</h5>
-{% render "ActsCamdramBundle:Diary:periodDiary" with {id: period.id} %}
+{% render url('acts_camdram_diary_period', {id: period.id}) with {}, {'standalone': true} %}

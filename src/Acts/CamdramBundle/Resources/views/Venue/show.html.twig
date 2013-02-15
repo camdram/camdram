@@ -24,14 +24,12 @@
      </div>
 
      <div class="row">
-         <div class="seven columns">
+         <div class="eight columns">
              <h5>Shows</h5>
-             {% for show in venue.shows %}
-                 <li><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></li>
-             {% endfor %}
+             {% render url('get_venue_shows', {identifier: venue.slug}) %}
          </div>
 
-         <div class="five columns" id="news_container">
+         <div class="four columns" id="news_container">
              <h5>
                  Latest News
                  <ul class="link-list right news_social_links">

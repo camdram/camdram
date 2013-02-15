@@ -344,4 +344,21 @@ class Performance
         return $entries;
     }
 
+    public function createEvent()
+    {
+        $event = new MultiDayEvent();
+        $event->setName($show->getName());
+        $event->setStartDate($perf->getStartDate());
+        $event->setEndDate($perf->getEndDate());
+        $event->setStartTime($perf->getTime());
+        $event->setVenue($perf->getVenue());
+
+        $event->setLink($this->generateUrl('get_show', array('identifier' => $show->getSlug())));
+        if ($show->getVenue() && $perf->getVenue() == $show->getVenue()->getName()) {
+            $event->setVenueLink($this->generateUrl('get_venue', array('identifier' => $show->getVenue()->getSlug())));
+        }
+
+        $diary->addEvent($event);
+    }
+
 }

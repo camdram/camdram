@@ -1,9 +1,6 @@
 acts_camdram_homepage:
     pattern:  /
     defaults: { _controller: ActsCamdramBundle:Default:index }
-acts_camdram_homepage_period:
-    pattern:  /home/period/{id}
-    defaults: { _controller: ActsCamdramBundle:Default:period }
 acts_camdram_homepage_statistics:
     pattern:  /home/statistics
     defaults: { _controller: ActsCamdramBundle:Default:statistics }
