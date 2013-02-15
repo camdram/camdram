@@ -203,6 +203,10 @@ section {
     margin:auto;
 }
 
+section ul {
+    margin-left:1.5em;
+}
+
 footer #sitemap {
     background:#fff;
     max-width:960px;
@@ -237,6 +241,16 @@ footer #copyright p {
 }
 #home_statistics strong {
     font-size:150%;
+}
+
+#home_vacancies ul {
+    border-top:1px solid #eee;
+    list-style:none;
+    margin:0;
+}
+#home_vacancies li {
+    border-bottom:1px solid #eee;
+    padding:5px 0;
 }
 
 /*---------------------------------------

@@ -29,8 +29,10 @@
   
 <div class="row">
     <div class="five columns">
-      {% render url('acts_camdram_homepage_vacancies') with {}, {'standalone': true} %}
-      <h5>Latest on camdram.net</h5>
+        <div id="home_vacancies">
+            {% render url('acts_camdram_homepage_vacancies') with {}, {'standalone': true} %}
+        </div>
+
         <div id="this_week">
           <h5>This week...</h5>
             <dl class="tabs contained three-up">
