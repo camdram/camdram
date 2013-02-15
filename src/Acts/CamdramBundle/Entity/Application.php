@@ -278,4 +278,3 @@ class Application
         return $this->society;
     }
 }
-

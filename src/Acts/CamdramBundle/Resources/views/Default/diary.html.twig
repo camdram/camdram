@@ -1,0 +1,14 @@
+<dl class="tabs contained">
+    {% for period in time_periods %}
+    <dd{% if loop.first %} class="active"{% endif %}><a href="#period{{ period.id }}">{{ period.shortName }}</a></dd>
+    {% endfor %}
+</dl>
+<ul class="tabs-content contained">
+    {% for period in time_periods %}
+        <li{% if loop.first %} class="active"{% endif %} id="period{{ period.id }}Tab">
+            {% for show in period.shows %}
+                <p>{{ show.name }}</p>
+            {% endfor %}
+        </li>
+    {% endfor %}
+</ul>

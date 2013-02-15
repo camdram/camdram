@@ -1,0 +1,45 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Diary{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <!-- div class="twelve columns" -->
+    {% for period in diary %}
+		{% set headerDate = period.startAt %}
+		<table>
+		<thead>
+		<tr>
+		<td colspan=7>
+			{{ period.name }}
+		</td>
+		</tr>
+		<tr>
+		{% for k in range(0,6) %}
+			<th>{{ headerDate|date('D d M') }}</th>
+			{% set headerDate = headerDate|date_modify('+1 day') %}
+		{% endfor %}
+		</tr>
+		</thead>
+
+		<tbody>
+		{# TODO add rendering of application deadlines and auditions #}
+		{#% render "ActsCamdramBundle:Audition:weeksAuditions" with {'startOfWeek': startOfWeek} %#}
+		{% render "ActsCamdramBundle:Diary:period" with {id: period.id} %}
+		</tr>
+		</tbody>
+		</table>
+    {% endfor %}
+    <!-- div -->
+	<hr>
+	<div class="row">
+	<div class="six columns">
+
+	</div>
+	<div class="six columns">
+	</div>
+	</div>
+</div>
+
+{% endblock %}

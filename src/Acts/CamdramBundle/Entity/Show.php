@@ -176,6 +176,27 @@ class Show extends Entity
      */
     private $performances;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="start_at", type="datetime", nullable=true)
+     */
+    private $start_at;
+
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="TimePeriod", inversedBy="shows")
+     * @ORM\JoinTable(name="acts_shows_time_periods_links")
+     */
+    private $time_periods;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="end_at", type="datetime", nullable=true)
+     */
+    private $end_at;
+
     protected $entity_type = 'show';
 
     /**
@@ -708,5 +729,84 @@ class Show extends Entity
     public function getEntityType()
     {
         return 'show';
+    }
+
+    /**
+     * Set start_at
+     *
+     * @param \DateTime $startAt
+     * @return Show
+     */
+    public function setStartAt($startAt)
+    {
+        $this->start_at = $startAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get start_at
+     *
+     * @return \DateTime 
+     */
+    public function getStartAt()
+    {
+        return $this->start_at;
+    }
+
+    /**
+     * Set end_at
+     *
+     * @param \DateTime $endAt
+     * @return Show
+     */
+    public function setEndAt($endAt)
+    {
+        $this->end_at = $endAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get end_at
+     *
+     * @return \DateTime 
+     */
+    public function getEndAt()
+    {
+        return $this->end_at;
+    }
+
+    /**
+     * Add time_periods
+     *
+     * @param \Acts\CamdramBundle\Entity\TimePeriod $timePeriods
+     * @return Show
+     */
+    public function addTimePeriod(\Acts\CamdramBundle\Entity\TimePeriod $timePeriods)
+    {
+        $this->time_periods[] = $timePeriods;
+    
+        return $this;
+    }
+
+    /**
+     * Remove time_periods
+     *
+     * @param \Acts\CamdramBundle\Entity\TimePeriod $timePeriods
+     */
+    public function removeTimePeriod(\Acts\CamdramBundle\Entity\TimePeriod $timePeriods)
+    {
+        $this->time_periods->removeElement($timePeriods);
+    }
+
+    /**
+     * Get time_periods
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTimePeriods()
+    {
+        return $this->time_periods;
     }
 }

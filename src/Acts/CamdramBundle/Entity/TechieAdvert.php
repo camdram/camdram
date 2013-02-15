@@ -340,4 +340,3 @@ class TechieAdvert
         return $this->show;
     }
 }
-

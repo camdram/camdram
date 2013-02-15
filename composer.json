@@ -27,7 +27,8 @@
         "egeloen/google-map-bundle" : "1.0.*",
         "exercise/elastica-bundle" : "dev-master",
         "pagerfanta/pagerfanta": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "1.1.*"
+        "friendsofsymfony/jsrouting-bundle": "1.1.*",
+        "sabre/vobject": "2.0.*"
 
     },
     "scripts": {
