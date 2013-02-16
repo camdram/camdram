@@ -40,4 +40,10 @@ class TextService
         return preg_replace("/[\r\n]+/", '', $text);
     }
 
+    public function truncate($text, $length)
+    {
+        if (strlen($text) < $length) return $text;
+        else return substr($text, 0, $length).'&hellip;';
+    }
+
 }

@@ -7,3 +7,6 @@ acts_camdram_homepage_statistics:
 acts_camdram_homepage_vacancies:
     pattern:  /home/vacancies
     defaults: { _controller: ActsCamdramBundle:Default:vacancies }
+acts_camdram_homepage_historic_data:
+    pattern:  /home/historic_data
+    defaults: { _controller: ActsCamdramBundle:Default:historicData }

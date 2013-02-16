@@ -44,18 +44,8 @@
             {% render url('acts_camdram_homepage_vacancies') with {}, {'standalone': true} %}
         </div>
 
-        <div id="this_week">
-          <h5>This week...</h5>
-            <dl class="tabs contained three-up">
-                <dd class="active"><a href="#lastYear">last year</a></dd>
-                <dd><a href="#fiveYearsAgo">5 years ago</a></dd>
-                <dd><a href="#tenYearsAgo">10 years ago</a></dd>
-            </dl>
-            <ul class="tabs-content contained">
-                <li class="active" id="lastYearTab">A show</li>
-                <li id="fiveYearsAgoTab">Another show</li>
-                <li id="tenYearsAgoTab">Yet another show</li>
-            </ul>
+        <div id="home_historic">
+            {% render url('acts_camdram_homepage_historic_data') with {}, {'standalone': true} %}
         </div>
     </div>
     <div class="seven columns">

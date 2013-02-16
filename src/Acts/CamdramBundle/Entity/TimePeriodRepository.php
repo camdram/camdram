@@ -34,6 +34,14 @@ class TimePeriodRepository extends EntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
+    public function getTimePeriod(\DateTime $date)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.start_at < :date')->andWhere('p.end_at >= :date')
+            ->setParameter('date', $date)
+            ->getQuery()->getOneOrNullResult();
+    }
+
     public function getTimePeriods($start, $end)
     {
 

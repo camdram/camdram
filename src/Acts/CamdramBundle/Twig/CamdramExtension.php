@@ -21,6 +21,7 @@ class CamdramExtension extends \Twig_Extension
             'camdram_markdown' => new \Twig_Filter_Method($this, 'camdramMarkdown', array('is_safe' => array('html'))),
             'detect_links' => new \Twig_Filter_Method($this, 'detectLinks'),
             'strip_new_lines' => new \Twig_Filter_Method($this, 'stripNewLines'),
+            'truncate' => new \Twig_Filter_Method($this, 'truncate', array('pre_escape' => 'html', 'is_safe' => array('html'))),
         );
     }
 
@@ -44,6 +45,11 @@ class CamdramExtension extends \Twig_Extension
     public function stripNewLines($text)
     {
         return $this->textService->stripNewLines($text);
+    }
+
+    public function truncate($text, $length)
+    {
+        return $this->textService->truncate($text, $length);
     }
 
     public function getName()

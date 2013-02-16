@@ -39,6 +39,18 @@ class ShowRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findMostInterestingByTimePeriod($id, $limit)
+    {
+        //For now, we define 'most interesting' as 'lasts the longest period of time'
+        $qb = $this->createQueryBuilder('s');
+        $qb->leftJoin('s.time_periods', 'p')
+            ->where('p.id = :id')
+            ->setParameter('id', $id)
+            ->orderBy('s.end_at - s.start_at', 'DESC')
+            ->setMaxResults($limit);
+        return $qb->getQuery()->getResult();
+    }
+
     public function getUpcomingByVenue(Venue $venue)
     {
         $query = $this->createQueryBuilder('s')

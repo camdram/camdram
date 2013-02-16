@@ -60,4 +60,23 @@ class DefaultController extends Controller
         return $response;
 
     }
+
+    public function historicDataAction()
+    {
+        $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
+        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $data = array();
+
+        foreach (array(1, 2, 5) as $years) {
+            $period = $time_repo->getTimePeriod(new \DateTime("-$years years"));
+            if ($period) {
+                $shows = $show_repo->findMostInterestingByTimePeriod($period->getId(), 5);
+                if (count($shows) > 0) $data[$years] = $shows;
+            }
+        }
+
+        $response = $this->render('ActsCamdramBundle:Default:historic-data.html.twig', array('data' => $data));
+        $response->setSharedMaxAge(3600);
+        return $response;
+    }
 }

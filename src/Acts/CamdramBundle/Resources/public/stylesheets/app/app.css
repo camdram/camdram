@@ -230,9 +230,7 @@ footer #copyright p {
    Home Page
 ----------------------------------------- */
 
-#this_week dd a {
-    padding: 0 5px;
-}
+
 
 #home_statistics {
     text-align:right;
@@ -251,6 +249,23 @@ footer #copyright p {
 #home_vacancies li {
     border-bottom:1px solid #eee;
     padding:5px 0;
+}
+
+#home_historic dd a {
+    padding: 0 5px;
+}
+
+#home_historic ul {
+    list-style:none;
+    margin:0;
+}
+
+#home_historic h6 {
+    margin-bottom:0;
+}
+
+#home_historic .show_info {
+    font-style:italic;
 }
 
 /*---------------------------------------

@@ -313,7 +313,12 @@ class Show extends Entity
      */
     public function getVenueName()
     {
-        return $this->venue_name;
+        if ($this->venue_name) {
+            return $this->venue_name;
+        }
+        elseif ($this->venue) {
+            return $this->venue->getName();
+        }
     }
 
     /**

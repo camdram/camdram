@@ -24,7 +24,10 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Fetching calendar data...');
+        $output->writeln('Creating time periods from existing term dates');
+        $this->createFromTermDates($output);
+
+        $output->writeln('Fetching ical file...');
         list($terms, $min, $max) = $this->getCalendarData();
         $output->writeln('Done');
         $last_date = null;
@@ -55,6 +58,8 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
 
                 $num = 0;
                 $date = clone $term_start;
+
+                if ($term_name == 'Lent') $term['end']->modify('+1 week');
 
                 while ($date < $term['end']) {
                     $start = clone $date;
@@ -178,6 +183,48 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
 
         }
         return array($terms, $min_year, $max_year);
+    }
+
+    private function createFromTermDates(OutputInterface $output)
+    {
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $term_repo = $em->getRepository('ActsCamdramBundle:TermDate');
+        $term_dates = $term_repo->findAll();
+        $last_date = null;
+        $last_vaction = null;
+
+        foreach ($term_dates as $term_date) {
+            $parts = explode(' ',$term_date->getName());
+            $term = $parts[0];
+            if ($term == 'Michaelmas' || $term == 'Lent' || $term == 'Easter') {
+                $year = $term_date->getStartDate()->format('Y');
+                $start = $term_date->getStartDate()->modify('-1 day');
+                $end = $term_date->getEndDate()->modify('-1 day');
+
+                if ($last_date != null) {
+                    $holiday_name = $last_vacation;
+                    $parts = explode(' ', $holiday_name);
+                    $holiday_name = $parts[0];
+                    $holiday_year = $parts[2];
+
+                    $this->createTerm($holiday_name, $holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year,
+                        $last_date, $start, $output, true);
+                }
+
+                $date = clone $start;
+                for ($num = $term_date->getFirstWeek(); $num <= $term_date->getLastWeek(); $num++) {
+                    $start = clone $date;
+                    $date->modify('+1 week');
+                    $end = clone $date;
+                    $this->createTerm('Week '.$num, $term.' Week '.$num, $term.' Term '.$year.' Week '.$num,
+                        $start, $end, $output);
+                }
+
+                $last_date = clone $date;
+                $last_vacation = $term_date->getVacation();
+                $this->createGroup($term. ' Term', $term.' Term '.$year, $start, $end, $output);
+            }
+        }
     }
 
 }
