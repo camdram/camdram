@@ -102,13 +102,13 @@ form textarea {
     padding:3px;
     margin-right: 5px;
     font-size:10px;
-    background: #0070a3;
+    background: #fe5c1f;
     color:#fff;
     border-radius: 3px;
 }
 
 .entity_type {
-    background: #0070a3;
+    background: #fe5c1f;
     color:#fff;
     border-radius: 3px;
     padding:4px;
@@ -170,6 +170,10 @@ nav .nav-bar {
     background:#000000;
 }
 
+header {
+    position:relative;
+}
+
 header .logo {
     background:url('../../images/header_separator.png') center right no-repeat;
     height:80px;
@@ -180,21 +184,53 @@ header .search {
     background:url('../../images/header_separator2.png') center right no-repeat #fff;
 }
 
+#search_form {
+    border: 1px solid black;
+    border-radius: 20px;
+    box-shadow: 0px 0px 4px #888;
+    background:#fff;
+    position:absolute;
+    right:60px;
+    top:20px;
+    z-index:1;
+}
+
+#search_form .ui-autocomplete {
+    position:static;
+    width:auto;
+    border:none;
+    background:#fff;
+    margin:8px;
+}
+
+#search_form .ui-autocomplete a {
+    border-top:1px solid #ddd;
+    padding:3px;
+    border-radius:0;
+}
+
+#search_form .ui-autocomplete a.ui-state-focus {
+    background:#f0f0f0;
+    border:none;
+    border-top:1px solid #ddd;
+    color:#000;
+    margin:0;
+}
+
 header .search input {
     border:none;
-    height:28px;
-    margin: 22px 0 0 22px;
-    padding:5px 15px 5px 45px;
-    width: 562px;
+    padding:0 15px 0 32px;
+    margin: 3px 3px 3px 12px;
+    width:530px;
     outline:none;
-    background:url('../../images/search_background.png') center no-repeat;
+    background:url('../../images/search.png') left center no-repeat;
     box-shadow:none;
     -webkit-box-shadow:none;
     -moz-box-shadow:none;
 }
 header .search input:focus {
     outline:none;
-    background:url('../../images/search_background.png') center no-repeat;
+    background:url('../../images/search.png') left center no-repeat;
     border:none;
 }
 

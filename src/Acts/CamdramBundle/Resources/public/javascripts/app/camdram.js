@@ -108,6 +108,9 @@
             delay: 100,
             select: function(item) {},
             display: function(li, item) {},
+            open: function(e, ui) {},
+            close: function(e, ui) {},
+            appendTo: null
         }, options);
 
         var cache = {};
@@ -140,7 +143,10 @@
                     $self.val( ui.item.name );
                     options.select.apply($self, [ui.item]);
                     return false;
-                }
+                },
+                appendTo: options.appendTo,
+                open: options.open,
+                close: options.close
 
             }).data( "autocomplete" )._renderItem = function( ul, item ) {
                 ul.attr('id', 'main_search_autocomplete');
@@ -202,8 +208,11 @@
 
     $('.news_media').newsFeedMedia();
     $('#main_search_box').camdramAutocomplete({
-       select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
-       display: function(li, item) { li.children().prepend('<small>'+item.entity_type+'</small>') }
+        select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
+        display: function(li, item) { li.children().prepend('<small>'+item.entity_type+'</small>') },
+        open: function(e, ui) { $('#search_form .ui-autocomplete').attr('style','').hide().slideDown(200); },
+        close: function(e, ui) { $('#search_form .ui-autocomplete').show().slideUp(200); },
+        appendTo: '#search_form'
     });
 
 })(jQuery, window);
