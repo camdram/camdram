@@ -262,6 +262,11 @@ footer #copyright p {
     padding:10px 0;
 }
 
+/* Override the default panel properties. */
+.panel {
+    background:transparent;
+}
+
 /* -----------------------------------------
    Home Page
 ----------------------------------------- */
