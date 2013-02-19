@@ -9,7 +9,7 @@
     {% endif %}
         <p>
             <strong><a href="{{ path('get_entity', {id: item.entity.id}) }}">{{ item.entity.name }}</a> posted:</strong>
-            {{ item.body }}
+            {{ item.body | detect_links }}
         </p>
         <p><em>{{ item.getPostedAt() | date('jS F Y g:i a') }}</em></p>
         {% for link in item.links %}

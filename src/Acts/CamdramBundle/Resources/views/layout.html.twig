@@ -134,30 +134,31 @@
   <!-- Footer --> 
   <!-- We probably should be generating the sitemap from Symfony's route in the future -->
   <footer>
-      <div id="sitemap">
-          <div class="row">
-            <div class="four columns">
-              <h5>Site Map</h5>
-              <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
-              <a href="{{ path('acts_camdram_diary') }}">Diary</a><br/>
-                <a href="{{ path('get_auditions') }}">Vacancies</a><br/>
-              <a href="{{ path('get_societies') }}">Societies</a><br/>
-              <a href="{{ path('get_venues') }}">Venues</a><br/>
-            </div>
-            <div class="four columns">
-              <h5>Vacant Positions</h5>
-              <a href="#">Technical</a><br/>
-              <a href="#">Actors</a><br/>
-              <a href="#">Directors/Producers</a><br/>
-            </div>
-            <div class="four columns">
-              <h5>About</h5>
-              <a href="#">Privacy policy</a><br/>
-              <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
-            </div>
-          </div>
-      </div>
+
       <div id="copyright">
+          <div id="sitemap">
+              <div class="row">
+                  <div class="four columns">
+                      <h5>Site Map</h5>
+                      <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
+                      <a href="{{ path('acts_camdram_diary') }}">Diary</a><br/>
+                      <a href="{{ path('get_auditions') }}">Vacancies</a><br/>
+                      <a href="{{ path('get_societies') }}">Societies</a><br/>
+                      <a href="{{ path('get_venues') }}">Venues</a><br/>
+                  </div>
+                  <div class="four columns">
+                      <h5>Vacant Positions</h5>
+                      <a href="#">Technical</a><br/>
+                      <a href="#">Actors</a><br/>
+                      <a href="#">Directors/Producers</a><br/>
+                  </div>
+                  <div class="four columns">
+                      <h5>About</h5>
+                      <a href="#">Privacy policy</a><br/>
+                      <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
+                  </div>
+              </div>
+          </div>
             <p>&copy; Association of Cambridge Theatre Societies and contributing groups 2004 &#8212; 2012.
 Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@camdram.net</a>
             </p>
@@ -175,6 +176,7 @@ Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@cam
 {% javascripts
         '@ActsCamdramBundle/Resources/public/javascripts/foundation/*.js'
         '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
+        '@ActsDiaryBundle/Resources/public/js/diary.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
         'js/fos_js_routes.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}

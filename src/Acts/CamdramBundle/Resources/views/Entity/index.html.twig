@@ -10,7 +10,7 @@
     <hr/>
     {% for entity in result.data %}
         <div class="panel">
-            <h5> <div class="entity_type">{{ entity.entityType }}</div>
+            <h5> <div class="entity_type entity_{{ entity.entityType }}">{{ entity.entityType }}</div>
                 <a href="{{ path('get_entity', {id: entity.id}) }}">{{ entity.name }}</a>
             </h5>
             {{ entity.description | strip_new_lines | camdram_markdown | striptags }}

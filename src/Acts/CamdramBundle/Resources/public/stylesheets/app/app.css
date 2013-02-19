@@ -102,18 +102,42 @@ form textarea {
     padding:3px;
     margin-right: 5px;
     font-size:10px;
-    background: #fe5c1f;
-    color:#fff;
     border-radius: 3px;
 }
 
 .entity_type {
     background: #fe5c1f;
-    color:#fff;
     border-radius: 3px;
     padding:4px;
     float:right;
     margin-left:7px;
+    color:#fff;
+}
+
+a .entity_type, a small {
+    color:#fff;
+}
+
+.entity_show {
+    background: #ffe500;
+    color:#333;
+}
+
+a .entity_show {
+    color:#333;
+}
+
+.entity_person {
+    background: #fe5c1f;
+
+}
+
+.entity_society {
+    background: #6a1faa;
+}
+
+.entity_venue {
+    background: #bc001f;
 }
 
 .autocomplete_input {
@@ -192,7 +216,7 @@ header .search {
     position:absolute;
     right:60px;
     top:20px;
-    z-index:1;
+    z-index:99;
 }
 
 #search_form .ui-autocomplete {
@@ -244,10 +268,15 @@ section ul {
 }
 
 footer #sitemap {
-    background:#fff;
+    background:#3a393a;
+    color:#fff;
     max-width:960px;
     margin:auto;
     padding:0 30px 15px 30px;
+}
+
+footer #sitemap h5 {
+    color:#fff;
 }
 
 footer #copyright {

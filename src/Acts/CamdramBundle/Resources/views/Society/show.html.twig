@@ -10,7 +10,7 @@
 
       <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
 
-        {{ society.description | camdram_markdown }}
+        <p>{{ society.description | camdram_markdown }}</p>
 
         <ul>
             {% for item in society.news %}

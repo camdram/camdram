@@ -209,9 +209,10 @@
     $('.news_media').newsFeedMedia();
     $('#main_search_box').camdramAutocomplete({
         select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
-        display: function(li, item) { li.children().prepend('<small>'+item.entity_type+'</small>') },
-        open: function(e, ui) { $('#search_form .ui-autocomplete').attr('style','').hide().slideDown(200); },
-        close: function(e, ui) { $('#search_form .ui-autocomplete').show().slideUp(200); },
+        display: function(li, item) {
+            var type = $('<small>'+item.entity_type+'</small>').addClass('entity_'+item.entity_type);
+            li.children().prepend(type);
+        },
         appendTo: '#search_form'
     });
 

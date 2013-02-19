@@ -26,13 +26,12 @@ class TextService
 
     protected $link_regexes = array(
         '/(http\:\\/\\/[a-zA-Z0-9\-\_\.\\/]+)/'                      =>  '<a href="$1" rel="ext" target="_blank">$1</a>',
-        '/(www\.[a-zA-Z0-9\-\_\.\\/]+)/'                             =>  '<a href="http://$1" rel="ext" target="_blank">$1</a>',
         '/([a-zA-Z0-9\-\_\.]@[a-zA-Z0-9\-\_\]+\.[a-zA-Z0-9\-\_\.])/' =>  '<a href="mailto:$1">$1</a>',
     );
 
     public function detectLinks($text)
     {
-        return preg_replace(array_keys($this->link_regexs), array_values($this->link_regexs), $text);
+        return preg_replace(array_keys($this->link_regexes), array_values($this->link_regexes), $text);
     }
 
     public function stripNewLines($text)

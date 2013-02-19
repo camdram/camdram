@@ -40,7 +40,7 @@ class DiaryRow
         foreach ($this->items as $item) {
             $item_start = $item->getStartIndex();
             $item_end = $item->getEndIndex();
-            if ($start_index < $item_end && $end_index > $item_start) return false;
+            if ($start_index <= $item_end && $end_index >= $item_start) return false;
         }
         return true;
     }
@@ -66,6 +66,8 @@ class DiaryRow
         elseif ($event instanceof MultiDayEventInterface) {
             $start_index = $this->calculateIndex($event->getStartDate());
             $end_index = $this->calculateIndex($event->getEndDate());
+            if ($event->getStartTime() == new \DateTime('2013-02-17 13:45:00')) {
+            }
             return $this->rangeIsFree($start_index, $end_index);
         }
     }
@@ -100,11 +102,12 @@ class DiaryRow
                 $this->items[] = $item2;
             }
             else {
+
                 $start_index = $this->calculateIndex($event->getStartDate());
                 $end_index = $this->calculateIndex($event->getEndDate());
                 $item->setIndex($start_index);
                 $item->setNumberOfDays($end_index - $start_index + 1);
-                $this->items[] = $item;
+                $this->items[$start_index] = $item;
             }
         }
 
@@ -115,6 +118,11 @@ class DiaryRow
         if (!$this->end || $item->getStartAt() > $this->end) {
             $this->end = $item->getStartAt();
         }
+    }
+
+    public function sort()
+    {
+        ksort($this->items);
     }
 
     public function getItems()

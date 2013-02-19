@@ -79,6 +79,9 @@ class Week
     public function sort()
     {
         ksort($this->rows);
+        foreach ($this->rows as $row) {
+            $row->sort();
+        }
     }
 
     public function getHeaderDates()
