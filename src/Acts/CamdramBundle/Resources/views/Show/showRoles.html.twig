@@ -1,0 +1,13 @@
+{% spaceless %}
+{% set current_role = null %}
+{% for role in roles %}
+    {% if role.role != current_role %}
+        {{ current_role is not null ? '<br/>' }}
+        {{ role.role }} - 
+        {% set current_role = role.role %}
+    {% else %}
+        , 
+    {% endif %}
+    <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a>
+{% endfor %}
+{% endspaceless %}
