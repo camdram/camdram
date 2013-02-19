@@ -4,44 +4,39 @@
 
 {% block body %}
 
-<div class="row" xmlns="http://www.w3.org/1999/html">
+<div class="row">
     {% render url('acts_camdram_entity_toolbar', {id: show.id}) %}
-
-    <div class="twelve columns">
+    
+    <div class="twelve columns panel">
+    <div class="four columns">
+    </div>
+    
+    <div class="six columns end">
         {% if show.society %}
-            <p><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a></p>
+            <p><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
         {% endif %}
 
-        <h2>{{ show.name }} - <small>{{ show.author }}</small></h2>
+        <h2>{{ show.name }}{% if show.author %} - <small>{{ show.author }}</small>{% endif %}</h2>
 
         {{ show.description | camdram_markdown }}
-
     </div>
-    <div class="four columns">
-        <h3>Cast</h3>
-        <ul>
-        {% for role in show.getRolesByType('cast') %}
-        <li>{{ role.role }} - <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a></li>
-        {% endfor %}
-        </ul>
     </div>
-    <div class="four columns">
-        <h3>Band</h3>
-        <ul>
-            {% for role in show.getRolesByType('band') %}
-                <li>{{ role.role }} - <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="four columns">
-        <h3>Production Team</h3>
-        <ul>
-            {% for role in show.getRolesByType('prod') %}
-                <li>{{ role.role }} - <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-
+</div>
+<div class="row">
+        <div class="four columns">
+            <h3>Cast</h3>
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('cast')} %}
+        </div>
+    {% if show.getRolesByType('band')|length > 0 %}
+        <div class="four columns">
+            <h3>Band</h3>
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('band')} %}
+        </div>
+    {% endif %}
+        <div class="four columns end">
+            <h3>Production Team</h3>
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('prod')} %}
+        </div>
 </div>
 
 {% endblock %}
