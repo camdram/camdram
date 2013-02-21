@@ -74,7 +74,7 @@ class CamdramUserProvider implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $class === 'Acts\CamdramSecurityBundle\Entity\User';
+        return $class === 'Acts\CamdramBundle\Entity\User';
     }
 
     public function mergeUsers($user1, $user2)

@@ -32,8 +32,12 @@ class Helper
         $this->aclProvider = $aclProvider;
     }
 
-    public function isGranted($attributes, $object)
+    public function isGranted($attributes, $object, $fully_authenticated = true)
     {
+        if ($fully_authenticated) {
+            if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) return false;
+        }
+
         if (is_string($object)) {
             //asking for a class identity
             $identity = new ObjectIdentity('class', $object);

@@ -2,7 +2,8 @@
 namespace Acts\CamdramSecurityBundle\Security;
 
 use Symfony\Component\DependencyInjection\ContainerInterface,
-    Symfony\Component\HttpFoundation\Request;
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Acts\CamdramSecurityBundle\Security\Service\ServiceInterface,
     Acts\CamdramSecurityBundle\Security\Acl\Dbal\AclListProvider;
@@ -188,8 +189,20 @@ class SecurityUtils
         else return array();
     }
 
-    public function isGranted($attributes, $object)
+    public function isGranted($attributes, $object, $fully_authenticated = true)
     {
-        return $this->container->get('camdram.security.acl.helper')->isGranted($attributes, $object);
+        return $this->container->get('camdram.security.acl.helper')->isGranted($attributes, $object, $fully_authenticated);
+    }
+
+    public function hasRole($role)
+    {
+        return $this->container->get('security.context')->isGranted($role);
+    }
+
+    public function ensureRole($role)
+    {
+        if (false === $this->hasRole($role)) {
+            throw new AccessDeniedException();
+        }
     }
 }

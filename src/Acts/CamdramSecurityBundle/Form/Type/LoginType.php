@@ -13,6 +13,7 @@ class LoginType extends AbstractType
         $builder
             ->add('email')
             ->add('password', 'password')
+            ->add('remember_me', 'checkbox', array('label' => 'Automatically log in on this computer next time', 'required' => false))
         ;
     }
 

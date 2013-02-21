@@ -1,6 +1,17 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
 {% block body %}
-<h2>Find user</h2>
-{%  include 'ActsCamdramSecurityBundle:Default:login_form.html.twig' %}
+<div class="row">
+    <div class="twelve columns">
+
+    <h4>Login using your Camdram password</h4>
+
+    {% if has_role('IS_AUTHENTICATED_REMEMBERED') %}
+    <p class="panel">For security reasons, you must log in again before accessing this page.</p>
+    {% endif %}
+
+    {%  include 'ActsCamdramSecurityBundle:Default:login_form.html.twig' %}
+
+    </div>
+</div>
 {% endblock %}

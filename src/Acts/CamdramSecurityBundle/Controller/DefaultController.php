@@ -20,9 +20,21 @@ class DefaultController extends Controller
         return new RedirectResponse($this->container->get('camdram.security.utils')->getAuthorizationUrl($service));
     }
 
+    public function loginAction()
+    {
+        return $this->redirect($this->generateUrl('camdram_security_entry_point', array('service' => 'local')));
+    }
+
     public function loginFormAction(Request $request)
     {
-        $form = $this->createForm(new LoginType(), array('email' => $request->get('email')));
+        $formBuilder = $this->createFormBuilder(array('email' => $request->get('email'), 'remember_me' => null))
+            ->add('email')
+            ->add('password', 'password');
+
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $formBuilder->add('remember_me', 'checkbox', array('label' => 'Automatically log in on this computer next time', 'required' => false));
+        }
+        $form = $formBuilder->getForm();
 
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -31,7 +43,7 @@ class DefaultController extends Controller
                 $user = $this->getDoctrine()->getRepository('ActsCamdramBundle:User')->findByEmailAndPassword($data['email'], $data['password']);
                 if ($user) {
                     $this->get('session')->set('new_local_user_id', $user->getId());
-                    return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'local')));
+                    return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'local', '_remember_me' => $data['remember_me'])));
                 }
                 else {
                     $form->addError(new \Symfony\Component\Form\FormError('That username and/or password are incorrect'));

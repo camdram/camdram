@@ -40,9 +40,9 @@ security:
                 services:
                     raven: ~
                     facebook: ~
-                    local: {display_name: 'Password'}
+                    local: {display_name: 'Camdram Password'}
             remember_me:
-                key:      Vns2DsEhoEC5EZIHUs4Qz28BER6f2AeP0V
+                key:      %secret%
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~
@@ -50,18 +50,6 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
-        secured_area:
-            pattern:    ^/demo/secured/
-            form_login:
-                check_path: /demo/secured/login_check
-                login_path: /demo/secured/login
-            logout:
-                path:   /demo/secured/logout
-                target: /demo/
-            #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
 
     access_control:
 #        - { path ^/.*\.(json|xml)$, roles: ROLE_API }

@@ -28,6 +28,11 @@ abstract class AbstractRestController extends FOSRestController
         return ucfirst($this->type);
     }
 
+    protected function checkAuthenticated()
+    {
+
+    }
+
     protected function getRouteParams($entity)
     {
         return array('identifier' => $entity->getSlug());
@@ -52,6 +57,7 @@ abstract class AbstractRestController extends FOSRestController
 
     public function newAction()
     {
+        $this->checkAuthenticated();
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
 
         $form = $this->getForm();
@@ -62,6 +68,7 @@ abstract class AbstractRestController extends FOSRestController
 
     public function postAction(Request $request)
     {
+        $this->checkAuthenticated();
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
 
         $form = $this->getForm();
@@ -81,6 +88,7 @@ abstract class AbstractRestController extends FOSRestController
 
     public function editAction($identifier)
     {
+        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
@@ -92,6 +100,7 @@ abstract class AbstractRestController extends FOSRestController
 
     public function putAction(Request $request, $identifier)
     {
+        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
@@ -112,6 +121,7 @@ abstract class AbstractRestController extends FOSRestController
 
     public function removeAction($identifier)
     {
+        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
 
@@ -123,6 +133,7 @@ abstract class AbstractRestController extends FOSRestController
 
     public function cgetAction(Request $request)
     {
+        $this->checkAuthenticated();
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
@@ -151,6 +162,7 @@ abstract class AbstractRestController extends FOSRestController
 
     public function getAction($identifier)
     {
+        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $view = $this->view($entity, 200)
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
