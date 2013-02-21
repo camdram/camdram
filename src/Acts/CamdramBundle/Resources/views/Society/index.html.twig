@@ -3,11 +3,11 @@
 {% set current_navigation_id = 'societies' %}
 {% block title %}Societies{% endblock %}
 
-{% block body %}
- <div class="row">
-     {% render url('acts_camdram_entity_toolbar', {type: 'society'}) %}
- </div>
+{% block option_links %}
+    {% render url('acts_camdram_entity_toolbar', {type: 'society'}) %}
+{% endblock %}
 
+{% block body %}
   <div class="row">
       {% if societies | length > 0 %}
         {% set value = 'no spaces' %}

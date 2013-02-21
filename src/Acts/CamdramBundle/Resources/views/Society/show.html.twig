@@ -3,12 +3,14 @@
 {% set current_navigation_id = 'societies' %}
 {% block title %}Society: {{ society.name }}{% endblock %}
 
+{% block option_links %}
+    {% render url('acts_camdram_entity_toolbar', {id: society.id}) %}
+{% endblock %}
+
 {% block body %}
   <div class="row">
     <div class="twelve columns">
-        {% render url('acts_camdram_entity_toolbar', {id: society.id}) %}
-
-      <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
+        <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
 
         <p>{{ society.description | camdram_markdown }}</p>
 

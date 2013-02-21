@@ -3,10 +3,13 @@
 {% set current_navigation_id = 'venues' %}
 {% block title %}Venue: {{ venue.name }}{% endblock %}
 
+{% block option_links %}
+    {% render url('acts_camdram_entity_toolbar', {id: venue.id}) %}
+{% endblock %}
+
 {% block body %}
   <div class="row">
     <div class="twelve columns">
-        {% render url('acts_camdram_entity_toolbar', {id: venue.id}) %}
       <h2>{{ venue.name }}</h2>
         <h5>{% if venue.address %}{{ venue.address }}{% endif %}</h5>
         {% if venue.college %}<p>College: {{ venue.college }}</p>{% endif %}

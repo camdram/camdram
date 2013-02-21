@@ -2,10 +2,11 @@
 
 {% block title %}Shows{% endblock %}
 
+{% block option_links %}
+     {% render url('acts_camdram_entity_toolbar', {type: 'show'}) %}
+{% endblock %}
+
 {% block body %}
-    <div class="row">
-        {% render url('acts_camdram_entity_toolbar', {type: 'show'}) %}
-    </div>
 
     <div class="row">
 

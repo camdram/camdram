@@ -3,11 +3,14 @@
 {% set current_navigation_id = 'venues' %}
 {% block title %}Venues{% endblock %}
 
+{% block option_links %}
+{% render url('acts_camdram_entity_toolbar', {type: 'venue'}) %}
+{% endblock %}
+
 {% block body %}
 
 <div class="row">
     <div class="twelve columns">
-        {% render url('acts_camdram_entity_toolbar', {type: 'venue'}) %}
         <h3>Venues</h3>
         <div class="large_map">
             {% render url('acts_camdram_venues_map') %}

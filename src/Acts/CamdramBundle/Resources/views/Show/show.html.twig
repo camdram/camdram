@@ -2,11 +2,14 @@
 
 {% block title %}Show: {{ show.name }}{% endblock %}
 
+{% block option_links %}
+    {% render url('acts_camdram_entity_toolbar', {id: show.id}) %}
+{% endblock %}
+
 {% block body %}
 
 <div class="row">
-    {% render url('acts_camdram_entity_toolbar', {id: show.id}) %}
-    
+
     <div class="twelve columns panel">
     <div class="four columns">
     </div>

@@ -1,5 +1,8 @@
-<ul class="link-list right">
-   {% if is_granted('CREATE', identity) %} <li><a href="{{ path(routes.new) }}">Create a new {{ label }}</a></li>{% endif %}
+<li class="has-flyout right">
+    <a href="#"><img src="{{ asset('/bundles/actscamdram/images/settings.png') }}"></a>
+    <ul class="flyout right">
+    {% if is_granted('CREATE', identity) %} <li><a href="{{ path(routes.new) }}">Add a new {{ label }}</a></li>{% endif %}
     {% if routes.edit is defined and (is_granted('EDIT', identity) or is_granted('EDIT', entity)) %}<li><a href="{{ path(routes.edit, {identifier: entity.slug}) }}">Edit this {{ type }}</a></li>{% endif %}
     {% if routes.delete is defined and (is_granted('DELETE', identity) or is_granted('DELETE', entity)) %}<li><a href="{{ path(routes.delete, {identifier: entity.slug}) }}">Delete this {{ type }}</a></li>{% endif %}
-</ul>
+    </ul>
+</li>

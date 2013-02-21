@@ -2,10 +2,13 @@
 
 {% block title %}Person: {{ person.name }}{% endblock %}
 
+{% block option_links %}
+    {% render url('acts_camdram_entity_toolbar', {id: person.id}) %}
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="twelve columns">
-    {% render url('acts_camdram_entity_toolbar', {id: person.id}) %}
 
     <h2>{{ person.name }}</h2>
 
