@@ -23,7 +23,12 @@
     </div>
 </div>
 <div class="row">
-        <div class="four columns">
+    {% if show.getRolesByType('band')|length > 0 %}
+        {% set num_cols = "four" %}
+    {% else %}
+        {% set num_cols = "six" %}
+    {% endif %}
+        <div class="{{ num_cols }} columns">
             <h3>Cast</h3>
             {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('cast')} %}
         </div>
@@ -33,7 +38,7 @@
             {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('band')} %}
         </div>
     {% endif %}
-        <div class="four columns end">
+        <div class="{{ num_cols }} columns end">
             <h3>Production Team</h3>
             {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('prod')} %}
         </div>
