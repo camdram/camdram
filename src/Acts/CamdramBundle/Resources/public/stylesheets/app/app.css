@@ -216,7 +216,7 @@ header .search {
     position:absolute;
     right:60px;
     top:20px;
-    z-index:99;
+    z-index:50;
 }
 
 #search_form .ui-autocomplete {
