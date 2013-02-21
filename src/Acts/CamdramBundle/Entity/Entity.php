@@ -3,6 +3,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use Hoyes\ImageManagerBundle\Entity\Image;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -41,6 +42,13 @@ abstract class Entity
      * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
+
+    /**
+     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     */
+    private $image;
 
     /**
      * @var int
@@ -350,5 +358,28 @@ abstract class Entity
     public function getEntityType()
     {
         return $this->entity_type;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @return Entity
+     */
+    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

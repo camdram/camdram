@@ -46,7 +46,7 @@
 
 {% block javascripts %}
 <script>
-    $('#venues_list').addMarkers(venue_info_boxes);
+    $(function() { $('#venues_list').addMarkers(venue_info_boxes); });
 </script>
 {% endblock %}
 

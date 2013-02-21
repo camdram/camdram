@@ -14,6 +14,7 @@ class SocietyType extends AbstractType
             ->add('name')
             ->add('short_name')
             ->add('description')
+            ->add('image', 'image_upload', array('label' => 'Logo'))
             ->add('college', 'college')
             ->add('facebook_id')
             ->add('twitter_id')

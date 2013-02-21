@@ -16,8 +16,9 @@
      </div>
      <div class="row">
          {% if venue.latitude and venue.longitude %}
-         <div class="four columns small_map">
-             {% render url('acts_camdram_venues_map', {identifier: venue.slug}) %}
+         <div class="four columns">
+             {% if venue.image %}<a href="{{ image_url(venue.image, 1024, 768) }}" class="fancybox">{{ render_image(venue.image, 205, 200) }}</a>{% endif %}
+            <div class="small_map">{% if venue.latitude %}{% render url('acts_camdram_venues_map', {identifier: venue.slug}) %}{% endif %}</div>
          </div>
          <div class="eight columns">
          {% else %}

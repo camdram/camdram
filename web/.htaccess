@@ -8,3 +8,15 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ app.php [QSA,L]
 </IfModule>
+
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|ico|js|css|swf)(\.gz)?$">
+Header set Expires "Thu, 15 Apr 2099 20:00:00 GMT"
+Header unset ETag
+FileETag None
+</FilesMatch>
+
+<IfModule mod_deflate.c>
+<FilesMatch "\.(js|css|php|html)$">
+SetOutputFilter DEFLATE
+</FilesMatch>
+</IfModule>

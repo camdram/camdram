@@ -9,6 +9,10 @@
 
 {% block body %}
   <div class="row">
+      <div class="twelve columns"><h3>Societies</h3></div>
+  </div>
+  <div class="row">
+
       {% if societies | length > 0 %}
         {% set value = 'no spaces' %}
         {% set i = 1  %}
@@ -17,6 +21,7 @@
           {% if (society.college is not empty) and not seen_college %}
             {% set seen_college = true %}
               <hr>
+              </div>
               <h3>College Societies</h3>
           {% endif %}
 
@@ -29,11 +34,19 @@
           {% if society.college is not empty %}
             <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
           {% endif %}
-          <p>{{ society.description|slice(0, 200)|strip_new_lines|camdram_markdown }}
-          {% if society.description|length > 200 %}
-          ...<br>[<a href="{{ path('get_society', {identifier: society.slug}) }}">Read More</a>]
+
+              {% if society.image %}<div class="row"><div class="three columns mobile-one">
+              <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ render_image(society.image, 88, 70) }}</a>
+          </div>
+              <div class="nine columns mobile-three">
+                  <p>{{ society.description|truncate(200)|strip_new_lines|camdram_markdown }}
+                  </p>
+                  <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
+              </div>
+          {% else %}
+              <p>{{ society.description|truncate(200)|strip_new_lines|camdram_markdown }}</p>
+              <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
           {% endif %}
-          </p>
           </div>
 
           {% if (i < societies | length) and (i is divisibleby(2)) %}

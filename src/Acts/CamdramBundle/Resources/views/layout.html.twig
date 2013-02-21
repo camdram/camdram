@@ -24,16 +24,33 @@
     'bundles/actscamdram/stylesheets/h5bp/*'
     'bundles/actscamdram/stylesheets/foundation/*.css'
     'bundles/actscamdram/stylesheets/jquery/*.css'
-    'bundles/actscamdram/stylesheets/app/*.css' %}
+    'bundles/actscamdram/stylesheets/app/*.css'
+    'bundles/hoyesimagemanager/css/fancybox.css'%}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
   <!-- Foundation stylesheets -->
 
 {% block stylesheets %}{% endblock %}
 
-{% javascripts '@ActsCamdramBundle/Resources/public/javascripts/modernizr/modernizr.foundation.js' %}
+
+    <!-- Initialize JS Plugins -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    {% javascripts
+    '@ActsCamdramBundle/Resources/public/javascripts/modernizr/modernizr.foundation.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/foundation/*.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
+    '@ActsDiaryBundle/Resources/public/js/diary.js'
+    '@FOSJsRoutingBundle/Resources/public/js/router.js'
+    'js/fos_js_routes.js'
+    '@HoyesImageManagerBundle/Resources/public/js/jquery.uploadify.js'
+    '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
+    {% endjavascripts %}
+
+    {% block javascripts %}{% endblock %}
+
 </head>
 <body>
   <!--[if lt IE 7]>
@@ -168,37 +185,13 @@ Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@cam
             </p>
       </div>
   </footer>
-  
-  <!-- Included JS Files (Uncompressed) -->
-  <!--
-  <script src="javascripts/jquery.js"></script><script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script><script src="javascripts/jquery.foundation.forms.js"></script><script src="javascripts/jquery.foundation.reveal.js"></script><script src="javascripts/jquery.foundation.orbit.js"></script><script src="javascripts/jquery.foundation.navigation.js"></script><script src="javascripts/jquery.foundation.buttons.js"></script><script src="javascripts/jquery.foundation.tabs.js"></script><script src="javascripts/jquery.foundation.tooltips.js"></script><script src="javascripts/jquery.foundation.accordion.js"></script><script src="javascripts/jquery.placeholder.js"></script><script src="javascripts/jquery.foundation.alerts.js"></script><script src="javascripts/jquery.foundation.topbar.js"></script><script src="javascripts/jquery.foundation.joyride.js"></script><script src="javascripts/jquery.foundation.clearing.js"></script><script src="javascripts/jquery.foundation.magellan.js"></script>
-  -->
-  
-  <!-- Initialize JS Plugins -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-{% javascripts
-        '@ActsCamdramBundle/Resources/public/javascripts/foundation/*.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
-        '@ActsDiaryBundle/Resources/public/js/diary.js'
-        '@FOSJsRoutingBundle/Resources/public/js/router.js'
-        'js/fos_js_routes.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
 
-  {% block javascripts %}{% endblock %}
-<script>
-    $(function() {
-   //     $('form.custom').foundationCustomForms();
-    })
-</script>
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
+  <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
       (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>
+          g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+          s.parentNode.insertBefore(g,s)}(document,'script'));
+  </script>
+
 </body>
 </html>

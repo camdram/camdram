@@ -15,6 +15,7 @@ class ShowType extends AbstractType
             ->add('name')
             ->add('author', null, array('required' => false))
             ->add('description')
+            ->add('image', 'image_upload', array('label' => 'Publicity image'))
             ->add('prices', null, array('required' => false, 'label' => 'Ticket prices'))
             ->add('venue')
             ->add('venue_name')

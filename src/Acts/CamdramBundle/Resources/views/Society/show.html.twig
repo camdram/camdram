@@ -12,7 +12,17 @@
     <div class="twelve columns">
         <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
 
-        <p>{{ society.description | camdram_markdown }}</p>
+        {% if society.image %}
+            <div class="row">
+                <div class="three columns"><a href="{{ image_url(society.image, 1024, 768) }}" class="fancybox">{{ render_image(society.image, 205, 200) }}</a></div>
+                <div class="nine columns">
+                    <p>{{ society.description | camdram_markdown }}</p>
+                </div>
+            </div>
+        {% else %}
+            <p>{{ society.description | camdram_markdown }}</p>
+        {% endif %}
+
 
         <ul>
             {% for item in society.news %}

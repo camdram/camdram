@@ -205,15 +205,17 @@
             })
         })
     }
-
-    $('.news_media').newsFeedMedia();
-    $('#main_search_box').camdramAutocomplete({
-        select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
-        display: function(li, item) {
-            var type = $('<small>'+item.entity_type+'</small>').addClass('entity_'+item.entity_type);
-            li.children().prepend(type);
-        },
-        appendTo: '#search_form'
+    $(function() {
+        $('.news_media').newsFeedMedia();
+        $('#main_search_box').camdramAutocomplete({
+            select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
+            display: function(li, item) {
+                var type = $('<small>'+item.entity_type+'</small>').addClass('entity_'+item.entity_type);
+                li.children().prepend(type);
+            },
+            appendTo: '#search_form'
+        });
+        $('a.fancybox').fancybox();
     });
 
 })(jQuery, window);

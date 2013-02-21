@@ -25,6 +25,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form:
         resources:
+            - 'HoyesImageManagerBundle:Form:fields.html.twig'
             - 'ActsCamdramBundle:Form:fields.html.twig'
 
 # Assetic Configuration

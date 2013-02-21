@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new FOQ\ElasticaBundle\FOQElasticaBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

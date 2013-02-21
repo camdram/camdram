@@ -28,9 +28,10 @@
         "exercise/elastica-bundle" : "dev-master",
         "pagerfanta/pagerfanta": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
-        "sabre/vobject": "2.0.*"
+        "sabre/vobject": "2.0.*",
+        "hoyes/symfony2-image-manager": "dev-master"
 
-    },
+},
     "scripts": {
         "post-install-cmd": [
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
