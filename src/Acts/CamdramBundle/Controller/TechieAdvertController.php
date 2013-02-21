@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Criteria;
  
 
 /**
- * @RouteResource("TechieAdvert")
+ * @RouteResource("Techie")
  */
 class TechieAdvertController extends FOSRestController
 {

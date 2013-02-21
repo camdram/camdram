@@ -1,11 +1,11 @@
-{% extends 'ActsCamdramBundle::layout.html.twig' %}
+{% extends 'ActsCamdramBundle::vacancies.html.twig' %}
 
-{% set current_navigation_id = 'vacancies' %}
 {% block title %}Auditions{% endblock %}
+{% set current_vacancies_id='auditions' %}
 
-{% block body %}
-<div class="row">
-    <div class="twelve columns">
+{% block vacancies_body %}
+        <h3>Auditions</h3>
+
     {% spaceless %}
     {% set currentName = null %}
     {% for a in auditions %}
@@ -14,17 +14,19 @@
                 </ul>
                 {% if currentName is not empty %}
                     </div>
-                    <hr>
                 {% endif %}
                 {% set currentName = a.show.name %}
+                <hr>
                 <div id="auditions-{{ a.show.id }}">
                 <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5><ul>
             {% endif %}
             <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
         {% endif %}
+
+    {% else %}
+        <p>There are currently no auditions listed - please check again later.</p>
     {% endfor %}
     </ul>
     {% endspaceless %}
-    </div>
-</div>
+
 {% endblock %}

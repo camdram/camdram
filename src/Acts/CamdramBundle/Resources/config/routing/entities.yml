@@ -25,13 +25,17 @@ acts_camdram_entities:
 acts_camdram_termdates:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\TermDateController"
+
 acts_camdram_applications:
     type:     rest
+    prefix: /vacancies
     resource: "Acts\CamdramBundle\Controller\ApplicationController"
 acts_camdram_auditions:
     type:     rest
+    prefix: /vacancies
     resource: "Acts\CamdramBundle\Controller\AuditionController"
 acts_camdram_techieadverts:
     type:     rest
+    prefix: /vacancies
     resource: "Acts\CamdramBundle\Controller\TechieAdvertController"
 

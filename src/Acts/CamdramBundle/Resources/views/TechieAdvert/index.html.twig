@@ -1,13 +1,15 @@
-{% extends 'ActsCamdramBundle::layout.html.twig' %}
+{% extends 'ActsCamdramBundle::vacancies.html.twig' %}
 
-{% set current_navigation_id = 'vacancies' %}
-{% block title %}Applications{% endblock %}
 
-{% block body %}
-<div class="row">
-    <div class="twelve columns">
+{% block title %}Technical and designer roles{% endblock %}
+{% set current_vacancies_id='techies' %}
+
+{% block vacancies_body %}
+    <h3>Technical and designer roles</h3>
+
     {% spaceless %}
     {% for a in techieadverts %}
+        <hr>
         <div id="advert-{{ a.id }}">
         <h4><a href="{{ path('get_show',
             {identifier: a.show.slug}) }}">{{ a.show.name }}</a></h4>
@@ -29,10 +31,9 @@
         {% endif %}
         </p>
         </div>
-        <hr>
+    {% else %}
+        <p>There are currently no vacancies listed - please check again later.</p>
     {% endfor %}
     {% endspaceless %}
-    </div>
-    </div>
-</div>
+
 {% endblock %}

@@ -1,11 +1,12 @@
-{% extends 'ActsCamdramBundle::layout.html.twig' %}
+{% extends 'ActsCamdramBundle::vacancies.html.twig' %}
 
-{% set current_navigation_id = 'vacancies' %}
+{% set current_vacancies_id = 'applications' %}
 {% block title %}Applications{% endblock %}
 
-{% block body %}
-<div class="row">
-    <div class="twelve columns">
+{% block vacancies_body %}
+
+<h3>Producer/director roles and show applications</h3>
+
     {% spaceless %}
     {% set current = null %}
     {% for a in applications %}
@@ -15,8 +16,9 @@
                 </div>
             {% endif %}
             {% set current = entity.name %}
-            <div class="row">
+            <div>
         {% endif %}
+        <hr>
         <div id="application-{{ a.id }}">
         <h4><a href="{{ path((a.show ? 'get_show' : 'get_society'),
             {identifier: entity.slug}) }}">{{ current }}</a></h4>
@@ -24,16 +26,16 @@
         {% if a.furtherinfo %}
             <p>{{ a.furtherinfo|nl2br }}</p>
         {% endif %}
-        <strong>Deadline:</strong> {{ a.deadlinedate|date('l jS F') }}
+        <p><strong>Deadline:</strong> {{ a.deadlinedate|date('l jS F') }}
         {% if a.deadlinetime %}
             {{ a.deadlinetime|date('g:ia') }}
         {% endif %}
-        <br>
+        </p>
         </div>
-        <hr>
+
+    {% else %}
+        <p>There are currently no vacancies or show applications listed - please check again later.</p>
     {% endfor %}
     {% endspaceless %}
-    </div>
-    </div>
-</div>
+
 {% endblock %}
