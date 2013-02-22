@@ -26,10 +26,10 @@ class ShowRef
      *
      * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=false)
+     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })
      */
-    private $show_id;
+    private $show;
 
     /**
      * @var string
@@ -78,9 +78,9 @@ class ShowRef
      * @param \Acts\CamdramBundle\Entity\Show $showId
      * @return ShowRef
      */
-    public function setShowId(\Acts\CamdramBundle\Entity\Show $showId = null)
+    public function setShowId(\Acts\CamdramBundle\Entity\Show $show = null)
     {
-        $this->show_id = $showId;
+        $this->show = $show;
     
         return $this;
     }
@@ -90,8 +90,8 @@ class ShowRef
      *
      * @return \Acts\CamdramBundle\Entity\Show 
      */
-    public function getShowId()
+    public function getShow()
     {
-        return $this->show_id;
+        return $this->show;
     }
 }

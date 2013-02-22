@@ -39,7 +39,7 @@ abstract class Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", nullable=false)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
@@ -101,6 +101,7 @@ abstract class Entity
      * @Serializer\Expose
      */
     protected $entity_type;
+
 
     /**
      * Get id
@@ -381,5 +382,28 @@ abstract class Entity
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set lock
+     *
+     * @param boolean $lock
+     * @return Entity
+     */
+    public function setLock($lock)
+    {
+        $this->lock = $lock;
+
+        return $this;
+    }
+
+    /**
+     * Get lock
+     *
+     * @return boolean
+     */
+    public function getLock()
+    {
+        return $this->lock;
     }
 }

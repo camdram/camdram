@@ -61,7 +61,7 @@ class Audition
      *
      * @ORM\ManyToOne(targetEntity="Show")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $show;
