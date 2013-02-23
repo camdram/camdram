@@ -7,6 +7,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 use Acts\CamdramBundle\Entity\User;
 use Acts\CamdramBundle\Form\Type\UserType;
+use Acts\CamdramBundle\Form\Type\AddAclType;
 
 /**
  * @RouteResource("User")
@@ -51,6 +52,32 @@ class UserController extends AbstractRestController
     protected function getForm($society = null)
     {
         return $this->createForm(new UserType(), $society);
+    }
+
+    public function newAceAction(Request $request, $identifier)
+    {
+        $form = $this->createForm(new AddAclType(), array('identifier' => $identifier));
+
+        return $this->view($form, 200)
+            ->setTemplateVar('form')
+            ->setTemplate('ActsCamdramBundle:User:ace-new-form.html.twig');
+    }
+
+    public function postAceAction(Request $request, $identifier)
+    {
+        $form = $this->createForm(new AddAclType(), array('identifier' => $identifier));
+        $form->bind($request);
+        if ($form->isValid()) {
+            $user = $this->getEntity($identifier);
+            $data = $form->getData();
+            $this->get('camdram.security.acl.provider')->grantAccess($data['entity'], $user, $this->getUser());
+            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($user));
+        }
+        else {
+            return $this->view($form, 400)
+                ->setTemplateVar('user')
+                ->setTemplate('ActsCamdramBundle:User:ace-new.html.twig');
+        }
     }
 
 }

@@ -7,7 +7,8 @@ security:
         Symfony\Component\Security\Core\User\User: plaintext
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_ADMIN:       [ROLE_USER, ROLE_EDITOR]
+        ROLE_EDITOR:      [ROLE_USER]
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
@@ -54,11 +55,6 @@ security:
     access_control:
 #        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
         - { path ^/settings.*, roles: IS_AUTHENTICATED_FULLY }
-        - { path ^/admin.*, roles: ROLE_ADMIN }
-    acl:
-        connection: default
-        voter:
-            allow_if_object_identity_unavailable: false
 
 acts_camdram_security:
     groups:

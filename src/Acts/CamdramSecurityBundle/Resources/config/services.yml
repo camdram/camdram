@@ -89,28 +89,42 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postLoad }
 
+    camdram.security.acl.provider:
+        class: Acts\CamdramSecurityBundle\Security\Acl\AclProvider
+        arguments: [@doctrine.orm.entity_manager]
+
     camdram.security.acl.helper:
         class: Acts\CamdramSecurityBundle\Security\Acl\Helper
-        arguments: [@security.context, @security.acl.provider]
+        arguments: [@security.context, @camdram.security.acl.provider]
 
-
-    camdram.security.voter.profile:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter
+    camdram.security.voter.create:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter
         tags:
             - { name: security.voter }
 
-    camdram.security.voter.own_user:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\OwnUserVoter
+    camdram.security.voter.admin:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\AdminVoter
+        tags:
+            - { name: security.voter }
+
+    camdram.security.voter.editor:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter
+        tags:
+            - { name: security.voter }
+
+    camdram.security.voter.owner:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\OwnerVoter
+        arguments: [@camdram.security.acl.provider]
         tags:
             - { name: security.voter }
 
     camdram.security.voter.show:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter
-        arguments: [@security.acl.voter.basic_permissions, @security.acl.permission.map]
+        arguments: [@camdram.security.acl.provider]
         tags:
             - { name: security.voter }
 
-    camdram.security.acl.list_provider:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Dbal\AclListProvider
-        parent: security.acl.dbal.provider
-        public: true
+    camdram.security.voter.profile:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter
+        tags:
+            - { name: security.voter }

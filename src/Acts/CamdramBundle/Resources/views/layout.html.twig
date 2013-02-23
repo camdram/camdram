@@ -65,7 +65,7 @@
       <ul class="left">
           {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
               'about-us': {'text': 'About Us'},
-              'development': {'text': 'Development', 'route': 'acts_camdram_development'},
+              'development': {'text': 'Development', 'path': path('acts_camdram_development')},
               'contact-us': {'text': 'Contact Us'},
           }, current_id: current_navigation_id} %}
       </ul>
@@ -76,15 +76,13 @@
                   <li class="has-dropdown">
                       <a href="#">{{ group.menuName }}</a>
                       <ul class="dropdown">
-                          <li><a href="{{ path('get_group', {identifier: group.shortName}) }}">View {{ group.menuName }} group</a></li>
-                          {% for venue in acl_entries('Acts\\CamdramBundle\\Entity\\Venue', group, 255) %}
+                          {% for venue in acl_entries(group, 'Acts\\CamdramBundle\\Entity\\Venue') %}
                               <li><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></li>
                           {% endfor %}
-                          {% for society in acl_entries('Acts\\CamdramBundle\\Entity\\Society', group, 255) %}
+                          {% for society in acl_entries(group, 'Acts\\CamdramBundle\\Entity\\Society') %}
                               <li><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a></li>
                           {% endfor %}
                           {% if 'ROLE_ADMIN' in group.roles %}
-                              <li class="divider"></li>
                               <li><a href="{{ path('get_users') }}">Manage Users</a></li>
                               <li><a href="{{ path('get_groups') }}">Manage Groups</a></li>
                           {% endif %}
@@ -134,15 +132,29 @@
   <nav>
       <ul class="nav-bar">
           {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
-          'home': {'text': 'Home', 'route': 'acts_camdram_homepage'},
-          'diary': {'text': 'Diary', 'route': 'acts_camdram_diary'},
-          'vacancies': {'text': 'Vacancies', 'route': 'get_auditions'},
-          'societies': {'text': 'Societies', 'route': 'get_societies'},
-          'venues': {'text': 'Venues', 'route': 'get_venues'},
+          'home': {'text': 'Home', 'path': path('acts_camdram_homepage')},
+          'diary': {'text': 'Diary', 'path': path('acts_camdram_diary')},
+          'vacancies': {'text': 'Vacancies', 'path': path('get_auditions')},
+          'societies': {'text': 'Societies', 'path': path('get_societies')},
+          'venues': {'text': 'Venues', 'path': path('get_venues')},
           }, current_id: current_navigation_id} %}
 
-          {% block option_links %}
-          {% endblock %}
+          <li class="has-flyout right">
+              <a href="#"><img src="{{ asset('/bundles/actscamdram/images/settings.png') }}"></a>
+              <ul class="flyout right">
+                  {% block option_links %}
+                  {% endblock %}
+                  {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with {items: {
+                    'add_show': {text: 'Create a new show', path: path('new_show')}
+                  }} %}
+                  {% if has_role('ROLE_EDITOR') %}
+                  {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with { items: {
+                    'add_venue': {text: 'Create a new venue', path: path('new_venue')},
+                    'add_society': {text: 'Create a new society', path: path('new_society')}
+                  }} %}
+                  {% endif %}
+              </ul>
+          </li>
       </ul>
   </nav>
 

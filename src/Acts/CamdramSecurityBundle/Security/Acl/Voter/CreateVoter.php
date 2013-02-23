@@ -4,27 +4,31 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramBundle\Entity\Show;
 
-class OwnUserVoter implements VoterInterface
+/**
+ * Grants access if
+ */
+class CreateVoter implements VoterInterface
 {
-
     public function supportsAttribute($attribute)
     {
-        return $attribute == 'EDIT';
+        return $attribute == 'CREATE';
     }
 
+    /**
+     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
+     * @param \Acts\CamdramBundle\Entity\Show $object
+     * @param array $attributes
+     * @return int
+     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-
-        if ($token instanceof CamdramUserToken && $object instanceof User) {
-            $user = $token->getUser();
-            if ($user == $object) {
+        if (is_string($object) && $attributes == array('CREATE')) {
+            if ($object == 'Acts\\CamdramBundle\\Entity\\Show')  {
                 return self::ACCESS_GRANTED;
             }
         }
-
         return self::ACCESS_ABSTAIN;
     }
 
@@ -38,6 +42,6 @@ class OwnUserVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class == 'Acts\\CamdramBundle\\Entity\\User';
+        return $class == 'Acts\\CamdramBundle\\Entity\\Show';
     }
 }

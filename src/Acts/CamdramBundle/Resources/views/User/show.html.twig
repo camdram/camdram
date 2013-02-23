@@ -35,6 +35,13 @@
         </ul>
         {% endif %}
 
+        <h4>{{ user.name }} is the owner of:</h4>
+        <ul>
+            {% for entity in acl_entries(user) %}
+                <li><a href="{{ path('get_entity', {id: entity.id}) }}">{{ entity.name }}</a> ({{ entity.entityType }})</li>
+            {% endfor %}
+        </ul>
+        {% render url('new_user_ace', {identifier: user.id}) %}
     </div>
 
 </div>

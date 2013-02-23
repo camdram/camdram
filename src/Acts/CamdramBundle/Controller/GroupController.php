@@ -27,6 +27,11 @@ class GroupController extends AbstractRestController
         return array('identifier' => $group->getShortName());
     }
 
+    protected function checkAuthenticated()
+    {
+        $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
+        $this->get('camdram.security.utils')->ensureRole('ROLE_ADMIN');
+    }
 
     protected function getEntity($identifier)
     {
@@ -65,7 +70,7 @@ class GroupController extends AbstractRestController
         if ($form->isValid()) {
             $group = $this->getEntity($identifier);
             $data = $form->getData();
-            $this->get('camdram.security.acl.helper')->grantRole($data['grant_type'], $data['entity'], $group);
+            $this->get('camdram.security.acl.provider')->grantAccess($data['entity'], $group, $this->getUser());
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($group));
         }
         else {

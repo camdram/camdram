@@ -4,24 +4,28 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-use Acts\CamdramBundle\Entity\User;
-use Acts\CamdramBundle\Entity\Person;
+use Acts\CamdramBundle\Entity\Entity;
 
-class ProfileVoter implements VoterInterface
+/**
+ * Grants access if
+ */
+class AdminVoter implements VoterInterface
 {
-
     public function supportsAttribute($attribute)
     {
-        return $attribute == 'EDIT';
+        return true;
     }
 
+    /**
+     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
+     * @param \Acts\CamdramBundle\Entity\Show $object
+     * @param array $attributes
+     * @return int
+     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($object instanceof Person && $attributes == array('EDIT')) {
-            $user = $token->getUser();
-            if ($user instanceof User && $user->getPerson() == $object) {
-                return self::ACCESS_GRANTED;
-            }
+        foreach ($token->getRoles() as $role) {
+            if ($role->getRole() == 'ROLE_ADMIN') return self::ACCESS_GRANTED;
         }
 
         return self::ACCESS_ABSTAIN;
@@ -37,6 +41,6 @@ class ProfileVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class == 'Acts\\CamdramBundle\\Entity\\Person';
+        return true;
     }
 }

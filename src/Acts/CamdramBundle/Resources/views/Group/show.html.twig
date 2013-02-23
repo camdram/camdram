@@ -31,11 +31,8 @@
 
         <h4>{{ group.name }} is the owner of:</h4>
         <ul>
-        {% for venue in acl_entries('Acts\\CamdramBundle\\Entity\\Venue', group, 255) %}
-            <li><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a> (venue)</li>
-        {% endfor %}
-        {% for society in acl_entries('Acts\\CamdramBundle\\Entity\\Society', group, 255) %}
-            <li><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }} (society)</a></li>
+        {% for entity in acl_entries(group) %}
+            <li><a href="{{ path('get_entity', {id: entity.id}) }}">{{ entity.name }}</a> ({{ entity.entityType }})</li>
         {% endfor %}
         </ul>
         {% render url('new_group_ace', {identifier: group.shortName}) %}

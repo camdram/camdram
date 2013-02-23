@@ -13,7 +13,6 @@ class AddAclType extends AbstractType
 
         $builder
             ->add('entity', 'entity_search', array('class' => 'Acts\\CamdramBundle\\Entity\\Entity'))
-            ->add('grant_type', 'grant_type')
         ;
     }
 

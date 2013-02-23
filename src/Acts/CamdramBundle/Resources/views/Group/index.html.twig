@@ -2,9 +2,12 @@
 
 {% block title %}Groups{% endblock %}
 
+{% block option_links %}
+    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Create a new group', path: path('new_group')}} %}
+{% endblock %}
+
 {% block body %}
     <div class="row">
-        {% render url('acts_camdram_group_toolbar') %}
 
         <h3>Manage Groups</h3>
 

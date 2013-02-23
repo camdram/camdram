@@ -39,9 +39,9 @@ class CamdramSecurityExtension extends \Twig_Extension
         return $this->utils->getServices();
     }
 
-    public function getAclEntries($class, $role, $mask)
+    public function getAclEntries($role, $class = NULL)
     {
-        return $this->utils->getAclEntries($class, $role, $mask);
+        return $this->utils->getAclEntries($role, $class);
     }
 
     public function isGranted($attributes, $object)

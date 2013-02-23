@@ -97,6 +97,14 @@ abstract class Entity
     private $news;
 
     /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="entity")
+     * @Serializer\Exclude
+     */
+    private $aces;
+
+    /**
      * @var string
      * @Serializer\Expose
      */

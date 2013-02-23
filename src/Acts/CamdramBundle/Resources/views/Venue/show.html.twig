@@ -4,8 +4,13 @@
 {% block title %}Venue: {{ venue.name }}{% endblock %}
 
 {% block option_links %}
-    {% render url('acts_camdram_entity_toolbar', {id: venue.id}) %}
+{% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~venue.name~'"', path: path('edit_venue', {identifier: venue.slug})}} %}
+
+{% if has_role('ROLE_EDITOR') %}
+    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~venue.name~'"', path: path('remove_venue', {identifier: venue.slug})}} %}
+{% endif %}
 {% endblock %}
+
 
 {% block body %}
   <div class="row">

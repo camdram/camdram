@@ -94,4 +94,17 @@ class ShowRef
     {
         return $this->show;
     }
+
+    /**
+     * Set show
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $show
+     * @return ShowRef
+     */
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show)
+    {
+        $this->show = $show;
+    
+        return $this;
+    }
 }

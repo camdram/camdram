@@ -3,15 +3,18 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Acl\Model\AclProviderInterface;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
-use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
+use Acts\CamdramBundle\Entity\Entity;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository;
 
 /**
  * Grants access if
  */
-class ShowVoter implements VoterInterface
+class OwnerVoter implements VoterInterface
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -25,8 +28,7 @@ class ShowVoter implements VoterInterface
 
     public function supportsAttribute($attribute)
     {
-        return $attribute == 'EDIT'
-            || $attribute == 'APPROVE';
+        return $attribute == 'EDIT';
     }
 
     /**
@@ -37,12 +39,9 @@ class ShowVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($object instanceof Show && $attributes == array('EDIT') && $attributes == array('APPROVE')) {
-            if ($object->getVenue()) {
-                if ($this->aclProvider->isOwner($token, $object->getVenue())) return self::ACCESS_GRANTED;
-            }
-            if ($object->getSociety()) {
-                if ($this->aclProvider->isOwner($token, $object->getSociety())) return self::ACCESS_GRANTED;
+        if ($object instanceof Entity && $attributes == array('EDIT')) {
+            if ($this->aclProvider->isOwner($token, $object)) {
+                return self::ACCESS_GRANTED;
             }
         }
         return self::ACCESS_ABSTAIN;
@@ -58,6 +57,9 @@ class ShowVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class == 'Acts\\CamdramBundle\\Entity\\Show';
+        return $class == 'Acts\\CamdramBundle\\Entity\\Show'
+            || $class == 'Acts\\CamdramBundle\\Entity\\Society'
+            || $class == 'Acts\\CamdramBundle\\Entity\\Venue'
+            || $class == 'Acts\\CamdramBundle\\Entity\\Person';
     }
 }

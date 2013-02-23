@@ -170,23 +170,19 @@ class SecurityUtils
         return $this->container->get('router')->generate($route, $params, $absolute);
     }
 
-    public function getAclEntries($class_name, $role, $mask)
+    public function getAclEntries($role, $class_name)
     {
         /** @var $aclProvider AclListProvider */
-        $aclProvider = $this->container->get('camdram.security.acl.list_provider');
+        $aclProvider = $this->container->get('camdram.security.acl.provider');
 
-        if ($role instanceof \Acts\CamdramSecurityBundle\Entity\Group) $role = new GroupRole($role);
-        $role = (string) $role;
-
-        $ids = $aclProvider->getAllowedEntitiesIds($class_name, array($role), $mask);
-        if (count($ids) > 0) {
-            /** @var $repo \Doctrine\ORM\EntityRepository */
-            $repo = $this->container->get('doctrine.orm.entity_manager')->getRepository($class_name);
-            $qb = $repo->createQueryBuilder('e');
-            $result = $qb->where($qb->expr()->in('e.id', $ids))->getQuery()->getResult();
-            return $result;
+        if ($role instanceof \Acts\CamdramSecurityBundle\Entity\Group) {
+            return $aclProvider->getEntitiesByGroup($role, $class_name);
         }
-        else return array();
+        if ($role instanceof \Acts\CamdramBundle\Entity\User) {
+            return $aclProvider->getEntitiesByUser($role, $class_name);
+        }
+
+        return array();
     }
 
     public function isGranted($attributes, $object, $fully_authenticated = true)
