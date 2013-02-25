@@ -24,9 +24,9 @@
             <p><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
         {% endif %}
 
-        <h2>{{ show.name }}{% if show.author %} - <small>{{ show.author }}</small>{% endif %}</h2>
-
-        {{ show.description | camdram_markdown }}
+    <h2>{{ show.name }}{% if show.author %}<br/><small> By {{ show.author }}</small>{% endif %}</h2>
+        <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
+        <p>{{ show.description | camdram_markdown }}</p>
     </div>
     </div>
 </div>
@@ -51,5 +51,6 @@
             {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('prod')} %}
         </div>
 </div>
+<br/>
 
 {% endblock %}
