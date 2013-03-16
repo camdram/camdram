@@ -7,9 +7,9 @@
     <div class="three columns">
         <ul class="side-nav">
             {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
-            'auditions': {'text': 'Auditions', 'route': 'get_auditions'},
-            'techies': {'text': 'Technical and designer roles', 'route': 'get_techies'},
-            'applications': {'text': 'Producer/director roles and show applications', 'route': 'get_applications'},
+            'auditions': {'text': 'Auditions', 'path': path('get_auditions')},
+            'techies': {'text': 'Technical and designer roles', 'path': path('get_techies')},
+            'applications': {'text': 'Producer/director roles and show applications', 'path': path('get_applications')},
 
             }, current_id: current_vacancies_id} %}
         </ul>
