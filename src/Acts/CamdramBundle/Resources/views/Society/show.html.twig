@@ -15,8 +15,14 @@
 {% endblock %}
 
 {% block body %}
-  <div class="row">
-    <div class="twelve columns">
+
+<div class="row">
+
+    <div class="twelve columns panel">
+    <div class="four columns">
+    </div>
+    
+    <div class="eight columns end">
         <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
 
         {% if society.image %}
@@ -38,11 +44,14 @@
                 </li>
             {% endfor %}
         </ul>
-
-        <h5>Shows</h5>
-        {% render url('get_society_shows', {identifier: society.slug}) %}
-    </div>
-  </div>
+    </div><!-- eight columns -->
+    </div><!-- twelve columns panel -->
+</div><!-- row -->
+<div class="row">
+    <h3>Shows</h3>
+    {% render url('get_society_shows', {identifier: society.slug}) %}
+</div><!-- row -->
+<br/>
 
 {% endblock %}
 

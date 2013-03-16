@@ -2,3 +2,4 @@
 {% for id, item in items %}
     <li{% if id == current_id %} class="active"{% endif %}><a href="{% if item.path is defined %}{{ item.path }}{% else %}#{% endif %}">{{ item.text }}</a></li>
 {% endfor %}
+
