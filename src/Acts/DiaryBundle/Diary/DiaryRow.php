@@ -26,8 +26,10 @@ class DiaryRow
 
     public function calculateIndex(\DateTime $date)
     {
-        $diff = $date->diff($this->start_date);
-        return $diff->days;
+        $diff = $this->start_date->diff($date, false);
+        $days = $diff->days;
+        if ($diff->invert) $days *= -1;
+        return $days;
     }
 
     /**
@@ -72,6 +74,13 @@ class DiaryRow
         }
     }
 
+    private function addItem(DiaryItem $item)
+    {
+        if ($item->getStartIndex() < 0) $item->setIndex(0);
+        if ($item->getEndIndex() > 6) $item->setNumberOfDays(7 - $item->getStartIndex());
+        $this->items[$item->getStartIndex()] = $item;
+    }
+
     public function addEvent(EventInterface $event)
     {
         $item = new DiaryItem();
@@ -87,27 +96,27 @@ class DiaryRow
         elseif ($event instanceof MultiDayEventInterface) {
             if ($event->getStartDate() < $event->getExcludeDate()
                     && $event->getExcludeDate() < $event->getEndDate()) {
-
                 $start_index = $this->calculateIndex($event->getStartDate());
-                $end_index = $this->calculateIndex($event->getEndDate());
+                $end_index = $this->calculateIndex($event->getExcludeDate());
                 $item->setIndex($start_index);
-                $item->setNumberOfDays($end_index);
-                $this->items[] = $item;
+                $item->setNumberOfDays($end_index - $start_index);
+                $this->addItem($item);
 
                 $item2 = clone $item;
                 $start_index = $this->calculateIndex($event->getExcludeDate());
                 $end_index = $this->calculateIndex($event->getEndDate());
-                $item2->setIndex($start_index);
-                $item2->setNumberOfDays($end_index);
-                $this->items[] = $item2;
+                $item2->setIndex($start_index+1);
+                $item2->setNumberOfDays($end_index - $start_index);
+                $this->addItem($item2);
             }
             else {
 
                 $start_index = $this->calculateIndex($event->getStartDate());
+                if ($event->getName() == 'AIDA' && $start_index == 4) { var_dump($start_index, $event->getStartDate()); }
                 $end_index = $this->calculateIndex($event->getEndDate());
                 $item->setIndex($start_index);
                 $item->setNumberOfDays($end_index - $start_index + 1);
-                $this->items[$start_index] = $item;
+                $this->addItem($item);
             }
         }
 
