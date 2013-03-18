@@ -77,6 +77,7 @@ abstract class AbstractRestController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+            $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         }
         else {

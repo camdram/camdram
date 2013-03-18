@@ -18,9 +18,12 @@ class AccessControlEntryRepository extends EntityRepository
         foreach ($users as $i => $user) $user_ids = $user->getId();
         foreach ($groups as $i => $group) $group_ids = $group->getId();
 
+        $where = $qb->expr()->orX();
+        if (count($user_ids) > 0) $where->add($qb->expr()->in('e.user_id', $user_ids));
+        if (count($group_ids) > 0) $where->add($qb->expr()->in('e.group_id', $group_ids));
+
         $query =$qb->select('COUNT(e.id) AS c')
-                ->where($qb->expr()->orX($qb->expr()->in('e.user_id', $user_ids),
-                    $qb->expr()->in('e.group_id', $group_ids)))
+                ->where($where)
                 ->andWhere('e.entity = :entity')
                 ->andWhere('e.granted_by IS NOT NULL')
                 ->andWhere('e.revoked_by IS NULL')
