@@ -25,7 +25,7 @@ class TextService
     }
 
     protected $link_regexes = array(
-        '/(http\:\\/\\/[a-zA-Z0-9\-\_\.\\/]+)/'                      =>  '<a href="$1" rel="ext" target="_blank">$1</a>',
+        '/(https?\:\\/\\/[a-zA-Z0-9%\-\_\.\\/]+)/'                      =>  '<a href="$1" rel="ext" target="_blank">$1</a>',
         '/([a-zA-Z0-9\-\_\.]@[a-zA-Z0-9\-\_\]+\.[a-zA-Z0-9\-\_\.])/' =>  '<a href="mailto:$1">$1</a>',
     );
 
