@@ -27,25 +27,25 @@
         <ul class="tabs-content contained">
             {% for period in periods %}
             <li{% if loop.first %} class="active" {% endif %} id="period{{ period.id }}Tab">
-                {% render url('acts_camdram_diary_period', {id: period.id}) with {}, {'standalone': true} %}
+                {{ render(url('acts_camdram_diary_period', {id: period.id}) , { 'strategy': 'esi'}) }}
             </li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="three columns hide-for-small" id="home_statistics">
-        {% render url('acts_camdram_homepage_statistics') with {}, {'standalone': true} %}
+        {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
     </div>
 </div>
   
 <div class="row">
     <div class="five columns">
         <div id="home_vacancies">
-            {% render url('acts_camdram_homepage_vacancies') with {}, {'standalone': true} %}
+            {{ render(controller('ActsCamdramBundle:Default:vacancies'), {'strategy': 'esi'}) }}
         </div>
 
         <div id="home_historic">
-            {% render url('acts_camdram_homepage_historic_data') with {}, {'standalone': true} %}
+            {{ render(controller('ActsCamdramBundle:Default:historicData'), {'strategy': 'esi'}) }}
         </div>
     </div>
     <div class="seven columns">

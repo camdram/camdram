@@ -3,9 +3,6 @@ acts_camdram_entities_res:
 acts_camdram_admin_res:
     resource: "routing/admin.yml"
     prefix: /admin
-acts_camdram_default:
-    resource: "routing/default.yml"
-    prefix: /
 acts_camdram_diary:
     resource: "routing/diary.yml"
     prefix: /diary
@@ -15,3 +12,6 @@ acts_camdram_development:
 acts_camdram_settings:
     pattern: /settings
     defaults: { _controller: ActsCamdramBundle:Account:settings }
+acts_camdram_homepage:
+    pattern:  /
+    defaults: { _controller: ActsCamdramBundle:Default:index }

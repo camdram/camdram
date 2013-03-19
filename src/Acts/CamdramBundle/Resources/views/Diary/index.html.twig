@@ -8,7 +8,7 @@
 <div class="row">
     <h3>Diary</h3>
     {% for period in diary %}
-		{% render "ActsCamdramBundle:Diary:period" with {id: period.id} %}
+		{{ render(controller("ActsCamdramBundle:Diary:period", {id: period.id})) }}
     {% endfor %}
 </div>
 
