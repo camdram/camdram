@@ -11,8 +11,10 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Venue,
     Acts\CamdramBundle\Form\Type\VenueType;
 
-use Ivory\GoogleMapBundle\Model\Events\MouseEvent,
-    Ivory\GoogleMapBundle\Model\Overlays\Animation;
+use Ivory\GoogleMap\Events\MouseEvent,
+    Ivory\GoogleMap\Overlays\Animation,
+    Ivory\GoogleMap\Overlays\Marker,
+    Ivory\GoogleMap\Overlays\InfoWindow;
 
 /**
  * @RouteResource("Venue")
@@ -86,7 +88,7 @@ class VenueController extends AbstractRestController
                     'one_venue' => $one_venue,
                 ))->getContent();
 
-                $infoWindow = $this->get('ivory_google_map.info_window');
+                $infoWindow = new InfoWindow;
                 $infoWindow->setPrefixJavascriptVariable('info_window_');
                 $infoWindow->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
                 $infoWindow->setContent($content);
@@ -96,7 +98,7 @@ class VenueController extends AbstractRestController
                 $infoWindow->setOption('zIndex', 10);
                 $map->addInfoWindow($infoWindow);
 
-                $marker = $this->get('ivory_google_map.marker');
+                $marker = new Marker;
                 $marker->setPrefixJavascriptVariable('marker_');
                 $marker->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
                 if ($one_venue) {
