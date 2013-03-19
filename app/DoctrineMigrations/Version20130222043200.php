@@ -101,9 +101,6 @@ class Version20130222043200 extends AbstractMigration
                    UPDATE acts_societies SET name = NEW.name, description = NEW.description, id = -NEW.id WHERE id=NEW.id;
               END IF;
             END IF;
-            IF NEW.slug IS NULL THEN
-              SET NEW.slug = slugify(NEW.name, NEW.id);
-            END IF;
             END");
         $this->addSql("CREATE TRIGGER `shows_insert` BEFORE INSERT ON `acts_shows`
              FOR EACH ROW BEGIN

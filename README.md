@@ -86,9 +86,8 @@ Run the following command to make the necessary changes to the database:
 8) (Optional) Run console tools to tidy up database
 ---------------------------------------------------
 
-It is recommended that you run `php app/console camdram:users:identities`, which
-detects and logs external accounts (e.g. on Google, Yahoo etc) for all the users
-in the database.
+It is recommended that you run `php app/console camdram:init`, which performs a range of data migrations
+(creating slugs, calculating Cambridge terms/weeks, detecting Raven/Google accounts based on e-mail addresses)
 
 There are a number of other tools which can be run which can be run, which are
 detailed on a Wiki page
