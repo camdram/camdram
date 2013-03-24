@@ -14,7 +14,7 @@ class MapLocationType extends AbstractType
 {
     private $map;
 
-    public function __construct(\Ivory\GoogleMapBundle\Model\Map $map, array $center)
+    public function __construct(\Ivory\GoogleMap\Map $map, array $center)
     {
         $map->setCenter($center[0], $center[1], true);
         $map->setMapOption('zoom', 14);

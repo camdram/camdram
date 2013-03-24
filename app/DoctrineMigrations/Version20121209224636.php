@@ -14,8 +14,6 @@ class Version20121209224636 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
 
-        $this->addSql('ALTER DATABASE  `'.$this->connection->getDatabase().'`  CHARACTER SET utf8 COLLATE utf8_general_ci');
-
         $this->addSql('ALTER TABLE `acts_access` ENGINE = INNODB, CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci');
 
         $this->addSql('ALTER TABLE `acts_applications` MODIFY `text` BLOB, MODIFY `furtherinfo` BLOB');
