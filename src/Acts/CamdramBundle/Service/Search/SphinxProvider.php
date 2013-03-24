@@ -45,7 +45,7 @@ class  SphinxProvider implements ProviderInterface
     public function executeTextSearch($repository, $q)
     {
         $finder = $this->container->get('acts.sphinx_realtime.finder.'.$repository);
-        $query = SphinxQL::forge()->select()->match($q);
+        $query = SphinxQL::forge()->select()->match('(name,description)', $q);
         return $finder->findPaginated($query);
     }
 }
