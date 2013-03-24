@@ -30,7 +30,8 @@
         "pagerfanta/pagerfanta": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "sabre/vobject": "2.0.*",
-        "hoyes/symfony2-image-manager": "dev-master"
+        "hoyes/symfony2-image-manager": "dev-master",
+        "camdram/sphinx-realtime-bundle": "dev-master"
 
     },
     "scripts": {

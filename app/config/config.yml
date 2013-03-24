@@ -170,5 +170,48 @@ foq_elastica:
                       listener: ~
                       finder: ~
 
+acts_sphinx_real_time:
+    clients:
+        default: ~
+    indexes:
+        entity:
+            fields: [name, description]
+            attributes: {entity_type: string}
+            persistence:
+                driver: orm
+                model: Acts\CamdramBundle\Entity\Entity
+                listener: ~
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                prefix_fields: [name]
+                enable_star: true
+                dict: keywords
+        user:
+            fields: [name]
+            persistence:
+                driver: orm
+                model: Acts\CamdramBundle\Entity\User
+                listener: ~
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                enable_star: true
+                dict: keywords
+        group:
+            fields: [name]
+            persistence:
+                driver: orm
+                model: Acts\CamdramSecurityBundle\Entity\Group
+                listener: ~
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                enable_star: true
+                dict: keywords
+
 fos_js_routing:
     routes_to_expose: [ "get_[a-z]+" ]

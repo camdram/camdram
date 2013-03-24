@@ -34,6 +34,7 @@ class AppKernel extends Kernel
             new FOQ\ElasticaBundle\FOQElasticaBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
+            new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
