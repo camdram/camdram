@@ -187,6 +187,7 @@ class Show extends Entity
      *
      * @ORM\ManyToMany(targetEntity="TimePeriod", inversedBy="shows")
      * @ORM\JoinTable(name="acts_shows_time_periods_links")
+     * @Serializer\Exclude
      */
     private $time_periods;
 
