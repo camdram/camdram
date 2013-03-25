@@ -14,7 +14,7 @@ class ShowRepository extends EntityRepository
 
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
-        $qb = $this->createQueryBuilder('s')->select('COUNT(s.id)');
+        $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)');
         $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
                 'p.show = s',
                 $qb->expr()->orX(
@@ -23,9 +23,9 @@ class ShowRepository extends EntityRepository
                     $qb->expr()->andX('p.start_date < :start', 'p.end_date > :end')
                 )
             ))
+            ->groupBy('s')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
-
         $result = $qb->getQuery()->getOneOrNullResult();
         return current($result);
     }

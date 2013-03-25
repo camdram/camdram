@@ -1,4 +1,5 @@
 <h5>This week:</h5>
-<strong>{{ performance_num }}</strong> performances of <strong>{{ show_num }}</strong> shows<br />
-are happening in <strong>{{ venue_num }}</strong> venues<br/>
-involving <strong>{{ people_num }}</strong> people
+{% if performance_num > 0 %}<strong>{{ performance_num }}</strong> performance{% if performance_num != 1 %}s{% endif %} of {% endif %}
+<strong>{{ show_num }}</strong> show{% if show_num != 1 %}s{% endif %}<br />
+{% if performance_num == 1 %}is{% else %}are{% endif %} happening{% if venue_num > 0 %} in <strong>{{ venue_num }}</strong> venue{% if venue_num != 1 %}s{% endif %}<br/>{% endif %}
+{% if people_num > 0 %}involving <strong>{{ people_num }}</strong> {% if people_num == 1 %}person{% else %}people{% endif %}{% endif %}
