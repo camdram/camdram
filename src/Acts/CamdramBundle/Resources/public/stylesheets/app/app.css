@@ -292,7 +292,44 @@ footer #copyright p {
 
 /* Override the default panel properties. */
 .panel {
-    background:transparent;
+
+}
+Claire Adcock
+label.required:after { content:"*"; }
+
+select {
+    width:auto;
+    background:#fff;
+    padding:6px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    border: 1px solid #cccccc;
+}
+
+.dropdown.custom {
+    float:left;
+}
+
+.performances .performance:last-child {
+    border-bottom:1px solid #ddd;
+}
+
+.performance {
+    border-top:1px solid #ddd;
+    padding:10px 0 0;
+}
+
+input[type=date], input[type=time] {
+    width:auto;
+    display:-webkit-inline-flex;
+}
+input[type=date] {
+    max-width:150px;
+}
+input[type=time] {
+    max-width:120px;
 }
 
 /* -----------------------------------------

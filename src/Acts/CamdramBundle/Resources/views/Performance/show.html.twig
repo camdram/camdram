@@ -5,14 +5,14 @@
         {% if date(p.startdate) != date(p.enddate) %}
             {# Show the duration #}
              - {{ p.enddate|date('D jS F') }}, 
-            {% if (date(p.excludedate) > date(p.startdate)) and (date(p.excludedate) < date(p.enddate)) %}
+            {% if p.excludedate > p.startdate and p.excludedate < p.enddate %}
                 (except {{ p.excludedate|date('jS') }}) 
             {% endif %}
         {% endif %}
-        {% if p.venuename is not empty %}
-             at {{ p.venuename }}
-        {% elseif p.venue and (p.venue.name is not empty) %}
+        {% if p.venue and (p.venue.name is not empty) %}
              at <a href="{{ path('get_venue', {identifier:p.venue.slug}) }}">{{ p.venue.name|e }}</a>
+        {% elseif p.venuename is not empty %}
+            at {{ p.venuename }}
         {% else %}
             Venue to be confirmed
         {% endif %}

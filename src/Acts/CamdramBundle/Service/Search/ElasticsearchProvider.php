@@ -20,7 +20,7 @@ class  ElasticsearchProvider implements ProviderInterface
      * @param $offset
      * @return array
      */
-    public function executeAutocomplete($repository, $q, $limit)
+    public function executeAutocomplete($repository, $q, $limit, array $filters = array())
     {
         if (empty($q)) return array();
 

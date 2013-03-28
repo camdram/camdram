@@ -33,6 +33,11 @@ abstract class AbstractRestController extends FOSRestController
 
     }
 
+    protected function preSave($entity, $oldEntity=null)
+    {
+
+    }
+
     protected function getRouteParams($entity)
     {
         return array('identifier' => $entity->getSlug());
@@ -75,6 +80,7 @@ abstract class AbstractRestController extends FOSRestController
         $form->bind($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $this->preSave($form->getData());
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
@@ -109,6 +115,7 @@ abstract class AbstractRestController extends FOSRestController
 
         $form->bind($request);
         if ($form->isValid()) {
+            $this->preSave($form->getData(), $entity);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
@@ -139,11 +146,18 @@ abstract class AbstractRestController extends FOSRestController
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
 
-            if ($request->query->has('autocomplete')) {
-                $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'));
+            if ($this->search_index == 'entity' && $this->type) {
+                $filters = array('entity_type' => $this->type);
             }
             else {
-                $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'));
+                $filters = array();
+            }
+
+            if ($request->query->has('autocomplete')) {
+                $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), $filters);
+            }
+            else {
+                $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'), $filters);
             }
         }
         else {

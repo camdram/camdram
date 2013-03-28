@@ -40,6 +40,10 @@ class VenueController extends AbstractRestController
     
     public function cgetAction(Request $request)
     {
+        if ($request->query->has('q')) {
+            return parent::cgetAction($request);
+        }
+
         $venues = $this->getRepository()->findAllOrderedByName();
  
         $view = $this->view($venues, 200)

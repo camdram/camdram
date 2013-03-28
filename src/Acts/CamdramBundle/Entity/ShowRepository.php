@@ -23,7 +23,6 @@ class ShowRepository extends EntityRepository
                     $qb->expr()->andX('p.start_date < :start', 'p.end_date > :end')
                 )
             ))
-            ->groupBy('s')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();

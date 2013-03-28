@@ -27,14 +27,14 @@ class Show extends Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="author", type="string", length=255, nullable=false)
+     * @ORM\Column(name="author", type="string", length=255, nullable=true)
      */
     private $author;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="prices", type="string", length=255, nullable=false)
+     * @ORM\Column(name="prices", type="string", length=255, nullable=true)
      */
     private $prices = '';
 
@@ -49,14 +49,14 @@ class Show extends Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="venue", type="string", length=255, nullable=false)
+     * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      */
     private $venue_name = '';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="excludedate", type="date", length=255, nullable=false)
+     * @ORM\Column(name="excludedate", type="date", length=255, nullable=true)
      * @Serializer\Exclude
      */
     private $exclude_date;
@@ -113,7 +113,7 @@ class Show extends Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="authorizeid", type="integer", nullable=false)
+     * @ORM\Column(name="authorizeid", type="integer", nullable=true)
      */
     private $authorize_id;
 
@@ -122,7 +122,7 @@ class Show extends Entity
      *
      * @ORM\Column(name="entered", type="boolean", nullable=false)
      */
-    private $entered;
+    private $entered = 1;
 
     /**
      * @var \DateTime
@@ -141,14 +141,14 @@ class Show extends Entity
     /**
      * @var string
      *
-     * @ORM\Column(name="bookingcode", type="string", length=255, nullable=false)
+     * @ORM\Column(name="bookingcode", type="string", length=255, nullable=true)
      */
     private $booking_code;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="primaryref", type="integer", nullable=false)
+     * @ORM\Column(name="primaryref", type="integer", nullable=true)
      */
     private $primary_ref;
 
@@ -170,7 +170,7 @@ class Show extends Entity
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Performance", mappedBy="show")
+     * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_date" = "ASC"})
      * @Serializer\Exclude
      */
@@ -199,6 +199,8 @@ class Show extends Entity
     private $end_at;
 
     protected $entity_type = 'show';
+
+    private $multi_venue;
 
     /**
      * Set dates
@@ -662,6 +664,7 @@ class Show extends Entity
 
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq("type", $type))
+            ->orderBy(array('order' => 'ASC'))
 
         ;
         return $this->getRoles()->matching($criteria);
@@ -730,6 +733,8 @@ class Show extends Entity
         parent::__construct();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->entry_expiry = new \DateTime;
+        $this->timestamp = new \DateTime;
     }
 
     public function getEntityType()
@@ -815,4 +820,111 @@ class Show extends Entity
     {
         return $this->time_periods;
     }
+
+    public function fixPerformanceExcludes()
+    {
+        foreach ($this->getPerformances() as $performance) {
+            /** @var $performance \Acts\CamdramBundle\Entity\Performance */
+            if ($performance->getExcludeDate()) {
+                if ($performance->getStartDate() > $performance->getExcludeDate() || $performance->getEndDate() < $performance->getExcludeDate()) {
+                    $performance->setExcludeDate(null);
+                }
+                else {
+                    $p2 = clone $performance;
+                    $start = clone $p2->getExcludeDate();
+                    $start->add(new \DateInterval('P1D'));
+                    $p2->setStartDate($start);
+                    $p2->setExcludeDate(null);
+                    $this->performances[] = $p2;
+
+                    $end = clone $performance->getExcludeDate();
+                    $end->sub(new \DateInterval('P1D'));
+                    $performance->setEndDate($end);
+                    $performance->setExcludeDate(null);
+                }
+            }
+        }
+    }
+
+    public function getMultiVenue()
+    {
+        if ($this->multi_venue) return $this->multi_venue;
+
+        if (count($this->getPerformances()) == 0) return 'single';
+
+        $venue = null;
+        $same = true;
+        foreach ($this->getPerformances() as $performance) {
+            if ($performance->getVenue()) $cur_venue = $performance->getVenue()->getName();
+            else $cur_venue = $performance->getVenueName();
+            if ($venue == null) {
+                $venue = $cur_venue;
+            }
+            else if ($venue != $cur_venue) {
+                $same = false;
+                break;
+            }
+        }
+        return $same ? 'single' : 'multi';
+    }
+
+    public function setMultiVenue($value)
+    {
+        $this->multi_venue = $value;
+    }
+
+    public function updateVenues()
+    {
+        //If it's a multi-venue show, set the main venue (and vice-versa)
+        switch ($this->getMultiVenue()) {
+            case 'single':
+                foreach ($this->getPerformances() as $performance) {
+                    $performance->setVenue($this->getVenue());
+                    $performance->setVenueName($this->getVenueName());
+                }
+                break;
+            case 'multi':
+                //Try to work out the 'main' venue
+                //First count venue objects and venue names
+                $venues = array();
+                $venue_counts = array();
+                $name_counts = array();
+                foreach ($this->getPerformances() as $performance) {
+                    if ($performance->getVenue()) {
+                        $key = $performance->getVenue()->getId();
+                        if (!isset($venue_counts[$key])) $venue_counts[$key] = 1;
+                        else $venue_counts[$key]++;
+                        $venues[$key] = $performance->getVenue();
+                    }
+                    if ($performance->getVenueName()) {
+                        $key = $performance->getVenue()->getId();
+                        if (!isset($name_counts[$key])) $name_counts[$key] = 1;
+                        else $name_counts[$key]++;
+                    }
+                    //Favour a venue object over a venue name
+                    if (count($venue_counts) > 0) {
+                        $venue_id = array_search(max($venue_counts), $venue_counts);
+                        $this->setVenue($venues[$venue_id]);
+                    }
+                    else {
+                        $venue_name = array_search(max($name_counts), $name_counts);
+                        $this->setVenueName($venue_name);
+                    }
+                }
+                break;
+        }
+    }
+
+    public function updateTimes()
+    {
+        $min = null;
+        $max = null;
+        foreach ($this->getPerformances() as $performance) {
+            if (is_null($min) || $performance->getStartDate() < $min) $min = $performance->getStartDate();
+            if (is_null($max) || $performance->getEndDate() > $max) $max = $performance->getEndDate();
+        }
+        $this->setStartAt($min);
+        $this->setEndAt($max);
+    }
+
 }

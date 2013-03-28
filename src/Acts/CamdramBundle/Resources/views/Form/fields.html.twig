@@ -108,9 +108,11 @@
 
 {% block entity_search_widget %}
     {% spaceless %}
-        {{ form_widget(form.children.name) }}
-        {{ form_widget(form.children.id) }}
-        <script>$(function(){ $('#{{ id }}_name').entitySearch({ route: '{{ route }}' }); })</script>
+        {% set text = attribute(form.children, text_id) %}
+        {% set hidden = attribute(form.children, hidden_id) %}
+        {{ form_widget(text) }}
+        {{ form_widget(hidden) }}
+        <script>$(function(){ $('#{{ text.vars.id }}').entitySearch({ route: '{{ route }}' }); })</script>
     {% endspaceless %}
 {% endblock %}
 
@@ -124,7 +126,19 @@
     </label>
 {% endblock %}
 
+{% block choice_widget_expanded %}
+<div {{ block('widget_container_attributes', form) }}>
+{% for child in form %}
+    <label for="{{ child.vars.id }}">
+        {{ form_widget(child) }}
+        {{ child.vars.label }}
+    </label>
+{% endfor %}
+</div>
+{% endblock %}
+
 {% block form_row %}
+    <div class="row">
     {% if 'checkbox' in form.vars.block_prefixes %}
         <div class="nine columns push-three">
             {{ block('form_option_box') }}
@@ -138,6 +152,7 @@
         {{ form_errors(form) }}
         </div>
     {% endif %}
+    </div>
 {% endblock %}
 
 {% block form_errors %}
@@ -160,7 +175,7 @@
         </div>
     {% endif %}
 
-    <div class="row"{{ block('widget_container_attributes') }}>
+    <div{{ block('widget_container_attributes') }}>
     {{ block('form_rows') }}
     {{ form_rest(form) }}
     </div>
@@ -168,7 +183,7 @@
 
 {% block form_rows %}
     {% for child in form %}
-        <div class="{% if child_class is defined %}{{ child_class }}{% else %}row{% endif %}">
+        <div class="{% if child_class is defined %}{{ child_class }}{% endif %}">
          {{ form_row(child) }}
         </div>
     {% endfor %}

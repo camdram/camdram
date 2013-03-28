@@ -28,7 +28,8 @@ class FacebookLinkType extends AbstractType
         $resolver->setDefaults(array(
             'class' => 'medium',
             'service' => 'facebook',
-            'label' => 'Facebook page name or URL',
+            'label' => 'Facebook event/page',
+            'attr' => array('placeholder' => 'URL, username or ID')
         ));
     }
 

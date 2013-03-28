@@ -28,7 +28,8 @@ class TwitterLinkType extends AbstractType
         $resolver->setDefaults(array(
             'class' => 'medium',
             'service' => 'twitter',
-            'label' => 'Twitter account name or URL',
+            'label' => 'Twitter account',
+            'attr' => array('placeholder' => 'URL or username')
         ));
     }
 

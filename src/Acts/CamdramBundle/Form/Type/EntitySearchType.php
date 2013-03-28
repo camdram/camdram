@@ -25,15 +25,30 @@ class EntitySearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', array('attr' => array('class' => 'autocomplete_input'), 'mapped' => false))
-            ->add('id', 'hidden')
-            ->addModelTransformer(new EntitySearchTransformer($this->em, $options['class']))
+        if (!$options['other_field']) $options['other_field'] = $builder->getName().'_name';
+        $builder->setAttribute('other_field', $options['other_field']);
+
+        $builder->add($options['other_field'], 'text', array('attr' => array('class' => 'autocomplete_input'), 'mapped' => $options['other_mapped']))
+            ->add($builder->create($builder->getName(), 'hidden')->addModelTransformer(new EntitySearchTransformer($this->em, $options['class'], 'id')))
         ;
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['route'] = $options['route'];
+        $view->vars['text_id'] = $form->getConfig()->getAttribute('other_field');
+        $view->vars['hidden_id'] = $form->getName();
+    }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $text = $view->children[$form->getConfig()->getAttribute('other_field')];
+        $hidden = $view->children[$form->getName()];
+
+        $data = $hidden->vars['value'];
+
+        if (empty($text->vars['value'])) $text->vars['value'] = $data['name'];
+        $hidden->vars['value'] = $data['id'];
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -41,13 +56,16 @@ class EntitySearchType extends AbstractType
         $resolver->setDefaults(array(
             'class' => null,
             'route' => 'get_people',
-            'error_bubbling' => false,
+            'compound' => true,
+            'virtual' => true,
+            'other_field' => null,
+            'other_mapped' => false,
         ));
     }
 
     public function getParent()
     {
-        return 'form';
+        return 'text';
     }
 
     public function getName()

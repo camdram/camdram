@@ -21,6 +21,12 @@ services:
         tags:
             - { name: form.type, alias: college }
 
+    acts.camdram.type.show_category:
+        class: Acts\CamdramBundle\Form\Type\ShowCategoryType
+        arguments: ~
+        tags:
+            - { name: form.type, alias: show_category }
+
     acts.camdram.type.facebook_link:
         class: Acts\CamdramBundle\Form\Type\FacebookLinkType
         arguments: [@acts.social_api.apis.facebook]

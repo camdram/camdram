@@ -15,7 +15,7 @@ class DoctrineProvider implements ProviderInterface
     }
 
 
-    public function executeAutocomplete($repository, $query, $limit)
+    public function executeAutocomplete($repository, $query, $limit, array $filters = array())
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $repo \Doctrine\ORM\EntityRepository */

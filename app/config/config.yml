@@ -176,8 +176,7 @@ acts_sphinx_real_time:
         default: ~
     indexes:
         entity:
-            fields: [name, description]
-            attributes: {entity_type: string}
+            fields: [name, description, entity_type]
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Entity

@@ -22,13 +22,17 @@ class  SphinxProvider implements ProviderInterface
      * @param $offset
      * @return array
      */
-    public function executeAutocomplete($repository, $q, $limit)
+    public function executeAutocomplete($repository, $q, $limit, array $filters = array())
     {
         if (empty($q)) return array();
 
         $finder = $this->container->get('acts.sphinx_realtime.finder.'.$repository);
 
         $query = SphinxQL::forge()->select()->match('name', $q.'*');
+
+        foreach ($filters as $key => $value) {
+            $query->match($key, $value);
+        }
 
         $results = $finder->find($query, $limit);
 
@@ -42,10 +46,15 @@ class  SphinxProvider implements ProviderInterface
      * @param $offset
      * @return \Pagerfanta\PagerfantaInterface;
      */
-    public function executeTextSearch($repository, $q)
+    public function executeTextSearch($repository, $q, array $filters = array())
     {
         $finder = $this->container->get('acts.sphinx_realtime.finder.'.$repository);
         $query = SphinxQL::forge()->select()->match('(name,description)', $q);
+
+        foreach ($filters as $key => $value) {
+            $query->match($key, $value);
+        }
+
         return $finder->findPaginated($query);
     }
 }
