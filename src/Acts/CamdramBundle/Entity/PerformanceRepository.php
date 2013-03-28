@@ -61,4 +61,15 @@ class PerformanceRepository extends EntityRepository
 
         return $count;
     }
+
+    public function getUpcomingByVenue(Venue $venue)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.end_date > CURRENT_TIMESTAMP()')
+            ->andWhere('p.venue = :venue')
+            ->orderBy('p.start_date', 'ASC')
+            ->setParameter('venue', $venue)
+            ->getQuery();
+        return $query->getResult();
+    }
 }
