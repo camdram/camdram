@@ -1,0 +1,63 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Play: {{ play.name.text }}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="twelve columns">
+
+            <h2>{{ play.name.text }}</h2>
+
+            {% if play.playwright | length > 0 %}
+                <h5>Author</h5>
+                <p>{% for playwright in play.playwright %}{{ playwright.text }}<br/>{% endfor %}</p>
+            {% endif %}
+            {% if play.composer | length > 0 %}
+                <h5>Composer</h5>
+                <p>{% for composer in play.composer %}{{ composer.text }}<br/>{% endfor %}</p>
+            {% endif %}
+            {% if play.lyricist | length > 0 %}
+                <h5>Lyricist</h5>
+                <p>{% for lyricist in play.lyricist %}{{ lyricist.text }}<br/>{% endfor %}</p>
+            {% endif %}
+            {% if play.orchestrator | length > 0 %}
+                <h5>Orchestrator</h5>
+                <p>{% for orchestrator in play.orchestrator %}{{ orchestrator.text }}<br/>{% endfor %}</p>
+            {% endif %}
+
+            <p>{{ play.description.value }}</p>
+
+            <h3>Characters</h3>
+            <ul>
+            {% for character in play.characters %}
+            <li>{{ character.text }}</li>
+            {% endfor %}
+            </ul>
+
+            {% if play.soundtracks | length > 0 %}
+            <h3>Cast Recordings</h3>
+            <ul>
+                {% for soundtrack in play.soundtracks %}
+                    <li><a href="https://www.freebase.com{{ soundtrack.id }}">{{ soundtrack.text }}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if shows | length > 0 %}
+            <h3>Performances</h3>
+            <ul class="block-grid two-up mobile">
+                {% for show in shows %}
+                <li>
+                    {% if show.society %}<a href="{{ path('get_society', {identifier: show.society}) }}">{{ show.society.name }}</a>{% endif %}
+                    <h5><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h5>
+                    <p><em>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</em></p>
+                    {{ show.description | truncate(200) | camdram_markdown }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

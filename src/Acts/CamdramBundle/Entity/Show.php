@@ -198,6 +198,13 @@ class Show extends Entity
      */
     private $end_at;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="freebase_id", type="string", nullable=true)
+     */
+    private $freebase_id;
+
     protected $entity_type = 'show';
 
     private $multi_venue;
@@ -944,4 +951,27 @@ class Show extends Entity
 
     }
 
+
+    /**
+     * Set freebase_id
+     *
+     * @param string $freebaseId
+     * @return Show
+     */
+    public function setFreebaseId($freebaseId)
+    {
+        $this->freebase_id = $freebaseId;
+
+        return $this;
+    }
+
+    /**
+     * Get freebase_id
+     *
+     * @return string 
+     */
+    public function getFreebaseId()
+    {
+        return $this->freebase_id;
+    }
 }
