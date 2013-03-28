@@ -6,6 +6,8 @@
         return str;
     }
 
+    var short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
     $.fn.scrollTo = function(options) {
         var options = $.extend({
             speed: 500,
@@ -150,9 +152,17 @@
 
             }).data( "autocomplete" )._renderItem = function( ul, item ) {
                 ul.attr('id', 'main_search_autocomplete');
+                text = item.name
+                if (item.entity_type == 'show') {
+                    var start_at = new Date(item.start_at);
+                    if (start_at.getFullYear()) { //is it a valid date?
+                        text += ' <em>(' + short_months[start_at.getMonth()] + ' ' + start_at.getFullYear() + ')</em>'
+                    }
+                }
+
                 var li = $( "<li>" )
                     .data( "item.autocomplete", item )
-                    .append( "<a>" + item.name + "</a>" )
+                    .append( "<a>" + text + "</a>" )
                     .addClass('autocomplete_item')
                 options.display(li, item);
                 return li.appendTo( ul );
