@@ -227,4 +227,22 @@ class Person extends Entity
         return 'person';
     }
 
+    /**
+     * A ranking used by the autocomplete index
+     * For people, return the start date of the most recent show
+     *
+     * @return int
+     */
+    public function getRank()
+    {
+        $latest = null;
+        foreach ($this->getRoles() as $role) {
+            if ($role->getShow() && (!$latest || $role->getShow()->getStartAt() > $latest)) {
+                $latest = $role->getShow()->getStartAt();
+            }
+        }
+        if (!$latest) return 0;
+        else return $latest->format('U');
+    }
+
 }

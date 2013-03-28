@@ -13,7 +13,7 @@ interface ProviderInterface
      * @param $offset
      * @return array
      */
-    public function executeAutocomplete($repository, $query, $limit);
+    public function executeAutocomplete($repository, $query, $limit, array $filters = array(), array $orderBy = array());
 
     /**
      * @param $repository
@@ -22,5 +22,5 @@ interface ProviderInterface
      * @param $offset
      * @return \Pagerfanta\PagerfantaInterface;
      */
-    public function executeTextSearch($repository, $query);
+    public function executeTextSearch($repository, $query, array $filters = array(), array $orderBy = array());
 }

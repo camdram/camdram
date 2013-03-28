@@ -123,6 +123,7 @@ acts_sphinx_real_time:
     indexes:
         entity:
             fields: [name, description, entity_type]
+            attributes: {rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Entity

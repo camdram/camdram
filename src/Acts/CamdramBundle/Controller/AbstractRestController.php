@@ -146,12 +146,8 @@ abstract class AbstractRestController extends FOSRestController
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
 
-            if ($this->search_index == 'entity' && $this->type) {
-                $filters = array('entity_type' => $this->type);
-            }
-            else {
-                $filters = array();
-            }
+            $filters = $this->search_index == 'entity' && $this->type
+                    ? array('entity_type' => $this->type) : array();
 
             if ($request->query->has('autocomplete')) {
                 $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), $filters);

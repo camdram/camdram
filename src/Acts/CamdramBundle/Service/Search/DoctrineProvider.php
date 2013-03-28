@@ -15,7 +15,7 @@ class DoctrineProvider implements ProviderInterface
     }
 
 
-    public function executeAutocomplete($repository, $query, $limit, array $filters = array())
+    public function executeAutocomplete($repository, $query, $limit, array $filters = array(), array $orderBy = array())
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $repo \Doctrine\ORM\EntityRepository */
@@ -32,7 +32,7 @@ class DoctrineProvider implements ProviderInterface
     }
 
 
-    public function executeTextSearch($repository, $query)
+    public function executeTextSearch($repository, $query, array $filters = array(), array $orderBy = array())
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $repo \Doctrine\ORM\EntityRepository */

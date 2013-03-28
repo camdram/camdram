@@ -927,4 +927,21 @@ class Show extends Entity
         $this->setEndAt($max);
     }
 
+    /**
+     * A ranking used by the autocomplete index
+     * For shows, return the Unix timestamp of the show's start date
+     *
+     * @return int
+     */
+    public function getRank()
+    {
+        if ($this->getStartAt()) {
+            return $this->getStartAt()->format('U');
+        }
+        else {
+            return 0;
+        }
+
+    }
+
 }

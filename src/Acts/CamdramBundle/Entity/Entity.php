@@ -470,4 +470,14 @@ abstract class Entity
     {
         return $this->aces;
     }
+
+    /**
+     * Returns a ranking used by the search indexer to prioritise more recent entries
+     *
+     * @return int
+     */
+    public function getRank()
+    {
+        return PHP_INT_MAX;
+    }
 }
