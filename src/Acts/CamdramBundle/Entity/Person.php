@@ -3,6 +3,8 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Criteria;
+
 use JMS\Serializer\Annotation\Exclude;
 
 /**
@@ -143,9 +145,11 @@ class Person extends Entity
      */
     public function getRoles()
     {
-        return $this->roles;
+        $criteria = Criteria::create()
+            ->orderBy(array('show' => 'DESC'));
+        return $this->roles->matching($criteria);
     }
-
+    
     /**
      * Add users
      *
@@ -228,3 +232,4 @@ class Person extends Entity
     }
 
 }
+

@@ -18,11 +18,36 @@
     <h2>{{ person.name }}</h2>
 
     <ul>
-    {% for role in person.roles %}
-        {% if role.show %}
-         <li><a href="{{ path('get_show', {identifier: role.show.slug}) }}">{{ role.show.name }}</a> - {{ role.role }}</li>
-        {% endif %}
-    {% endfor %}
+    {% spaceless %}
+    <h3>Current and Upcoming Shows</h3>
+    {% set current_show = null %}
+    {% set done_current = false %}
+    {%- for role in person.roles -%}
+        {%- if role.show != current_show -%}
+            {% if current_show is not null %}
+                </strong><br/>
+                {% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': current_show.performances } %}</li>
+            {% endif %}
+            {% set current_show = role.show %}
+            {# Check for current and upcoming shows #}
+            {% if ((date() >= date(current_show.startAt)) and 
+                  (date() <= date(current_show.endAt))) or
+                  (date() < date(current_show.startAt)) %}
+                {{ date(current_show.startAt)|date('Y-m-d') }} {{"now"|date('Y-m-d')}}foo
+                {% set done_current = true %}
+            {% elseif not done_current %}
+                {{ person.name }} is not currently involved in any shows.
+                {% set done_current = true %}
+                <h3>Previous Shows</h3>
+            {% endif %}
+            <li><a href="{{ path('get_show', {identifier: role.show.slug}) }}">{{ current_show.name }}</a> - under <strong> 
+        {% else -%}
+            ,
+        {% endif -%}
+        {{ role.role }}
+    {%- endfor -%}
+        <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': current_show.performances } %}</p></li>
+    {% endspaceless %}
     </ul>
 
 {% endblock %}
