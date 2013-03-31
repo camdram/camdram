@@ -45,4 +45,14 @@ class DiaryHelper
         }
         return $events;
     }
+
+    public function createEventsFromPerformances(array $performances)
+    {
+        $events = array();
+        foreach($performances as $performance) {
+            $event = $this->createEventFromPerformance($performance->getShow(), $performance);
+            $events[] = $event;
+        }
+        return $events;
+    }
 }

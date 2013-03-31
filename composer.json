@@ -26,11 +26,11 @@
         "friendsofsymfony/oauth-server-bundle": "dev-master",
         "egeloen/google-map-bundle" : "dev-master",
         "willdurand/geocoder" : "1.4.*",
-        "exercise/elastica-bundle" : "dev-master",
         "pagerfanta/pagerfanta": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "sabre/vobject": "2.0.*",
-        "hoyes/symfony2-image-manager": "dev-master"
+        "hoyes/symfony2-image-manager": "dev-master",
+        "camdram/sphinx-realtime-bundle": "dev-master"
 
     },
     "scripts": {

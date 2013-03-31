@@ -15,3 +15,8 @@ acts_camdram_settings:
 acts_camdram_homepage:
     pattern:  /
     defaults: { _controller: ActsCamdramBundle:Default:index }
+acts_camdram_play:
+    pattern: /plays/{mid}
+    defaults: { _controller: ActsCamdramBundle:Play:display }
+    requirements:
+        mid: .*

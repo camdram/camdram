@@ -24,6 +24,7 @@ class SocietyController extends AbstractRestController
 
     protected $type_plural = 'societies';
 
+
     protected function getRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Society');
@@ -36,6 +37,10 @@ class SocietyController extends AbstractRestController
 
     public function cgetAction(Request $request)
     {
+        if ($request->query->has('q')) {
+            return parent::cgetAction($request);
+        }
+
         $societies = $this->getRepository()->findAllOrderedByCollegeName();
  
         $view = $this->view($societies, 200)

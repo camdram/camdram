@@ -31,8 +31,6 @@ class Performance
      */
     private $show;
 
-    private $name;
-
     /**
      * @var \DateTime
      *
@@ -50,7 +48,7 @@ class Performance
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="excludedate", type="date", nullable=false)
+     * @ORM\Column(name="excludedate", type="date", nullable=true)
      */
     private $exclude_date;
 
@@ -72,19 +70,22 @@ class Performance
      * @var \Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="venid", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="venid", referencedColumnName="id")
      */
     private $venue;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="venue", type="string", length=255, nullable=false)
+     * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      */
     private $venue_name;
 
+
+    public function __construct()
+    {
+
+    }
 
     /**
      * Get id
@@ -293,10 +294,10 @@ class Performance
     /**
      * Set venue
      *
-     * @param \Acts\CamdramBundle\Entity\Society $venue
+     * @param \Acts\CamdramBundle\Entity\Venue $venue
      * @return Performance
      */
-    public function setVenue(\Acts\CamdramBundle\Entity\Society $venue = null)
+    public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
     {
         $this->venue = $venue;
     

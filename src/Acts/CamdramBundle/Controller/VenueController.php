@@ -40,6 +40,10 @@ class VenueController extends AbstractRestController
     
     public function cgetAction(Request $request)
     {
+        if ($request->query->has('q')) {
+            return parent::cgetAction($request);
+        }
+
         $venues = $this->getRepository()->findAllOrderedByName();
  
         $view = $this->view($venues, 200)
@@ -134,12 +138,12 @@ class VenueController extends AbstractRestController
 
     public function getShowsAction($identifier)
     {
-        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $shows = $show_repo->getUpcomingByVenue($this->getEntity($identifier));
+        $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $performances = $performance_repo->getUpcomingByVenue($this->getEntity($identifier));
 
         $diary = $this->get('acts.diary.factory')->createDiary();
 
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromShows($shows);
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
         $diary->addEvents($events);
 
         return $diary;

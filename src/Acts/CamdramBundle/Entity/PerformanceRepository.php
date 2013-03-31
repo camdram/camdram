@@ -56,9 +56,20 @@ class PerformanceRepository extends EntityRepository
         $count = 0;
         foreach ($result as $p) {
             $count += $p->getEndDate()->diff($p->getStartDate())->d + 1;
-            if ($p->getExcludeDate()->format('u') > 0) $count--;
+            if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0) $count--;
         }
 
         return $count;
+    }
+
+    public function getUpcomingByVenue(Venue $venue)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.end_date > CURRENT_TIMESTAMP()')
+            ->andWhere('p.venue = :venue')
+            ->orderBy('p.start_date', 'ASC')
+            ->setParameter('venue', $venue)
+            ->getQuery();
+        return $query->getResult();
     }
 }

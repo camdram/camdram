@@ -51,10 +51,12 @@ class EntityController extends FOSRestController
 
 
         if ($request->query->has('autocomplete')) {
-            $data = $search_provider->executeAutocomplete('entity', $request->get('q'), $request->get('limit'));
+            $data = $search_provider->executeAutocomplete('entity', $request->get('q'), $request->get('limit'),
+                    array(), array('rank' => 'DESC'));
         }
         else {
-            $data = $search_provider->executeTextSearch('entity', $request->get('q'));
+            $data = $search_provider->executeTextSearch('entity', $request->get('q'),
+                array(), array('rank' => 'DESC'));
         }
 
         return $this->view($data, 200)

@@ -92,6 +92,17 @@ google_simple:
             arguments: [keyword, location, radius]
             defaults: {sensor: 'false'}
             response: {root: 'results'}
+        freebase_reconcile:
+            path: https://www.googleapis.com/freebase/v1/reconcile
+            arguments: [name, kind, prop, limit, confidence]
+        freebase_search:
+            path: https://www.googleapis.com/freebase/v1/search
+            arguments: [query, filter, limit]
+            response: {root: 'result'}
+        freebase_topic:
+            path: https://www.googleapis.com/freebase/v1/topic/{mid}
+            url_has_params: true
+            arguments: [mid]
 
 github:
     class: oauth2

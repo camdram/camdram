@@ -18,6 +18,7 @@ framework:
     default_locale:  "%locale%"
     trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     session:         ~
+    fragments: { path: /_fragment }
 
 # Twig Configuration
 twig:
@@ -116,59 +117,48 @@ fos_oauth_server:
     refresh_token_class: Acts\CamdramSecurityBundle\Entity\RefreshToken
     auth_code_class:     Acts\CamdramSecurityBundle\Entity\AuthCode
 
-foq_elastica:
+acts_sphinx_real_time:
     clients:
-        default: { host: localhost, port: 9200 }
+        default: ~
     indexes:
-        camdram:
-            client: default
-            settings:
-               index:
-                  analysis:
-                      analyzer:
-                          autocomplete:
-                              type: custom
-                              tokenizer: lowercase
-                              filter   : [stop, autocomplete_ngram]
-                      filter:
-                          autocomplete_ngram:
-                              type: edgeNGram
-                              min_gram: 2
-                              max_gram: 6
-                              side: front
-                      tokenizer:
-                          autocomplete_tokenizer:
-
-            types:
-               entity:
-                  mappings:
-                      name: { boost: 20, analyzer: autocomplete }
-                      description:
-                      entity_type: { analyzer: keyword }
-                  persistence:
-                      driver: orm
-                      model: Acts\CamdramBundle\Entity\Entity
-                      provider: ~
-                      listener: ~
-                      finder: ~
-               user:
-                  mappings:
-                      name: { analyzer: autocomplete }
-                  persistence:
-                      driver: orm
-                      model: Acts\CamdramBundle\Entity\User
-                      provider: ~
-                      listener: ~
-                      finder: ~
-               group:
-                  mappings:
-                      name: { analyzer: autocomplete }
-                  persistence:
-                      driver: orm
-                      model: Acts\CamdramSecurityBundle\Entity\Group
-                      provider: ~
-                      listener: ~
-                      finder: ~
+        entity:
+            fields: [name, description, entity_type]
+            attributes: {rank: int}
+            persistence:
+                driver: orm
+                model: Acts\CamdramBundle\Entity\Entity
+                listener: ~
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                prefix_fields: [name]
+                enable_star: true
+                dict: keywords
+        user:
+            fields: [name]
+            persistence:
+                driver: orm
+                model: Acts\CamdramBundle\Entity\User
+                listener: ~
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                enable_star: true
+                dict: keywords
+        group:
+            fields: [name]
+            persistence:
+                driver: orm
+                model: Acts\CamdramSecurityBundle\Entity\Group
+                listener: ~
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                enable_star: true
+                dict: keywords
 
 fos_js_routing:
     routes_to_expose: [ "get_[a-z]+" ]

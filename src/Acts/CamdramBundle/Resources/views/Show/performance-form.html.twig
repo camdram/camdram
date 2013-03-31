@@ -1,0 +1,34 @@
+<div class="performance">
+    <div class="row">
+        <div class="one column">
+            {{ form_label(performance.start_date) }}
+        </div>
+        <div class="three columns">
+            {{ form_widget(performance.start_date) }}
+        </div>
+        <div class="one column end-date">
+            {{ form_label(performance.end_date) }}
+        </div>
+        <div class="three columns end-date">
+            {{ form_widget(performance.end_date) }}
+        </div>
+        <div class="one column">
+            {{ form_label(performance.time) }}
+        </div>
+        <div class="three columns">
+            <div class="right">
+                <a href="#" class="remove_performance">[X]</a>
+            </div>
+            {{ form_widget(performance.time) }}
+        </div>
+    </div>
+    <div class="row venue-row">
+        <div class="three columns">
+            {{ form_label(performance.venue) }}
+        </div>
+        <div class="nine columns">
+            <div class="row">{{ form_widget(performance.venue) }}</div>
+        </div>
+    </div>
+{{ form_rest(performance) }}
+</div>

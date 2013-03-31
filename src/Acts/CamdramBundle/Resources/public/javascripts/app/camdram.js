@@ -6,6 +6,8 @@
         return str;
     }
 
+    var short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
     $.fn.scrollTo = function(options) {
         var options = $.extend({
             speed: 500,
@@ -150,9 +152,17 @@
 
             }).data( "autocomplete" )._renderItem = function( ul, item ) {
                 ul.attr('id', 'main_search_autocomplete');
+                text = item.name
+                if (item.entity_type == 'show') {
+                    var start_at = new Date(item.start_at);
+                    if (start_at.getFullYear()) { //is it a valid date?
+                        text += ' <em>(' + short_months[start_at.getMonth()] + ' ' + start_at.getFullYear() + ')</em>'
+                    }
+                }
+
                 var li = $( "<li>" )
                     .data( "item.autocomplete", item )
-                    .append( "<a>" + item.name + "</a>" )
+                    .append( "<a>" + text + "</a>" )
                     .addClass('autocomplete_item')
                 options.display(li, item);
                 return li.appendTo( ul );
@@ -167,13 +177,13 @@
            },
            placeholder: 'start typing to search'
        }, options)
-        console.log(options);
        $(this).camdramAutocomplete(options)
 
        $(this).each(function() {
-           $(this).change(function() {
-               $(this).siblings('input[type=hidden]').val('');
-           })
+           $(this).attr('placeholder', options.placeholder)
+               .change(function() {
+                   $(this).siblings('input[type=hidden]').val('');
+               });
        })
     }
 
@@ -205,6 +215,67 @@
             })
         })
     }
+
+    $.fn.initPerformances = function(options) {
+        var $self = $(this);
+        var index = $('.performance',$self).length;
+
+        var update_date_fields = function() {
+            var val = $('#acts_camdrambundle_showtype_multi_venue input:checked', $self).val();
+            switch (val) {
+                case 'single':
+                    $('.performances .venue-row', $self).hide();
+                    $('.main-venue-row', $self).show();
+                    break;
+                case 'multi':
+                    $('.performances .venue-row', $self).show();
+                    $('.main-venue-row', $self).hide();
+                    break;
+            }
+        };
+
+        var update_remove_links = function() {
+            if ($('.remove_performance').length > 1) {
+                $('.remove_performance', $self).show();
+            }
+            else {
+                $('.remove_performance', $self).hide();
+            }
+        }
+
+        $('input[type=date]', $self).live('change', function() {
+            var $self = $(this);
+            $self.parents('.performance').find('input[type=date]').each(function(key, input) {
+                if (!$(input).val()) {
+                    $(input).val($self.val());
+                }
+            })
+        })
+
+        $('#acts_camdrambundle_showtype_multi_venue input', $self).change(update_date_fields)
+        $('.main-venue-row select', $self).change(function() {
+            $('.performances .venue-row select', $self).val($(this).val());
+        })
+
+        $('.add_performance').click(function(e) {
+            e.preventDefault();
+            var html = $('.performances', $self).attr('data-prototype').replace(/__name__/g, index);
+            $('.performances', $self).append($(html));
+            update_date_fields();
+            update_remove_links();
+            index++;
+        })
+
+        $('.remove_performance', $self).live('click', function(e) {
+            e.preventDefault();
+            $(this).parents('.performance').remove();
+            update_remove_links();
+        })
+
+        update_remove_links();
+        update_date_fields();
+    }
+
     $(function() {
         $('.news_media').newsFeedMedia();
         $('#main_search_box').camdramAutocomplete({
@@ -216,6 +287,11 @@
             appendTo: '#search_form'
         });
         $('a.fancybox').fancybox();
+        $('.datepicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd/mm/yy' //D d M yy
+        });
     });
 
 })(jQuery, window);

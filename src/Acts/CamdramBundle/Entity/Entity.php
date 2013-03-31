@@ -99,7 +99,7 @@ abstract class Entity
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="entity")
+     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="entity", cascade={"remove"})
      * @Serializer\Exclude
      */
     private $aces;
@@ -109,7 +109,6 @@ abstract class Entity
      * @Serializer\Expose
      */
     protected $entity_type;
-
 
     /**
      * Get id
@@ -413,5 +412,72 @@ abstract class Entity
     public function getLock()
     {
         return $this->lock;
+    }
+
+
+    /**
+     * Add news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     * @return Entity
+     */
+    public function addNews(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news[] = $news;
+
+        return $this;
+    }
+
+    /**
+     * Remove news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     */
+    public function removeNews(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news->removeElement($news);
+    }
+
+    /**
+     * Add aces
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
+     * @return Entity
+     */
+    public function addAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
+    {
+        $this->aces[] = $aces;
+
+        return $this;
+    }
+
+    /**
+     * Remove aces
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
+     */
+    public function removeAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
+    {
+        $this->aces->removeElement($aces);
+    }
+
+    /**
+     * Get aces
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAces()
+    {
+        return $this->aces;
+    }
+
+    /**
+     * Returns a ranking used by the search indexer to prioritise more recent entries
+     *
+     * @return int
+     */
+    public function getRank()
+    {
+        return PHP_INT_MAX;
     }
 }

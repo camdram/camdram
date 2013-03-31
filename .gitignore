@@ -4,6 +4,7 @@ web/js
 app/bootstrap.php.cache
 app/cache/*
 app/config/parameters.yml
+app/config/sphinx*
 app/logs/*
 app/data/*
 build/

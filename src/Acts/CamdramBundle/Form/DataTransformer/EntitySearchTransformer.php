@@ -5,7 +5,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class EntitySearchTransformer implements DataTransformerInterface
 {
@@ -19,10 +19,13 @@ class EntitySearchTransformer implements DataTransformerInterface
      */
     private $repository_name;
 
-    public function __construct(EntityManager $em, $repository_name)
+    private $property;
+
+    public function __construct(EntityManager $em, $repository_name, $property)
     {
         $this->em = $em;
         $this->repository_name = $repository_name;
+        $this->property = $property;
     }
 
     public function transform($value) {
@@ -32,17 +35,14 @@ class EntitySearchTransformer implements DataTransformerInterface
                 'name' => $value->getName(),
             );
         }
-        return $value;
+        return array('id' => null, 'name' => null);
     }
 
     public function reverseTransform($value) {
-        if (is_array($value) && isset($value['id'])) {
+        if (is_numeric($value)) {
             $repo = $this->em->getRepository($this->repository_name);
 
-            $entity = $repo->findOneById($value['id']);
-            if ($entity) {
-                $entities[] = $entity;
-            }
+            $entity = $repo->findOneById($value);
             return $entity;
         }
         return $value;
