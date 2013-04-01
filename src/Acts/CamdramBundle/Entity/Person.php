@@ -231,12 +231,6 @@ class Person extends Entity
         return 'person';
     }
 
-<<<<<<< HEAD
-}
-
-||||||| merged common ancestors
-}
-=======
     /**
      * A ranking used by the autocomplete index
      * For people, return the start date of the most recent show
@@ -256,4 +250,3 @@ class Person extends Entity
     }
 
 }
->>>>>>> ea1749124999be071bb381760b2c9b4e967a51db
