@@ -3,12 +3,13 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * TimePeriodGroup
  *
  * @ORM\Table(name="acts_time_period_groups")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\TimePeriodGroupRepository")
  */
 class TimePeriodGroup
 {
@@ -53,6 +54,12 @@ class TimePeriodGroup
      * @ORM\Column(name="end_at", type="datetime")
      */
     private $end_at;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     */
+    private $slug;
 
     /**
      * Get id
@@ -194,5 +201,28 @@ class TimePeriodGroup
     public function getEndAt()
     {
         return $this->end_at;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return TimePeriodGroup
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

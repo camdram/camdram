@@ -12,14 +12,52 @@ class DiaryController extends FOSRestController
 
     public function indexAction()
     {
-        $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $periods = $periods_repo->getCurrentTimePeriods(5);
 
-        $view = $this->view($periods, 200)
-            ->setTemplate("ActsCamdramBundle:Diary:index.html.twig")
-            ->setTemplateVar('diary')
+
+        return $this->render("ActsCamdramBundle:Diary:index.html.twig")
         ;
-        return $view;
+    }
+
+    public function toolbarAction()
+    {
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriodGroup');
+        $years = $repo->getYears();
+        $current_year = date('Y');
+        $groups = $repo->getGroupsByYear($current_year);
+        $current_group = $repo->getCurrentGroup();
+
+        return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(
+            'years' => $years,
+            'current_year' => $current_year,
+            'groups' => $groups,
+            'current_group' => $current_group,
+        ));
+    }
+
+    public function contentAction($direction = null, $last_date = null)
+    {
+        $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
+
+        if (is_null($direction)) {
+            $periods = $periods_repo->getCurrentTimePeriods(5);
+        }
+        else {
+            $last_date = new \DateTime($last_date);
+            $last_date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+            if ($direction == 'next') {
+                $periods = $periods_repo->getTimePeriodsAfter($last_date, 3);
+            }
+            elseif ($direction == 'previous') {
+                $periods = $periods_repo->getTimePeriodsBefore($last_date, 1);
+            }
+        }
+
+
+
+        return $this->render("ActsCamdramBundle:Diary:content.html.twig", array(
+            'periods' => $periods
+        ));
     }
 
     public function periodAction($id)
@@ -29,7 +67,7 @@ class DiaryController extends FOSRestController
         return $this->render('ActsCamdramBundle:Diary:period.html.twig', array('period' => $period));
     }
 
-    public function periodDiaryAction($id)
+    public function diaryAction($id)
     {
         /** @var $diary \Acts\DiaryBundle\Diary\Diary */
         $diary = $this->get('acts.diary.factory')->createDiary();
@@ -39,7 +77,7 @@ class DiaryController extends FOSRestController
         $diary->setDateRange($period->getStartAt(), $period->getEndAt());
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $shows = $repo->findByTimePeriod($id);
+        $shows = $repo->findByTimePeriod($period);
 
         $events = $this->get('acts.camdram.diary_helper')->createEventsFromShows($shows);
         $diary->addEvents($events);

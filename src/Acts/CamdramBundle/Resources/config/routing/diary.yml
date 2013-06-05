@@ -4,4 +4,8 @@ acts_camdram_diary:
 
 acts_camdram_diary_period:
     pattern:  /period/{id}
-    defaults: { _controller: ActsCamdramBundle:Diary:periodDiary }
+    defaults: { _controller: ActsCamdramBundle:Diary:diary }
+
+acts_camdram_diary_content:
+    pattern: /content/{direction}/{last_date}
+    defaults: { _controller: ActsCamdramBundle:Diary:content }

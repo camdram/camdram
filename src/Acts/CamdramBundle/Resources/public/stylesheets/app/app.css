@@ -294,7 +294,7 @@ footer #copyright p {
 .panel {
 
 }
-Claire Adcock
+
 label.required:after { content:"*"; }
 
 select {
@@ -332,10 +332,21 @@ input[type=time] {
     max-width:120px;
 }
 
+a.infinite_scroll {
+    display:block;
+    text-align:center;
+    background:#eee;
+    padding:0.8em;
+    margin:0.8em 0;
+    color:#333;
+}
+a.infinite_scroll:hover {
+    background:#f0f0f0;
+}
+
 /* -----------------------------------------
    Home Page
 ----------------------------------------- */
-
 
 
 #home_statistics {

@@ -6,10 +6,56 @@
 {% block body %}
 
 <div class="row">
-    <h3>Diary</h3>
-    {% for period in diary %}
-		{{ render(controller("ActsCamdramBundle:Diary:period", {id: period.id})) }}
-    {% endfor %}
+    <div class="six columns"><h3>Diary</h3></div>
+    <form>
+    <div class="six columns text-right">
+        {{ render(controller("ActsCamdramBundle:Diary:toolbar") )}}
+
+    </div>
+    </form>
 </div>
+
+<div class="row">
+    <div class="twelve columns">
+        <a href="#" class="infinite_scroll load_previous">Go back</a>
+        <div id="diary">
+            {{ render(controller("ActsCamdramBundle:Diary:content")) }}
+        </div>
+        <a href="#" class="infinite_scroll">More</a>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        var get_last_date = function() {
+            var date = new Date($('#diary').children().last().attr('data-end'));
+            return date.toISOString();
+        }
+
+        var get_first_date = function() {
+            var date = new Date($('#diary').children().first().attr('data-start'));
+            return date.toISOString();
+        }
+        var loading = false;
+
+        $(window).endlessScroll({
+            callback: function() {
+                if (!loading) {
+                    loading = true;
+                    $.get(Routing.generate('acts_camdram_diary_content', {direction: 'next', last_date: get_last_date()}), function(data) {
+                        $('#diary').append(data)
+                        loading = false;
+                    })
+                }
+            }
+        })
+        $('.load_previous').click(function(e) {
+            e.preventDefault();
+            $.get(Routing.generate('acts_camdram_diary_content', {direction: 'previous', last_date: get_first_date()}), function(data) {
+                $('#diary').prepend(data)
+            })
+        })
+    })
+</script>
 
 {% endblock %}

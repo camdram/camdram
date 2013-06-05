@@ -327,4 +327,50 @@ class AccessControlEntry
     {
         return $this->email;
     }
+
+    /**
+     * Set user_id
+     *
+     * @param integer $userId
+     * @return AccessControlEntry
+     */
+    public function setUserId($userId)
+    {
+        $this->user_id = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get user_id
+     *
+     * @return integer 
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * Set group_id
+     *
+     * @param integer $groupId
+     * @return AccessControlEntry
+     */
+    public function setGroupId($groupId)
+    {
+        $this->group_id = $groupId;
+
+        return $this;
+    }
+
+    /**
+     * Get group_id
+     *
+     * @return integer 
+     */
+    public function getGroupId()
+    {
+        return $this->group_id;
+    }
 }

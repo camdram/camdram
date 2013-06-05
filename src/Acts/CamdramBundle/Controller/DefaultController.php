@@ -70,7 +70,7 @@ class DefaultController extends Controller
         foreach (array(1, 2, 5) as $years) {
             $period = $time_repo->getTimePeriod(new \DateTime("-$years years"));
             if ($period) {
-                $shows = $show_repo->findMostInterestingByTimePeriod($period->getId(), 5);
+                $shows = $show_repo->findMostInterestingByTimePeriod($period, 5);
                 if (count($shows) > 0) $data[$years] = $shows;
             }
         }

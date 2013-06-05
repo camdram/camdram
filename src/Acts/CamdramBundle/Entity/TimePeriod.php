@@ -71,12 +71,6 @@ class TimePeriod
     private $visible = true;
 
     /**
-     *
-     * @ORM\ManyToMany(targetEntity="Show", mappedBy="time_periods")
-     */
-    private $shows;
-
-    /**
      * @var TimePeriodGroup
      * @ORM\ManyToOne(targetEntity="TimePeriodGroup", inversedBy="periods")
      */

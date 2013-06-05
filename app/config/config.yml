@@ -54,10 +54,10 @@ doctrine:
         charset:  UTF8
         mapping_types:
             enum:       string
-
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -161,4 +161,4 @@ acts_sphinx_real_time:
                 dict: keywords
 
 fos_js_routing:
-    routes_to_expose: [ "get_[a-z]+" ]
+    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary_content' ]

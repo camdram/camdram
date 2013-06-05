@@ -15,7 +15,6 @@ class TimePeriodRepository extends EntityRepository
 
     public function getCurrentTimePeriods($limit)
     {
-        $periods = array($this->getCurrentTimePeriod());
         $qb = $this->createQueryBuilder('p');
         $query = $qb->where($qb->expr()->andX('p.start_at < :now', 'p.end_at >= :now'))
             ->orWhere('p.start_at >= :now')
@@ -24,6 +23,28 @@ class TimePeriodRepository extends EntityRepository
             ->setMaxResults($limit)
             ->getQuery();
         return $query->getResult();
+    }
+
+    public function getTimePeriodsAfter($date, $limit)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->where('p.start_at >= :date')
+            ->setParameter('date', $date)
+            ->orderBy('p.start_at', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getTimePeriodsBefore(\DateTime $date, $limit)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $query = $qb->where('p.end_at <= :date')
+            ->setParameter('date', $date)
+            ->orderBy('p.start_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery();
+        return array_reverse($query->getResult());
     }
 
     public function getCurrentTimePeriod()
@@ -56,4 +77,5 @@ class TimePeriodRepository extends EntityRepository
 
         return $query->getResult();
     }
+
 }

@@ -17,11 +17,7 @@ class ShowRepository extends EntityRepository
         $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)');
         $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
                 'p.show = s',
-                $qb->expr()->orX(
-                    $qb->expr()->andX('p.end_date > :start', 'p.end_date < :end'),
-                    $qb->expr()->andX('p.start_date > :start', 'p.start_date < :end'),
-                    $qb->expr()->andX('p.start_date < :start', 'p.end_date > :end')
-                )
+                $qb->expr()->andX('p.start_date <= :end', 'p.end_date >= :start')
             ))
             ->setParameter('start', $start)
             ->setParameter('end', $end);
@@ -29,22 +25,27 @@ class ShowRepository extends EntityRepository
         return current($result);
     }
 
-    public function findByTimePeriod($id)
+    public function findByTimePeriod(TimePeriod $period)
     {
         $qb = $this->createQueryBuilder('s');
-        $qb->leftJoin('s.time_periods', 'p')
-        ->where('p.id = :id')
-            ->setParameter('id', $id);
+        $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
+            'p.show = s',
+            $qb->expr()->andX('p.start_date <= :end', 'p.end_date >= :start')
+        ))
+            ->setParameter('start', $period->getStartAt())
+            ->setParameter('end', $period->getEndAt());
         return $qb->getQuery()->getResult();
     }
 
-    public function findMostInterestingByTimePeriod($id, $limit)
+    public function findMostInterestingByTimePeriod(TimePeriod $period, $limit)
     {
         //For now, we define 'most interesting' as 'lasts the longest period of time'
         $qb = $this->createQueryBuilder('s');
-        $qb->leftJoin('s.time_periods', 'p')
-            ->where('p.id = :id')
-            ->setParameter('id', $id)
+        $qb->leftJoin('s.performances', 'p')
+            ->where('p.start_date < :end')
+            ->andWhere('p.end_date > :start')
+            ->setParameter('start', $period->getStartAt())
+            ->setParameter('end', $period->getEndAt())
             ->orderBy('s.end_at - s.start_at', 'DESC')
             ->setMaxResults($limit);
         return $qb->getQuery()->getResult();

@@ -29,6 +29,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
 
         $output->writeln('Fetching ical file...');
         list($terms, $min, $max) = $this->getCalendarData();
+
         $output->writeln('Done');
         $last_date = null;
         $holidays = array(
@@ -54,19 +55,29 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
                     if ($last_date->format('Y') != $term_start->format('Y')) $holiday_year .= '/'.$term_start->format('Y');
                     $this->createTerm($holiday_name, $holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year,
                             $last_date, $term_start, $output, true);
+
+                    $this->createGroup($holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year, $last_date, $term_start, $output);
                 }
 
                 $num = 0;
                 $date = clone $term_start;
 
+                //Make Lent Term have 9 weeks to include LTM
                 if ($term_name == 'Lent') $term['end']->modify('+1 week');
 
                 while ($date < $term['end']) {
                     $start = clone $date;
                     $date->modify('+1 week');
                     $end = clone $date;
-                    $this->createTerm('Week '.$num, $term_name.' Week '.$num, $term_name.' Term '.$year.' Week '.$num,
+
+                    //Make Easter Term week 8 'May Week'
+                    if ($term_name == 'Easter' && $num == 8) {
+                        $this->createTerm('May Week', 'May Week', 'May Week '.$year, $start, $end, $output);
+                    }
+                    else {
+                        $this->createTerm('Week '.$num, $term_name.' Week '.$num, $term_name.' Term '.$year.' Week '.$num,
                             $start, $end, $output);
+                    }
                     $num++;
                 }
                 $last_date = clone $date;
@@ -84,15 +95,12 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
         $repo = $em->getRepository('ActsCamdramBundle:TimePeriodGroup');
         $qb = $repo->createQueryBuilder('g');
         $query = $qb
-            ->where($qb->expr()->andX('g.start_at < :start', 'g.end_at > :start'))
-            ->orWhere($qb->expr()->andX('g.start_at < :end', 'g.end_at > :end'))
-            ->orWhere($qb->expr()->andX('g.start_at = :start', 'g.end_at = :end'))
+            ->where($qb->expr()->andX('g.start_at <= :end', 'g.end_at >= :start'))
             ->setParameter('start', $start)->setParameter('end', $end)
             ->getQuery();
-        $result = $query->getOneOrNullResult();
+        $result = $query->getResult();
 
-
-        if (!$result) {
+        if (count($result) == 0) {
             $g = new TimePeriodGroup;
             $g->setName($name)->setLongName($long)
                 ->setStartAt($start)->setEndAt($end);
@@ -102,7 +110,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
             $output->writeln('<info>Created time period group '.$long.'</info>');
         }
         else {
-            $g = $result;
+            $g = current($result);
             $output->writeln('Time period group '.$long. ' already exists');
         }
 
@@ -127,14 +135,13 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
         $repo = $em->getRepository('ActsCamdramBundle:TimePeriod');
         $qb = $repo->createQueryBuilder('p');
         $query = $qb->select('count(p.id) AS c')
-            ->where($qb->expr()->andX('p.start_at < :start', 'p.end_at > :start'))
-            ->orWhere($qb->expr()->andX('p.start_at < :end', 'p.end_at > :end'))
-            ->orWhere($qb->expr()->andX('p.start_at = :start', 'p.end_at = :end'))
+            ->where($qb->expr()->andX('p.start_at < :end', 'p.end_at > :start'))
             ->setParameter('start', $start)->setParameter('end', $end)
             ->getQuery();
         $result = $query->getResult();
         $count = $result[0]['c'];
         if ($count == 0) {
+
             $p = new TimePeriod;
             $p->setShortName($short)->setName($name)->setLongName($long)
                 ->setStartAt($start)->setEndAt($end);
@@ -189,9 +196,11 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $term_repo = $em->getRepository('ActsCamdramBundle:TermDate');
-        $term_dates = $term_repo->findAll();
+        $term_dates = $term_repo->createQueryBuilder('d')
+            ->orderBy('d.start_date')
+            ->getQuery()->getResult();
         $last_date = null;
-        $last_vaction = null;
+        $last_vacation = null;
 
         foreach ($term_dates as $term_date) {
             $parts = explode(' ',$term_date->getName());
@@ -209,6 +218,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
 
                     $this->createTerm($holiday_name, $holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year,
                         $last_date, $start, $output, true);
+                    $this->createGroup($holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year, $last_date, $start, $output);
                 }
 
                 $date = clone $start;
@@ -216,8 +226,13 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
                     $start = clone $date;
                     $date->modify('+1 week');
                     $end = clone $date;
-                    $this->createTerm('Week '.$num, $term.' Week '.$num, $term.' Term '.$year.' Week '.$num,
-                        $start, $end, $output);
+                    if ($term == 'Easter' && $num == 8) {
+                        $this->createTerm('May Week', 'May Week', 'May Week '.$year, $start, $end, $output);
+                    }
+                    else {
+                        $this->createTerm('Week '.$num, $term.' Week '.$num, $term.' Term '.$year.' Week '.$num,
+                            $start, $end, $output);
+                    }
                 }
 
                 $last_date = clone $date;

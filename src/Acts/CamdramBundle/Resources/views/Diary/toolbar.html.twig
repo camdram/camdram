@@ -1,0 +1,13 @@
+<select id="years" name="year">
+    {% for year in years %}
+    <option value="{{ year }}"{% if current_year == year %} selected{% endif %}>{{ year }}</option>
+    {% endfor %}
+</select>
+
+<select id="groups" name="group">
+    {% for group in groups %}
+        <option value="{{ group.id }}"{% if current_group == group %} selected{% endif %}>{{ group.longName }}</option>
+    {% endfor %}
+</select>
+
+<button class="button small">Go</button>

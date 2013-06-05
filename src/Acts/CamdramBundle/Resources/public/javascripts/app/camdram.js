@@ -276,6 +276,28 @@
         update_date_fields();
     }
 
+    $.fn.endlessScroll = function(options) {
+        var options = $.extend({
+            distance: 500,
+            interval: 200,
+            callback: function() {}
+        }, options);
+
+        var $window = $(window),
+            $document = $(document),
+            $self = $(this);
+
+        var checkScrollPosition = function() {
+            var top = $document.height() - $window.height() - options.distance;
+
+            if ($window.scrollTop() >= top) {
+                options.callback.apply($self);
+            }
+        };
+
+        setInterval(checkScrollPosition, options.interval);
+    }
+
     $(function() {
         $('.news_media').newsFeedMedia();
         $('#main_search_box').camdramAutocomplete({
