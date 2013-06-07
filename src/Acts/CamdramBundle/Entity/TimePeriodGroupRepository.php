@@ -38,11 +38,11 @@ class TimePeriodGroupRepository extends EntityRepository
         return $years;
     }
 
-    public function getCurrentGroup()
+    public function getGroupAt(\DateTime $date)
     {
         return $this->createQueryBuilder('g')
             ->where('g.start_at < :now')->andWhere('g.end_at >= :now')
-            ->setParameter('now', new \DateTime)
+            ->setParameter('now', $date)
             ->getQuery()->getOneOrNullResult();
     }
 

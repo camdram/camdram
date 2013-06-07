@@ -13,15 +13,16 @@ class DefaultController extends Controller
         $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
         $news = $news_repo->getRecent(20);
 
+        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $periods = $time_repo->getCurrentTimePeriods(3);
+        $periods = $time_repo->getTimePeriodsAt($now, 3);
 
         return $this->render('ActsCamdramBundle:Default:index.html.twig', array('news' => $news, 'periods' => $periods));
     }
 
     public function statisticsAction()
     {
-        $now = new \DateTime;
+        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
         $day = $now->format('N');
         if ($day == 7) $day = 0;
 
@@ -66,9 +67,12 @@ class DefaultController extends Controller
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
         $data = array();
+        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
 
         foreach (array(1, 2, 5) as $years) {
-            $period = $time_repo->getTimePeriod(new \DateTime("-$years years"));
+            $date = clone $now;
+            $date->modify('-'.$years.' years');
+            $period = $time_repo->getTimePeriodAt($date);
             if ($period) {
                 $shows = $show_repo->findMostInterestingByTimePeriod($period, 5);
                 if (count($shows) > 0) $data[$years] = $shows;

@@ -896,7 +896,7 @@ class Show extends Entity
                         $venues[$key] = $performance->getVenue();
                     }
                     if ($performance->getVenueName()) {
-                        $key = $performance->getVenue()->getId();
+                        $key = $performance->getVenueName();
                         if (!isset($name_counts[$key])) $name_counts[$key] = 1;
                         else $name_counts[$key]++;
                     }

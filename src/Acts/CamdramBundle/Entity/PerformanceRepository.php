@@ -62,13 +62,14 @@ class PerformanceRepository extends EntityRepository
         return $count;
     }
 
-    public function getUpcomingByVenue(Venue $venue)
+    public function getUpcomingByVenue(\DateTime $now, Venue $venue)
     {
         $query = $this->createQueryBuilder('p')
-            ->where('p.end_date > CURRENT_TIMESTAMP()')
+            ->where('p.end_date > :now')
             ->andWhere('p.venue = :venue')
             ->orderBy('p.start_date', 'ASC')
             ->setParameter('venue', $venue)
+            ->setParameter('now', $now)
             ->getQuery();
         return $query->getResult();
     }

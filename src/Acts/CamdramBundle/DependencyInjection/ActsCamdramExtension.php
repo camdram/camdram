@@ -29,5 +29,7 @@ class ActsCamdramExtension extends Extension
         $container->setDefinition('acts.camdram.search_provider',
             new DefinitionDecorator('acts.camdram.search_provider.'.$config['search_provider'])
         );
+
+        $container->setParameter('camdram.time_override', $config['time_override']);
     }
 }

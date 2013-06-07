@@ -42,13 +42,12 @@
     '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
     '@ActsDiaryBundle/Resources/public/js/diary.js'
     '@FOSJsRoutingBundle/Resources/public/js/router.js'
-    'js/fos_js_routes.js'
     '@HoyesImageManagerBundle/Resources/public/js/jquery.uploadify.js'
     '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js'
     '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {% block javascripts %}{% endblock %}
 
 </head>

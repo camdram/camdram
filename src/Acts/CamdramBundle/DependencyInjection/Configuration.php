@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('acts_camdram');
         $rootNode->children()
                 ->scalarNode('search_provider')->isRequired()->end()
+                ->scalarNode('time_override')->defaultNull()->end()
             ->end();
 
         // Here you should define the parameters that are allowed to

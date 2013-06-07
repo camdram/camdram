@@ -139,7 +139,8 @@ class VenueController extends AbstractRestController
     public function getShowsAction($identifier)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
-        $performances = $performance_repo->getUpcomingByVenue($this->getEntity($identifier));
+        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
+        $performances = $performance_repo->getUpcomingByVenue($now, $this->getEntity($identifier));
 
         $diary = $this->get('acts.diary.factory')->createDiary();
 

@@ -13,12 +13,12 @@ use Doctrine\ORM\EntityRepository;
 class TimePeriodRepository extends EntityRepository
 {
 
-    public function getCurrentTimePeriods($limit)
+    public function getTimePeriodsAt(\DateTime $date, $limit)
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->where($qb->expr()->andX('p.start_at < :now', 'p.end_at >= :now'))
             ->orWhere('p.start_at >= :now')
-            ->setParameter('now', new \DateTime)
+            ->setParameter('now', $date)
             ->orderBy('p.start_at', 'ASC')
             ->setMaxResults($limit)
             ->getQuery();
@@ -47,23 +47,12 @@ class TimePeriodRepository extends EntityRepository
         return array_reverse($query->getResult());
     }
 
-    public function getCurrentTimePeriod()
+    public function getTimePeriodAt(\DateTime $date)
     {
-        return $this->createQueryBuilder('p')
-            ->where('p.start_at < :now')->andWhere('p.end_at >= :now')
-            ->setParameter('now', new \DateTime)
-            ->getQuery()->getOneOrNullResult();
+        return current($this->getTimePeriodsAt($date, 1));
     }
 
-    public function getTimePeriod(\DateTime $date)
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.start_at < :date')->andWhere('p.end_at >= :date')
-            ->setParameter('date', $date)
-            ->getQuery()->getOneOrNullResult();
-    }
-
-    public function getTimePeriods($start, $end)
+    public function getTimePeriods(\DateTime $start, \DateTime $end)
     {
 
         $qb = $this->createQueryBuilder('p');

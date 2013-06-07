@@ -146,7 +146,7 @@ class Person extends Entity
     public function getRoles()
     {
         $criteria = Criteria::create()
-            ->orderBy(array('show' => 'DESC'));
+            ->orderBy(array('show_id' => 'DESC'));
         return $this->roles->matching($criteria);
     }
     

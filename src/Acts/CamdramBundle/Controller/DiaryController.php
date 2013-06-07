@@ -24,7 +24,8 @@ class DiaryController extends FOSRestController
         $years = $repo->getYears();
         $current_year = date('Y');
         $groups = $repo->getGroupsByYear($current_year);
-        $current_group = $repo->getCurrentGroup();
+        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
+        $current_group = $repo->getGroupAt($now);
 
         return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(
             'years' => $years,
@@ -39,7 +40,8 @@ class DiaryController extends FOSRestController
         $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
 
         if (is_null($direction)) {
-            $periods = $periods_repo->getCurrentTimePeriods(5);
+            $now = $this->get('acts.camdram.time_service')->getCurrentTime();
+            $periods = $periods_repo->getTimePeriodsAt($now, 5);
         }
         else {
             $last_date = new \DateTime($last_date);
