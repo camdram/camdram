@@ -1,0 +1,8 @@
+default:
+    extensions:
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: test
+        Behat\MinkExtension\Extension:
+            base_url: http://peter.camdram.net/app_test.php/
+            goutte: ~
