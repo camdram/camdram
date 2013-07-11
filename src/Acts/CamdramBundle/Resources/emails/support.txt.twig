@@ -1,0 +1,15 @@
+{% if continued %}
+A new email has been sent concerning issue {{ issue }}
+
+To reply, visit {{ link }}
+{% else %}
+A new camdram support issue has been created.
+
+To investigate, visit {{ link }}
+{% endif %}
+Email details as follows:
+From: {{ from }}
+To: {{ to }}
+CC: {{ cc }}
+{{ body }}
+
