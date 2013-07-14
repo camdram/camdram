@@ -14,19 +14,25 @@
         {% if is_granted('EDIT', group) %}<p><a href="{{ path('edit_group', {identifier: group.shortName}) }}">Edit</a></p>{% endif %}
 
         <h4>Members</h4>
-        <ul>
+        {% if group.users | length > 0 %}
+            <ul>
             {% for user in group.users %}
                 <li><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.name }}</a></li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% else %}
+            <p>There are no users in this group.</p>
+        {% endif %}
 
-        {% if group.roles | length > 0 %}
         <h4>Roles</h4>
-        <ul>
-        {% for role in group.roles %}
-            <li>{{ role }}</li>
-        {% endfor %}
-        </ul>
+        {% if group.roles | length > 0 %}
+            <ul>
+            {% for role in group.roles %}
+                <li>{{ role }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no roles associated with this group.</p>
         {% endif %}
 
         <h4>{{ group.name }} is the owner of:</h4>
@@ -41,3 +47,4 @@
 </div>
 
 {% endblock %}
+
