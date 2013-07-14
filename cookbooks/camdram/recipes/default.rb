@@ -5,7 +5,7 @@
 
 include_recipe "apt"
 
-%w{"vim"}.each do |pkg|
+%w{vim git-core}.each do |pkg|
   package pkg
 end
 

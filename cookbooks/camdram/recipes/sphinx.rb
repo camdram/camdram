@@ -25,9 +25,8 @@ directory "/var/log/searchd/" do
   action :create
 end
 
-execute "stop Sphinx" do
-  command "sudo service sphinxsearch stop"
-  action :run
+service "sphinxsearch" do
+  action :stop
 end
 
 directory "/var/www/camdram/app/data/sphinx" do
@@ -38,7 +37,6 @@ directory "/var/www/camdram/app/data/sphinx" do
   action :create
 end
 
-execute "start Sphinx" do
-  command "sudo service sphinxsearch start"
-  action :run
+service "sphinxsearch" do
+  action :start
 end

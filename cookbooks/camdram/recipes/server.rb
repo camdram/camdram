@@ -44,7 +44,6 @@ template "/etc/php5/apache2/php.ini" do
   source "php-apache2.ini.erb"
 end
 
-execute "restart Apache" do
-  command "sudo service apache2 restart"
-  action :run
+service "apache2" do
+  action :restart
 end
