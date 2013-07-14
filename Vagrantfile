@@ -4,7 +4,7 @@
 Vagrant::Config.run do |config|
 
   config.vm.box = "precise32"
-  config.vm.box_url = "https://dl.dropboxusercontent.com/u/2289657/squeeze32-vanilla.box"
+  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
 
   config.vm.network :hostonly, "192.168.150.10"
 
@@ -20,8 +20,6 @@ Vagrant::Config.run do |config|
     chef.json = {
       :camdram => { :servername => ENV['USER'] + '.camdram.net' }
     }
-    #chef.cookbooks_path = ['.', 'cookbooks', 'chef-cookbooks-master']
-    #chef.recipe_url = 'http://peter.camdram.net/cookbooks.tar.gz'
     chef.add_recipe "camdram"
   end
 
