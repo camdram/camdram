@@ -12,3 +12,4 @@ vendor
 composer.phar
 *~
 .idea
+.vagrant

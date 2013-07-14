@@ -2,9 +2,13 @@ parameters:
     database_driver:   pdo_mysql
     database_host:     localhost
     database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
+    database_name:     camdram
+    database_user:     camdram
+    database_password: password
+
+    test_database_name: camdram_test
+    test_database_user: camdram_test
+    test_database_password: password
 
     # During development send emails from your own gmail address e.g.
     # your_username@gmail.com.
@@ -33,4 +37,3 @@ parameters:
     map_center: [52.20531,0.12179]
     search_provider: doctrine
     term_dates_ical: http://www.google.com/calendar/ical/cam.ac.uk_t5c3ocr5f5ehr8ln3ec4ile1g0%40group.calendar.google.com/public/basic.ics
-
