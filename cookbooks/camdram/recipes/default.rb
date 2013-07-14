@@ -11,5 +11,6 @@ end
 
 include_recipe "camdram::server"
 include_recipe "camdram::database"
-include_recipe "camdram::sphinx"
 include_recipe "camdram::symfony"
+include_recipe "camdram::sphinx"
+include_recipe "camdram::insert-data"
