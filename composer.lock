@@ -3,8 +3,52 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "bda29978232a64b4374d615d857ee87d",
+    "hash": "6bcb1ec0a14697788983df9d6c204c99",
     "packages": [
+        {
+            "name": "acts/time-mock-bundle",
+            "version": "dev-master",
+            "target-dir": "Acts/TimeMockBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/camdram/time-mock-bundle.git",
+                "reference": "42a9e371890ddd2b14f7980fd9db72a6fe1bc867"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/camdram/time-mock-bundle/zipball/42a9e371890ddd2b14f7980fd9db72a6fe1bc867",
+                "reference": "42a9e371890ddd2b14f7980fd9db72a6fe1bc867",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/symfony": ">=2.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Acts\\TimeMockBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Peter Hoyes",
+                    "email": "pahoyes@gmail.com"
+                }
+            ],
+            "description": "A simple bundle for Symfony2 which enables the current time to be mocked.",
+            "keywords": [
+                "date",
+                "mock",
+                "testing",
+                "time"
+            ],
+            "time": "2013-07-14 22:19:56"
+        },
         {
             "name": "behat/behat",
             "version": "dev-develop",

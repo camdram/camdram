@@ -17,6 +17,8 @@ parameters:
     mailer_user:       your_gmail_username
     mailer_password:   your_gmail_password
 
+    current_time:      "2001-02-27 12:30:07"
+
     locale:            en
     secret:            "default secret"
 

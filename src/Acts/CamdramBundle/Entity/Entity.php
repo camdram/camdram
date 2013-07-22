@@ -5,16 +5,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
 use Hoyes\ImageManagerBundle\Entity\Image;
 
+
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="CamdramEntityRepository")
- * @ORM\Table(name="acts_entities", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"entity_type", "slug"})})
+ * @ORM\Table(name="acts_entities", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="entity_type", type="string")
  * @ORM\DiscriminatorMap({"person" = "Person", "show" = "Show", "society" = "Society", "venue" = "Venue"})
  *
  * @Serializer\XmlRoot("entity")
+ * @Serializer\Discriminator(field = "camdram_type", map = {
+ *    "person" = "Acts\CamdramBundle\Entity\Person", 
+ *    "show" = "Acts\CamdramBundle\Entity\Show", 
+ *    "society" = "Acts\CamdramBundle\Entity\Society", 
+ *    "venue" = "Acts\CamdramBundle\Entity\Venue",
+ * })
  */
 abstract class Entity
 {
@@ -106,7 +113,6 @@ abstract class Entity
 
     /**
      * @var string
-     * @Serializer\Expose
      */
     protected $entity_type;
 
