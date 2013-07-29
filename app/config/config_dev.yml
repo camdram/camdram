@@ -22,8 +22,10 @@ monolog:
 assetic:
     use_controller: true
 
-#swiftmailer:
-#    delivery_address: me@example.com
+# During development emails will be sent to me@example.com.
+swiftmailer:
+    delivery_address: me@example.com
 
 fos_js_routing:
     request_context_base_url: /app_dev.php
+

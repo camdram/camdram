@@ -16,6 +16,7 @@ parameters:
     mailer_host:       ~
     mailer_user:       your_gmail_username
     mailer_password:   your_gmail_password
+    mailer_delivery_address: example@example.com
 
     locale:            en
     secret:            "default secret"
