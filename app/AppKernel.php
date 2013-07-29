@@ -30,6 +30,7 @@ class AppKernel extends Kernel
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
+            new Acts\TimeMockBundle\ActsTimeMockBundle(),
             new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
         );
 

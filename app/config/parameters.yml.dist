@@ -18,6 +18,8 @@ parameters:
     mailer_password:   your_gmail_password
     mailer_delivery_address: example@example.com
 
+    current_time:      "2001-02-27 12:30:07"
+
     locale:            en
     secret:            "default secret"
 

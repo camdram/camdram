@@ -33,7 +33,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "behat/symfony2-extension": "1.0.*",
         "behat/mink-extension": "1.1.*",
-        "behat/mink-goutte-driver": "*"
+        "behat/mink-goutte-driver": "*",
+        "acts/time-mock-bundle": "*"
     },
     "scripts": {
         "post-install-cmd": [

@@ -37,8 +37,10 @@ fos_js_routing:
     request_context_base_url: /app_test.php
 
 acts_camdram:
-    time_override: "2001-02-27 12:30:07"
     search_provider: doctrine
 
 acts_sphinx_real_time:
     enabled: false
+
+acts_time_mock:
+    time_override: "2001-02-27 12:30:07"
