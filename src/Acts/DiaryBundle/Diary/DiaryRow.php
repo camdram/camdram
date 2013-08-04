@@ -7,6 +7,11 @@ use Acts\DiaryBundle\Event\MultiDayEventInterface;
 
 class DiaryRow
 {
+    /**
+     * All the events within a single row of the diary must start within this number of minutes. A higher number
+     * causes the diary to be more compact, but looks more confusing as events with different times appear in the same
+     * row
+     */
     const MAX_ROW_RANGE_MINUTES = 30;
 
     private $items = array();
