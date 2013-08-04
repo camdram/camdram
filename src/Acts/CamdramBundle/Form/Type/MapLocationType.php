@@ -10,6 +10,14 @@ use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class MapLocationType
+ *
+ * A form type representing a location on a map, or a longitude/latitude pair. It is rendered as a click-able
+ * Google Map (with the help of some Javascript), which gracefully degrades to two input boxes.
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class MapLocationType extends AbstractType
 {
     private $map;

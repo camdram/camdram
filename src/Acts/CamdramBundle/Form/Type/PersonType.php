@@ -6,6 +6,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class PersonType
+ *
+ * The form that's presented when a user adds/edits a person
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class PersonType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

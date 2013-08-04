@@ -7,6 +7,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Acts\SocialApiBundle\Service\OAuthApi;
 
+/**
+ * Class TwitterLinkTransformer
+ *
+ * Transforms a twitter_id from it's database representation (it's account ID) to it's user-facing representation
+ * (it's account name) whenever a form is loaded.
+ *
+ * @package Acts\CamdramBundle\Form\DataTransformer
+ */
 class TwitterLinkTransformer implements DataTransformerInterface
 {
     /**
@@ -19,6 +27,13 @@ class TwitterLinkTransformer implements DataTransformerInterface
         $this->api = $api;
     }
 
+    /**
+     * Converts a Twitter account ID into a Twitter account name
+     *
+     * @param mixed $value
+     * @return mixed|null
+     * @throws \Symfony\Component\Form\Exception\TransformationFailedException
+     */
     public function transform($value) {
         if (empty($value)) return NULL;
 
@@ -40,6 +55,13 @@ class TwitterLinkTransformer implements DataTransformerInterface
         }
     }
 
+    /**
+     * Converts a Twitter account name, URL or ID into a Twitter account ID
+     *
+     * @param mixed $value
+     * @return mixed|null
+     * @throws \Symfony\Component\Form\Exception\TransformationFailedException
+     */
     public function reverseTransform($value) {
         if (empty($value)) return NULL;
 

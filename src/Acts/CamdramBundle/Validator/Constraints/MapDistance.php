@@ -7,6 +7,9 @@ use Acts\CamdramBundle\Entity\MapLocation as MapLocationEntity;
 
 
 /**
+ * A map distance constraint, which can be used to validate a MapLocation type against it's proximity to a certain
+ * location
+ *
  * @Annotation
  */
 class MapDistance extends Constraint

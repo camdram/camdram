@@ -17,6 +17,9 @@ use Ivory\GoogleMap\Events\MouseEvent,
     Ivory\GoogleMap\Overlays\InfoWindow;
 
 /**
+ * Class VenueController
+ *
+ * Controller for REST actions for venues. Inherits from AbstractRestController.
  * @RouteResource("Venue")
  */
 class VenueController extends AbstractRestController
@@ -37,7 +40,11 @@ class VenueController extends AbstractRestController
     {
         return $this->createForm(new VenueType(), $venue);
     }
-    
+
+    /**
+     * We don't want the default behaviour of paginated results - just output all of them unless there's a query
+     * parameter specified.
+     */
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
@@ -54,6 +61,13 @@ class VenueController extends AbstractRestController
         return $view;
     }
 
+    /**
+     * Render a Google Map in an iframe. If $identifier is specified then a small map will be output with a single
+     * marker. Otherwise a large map will be output with a marker for each venue.
+     *
+     * @param null|string $identifier
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function mapAction($identifier = null)
     {
 
@@ -131,11 +145,23 @@ class VenueController extends AbstractRestController
         return $this->render('ActsCamdramBundle:Venue:map.html.twig', array('map' => $map, 'info_boxes' => $info_boxes));
     }
 
+    /**
+     * Utility function used by mapAction to generate the URL of a marker image.
+     *
+     * @param $letter letter of the alphabet used in the marker
+     * @return string
+     */
     private function getMarkerUrl($letter)
     {
         return 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='.$letter.'|4499DD|000000';
     }
 
+    /**
+     * Render a diary of the shows put on in this venue.
+     *
+     * @param $identifier
+     * @return mixed
+     */
     public function getShowsAction($identifier)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');

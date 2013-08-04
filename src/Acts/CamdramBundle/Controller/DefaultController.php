@@ -6,8 +6,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Event\MultiDayEvent;
 
+/**
+ * Class DefaultController
+ *
+ * Controlled for the home page. Most areas of the home page are split up into sub-actions which are triggered
+ * individually from the main template.
+ *
+ * @package Acts\CamdramBundle\Controller
+ */
+
 class DefaultController extends Controller
 {
+    /**
+     * The home page.
+     *
+     * Also returns the time periods used by the mini-diary
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
         $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
@@ -20,6 +36,11 @@ class DefaultController extends Controller
         return $this->render('ActsCamdramBundle:Default:index.html.twig', array('news' => $news, 'periods' => $periods));
     }
 
+    /**
+     * Renders the statistics ("7 shows in the last week" etc...)
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function statisticsAction()
     {
         $now = $this->get('acts.camdram.time_service')->getCurrentTime();
@@ -46,6 +67,11 @@ class DefaultController extends Controller
         return $response;
     }
 
+    /**
+     * Renders the vacancies summary on the home page
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function vacanciesAction()
     {
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
@@ -62,6 +88,11 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * Renders the "This time..." section on the home page
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function historicDataAction()
     {
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');

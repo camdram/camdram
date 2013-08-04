@@ -12,38 +12,80 @@ use Pagerfanta\Pagerfanta;
 
 use Acts\CamdramBundle\Entity\Entity;
 
+/**
+ * Class AbstractRestController
+ *
+ * This controller is used as a base for show, venue, society and people pages, containing common functionality for
+ * viewing, searching, creating, editing and deleting editities.
+ *
+ * @package Acts\CamdramBundle\Controller
+ */
+
 abstract class AbstractRestController extends FOSRestController
 {
 
+    /** @var string The fully qualified class name for the entity represented by the class */
     protected $class;
 
+    /** @var string the English word for the entity represented by the class  */
     protected $type;
 
+    /** @var string the plural form of the English word for the entity represented by the class  */
     protected $type_plural;
 
+    /** @var string the Sphinx index that contins that should be searched for this sort of entity  */
     protected $search_index = 'entity';
 
+    /**
+     * @return string used to populate the namespace of the templates for this class
+     */
     protected function getController()
     {
         return ucfirst($this->type);
     }
 
+    /**
+     * Called on each page load. Default is to do nothing, but allows child classes to do stricter access checking
+     * (e.g. for user and group administration pages)
+     *
+     * @return null
+     */
     protected function checkAuthenticated()
     {
 
     }
 
+    /**
+     * Called immediately prior to saving or updating an entity.
+     *
+     * @param $entity mixed the entity that is about to be saved
+     * @param null|mixed $oldEntity the entity, prior to having its changes applied,
+     *      if applicable.
+     */
     protected function preSave($entity, $oldEntity=null)
     {
 
     }
 
+    /**
+     * Returns the route parameters used to identity a particular entity. Used when generating URLs for redirects
+     *
+     * @param $entity the entity to use
+     * @return array the parameters to pass to the router
+     */
     protected function getRouteParams($entity)
     {
         return array('identifier' => $entity->getSlug());
     }
 
-
+    /**
+     * Load an entity given its identifier (normally its slug, but this method could be overridden to use a different
+     * parameter).
+     *
+     * @param $identifier the identifier given (normally as part of the URL)
+     * @return mixed The entity object corresponding to the identifier
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     protected function getEntity($identifier)
     {
         $entity = $this->getRepository()->findOneBySlug($identifier);
@@ -55,11 +97,25 @@ abstract class AbstractRestController extends FOSRestController
         return $entity;
     }
 
+    /**
+     * Return the Doctrine repository corresponding to the entity type represented by the child class.
+     *
+     * @return Doctrine\ORM\EntityRepository
+     */
     abstract protected function getRepository();
 
+    /**
+     * Return a Form type object corresponding to the entity type represented by the child class.
+     * The Type objects are defined in src\CamdramBundle\Form\Type, which define what a form looks like for each class,
+     * including validation rules.
+     *
+     * @return Symfony\Component\Form\AbstractType
+     */
     abstract protected function getForm($entity = null);
 
-
+    /**
+     * Action for URL e.g. /shows/new
+     */
     public function newAction()
     {
         $this->checkAuthenticated();
@@ -71,6 +127,10 @@ abstract class AbstractRestController extends FOSRestController
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':new.html.twig');
     }
 
+
+    /**
+     * Action where POST request is submitted from new entity form
+     */
     public function postAction(Request $request)
     {
         $this->checkAuthenticated();
@@ -93,6 +153,9 @@ abstract class AbstractRestController extends FOSRestController
         }
     }
 
+    /**
+     * Action for URL e.g. /shows/the-lion-king/edit
+     */
     public function editAction($identifier)
     {
         $this->checkAuthenticated();
@@ -105,6 +168,9 @@ abstract class AbstractRestController extends FOSRestController
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
     }
 
+    /**
+     * Action where PUT request is submitted from edit entity form
+     */
     public function putAction(Request $request, $identifier)
     {
         $this->checkAuthenticated();
@@ -127,6 +193,9 @@ abstract class AbstractRestController extends FOSRestController
         }
     }
 
+    /**
+     * Action where PUT request is submitted from edit entity form
+     */
     public function removeAction($identifier)
     {
         $this->checkAuthenticated();
@@ -139,6 +208,12 @@ abstract class AbstractRestController extends FOSRestController
         return $this->routeRedirectView('get_'.$this->type_plural);
     }
 
+    /**
+     * Action which returns a list of entities.
+     *
+     * If a search term 'q' is provided, then a text search is performed against Sphinx. Otherwise, a paginated
+     * collection of all entities is returned.
+     */
     public function cgetAction(Request $request)
     {
         $this->checkAuthenticated();
@@ -146,9 +221,12 @@ abstract class AbstractRestController extends FOSRestController
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
 
+            //Hack to add to allow filtering by, e.g. show within the entity Sphinx index
             $filters = $this->search_index == 'entity' && $this->type
                     ? array('entity_type' => $this->type) : array();
 
+            //If the additional 'autocomplete' parameter is set, then we only return a few results, and prefixes are
+            //matched instead of whole words. Used by the global search bar.
             if ($request->query->has('autocomplete')) {
                 $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), $filters);
             }
@@ -171,6 +249,9 @@ abstract class AbstractRestController extends FOSRestController
         return $view;
     }
 
+    /**
+     * Action for pages that represent a single entity - the entity in question is passed to the template
+     */
     public function getAction($identifier)
     {
         $this->checkAuthenticated();
@@ -181,37 +262,6 @@ abstract class AbstractRestController extends FOSRestController
         ;
 
         return $view;
-    }
-
-    public function toolbarAction(Request $request)
-    {
-        $entity = null;
-
-        if ($request->query->has('identifier')) {
-            $entity = $this->getEntity($request->get('identifier'));
-        }
-        $type = $this->type;
-
-        if ($entity) {
-            $routes = array(
-                'edit' => 'edit_'.$type,
-                'new' => 'new_'.$type,
-                'delete' => 'remove_'.$type,
-            );
-        }
-        else {
-            $routes = array('new' => 'new_'.$type);
-        }
-        $label = $type;
-        $identity = new ObjectIdentity('class', $this->class);
-
-        return $this->render('ActsCamdramBundle:Entity:toolbar.html.twig', array(
-            'routes' => $routes,
-            'entity' => $entity,
-            'label' => $label,
-            'type' => $type,
-            'identity' => $identity,
-        ));
     }
 
 }

@@ -7,6 +7,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Acts\CamdramBundle\Form\DataTransformer\PerformanceExcludeTransformer;
 
+/**
+ * Class ShowType
+ *
+ * The form that's presented when a user adds/edits a show
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class ShowType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

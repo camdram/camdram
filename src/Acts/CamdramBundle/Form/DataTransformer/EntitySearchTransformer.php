@@ -7,6 +7,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * Class EntitySearchTransformer
+ *
+ * Transforms a linked entity into its name for when it's displayed in a form.
+ *
+ * @package Acts\CamdramBundle\Form\DataTransformer
+ */
 class EntitySearchTransformer implements DataTransformerInterface
 {
     /**

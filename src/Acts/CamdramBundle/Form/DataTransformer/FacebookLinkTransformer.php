@@ -7,6 +7,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Acts\SocialApiBundle\Service\OAuthApi;
 
+/**
+ * Class FacebookLinkTransformer
+ *
+ * Transforms a facebook_id from it's database representation (it's page ID) to it's user-facing representation
+ * (it's page username) whenever a form is loaded.
+ *
+ * @package Acts\CamdramBundle\Form\DataTransformer
+ */
 class FacebookLinkTransformer implements DataTransformerInterface
 {
     /**
@@ -19,6 +27,13 @@ class FacebookLinkTransformer implements DataTransformerInterface
         $this->api = $api;
     }
 
+    /**
+     * Converts a Facebook page ID into the page username
+     *
+     * @param mixed $value
+     * @return mixed|null
+     * @throws \Symfony\Component\Form\Exception\TransformationFailedException
+     */
     public function transform($value) {
         if (empty($value)) return NULL;
         try {
@@ -38,6 +53,13 @@ class FacebookLinkTransformer implements DataTransformerInterface
         }
     }
 
+    /**
+     * Convert a Facebook page username, URL or ID into its page ID
+     *
+     * @param mixed $value
+     * @return mixed|null
+     * @throws \Symfony\Component\Form\Exception\TransformationFailedException
+     */
     public function reverseTransform($value) {
         if (empty($value)) return NULL;
 

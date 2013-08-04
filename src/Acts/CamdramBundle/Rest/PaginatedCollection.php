@@ -8,6 +8,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Acts\CamdramBundle\Rest\ResponseQueryParams;
 use Acts\CamdramBundle\Rest\ResponseUrls;
 
+/**
+ * Class PaginatedCollection
+ *
+ * An object returned by controllers that encapsulates a collection of results. This object contains a pointer to the
+ * results collection (in the form of a Pagerfanta interface) and the desired number of results per page and
+ * page number. The ViewPaginatorListener detects when one of these objects is returned, and uses the information
+ * contained in this class to render a template or populate a JSON/XML object as appropriate.
+ *
+ * @package Acts\CamdramBundle\Rest
+ */
 class PaginatedCollection
 {
     public $data;

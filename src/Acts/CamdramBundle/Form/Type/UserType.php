@@ -6,6 +6,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class UserType
+ *
+ * The form that's presented when a user is edited
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

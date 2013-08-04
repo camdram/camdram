@@ -7,6 +7,8 @@ use Symfony\Component\Validator\Constraint;
 use Acts\CamdramBundle\Entity\MapLocation;
 
 /**
+ * A map distance validator, which evaluates a MapLocation's distance from a given centre point.
+ *
  * @Annotation
  */
 class MapDistanceValidator extends ConstraintValidator

@@ -5,6 +5,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
+/**
+ * Class DoctrineProvider
+ *
+ * An implementation of the Search\ProviderInterface that calls the Doctrine backend. It isn't very efficient but
+ * it works straight out of the box without having to install Sphinx.
+ *
+ * @package Acts\CamdramBundle\Service\Search
+ */
 class DoctrineProvider implements ProviderInterface
 {
     private $container;

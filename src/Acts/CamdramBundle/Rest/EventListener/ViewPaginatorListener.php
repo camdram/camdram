@@ -16,6 +16,15 @@ use Acts\CamdramBundle\Rest\ResponseUrls;
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Renderer\HtmlRenderer;
 
+/**
+ * Class ViewPaginatorListener
+ *
+ * This listener is called by Symfony after between calling the controller and sending the response to the browser.
+ * It catches certain sorts of responses returned by controllers (for convenience) and converts them into a format
+ * that the browser can render
+ *
+ * @package Acts\CamdramBundle\Rest\EventListener
+ */
 
 class ViewPaginatorListener
 {
@@ -37,7 +46,8 @@ class ViewPaginatorListener
     }
 
     /**
-     * Detects a paginator returned at part of a rest view and convert it into a PaginatorCollection
+     * Detects a paginator returned by a Rest view and converts it into a PaginatorCollection. Also detects in a
+     * Diary object is returned and sends it the DiaryBundle to be rendered.
      *
      * @param GetResponseForControllerResultEvent $event A GetResponseForControllerResultEvent instance
      */

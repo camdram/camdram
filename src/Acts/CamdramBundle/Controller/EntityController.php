@@ -16,11 +16,25 @@ use Acts\CamdramBundle\Entity\Entity;
 use FOS\RestBundle\Controller\Annotations\NoRoute;
 
 /**
+ * Class EntityController
+ *
+ * Controller for REST actions of the base entity class (which shows, people etc all extend). Mainly exists for the
+ * search feature, so that you can search all entities rather than those of just one type, e.g. shows.
+ *
+ * @package Acts\CamdramBundle\Controller
  * @RouteResource("Entity")
  */
 class EntityController extends FOSRestController
 {
 
+    /**
+     * A convenience method which allows other pages to link to /entity/{slug} without caring whether it's a show,
+     * society, venue or person. It redirects to e.g. /shows/{slug} or /venues/{slug} accordingly.
+     *
+     * @param $id the identifer (slug).
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function getAction($id)
     {
         $entity = $this->getEntity($id);
@@ -44,6 +58,14 @@ class EntityController extends FOSRestController
         return $this->redirect($this->generateUrl($route, array('identifier' => $entity->getSlug())));
     }
 
+    /**
+     * The controller which powers the search and autocomplete features. Returns a collection of entities (which could
+     * be a combination of shows, societies, people and/or venues. A response listener detects the request type and
+     * renders an HTML template, JSON or XML as appropriate
+     *
+     * @param Request $request
+     * @return $this
+     */
     public function cgetAction(Request $request)
     {
         /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */

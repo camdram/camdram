@@ -6,10 +6,22 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Acts\DiaryBundle\Event\MultiDayEvent;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class DiaryController
+ *
+ * Controller for the diary page. The diary
+ *
+ * @package Acts\CamdramBundle\Controller
+ */
 
 class DiaryController extends FOSRestController
 {
 
+    /**
+     * Renders the main diary template
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
 
@@ -18,6 +30,11 @@ class DiaryController extends FOSRestController
         ;
     }
 
+    /**
+     * Sub-action which renders the toolbar which allows the user to switch term/year
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function toolbarAction()
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriodGroup');
@@ -35,6 +52,17 @@ class DiaryController extends FOSRestController
         ));
     }
 
+    /**
+     * Sub-action which actually renders the diary. Also called by the AJAX callback which loads new data
+     *
+     * If both $direction and $last_date are null then the current time period and the 5 following time periods are
+     * returned. If $direction is 'next', then the 3 time periods prior to $last_date are returned. If $direction is
+     * $previous then the time period prior to $last_date is returned.
+     *
+     * @param null|string $direction
+     * @param null|string $last_date
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function contentAction($direction = null, $last_date = null)
     {
         $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
@@ -62,6 +90,12 @@ class DiaryController extends FOSRestController
         ));
     }
 
+    /**
+     * Renders a single time period. Called multiple times by contentAction's template.
+     *
+     * @param $id Primary key of the time period to be rendered
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function periodAction($id)
     {
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
@@ -69,6 +103,13 @@ class DiaryController extends FOSRestController
         return $this->render('ActsCamdramBundle:Diary:period.html.twig', array('period' => $period));
     }
 
+    /**
+     * Renders the actually diary. It creates a Diary object, which is picked up by a response listener and
+     * rendered by the DiaryBundle, which deals with the logic of working out which events to put in which row.
+     *
+     * @param $id Primary key of the time period to be rendered
+     * @return \Acts\DiaryBundle\Diary\Diary
+     */
     public function diaryAction($id)
     {
         /** @var $diary \Acts\DiaryBundle\Diary\Diary */

@@ -6,6 +6,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * Class EntityCollectionTransformer
+ *
+ * * Transforms an collection of linked entities into their names for when they are displayed in a form.
+ *
+ * @package Acts\CamdramBundle\Form\DataTransformer
+ */
 class EntityCollectionTransformer implements DataTransformerInterface
 {
     /**

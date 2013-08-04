@@ -3,6 +3,15 @@ namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Class DevelopmentController
+ *
+ * Very basic controller used by the small 'Development' section, which contains information about contributing to
+ * Camdram.
+ *
+ * @package Acts\CamdramBundle\Controller
+ */
+
 class DevelopmentController extends Controller
 {
     public function indexAction()

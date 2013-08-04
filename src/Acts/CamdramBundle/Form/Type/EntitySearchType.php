@@ -11,6 +11,13 @@ use Doctrine\ORM\EntityManager;
 
 use Acts\CamdramBundle\Form\DataTransformer\EntitySearchTransformer;
 
+/**
+ * Class EntitySearchType
+ *
+ * A form type that presents an autocomplete box which the user can use to search for a linked entity
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class EntitySearchType extends AbstractType
 {
     /**

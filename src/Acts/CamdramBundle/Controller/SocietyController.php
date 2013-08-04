@@ -14,6 +14,10 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
+ * Class SocietyController
+ *
+ * Controller for REST actions for societies. Inherits from AbstractRestController.
+ *
  * @RouteResource("Society")
  */
 class SocietyController extends AbstractRestController
@@ -51,6 +55,12 @@ class SocietyController extends AbstractRestController
         return $view;
     }
 
+    /**
+     * Render a diary of the shows put on by this society.
+     *
+     * @param $identifier
+     * @return mixed
+     */
     public function getShowsAction($identifier)
     {
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');

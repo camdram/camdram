@@ -12,6 +12,11 @@ use Acts\CamdramBundle\Form\Type\PersonType;
 
 
 /**
+ * Class PersonController
+ *
+ * Controller for REST actions for people. Inherits from AbstractRestController.
+ *
+ * @package Acts\CamdramBundle\Controller
  * @RouteResource("Person")
  */
 class PersonController extends AbstractRestController

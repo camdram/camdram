@@ -8,6 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class GrantType
+ *
+ * A form type that presents a drop-down list of permissions that can be granted. Used by the admin tools for
+ * granting permissions to users/groups
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class GrantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

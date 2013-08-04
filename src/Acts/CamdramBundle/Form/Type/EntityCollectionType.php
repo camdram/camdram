@@ -11,6 +11,13 @@ use Doctrine\ORM\EntityManager;
 
 use Acts\CamdramBundle\Form\DataTransformer\EntityCollectionTransformer;
 
+/**
+ * Class EntityCollectionType
+ *
+ * A form type that presents an autocomplete box which the user can use to add to/remove from a list of linked entities
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class EntityCollectionType extends AbstractType
 {
     /**

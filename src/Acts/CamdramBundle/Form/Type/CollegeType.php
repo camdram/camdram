@@ -8,6 +8,15 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class CollegeType
+ *
+ * A Form type represnting a Cambridge college. Is represented in a form as a drop-down box with a list of colleges,
+ * the names of which are pulled from a Yaml file.
+ *
+ * @package Acts\CamdramBundle\Form\Type
+ */
+
 class CollegeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

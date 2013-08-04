@@ -6,7 +6,13 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-
+/**
+ * Class CamdramFormTypeExtension
+ *
+ * A custom form extension which modifies the default formatting of forms to match Foundation's styling.
+ *
+ * @package Acts\CamdramBundle\Form
+ */
 class CamdramFormTypeExtension extends AbstractTypeExtension
 {
     /**

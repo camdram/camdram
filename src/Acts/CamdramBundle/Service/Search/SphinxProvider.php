@@ -5,6 +5,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\PagerfantaInterface;
 use Foolz\SphinxQL\SphinxQL;
 
+/**
+ * Class SphinxProvider
+ *
+ * An implementation of the Search\ProviderInterface that calls the Sphinx backend
+ *
+ * @package Acts\CamdramBundle\Service\Search
+ */
 class  SphinxProvider implements ProviderInterface
 {
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface */

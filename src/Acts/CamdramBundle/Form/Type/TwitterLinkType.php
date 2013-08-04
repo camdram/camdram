@@ -9,6 +9,14 @@ use Symfony\Component\Yaml\Yaml;
 
 use Acts\CamdramBundle\Form\DataTransformer\TwitterLinkTransformer;
 
+/**
+ * Class TwitterLinkType
+ *
+ * Form type for a Twitter account. The user just sees an input box, but some clever stuff on the backend uses
+ * the Twitter API to do some validating and convert it into a Twitter account ID.
+
+ * @package Acts\CamdramBundle\Form\Type
+ */
 class TwitterLinkType extends AbstractType
 {
     private $api;
