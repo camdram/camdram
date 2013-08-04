@@ -90,8 +90,3 @@ services:
     acts.camdram.search_provider.sphinx:
         class: Acts\CamdramBundle\Service\Search\SphinxProvider
         arguments: [@service_container]
-
-    acts.camdram.time_service:
-        class: Acts\CamdramBundle\Service\TimeService
-        calls:
-            - [ 'setCurrentTime', [%camdram.time_override%]]

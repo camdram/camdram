@@ -64,7 +64,7 @@ class SocietyController extends AbstractRestController
     public function getShowsAction($identifier)
     {
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
+        $now = $this->get('acts.time_service')->getCurrentTime();
         $shows = $show_repo->getUpcomingBySociety($now, $this->getEntity($identifier));
 
         $diary = $this->get('acts.diary.factory')->createDiary();

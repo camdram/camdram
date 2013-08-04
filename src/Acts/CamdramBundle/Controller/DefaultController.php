@@ -29,7 +29,7 @@ class DefaultController extends Controller
         $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
         $news = $news_repo->getRecent(20);
 
-        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
+        $now = $this->get('acts.time_service')->getCurrentTime();
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
         $periods = $time_repo->getTimePeriodsAt($now, 3);
 
@@ -43,7 +43,7 @@ class DefaultController extends Controller
      */
     public function statisticsAction()
     {
-        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
+        $now = $this->get('acts.time_service')->getCurrentTime();
         $day = $now->format('N');
         if ($day == 7) $day = 0;
 
@@ -98,7 +98,7 @@ class DefaultController extends Controller
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
         $data = array();
-        $now = $this->get('acts.camdram.time_service')->getCurrentTime();
+        $now = $this->get('acts.time_service')->getCurrentTime();
 
         foreach (array(1, 2, 5) as $years) {
             $date = clone $now;
