@@ -26,6 +26,7 @@
     'bundles/actscamdram/stylesheets/foundation/*.css'
     'bundles/actscamdram/stylesheets/jquery/*.css'
     'bundles/actscamdram/stylesheets/app/*.css'
+    'bundles/actscamdram/stylesheets/fontawesome/font-awesome.min.css'
     'bundles/hoyesimagemanager/css/fancybox.css'%}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
@@ -40,12 +41,13 @@
     {% javascripts output='js/main.js'
     '@ActsCamdramBundle/Resources/public/javascripts/modernizr/modernizr.foundation.js'
     '@ActsCamdramBundle/Resources/public/javascripts/foundation/*.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/jquery/*.js'
     '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
     '@ActsDiaryBundle/Resources/public/js/diary.js'
     '@FOSJsRoutingBundle/Resources/public/js/router.js'
     '@HoyesImageManagerBundle/Resources/public/js/jquery.uploadify.js'
     '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}
+    '@ActsCamdramBundle/Resources/public/javascripts/app/*.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
@@ -122,9 +124,16 @@
         <h1><a href="{{ path('acts_camdram_homepage') }}"><img src="{{ asset('bundles/actscamdram/images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
       </div>
       <div class="nine columns search">
-          <form method="get" action="{{ path('get_entities') }}" id="search_form">
-              <input type="search" name="q" id="main_search_box" placeholder="search for a show, person, society or venue" />
-          </form>
+          <div class="autocomplete">
+              <i class="status-icon icon-search"></i>
+              <form action="/app_dev.php/entities" class="searchform" method="GET">
+                  <input type="text" class="searchfield" name="searchfield" id="searchfield" autocomplete="off" placeholder="Search for something..." />
+              </form>
+              <div class="results">
+                  <ul></ul>
+                  <h3 class="noresults">No Results</h3>
+              </div>
+          </div>
       </div>
     </div>
   </header>
