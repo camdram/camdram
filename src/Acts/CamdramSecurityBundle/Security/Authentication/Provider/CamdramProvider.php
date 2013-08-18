@@ -4,14 +4,11 @@ namespace Acts\CamdramSecurityBundle\Security\Authentication\Provider;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\NonceExpiredException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
 use Acts\CamdramSecurityBundle\Security\ServiceMap;
 use Acts\CamdramSecurityBundle\Security\Exception\IdentityNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * CamdramProvider

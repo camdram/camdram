@@ -17,9 +17,6 @@ use Acts\CamdramSecurityBundle\DependencyInjection\Security\Factory\CamdramFacto
  */
 class ActsCamdramSecurityExtension extends Extension
 {
-    /**
-     * {@inheritDoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
@@ -28,36 +25,6 @@ class ActsCamdramSecurityExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $authServices = array();
-        foreach ($config['services'] as $name => $options) {
-            $authServices[] = $name;
-            $this->createAuthService($container, $name, $options);
-        }
-        $container->setParameter('camdram.security.services', $authServices);
-        $container->setParameter('camdram.security.default_firewall', $config['default_firewall']);
-
-        $container->getDefinition('camdram.security.event_listener.group')
-            ->addArgument($config['groups']);
-    }
-
-    public function createAuthService(ContainerBuilder $container, $name, array $options)
-    {
-        if ($name == $options['class']) {
-            $definition = $container->getDefinition('camdram.security.service.'.$name);
-        }
-        else {
-            $definition = $container->setDefinition('camdram.security.service.'.$name,
-                new DefinitionDecorator('camdram.security.service.'.$options['class']));
-        }
-
-        $definition->addArgument($name)
-            ->addArgument($options);
-
-        switch ($options['class']) {
-            case 'social_api':
-                $definition->addMethodCall('setApi', array(new Reference('acts.social_api.apis.'.$options['id'])));
-                break;
-        }
     }
 
 }

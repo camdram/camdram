@@ -16,11 +16,6 @@ use Acts\CamdramSecurityBundle\Form\Type\LoginType,
 class DefaultController extends Controller
 {
 
-    public function redirectAction($service)
-    {
-        return new RedirectResponse($this->container->get('camdram.security.utils')->getAuthorizationUrl($service));
-    }
-
     public function loginAction()
     {
         $request = $this->getRequest();
@@ -54,40 +49,6 @@ class DefaultController extends Controller
                 'error'         => $error,
             )
         );
-    }
-
-    public function noExistingUserAction(Request $request)
-    {
-        $form = $this->createForm(new LoginType(), array('email' => $request->get('email')));
-
-        $token = $this->get('security.context')->getToken();
-        $service = $token->getLastService();
-
-        if ($request->getMethod() == 'POST') {
-            if ($request->request->has('new_user')) {
-                return $this->redirect($this->generateUrl('camdram_security_new_user'));
-            }
-
-            $form->bind($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $user = $this->getDoctrine()->getRepository('ActsCamdramBundle:User')->findByEmailAndPassword($data['email'], $data['password']);
-                if ($user) {
-                    $this->addIdentity($user, $service);
-
-                    $this->get('session')->set('new_local_user_id', $user->getId());
-                    return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'local')));
-                }
-                else {
-                    $form->addError(new \Symfony\Component\Form\FormError('An account cannot be found for that username and password'));
-                }
-            }
-        }
-
-        return $this->render('ActsCamdramSecurityBundle:Default:no_existing_user.html.twig', array(
-            'form' => $form->createView(),
-            'service' => $service,
-        ));
     }
 
     public function newUserAction(Request $request)
@@ -138,45 +99,6 @@ class DefaultController extends Controller
             ));
         }
 
-    }
-
-
-    public function confirmAddIdentityAction(Request $request)
-    {
-
-        $token = $this->get('security.context')->getToken();
-        $service = $token->getLastService();
-
-        if ($request->getMethod() == 'POST') {
-            if ($request->request->has('yes')) {
-                $user = $this->get('security.context')->getToken()->getUser();
-                $this->addIdentity($user, $service);
-            }
-            else {
-                $token->removeLastService();
-            }
-            return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'complete')));
-        }
-
-        return $this->render('ActsCamdramSecurityBundle:Default:confirm_add_identity.html.twig', array(
-            'service' => $service
-        ));
-    }
-
-    private function addIdentity(User $user, CamdramUserTokenService $service)
-    {
-        if ($service->getName() == 'local') return;
-
-        $i = new UserIdentity();
-        $i->setService($service->getName());
-        $i->setRemoteId($service->getUserInfo('id'));
-        $i->setRemoteUser($service->getUserInfo('username'));
-        $i->setUser($user);
-        $user->addIdentity($i);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($i);
-        $em->flush();
     }
 
 }

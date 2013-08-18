@@ -20,31 +20,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('acts_camdram_security');
 
-        $rootNode
-            ->isRequired()
-            ->cannotBeEmpty()
-            ->children()
-            ->scalarNode('default_firewall')->defaultValue('public')->end()
-            ->arrayNode('groups')
-                ->prototype('array')
-                ->treatNullLike(array())
-                ->children()
-                    ->arrayNode('roles')->prototype('scalar')->treatNullLike(array())->end()->end()
-                ->end()->end()
-            ->end()
-            ->arrayNode('services')
-                ->isRequired()
-                ->prototype('array')
-                ->children()
-                    ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('id')->cannotBeEmpty()->end()
-                    ->scalarNode('client_id')->cannotBeEmpty()->end()
-                    ->scalarNode('client_secret')->cannotBeEmpty()->end()
-                    ->scalarNode('description')->end()
-                ->end()
-            ->end()->end();
-
-
         return $treeBuilder;
     }
 }
