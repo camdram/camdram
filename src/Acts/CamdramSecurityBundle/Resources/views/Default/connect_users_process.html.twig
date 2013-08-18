@@ -2,5 +2,32 @@
 
 {% block body %}
 <h2>Find user</h2>
-{%  include 'ActsCamdramSecurityBundle:Default:connect_users_process_view.html.twig' %}
+    <h2>Connect to user accounts</h2>
+
+    {% set counter = 1 %}
+
+    {% for user in users %}
+        <div class="connect_step_{{ user_status[user.id] }}">
+            {% if users|length > 1  %}<h3>Step {{ counter }}</h3>{% endif %}
+            <p>
+
+                {% if user_status[user.id] == 'validated' %}
+                {{ user.email }} validated
+                {% elseif user_status[user.id] == 'next' %}
+                How would you like to validate that you own the account {{ user.email }} ?
+            <ul>
+                {% for i in user.identities %}
+                    <li><a href="{{ path("camdram_security_entry_point", {service: i.service}) }}">Login with {{ i.service | capitalize }}</a></li>
+                {% endfor %}
+                {% if user.password %} <li><a href="{{ path("camdram_security_local_login", {email: user.email}) }}">Login with old camdram password</a></li>{% endif %}
+            </ul>
+            {% else %}
+                {{ user.email }}
+            {% endif %}
+
+            </p>
+        </div>
+
+        {% set counter = counter + 1 %}
+    {% endfor %}
 {% endblock %}

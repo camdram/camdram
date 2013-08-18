@@ -1,6 +1,11 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
 {% block body %}
-<h2>New user</h2>
-{%  include 'ActsCamdramSecurityBundle:Default:new_user_form.html.twig' %}
+    <h2>New user</h2>
+    <p>Please fill in the details below to register with camdram</p>
+    <form action="{{ path('camdram_security_new_user') }}" method="post">
+        {{ form_widget(form) }}
+
+        <p><input type="submit" value="Register"/> </p>
+    </form>
 {% endblock %}
