@@ -101,14 +101,38 @@
           </ul>
         </li>
           {% else %}
+          <li>
+              <a href="#">Create an account</a>
+          </li>
           <li class="has-dropdown">
-              <a href="#">Sign in</a>
-              <ul class="dropdown">
-                  <li><label>Sign in using</label></li>
-                {% for service in camdram_security_services() %}
-                  <li><a href="{{ path('camdram_security_entry_point', {service: service}) }}">{{ service | capitalize }}</a></li>
-                {% endfor %}
-              </ul>
+              <a href="#">Log in</a>
+              <div class="dropdown login-flybox">
+                  <form>
+                      <div class="row">
+                          <div class="twelve columns">
+                              Log in using
+                              {% for service in camdram_security_services() %}
+                              <a href="{{ path('camdram_security_entry_point', {service: service}) }}">
+                                  <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service ~ '.png') }}" alt="{{ service | capitalize }}" title="{{ service | capitalize }}"/>
+                                  {{ service | capitalize }}
+                              </a>
+                              {% endfor %}
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="three columns"><label>Email</label></div>
+                          <div class="nine columns"><input type="text" /></div>
+                      </div>
+                      <div class="row">
+                          <div class="three columns"><label>Password</label></div>
+                          <div class="nine columns"><input type="password" /></div>
+                      </div>
+                      <div class="text-right">
+                          <input type="submit" class="button" value="Log in" />
+                      </div>
+                  </form>
+
+              </div>
           </li>
           {% endif %}
       </ul>

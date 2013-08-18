@@ -33,11 +33,14 @@ security:
             logout:
                 path: /logout
                 target: /
-            camdram:
-                services:
-                    raven: ~
-                    facebook: ~
-                    local: {display_name: 'Camdram Password'}
+            form_login:
+                username_parameter: form[email]
+                password_parameter: form[password]
+            #camdram:
+            #    services:
+            #        raven: ~
+            #        facebook: ~
+            #        google: ~
             remember_me:
                 key:      %secret%
                 lifetime: 31536000 # 365 days in seconds
@@ -51,6 +54,10 @@ security:
     access_control:
 #        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
         - { path ^/settings.*, roles: IS_AUTHENTICATED_FULLY }
+
+    encoders:
+        Acts\CamdramBundle\Entity\User:
+            id: camdram.security.encoder.legacy_md5
 
 acts_camdram_security:
     groups:

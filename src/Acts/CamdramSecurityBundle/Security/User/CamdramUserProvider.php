@@ -29,9 +29,7 @@ class CamdramUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($id)
     {
-        $user = $this->em->getRepository('ActsCamdramBundle:User')->findOneById($id);
-        if ($user) return $user;
-        else throw UnsupportedUserException();
+        return $this->em->getRepository('ActsCamdramBundle:User')->findOneByEmail($id);
     }
 
     public function loadUserByServiceAndUser($service, $info)

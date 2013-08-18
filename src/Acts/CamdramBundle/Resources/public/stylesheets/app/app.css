@@ -193,6 +193,26 @@ nav .nav-bar {
     background:#000000;
 }
 
+.top-bar ul > li.has-dropdown .login-flybox {
+    width:300px;
+    padding:0;
+}
+.login-flybox form {
+    padding:0 10px 5px 10px;
+    background-color:#ddd;
+    margin:0;
+}
+.top-bar ul > li.has-dropdown .login-flybox a {
+    display:inline;
+    font:inherit;
+    height:auto;
+    line-height:inherit;
+    padding:0;
+}
+.top-bar ul > li.has-dropdown .login-flybox a:after {
+    display:none;
+}
+
 header {
     position:relative;
 }

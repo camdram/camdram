@@ -620,7 +620,7 @@ class User implements UserInterface, \Serializable
 
     public function getUsername()
     {
-        return $this->getId();
+        return $this->getEmail();
     }
 
     public function getSalt()

@@ -1,5 +1,7 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
+{% block title %}Log in{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="twelve columns">
@@ -10,7 +12,11 @@
         <p class="panel">For security reasons, you must log in again before accessing this page.</p>
     {% endif %}
 
-        <form method="post" action="{{ path('camdram_security_local_login') }}">
+        {% if error %}
+            <div>{{ error.message }}</div>
+        {% endif %}
+
+        <form method="post" action="{{ path('login_check') }}">
 
             {{ form_widget(form) }}
 

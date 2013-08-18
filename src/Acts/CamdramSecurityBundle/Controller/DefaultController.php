@@ -4,7 +4,8 @@ namespace Acts\CamdramSecurityBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\RedirectResponse,
-    Symfony\Component\HttpFoundation\Request;
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\Security\Core\SecurityContext;
 
 use Acts\CamdramSecurityBundle\Form\Type\LoginType,
     Acts\CamdramSecurityBundle\Form\Type\RegistrationType,
@@ -22,11 +23,19 @@ class DefaultController extends Controller
 
     public function loginAction()
     {
-        return $this->redirect($this->generateUrl('camdram_security_entry_point', array('service' => 'local')));
-    }
+        $request = $this->getRequest();
+        $session = $request->getSession();
 
-    public function loginFormAction(Request $request)
-    {
+        // get the login error if there is one
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(
+                SecurityContext::AUTHENTICATION_ERROR
+            );
+        } else {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        }
+
         $formBuilder = $this->createFormBuilder(array('email' => $request->get('email'), 'remember_me' => null))
             ->add('email')
             ->add('password', 'password');
@@ -36,121 +45,15 @@ class DefaultController extends Controller
         }
         $form = $formBuilder->getForm();
 
-        if ($request->getMethod() == 'POST') {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $user = $this->getDoctrine()->getRepository('ActsCamdramBundle:User')->findByEmailAndPassword($data['email'], $data['password']);
-                if ($user) {
-                    $this->get('session')->set('new_local_user_id', $user->getId());
-                    return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'local', '_remember_me' => $data['remember_me'])));
-                }
-                else {
-                    $form->addError(new \Symfony\Component\Form\FormError('That username and/or password are incorrect'));
-                }
-            }
-        }
-
-        return $this->render('ActsCamdramSecurityBundle:Default:login.html.twig', array('form' => $form->createView()));
-    }
-
-    public function connectUsersAction()
-    {
-        $token = $this->get('security.context')->getToken();
-        $name = $token->getLastService()->getUserInfo('name');
-        if (!$name) return $this->redirect($this->generateUrl('camdram_security_no_existing_user'));
-
-        $possible_users = $this->getDoctrine()->getRepository('ActsCamdramBundle:User')
-            ->findUsersWithSimilarName($name);
-
-        $possible_users = $this->get('camdram.security.name_utils')
-                ->filterPossibleUsers($name, $possible_users);
-
-        if (count($possible_users) == 0) {
-            return $this->redirect($this->generateUrl('camdram_security_no_existing_user'));
-        }
-
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $user_ids = array_keys($this->getRequest()->get('link_users', array()));
-            $users = array();
-            foreach ($user_ids as $id)
-            {
-                foreach ($possible_users as $u) {
-                    if ($u->getId() == $id) $users[] = $u;
-                }
-            }
-
-            if (count($users) == 0) return $this->redirect($this->generateUrl('camdram_security_no_existing_user'));
-            else {
-                $token->setPotentialUsers($users);
-                return $this->redirect($this->generateUrl('camdram_security_connect_users_process'));
-            }
-        }
-        else {
-            return $this->render('ActsCamdramSecurityBundle:Default:connect_users.html.twig',
-                array(
-                    'service_name' => $token->getLastService()->getName(),
-                    'name' => $name,
-                    'possible_users' => $possible_users
-                )
-            );
-        }
-    }
-
-    public function connectUsersProcessAction()
-    {
-        $token = $this->get('security.context')->getToken();
-        $users = $token->getPotentialUsers();
-        if (!$users) return $this->redirect($this->generateUrl('camdram_security_no_existing_user'));
-
-        $user_status = array();
-        $picked_next_user = false;
-        $provider = $this->get('camdram.security.user.provider');
-
-        foreach ($users as &$user) {
-            $user = $provider->refreshUser($user);
-
-            if ($token->isUserValidated($user)) {
-                $user_status[$user->getId()] = 'validated';
-            }
-            elseif ($picked_next_user == false) {
-                $user_status[$user->getId()] = 'next';
-                $picked_next_user = true;
-            }
-            else {
-                $user_status[$user->getId()] = 'pending';
-            }
-        }
-
-        if ($picked_next_user == false) {
-
-            $user = $this->mergeUsers($users);
-            foreach ($token->getServices() as $service) {
-                $this->addIdentity($user, $service);
-            }
-
-            $token->setPotentialUsers(array());
-            $token->setUser($user);
-            $token->setAuthenticated(true);
-            $token->cleanIdentities();
-
-            return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'complete')));
-        }
-
-        return $this->render('ActsCamdramSecurityBundle:Default:connect_users_process.html.twig', array(
-            'user_status' => $user_status,
-            'users' => $users
-        ));
-    }
-
-    private function mergeUsers(array $users)
-    {
-        $keep = array_pop($users);
-        $provider = $this->get('camdram.security.user.provider');
-        foreach ($users as $user) {
-            $provider->mergeUsers($keep, $user);
-        }
-        return $keep;
+        return $this->render(
+            'ActsCamdramSecurityBundle:Default:login.html.twig',
+            array(
+                // last username entered by the user
+                'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+                'form'          => $form->createView(),
+                'error'         => $error,
+            )
+        );
     }
 
     public function noExistingUserAction(Request $request)

@@ -26,7 +26,8 @@ class SecurityUtils
     {
         $this->container = $container;
         if (!$firewall_name) $firewall_name = $container->getParameter('camdram.security.default_firewall');
-        $this->serviceMap  = $this->container->get('camdram.security.service_map.'.$firewall_name);
+       // $this->serviceMap  = $this->container->get('camdram.security.service_map.'.$firewall_name);
+        $this->serviceMap = array();
     }
 
     /**
@@ -34,9 +35,9 @@ class SecurityUtils
      */
     public function getServices()
     {
-        $services = $this->serviceMap->getServices();
+        //$services = $this->serviceMap->getServices();
 
-        return array_keys($services);
+        return array(); //array_keys($services);
     }
 
     /**

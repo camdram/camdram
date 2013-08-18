@@ -24,8 +24,8 @@ class CamdramFactory extends AbstractFactory
         $servicesMap = array();
 
         foreach ($config['services'] as $name => $options) {
-            if (!isset($options['login_url'])) $options['login_url'] = '/login/'.$name;
-            if (!isset($options['connect_url'])) $options['connect_url'] = '/connect/'.$name;
+            if (!isset($options['login_url'])) $options['login_url'] = '/auth/'.$name;
+            if (!isset($options['connect_url'])) $options['connect_url'] = '/redirect/'.$name;
             if (!isset($options['display_name'])) $options['display_name'] = ucfirst($name);
             $servicesMap[$name] = $options;
         }

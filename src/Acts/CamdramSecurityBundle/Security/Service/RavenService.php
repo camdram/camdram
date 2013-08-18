@@ -16,7 +16,7 @@ class RavenService extends AbstractService
             $wlsResponse = $request->query->get('WLS-Response');
             $request->query->remove('WLS-Response');
 
-            list($ver, $status, $msg, $issue, $id, $url, $principal, $auth, $sso, $life, $params, $kid, $sig) = explode(
+            list($ver, $status, $msg, $issue, $id, $url, $principal, $ptags, $auth, $sso, $life, $params, $kid, $sig) = explode(
                 '!',
                 $wlsResponse
             );
@@ -28,6 +28,7 @@ class RavenService extends AbstractService
                 'msg' => $msg != '' ? (string) $msg : null,
                 'issue' => new \DateTime($issue),
                 'id' => (string) $id,
+                'ptags' => (string) $ptags,
                 'url' => (string) $url,
                 'auth' => $auth != '' ? (string) $auth : null,
                 'sso' => (string) $sso,
@@ -47,7 +48,7 @@ class RavenService extends AbstractService
 
     public function getAuthorizationUrl($redirect_uri, array $extraParameters = array())
     {
-        $params['ver'] = 2;
+        $params['ver'] = 3;
         $params['url'] = urlencode($redirect_uri);
         $params['desc'] = urlencode($this->getOption('description'));
 
@@ -98,6 +99,7 @@ class RavenService extends AbstractService
                     $token['id'],
                     $token['url'],
                     $token['principal'],
+                    $token['ptags'],
                     $token['auth'],
                     $token['sso'],
                     $token['life'],

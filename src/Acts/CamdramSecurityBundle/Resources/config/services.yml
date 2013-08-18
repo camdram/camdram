@@ -10,6 +10,9 @@ services:
         calls:
             - [setRouter, [@router]]
 
+    camdram.security.encoder.legacy_md5:
+        class:  Acts\CamdramSecurityBundle\Security\Encoder\LegacyMd5Encoder
+
     camdram.security.service.abstract:
         class: Acts\CamdramSecurityBundle\Security\Service\AbstractService
         arguments: [@buzz.client, @security.http_utils]
@@ -96,6 +99,8 @@ services:
     camdram.security.acl.helper:
         class: Acts\CamdramSecurityBundle\Security\Acl\Helper
         arguments: [@security.context, @camdram.security.acl.provider]
+
+    ### Authorization voters
 
     camdram.security.voter.create:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter
