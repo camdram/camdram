@@ -1,5 +1,5 @@
 <?php
-namespace Acts\CamdramSecurityBundle\Security\Service;
+namespace Acts\ExternalLoginBundle\Security\Service;
 
 use Buzz\Client\ClientInterface as HttpClientInterface,
     Buzz\Message\RequestInterface as HttpRequestInterface,
@@ -10,26 +10,18 @@ use Buzz\Client\ClientInterface as HttpClientInterface,
 use Symfony\Component\Security\Core\Exception\AuthenticationException,
     Symfony\Component\Security\Http\HttpUtils;
 
-//use HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse;
 
-/**
- * AbstractResourceOwner
- *
- * @author Geoffrey Bachelet <geoffrey.bachelet@gmail.com>
- * @author Alexander <iam.asm89@gmail.com>
- * @author Francisco Facioni <fran6co@gmail.com>
- */
 abstract class AbstractService implements ServiceInterface
 {
-    protected $options = array();
+    protected $settings = array();
 
     protected $api;
 
     protected $name;
 
-    public function __construct(HttpClientInterface $httpClient, HttpUtils $httpUtils, $name, array $options)
+    final public function __construct(HttpClientInterface $httpClient, HttpUtils $httpUtils, $name, array $settings)
     {
-        $this->options = array_merge($this->options, $options);
+        $this->options = array_merge($this->settings, $settings);
 
         $this->httpClient = $httpClient;
         $this->httpUtils  = $httpUtils;

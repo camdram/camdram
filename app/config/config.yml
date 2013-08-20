@@ -15,7 +15,8 @@ framework:
     templating:      { engines: ['twig'] }
     default_locale:  "%locale%"
     trusted_proxies: ['127.0.0.1']
-    session:         ~
+    session:
+        name: camdram
     fragments: { path: /_fragment }
 
 # Twig Configuration

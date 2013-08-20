@@ -82,7 +82,7 @@ google:
         current_user:
             path: https://www.googleapis.com/oauth2/v1/userinfo
             arguments: []
-            response: {map: {email: username}}
+            response: {map: {username: email}}
 google_simple:
     class: simple
     base_url: ~

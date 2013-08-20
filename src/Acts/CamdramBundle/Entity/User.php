@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 
 use Acts\CamdramBundle\Entity\Person;
-use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 use Acts\CamdramSecurityBundle\Security\GroupRole;
 
 /**
@@ -172,13 +171,6 @@ class User implements UserInterface, \Serializable
      *
      */
     private $person;
-
-    /**
-     * @var \User
-     *
-     *  @ORM\OneToMany(targetEntity="\Acts\CamdramSecurityBundle\Entity\UserIdentity", mappedBy="user")
-     */
-    private $identities;
 
     /**
      * @var boolean
@@ -676,18 +668,6 @@ class User implements UserInterface, \Serializable
     public function setPerson(Person $person = null)
     {
         $this->person = $person;
-
-        foreach ($this->getIdentities() as $identity) {
-            switch ($identity->getService()) {
-                case 'facebook':
-                    $this->person->setFacebookId($identity->getRemoteId());
-                    break;
-                case 'twitter':
-                    $this->person->setTwitterId($identity->getRemoteId());
-                    break;
-            }
-        }
-
         return $this;
     }
 
@@ -705,7 +685,6 @@ class User implements UserInterface, \Serializable
      */
     public function __construct()
     {
-        $this->identities = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contact = false;
         $this->alumni = false;
         $this->publish_email = false;
@@ -719,75 +698,6 @@ class User implements UserInterface, \Serializable
 
         $this->registered = new \DateTime;
         $this->login = new \DateTime;
-    }
-    
-    /**
-     * Add identities
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\UserIdentity $identities
-     * @return User
-     */
-    public function addIdentity(UserIdentity $identity)
-    {
-        $this->identities[] = $identity;
-
-        if ($this->getPerson()) {
-            switch ($identity->getService()) {
-                case 'facebook':
-                    $this->person->setFacebookId($identity->getRemoteId());
-                    break;
-                case 'twitter':
-                    $this->person->setTwitterId($identity->getRemoteId());
-                    break;
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove identities
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\UserIdentity $identities
-     */
-    public function removeIdentity(UserIdentity $identities)
-    {
-        $this->identities->removeElement($identities);
-    }
-
-    /**
-     * Get identities
-     *
-     * @return \Doctrine\Common\Collections\Collection | null
-     */
-    public function getIdentities()
-    {
-        return $this->identities;
-    }
-
-    public function getIdentityByServiceName($service_name)
-    {
-        if (!is_string($service_name)) {
-            throw new \InvalidArgumentException('The service name given to User::getIdentityByServiceName() must be a string');
-        }
-
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("service", $service_name))
-        ;
-        $res = $this->getIdentities()->matching($criteria);
-        if (count($res) > 0) {
-            return $res[0];
-        }
-        else return null;
-    }
-
-
-    //Two stub methods because Doctrine can't deal with the irregular singularisation of 'identities'...
-    public function addIdentitie(UserIdentity $identities)
-    {
-    }
-    public function removeIdentitie(UserIdentity $identities)
-    {
     }
 
     public function serialize()

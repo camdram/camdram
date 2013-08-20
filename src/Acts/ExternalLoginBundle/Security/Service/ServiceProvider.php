@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Acts\CamdramSecurityBundle\Security;
+namespace Acts\ExternalLoginBundle\Security\Service;
 
 use Symfony\Component\DependencyInjection\ContainerInterface,
     Symfony\Component\HttpFoundation\Request,
@@ -9,11 +9,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface,
     Symfony\Component\Security\Http\HttpUtils;
 
 /**
- * ResourceOwnerMap. Holds several services for a firewall. Lazy
- * loads the appropriate resource owner when requested.
+ * ServiceMap. Holds several services for a firewall.
  *
  */
-class ServiceMap
+class ServiceProvider
 {
     /**
      * @var ContainerInterface
@@ -30,21 +29,14 @@ class ServiceMap
      */
     protected $services;
 
-    protected $possibleServices;
-
     /**
      * Constructor.
      *
      * @param ContainerInterface $container              Container used to lazy load the resource owners.
-     * @param HttpUtils          $httpUtils              HttpUtils
-     * @param array              $possibleServices Array with possible resource owners names.
      * @param array              $services         Array with configured resource owners.
      */
-    public function __construct(ContainerInterface $container, HttpUtils $httpUtils, array $possibleServices, $services)
+    public function __construct($services)
     {
-        $this->container              = $container;
-        $this->httpUtils              = $httpUtils;
-        $this->possibleServices = $possibleServices;
         $this->services         = $services;
     }
 
@@ -53,20 +45,15 @@ class ServiceMap
      *
      * @param string $name
      *
-     * @return null|\Acts\CamdramSecurityBundle\Security\ServiceInterface
+     * @return null|\Acts\ExternalLoginBundle\Security\Service\ServiceInterface
      */
     public function getServiceByName($name)
     {
         if (!isset($this->services[$name])) {
             return null;
         }
-        if (!in_array($name, $this->possibleServices)) {
-            return null;
-        }
 
-        $service = $this->container->get('camdram.security.service.'.$name);
-
-        return $service;
+        return $this->services[$name];
     }
 
     /**

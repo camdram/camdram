@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Acts\CamdramSecurityBundle\Security\Service;
+namespace Acts\ExternalLoginBundle\Security\Service;
 
+use Acts\SocialApiBundle\Exception\OAuthException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use Buzz\Client\ClientInterface as HttpClientInterface;
@@ -19,10 +20,14 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException,
     Symfony\Component\Security\Http\HttpUtils,
     Symfony\Component\HttpFoundation\Request;
 
-use Acts\SocialApiBundle\Service\RestApi;
+use Acts\SocialApiBundle\Service\OAuthApi;
 
 class SocialApiService extends AbstractService
 {
+    /**
+     * @var OAuthApi
+     */
+    protected $api;
 
     public function getName()
     {
@@ -50,7 +55,13 @@ class SocialApiService extends AbstractService
      */
     public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())
     {
-        return $this->api->authenticateWithRequest($request, $redirectUri);
+        try {
+            $this->api->authenticateWithRequest($request, $redirectUri);
+            return $this->api->getToken();
+        }
+        catch (OAuthException $e) {
+            throw new AuthenticationException();
+        }
     }
 
     /**

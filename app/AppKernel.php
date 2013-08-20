@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
             new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
+            new Acts\ExternalLoginBundle\ActsExternalLoginBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -1,0 +1,34 @@
+parameters:
+#    acts_external_login.example.class: Acts\ExternalLoginBundle\Example
+
+services:
+    external_login.service.abstract:
+        class: Acts\ExternalLoginBundle\Security\Service\AbstractService
+        arguments: [@buzz.client, @security.http_utils]
+        abstract: true
+
+    external_login.service.social_api:
+        class: Acts\ExternalLoginBundle\Security\Service\SocialApiService
+        parent: external_login.service.abstract
+
+    external_login.service.raven:
+        class: Acts\ExternalLoginBundle\Security\Service\RavenService
+        parent: external_login.service.abstract
+
+    external_login.authentication.listener:
+        class:  Acts\ExternalLoginBundle\Security\Firewall\ExternalLoginListener
+        parent: security.authentication.listener.abstract
+        public: false
+        abstract: true
+
+    external_login.authentication.provider:
+        class:  Acts\ExternalLoginBundle\Security\Authentication\Provider\ExternalLoginProvider
+        arguments: [@external_login.user.provider, @external_login.service_provider, @router, @security.user_checker]
+        abstract: true
+
+    external_login.service_provider:
+        class: Acts\ExternalLoginBundle\Security\Service\ServiceProvider
+
+    external_login.user.provider:
+        class: Acts\ExternalLoginBundle\Security\User\ExternalLoginUserProvider
+        arguments: [@doctrine.orm.entity_manager, @external_login.service_provider]

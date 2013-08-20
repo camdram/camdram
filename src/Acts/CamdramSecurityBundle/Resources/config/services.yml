@@ -46,6 +46,10 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Acl\Helper
         arguments: [@security.context, @camdram.security.acl.provider]
 
+    camdram.security.user.provider:
+        class: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
+        arguments: [@doctrine.orm.entity_manager]
+
     ### Authorization voters
 
     camdram.security.voter.create:

@@ -6,7 +6,7 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
     Symfony\Component\Security\Http\HttpUtils,
     Symfony\Component\HttpFoundation\Request;
 
-class CamdramEntryPoint implements AuthenticationEntryPointInterface
+class ExternalLoginEntryPoint implements AuthenticationEntryPointInterface
 {
     /**
      * @var Symfony\Component\Security\Http\HttpUtils

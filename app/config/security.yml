@@ -8,13 +8,12 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        camdram:
-            id: camdram.security.user.provider
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        main:
+            entity:
+                class: Acts\CamdramBundle\Entity\User
+                property: email
+        external_login:
+            id: external_login.user.provider
 
     firewalls:
         oauth_token:
@@ -23,9 +22,10 @@ security:
 
         oauth_authorize:
             pattern:    ^/oauth/v2/auth
-            camdram:
-                services:
-                  facebook: {display_name: Facebook}
+            form_login:
+                username_parameter: form[email]
+                password_parameter: form[password]
+
         public:
             pattern: ^/.*
             anonymous: true
@@ -36,11 +36,8 @@ security:
             form_login:
                 username_parameter: form[email]
                 password_parameter: form[password]
-            #camdram:
-            #    services:
-            #        raven: ~
-            #        facebook: ~
-            #        google: ~
+            external_login:
+                services: [raven, facebook, google]
             remember_me:
                 key:      %secret%
                 lifetime: 31536000 # 365 days in seconds
@@ -59,24 +56,17 @@ security:
         Acts\CamdramBundle\Entity\User:
             id: camdram.security.encoder.legacy_md5
 
-acts_camdram_security:
-    groups:
-        admin:
-            roles: [ROLE_ADMIN]
-        editor:
-            roles: [ROLE_EDITOR]
+acts_external_login:
     services:
         facebook:
             class: social_api
-            id: facebook
-        twitter:
-            class: social_api
-            id: twitter
+            settings:
+                api: facebook
         google:
             class: social_api
-            id: google
+            settings:
+                api: google
         raven:
             class: raven
-            description: "camdram.net"
-        local:
-            class: local
+            settings:
+                description: "camdram.net"

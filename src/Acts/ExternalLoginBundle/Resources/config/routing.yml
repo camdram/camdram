@@ -1,0 +1,5 @@
+acts_external_login_auth:
+    pattern: /login/{service}
+
+acts_external_login_entry:
+    pattern: /redirect/{service}

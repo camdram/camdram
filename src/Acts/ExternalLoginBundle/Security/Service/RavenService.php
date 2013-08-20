@@ -1,5 +1,5 @@
 <?php
-namespace Acts\CamdramSecurityBundle\Security\Service;
+namespace Acts\ExternalLoginBundle\Security\Service;
 use Symfony\Component\HttpFoundation\Request,
         Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -69,7 +69,7 @@ class RavenService extends AbstractService
     public function getUserInfo($token = null)
     {
         return array(
-            'id' => null,
+            'id' => $token['principal'],
             'username' => $token['principal'],
             'name' => null,
             'email' => $token['principal'].'@cam.ac.uk',

@@ -1,3 +1,7 @@
+acts_external_login:
+    resource: "@ActsExternalLoginBundle/Resources/config/routing.yml"
+    prefix:   /extauth
+
 acts_camdram_backend:
     resource: "@ActsCamdramBackendBundle/Resources/config/routing.yml"
     prefix:   /

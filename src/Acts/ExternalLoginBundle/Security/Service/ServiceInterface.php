@@ -1,5 +1,5 @@
 <?php
-namespace Acts\CamdramSecurityBundle\Security\Service;
+namespace Acts\ExternalLoginBundle\Security\Service;
 
 use Symfony\Component\HttpFoundation\Request,
     Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

@@ -1,15 +1,16 @@
 <?php
-namespace Acts\CamdramSecurityBundle\Entity;
+namespace Acts\ExternalLoginBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
-* User
+* External User
 *
-* @ORM\Table(name="acts_user_identities")
+* @ORM\Table(name="external_users")
 * @ORM\Entity
 */
-class UserIdentity
+class ExternalUser implements UserInterface
 {
     /**
     * @var integer
@@ -19,23 +20,6 @@ class UserIdentity
     * @ORM\GeneratedValue(strategy="IDENTITY")
     */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
-     */
-    private $user_id;
-
-    /**
-     * @var \User
-     *
-     *  @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\User", inversedBy="identities")
-     *  @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
-     */
-    private $user;
 
     /**
     * @var string
@@ -54,9 +38,16 @@ class UserIdentity
     /**
     * @var string
     *
-    * @ORM\Column(name="remote_user", type="string", length=255, nullable=true)
+    * @ORM\Column(name="username", type="string", length=255, nullable=true)
     */
-    private $remote_user;
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
 
     /**
      * @var string
@@ -73,6 +64,14 @@ class UserIdentity
     private $token_secret;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
+
+
+    /**
      * Get id
      *
      * @return integer 
@@ -83,33 +82,10 @@ class UserIdentity
     }
 
     /**
-     * Set user_id
-     *
-     * @param integer $userId
-     * @return UserIdentity
-     */
-    public function setUserId($userId)
-    {
-        $this->user_id = $userId;
-    
-        return $this;
-    }
-
-    /**
-     * Get user_id
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
-
-    /**
      * Set service
      *
      * @param string $service
-     * @return UserIdentity
+     * @return ExternalUser
      */
     public function setService($service)
     {
@@ -132,7 +108,7 @@ class UserIdentity
      * Set remote_id
      *
      * @param string $remoteId
-     * @return UserIdentity
+     * @return ExternalUser
      */
     public function setRemoteId($remoteId)
     {
@@ -152,56 +128,33 @@ class UserIdentity
     }
 
     /**
-     * Set remote_user
+     * Set username
      *
-     * @param string $remoteUser
-     * @return UserIdentity
+     * @param string $username
+     * @return ExternalUser
      */
-    public function setRemoteUser($remoteUser)
+    public function setUsername($username)
     {
-        $this->remote_user = $remoteUser;
+        $this->username = $username;
     
         return $this;
     }
 
     /**
-     * Get remote_user
+     * Get username
      *
      * @return string 
      */
-    public function getRemoteUser()
+    public function getUsername()
     {
-        return $this->remote_user;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \Acts\CamdramBundle\Entity\User $user
-     * @return UserIdentity
-     */
-    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-    
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \Acts\CamdramBundle\Entity\User 
-     */
-    public function getUser()
-    {
-        return $this->user;
+        return $this->username;
     }
 
     /**
      * Set token
      *
      * @param string $token
-     * @return UserIdentity
+     * @return ExternalUser
      */
     public function setToken($token)
     {
@@ -224,7 +177,7 @@ class UserIdentity
      * Set token_secret
      *
      * @param string $tokenSecret
-     * @return UserIdentity
+     * @return ExternalUser
      */
     public function setTokenSecret($tokenSecret)
     {
@@ -243,12 +196,80 @@ class UserIdentity
         return $this->token_secret;
     }
 
-    public function loadAccessToken($access_token)
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return ExternalUser
+     */
+    public function setEmail($email)
     {
-        if (is_array($access_token)) {
-            if (isset($access_token['token'])) $this->setToken($access_token['token']);
-            if (isset($access_token['token_secret']))$this->setTokenSecret($access_token['token_secret']);
-        }
-        else $this->setToken($access_token);
+        $this->email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPassword()
+    {
+        return '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSalt()
+    {
+        return '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRoles() {
+        return array('ROLE_USER', 'ROLE_EXTERNAL');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function eraseCredentials()
+    {
+    }
+
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return ExternalUser
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
