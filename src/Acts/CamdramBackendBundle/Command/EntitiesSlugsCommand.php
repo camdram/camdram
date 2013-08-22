@@ -9,6 +9,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Doctrine\ORM\Query\Expr;
 
+/**
+ * Class EntitiesSlugsCommand
+ *
+ * Generates slugs for any entity with a blank slug
+ *
+ * @package Acts\CamdramBackendBundle\Command
+ */
 
 class EntitiesSlugsCommand extends ContainerAwareCommand
 {

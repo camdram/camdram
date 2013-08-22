@@ -50,6 +50,10 @@ services:
         class: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
         arguments: [@doctrine.orm.entity_manager]
 
+    camdram.security.external_user.provider:
+        class: Acts\CamdramSecurityBundle\Security\User\ExternalLoginUserProvider
+        arguments: [@doctrine.orm.entity_manager]
+
     ### Authorization voters
 
     camdram.security.voter.create:

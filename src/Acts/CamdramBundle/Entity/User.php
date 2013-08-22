@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 
 use Acts\CamdramBundle\Entity\Person;
+use Acts\ExternalLoginBundle\Security\User\ExternalLinkedUserInterface;
 use Acts\CamdramSecurityBundle\Security\GroupRole;
 
 /**
@@ -16,7 +17,7 @@ use Acts\CamdramSecurityBundle\Security\GroupRole;
  * @ORM\Table(name="acts_users")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User implements \Serializable
 {
     /**
      * @var integer
@@ -187,6 +188,13 @@ class User implements UserInterface, \Serializable
     private $groups;
 
     /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user")
+     */
+    private $external_users;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -217,6 +225,11 @@ class User implements UserInterface, \Serializable
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getDisplayName()
+    {
+        return $this->getName();
     }
 
     /**
@@ -795,5 +808,38 @@ class User implements UserInterface, \Serializable
     public function __toString()
     {
         return $this->getName().' ('.$this->getEmail().')';
+    }
+
+    /**
+     * Add external_users
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
+     * @return User
+     */
+    public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
+    {
+        $this->external_users[] = $externalUsers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove external_users
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
+     */
+    public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
+    {
+        $this->external_users->removeElement($externalUsers);
+    }
+
+    /**
+     * Get external_users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getExternalUsers()
+    {
+        return $this->external_users;
     }
 }

@@ -34,6 +34,8 @@ class ActsExternalLoginExtension extends Extension
         }
 
         $container->getDefinition('external_login.service_provider')->addArgument($authServices);
+        $container->getDefinition('external_login.authentication.provider')
+            ->replaceArgument(0, new Reference($config['user_provider_id']));
         $container->setParameter('external_login.default_firewall', $config['default_firewall']);
     }
 

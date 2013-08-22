@@ -13,7 +13,7 @@ security:
                 class: Acts\CamdramBundle\Entity\User
                 property: email
         external_login:
-            id: external_login.user.provider
+            id: camdram.security.external_user.provider
 
     firewalls:
         oauth_token:
@@ -57,6 +57,7 @@ security:
             id: camdram.security.encoder.legacy_md5
 
 acts_external_login:
+    user_provider_id: camdram.security.external_user.provider
     services:
         facebook:
             class: social_api

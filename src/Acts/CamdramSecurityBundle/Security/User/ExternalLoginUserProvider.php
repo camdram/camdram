@@ -1,34 +1,27 @@
 <?php
-namespace Acts\ExternalLoginBundle\Security\User;
+namespace Acts\CamdramSecurityBundle\Security\User;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Acts\ExternalLoginBundle\Entity\ExternalUser;
-use Acts\ExternalLoginBundle\Security\Service\ServiceProvider;
+use Acts\ExternalLoginBundle\Security\User\ExternalUserProviderInterface;
+use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class ExternalLoginUserProvider implements UserProviderInterface
+class ExternalLoginUserProvider implements ExternalUserProviderInterface
 {
     /**
      * @var ObjectManager;
      */
     protected $em;
 
-    /**
-     * @var ServiceProvider
-     */
-    protected $serviceProvider;
-
-    public function __construct(ObjectManager $em, ServiceProvider $serviceProvider)
+    public function __construct(ObjectManager $em)
     {
         $this->em = $em;
-        $this->serviceProvider = $serviceProvider;
     }
 
     /**
-     * Actually loads by email...but has to comply with the Symfony interface
+     * Actually loads by remote id...but has to comply with the Symfony interface
      *
      * @param string $username
      * @return \Symfony\Component\Security\Core\User\UserInterface
@@ -36,12 +29,12 @@ class ExternalLoginUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($id)
     {
-        return $this->em->getRepository('ActsExternalLoginBundle:ExternalUser')->findOneBy(array('remote_id' => $id));
+        return $this->em->getRepository('ActsCamdramSecurityBundle:ExternalUser')->findOneBy(array('remote_id' => $id));
     }
 
     public function loadUserByServiceAndId($service, $id)
     {
-        $user = $this->em->getRepository('ActsExternalLoginBundle:ExternalUser')->findOneBy(array(
+        $user = $this->em->getRepository('ActsCamdramSecurityBundle:ExternalUser')->findOneBy(array(
             'service' => $service,
             'remote_id' => $id
         ));
@@ -63,10 +56,10 @@ class ExternalLoginUserProvider implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $class === 'Acts\ExternalLoginBundle\Security\User\ExternalLoginUser';
+        return $class === 'Acts\CamdramSecurityBundle\Security\User\ExternalLoginUser';
     }
 
-    public function createUser($userinfo, $service, $access_token)
+    public function persistUser($userinfo, $service, $access_token)
     {
         $user = new ExternalUser();
         $user->setService($service);

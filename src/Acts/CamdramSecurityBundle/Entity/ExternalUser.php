@@ -1,16 +1,18 @@
 <?php
-namespace Acts\ExternalLoginBundle\Entity;
+namespace Acts\CamdramSecurityBundle\Entity;
 
+use Acts\ExternalLoginBundle\Security\User\ExternalLinkedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Acts\ExternalLoginBundle\Security\User\ExternalUserInterface;
+use Acts\CamdramBundle\Entity\User;
 
 /**
 * External User
 *
-* @ORM\Table(name="external_users")
+* @ORM\Table(name="acts_external_users")
 * @ORM\Entity
 */
-class ExternalUser implements UserInterface
+class ExternalUser implements ExternalUserInterface
 {
     /**
     * @var integer
@@ -20,6 +22,13 @@ class ExternalUser implements UserInterface
     * @ORM\GeneratedValue(strategy="IDENTITY")
     */
     private $id;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
+     */
+    private $linked_user;
 
     /**
     * @var string
@@ -55,13 +64,6 @@ class ExternalUser implements UserInterface
      * @ORM\Column(name="token", type="string", length=255, nullable=true)
      */
     private $token;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="token_secret", type="string", length=255, nullable=true)
-     */
-    private $token_secret;
 
     /**
      * @var string
@@ -174,29 +176,6 @@ class ExternalUser implements UserInterface
     }
 
     /**
-     * Set token_secret
-     *
-     * @param string $tokenSecret
-     * @return ExternalUser
-     */
-    public function setTokenSecret($tokenSecret)
-    {
-        $this->token_secret = $tokenSecret;
-    
-        return $this;
-    }
-
-    /**
-     * Get token_secret
-     *
-     * @return string 
-     */
-    public function getTokenSecret()
-    {
-        return $this->token_secret;
-    }
-
-    /**
      * Set email
      *
      * @param string $email
@@ -271,5 +250,42 @@ class ExternalUser implements UserInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getDisplayName()
+    {
+        if ($this->getLinkedUser()) {
+            return $this->getLinkedUser()->getName();
+        }
+        elseif ($this->getName()) {
+            return $this->getName();
+        }
+        else {
+            return $this->getUsername();
+        }
+    }
+
+
+    /**
+     * Set linked_user
+     *
+     * @param \Acts\CamdramBundle\Entity\User $linkedUser
+     * @return ExternalUser
+     */
+    public function setLinkedUser(ExternalLinkedUserInterface $linkedUser = null)
+    {
+        $this->linked_user = $linkedUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get linked_user
+     *
+     * @return \Acts\CamdramBundle\Entity\User 
+     */
+    public function getLinkedUser()
+    {
+        return $this->linked_user;
     }
 }

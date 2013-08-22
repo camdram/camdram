@@ -19,9 +19,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 use Acts\ExternalLoginBundle\Security\Service\ServiceProvider;
-use Acts\ExternalLoginBundle\Security\User\ExternalLoginUser;
 
 /**
  * ExternalLoginListener
@@ -95,7 +95,7 @@ class ExternalLoginListener implements ListenerInterface
     }
 
     /**
-     * @var ServiceMap $resourceOwnerMap
+     * @var ServiceProvider $serviceProvider
      */
     public function setServiceProvider(ServiceProvider $serviceProvider)
     {
@@ -125,12 +125,12 @@ class ExternalLoginListener implements ListenerInterface
                         $this->authenticationManager->authenticate($token);
 
                         $this->sessionStrategy->onAuthentication($request, $token);
-                        $this->securityContext->setToken($token);
+
                         $response = $this->successHandler->onAuthenticationSuccess($request, $token);
+                        $this->securityContext->setToken($token);
                     }
                     catch (AuthenticationException $e) {
                         $response = $this->failureHandler->onAuthenticationFailure($request, $e);
-                        die('fail');
                     }
                     $event->setResponse($response);
                 }

@@ -11,6 +11,15 @@ use Acts\CamdramBundle\Entity\News,
     Acts\CamdramBundle\Entity\NewsLink,
     Acts\CamdramBundle\Entity\NewsMention;
 
+/**
+ * Class EntitiesNewsCommand
+ *
+ * A console command to pull in the latest 'news' for societies and venues (i.e. Facebook page updates and tweets).
+ * Should be run regularly from a cron job.
+ *
+ * @package Acts\CamdramBackendBundle\Command
+ */
+
 class EntitiesNewsCommand extends ContainerAwareCommand
 {
     protected function configure()

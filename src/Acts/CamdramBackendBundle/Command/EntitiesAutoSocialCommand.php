@@ -10,8 +10,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Acts\CamdramBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
+/**
+ * Class EntitiesAutoSocialCommand
+ *
+ * This console command attempt to link venues and societies in the database to Facebook pages and Twitter
+ * accounts using their respective search APIs. It isn't very accurate so should be used with caution!
+ *
+ * @package Acts\CamdramBackendBundle\Command
+ */
+
 class EntitiesAutoSocialCommand extends ContainerAwareCommand
 {
+    /**
+     * @inheritdoc
+     */
     protected function configure()
     {
         $this
@@ -27,13 +39,19 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
         $social->get('twitter')->authenticateAsSelf();
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
+        // Link venues to Facebook/Twitter accounts
         $venues_rep = $em->getRepository('ActsCamdramBundle:Venue');
         $this->linkEntities($venues_rep->findAll(), $output);
 
+        // Link societies to Facebook/Twitter accounts
         $societies_rep = $em->getRepository('ActsCamdramBundle:Society');
         $this->linkEntities($societies_rep->findAll(), $output);
     }
 
+    /**
+     * @param array $entities An array of entities which it should attempt to link to social media accounts
+     * @param OutputInterface $output
+     */
     private function linkEntities(array $entities, OutputInterface $output)
     {
         $social = $this->getContainer()->get('acts.social_api.provider');

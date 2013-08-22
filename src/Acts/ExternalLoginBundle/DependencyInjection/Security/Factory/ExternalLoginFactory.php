@@ -82,13 +82,6 @@ class ExternalLoginFactory extends AbstractFactory
 
     protected function createEntryPoint($container, $id, $config, $defaultEntryPoint)
     {
-        /*$entryPointId = 'camdram.security.entry_point.'.$id;
-        $container
-            ->setDefinition($entryPointId, new DefinitionDecorator('camdram.security.entry_point'))
-            ->addArgument($config['login_path'])
-        ;
-
-        return $entryPointId;*/
         return $defaultEntryPoint;
     }
 

@@ -23,12 +23,8 @@ services:
 
     external_login.authentication.provider:
         class:  Acts\ExternalLoginBundle\Security\Authentication\Provider\ExternalLoginProvider
-        arguments: [@external_login.user.provider, @external_login.service_provider, @router, @security.user_checker]
+        arguments: [~, @external_login.service_provider, @router, @security.user_checker]
         abstract: true
 
     external_login.service_provider:
         class: Acts\ExternalLoginBundle\Security\Service\ServiceProvider
-
-    external_login.user.provider:
-        class: Acts\ExternalLoginBundle\Security\User\ExternalLoginUserProvider
-        arguments: [@doctrine.orm.entity_manager, @external_login.service_provider]
