@@ -5,7 +5,7 @@
 
 {% block body %}
   <div class="row">
-      <div class="twelve columns"><h3>Societies</h3></div>
+      <div class="large-12 columns"><h3>Societies</h3></div>
   </div>
   <div class="row">
 
@@ -21,7 +21,7 @@
               <h3>College Societies</h3>
           {% endif %}
 
-          <div class="six columns">
+          <div class="large-6 columns">
           <h5><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
           {% if society.shortname is not empty %}
             <small>- {{ society.shortname }}</small>
@@ -31,10 +31,10 @@
             <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
           {% endif %}
 
-              {% if society.image %}<div class="row"><div class="three columns mobile-one">
+              {% if society.image %}<div class="row"><div class="small-3 columns">
               <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ render_image(society.image, 88, 70) }}</a>
           </div>
-              <div class="nine columns mobile-three">
+              <div class="small-9 columns">
                   <p>{{ society.description|truncate(200)|strip_new_lines|camdram_markdown }}
                   </p>
                   <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
@@ -52,7 +52,7 @@
           {% set i = i + 1 %}
         {% endfor %}
       {% else %}
-        <div class="twelve columns">
+        <div class="large-12 columns">
         <p>There are no societies.</p>
       {% endif %}
         </div>

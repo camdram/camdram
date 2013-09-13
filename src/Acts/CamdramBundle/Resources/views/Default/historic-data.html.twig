@@ -1,25 +1,23 @@
 {% if data | length > 0 %}
 <h5>This time...</h5>
-<dl class="tabs contained three-up">
-    {% for years,shows in data %}
-    <dd{% if loop.first %} class="active"{% endif %}><a href="#historicData{{ years }}">
-        {% if years == 1 %}last year{% else %}{{ years }} years ago{% endif %}
-    </a></dd>
-    {% endfor %}
-</dl>
-<ul class="tabs-content contained">
-    {% for years,shows in data %}
-    <li{% if loop.first %} class="active"{% endif %} id="historicData{{ years }}Tab">
-        <ul>
-        {% for show in shows %}
-        <li>
-            <h6><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h6>
-            <div class="show_info">{{ show.venueName }}</div>
-            {{ show.description | truncate(50) }}
-        </li>
+
+    <div class="section-container auto" data-section>
+        {% for years,shows in data %}
+            <section{% if loop.first %} class="active"{% endif %}>
+                <p class="title" data-section-title><a href="#panel{{ years }}">{% if years == 1 %}last year{% else %}{{ years }} years ago{% endif %}</a></p>
+                <div class="content" data-section-content>
+                    <ul>
+                        {% for show in shows %}
+                            <li>
+                                <h6><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h6>
+                                <div class="show_info">{{ show.venueName }}</div>
+                                {{ show.description | truncate(50) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
         {% endfor %}
-         </ul>
-    </li>
-    {% endfor %}
-</ul>
+    </div>
+
 {% endif %}

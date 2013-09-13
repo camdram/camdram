@@ -1,3 +1,4 @@
+
 .diary-week {
     margin-bottom:15px;
 }
@@ -5,7 +6,7 @@
 .diary-week:after {
     content: ".";
     display: block;
-    height: 0;
+    height: 0px;
     clear: both;
     visibility: hidden;
 }

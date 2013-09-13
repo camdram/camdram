@@ -6,7 +6,7 @@
 {% block body %}
 
 <div class="row">
-    <div class="twelve columns">
+    <div class="large-12 columns">
         <h3>Venues</h3>
         <div class="large_map">
             {% render url('acts_camdram_venues_map') %}
@@ -14,29 +14,27 @@
     </div>
 </div>
 
-<div class="row">
-    <ul class="block-grid two-up mobile" id="venues_list">
-    {% for venue in venues %}
-       <li id="venue-{{ venue.slug }}">
-           <div class="row">
-               <div class="two columns mobile-one marker_column">
+<ul class="large-block-grid-2" id="venues_list">
+{% for venue in venues %}
+   <li id="venue-{{ venue.slug }}">
+       <div class="row">
+           <div class="small-2 columns marker_column">
 
-               </div>
-               <div class="ten columns mobile-three">
-                   <h5><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></h5>
-                   {% if venue.college %}<h6>{{ venue.college }} College, Cambridge</h6>
-                   {% elseif venue.address %}<h6>{{ venue.address }}</h6>{% endif %}
-                   <p>{{ venue.description | slice(0, 200) | strip_new_lines | camdram_markdown }}
-                       {% if venue.description|length > 200 %}
-                           ...<br>[<a href="{{ path('get_venue', {identifier: venue.slug}) }}">Read More</a>]
-                       {% endif %}
-                   </p>
-               </div>
            </div>
-       </li>
-   {% endfor %}
-    </ul>
-</div>
+           <div class="small-10 columns">
+               <h5><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></h5>
+               {% if venue.college %}<h6>{{ venue.college }} College, Cambridge</h6>
+               {% elseif venue.address %}<h6>{{ venue.address }}</h6>{% endif %}
+               <p>{{ venue.description | slice(0, 200) | strip_new_lines | camdram_markdown }}
+                   {% if venue.description|length > 200 %}
+                       ...<br>[<a href="{{ path('get_venue', {identifier: venue.slug}) }}">Read More</a>]
+                   {% endif %}
+               </p>
+           </div>
+       </div>
+   </li>
+{% endfor %}
+</ul>
 
 {% endblock %}
 

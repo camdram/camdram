@@ -5,41 +5,34 @@
 
 {% block body %}
 <div class="row">
-    <div class="twelve columns">
+    <div class="large-12 columns">
       <h3>Welcome to Camdram <small> - the portal website for student theatre in Cambridge</small></h3>
-
     </div>
 </div>
 
 <div class="row">
-    <div class="nine columns">
-        <dl class="tabs contained">
+    <div class="large-9 columns">
+        <div class="section-container auto" data-section>
             {% for period in periods %}
-            <dd{% if loop.first %} class="active"{% endif %}>
-                <a href="#period{{ period.id }}">
-                {% if loop.first %}{{ period.name }}
-                {% else %}{{ period.shortName }}
-                {% endif %}
-                </a>
-            </dd>
+            <section>
+                <p class="title" data-section-title><a href="#panel{{ period.id }}">{% if loop.first %}{{ period.name }}
+                        {% else %}{{ period.shortName }}
+                        {% endif %}</a></p>
+                <div class="content" data-section-content>
+                    {{ render(url('acts_camdram_diary_period', {id: period.id}) , { 'strategy': 'esi'}) }}
+                </div>
+            </section>
             {% endfor %}
-        </dl>
-        <ul class="tabs-content contained">
-            {% for period in periods %}
-            <li{% if loop.first %} class="active" {% endif %} id="period{{ period.id }}Tab">
-                {{ render(url('acts_camdram_diary_period', {id: period.id}) , { 'strategy': 'esi'}) }}
-            </li>
-            {% endfor %}
-        </ul>
+        </div>
     </div>
 
-    <div class="three columns hide-for-small" id="home_statistics">
+    <div class="large-3 columns hide-for-small" id="home_statistics">
         {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
     </div>
 </div>
   
 <div class="row">
-    <div class="five columns">
+    <div class="large-5 columns">
         <div id="home_vacancies">
             {{ render(controller('ActsCamdramBundle:Default:vacancies'), {'strategy': 'esi'}) }}
         </div>
@@ -48,7 +41,7 @@
             {{ render(controller('ActsCamdramBundle:Default:historicData'), {'strategy': 'esi'}) }}
         </div>
     </div>
-    <div class="seven columns">
+    <div class="large-7 columns">
         <h4>News</h4>
         <hr />
         {% for item in news %}
