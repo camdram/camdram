@@ -1,0 +1,163 @@
+$background-color: #fff9e3;
+$white: #fff;
+$orange: #fe5c1f;
+$dark-grey: #3a393a;
+
+$primary-color: $orange;
+$secondary-color: #f00;
+
+$topbar-bg: $dark-grey;
+$topbar-margin-bottom: 0;
+
+$section-border-color: #e6e6e6;
+
+@import "foundation";
+
+$footer-height: emCalc(160);
+$footer-height-mobile: emCalc(350);
+
+.top-bar-section {
+  max-width:$row-width;
+  margin:auto;
+}
+
+html, body {
+  height: 100%;
+}
+#wrapper {
+  min-height: 100%;
+  margin-bottom: -$footer-height;
+
+  &:after {
+    content: "";
+    display: block;
+    height: $footer-height;
+  }
+}
+
+body {
+  background:$background-color;
+}
+
+section {
+  background:$white;
+}
+
+header {
+  background:$orange;
+}
+
+#wrapper > section {
+  max-width:$row-width;
+  margin:auto;
+  padding-bottom: emCalc(20);
+  min-height:100%;
+
+  p {
+    font-size: emCalc(14);
+  }
+
+  &:before {
+    content: "";
+    width:100%;
+    max-width:$row-width;
+    margin:auto;
+    background:$white;
+    position:absolute;
+    bottom:0;
+    top:0;
+    z-index:-1;
+  }
+}
+
+footer {
+  background:$dark-grey;
+  color: $white;
+  height:$footer-height-mobile;
+  @media #{$small} {
+    height: $footer-height;
+  }
+   h5 {
+    color: $white;
+   }
+  p {
+    text-align:center;
+    margin:auto;
+    color:white;
+    padding:10px 0;
+    font-size:0.9em;
+  }
+}
+
+header .logo {
+  text-align: center;
+  @media #{$small} {
+    height:80px;
+    background:url('../../images/header_separator.png') center right no-repeat;
+  }
+}
+
+header .search {
+  background: #fff;
+  padding-top: 20px;
+  @media #{$small} {
+    height:80px;
+    padding-left:30px;
+    padding-right:30px;
+    background:url('../../images/header_separator2.png') center right no-repeat #fff;
+  }
+}
+
+//Search box / autocomplete
+
+#search_form {
+  border: 1px solid black;
+  border-radius: 20px;
+  box-shadow: 0px 0px 4px #888;
+  background:#fff;
+  z-index:200;
+}
+
+#search_form .ui-autocomplete {
+  position:static;
+  width:auto;
+  border:none;
+  background:#fff;
+  margin:8px;
+}
+
+#search_form .ui-autocomplete a {
+  border-top:1px solid #ddd;
+  padding:3px;
+  border-radius:0;
+}
+
+#search_form .ui-autocomplete a.ui-state-focus {
+  background:#f0f0f0;
+  border:none;
+  border-top:1px solid #ddd;
+  color:#000;
+  margin:0;
+}
+
+header .search input[type=search] {
+  border:none;
+  padding:0 15px 0 32px;
+  margin: 3px 3px 3px 12px;
+  outline:none;
+  background:url('../../images/search.png') left center no-repeat;
+  box-shadow:none;
+  -webkit-box-shadow:none;
+  -moz-box-shadow:none;
+}
+header input[type=search]:focus {
+  outline:none;
+  background:url('../../images/search.png') left center no-repeat;
+  border:none;
+  box-shadow:none;
+  -webkit-box-shadow:none;
+  -moz-box-shadow:none;
+}
+
+@import "home";
+@import "venues";
