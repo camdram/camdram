@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Form\Type\PersonType;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 
 /**
@@ -35,5 +36,57 @@ class PersonController extends AbstractRestController
     protected function getForm($person = null)
     {
         return $this->createForm(new PersonType(), $person);
+    }
+
+    /**
+     * @param $identifier
+     * @return $this
+     * @Rest\Get("/people/{identifier}/past-roles")
+     */
+    public function getPastRolesAction($identifier)
+    {
+        $now = $this->get('acts.time_service')->getCurrentTime();
+        $person = $this->getEntity($identifier);
+        $roles = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')->getPastByPerson($now, $person);
+
+        $data = array('person' => $person, 'roles' => $roles);
+        return $this->view($data, 200)
+            ->setTemplateVar('data')
+            ->setTemplate('ActsCamdramBundle:Person:past-shows.html.twig');
+    }
+
+    /**
+     * @param $identifier
+     * @return $this
+     * @Rest\Get("/people/{identifier}/upcoming-roles")
+     */
+    public function getUpcomingRolesAction($identifier)
+    {
+        $now = $this->get('acts.time_service')->getCurrentTime();
+        $person = $this->getEntity($identifier);
+        $roles = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')->getUpcomingByPerson($now, $person);
+
+        $data = array('person' => $person, 'roles' => $roles);
+        return $this->view($data, 200)
+            ->setTemplateVar('data')
+            ->setTemplate('ActsCamdramBundle:Person:upcoming-shows.html.twig');
+    }
+
+    /**
+     * @param $identifier
+     * @return $this
+     * @Rest\Get("/people/{identifier}/current-roles")
+     */
+    public function getCurrentRolesAction($identifier)
+    {
+        $now = $this->get('acts.time_service')->getCurrentTime();
+        $person = $this->getEntity($identifier);
+        $roles = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')->getCurrentByPerson($now, $person);
+
+        $data = array('person' => $person, 'roles' => $roles);
+
+        return $this->view($data, 200)
+            ->setTemplateVar('data')
+            ->setTemplate('ActsCamdramBundle:Person:current-shows.html.twig');
     }
 }

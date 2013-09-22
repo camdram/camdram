@@ -75,4 +75,44 @@ class ShowRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function getUpcomingByPerson(\DateTime $now, Person $person)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.start_at >= :now')
+            ->join('ActsCamdramBundle:Role', 'r')
+            ->andWhere('r.person = :person')
+            ->orderBy('s.start_at', 'ASC')
+            ->setParameter('person', $person)
+            ->setParameter('now', $now)
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getCurrentByPerson(\DateTime $now, Person $person)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.end_at >= :now')
+            ->where('s.start_at < :now')
+            ->join('ActsCamdramBundle:Role', 'r')
+            ->andWhere('r.person = :person')
+            ->orderBy('s.start_at', 'ASC')
+            ->setParameter('person', $person)
+            ->setParameter('now', $now)
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getPastByPerson(\DateTime $now, Person $person)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->where('s.end_at < :now')
+            ->join('ActsCamdramBundle:Role', 'r')
+            ->andWhere('r.person = :person')
+            ->orderBy('s.start_at', 'DESC')
+            ->setParameter('person', $person)
+            ->setParameter('now', $now)
+            ->getQuery();
+        return $query->getResult();
+    }
+
 }

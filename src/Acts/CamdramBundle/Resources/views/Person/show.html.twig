@@ -15,39 +15,17 @@
 <div class="row">
     <div class="twelve columns">
 
-    <h2>{{ person.name }}</h2>
+    <div class="entity-panel">
+        <h2>{{ person.name }}</h2>
+        {% if person.description %}
+        <p>{{ person.description }}</p>
+        {% endif %}
+    </div>
 
-    <ul>
-    {% spaceless %}
-    <h3>Current and Upcoming Shows</h3>
-    {% set current_show = null %}
-    {% set done_current = false %}
-    {%- for role in person.roles -%}
-        {%- if role.show != current_show -%}
-            {% if current_show is not null %}
-                </strong><br/>
-                {% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': current_show.performances } %}</li>
-            {% endif %}
-            {% set current_show = role.show %}
-            {# Check for current and upcoming shows #}
-            {% if ((date() >= date(current_show.startAt)) and
-                  (date() <= date(current_show.endAt))) or
-                  (date() < date(current_show.startAt)) %}
-                {{ date(current_show.startAt)|date('Y-m-d') }} {{"now"|date('Y-m-d')}}foo
-                {% set done_current = true %}
-            {% elseif not done_current %}
-                {{ person.name }} is not currently involved in any shows.
-                {% set done_current = true %}
-                <h3>Previous Shows</h3>
-            {% endif %}
-            <li><a href="{{ path('get_show', {identifier: role.show.slug}) }}">{{ current_show.name }}</a> - under <strong>
-        {% else -%}
-            ,
-        {% endif -%}
-        {{ role.role }}
-    {%- endfor -%}
-     {##   <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': current_show.performances } %}</p></li>#}
-    {% endspaceless %}
-    </ul>
+    {{ render(url('get_person_current_roles', {identifier: person.slug})) }}
+    {{ render(url('get_person_upcoming_roles', {identifier: person.slug})) }}
+    {{ render(url('get_person_past_roles', {identifier: person.slug})) }}
 
+    </div>
+</div>
 {% endblock %}

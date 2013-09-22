@@ -1,0 +1,12 @@
+{% if roles | length > 0 %}
+    <h3>{{ person.name }} has been involved with</h3>
+    <ul>
+    {% for role in roles %}
+        <li>
+            {{ role.role }}<br />
+            <h3><a href="{{ url('get_show', {identifier : role.show.slug}) }}">{{ role.show.name }}</a></h3>
+            {% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': role.show.performances } %}</li>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}

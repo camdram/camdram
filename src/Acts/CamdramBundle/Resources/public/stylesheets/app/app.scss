@@ -116,6 +116,7 @@ header .search {
   box-shadow: 0px 0px 4px #888;
   background:#fff;
   z-index:200;
+  position:relative;
 }
 
 #search_form .ui-autocomplete {
@@ -161,3 +162,4 @@ header input[type=search]:focus {
 
 @import "home";
 @import "venues";
+@import "entities";

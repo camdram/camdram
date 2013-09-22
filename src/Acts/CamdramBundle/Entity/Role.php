@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation\Exclude;
  * Role
  *
  * @ORM\Table(name="acts_shows_people_link")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\RoleRepository")
  */
 class Role
 {
