@@ -15,7 +15,7 @@ class RoleRepository extends EntityRepository
     public function getUpcomingByPerson(\DateTime $now, Person $person)
     {
         $query = $this->createQueryBuilder('r')
-            ->join('ActsCamdramBundle:Show', 's')
+            ->join('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 's = r.show')
             ->where('s.start_at >= :now')
             ->andWhere('r.person = :person')
             ->orderBy('s.start_at', 'ASC')
@@ -42,7 +42,7 @@ class RoleRepository extends EntityRepository
     public function getPastByPerson(\DateTime $now, Person $person)
     {
         $query = $this->createQueryBuilder('r')
-            ->join('ActsCamdramBundle:Show', 's')
+            ->join('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 's = r.show')
             ->where('s.end_at < :now')
             ->andWhere('r.person = :person')
             ->orderBy('s.start_at', 'DESC')

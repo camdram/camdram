@@ -1,10 +1,10 @@
 {% if roles | length > 0 %}
-    <h3>{{ person.name }} is currently involved with</h3>
+    <h4>{{ person.name }} is currently involved with</h4>
     {% for role in roles %}
-        <div class="panel">
-            {{ role.role }}<br />
-            <h3><a href="{{ url('get_show', {identifier : role.show.slug}) }}">{{ role.show.name }}</a></h3>
-            {% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': role.show.performances } %}
+        <div>
+            <h5><a href="{{ url('get_show', {identifier : role.show.slug}) }}">{{ role.show.name }}</a> - {{ role.role }}</h5>
+            <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': role.show.performances } %}</p>
+            <p>{{ role.show.description | camdram_markdown }}</p>
         </div>
     {% endfor %}
 {% endif %}
