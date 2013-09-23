@@ -1,13 +1,14 @@
-.small_map {
+.map-small {
   height:270px;
 }
 
-.large_map {
+.map-large {
   height:300px;
+  margin-bottom:emCalc(20);
 }
 
 @media only screen and (max-width: 767px) {
-  .large_map {
+  .map-large {
     height: 250px;
   }
 }

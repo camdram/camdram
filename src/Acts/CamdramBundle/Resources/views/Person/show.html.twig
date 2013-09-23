@@ -12,20 +12,16 @@
 {% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="twelve columns">
 
-    <div id="entity-header">
-        <h2>{{ person.name }}</h2>
-        {% if person.description %}
-        <p>{{ person.description }}</p>
-        {% endif %}
-    </div>
-
-    {{ render(url('get_person_current_roles', {identifier: person.slug})) }}
-    {{ render(url('get_person_upcoming_roles', {identifier: person.slug})) }}
-    {{ render(url('get_person_past_roles', {identifier: person.slug})) }}
-
-    </div>
+<div id="entity-header">
+    <h2>{{ person.name }}</h2>
+    {% if person.description %}
+    <p>{{ person.description }}</p>
+    {% endif %}
 </div>
+
+{{ render(url('get_person_current_roles', {identifier: person.slug})) }}
+{{ render(url('get_person_upcoming_roles', {identifier: person.slug})) }}
+{{ render(url('get_person_past_roles', {identifier: person.slug})) }}
+
 {% endblock %}

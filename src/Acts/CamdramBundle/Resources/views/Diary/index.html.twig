@@ -6,17 +6,16 @@
 {% block body %}
 
 <div class="row">
-    <div class="six columns"><h3>Diary</h3></div>
-    <form>
-    <div class="six columns text-right">
+    <div class="large-6 columns"><h3>Diary</h3></div>
+    <div class="large-6 columns text-right">
+        <form>
         {{ render(controller("ActsCamdramBundle:Diary:toolbar") )}}
-
+        </form>
     </div>
-    </form>
 </div>
 
 <div class="row">
-    <div class="twelve columns">
+    <div class="large-12 columns">
         <a href="#" class="infinite_scroll load_previous">Go back</a>
         <div id="diary">
             {{ render(controller("ActsCamdramBundle:Diary:content")) }}
