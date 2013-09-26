@@ -1,6 +1,9 @@
 acts_camdram_diary:
     pattern:  /
-    defaults: { _controller: ActsCamdramBundle:Diary:index }
+    defaults:
+      _controller: ActsCamdramBundle:Diary:index
+      year: ~
+      period: ~
 
 acts_camdram_diary_period:
     pattern:  /period/{id}
@@ -9,3 +12,8 @@ acts_camdram_diary_period:
 acts_camdram_diary_content:
     pattern: /content/{direction}/{last_date}
     defaults: { _controller: ActsCamdramBundle:Diary:content }
+
+acts_camdram_diary_select:
+    pattern:  /{year}/{period}
+    defaults:
+      _controller: ActsCamdramBundle:Diary:index

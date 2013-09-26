@@ -16,7 +16,7 @@ class TimePeriodRepository extends EntityRepository
     public function getTimePeriodsAt(\DateTime $date, $limit)
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->where($qb->expr()->andX('p.start_at < :now', 'p.end_at >= :now'))
+        $query = $qb->where($qb->expr()->andX('p.start_at <= :now', 'p.end_at > :now'))
             ->orWhere('p.start_at >= :now')
             ->setParameter('now', $date)
             ->orderBy('p.start_at', 'ASC')

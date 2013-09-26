@@ -22,12 +22,36 @@ class DiaryController extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction($year, $period)
     {
+        if (($query_year = $this->getRequest()->query->get('year')) && ($query_period = $this->getRequest()->query->get('period'))) {
+            return $this->redirect($this->generateUrl('acts_camdram_diary_select', array(
+                'year' => $query_year,
+                'period' => $query_period,
+            )));
+        }
 
+        $groups_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriodGroup');
+        $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
 
-        return $this->render("ActsCamdramBundle:Diary:index.html.twig")
-        ;
+        if ($period) {
+            $group = $groups_repo->findOneBySlug($period);
+            if ($group->getStartAt()->format('Y') != $year) {
+                return $this->redirect($this->generateUrl('acts_camdram_diary_select', array(
+                    'year' => $group->getStartAt()->format('Y'),
+                    'period' => $period,
+                )));
+            }
+            $periods = $periods = $periods_repo->getTimePeriodsAt($group->getStartAt(), 5);
+        }
+        else {
+            $now = $this->get('acts.time_service')->getCurrentTime();
+            $periods = $periods = $periods_repo->getTimePeriodsAt($now, 5);
+        }
+
+        return $this->render("ActsCamdramBundle:Diary:index.html.twig", array(
+            'periods' => $periods,
+        ));
     }
 
     /**
@@ -39,7 +63,7 @@ class DiaryController extends FOSRestController
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriodGroup');
         $years = $repo->getYears();
-        $current_year = date('Y');
+        $current_year = $this->get('acts.time_service')->getCurrentTime()->format('Y');
         $groups = $repo->getGroupsByYear($current_year);
         $now = $this->get('acts.time_service')->getCurrentTime();
         $current_group = $repo->getGroupAt($now);
@@ -67,23 +91,15 @@ class DiaryController extends FOSRestController
     {
         $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
 
-        if (is_null($direction)) {
-            $now = $this->get('acts.time_service')->getCurrentTime();
-            $periods = $periods_repo->getTimePeriodsAt($now, 5);
+        $last_date = new \DateTime($last_date);
+        $last_date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+
+        if ($direction == 'next') {
+            $periods = $periods_repo->getTimePeriodsAfter($last_date, 3);
         }
-        else {
-            $last_date = new \DateTime($last_date);
-            $last_date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-
-            if ($direction == 'next') {
-                $periods = $periods_repo->getTimePeriodsAfter($last_date, 3);
-            }
-            elseif ($direction == 'previous') {
-                $periods = $periods_repo->getTimePeriodsBefore($last_date, 1);
-            }
+        elseif ($direction == 'previous') {
+            $periods = $periods_repo->getTimePeriodsBefore($last_date, 1);
         }
-
-
 
         return $this->render("ActsCamdramBundle:Diary:content.html.twig", array(
             'periods' => $periods

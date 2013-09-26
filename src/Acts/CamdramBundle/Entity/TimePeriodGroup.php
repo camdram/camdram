@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * TimePeriodGroup
@@ -38,6 +39,7 @@ class TimePeriodGroup
 
     /**
      * @ORM\OneToMany(targetEntity="TimePeriod", mappedBy="group")
+     * @Serializer\Exclude;
      */
     private $periods;
 
@@ -56,7 +58,7 @@ class TimePeriodGroup
     private $end_at;
 
     /**
-     * @Gedmo\Slug(fields={"name"})
+     * @Gedmo\Slug(fields={"name"}, unique=false)
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      */
     private $slug;

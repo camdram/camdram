@@ -1,12 +1,14 @@
+Jump to:
+
 <select id="years" name="year">
     {% for year in years %}
     <option value="{{ year }}"{% if current_year == year %} selected{% endif %}>{{ year }}</option>
     {% endfor %}
 </select>
 
-<select id="groups" name="group">
+<select id="periods" name="period">
     {% for group in groups %}
-        <option value="{{ group.id }}"{% if current_group == group %} selected{% endif %}>{{ group.longName }}</option>
+        <option value="{{ group.slug }}"{% if current_group == group %} selected{% endif %}>{{ group.name }}</option>
     {% endfor %}
 </select>
 

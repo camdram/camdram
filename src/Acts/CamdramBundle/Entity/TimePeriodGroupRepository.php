@@ -52,16 +52,15 @@ class TimePeriodGroupRepository extends EntityRepository
             throw new \InvalidArgumentException('$year must be a number');
         }
 
-        return $this->createQueryBuilder('g')
-            ->innerJoin('ActsCamdramBundle:Performance', 'p')
-            ->where('p.start_date <= g.end_at')->andWhere('p.end_date >= g.start_at')
-            ->andWhere('g.start_at <= :end')->andWhere('g.end_at > :start')
+        $query = $this->createQueryBuilder('g')
+            ->where('g.end_at <= :end')->andWhere('g.start_at >= :start')
             ->orderBy('g.start_at')
             ->groupBy('g.id')
             ->setParameter('start', new \DateTime($year.'-01-01'))
             ->setParameter('end', new \DateTime(($year+1).'-01-01'))
 
-            ->getQuery()->getResult();
+            ->getQuery();
+        return $query->getResult();
     }
 
 }
