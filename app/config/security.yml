@@ -17,15 +17,6 @@ security:
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
     firewalls:
-        oauth_token:
-            pattern:    ^/oauth/v2/token
-            security:   false
-
-        oauth_authorize:
-            pattern:    ^/oauth/v2/auth
-            camdram:
-                services:
-                  facebook: {display_name: Facebook}
         public:
             pattern: ^/.*
             anonymous: true
