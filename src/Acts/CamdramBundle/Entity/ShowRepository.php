@@ -115,4 +115,13 @@ class ShowRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function getLastShowDate()
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select('MAX(s.end_at)')
+            ->setMaxResults(1)
+            ->getQuery();
+        return new \DateTime(current($query->getOneOrNullResult()));
+    }
+
 }

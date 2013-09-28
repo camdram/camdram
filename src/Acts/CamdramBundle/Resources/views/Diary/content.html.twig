@@ -1,5 +1,5 @@
 {% for period in periods %}
-    <div class="time-period" data-start="{{ period.startAt | date('c') }}" data-end="{{ period.endAt | date('c') }}">
+    <div class="time-period" id="period{{ period.id }}" data-group="{{ period.group.slug }}" data-start="{{ period.startAt | date('c') }}" data-end="{{ period.endAt | date('c') }}">
         <h5>{{ period.longName }}</h5>
         {{ render(url('acts_camdram_diary_period', {id: period.id}), {}, {'standalone': true}) }}
     </div>

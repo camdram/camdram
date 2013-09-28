@@ -46,18 +46,23 @@ class TimePeriodGroupRepository extends EntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function getGroupsByYear($year)
+
+    public function findByYearBefore($year, $before_date)
     {
         if (!is_numeric($year)) {
             throw new \InvalidArgumentException('$year must be a number');
         }
 
+        $start_date = new \DateTime($year.'-01-01');
+        $end_date = new \DateTime(($year+1).'-01-01');
+        if ($before_date >= $start_date && $before_date < $end_date) $end_date = $before_date;
+
         $query = $this->createQueryBuilder('g')
-            ->where('g.end_at <= :end')->andWhere('g.start_at >= :start')
+            ->where('g.start_at <= :end')->andWhere('g.start_at >= :start')
             ->orderBy('g.start_at')
             ->groupBy('g.id')
-            ->setParameter('start', new \DateTime($year.'-01-01'))
-            ->setParameter('end', new \DateTime(($year+1).'-01-01'))
+            ->setParameter('start', $start_date)
+            ->setParameter('end', $end_date)
 
             ->getQuery();
         return $query->getResult();
@@ -70,7 +75,7 @@ class TimePeriodGroupRepository extends EntityRepository
         }
 
         $query = $this->createQueryBuilder('g')
-            ->where('g.end_at <= :end')->andWhere('g.start_at >= :start')
+            ->where('g.start_at <= :end')->andWhere('g.end_at >= :start')
             ->andWhere('g.slug = :slug')
             ->orderBy('g.start_at')
             ->groupBy('g.id')
@@ -78,7 +83,7 @@ class TimePeriodGroupRepository extends EntityRepository
             ->setParameter('end', new \DateTime(($year+1).'-01-01'))
             ->setParameter('slug', $slug)
             ->getQuery();
-        return $query->getOneOrNullResult();
+        return current($query->getResult());
     }
 
 }

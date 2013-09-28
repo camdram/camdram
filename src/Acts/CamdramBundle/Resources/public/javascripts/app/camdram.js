@@ -289,7 +289,6 @@
 
         var checkScrollPosition = function() {
             var top = $document.height() - $window.height() - options.distance;
-
             if ($window.scrollTop() >= top) {
                 options.callback.apply($self);
             }
