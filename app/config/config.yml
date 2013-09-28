@@ -163,7 +163,7 @@ acts_sphinx_real_time:
                 dict: keywords
 
 fos_js_routing:
-    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary_content' ]
+    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*' ]
     
 acts_time_mock:
     time_override: %current_time%
