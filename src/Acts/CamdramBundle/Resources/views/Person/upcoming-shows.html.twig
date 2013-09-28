@@ -5,6 +5,7 @@
         <li>
             <h5><a href="{{ url('get_show', {identifier : role.show.slug}) }}">{{ role.show.name }}</a> - {{ role.role }}</h5>
             <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': role.show.performances } %}</p>
+            <p>{{ role.show.description | truncate(200) }}</p>
         </li>
     {% endfor %}
     </ul>
