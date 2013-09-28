@@ -36,11 +36,13 @@
             return date.toISOString();
         }
         $('#years').change(function() {
+            var previous_val = $('#periods').val();
             $('#periods').empty();
             $.get(Routing.generate('get_time-period', {'year': $('#years').val(), '_format' : 'json'}), function(groups) {
                 $.each(groups, function(key, group) {
                     $('#periods').append($('<option/>').val(group.slug).text(group.name));
                 })
+                $('#periods').val(previous_val);
             })
         })
         var loading = false;

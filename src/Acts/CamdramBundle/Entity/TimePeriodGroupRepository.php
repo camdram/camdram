@@ -63,4 +63,22 @@ class TimePeriodGroupRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findOneByYearAndSlug($year, $slug)
+    {
+        if (!is_numeric($year)) {
+            throw new \InvalidArgumentException('$year must be a number');
+        }
+
+        $query = $this->createQueryBuilder('g')
+            ->where('g.end_at <= :end')->andWhere('g.start_at >= :start')
+            ->andWhere('g.slug = :slug')
+            ->orderBy('g.start_at')
+            ->groupBy('g.id')
+            ->setParameter('start', new \DateTime($year.'-01-01'))
+            ->setParameter('end', new \DateTime(($year+1).'-01-01'))
+            ->setParameter('slug', $slug)
+            ->getQuery();
+        return $query->getOneOrNullResult();
+    }
+
 }

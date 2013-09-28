@@ -35,7 +35,7 @@ class DiaryController extends FOSRestController
         $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
 
         if ($period) {
-            $group = $groups_repo->findOneBySlug($period);
+            $group = $groups_repo->findOneByYearAndSlug($year, $period);
             if ($group->getStartAt()->format('Y') != $year) {
                 return $this->redirect($this->generateUrl('acts_camdram_diary_select', array(
                     'year' => $group->getStartAt()->format('Y'),
