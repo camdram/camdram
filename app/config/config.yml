@@ -32,7 +32,7 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        [ ActsCamdramBundle ]
-    ruby: /opt/vagrant_ruby/bin/ruby
+    ruby: %ruby_bin%
     filters:
         cssrewrite:
             apply_to: '\.css$'
@@ -40,7 +40,7 @@ assetic:
         #    apply_to: "\.sass$"
         compass:
             plugins: ['zurb-foundation']
-            bin: /opt/vagrant_ruby/bin/compass
+            bin: %compass_bin%
             apply_to: "\.scss$"
         uglifyjs: ~
 
