@@ -36,17 +36,17 @@ class TimePeriodRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findBetween($start_date, $end_date, $limit)
+    public function findBetween($start_date, $end_date, $limit=null)
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->where('p.start_at >= :start_date')
+        $qb->where('p.start_at >= :start_date')
             ->andWhere('p.end_at < :end_date')
             ->setParameter('start_date', $start_date)
             ->setParameter('end_date', $end_date)
-            ->orderBy('p.start_at', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery();
-        return $query->getResult();
+            ->orderBy('p.start_at', 'ASC');
+        if ($limit > 0) $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findBefore(\DateTime $date, $limit)

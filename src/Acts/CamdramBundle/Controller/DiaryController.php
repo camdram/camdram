@@ -83,14 +83,15 @@ class DiaryController extends FOSRestController
     {
         $groups_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriodGroup');
         $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
+        $limit = $this->getRequest()->query->get('limit', 5);
 
         if ($year && $period) {
             $group = $groups_repo->findOneByYearAndSlug($year, $period);
-            $periods = $periods = $periods_repo->getTimePeriodsAt($group->getStartAt(), 5);
+            $periods = $periods = $periods_repo->getTimePeriodsAt($group->getStartAt(), $limit);
         }
         else {
             $now = $this->get('acts.time_service')->getCurrentTime();
-            $periods = $periods = $periods_repo->getTimePeriodsAt($now, 5);
+            $periods = $periods = $periods_repo->getTimePeriodsAt($now, $limit);
         }
 
         return $this->render("ActsCamdramBundle:Diary:content.html.twig", array(
@@ -119,10 +120,12 @@ class DiaryController extends FOSRestController
 
         if ($direction == 'next') {
             $final_date = $shows_repo->getLastShowDate();
-            $periods = $periods_repo->findBetween($last_date, $final_date, 3);
+            $limit = $this->getRequest()->get('limit', 3);
+            $periods = $periods_repo->findBetween($last_date, $final_date, $limit);
         }
         elseif ($direction == 'previous') {
-            $periods = $periods_repo->findBefore($last_date, 1);
+            $limit = $this->getRequest()->get('limit', 1);
+            $periods = $periods_repo->findBefore($last_date, $limit);
         }
 
         return $this->render("ActsCamdramBundle:Diary:content.html.twig", array(

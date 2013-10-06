@@ -46,7 +46,8 @@
     {% endjavascripts %}
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     {% javascripts output='js/main.js' filter='?uglifyjs'
-    '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}
+    '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% block javascripts %}{% endblock %}

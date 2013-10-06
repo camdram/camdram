@@ -11,28 +11,43 @@
 </div>
 
 <div class="row">
-    <div class="large-9 columns">
-        <div class="section-container auto" data-section>
-            {% for period in periods %}
-            <section>
-                <p class="title" data-section-title><a href="#panel{{ period.id }}">{% if loop.first %}{{ period.name }}
-                        {% else %}{{ period.shortName }}
-                        {% endif %}</a></p>
-                <div class="content" data-section-content>
-                    {{ render(url('acts_camdram_diary_period', {id: period.id}) , { 'strategy': 'esi'}) }}
-                </div>
-            </section>
-            {% endfor %}
+    <div class="small-12 columns" id="home-diary-container">
+        <div id="home-diary-nav">
+            <div class="left-link"><a href="" class="">&lt;</a></div>
+            <div class="right-link"><a href="">&gt;</a></div>
+            <ul>
+                <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
+                {% for period in periods %}
+                    <li data-period="{{ period.id }}" class="week-link{% if period == current_period %} current{% endif %}">
+                        <a>
+                            {{ period.name }}
+                            <em>
+                                {% if period == current_period %}
+                                    <strong>This week</strong>
+                                {% elseif period.startAt == current_period.endAt %}
+                                    Next week
+                                {% else %}
+                                    {{ period.startAt | date_modify("+1 day") | date('j M') }} - {{ period.endAt | date('j M') }}
+                                {% endif %}
+                            </em>
+                        </a>
+                    </li>
+                {% endfor %}
+                <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
+            </ul>
         </div>
-    </div>
-
-    <div class="large-3 columns hide-for-small" id="home_statistics">
-        {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
+        <div id="home-diary">
+            {{ render(url('acts_camdram_diary_period', {id: current_period.id}) , { 'strategy': 'esi'}) }}
+        </div>
     </div>
 </div>
   
 <div class="row">
     <div class="large-5 columns">
+        <div id="home_statistics">
+            {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
+        </div>
+
         <div id="home_vacancies">
             {{ render(controller('ActsCamdramBundle:Default:vacancies'), {'strategy': 'esi'}) }}
         </div>

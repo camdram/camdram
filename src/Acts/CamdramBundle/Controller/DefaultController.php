@@ -30,10 +30,20 @@ class DefaultController extends Controller
         $news = $news_repo->getRecent(20);
 
         $now = $this->get('acts.time_service')->getCurrentTime();
+        $start = clone $now;
+        $start->modify('-4 weeks');
+        $end = clone $now;
+        $end->modify('+10 weeks');
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $periods = $time_repo->getTimePeriodsAt($now, 3);
+        $periods = $time_repo->findBetween($start, $end);
 
-        return $this->render('ActsCamdramBundle:Default:index.html.twig', array('news' => $news, 'periods' => $periods));
+        $current_period = $time_repo->getTimePeriodAt($now);
+
+        return $this->render('ActsCamdramBundle:Default:index.html.twig', array(
+            'news' => $news,
+            'periods' => $periods,
+            'current_period' => $current_period,
+        ));
     }
 
     /**
