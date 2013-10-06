@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Gedmo\Sluggable\Util as Sluggable;
 
 use Doctrine\ORM\Query\Expr;
 
@@ -37,14 +38,15 @@ class EntitiesSlugsCommand extends ContainerAwareCommand
         foreach ($entities as $row) {
             $e = $row[0];
 
-            $e->setSlug('');
-            $output->writeln("Generated slug for ".$e->getName());
+            $e->setSlug(Sluggable\Urlizer::urlize($e->getName(), '-'));
+
             $count++;
             if ($count % 100 == 0) {
                 $output->writeln('Updating DB (memory usage: '.memory_get_usage(true).')');
                 $em->flush();
                 $em->clear();
             }
+            $output->writeln("Generated slug for ".$e->getName());
         }
         $em->flush();
         $em->clear();

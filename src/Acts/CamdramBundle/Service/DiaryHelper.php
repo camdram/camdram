@@ -46,8 +46,8 @@ class DiaryHelper
         $event->setVenue($perf->getVenueName());
 
         $event->setLink($this->router->generate('get_show', array('identifier' => $show->getSlug())));
-        if ($show->getVenue() && $perf->getVenue() == $show->getVenue()->getName()) {
-            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $show->getVenue()->getSlug())));
+        if ($perf->getVenue()) {
+            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $perf->getVenue()->getSlug())));
         }
         return $event;
     }

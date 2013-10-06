@@ -50,10 +50,6 @@ header {
   min-height:100%;
   background:$white;
 
-  p {
-    font-size: emCalc(14);
-  }
-
   &:before {
     content: "";
     position:absolute;
@@ -69,6 +65,20 @@ header {
 
       left:50%;
       margin-left:-$row-width / 2;
+    }
+  }
+}
+
+#content {
+  p, li {
+    font-size: emCalc(14);
+  }
+
+  ul {
+    margin-left: 1em;
+
+    &.side-nav {
+      margin-left:0;
     }
   }
 }

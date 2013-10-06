@@ -30,6 +30,34 @@
     </div>
     </div>
 </div>
+{% if show.hasVacancies() %}
+<div id="show-vacancies" class="row">
+    <div class="large-12">
+        <h3>Get Involved</h3>
+        {% if show.auditions | length > 0 %}
+        <p>Auditions are being held at the times below - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
+            <ul>
+                {% for a in show.auditions %}
+                <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if show.techieAdverts | length > 0 %}
+            <p>We are looking for:
+            {% for advert in show.techieAdverts %}
+                {% for p in advert.positions|split("\n") %}
+                    {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}{{ p }}
+                {%- endfor %}
+                - <a href="{{ path('get_techies') }}#advert-{{ advert.id }}">more details</a></p>
+            {% endfor %}
+        {% endif %}
+        {% for advert in show.applications %}
+            <p>{{ advert.text() }} -
+            <a href="{{ path('get_applications') }}#application-{{ advert.id }}">more details</a></p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 <div class="row">
     {% if show.getRolesByType('band')|length > 0 %}
         {% set num_cols = "large-4" %}
