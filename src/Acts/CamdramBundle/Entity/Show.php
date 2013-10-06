@@ -966,4 +966,9 @@ class Show extends Entity
     {
         return $this->freebase_id;
     }
+
+    public function isIndexable()
+    {
+        return $this->getAuthorizeId() !== null;
+    }
 }

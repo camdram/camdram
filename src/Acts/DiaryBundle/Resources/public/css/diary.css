@@ -65,6 +65,7 @@ ul.diary-header:after {
     padding:5px;
     line-height:1.1em;
     position:relative;
+    overflow:hidden;
 }
 
 .diary-item-hidden:after {

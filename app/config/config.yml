@@ -129,7 +129,8 @@ acts_sphinx_real_time:
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Entity
-                listener: ~
+                listener:
+                    is_indexable_callback: isIndexable
                 provider: ~
                 finder: ~
             config:

@@ -486,4 +486,14 @@ abstract class Entity
     {
         return PHP_INT_MAX;
     }
+
+    /**
+     * Returns whether the entity should be added to the search index
+     *
+     * @return bool
+     */
+    public function isIndexable()
+    {
+        return true;
+    }
 }
