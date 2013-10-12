@@ -43,3 +43,4 @@ parameters:
 
     ruby_bin: /usr/bin/ruby
     compass_bin: /usr/local/bin/compass
+    uglifyjs_bin: /usr/local/bin/uglifyjs

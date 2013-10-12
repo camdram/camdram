@@ -42,7 +42,8 @@ assetic:
             plugins: ['zurb-foundation']
             bin: %compass_bin%
             apply_to: "\.scss$"
-        uglifyjs: ~
+        uglifyjs:
+            bin: %uglifyjs_bin%
 
 # Doctrine Configuration
 doctrine:
