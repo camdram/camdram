@@ -20,7 +20,8 @@ monolog:
             level: info
 
 assetic:
-    use_controller: false
+    variables:
+        env: [dev]
 
 # During development emails will be sent to me@example.com.
 swiftmailer:

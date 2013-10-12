@@ -42,5 +42,5 @@ parameters:
     term_dates_ical: http://www.google.com/calendar/ical/cam.ac.uk_t5c3ocr5f5ehr8ln3ec4ile1g0%40group.calendar.google.com/public/basic.ics
 
     ruby_bin: /usr/bin/ruby
-    compass_bin: /usr/local/bin/compass
-    uglifyjs_bin: /usr/local/bin/uglifyjs
+    ruby_bin_dir: /usr/local/bin
+    node_bin_dir: /usr/local/bin

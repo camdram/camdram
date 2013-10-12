@@ -19,8 +19,7 @@
   
   <!-- Included CSS Files -->
   <!-- H5BP stylesheets -->
-{% stylesheets
-    output='css/main.css'
+{% stylesheets output='css/main.css'
     'bundles/actscamdram/stylesheets/app/app.scss'
     'bundles/actsdiary/css/diary.css'
     'bundles/actscamdram/stylesheets/jquery/*.css'
@@ -35,7 +34,7 @@
     <!-- Initialize JS Plugins -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-    {% javascripts output='js/deps.js' filter='?uglifyjs'
+    {% javascripts output='js/deps.js'
     '@ActsCamdramBundle/Resources/public/javascripts/jquery/jquery-ui.touchpunch.js'
     '@ActsCamdramBundle/Resources/public/javascripts/foundation/custom.modernizr.js'
     '@ActsCamdramBundle/Resources/public/javascripts/foundation/foundation.min.js'
@@ -45,8 +44,8 @@
     '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    {% javascripts output='js/main.js' filter='?uglifyjs'
+    {% javascripts vars=['env'] output='js/main.{env}.js'
+    'js/fos_js_routes.{env}.js'
     '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
     '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}
     <script type="text/javascript" src="{{ asset_url }}"></script>

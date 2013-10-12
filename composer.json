@@ -23,7 +23,7 @@
         "jms/serializer-bundle": "0.12.*",
         "sensio/buzz-bundle": "dev-master",
         "friendsofsymfony/oauth-server-bundle": "dev-master",
-        "egeloen/google-map-bundle" : "dev-master",
+        "egeloen/google-map-bundle" : "2.0.*",
         "willdurand/geocoder" : "1.4.*",
         "pagerfanta/pagerfanta": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",

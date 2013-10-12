@@ -18,6 +18,7 @@ framework:
     session:         ~
     fragments: { path: /_fragment }
 
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
@@ -36,14 +37,10 @@ assetic:
     filters:
         cssrewrite:
             apply_to: '\.css$'
-        #sass:
-        #    apply_to: "\.sass$"
         compass:
             plugins: ['zurb-foundation']
-            bin: %compass_bin%
+            bin: %ruby_bin_dir%/compass
             apply_to: "\.scss$"
-        uglifyjs:
-            bin: %uglifyjs_bin%
 
 # Doctrine Configuration
 doctrine:

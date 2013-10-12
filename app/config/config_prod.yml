@@ -17,3 +17,16 @@ monolog:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+
+
+# Assetic Configuration
+assetic:
+    variables:
+        env: [prod]
+    filters:
+        uglifyjs:
+            bin: %node_bin_dir%/uglifyjs
+            apply_to: "\.js$"
+        uglifycss:
+            bin: %node_bin_dir%/uglifycss
+            apply_to: "\.css$"
