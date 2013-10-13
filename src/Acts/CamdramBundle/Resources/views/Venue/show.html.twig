@@ -13,24 +13,23 @@
 
 
 {% block body %}
-  <div class="row">
-    <div class="twelve columns">
-      <h2>{{ venue.name }}</h2>
-        <h5>{% if venue.address %}{{ venue.address }}{% endif %}</h5>
-        {% if venue.college %}<p>College: {{ venue.college }}</p>{% endif %}
-     </div>
-     <div class="row">
-         {% if venue.latitude and venue.longitude %}
-         <div class="four columns">
-             {% if venue.image %}<a href="{{ image_url(venue.image, 1024, 768) }}" class="fancybox">{{ render_image(venue.image, 205, 200) }}</a>{% endif %}
-            <div class="small_map">{% if venue.latitude %}{% render url('acts_camdram_venues_map', {identifier: venue.slug}) %}{% endif %}</div>
-         </div>
-         <div class="eight columns">
-         {% else %}
-         <div class="twelve columns">
-         {% endif %}
-             <p>{{ venue.description | camdram_markdown }}</p>
-         </div>
+
+      <div id="entity-header" class="row">
+            <h2>{{ venue.name }}</h2>
+            {% if venue.latitude and venue.longitude or venue.image %}
+                <div class="large-4 columns">
+                    {% if venue.image %}<a href="{{ image_url(venue.image, 1024, 768) }}" class="fancybox">{{ render_image(venue.image, 205, 200) }}</a>{% endif %}
+                    <div class="map-small">{% if venue.latitude %}{% render url('acts_camdram_venues_map', {identifier: venue.slug}) %}{% endif %}</div>
+                </div>
+                <div class="large-8 columns">
+            {% else %}
+                <div class="large-12 columns">
+            {% endif %}
+
+            <h5>{% if venue.address %}{{ venue.address }}{% endif %}</h5>
+            {% if venue.college %}<p>College: {{ venue.college }}</p>{% endif %}
+            <p>{{ venue.description | camdram_markdown }}</p>
+            </div>
      </div>
 
      <div class="row">
@@ -53,7 +52,6 @@
              {% endfor %}
              </div>
          </div>
-     </div>
-</div>
+    </div>
 {% endblock %}
 

@@ -17,7 +17,7 @@ class TimePeriodFixtures extends AbstractFixture implements OrderedFixtureInterf
     {
         $start_date = new \DateTime("2000-01-01 00:00:00");
         $start_date->modify("+".(7-$start_date->format('N'))); //Rewind back to Sunday
-        $end_date = new \DateTime("2001-06-30 00:00:00");
+        $end_date = new \DateTime("2001-12-31 00:00:00");
 
         $date = clone $start_date;
         $groups = array();
@@ -64,7 +64,7 @@ class TimePeriodFixtures extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
 
         $this->setReference('start_group', $groups[0]);
-        $this->setReference('end_group', $groups[count($groups)-1]);
+        $this->setReference('end_group', $groups[count($groups)-7]);
     }
 
     /**

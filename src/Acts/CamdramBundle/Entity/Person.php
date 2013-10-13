@@ -249,4 +249,9 @@ class Person extends Entity
         else return $latest->format('U');
     }
 
+    public function isIndexable()
+    {
+        return count($this->getRoles()) > 0;
+    }
+
 }

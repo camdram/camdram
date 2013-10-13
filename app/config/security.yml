@@ -16,15 +16,6 @@ security:
             id: camdram.security.external_user.provider
 
     firewalls:
-        oauth_token:
-            pattern:    ^/oauth/v2/token
-            security:   false
-
-        oauth_authorize:
-            pattern:    ^/oauth/v2/auth
-            form_login:
-                username_parameter: form[email]
-                password_parameter: form[password]
 
         public:
             pattern: ^/.*

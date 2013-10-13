@@ -5,41 +5,49 @@
 
 {% block body %}
 <div class="row">
-    <div class="twelve columns">
+    <div class="large-12 columns">
       <h3>Welcome to Camdram <small> - the portal website for student theatre in Cambridge</small></h3>
-
     </div>
 </div>
 
 <div class="row">
-    <div class="nine columns">
-        <dl class="tabs contained">
-            {% for period in periods %}
-            <dd{% if loop.first %} class="active"{% endif %}>
-                <a href="#period{{ period.id }}">
-                {% if loop.first %}{{ period.name }}
-                {% else %}{{ period.shortName }}
-                {% endif %}
-                </a>
-            </dd>
-            {% endfor %}
-        </dl>
-        <ul class="tabs-content contained">
-            {% for period in periods %}
-            <li{% if loop.first %} class="active" {% endif %} id="period{{ period.id }}Tab">
-                {{ render(url('acts_camdram_diary_period', {id: period.id}) , { 'strategy': 'esi'}) }}
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="three columns hide-for-small" id="home_statistics">
-        {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
+    <div class="small-12 columns" id="home-diary-container">
+        <div id="home-diary-nav">
+            <div class="left-link"><a href="" class="">&lt;</a></div>
+            <div class="right-link"><a href="">&gt;</a></div>
+            <ul>
+                <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
+                {% for period in periods %}
+                    <li data-period="{{ period.id }}" class="week-link{% if period == current_period %} current{% endif %}">
+                        <a>
+                            {{ period.name }}
+                            <em>
+                                {% if period == current_period %}
+                                    <strong>This week</strong>
+                                {% elseif period.startAt == current_period.endAt %}
+                                    Next week
+                                {% else %}
+                                    {{ period.startAt | date_modify("+1 day") | date('j M') }} - {{ period.endAt | date('j M') }}
+                                {% endif %}
+                            </em>
+                        </a>
+                    </li>
+                {% endfor %}
+                <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
+            </ul>
+        </div>
+        <div id="home-diary">
+            {{ render(url('acts_camdram_diary_period', {id: current_period.id}) , { 'strategy': 'esi'}) }}
+        </div>
     </div>
 </div>
   
 <div class="row">
-    <div class="five columns">
+    <div class="large-5 columns">
+        <div id="home_statistics">
+            {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
+        </div>
+
         <div id="home_vacancies">
             {{ render(controller('ActsCamdramBundle:Default:vacancies'), {'strategy': 'esi'}) }}
         </div>
@@ -48,7 +56,7 @@
             {{ render(controller('ActsCamdramBundle:Default:historicData'), {'strategy': 'esi'}) }}
         </div>
     </div>
-    <div class="seven columns">
+    <div class="large-7 columns">
         <h4>News</h4>
         <hr />
         {% for item in news %}

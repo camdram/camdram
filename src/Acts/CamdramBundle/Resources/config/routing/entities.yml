@@ -39,3 +39,6 @@ acts_camdram_techieadverts:
     prefix: /vacancies
     resource: "Acts\CamdramBundle\Controller\TechieAdvertController"
 
+acts_camdram_timeperiods:
+    type:     rest
+    resource: "Acts\CamdramBundle\Controller\TimePeriodController"

@@ -5,57 +5,45 @@
 
 {% block body %}
 
-<div class="row">
-    <div class="six columns"><h3>Diary</h3></div>
-    <form>
-    <div class="six columns text-right">
-        {{ render(controller("ActsCamdramBundle:Diary:toolbar") )}}
-
-    </div>
-    </form>
-</div>
+<h3>Diary</h3>
 
 <div class="row">
-    <div class="twelve columns">
-        <a href="#" class="infinite_scroll load_previous">Go back</a>
-        <div id="diary">
-            {{ render(controller("ActsCamdramBundle:Diary:content")) }}
-        </div>
-        <a href="#" class="infinite_scroll">More</a>
+    <div class="large-6 columns">
+        <a class="button small" id="load_today" href="{{ url('acts_camdram_diary') }}">This week</a>
+        <button class="small" id="load_previous">Previous week</button>
+    </div>
+    <div class="large-6 columns text-right">
+        <form action="{{ url('acts_camdram_diary') }}" method="get" id="diary_jump_form">
+            Jump to
+            <select id="years" name="year">
+                {% for year in years %}
+                    <option value="{{ year }}"{% if current_year == year %} selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+
+            <select id="periods" name="period">
+                {% for group in groups %}
+                    <option value="{{ group.slug }}"{% if current_group == group %} selected{% endif %}>{{ group.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button class="button small">Go</button>
+        </form>
     </div>
 </div>
 
+<div id="diary">
+    {{ render(url("acts_camdram_diary_content", {year: provided_year, period: provided_period})) }}
+</div>
+
+{% javascripts output='js/diary.js' '@ActsCamdramBundle/Resources/public/javascripts/app/diary.js' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 <script>
     $(function() {
-        var get_last_date = function() {
-            var date = new Date($('#diary').children().last().attr('data-end'));
-            return date.toISOString();
-        }
-
-        var get_first_date = function() {
-            var date = new Date($('#diary').children().first().attr('data-start'));
-            return date.toISOString();
-        }
-        var loading = false;
-
-        $(window).endlessScroll({
-            callback: function() {
-                if (!loading) {
-                    loading = true;
-                    $.get(Routing.generate('acts_camdram_diary_content', {direction: 'next', last_date: get_last_date()}), function(data) {
-                        $('#diary').append(data)
-                        loading = false;
-                    })
-                }
-            }
-        })
-        $('.load_previous').click(function(e) {
-            e.preventDefault();
-            $.get(Routing.generate('acts_camdram_diary_content', {direction: 'previous', last_date: get_first_date()}), function(data) {
-                $('#diary').prepend(data)
-            })
-        })
+        add_diary_history("{{ current_year }}", "{{ current_group.slug }}", true);
     })
+
 </script>
 
 {% endblock %}

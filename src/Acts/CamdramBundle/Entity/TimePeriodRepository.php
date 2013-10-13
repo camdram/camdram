@@ -16,7 +16,7 @@ class TimePeriodRepository extends EntityRepository
     public function getTimePeriodsAt(\DateTime $date, $limit)
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->where($qb->expr()->andX('p.start_at < :now', 'p.end_at >= :now'))
+        $query = $qb->where($qb->expr()->andX('p.start_at <= :now', 'p.end_at > :now'))
             ->orWhere('p.start_at >= :now')
             ->setParameter('now', $date)
             ->orderBy('p.start_at', 'ASC')
@@ -25,7 +25,7 @@ class TimePeriodRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getTimePeriodsAfter($date, $limit)
+    public function findAfter($date, $limit)
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->where('p.start_at >= :date')
@@ -36,7 +36,20 @@ class TimePeriodRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getTimePeriodsBefore(\DateTime $date, $limit)
+    public function findBetween($start_date, $end_date, $limit=null)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where('p.start_at >= :start_date')
+            ->andWhere('p.end_at < :end_date')
+            ->setParameter('start_date', $start_date)
+            ->setParameter('end_date', $end_date)
+            ->orderBy('p.start_at', 'ASC');
+        if ($limit > 0) $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findBefore(\DateTime $date, $limit)
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->where('p.end_at <= :date')

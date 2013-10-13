@@ -40,3 +40,7 @@ parameters:
     map_center: [52.20531,0.12179]
     search_provider: doctrine
     term_dates_ical: http://www.google.com/calendar/ical/cam.ac.uk_t5c3ocr5f5ehr8ln3ec4ile1g0%40group.calendar.google.com/public/basic.ics
+
+    ruby_bin: /usr/bin/ruby
+    ruby_bin_dir: /usr/local/bin
+    node_bin_dir: /usr/local/bin

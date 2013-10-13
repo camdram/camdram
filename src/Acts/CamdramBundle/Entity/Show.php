@@ -160,6 +160,27 @@ class Show extends Entity
     private $timestamp;
 
     /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
+     */
+    private $techie_adverts;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Audition", mappedBy="show")
+     */
+    private $auditions;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Application", mappedBy="show")
+     */
+    private $applications;
+
+    /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
@@ -965,5 +986,127 @@ class Show extends Entity
     public function getFreebaseId()
     {
         return $this->freebase_id;
+    }
+
+    public function isIndexable()
+    {
+        return $this->getAuthorizeId() !== null;
+    }
+
+    /**
+     * Add techie_adverts
+     *
+     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     * @return Show
+     */
+    public function addTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    {
+        $this->techie_adverts[] = $techieAdverts;
+    
+        return $this;
+    }
+
+    /**
+     * Remove techie_adverts
+     *
+     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     */
+    public function removeTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    {
+        $this->techie_adverts->removeElement($techieAdverts);
+    }
+
+    /**
+     * Get techie_adverts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTechieAdverts()
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->gte('expiry', new \DateTime()));
+
+        return $this->techie_adverts->matching($criteria);
+    }
+
+    /**
+     * Add auditions
+     *
+     * @param \Acts\CamdramBundle\Entity\Audition $auditions
+     * @return Show
+     */
+    public function addAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
+    {
+        $this->auditions[] = $auditions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove auditions
+     *
+     * @param \Acts\CamdramBundle\Entity\Audition $auditions
+     */
+    public function removeAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
+    {
+        $this->auditions->removeElement($auditions);
+    }
+
+    /**
+     * Get auditions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAuditions()
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("display", 0))
+            ->andWhere(Criteria::expr()->gte('date', new \DateTime()));
+
+
+        return $this->auditions->matching($criteria);
+    }
+
+    /**
+     * Add applications
+     *
+     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @return Show
+     */
+    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    {
+        $this->applications[] = $applications;
+    
+        return $this;
+    }
+
+    /**
+     * Remove applications
+     *
+     * @param \Acts\CamdramBundle\Entity\Application $applications
+     */
+    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    {
+        $this->applications->removeElement($applications);
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApplications()
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->gte('deadline_date', new \DateTime()));
+
+        return $this->applications->matching($criteria);
+    }
+
+    public function hasVacancies()
+    {
+        return count($this->getTechieAdverts()) > 0
+                || count($this->getAuditions()) > 0
+                || count($this->getApplications()) > 0;
     }
 }

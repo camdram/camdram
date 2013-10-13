@@ -1,3 +1,4 @@
+
 .diary-week {
     margin-bottom:15px;
 }
@@ -5,7 +6,7 @@
 .diary-week:after {
     content: ".";
     display: block;
-    height: 0;
+    height: 0px;
     clear: both;
     visibility: hidden;
 }
@@ -23,6 +24,10 @@ ul.diary-header {
     list-style:none;
     margin:0;
     clear:both;
+    border-top:1px solid #aaa;
+    border-bottom:1px solid #aaa;
+    background:#eee;
+    margin-bottom:7px;
 }
 
 ul.diary-header > li {
@@ -34,6 +39,14 @@ ul.diary-header > li {
     text-align: center;
     font-weight:bold;
     font-size:0.8em;
+}
+ul.diary-header:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
 }
 
 .diary-row {
@@ -52,6 +65,7 @@ ul.diary-header > li {
     padding:5px;
     line-height:1.1em;
     position:relative;
+    overflow:hidden;
 }
 
 .diary-item-hidden:after {

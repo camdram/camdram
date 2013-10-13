@@ -9,10 +9,10 @@
                 (except {{ p.excludedate|date('jS') }}) 
             {% endif %}
         {% endif %}
-        {% if p.venuename is not empty %}
+        {% if p.venue %}
+            at <a href="{{ path('get_venue', {identifier:p.venue.slug}) }}">{{ p.venue.name|e }}</a>
+        {% elseif p.venuename is not empty %}
              at {{ p.venuename }}
-        {% elseif p.venue and (p.venue.name is not empty) %}
-             at <a href="{{ path('get_venue', {identifier:p.venue.slug}) }}">{{ p.venue.name|e }}</a>
         {% else %}
             Venue to be confirmed
         {% endif %}

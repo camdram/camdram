@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="three columns">
+    <div class="large-3 columns">
         <ul class="side-nav">
             {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
             'auditions': {'text': 'Auditions', 'path': path('get_auditions')},
@@ -15,7 +15,7 @@
         </ul>
     </div>
 
-    <div class="nine columns">
+    <div class="large-9 columns">
     {% block vacancies_body %}{% endblock %}
     </div>
 </div>

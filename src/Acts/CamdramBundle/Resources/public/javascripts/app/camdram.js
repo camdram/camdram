@@ -289,7 +289,6 @@
 
         var checkScrollPosition = function() {
             var top = $document.height() - $window.height() - options.distance;
-
             if ($window.scrollTop() >= top) {
                 options.callback.apply($self);
             }
@@ -299,6 +298,7 @@
     }
 
     $(function() {
+        $(document).foundation();
         $('.news_media').newsFeedMedia();
         $('#main_search_box').camdramAutocomplete({
             select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
@@ -309,11 +309,11 @@
             appendTo: '#search_form'
         });
         $('a.fancybox').fancybox();
-        $('.datepicker').datepicker({
+        /*$('.datepicker').datepicker({
             changeMonth: true,
             changeYear: true,
             dateFormat: 'dd/mm/yy' //D d M yy
-        });
+        });*/
     });
 
 })(jQuery, window);

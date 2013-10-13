@@ -19,13 +19,10 @@
   
   <!-- Included CSS Files -->
   <!-- H5BP stylesheets -->
-{% stylesheets filter='cssrewrite'
-    output='css/main.css'
+{% stylesheets output='css/main.css'
+    'bundles/actscamdram/stylesheets/app/app.scss'
     'bundles/actsdiary/css/diary.css'
-    'bundles/actscamdram/stylesheets/h5bp/*'
-    'bundles/actscamdram/stylesheets/foundation/*.css'
     'bundles/actscamdram/stylesheets/jquery/*.css'
-    'bundles/actscamdram/stylesheets/app/*.css'
     'bundles/hoyesimagemanager/css/fancybox.css'%}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
@@ -37,31 +34,33 @@
     <!-- Initialize JS Plugins -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-    {% javascripts output='js/main.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/modernizr/modernizr.foundation.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/foundation/*.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/h5bp/plugins.js'
+    {% javascripts output='js/deps.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/jquery/jquery-ui.touchpunch.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/foundation/custom.modernizr.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/foundation/foundation.min.js'
     '@ActsDiaryBundle/Resources/public/js/diary.js'
     '@FOSJsRoutingBundle/Resources/public/js/router.js'
     '@HoyesImageManagerBundle/Resources/public/js/jquery.uploadify.js'
-    '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js'
-    '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js' %}
+    '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    {% javascripts vars=['env'] output='js/main.{env}.js'
+    'js/fos_js_routes.{env}.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     {% block javascripts %}{% endblock %}
 
 </head>
 <body>
-  <!--[if lt IE 7]>
-    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-  <![endif]-->
-
-
-  <!-- Navigation -->
+<div id="wrapper">
   <nav class="top-bar">
-<div class="row">
-
+    <ul class="title-area">
+        <li class="name"></li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+    </ul>
+    <section class="top-bar-section">
       <ul class="left">
           {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
               'about-us': {'text': 'About Us'},
@@ -136,16 +135,18 @@
           </li>
           {% endif %}
       </ul>
-</div>
+
+    </section>
   </nav>
+
   <!-- End Navigation -->
 
   <header>
     <div class="row">
-      <div class="three columns logo">
+      <div class="large-3 columns logo">
         <h1><a href="{{ path('acts_camdram_homepage') }}"><img src="{{ asset('bundles/actscamdram/images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
       </div>
-      <div class="nine columns search">
+      <div class="large-9 columns search">
           <form method="get" action="{{ path('get_entities') }}" id="search_form">
               <input type="search" name="q" id="main_search_box" placeholder="search for a show, person, society or venue" />
           </form>
@@ -153,8 +154,13 @@
     </div>
   </header>
 
-  <nav>
-      <ul class="nav-bar">
+  <nav class="top-bar">
+      <ul class="title-area">
+          <li class="name"></li>
+          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+      <ul class="left">
           {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
           'home': {'text': 'Home', 'path': path('acts_camdram_homepage')},
           'diary': {'text': 'Diary', 'path': path('acts_camdram_diary')},
@@ -162,10 +168,11 @@
           'societies': {'text': 'Societies', 'path': path('get_societies')},
           'venues': {'text': 'Venues', 'path': path('get_venues')},
           }, current_id: current_navigation_id} %}
-
-          <li class="has-flyout right">
+        </ul>
+          <ul class="right">
+            <li class="has-dropdown">
               <a href="#"><img src="{{ asset('/bundles/actscamdram/images/settings.png') }}"></a>
-              <ul class="flyout right">
+              <ul class="dropdown">
                   {% block option_links %}
                   {% endblock %}
                   {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with {items: {
@@ -178,47 +185,46 @@
                   }} %}
                   {% endif %}
               </ul>
-          </li>
-      </ul>
-  </nav>
+              </li>
+          </ul>
+      </section>
+ </nav>
 
-  <section>
+  <section id="content">
 
 {% block body %}
 {% endblock %}
   </section>
-  
-  <!-- Footer --> 
-  <!-- We probably should be generating the sitemap from Symfony's route in the future -->
+
+</div>
+
   <footer>
 
-      <div id="copyright">
-          <div id="sitemap">
-              <div class="row">
-                  <div class="four columns">
-                      <h5>Site Map</h5>
-                      <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
-                      <a href="{{ path('acts_camdram_diary') }}">Diary</a><br/>
-                      <a href="{{ path('get_auditions') }}">Vacancies</a><br/>
-                      <a href="{{ path('get_societies') }}">Societies</a><br/>
-                      <a href="{{ path('get_venues') }}">Venues</a><br/>
-                  </div>
-                  <div class="four columns">
-                      <h5>Vacant Positions</h5>
-                      <a href="{{ path('get_techies') }}">Technical</a><br/>
-                      <a href="{{ path('get_auditions') }}">Actors</a><br/>
-                      <a href="{{ path('get_applications') }}">Directors/Producers</a><br/>
-                  </div>
-                  <div class="four columns">
-                      <h5>About</h5>
-                      <a href="#">Privacy policy</a><br/>
-                      <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
-                  </div>
+          <div id="sitemap" class="row">
+              <div class="large-4 columns">
+                  <h5>Site Map</h5>
+                  <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
+                  <a href="{{ path('acts_camdram_diary') }}">Diary</a><br/>
+                  <a href="{{ path('get_auditions') }}">Vacancies</a><br/>
+                  <a href="{{ path('get_societies') }}">Societies</a><br/>
+                  <a href="{{ path('get_venues') }}">Venues</a><br/>
+              </div>
+              <div class="large-4 columns">
+                  <h5>Vacant Positions</h5>
+                  <a href="{{ path('get_techies') }}">Technical</a><br/>
+                  <a href="{{ path('get_auditions') }}">Actors</a><br/>
+                  <a href="{{ path('get_applications') }}">Directors/Producers</a><br/>
+              </div>
+              <div class="large-4 columns">
+                  <h5>About</h5>
+                  <a href="#">Privacy policy</a><br/>
+                  <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
               </div>
           </div>
-            <p>&copy; Association of Cambridge Theatre Societies and contributing groups 2004 &#8212; {{ "now"|date('Y') }}.
+      <div id="copyright" class="row">
+        <p>&copy; Association of Cambridge Theatre Societies and contributing groups 2004 &#8212; {{ "now"|date('Y') }}.
 Comments &amp; queries to <a href="mailto:websupport@camdram.net">websupport@camdram.net</a>
-            </p>
+        </p>
       </div>
   </footer>
 

@@ -1,0 +1,116 @@
+
+#home_statistics p {
+  text-align:center;
+  font-style:italic;
+  line-height:150%;
+}
+#home_statistics strong {
+  font-size:150%;
+}
+
+#home_vacancies ul {
+  border-top:1px solid #eee;
+  list-style:none;
+  margin:0;
+  margin-bottom:0.8em;
+}
+#home_vacancies li {
+  border-bottom:1px solid #eee;
+  padding:5px 0;
+}
+
+#home_historic dd a {
+  padding: 0 5px;
+}
+
+#home_historic ul {
+  list-style:none;
+  margin:0;
+}
+
+#home_historic h6 {
+  margin-bottom:0;
+}
+
+#home_historic .show_info {
+  font-style:italic;
+}
+
+#home-diary-container {
+  border-top:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  position:relative;
+  margin-bottom:1em;
+
+  .left-link {
+    position:absolute;
+    left:emCalc(0);
+    a {
+      padding-top:0.3em;
+      height:1.7em;
+      display:block;
+      float:left;
+    }
+    width:emCalc(25);
+    font-size:1.5em;
+    font-weight:bold;
+    z-index:10;
+    background-image: -webkit-linear-gradient(right, transparent, white 50%, white);
+    background-image: -moz-linear-gradient(right, transparent, white 50%, white);
+    background-image: -ms-linear-gradient(right, transparent, white 50%, white);
+    background-image: -o-linear-gradient(right, transparent, white 50%, white);
+  }
+
+  .right-link {
+    position:absolute;
+    right:emCalc(0);
+    a {
+      padding-top:0.3em;
+      height:1.7em;
+      display:block;
+      float:right;
+    }
+    width:emCalc(25);
+    font-size:1.5em;
+    font-weight:bold;
+    z-index:10;
+    background-image: -webkit-linear-gradient(left, transparent, white 50%, white);
+    background-image: -moz-linear-gradient(left, transparent, white 50%, white);
+    background-image: -ms-linear-gradient(left, transparent, white 50%, white);
+    background-image: -o-linear-gradient(left, transparent, white 50%, white);
+  }
+}
+
+#home-diary-nav {
+  overflow:hidden;
+}
+#home-diary-nav ul {
+  width:auto;
+  overflow:hidden;
+  white-space:nowrap;
+  width:3000px;
+}
+#home-diary-nav li {
+  display:inline-block;
+  font-size:0.8em;
+  padding: 0 0.8em;
+
+  em {
+    display:block;
+    color: #555;
+  }
+
+  &.diary-link {
+    width:7em;
+    text-align:center;
+    font-style:italic;
+    white-space:normal;
+  }
+
+  &.current {
+    background: #eee;
+    a {
+      cursor:default;
+    }
+  }
+}

@@ -14,28 +14,6 @@
 ----------------------------------------- */
 
 
-body {
-    background:#fff9e3;
-}
-
-section {
-    background:#fff;
-
-}
-
-.nav-bar > li.right {
-    float:right;
-}
-
-ul.flyout {
-    margin-top:-1px;
-    width:200px;
-}
-
-ul.flyout li a, .nav-bar li ul li a {
-    padding: 10px 15px;
-}
-
 .news_link p {
     font-size:80%;
 }
@@ -364,46 +342,6 @@ a.infinite_scroll:hover {
     background:#f0f0f0;
 }
 
-/* -----------------------------------------
-   Home Page
------------------------------------------ */
-
-
-#home_statistics {
-    text-align:right;
-    font-style:italic;
-    line-height:150%;
-}
-#home_statistics strong {
-    font-size:150%;
-}
-
-#home_vacancies ul {
-    border-top:1px solid #eee;
-    list-style:none;
-    margin:0;
-}
-#home_vacancies li {
-    border-bottom:1px solid #eee;
-    padding:5px 0;
-}
-
-#home_historic dd a {
-    padding: 0 5px;
-}
-
-#home_historic ul {
-    list-style:none;
-    margin:0;
-}
-
-#home_historic h6 {
-    margin-bottom:0;
-}
-
-#home_historic .show_info {
-    font-style:italic;
-}
 
 /*---------------------------------------
    Entities
@@ -430,34 +368,6 @@ img.has_media {
     cursor: pointer;
 }
 
-
-/* -----------------------------------------
-   Venues
------------------------------------------ */
-
-.small_map {
-    height:270px;
-}
-
-.large_map {
-    height:300px;
-}
-
-@media only screen and (max-width: 767px) {
-    .large_map {
-        height: 250px;
-    }
-}
-
-
-#venues_list .marker_column {
-    text-align: center;
-    margin-top:15px;
-}
-
-#venues_list .marker_img {
-    cursor: pointer;
-}
 
 /*--------------------------------------------
 Uploadify

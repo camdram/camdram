@@ -1,0 +1,10 @@
+#entity-header {
+  @extend .panel;
+}
+
+#show-vacancies {
+  background: #ffff00;
+  margin:0 emCalc(-15);
+  padding:emCalc(15) emCalc(30);
+  width:auto;
+}
