@@ -1,20 +1,20 @@
 {{ form_row(form.name) }}
         {{ form_row(form.author) }}
 <div class="row">
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_label(form.category) }}
     </div>
-    <div class="nine columns">
+    <div class="large-9 columns">
         {{ form_widget(form.category) }}
     </div>
 </div>
 
 
 <div class="row">
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_label(form.performances) }}
     </div>
-    <div class="nine columns">
+    <div class="large-9 columns">
         {{ form_widget(form.multi_venue) }}
 
         <div class="performances" data-prototype="{% filter escape('html') %}{% include 'ActsCamdramBundle:Show:performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endfilter %}">
@@ -30,19 +30,19 @@
 
 
 <div class="row main-venue-row">
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_label(form.venue) }}
     </div>
-    <div class="nine columns">
+    <div class="large-9 columns">
         {{ form_widget(form.venue) }}
     </div>
 </div>
 
 <div class="row">
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_label(form.society) }}
     </div>
-    <div class="nine columns">
+    <div class="large-9 columns">
         {{ form_widget(form.society) }}
     </div>
 </div>
@@ -51,31 +51,31 @@
         {{ form_row(form.image) }}
 
 <div class="row">
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_label(form.booking_code) }}
     </div>
-    <div class="five columns">
+    <div class="large-5 columns">
         {{ form_widget(form.booking_code) }}
     </div>
-    <div class="two columns">
+    <div class="large-2 columns">
         {{ form_label(form.prices) }}
     </div>
-    <div class="two columns">
+    <div class="large-2 columns">
         {{ form_widget(form.prices) }}
     </div>
 </div>
 
 <div class="row">
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_label(form.facebook_id) }}
     </div>
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_widget(form.facebook_id) }}
     </div>
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_label(form.twitter_id) }}
     </div>
-    <div class="three columns">
+    <div class="large-3 columns">
         {{ form_widget(form.twitter_id) }}
     </div>
 </div>

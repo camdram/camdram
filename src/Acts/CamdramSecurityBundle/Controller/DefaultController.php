@@ -16,12 +16,20 @@ use Acts\CamdramSecurityBundle\Form\Type\LoginType,
 class DefaultController extends Controller
 {
 
+    public function toolbarAction()
+    {
+        return $this->render('ActsCamdramSecurityBundle:Default:toolbar.html.twig', array(
+            'services' => $this->get('external_login.service_provider')->getServices()
+        ));
+    }
+
     public function loginAction()
     {
         $request = $this->getRequest();
         $session = $request->getSession();
 
         // get the login error if there is one
+
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(
                 SecurityContext::AUTHENTICATION_ERROR
@@ -44,6 +52,7 @@ class DefaultController extends Controller
             'ActsCamdramSecurityBundle:Default:login.html.twig',
             array(
                 // last username entered by the user
+                'services' => $this->get('external_login.service_provider')->getServices(),
                 'last_username' => $session->get(SecurityContext::LAST_USERNAME),
                 'form'          => $form->createView(),
                 'error'         => $error,

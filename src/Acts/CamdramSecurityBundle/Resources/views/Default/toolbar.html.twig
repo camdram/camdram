@@ -1,0 +1,48 @@
+{% if app.user %}
+    <li class="has-dropdown">
+        {# {% if app.user.person %}<a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">{{ app.user.name }}</a>
+         {% else %}<a href="#">{{ app.user.name }}</a>{% endif %}#}
+        <a href="#" data-dropdown="account-dropdown" data-options="is_hover:true">{{ app.user.displayName }}</a>
+        <div class="f-dropdown content small" id="account-dropdown">
+            {% if app.user.person is defined and app.user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">My profile</a></li>{% endif %}
+            <a href="{{ path('acts_camdram_settings') }}">Settings</a>
+            <a href="{{ path('_security_logout') }}">Log out</a>
+        </div>
+    </li>
+{% else %}
+    <li>
+        <a href="#">Create an account</a>
+    </li>
+    <li id="login-link">
+
+        <a href="#">Log in</a>
+            {% for service in services %}
+               <a href="{{ path('acts_external_login_entry', {service: service.name}) }}" class="icon-link">
+                    <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service.name ~ '.png') }}" alt="{{ service.name | capitalize }}" title="{{ service.name | capitalize }}" width="19" height="19" />
+               </a>
+            {% endfor %}
+
+        <div id="login-dropdown">
+            <form action="{{ path('login_check') }}" method="post">
+                <div class="row">
+                    <div class="small-3 columns"><label for="login_email">Email</label></div>
+                    <div class="small-9 columns"><input type="text" name="form[email]" id="login_email" required /></div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns"><label for="login_password">Password</label></div>
+                    <div class="small-9 columns"><input type="password" name="form[password]" id="login_password" required /></div>
+                </div>
+                <div class="row">
+                    <div class="small-8 columns">
+                        <label><input type="checkbox" name="form[remember_me]" id="login_remember_me"/>
+                        Remember me</label>
+                    </div>
+                    <div class="small-4 columns text-right">
+                        <input type="submit" class="button small" value="Log in" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </li>
+{% endif %}

@@ -1,10 +1,9 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Entity;
 
-use Acts\ExternalLoginBundle\Security\User\ExternalLinkedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Acts\ExternalLoginBundle\Security\User\ExternalUserInterface;
 use Acts\CamdramBundle\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
 * External User
@@ -12,7 +11,7 @@ use Acts\CamdramBundle\Entity\User;
 * @ORM\Table(name="acts_external_users")
 * @ORM\Entity
 */
-class ExternalUser implements ExternalUserInterface
+class ExternalUser implements UserInterface
 {
     /**
     * @var integer

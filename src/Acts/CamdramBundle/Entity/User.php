@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 
 use Acts\CamdramBundle\Entity\Person;
-use Acts\ExternalLoginBundle\Security\User\ExternalLinkedUserInterface;
 use Acts\CamdramSecurityBundle\Security\GroupRole;
 
 /**
@@ -17,7 +16,7 @@ use Acts\CamdramSecurityBundle\Security\GroupRole;
  * @ORM\Table(name="acts_users")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\UserRepository")
  */
-class User implements \Serializable
+class User implements \Serializable, UserInterface
 {
     /**
      * @var integer

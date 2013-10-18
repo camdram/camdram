@@ -14,10 +14,10 @@
 
 {% block image_upload_widget %}
     {% spaceless %}
-       <div class="three columns">
+       <div class="large-3 columns">
             {{ form_label(form) }}
         </div>
-        <div class="nine columns">
+        <div class="large-9 columns">
             <input type="hidden"{{ block('widget_attributes') }} value="{% if data %}{{ data.id }}{% endif %}"/>
             <div id="{{ id }}_uploadify_queue" class="uploadify-queue"></div>
             <div id="{{ id }}_{{ preview_div }}" class="uploadify-preview">{% if data %}{{ render_image(data, 250, 200) }}{% endif %}</div>
@@ -77,7 +77,7 @@
 {% block entity_collection_widget %}
     <div  id="{{ id }}" class="entity_collection_container">
         <div class="row">
-            <div class="six columns push-three">
+            <div class="large-6 columns large-offset-3">
                 <ul class="entity_collection_list">
                 {% for child in data %}
                     {% if child.name is defined %}
@@ -95,10 +95,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="three columns">
+            <div class="large-3 columns">
                 <label for="{{ full_name }}_new_entry" class="right inline">{{ new_label }}</label>
             </div>
-            <div class="nine columns">
+            <div class="large-9 columns">
                 <input type="text" id="{{ full_name }}_new_entry" class="autocomplete_input"/>
             </div>
         </div>
@@ -140,14 +140,14 @@
 {% block form_row %}
     <div class="row">
     {% if 'checkbox' in form.vars.block_prefixes %}
-        <div class="nine columns push-three">
+        <div class="large-9 columns large-offset-3">
             {{ block('form_option_box') }}
         </div>
     {% else %}
-        <div class="three columns">
+        <div class="large-3 columns">
         {{ form_label(form) }}
         </div>
-        <div class="nine columns">
+        <div class="large-9 columns">
         {{ form_widget(form) }}
         {{ form_errors(form) }}
         </div>

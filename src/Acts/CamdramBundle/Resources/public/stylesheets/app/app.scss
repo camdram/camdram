@@ -2,12 +2,17 @@ $background-color: #fff9e3;
 $white: #fff;
 $orange: #fe5c1f;
 $dark-grey: #3a393a;
+$light-grey: #666;
 
 $primary-color: $orange;
 $secondary-color: #f00;
 
+$topbar-height: 40px;
 $topbar-bg: $dark-grey;
 $topbar-margin-bottom: 0;
+$topbar-link-bg-hover: $light-grey;
+$topbar-link-font-size: 0.9em;
+$topbar-link-weight: normal;
 
 $section-border-color: #e6e6e6;
 
@@ -16,9 +21,22 @@ $section-border-color: #e6e6e6;
 $footer-height: emCalc(160);
 $footer-height-mobile: emCalc(350);
 
+@mixin brighten($factor) {
+  filter: brightness($factor);
+  -webkit-filter: brightness($factor);
+  -moz-filter: brightness($factor);
+  -o-filter: brightness($factor);
+  -ms-filter: brightness($factor);
+}
+
 .top-bar-section {
   max-width:$row-width;
   margin:auto;
+
+  ul li.active > a:hover {
+    background:inherit;
+    cursor:default;
+  }
 }
 
 html, body {
@@ -41,6 +59,7 @@ body {
 
 header {
   background:$orange;
+  clear:both;
 }
 
 #wrapper > section {
@@ -74,12 +93,8 @@ header {
     font-size: emCalc(14);
   }
 
-  ul {
+  ul.list {
     margin-left: 1em;
-
-    &.side-nav {
-      margin-left:0;
-    }
   }
 }
 
@@ -173,8 +188,84 @@ header input[type=search]:focus {
   -moz-box-shadow:none;
 }
 
+#login-dropdown {
+  width:300px;
+  background:$light-grey;
+  position:absolute;
+  top:9999px;
+  z-index:99;
+  color:white;
+  font-size:0.8em;
+  padding-top:1em;
+
+  a, label {
+    color: white;
+    font-size:1em;
+  }
+
+  .button {
+    margin-bottom:0;
+  }
+}
+
+#header-bar {
+  background:#3a393a;
+
+  section {
+    max-width:$row-width;
+    margin:auto;
+
+    &:after {
+      content:" ";
+      clear:both;
+      height:0;
+      display:block;
+    }
+
+
+    > ul {
+      margin:0;
+
+      > li {
+        color: white;
+
+        > a {
+          color: white;
+          display:inline-block;
+          padding: 7px 15px;
+          font-size:0.8em;
+          font-weight:bold;
+
+          &.icon-link {
+            padding:7px 3px;
+
+            &:hover {
+              @include brighten(1.5);
+            }
+          }
+        }
+
+        &#login-link {
+          padding-right:5px;
+
+          > a {
+            padding-right:5px;
+          }
+        }
+
+        &:hover {
+          background: $light-grey;
+        }
+        display:block;
+        float:left;
+      }
+    }
+  }
+}
+
 @import "forms";
 @import "home";
 @import "diary";
 @import "venues";
 @import "entities";
+@import "uploadify";

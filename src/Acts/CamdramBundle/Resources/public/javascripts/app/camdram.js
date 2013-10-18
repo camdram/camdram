@@ -314,6 +314,28 @@
             changeYear: true,
             dateFormat: 'dd/mm/yy' //D d M yy
         });*/
+
+        $link = $('#login-link');
+        $dropdown = $('#login-dropdown');
+        $dropdown.hide();
+        var hideEnabled = true;
+        $link.mouseenter(function() {
+            $dropdown.css({
+                'position': 'absolute',
+                'top': $link.offset().top + $link.height(),
+                'left': $link.offset().left + $link.outerWidth() - $dropdown.outerWidth()
+            }).show();
+            $dropdown.show();
+        }).mouseleave(function() {
+            if (hideEnabled) $dropdown.hide();
+        });
+        $('input', $dropdown).bind('invalid',function() {
+            hideEnabled = false;
+            window.setTimeout(function() {
+                hideEnabled = true;
+            },200);
+        })
+
     });
 
 })(jQuery, window);

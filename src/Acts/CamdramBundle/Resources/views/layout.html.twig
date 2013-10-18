@@ -55,13 +55,9 @@
 </head>
 <body>
 <div id="wrapper">
-  <nav class="top-bar">
-    <ul class="title-area">
-        <li class="name"></li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
-    </ul>
-    <section class="top-bar-section">
-      <ul class="left">
+  <nav id="header-bar">
+      <section>
+      <ul class="left hide-for-small">
           {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
               'about-us': {'text': 'About Us'},
               'development': {'text': 'Development', 'path': path('acts_camdram_development')},
@@ -70,73 +66,9 @@
       </ul>
 
       <ul class="right">
-          {% if app.user %}
-              {# {% for group in app.user.groups %}
-                  <li class="has-dropdown">
-                      <a href="#">{{ group.menuName }}</a>
-                      <ul class="dropdown">
-                          {% for venue in acl_entries(group, 'Acts\\CamdramBundle\\Entity\\Venue') %}
-                              <li><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></li>
-                          {% endfor %}
-                          {% for society in acl_entries(group, 'Acts\\CamdramBundle\\Entity\\Society') %}
-                              <li><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a></li>
-                          {% endfor %}
-                          {% if 'ROLE_ADMIN' in group.roles %}
-                              <li><a href="{{ path('get_users') }}">Manage Users</a></li>
-                              <li><a href="{{ path('get_groups') }}">Manage Groups</a></li>
-                          {% endif %}
-                      </ul>
-                  </li>
-              {% endfor %} ###}
-        <li class="has-dropdown">
-         {# {% if app.user.person %}<a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">{{ app.user.name }}</a>
-          {% else %}<a href="#">{{ app.user.name }}</a>{% endif %}#}
-            <a href="#">{{ app.user.displayName }}</a>
-          <ul class="dropdown">
-           {#   {% if app.user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">My profile</a></li>{% endif %} #}
-            <li><a href="{{ path('acts_camdram_settings') }}">Settings</a></li>
-            <li class="divider"></li>
-            <li><a href="{{ path('_security_logout') }}">Log out</a></li>
-          </ul>
-        </li>
-          {% else %}
-          <li>
-              <a href="#">Create an account</a>
-          </li>
-          <li class="has-dropdown">
-              <a href="#">Log in</a>
-              <div class="dropdown login-flybox">
-                  <form>
-                      <div class="row">
-                          <div class="twelve columns">
-                              Log in using
-                              {% for service in camdram_security_services() %}
-                              <a href="{{ path('camdram_security_entry_point', {service: service}) }}">
-                                  <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service ~ '.png') }}" alt="{{ service | capitalize }}" title="{{ service | capitalize }}"/>
-                                  {{ service | capitalize }}
-                              </a>
-                              {% endfor %}
-                          </div>
-                      </div>
-                      <div class="row">
-                          <div class="three columns"><label>Email</label></div>
-                          <div class="nine columns"><input type="text" /></div>
-                      </div>
-                      <div class="row">
-                          <div class="three columns"><label>Password</label></div>
-                          <div class="nine columns"><input type="password" /></div>
-                      </div>
-                      <div class="text-right">
-                          <input type="submit" class="button" value="Log in" />
-                      </div>
-                  </form>
-
-              </div>
-          </li>
-          {% endif %}
+        {{ render(controller('ActsCamdramSecurityBundle:Default:toolbar')) }}
       </ul>
-
-    </section>
+      </section>
   </nav>
 
   <!-- End Navigation -->
