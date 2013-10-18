@@ -159,14 +159,6 @@ class CamdramUserProvider implements UserProviderInterface
         }
         $this->em->flush();
 
-        //Merge user groups
-        $groups = $this->em->getRepository('ActsCamdramSecurityBundle:Group')->findByUser($user2);
-        foreach ($groups as $group) {
-            $group->addUser($user1);
-            $group->removeUser($user2);
-        }
-        $this->em->flush();
-
         if ($user2->getPerson() && !$user1->getPerson()) {
             $user1->setPerson($user2->getPerson());
         }

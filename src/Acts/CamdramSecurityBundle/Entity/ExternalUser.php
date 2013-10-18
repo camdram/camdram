@@ -25,9 +25,9 @@ class ExternalUser implements UserInterface
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User", inversedBy="external_users")
      */
-    private $linked_user;
+    private $user;
 
     /**
     * @var string
@@ -271,9 +271,9 @@ class ExternalUser implements UserInterface
      * @param \Acts\CamdramBundle\Entity\User $linkedUser
      * @return ExternalUser
      */
-    public function setLinkedUser(ExternalLinkedUserInterface $linkedUser = null)
+    public function setUser(User $user = null)
     {
-        $this->linked_user = $linkedUser;
+        $this->user = $user;
     
         return $this;
     }
@@ -283,8 +283,8 @@ class ExternalUser implements UserInterface
      *
      * @return \Acts\CamdramBundle\Entity\User 
      */
-    public function getLinkedUser()
+    public function getUser()
     {
-        return $this->linked_user;
+        return $this->user;
     }
 }

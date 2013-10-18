@@ -149,18 +149,6 @@ acts_sphinx_real_time:
                 min_prefix_len: 1
                 enable_star: true
                 dict: keywords
-        group:
-            fields: [name]
-            persistence:
-                driver: orm
-                model: Acts\CamdramSecurityBundle\Entity\Group
-                listener: ~
-                provider: ~
-                finder: ~
-            config:
-                min_prefix_len: 1
-                enable_star: true
-                dict: keywords
 
 fos_js_routing:
     routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*' ]

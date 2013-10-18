@@ -38,9 +38,6 @@ class SecurityUtils
         /** @var $aclProvider AclListProvider */
         $aclProvider = $this->container->get('camdram.security.acl.provider');
 
-        if ($role instanceof \Acts\CamdramSecurityBundle\Entity\Group) {
-            return $aclProvider->getEntitiesByGroup($role, $class_name);
-        }
         if ($role instanceof \Acts\CamdramBundle\Entity\User) {
             return $aclProvider->getEntitiesByUser($role, $class_name);
         }

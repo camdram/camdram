@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="row">
-    <h3>Edit Group</h3>
+    <h3>Edit User</h3>
     <form action="{{ path("put_user", {identifier: form.vars.value.id, _method: 'put'}) }}" method="post" class="custom">
         {{ form_widget(form) }}
         <div class="text-right">

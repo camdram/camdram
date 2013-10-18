@@ -5,9 +5,9 @@ namespace Acts\CamdramSecurityBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Access
+ * AccessControlEntry
  *
- * @ORM\Table(name="acts_access_control_entries")
+ * @ORM\Table(name="acts_access")
  * @ORM\Entity(repositoryClass="AccessControlEntryRepository")
  */
 class AccessControlEntry
@@ -24,16 +24,26 @@ class AccessControlEntry
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Entity")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Entity", inversedBy="aces")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="rid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * })
      */
     private $entity;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column("type", type="integer")
+     */
+    private $type;
 
     /**
      * @var \Acts\CamdramBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     *   @ORM\JoinColumn(name="uid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      * })
      */
     private $user;
@@ -41,40 +51,16 @@ class AccessControlEntry
     /**
      * @var int
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=true)
+     * @ORM\Column(name="uid", type="integer", nullable=true)
      */
     private $user_id;
-
-    /**
-     * @var Group
-     *
-     * @ORM\ManyToOne(targetEntity="Group")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     * })
-     */
-    private $group;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="group_id", type="integer", nullable=true)
-     */
-    private $group_id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", nullable=true)
-     */
-    private $email;
 
     /**
      * @var \Acts\CamdramBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="granted_by_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
      * })
      */
     private $granted_by;
@@ -82,23 +68,16 @@ class AccessControlEntry
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="date", nullable=false)
+     * @ORM\Column(name="creationdate", type="date", nullable=false)
      */
     private $created_at;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="granted_at", type="date", nullable=false)
-     */
-    private $granted_at;
 
     /**
      * @var \Acts\CamdramBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="revoked_by_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     *   @ORM\JoinColumn(name="revokeid", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      * })
      */
     private $revoked_by;
@@ -106,7 +85,7 @@ class AccessControlEntry
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="revoked_at", type="date", nullable=true)
+     * @ORM\Column(name="revokedate", type="date", nullable=true)
      */
     private $revoked_at;
 
@@ -283,52 +262,6 @@ class AccessControlEntry
     }
 
     /**
-     * Set group
-     *
-     * @param \Acts\CamdramBundle\Entity\Group $group
-     * @return AccessControlEntry
-     */
-    public function setGroup(\Acts\CamdramSecurityBundle\Entity\Group $group = null)
-    {
-        $this->group = $group;
-    
-        return $this;
-    }
-
-    /**
-     * Get group
-     *
-     * @return \Acts\CamdramSecurityBundle\Entity\Group
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return AccessControlEntry
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
      * Set user_id
      *
      * @param integer $userId
@@ -352,25 +285,25 @@ class AccessControlEntry
     }
 
     /**
-     * Set group_id
+     * Set type
      *
-     * @param integer $groupId
+     * @param integer $type
      * @return AccessControlEntry
      */
-    public function setGroupId($groupId)
+    public function setType($type)
     {
-        $this->group_id = $groupId;
-
+        $this->type = $type;
+    
         return $this;
     }
 
     /**
-     * Get group_id
+     * Get type
      *
      * @return integer 
      */
-    public function getGroupId()
+    public function getType()
     {
-        return $this->group_id;
+        return $this->type;
     }
 }

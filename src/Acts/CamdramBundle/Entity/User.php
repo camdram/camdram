@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 
 use Acts\CamdramBundle\Entity\Person;
-use Acts\CamdramSecurityBundle\Security\GroupRole;
 
 /**
  * User
@@ -178,13 +177,6 @@ class User implements \Serializable, UserInterface
      * @ORM\Column(name="upgraded_at", type="datetime", nullable=true)
      */
     private $upgraded_at;
-
-    /**
-     * @var array
-     *
-     * @ORM\ManyToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\Group", mappedBy="users")
-     */
-    private $groups;
 
     /**
      * @var array
@@ -635,11 +627,6 @@ class User implements \Serializable, UserInterface
     public function getRoles()
     {
         $roles = array();
-        foreach ($this->getGroups() as $group) {
-            $roles = array_merge($roles, $group->getRoles());
-            $roles[] = (string) new GroupRole($group);
-        }
-
         return $roles;
     }
 
@@ -769,39 +756,6 @@ class User implements \Serializable, UserInterface
     public function getUpgradedAt()
     {
         return $this->upgraded_at;
-    }
-
-    /**
-     * Add groups
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\Group $groups
-     * @return User
-     */
-    public function addGroup(\Acts\CamdramSecurityBundle\Entity\Group $group)
-    {
-        $group->addUser($this);
-        $this->groups[] = $group;
-        return $this;
-    }
-
-    /**
-     * Remove groups
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\Group $groups
-     */
-    public function removeGroup(\Acts\CamdramSecurityBundle\Entity\Group $groups)
-    {
-        $this->groups->removeElement($groups);
-    }
-
-    /**
-     * Get groups
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getGroups()
-    {
-        return $this->groups;
     }
 
     public function __toString()

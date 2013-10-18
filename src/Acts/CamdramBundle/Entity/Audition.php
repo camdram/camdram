@@ -59,7 +59,7 @@ class Audition
     /**
      * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="Show")
+     * @ORM\ManyToOne(targetEntity="Show", inversedBy="auditions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })

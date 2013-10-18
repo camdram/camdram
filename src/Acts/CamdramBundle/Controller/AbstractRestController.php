@@ -46,7 +46,7 @@ abstract class AbstractRestController extends FOSRestController
 
     /**
      * Called on each page load. Default is to do nothing, but allows child classes to do stricter access checking
-     * (e.g. for user and group administration pages)
+     * (e.g. for user administration pages)
      *
      * @return null
      */

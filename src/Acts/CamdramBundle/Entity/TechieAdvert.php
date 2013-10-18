@@ -24,7 +24,7 @@ class TechieAdvert
     /**
      * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="Show")
+     * @ORM\ManyToOne(targetEntity="Show", inversedBy="techie_adverts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })

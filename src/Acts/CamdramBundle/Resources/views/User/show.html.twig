@@ -17,15 +17,6 @@
             <p>Linked to person <a href="{{ path('get_person', {identifier: user.person.slug}) }}">{{ user.person.name }}</a></p>
         {% endif %}
 
-        {% if user.groups | length > 0 %}
-            <h4>Groups</h4>
-            <ul>
-                {% for group in user.groups %}
-                    <li><a href="{{ path('get_group', {identifier: group.shortName}) }}">{{ group.name }}</a></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
         {% if user.roles | length > 0 %}
         <h4>Roles</h4>
         <ul>

@@ -31,7 +31,7 @@ class Application
     /**
      * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="Show")
+     * @ORM\ManyToOne(targetEntity="Show", inversedBy="applications")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })

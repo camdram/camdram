@@ -23,7 +23,6 @@ class UserType extends AbstractType
             ->add('person', 'entity_search', array('route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
             ->add('occupation')
             ->add('graduation')
-            ->add('groups', 'entity_collection', array('route' => 'get_groups', 'class' => 'Acts\\CamdramSecurityBundle\\Entity\\Group'))
         ;
     }
 
