@@ -1,5 +1,8 @@
-login:
+acts_camdram_security_login:
     pattern:   /login
     defaults:  {  _controller: ActsCamdramSecurityBundle:Default:login }
-login_check:
+acts_camdram_security_login_check:
     pattern:   /login_check
+acts_camdram_security_link_user:
+    pattern:   /link-user
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:linkUser }

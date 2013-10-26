@@ -27,8 +27,10 @@ security:
             form_login:
                 username_parameter: form[email]
                 password_parameter: form[password]
+                success_handler:  camdram.security.authentication_success_handler
             external_login:
                 services: [raven, facebook, google]
+                success_handler:  camdram.security.authentication_success_handler
             remember_me:
                 key:      %secret%
                 lifetime: 31536000 # 365 days in seconds

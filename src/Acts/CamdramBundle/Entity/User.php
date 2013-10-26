@@ -2,8 +2,8 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 
@@ -15,7 +15,7 @@ use Acts\CamdramBundle\Entity\Person;
  * @ORM\Table(name="acts_users")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\UserRepository")
  */
-class User implements \Serializable, UserInterface
+class User implements \Serializable, CamdramUserInterface
 {
     /**
      * @var integer
@@ -626,7 +626,7 @@ class User implements \Serializable, UserInterface
 
     public function getRoles()
     {
-        $roles = array();
+        $roles = array('ROLE_USER');
         return $roles;
     }
 
@@ -804,5 +804,10 @@ class User implements \Serializable, UserInterface
         if (count($res) > 0) {
             return $res[0];
         }
+    }
+
+    public function getType()
+    {
+        return 'native';
     }
 }

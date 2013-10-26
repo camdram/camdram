@@ -1,9 +1,9 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Entity;
 
+use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Acts\CamdramBundle\Entity\User;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
 * External User
@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 * @ORM\Table(name="acts_external_users")
 * @ORM\Entity
 */
-class ExternalUser implements UserInterface
+class ExternalUser implements CamdramUserInterface
 {
     /**
     * @var integer
@@ -217,7 +217,7 @@ class ExternalUser implements UserInterface
      * @inheritdoc
      */
     public function getRoles() {
-        return array('ROLE_USER', 'ROLE_EXTERNAL');
+        return array('ROLE_USER', 'ROLE_EXTERNAL', 'ROLE_'.strtoupper($this->getService()));
     }
 
     /**
@@ -286,5 +286,10 @@ class ExternalUser implements UserInterface
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getType()
+    {
+        return 'external';
     }
 }

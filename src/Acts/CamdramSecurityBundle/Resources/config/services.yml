@@ -2,14 +2,6 @@ parameters:
 #    acts_camdram.example.class: Acts\CamdramBundle\Example
 
 services:
-    camdram.security.authentication.listener:
-        class:  Acts\CamdramSecurityBundle\Security\Firewall\CamdramListener
-        parent: security.authentication.listener.abstract
-        public: false
-        abstract: true
-        calls:
-            - [setRouter, [@router]]
-
     camdram.security.encoder.legacy_md5:
         class:  Acts\CamdramSecurityBundle\Security\Encoder\LegacyMd5Encoder
 
@@ -25,6 +17,14 @@ services:
         class: Acts\CamdramSecurityBundle\Twig\Extension\CamdramSecurityExtension
         arguments: [@camdram.security.utils]
         tags: [{ name: twig.extension }]
+
+    camdram.security.authentication_success_handler:
+        class: Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler
+        arguments: [@security.context, @camdram.security.name_utils, @camdram.security.user_linker, @security.http_utils, 'public']
+
+    camdram.security.user_linker:
+        class: Acts\CamdramSecurityBundle\Security\UserLinker
+        arguments: [@doctrine.orm.entity_manager]
 
     camdram.security.type.graduation_year:
         class: Acts\CamdramSecurityBundle\Form\Type\GraduationYearType

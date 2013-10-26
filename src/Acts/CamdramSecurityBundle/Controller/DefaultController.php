@@ -10,8 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 use Acts\CamdramSecurityBundle\Form\Type\LoginType,
     Acts\CamdramSecurityBundle\Form\Type\RegistrationType,
     Acts\CamdramSecurityBundle\Entity\UserIdentity,
-    Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserTokenService,
-    Acts\CamdramBundle\Entity\User;
+    Acts\CamdramBundle\Entity\User,
+    Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
 
 class DefaultController extends Controller
 {
@@ -108,6 +108,38 @@ class DefaultController extends Controller
             ));
         }
 
+    }
+
+    public function linkUserAction(Request $request)
+    {
+        $link_token = $this->getRequest()->getSession()->get(AuthenticationSuccessHandler::NEW_TOKEN);
+        if (!$link_token) {
+            return $this->redirect($this->generateUrl('acts_camdram_homepage'));
+        }
+        $user = $this->getUser();
+        $link_user = $link_token->getUser();
+
+        if ($request->getMethod() == 'POST') {
+            if ($request->request->has('link')) {
+                $this->get('camdram.security.user_linker')->linkUsers($user, $link_user);
+                $request->getSession()->remove(AuthenticationSuccessHandler::LAST_AUTHENTICATION_TOKEN);
+                $token = $this->get('camdram.security.user_linker')->findCamdramToken($link_token, $this->get('security.context')->getToken());
+                return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
+            }
+            elseif ($request->request->has('old')) {
+                return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $this->get('security.context')->getToken());
+            }
+            else {
+                $request->getSession()->clear();
+                $this->get('security.context')->setToken($link_token);
+                return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $link_token);
+            }
+        }
+
+        return $this->render('ActsCamdramSecurityBundle:Default:link_user.html.twig', array(
+            'user' => $user,
+            'link_user' => $link_user
+        ));
     }
 
 }

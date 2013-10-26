@@ -2,6 +2,7 @@
 namespace Acts\ExternalLoginBundle\Security\Firewall;
 
 use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
+use Acts\ExternalLoginBundle\Security\Service\ServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -112,28 +113,53 @@ class ExternalLoginListener implements ListenerInterface
                 $request->getPathInfo(), $matches)) {
             $action = $matches[1];
             $service_name = $matches[2];
-            if ($service = $this->serviceProvider->getServiceByName($service_name)) {
-                $return_url = $this->httpUtils->generateUri($event->getRequest(), $this->urls['auth'].'/'.$service_name);
+            if (($service = $this->serviceProvider->getServiceByName($service_name))) {
                 if ($action == $this->urls['entry']) {
+                    $this->setTargetPath($request);
+                    $return_url = $this->getReturnUrl($request, $service_name);
                     $event->setResponse(new RedirectResponse($service->getAuthorizationUrl($return_url)));
                 }
                 elseif ($action == $this->urls['auth']) {
-                    $token = new ExternalLoginToken($service_name);
-                    try {
-                        $access_token = $service->getAccessToken($event->getRequest(), $return_url);
-                        $token->setAccessToken($access_token);
-                        $this->authenticationManager->authenticate($token);
-
-                        $this->sessionStrategy->onAuthentication($request, $token);
-
-                        $response = $this->successHandler->onAuthenticationSuccess($request, $token);
-                        $this->securityContext->setToken($token);
-                    }
-                    catch (AuthenticationException $e) {
-                        $response = $this->failureHandler->onAuthenticationFailure($request, $e);
-                    }
+                    $response = $this->doAuthentication($event->getRequest(), $service);
                     $event->setResponse($response);
                 }
+            }
+        }
+    }
+
+    protected function getReturnUrl(Request $request, $service_name)
+    {
+        return $this->httpUtils->generateUri($request, $this->urls['auth'].'/'.$service_name);
+    }
+
+    protected function doAuthentication(Request $request, ServiceInterface $service)
+    {
+        $token = new ExternalLoginToken($service->getName());
+        try {
+            $access_token = $service->getAccessToken($request, $this->getReturnUrl($request, $service->getName()));
+            $token->setAccessToken($access_token);
+            $this->authenticationManager->authenticate($token);
+
+            $this->sessionStrategy->onAuthentication($request, $token);
+
+            $this->securityContext->setToken($token);
+            $response = $this->successHandler->onAuthenticationSuccess($request, $token);
+        }
+        catch (AuthenticationException $e) {
+            $response = $this->failureHandler->onAuthenticationFailure($request, $e);
+        }
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     */
+    protected function setTargetPath(Request $request)
+    {
+        // session isn't required when using http basic authentication mechanism for example
+        if (($targetUrl = $request->headers->get('Referer')) && $targetUrl !== $this->httpUtils->generateUri($request, '/login')) {
+            if ($request->hasSession() && $request->isMethodSafe()) {
+                $request->getSession()->set('_security.'.$this->providerKey.'.target_path', $targetUrl);
             }
         }
     }
