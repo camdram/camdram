@@ -60,10 +60,10 @@ class DiaryRow
     {
         //First check if the time is the same (within a certain threshold)
         $earliest = clone $this->start;
-        $earliest->modify('-'.self::MAX_ROW_RANGE_MINUTES.' minutes');
+        $earliest->modify('-'.(self::MAX_ROW_RANGE_MINUTES+1).' minutes');
         $latest = clone $this->start;
-        $latest->modify('+'.self::MAX_ROW_RANGE_MINUTES.' minutes');
-        if ($event->getStartTime() < $earliest || $event->getStartTime() >= $latest) return false;
+        $latest->modify('+'.(self::MAX_ROW_RANGE_MINUTES+1).' minutes');
+        if ($event->getStartTime() <= $earliest || $event->getStartTime() >= $latest) return false;
 
         //Now see if there's space in the row
         if ($event instanceof SingleDayEventInterface) {
@@ -117,7 +117,6 @@ class DiaryRow
             else {
 
                 $start_index = $this->calculateIndex($event->getStartDate());
-                if ($event->getName() == 'AIDA' && $start_index == 4) { var_dump($start_index, $event->getStartDate()); }
                 $end_index = $this->calculateIndex($event->getEndDate());
                 $item->setIndex($start_index);
                 $item->setNumberOfDays($end_index - $start_index + 1);
