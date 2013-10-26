@@ -253,8 +253,8 @@ class ExternalUser implements UserInterface
 
     public function getDisplayName()
     {
-        if ($this->getLinkedUser()) {
-            return $this->getLinkedUser()->getName();
+        if ($this->getUser()) {
+            return $this->getUser()->getName();
         }
         elseif ($this->getName()) {
             return $this->getName();

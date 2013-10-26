@@ -24,17 +24,14 @@ class AccessControlEntry
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Entity", inversedBy="aces")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="rid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     * })
+     * @ORM\Column(name="rid", type="integer")
      */
-    private $entity;
+    private $entity_id;
 
     /**
      * @var integer
      *
-     * @ORM\Column("type", type="integer")
+     * @ORM\Column(name="type", type="string", length=20)
      */
     private $type;
 
@@ -170,29 +167,6 @@ class AccessControlEntry
     }
 
     /**
-     * Set entity
-     *
-     * @param \Acts\CamdramBundle\Entity\Entity $entity
-     * @return AccessControlEntry
-     */
-    public function setEntity(\Acts\CamdramBundle\Entity\Entity $entity = null)
-    {
-        $this->entity = $entity;
-    
-        return $this;
-    }
-
-    /**
-     * Get entity
-     *
-     * @return \Acts\CamdramBundle\Entity\Entity 
-     */
-    public function getEntity()
-    {
-        return $this->entity;
-    }
-
-    /**
      * Set user
      *
      * @param \Acts\CamdramBundle\Entity\User $user
@@ -305,5 +279,28 @@ class AccessControlEntry
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set entity_id
+     *
+     * @param integer $entityId
+     * @return AccessControlEntry
+     */
+    public function setEntityId($entityId)
+    {
+        $this->entity_id = $entityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get entity_id
+     *
+     * @return integer 
+     */
+    public function getEntityId()
+    {
+        return $this->entity_id;
     }
 }
