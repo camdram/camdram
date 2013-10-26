@@ -795,4 +795,14 @@ class User implements \Serializable, UserInterface
     {
         return $this->external_users;
     }
+
+    public function getExternalUserByService($service)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("service", $service));
+        $res = $this->external_users->matching($criteria);
+        if (count($res) > 0) {
+            return $res[0];
+        }
+    }
 }

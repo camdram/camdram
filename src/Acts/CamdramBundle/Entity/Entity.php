@@ -104,14 +104,6 @@ abstract class Entity
     private $news;
 
     /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="entity", cascade={"remove"})
-     * @Serializer\Exclude
-     */
-    private $aces;
-
-    /**
      * @var string
      */
     protected $entity_type;
@@ -442,39 +434,6 @@ abstract class Entity
     public function removeNews(\Acts\CamdramBundle\Entity\News $news)
     {
         $this->news->removeElement($news);
-    }
-
-    /**
-     * Add aces
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
-     * @return Entity
-     */
-    public function addAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
-    {
-        $this->aces[] = $aces;
-
-        return $this;
-    }
-
-    /**
-     * Remove aces
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
-     */
-    public function removeAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
-    {
-        $this->aces->removeElement($aces);
-    }
-
-    /**
-     * Get aces
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAces()
-    {
-        return $this->aces;
     }
 
     /**

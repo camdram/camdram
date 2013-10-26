@@ -808,39 +808,6 @@ class Show extends Entity
         return $this->end_at;
     }
 
-    /**
-     * Add time_periods
-     *
-     * @param \Acts\CamdramBundle\Entity\TimePeriod $timePeriods
-     * @return Show
-     */
-    public function addTimePeriod(\Acts\CamdramBundle\Entity\TimePeriod $timePeriods)
-    {
-        $this->time_periods[] = $timePeriods;
-    
-        return $this;
-    }
-
-    /**
-     * Remove time_periods
-     *
-     * @param \Acts\CamdramBundle\Entity\TimePeriod $timePeriods
-     */
-    public function removeTimePeriod(\Acts\CamdramBundle\Entity\TimePeriod $timePeriods)
-    {
-        $this->time_periods->removeElement($timePeriods);
-    }
-
-    /**
-     * Get time_periods
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTimePeriods()
-    {
-        return $this->time_periods;
-    }
-
     public function fixPerformanceExcludes()
     {
         foreach ($this->getPerformances() as $performance) {
