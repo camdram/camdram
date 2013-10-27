@@ -4,7 +4,7 @@ namespace Acts\CamdramSecurityBundle\Service;
 use Acts\CamdramBundle\Entity\User;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class EmailConfirmationTokenGenerator
+class TokenGenerator
 {
     private $secret;
 
@@ -13,9 +13,19 @@ class EmailConfirmationTokenGenerator
         $this->secret = $secret;
     }
 
-    public function generate(User $user)
+    public function generateEmailConfirmationToken(User $user)
     {
-        $string = $user->getEmail().$user->getPassword().$this->secret;
+        return $this->generate($user, 'weiopfusidohjfg');
+    }
+
+    public function generatePasswordResetToken(User $user)
+    {
+        return $this->generate($user, 'l;kdsfkjl234hldf');
+    }
+
+    protected function generate(User $user, $salt)
+    {
+        $string = $user->getEmail().$user->getPassword().$this->secret.$salt;
         for ($i = 1; $i < 100; $i++) {
             $digest = hash('sha256', $string, true);
         }

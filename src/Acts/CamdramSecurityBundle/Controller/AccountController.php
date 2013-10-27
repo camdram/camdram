@@ -72,23 +72,8 @@ class AccountController extends Controller
     public function resendVerificationAction()
     {
         $user = $this->getUser();
-        $token = $this->get('camdram.security.email_confirmation_token_generator')->generate($user);
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Verify your email address')
-            ->setFrom($this->container->getParameter('mailer_sender_address'))
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->renderView(
-                    'ActsCamdramBundle:Email:resend_email_verification.txt.twig',
-                    array(
-                        'user'                     => $this->getUser(),
-                        'email_confirmation_token' => $token
-                    )
-                )
-            )
-        ;
-        $this->get('mailer')->send($message);
+        $token = $this->get('camdram.security.token_generator')->generateEmailConfirmationToken($user);
+        $this->get('camdram.security.email_dispatcher')->resendEmailVerifyEmail($user, $token);
 
         return $this->redirect($this->generateUrl('acts_camdram_security_settings'));
     }
@@ -97,7 +82,7 @@ class AccountController extends Controller
     {
         $user = $this->getUser();
         $external_user = $user->getExternalUserByService($service);
-        
+
         if ($external_user) {
             $user->removeExternalUser($external_user);
             $em = $this->getDoctrine()->getManager();

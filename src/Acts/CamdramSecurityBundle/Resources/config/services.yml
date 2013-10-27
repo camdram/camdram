@@ -58,16 +58,20 @@ services:
         class: Acts\CamdramSecurityBundle\Security\User\ExternalLoginUserProvider
         arguments: [@doctrine.orm.entity_manager]
 
-    camdram.security.email_confirmation_token_generator:
-        class: Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator
+    camdram.security.token_generator:
+        class: Acts\CamdramSecurityBundle\Service\TokenGenerator
         arguments: [%secret%]
 
     camdram.security.email_send_listener:
         class: Acts\CamdramSecurityBundle\EventListener\EmailSendListener
-        arguments: [@swiftmailer.mailer, @twig, @camdram.security.email_confirmation_token_generator, %mailer_sender_address%]
+        arguments: [@camdram.security.email_dispatcher, @camdram.security.token_generator]
         tags:
             - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
             - { name: kernel.event_listener, event: camdram_security.email_changed, method: onEmailChangeEvent }
+
+    camdram.security.email_dispatcher:
+        class: Acts\CamdramSecurityBundle\Service\EmailDispatcher
+        arguments: [@swiftmailer.mailer, @twig, %mailer_sender_address%]
 
     ### Authorization voters
 

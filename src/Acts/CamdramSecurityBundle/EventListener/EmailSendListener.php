@@ -3,66 +3,34 @@ namespace Acts\CamdramSecurityBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
-use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
+use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
+use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Symfony\Component\Routing\RouterInterface;
 
 class EmailSendListener
 {
-    private $mailer;
-    private $twig;
+    private $dispatcher;
     private $generator;
-    private $from_address;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig,
-                                EmailConfirmationTokenGenerator $generator, $from_address)
+    public function __construct(EmailDispatcher $dispatcher, TokenGenerator $generator)
     {
-        $this->mailer = $mailer;
-        $this->twig = $twig;
+        $this->dispatcher = $dispatcher;
         $this->generator = $generator;
-        $this->from_address = $from_address;
     }
 
     public function onRegistrationEvent(UserEvent $event)
     {
         $user = $event->getUser();
-        $token = $user->getIsEmailVerified() ? null : $this->generator->generate($user);
+        $token = $user->getIsEmailVerified() ? null : $this->generator->generateEmailConfirmationToken($user);
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Welcome to Camdram')
-            ->setFrom($this->from_address)
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->twig->render(
-                    'ActsCamdramBundle:Email:create_account.txt.twig',
-                    array(
-                        'user' => $user,
-                        'email_confirmation_token' => $token
-                    )
-                )
-            )
-        ;
-        $this->mailer->send($message);
+        $this->dispatcher->sendRegistrationEmail($user, $token);
     }
 
     public function onEmailChangeEvent(UserEvent $event)
     {
         $user = $event->getUser();
-        $token = $this->generator->generate($user);
+        $token = $this->generator->generateEmailConfirmationToken($user);
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Verify your new email address')
-            ->setFrom($this->from_address)
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->twig->render(
-                    'ActsCamdramBundle:Email:change_email.txt.twig',
-                    array(
-                        'user' => $user,
-                        'email_confirmation_token' => $token
-                    )
-                )
-            )
-        ;
-        $this->mailer->send($message);
+        $this->dispatcher->sendEmailVerifyEmail($user, $token);
     }
 }

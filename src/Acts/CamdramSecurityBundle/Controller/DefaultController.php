@@ -5,6 +5,8 @@ namespace Acts\CamdramSecurityBundle\Controller;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
+use Acts\CamdramSecurityBundle\Form\Type\ForgottenPasswordType;
+use Acts\CamdramSecurityBundle\Form\Type\ResetPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\HttpFoundation\Request,
@@ -15,6 +17,7 @@ use Acts\CamdramSecurityBundle\Form\Type\LoginType,
     Acts\CamdramSecurityBundle\Entity\UserIdentity,
     Acts\CamdramBundle\Entity\User,
     Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
@@ -151,7 +154,7 @@ class DefaultController extends Controller
     {
         $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User')->findOneByEmail($email);
         if ($user && !$user->getIsEmailVerified()) {
-            $expected_token = $this->get('camdram.security.email_confirmation_token_generator')->generate($user);
+            $expected_token = $this->get('camdram.security.token_generator')->generateEmailConfirmationToken($user);
             if ($token == $expected_token) {
                 $user->setIsEmailVerified(true);
                 $this->getDoctrine()->getManager()->flush();
@@ -163,6 +166,67 @@ class DefaultController extends Controller
             }
         }
         return $this->render('ActsCamdramSecurityBundle:Default:confirm_email_error.html.twig', array());
+    }
+
+    public function forgottenPasswordAction()
+    {
+        $email = $this->getUser() ? $this->getUser()->getEmail() : null;
+        $form = $this->createForm(new ForgottenPasswordType(), array('email' => $email));
+
+        if ($this->getRequest()->getMethod() == 'POST') {
+            $form->submit($this->getRequest());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User')->findOneByEmail($data['email']);
+                if ($user) {
+                    $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
+                    $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
+                    return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password_complete.html.twig', array(
+                        'email' => $data['email']
+                    ));
+                }
+                else {
+                    $form->get('email')->addError(new FormError('A user cannot be found with that email address'));
+                }
+            }
+        }
+        return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    public function resetPasswordAction($email, $token)
+    {
+        $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User')->findOneByEmail($email);
+        if ($user) {
+            $expected_token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
+            if ($token == $expected_token) {
+
+                $form = $this->createForm(new ResetPasswordType(), array());
+                if ($this->getRequest()->getMethod() == 'POST') {
+                    $form->submit($this->getRequest());
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        $factory = $this->get('security.encoder_factory');
+                        $encoder = $factory->getEncoder($user);
+                        $password = $encoder->encodePassword($data['password'], $user->getSalt());
+                        $user->setPassword($password);
+                        $this->getDoctrine()->getManager()->flush();
+                        return $this->render('ActsCamdramSecurityBundle:Default:reset_password_complete.html.twig', array(
+                            'email'     => $email,
+                            'services'  => $this->get('external_login.service_provider')->getServices(),
+                        ));
+                    }
+                }
+
+                return $this->render('ActsCamdramSecurityBundle:Default:reset_password.html.twig', array(
+                    'email' => $email,
+                    'token' => $token,
+                    'form' => $form->createView()
+                ));
+            }
+        }
+        return $this->render('ActsCamdramSecurityBundle:Default:reset_password_error.html.twig', array());
     }
 
 }
