@@ -43,4 +43,26 @@ class EmailSendListener
         ;
         $this->mailer->send($message);
     }
+
+    public function onEmailChangeEvent(UserEvent $event)
+    {
+        $user = $event->getUser();
+        $token = $this->generator->generate($user);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Verify your new email address')
+            ->setFrom($this->from_address)
+            ->setTo($user->getEmail())
+            ->setBody(
+                $this->twig->render(
+                    'ActsCamdramBundle:Email:change_email.txt.twig',
+                    array(
+                        'user' => $user,
+                        'email_confirmation_token' => $token
+                    )
+                )
+            )
+        ;
+        $this->mailer->send($message);
+    }
 }

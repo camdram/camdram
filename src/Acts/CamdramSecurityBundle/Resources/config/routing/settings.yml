@@ -1,0 +1,15 @@
+acts_camdram_security_settings:
+    pattern: /
+    defaults: { _controller: ActsCamdramSecurityBundle:Account:settings }
+acts_camdram_security_change_password:
+    pattern: /change-password
+    defaults: { _controller: ActsCamdramSecurityBundle:Account:changePassword }
+acts_camdram_security_change_email:
+    pattern: /change-email
+    defaults: { _controller: ActsCamdramSecurityBundle:Account:changeEmail }
+acts_camdram_security_resend_verification:
+    pattern: /resend-verification
+    defaults: { _controller: ActsCamdramSecurityBundle:Account:resendVerification }
+acts_camdram_security_unlink_account:
+    pattern: /unlink-account/{service}
+    defaults: { _controller: ActsCamdramSecurityBundle:Account:unlinkAccount }

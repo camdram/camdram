@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Handler;
 
+use Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,10 +41,12 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
      */
     private $userLinker;
 
-    public function __construct(SecurityContext $context, NameUtils $nameUtils, UserLinker $userLinker, HttpUtils $httpUtils, $providerKey)
+    public function __construct(SecurityContext $context, NameUtils $nameUtils, CamdramUserProvider $userProvider,
+                                UserLinker $userLinker, HttpUtils $httpUtils, $providerKey)
     {
         $this->securityContext = $context;
         $this->nameUtils = $nameUtils;
+        $this->userProvider = $userProvider;
         $this->userLinker = $userLinker;
         $this->setProviderKey($providerKey);
         parent::__construct($httpUtils, array());
@@ -66,12 +69,14 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 
             $camdram_token = $this->userLinker->findCamdramToken($token, $last_token);
             $external_token = $this->userLinker->findExternalToken($token, $last_token);
+//var_dump($camdram_token, $external_token);
 
             if ($camdram_token && $external_token && $camdram_token !== $external_token) {
                 $camdram_user = $camdram_token->getUser();
                 $external_user = $external_token->getUser();
 
                 if ($camdram_user instanceof ExternalUser) $camdram_user = $camdram_user->getUser();
+                $camdram_user = $this->userProvider->refreshUser($camdram_user);
 
                 if ($camdram_user && $external_user && !$external_user->getUser()) {
                     //We're attempted to link a Camdram account to an external account, or maybe someone else
@@ -91,13 +96,16 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 
                 //If a user has now logged in with both a camdram and external login, keep the camdram token as it has
                 //greater rights
-                if ($external_user->getUser() == $camdram_user && $camdram_token instanceof UsernamePasswordToken) {
+                if ($external_user->getUser()
+                        && $external_user->getUser()->getId() == $camdram_user->getId()
+                        && $camdram_token instanceof UsernamePasswordToken) {
                     $this->securityContext->setToken($camdram_token);
+                    $token = $camdram_token;
                 }
             }
 
         }
-        $request->getSession()->set(self::LAST_AUTHENTICATION_TOKEN, $token);
+        $request->getSession()->set(AuthenticationSuccessHandler::LAST_AUTHENTICATION_TOKEN, $this->securityContext->getToken());
         return $this->httpUtils->createRedirectResponse($request, $this->determineTargetUrl($request));
     }
 

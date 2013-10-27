@@ -194,6 +194,13 @@ class User implements \Serializable, CamdramUserInterface
     private $is_email_verified = false;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="profile_picture_url", type="string", nullable=true)
+     */
+    private $profile_picture_url;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -711,13 +718,14 @@ class User implements \Serializable, CamdramUserInterface
     {
         return serialize(array(
                 $this->id, $this->name, $this->email, $this->password, $this->registered,
-                $this->login, $this->person_id
+                $this->login, $this->occupation, $this->graduation, $this->person_id, $this->is_email_verified
         ));
     }
     public function unserialize($serialized)
     {
-        list( $this->id, $this->name, $this->email, $this->password, $this->registered,
-            $this->login, $this->person_id) = unserialize($serialized);
+        list($this->id, $this->name, $this->email, $this->password, $this->registered,
+            $this->login, $this->occupation, $this->graduation, $this->person_id,
+            $this->is_email_verified) = unserialize($serialized);
     }
 
     /**
@@ -777,9 +785,13 @@ class User implements \Serializable, CamdramUserInterface
      * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
      * @return User
      */
-    public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
+    public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser)
     {
-        $this->external_users[] = $externalUsers;
+        $this->external_users[] = $externalUser;
+
+        if (!$this->getProfilePictureUrl()) {
+            $this->setProfilePictureUrl($externalUser->getProfilePictureUrl());
+        }
     
         return $this;
     }
@@ -789,9 +801,9 @@ class User implements \Serializable, CamdramUserInterface
      *
      * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
      */
-    public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
+    public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser)
     {
-        $this->external_users->removeElement($externalUsers);
+        $this->external_users->removeElement($externalUser);
     }
 
     /**
@@ -810,7 +822,7 @@ class User implements \Serializable, CamdramUserInterface
             ->where(Criteria::expr()->eq("service", $service));
         $res = $this->external_users->matching($criteria);
         if (count($res) > 0) {
-            return $res[0];
+            return $res->first();
         }
     }
 
@@ -842,8 +854,27 @@ class User implements \Serializable, CamdramUserInterface
         return $this->is_email_verified;
     }
 
+
+    /**
+     * Set profile_picture_url
+     *
+     * @param string $profilePictureUrl
+     * @return User
+     */
+    public function setProfilePictureUrl($profilePictureUrl)
+    {
+        $this->profile_picture_url = $profilePictureUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get profile_picture_url
+     *
+     * @return string 
+     */
     public function getProfilePictureUrl()
     {
-        // TODO: Implement getProfilePictureUrl() method.
+        return $this->profile_picture_url;
     }
 }

@@ -15,3 +15,7 @@ acts_camdram_security_create_account_complete:
 acts_camdram_security_confirm_email:
     pattern:   /confirm-email/{email}/{token}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:confirmEmail }
+
+acts_camdram_security_settings_res:
+    prefix: /settings
+    resource: routing/settings.yml

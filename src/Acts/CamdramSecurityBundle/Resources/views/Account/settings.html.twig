@@ -1,0 +1,52 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Account Settings{% endblock %}
+
+{% block body %}
+  <div class="row">
+      <h3>Account Settings</h3>
+
+      <div class="row">
+          <div class="large-12 columns">
+              <p><strong>Name:</strong> {{ app.user.name }}</p>
+          </div>
+      </div>
+
+      <div class="panel">
+          <h5>Linked Accounts</h5>
+          {% for u in app.user.externalUsers %}
+              <p>
+                  <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ u.service ~ '.png') }}" alt="{{ u.service | capitalize }}" title="{{ u.service | capitalize }}" width="19" height="19" />
+                  Your Camdram account is linked to the {{ u.service | capitalize }} account {{ u.username }}
+                  <a href="{{ path('acts_camdram_security_unlink_account', {service: u.service}) }}">(unlink)</a>
+              </p>
+          {% endfor %}
+          {% for service in services %}
+              {% if app.user.getExternalUserByService(service.name) is null %}
+                  <p><a href="{{ path('acts_external_login_entry', {service: service.name}) }}" class="icon-link">
+                      <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service.name ~ '.png') }}" alt="{{ service.name | capitalize }}" title="{{ service.name | capitalize }}" width="19" height="19" />
+                      Link your Camdram account to your {{ service.name | capitalize }} account
+                  </a></p>
+              {% endif %}
+          {% endfor %}
+      </div>
+
+      <div class="panel" id="email">
+          <h5>E-mail address</h5>
+          <p>
+              {% if app.user.isEmailVerified %}
+                  Your email address has been verified
+              {% else %}
+                  Your email address has not been verified. <a href="{{ path('acts_camdram_security_resend_verification') }}">Resend verification email</a>
+              {% endif %}
+          </p>
+          {{ render(controller('ActsCamdramSecurityBundle:Account:changeEmail')) }}
+      </div>
+
+      <div class="panel" id="change-password">
+          <h5>Change password</h5>
+          {{ render(controller('ActsCamdramSecurityBundle:Account:changePassword')) }}
+      </div>
+
+  </div>
+{% endblock %}

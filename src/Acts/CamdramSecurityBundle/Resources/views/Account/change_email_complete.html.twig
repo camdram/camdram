@@ -1,0 +1,16 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Account Settings{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-12 columns">
+            <h3>Change Email</h3>
+
+            <p>You have successfully changed your email address.</p>
+            <p>You will shortly receive an email asking you to click on a link to verify your new email address.</p>
+
+            <a href="{{ path('acts_camdram_security_settings') }}" class="button small">Return to account settings</a>
+        </div>
+    </div>
+{% endblock %}

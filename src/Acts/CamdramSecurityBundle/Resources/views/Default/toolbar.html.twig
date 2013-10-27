@@ -1,15 +1,15 @@
 {% if app.user %}
     <li id="account-link" class="dropdown-link">
         <a href="#">
-            {% if app.user.profilePictureUrl %}<img src="{{ app.user.profilePictureUrl }}" width="22" height="22"/>{% endif %}
-            {{ app.user.displayName }}
-        </a>
-        <ul id="account-dropdown" class="dropdown">
             {% if app.user.type =='external' and app.user.user is not null %}
                 {% set main_user = app.user.user %}
             {% else %}
                 {%  set main_user = app.user %}
             {% endif %}
+            {% if main_user.profilePictureUrl %}<img src="{{ app.user.profilePictureUrl }}" width="22" height="22"/>{% endif %}
+            {{ main_user.displayName }}
+        </a>
+        <ul id="account-dropdown" class="dropdown">
             {% if main_user.person is defined and main_user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">My profile</a></li>{% endif %}
             {% if app.user.type == 'external' and app.user.user is null %}<li><a href="#">Create Camdram password</a></li>{% endif %}
 
@@ -22,8 +22,8 @@
                     </a></li>
                     {% endif %}
                 {% endfor %}
+                <li><a href="{{ path('acts_camdram_security_settings') }}">Account Settings</a></li>
             {% endif %}
-            <li><a href="{{ path('acts_camdram_settings') }}">Account Settings</a></li>
             <li><a href="{{ path('_security_logout') }}">Log out</a></li>
         </ul>
     </li>

@@ -1,0 +1,5 @@
+You requested for an e-mail verification e-mail to be resent. Please click on the link below to verify your email address
+
+{{ url('acts_camdram_security_confirm_email', {email: user.email, token: email_confirmation_token}) }}
+
+{% include 'ActsCamdramBundle:Email:signature.txt.twig' %}

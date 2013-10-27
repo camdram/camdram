@@ -20,11 +20,11 @@ services:
 
     camdram.security.authentication_success_handler:
         class: Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler
-        arguments: [@security.context, @camdram.security.name_utils, @camdram.security.user_linker, @security.http_utils, 'public']
+        arguments: [@security.context, @camdram.security.name_utils, @camdram.security.user.provider, @camdram.security.user_linker, @security.http_utils, 'public']
 
     camdram.security.entry_point:
         class: Acts\CamdramSecurityBundle\Security\EntryPoint\CamdramLoginEntryPoint
-        arguments: [@security.authentication.form_entry_point.public]
+        arguments: [@security.authentication.form_entry_point.public, @security.context]
 
     camdram.security.user_linker:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
@@ -67,6 +67,7 @@ services:
         arguments: [@swiftmailer.mailer, @twig, @camdram.security.email_confirmation_token_generator, %mailer_sender_address%]
         tags:
             - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
+            - { name: kernel.event_listener, event: camdram_security.email_changed, method: onEmailChangeEvent }
 
     ### Authorization voters
 

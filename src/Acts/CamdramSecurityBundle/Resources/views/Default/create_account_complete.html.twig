@@ -5,7 +5,7 @@
     <div class="large-12 columns">
     <h4>Create a Camdram account</h4>
     <p>Thank you for creating a Camdram account.
-        {% if not app.user.isEmailVerified %}An e-mail has been sent to the address provided with a link
+        {% if app.user.type == 'native' and not app.user.isEmailVerified %}An e-mail has been sent to the address provided with a link
             you can click on to verify your e-mail address.{% endif %}
     </p>
 

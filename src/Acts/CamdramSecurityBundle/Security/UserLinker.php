@@ -77,9 +77,6 @@ class UserLinker
         }
 
         if (isset($camdram_user) && isset($external_user)) {
-            $external_user = $this->entityManager->merge($external_user);
-            $camdram_user = $this->entityManager->merge($camdram_user);
-
             $external_user->setUser($camdram_user);
             $camdram_user->addExternalUser($external_user);
             $this->entityManager->flush();

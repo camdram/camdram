@@ -29,7 +29,6 @@ class CamdramUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($id)
     {
-        var_dump($id);die();
         return $this->em->getRepository('ActsCamdramBundle:User')->findOneByEmail($id);
     }
 

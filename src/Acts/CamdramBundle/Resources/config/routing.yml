@@ -9,9 +9,6 @@ acts_camdram_diary:
 acts_camdram_development:
     resource: "routing/development.yml"
     prefix: /development
-acts_camdram_settings:
-    pattern: /settings
-    defaults: { _controller: ActsCamdramBundle:Account:settings }
 acts_camdram_homepage:
     pattern:  /
     defaults: { _controller: ActsCamdramBundle:Default:index }

@@ -91,8 +91,9 @@ class DefaultController extends Controller
                 $em->flush();
 
                 $token = new UsernamePasswordToken($user, $user->getPassword(), 'public', $user->getRoles());
-                $this->get('security.context')->setToken($token);
                 $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::REGISTRATION_COMPLETE, new UserEvent($user));
+                $this->get('security.context')->setToken($token);
+                $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
                 return $this->redirect($this->generateUrl('acts_camdram_security_create_account_complete'));
             }
 
@@ -115,6 +116,12 @@ class DefaultController extends Controller
         }
         $user = $this->getUser();
         $link_user = $link_token->getUser();
+        if ($link_user instanceof ExternalUser) {
+            $link_user = $this->get('camdram.security.external_user.provider')->refreshUser($link_user);
+        }
+        elseif ($link_user instanceof User) {
+            $link_user = $this->get('camdram.security.user.provider')->refreshUser($link_user);
+        }
 
         if ($request->getMethod() == 'POST') {
             if ($request->request->has('link')) {
