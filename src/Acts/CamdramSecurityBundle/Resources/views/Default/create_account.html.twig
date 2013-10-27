@@ -1,0 +1,26 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <div class="large-12 columns">
+    <h4>Create a Camdram account</h4>
+    <p>Please fill in the details below to create a Camdram account.</p>
+    <form action="{{ path('acts_camdram_security_create_account') }}" method="post">
+        {{ form_row(form.name) }}
+        {{ form_row(form.email) }}
+        <div class="row">
+            <div class="large-3 columns">{{ form_label(form.password.password) }}</div>
+            <div class="large-3 columns">{{ form_widget(form.password.password) }}</div>
+            <div class="large-3 columns">{{ form_label(form.password.confirm) }}</div>
+            <div class="large-3 columns">{{ form_widget(form.password.confirm) }}</div>
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="row">
+            <div class="large-12 text-right"><input type="submit" value="Register" class="button"/></div>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock %}

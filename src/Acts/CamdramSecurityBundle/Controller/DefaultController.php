@@ -13,6 +13,7 @@ use Acts\CamdramSecurityBundle\Form\Type\LoginType,
     Acts\CamdramSecurityBundle\Entity\UserIdentity,
     Acts\CamdramBundle\Entity\User,
     Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
 class DefaultController extends Controller
@@ -67,53 +68,35 @@ class DefaultController extends Controller
 
     }
 
-    public function newUserAction(Request $request)
+    public function createAccountAction(Request $request)
     {
-        $token = $this->get('security.context')->getToken();
-        $service = $token->getLastService();
-        $complete = $service->getUserInfo('email') && $service->getUserInfo('name');
-
         $user = new User;
-        $user->setName($service->getUserInfo('name'));
-        $user->setEmail($service->getUserInfo('email'));
 
-        $errors = $this->get('validator')->validate($user);
+        $form = $this->createForm(new RegistrationType(), $user);
 
-        if (count($errors) == 0) {
-            //We've been passed enough information to create the account straight away
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-            $this->addIdentity($user, $service);
+        if ($request->getMethod() == 'POST') {
+            $form->submit($request);
+            if ($form->isValid()) {
+                $user = $form->getData();
 
-            $token->setUser($user);
-            $token->setAuthenticated(true);
+                $factory = $this->get('security.encoder_factory');
+                $encoder = $factory->getEncoder($user);
+                $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+                $user->setPassword($password);
 
-            return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'complete')));
-        }
-        else {
-            $form = $this->createForm(new RegistrationType(), $user);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            if ($request->getMethod() == 'POST') {
-                $form->bind($request);
-                if ($form->isValid()) {
-                    $user = $form->getData();
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($user);
-                    $em->flush();
-                    $this->addIdentity($user, $service);
-
-                    $token->setUser($user);
-                    $token->setAuthenticated(true);
-
-                    return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'complete')));
-                }
-
+                $token = new UsernamePasswordToken($user, $user->getPassword(), 'public', $user->getRoles());
+                $this->get('security.context')->setToken($token);
+                return $this->redirect($this->generateUrl('acts_camdram_homepage'));
             }
-            return $this->render('ActsCamdramSecurityBundle:Default:new_user.html.twig', array(
-                'form' => $form->createView(),
-            ));
+
         }
+        return $this->render('ActsCamdramSecurityBundle:Default:create_account.html.twig', array(
+            'form' => $form->createView(),
+        ));
 
     }
 

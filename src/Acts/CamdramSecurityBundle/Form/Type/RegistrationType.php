@@ -13,6 +13,12 @@ class RegistrationType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
+            ->add('password', 'repeated', array(
+               'first_name'  => 'password',
+               'second_name' => 'confirm',
+               'second_options' => array('label' => 'Confirm password'),
+               'type'        => 'password',
+            ))
             ->add('occupation', 'occupation')
             ->add('graduation', 'graduation_year')
         ;

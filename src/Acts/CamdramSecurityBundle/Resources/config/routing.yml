@@ -6,3 +6,6 @@ acts_camdram_security_login_check:
 acts_camdram_security_link_user:
     pattern:   /link-user
     defaults: { _controller: ActsCamdramSecurityBundle:Default:linkUser }
+acts_camdram_security_create_account:
+    pattern:   /create-account
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccount }
