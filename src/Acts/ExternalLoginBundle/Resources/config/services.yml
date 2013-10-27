@@ -28,3 +28,8 @@ services:
 
     external_login.service_provider:
         class: Acts\ExternalLoginBundle\Security\Service\ServiceProvider
+
+    external_login.security.voter.external_login:
+        class: Acts\ExternalLoginBundle\Security\Acl\Voter\ExternalLoginVoter
+        tags:
+            - { name: security.voter }

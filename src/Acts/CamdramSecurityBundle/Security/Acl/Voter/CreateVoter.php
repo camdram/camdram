@@ -2,9 +2,11 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Acts\CamdramBundle\Entity\Show;
+use Symfony\Component\Security\Core\User\User;
 
 /**
  * Grants access if

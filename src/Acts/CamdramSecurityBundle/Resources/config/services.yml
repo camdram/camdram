@@ -22,6 +22,10 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler
         arguments: [@security.context, @camdram.security.name_utils, @camdram.security.user_linker, @security.http_utils, 'public']
 
+    camdram.security.entry_point:
+        class: Acts\CamdramSecurityBundle\Security\EntryPoint\CamdramLoginEntryPoint
+        arguments: [@security.authentication.form_entry_point.public]
+
     camdram.security.user_linker:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
         arguments: [@doctrine.orm.entity_manager]

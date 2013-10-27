@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Controller;
 
+use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\HttpFoundation\Request,
@@ -12,6 +13,7 @@ use Acts\CamdramSecurityBundle\Form\Type\LoginType,
     Acts\CamdramSecurityBundle\Entity\UserIdentity,
     Acts\CamdramBundle\Entity\User,
     Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
+use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
 class DefaultController extends Controller
 {
@@ -25,39 +27,44 @@ class DefaultController extends Controller
 
     public function loginAction()
     {
-        $request = $this->getRequest();
-        $session = $request->getSession();
+        $session = $this->getRequest()->getSession();
 
-        // get the login error if there is one
+        $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+        $session->remove(SecurityContext::AUTHENTICATION_ERROR);
 
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(
-                SecurityContext::AUTHENTICATION_ERROR
+        if ($session->get(SecurityContext::LAST_USERNAME)) {
+            $last_email = $session->get(SecurityContext::LAST_USERNAME);
+        }
+        elseif ($this->getUser() instanceof User) {
+            $last_email = $this->getUser()->getEmail();
+        }
+        elseif ($this->getUser() instanceof ExternalUser && $this->getUser()->getUser()) {
+            $last_email = $this->getUser()->getUser()->getEmail();
+        }
+        else {
+            $last_email = '';
+        }
+
+        if ($session->get('_security.last_exception') instanceof InsufficientAuthenticationException) {
+            return $this->render(
+                'ActsCamdramSecurityBundle:Default:relogin.html.twig',
+                array(
+                    'last_email'    => $last_email,
+                    'error'         => $error,
+                )
             );
-        } else {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        }
+        else {
+            return $this->render(
+                'ActsCamdramSecurityBundle:Default:login.html.twig',
+                array(
+                    'services'      => $this->get('external_login.service_provider')->getServices(),
+                    'last_email'    => $last_email,
+                    'error'         => $error,
+                )
+            );
         }
 
-        $formBuilder = $this->createFormBuilder(array('email' => $request->get('email'), 'remember_me' => null))
-            ->add('email')
-            ->add('password', 'password');
-
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $formBuilder->add('remember_me', 'checkbox', array('label' => 'Automatically log in on this computer next time', 'required' => false));
-        }
-        $form = $formBuilder->getForm();
-
-        return $this->render(
-            'ActsCamdramSecurityBundle:Default:login.html.twig',
-            array(
-                // last username entered by the user
-                'services' => $this->get('external_login.service_provider')->getServices(),
-                'last_username' => $session->get(SecurityContext::LAST_USERNAME),
-                'form'          => $form->createView(),
-                'error'         => $error,
-            )
-        );
     }
 
     public function newUserAction(Request $request)
@@ -124,6 +131,7 @@ class DefaultController extends Controller
                 $this->get('camdram.security.user_linker')->linkUsers($user, $link_user);
                 $request->getSession()->remove(AuthenticationSuccessHandler::LAST_AUTHENTICATION_TOKEN);
                 $token = $this->get('camdram.security.user_linker')->findCamdramToken($link_token, $this->get('security.context')->getToken());
+                $this->get('security.context')->setToken($token);
                 return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
             }
             elseif ($request->request->has('old')) {

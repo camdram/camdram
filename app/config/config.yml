@@ -155,3 +155,6 @@ fos_js_routing:
     
 acts_time_mock:
     time_override: %current_time%
+
+parameters:
+    security.authentication.trust_resolver.class: Acts\ExternalLoginBundle\Security\Authentication\AuthenticationTrustResolver

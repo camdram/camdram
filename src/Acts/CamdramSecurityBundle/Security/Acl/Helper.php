@@ -1,6 +1,8 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
+use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -47,9 +49,9 @@ class Helper
         }
     }
 
-    public function ensureGranted($attributes, $object)
+    public function ensureGranted($attributes, $object, $fully_authenticated = true)
     {
-        if (false === $this->isGranted($attributes, $object)) {
+        if (false === $this->isGranted($attributes, $object, $fully_authenticated)) {
             throw new AccessDeniedException();
         }
     }

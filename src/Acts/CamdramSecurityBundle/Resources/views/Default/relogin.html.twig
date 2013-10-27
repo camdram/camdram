@@ -1,0 +1,51 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="twelve columns">
+
+            <h4>Log in to camdram.net</h4>
+
+            {% if has_role('IS_AUTHENTICATED_REMEMBERED') %}
+                <p class="panel">For security reasons, you must log in again before accessing this page.</p>
+            {% elseif has_role('IS_AUTHENTICATED_EXTERNALLY') %}
+                <p class="panel">For security reasons, you must provide your Camdram password before accessing this page.</p>
+            {% endif %}
+
+            {% if error %}
+                <div class="error_panel">
+                    <p>
+                        That password is invalid - please try again
+                    </p>
+                </div>
+            {% endif %}
+
+            <form method="post" action="{{ path('acts_camdram_security_login_check') }}">
+
+                <div class="row">
+                    <div class="large-3 columns">
+                        <label class="right inline">Email</label>
+                    </div>
+                    <div class="large-9 columns">
+                        <p>{{ last_email }}</p>
+                        <input type="hidden" name="email" value="{{ last_email }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="large-3 columns">
+                        <label class="right inline required{% if error %} error{% endif %}" for="form_password">Password</label>
+                    </div>
+                    <div class="large-9 columns">
+                        <input type="password" id="form_password" name="password" required="required"{% if error %} class="error"{% endif %} />
+                    </div>
+                </div>
+
+                <div class="text-right"><input type="submit" value="Log in" id="login_button" class="button"/> </div>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

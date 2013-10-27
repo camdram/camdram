@@ -21,12 +21,13 @@ security:
             pattern: ^/.*
             anonymous: true
             switch_user: { role: ROLE_ADMIN, parameter: _switch_to_user }
+            entry_point: camdram.security.entry_point
             logout:
                 path: /logout
                 target: /
             form_login:
-                username_parameter: form[email]
-                password_parameter: form[password]
+                username_parameter: email
+                password_parameter: password
                 success_handler:  camdram.security.authentication_success_handler
             external_login:
                 services: [raven, facebook, google]
