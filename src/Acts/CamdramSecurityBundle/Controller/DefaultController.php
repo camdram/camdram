@@ -40,6 +40,7 @@ class DefaultController extends Controller
 
         if ($session->get(SecurityContext::LAST_USERNAME)) {
             $last_email = $session->get(SecurityContext::LAST_USERNAME);
+            $session->remove(SecurityContext::LAST_USERNAME);
         }
         elseif ($this->getUser() instanceof User) {
             $last_email = $this->getUser()->getEmail();
