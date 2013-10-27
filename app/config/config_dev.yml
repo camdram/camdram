@@ -23,9 +23,8 @@ assetic:
     variables:
         env: [dev]
 
-# During development emails will be sent to me@example.com.
 swiftmailer:
-    delivery_address: me@example.com
+    delivery_address: %mailer_delivery_address%
 
 fos_js_routing:
     request_context_base_url: /app_dev.php

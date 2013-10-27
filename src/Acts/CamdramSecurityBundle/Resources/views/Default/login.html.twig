@@ -14,48 +14,7 @@
             </div>
         {% endif %}
 
-        <ul class="inline-list">
-            <li>Log in using</li>
-            {% for service in services %}
-                <li><a href="{{ path('acts_external_login_entry', {service: service.name}) }}" class="icon-link">
-                        <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service.name ~ '.png') }}" alt="{{ service.name | capitalize }}" title="{{ service.name | capitalize }}" width="19" height="19" />
-                        {{ service.name | capitalize }}
-                    </a></li>
-            {% endfor %}
-        </ul>
-        <p>Or, if you have already registered, use your e-mail address and password:</p>
-
-        <form method="post" action="{{ path('acts_camdram_security_login_check') }}">
-
-            <div class="row">
-                <div class="large-3 columns">
-                    <label class="right inline{% if error %} error{% endif %}" for="form_email">Email</label>
-                </div>
-                <div class="large-9 columns">
-                    <input type="text" id="form_email" name="email" required="required" value="{{ last_email }}"{% if error %} class="error"{% endif %} />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="large-3 columns">
-                    <label class="right inline required{% if error %} error{% endif %}" for="form_password">Password</label>
-                </div>
-                <div class="large-9 columns">
-                    <input type="password" id="form_password" name="password" required="required"{% if error %} class="error"{% endif %} />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="large-9 columns large-offset-3">
-                    <label for=form_remember_me><input type="checkbox" id="form_remember_me" name="_remember_me" value="1" />
-                        Automatically log in on this computer next time
-                    </label>
-                </div>
-            </div>
-
-            <div class="text-right"><input type="submit" value="Log in" id="login_button" class="button"/> </div>
-        </form>
-
+        {% include 'ActsCamdramSecurityBundle:Default:login_form.html.twig' %}
     </div>
 </div>
 {% endblock %}

@@ -20,7 +20,7 @@ class RegistrationType extends AbstractType
                'type'        => 'password',
             ))
             ->add('occupation', 'occupation')
-            ->add('graduation', 'graduation_year')
+            ->add('graduation', 'graduation_year', array('required' => false))
         ;
     }
 

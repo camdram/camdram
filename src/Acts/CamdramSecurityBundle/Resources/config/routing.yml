@@ -9,3 +9,9 @@ acts_camdram_security_link_user:
 acts_camdram_security_create_account:
     pattern:   /create-account
     defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccount }
+acts_camdram_security_create_account_complete:
+    pattern:   /create-account-complete
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccountComplete }
+acts_camdram_security_confirm_email:
+    pattern:   /confirm-email/{email}/{token}
+    defaults: { _controller: ActsCamdramSecurityBundle:Default:confirmEmail }

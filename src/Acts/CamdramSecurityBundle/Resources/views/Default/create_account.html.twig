@@ -4,15 +4,42 @@
 <div class="row">
     <div class="large-12 columns">
     <h4>Create a Camdram account</h4>
-    <p>Please fill in the details below to create a Camdram account.</p>
+    <p>Please fill in the details below to create a Camdram account. An account is required to create or edit shows.</p>
     <form action="{{ path('acts_camdram_security_create_account') }}" method="post">
         {{ form_row(form.name) }}
         {{ form_row(form.email) }}
         <div class="row">
             <div class="large-3 columns">{{ form_label(form.password.password) }}</div>
-            <div class="large-3 columns">{{ form_widget(form.password.password) }}</div>
+            <div class="large-3 columns">
+                {{ form_widget(form.password.password) }}
+                {{ form_errors(form.password.password) }}
+            </div>
             <div class="large-3 columns">{{ form_label(form.password.confirm) }}</div>
-            <div class="large-3 columns">{{ form_widget(form.password.confirm) }}</div>
+            <div class="large-3 columns">
+                {{ form_widget(form.password.confirm) }}
+                {{ form_errors(form.password.confirm) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <p>We use the following information will help us understand who is using Camdram and helpl improve it in the future.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-3 columns">
+                {{ form_label(form.occupation) }}
+            </div>
+            <div class="large-3 columns">
+                {{ form_widget(form.occupation) }}
+                {{ form_errors(form.occupation) }}
+            </div>
+            <div class="large-3 columns">
+                {{ form_label(form.graduation) }}
+            </div>
+            <div class="large-3 columns">
+                {{ form_widget(form.graduation) }}
+                {{ form_errors(form.graduation) }}
+            </div>
         </div>
 
         {{ form_rest(form) }}

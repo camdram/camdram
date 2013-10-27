@@ -3,6 +3,8 @@
 namespace Acts\CamdramSecurityBundle\Controller;
 
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
+use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
+use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\RedirectResponse,
     Symfony\Component\HttpFoundation\Request,
@@ -90,14 +92,19 @@ class DefaultController extends Controller
 
                 $token = new UsernamePasswordToken($user, $user->getPassword(), 'public', $user->getRoles());
                 $this->get('security.context')->setToken($token);
-                return $this->redirect($this->generateUrl('acts_camdram_homepage'));
+                $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::REGISTRATION_COMPLETE, new UserEvent($user));
+                return $this->redirect($this->generateUrl('acts_camdram_security_create_account_complete'));
             }
 
         }
         return $this->render('ActsCamdramSecurityBundle:Default:create_account.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
 
+    public function createAccountCompleteAction()
+    {
+        return $this->render('ActsCamdramSecurityBundle:Default:create_account_complete.html.twig', array());
     }
 
     public function linkUserAction(Request $request)
@@ -131,6 +138,24 @@ class DefaultController extends Controller
             'user' => $user,
             'link_user' => $link_user
         ));
+    }
+
+    public function confirmEmailAction($email, $token)
+    {
+        $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User')->findOneByEmail($email);
+        if ($user && !$user->getIsEmailVerified()) {
+            $expected_token = $this->get('camdram.security.email_confirmation_token_generator')->generate($user);
+            if ($token == $expected_token) {
+                $user->setIsEmailVerified(true);
+                $this->getDoctrine()->getManager()->flush();
+                $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::EMAIL_VERIFIED, new UserEvent($user));
+                return $this->render('ActsCamdramSecurityBundle:Default:confirm_email.html.twig', array(
+                    'confirm_user' => $user,
+                    'services'      => $this->get('external_login.service_provider')->getServices(),
+                ));
+            }
+        }
+        return $this->render('ActsCamdramSecurityBundle:Default:confirm_email_error.html.twig', array());
     }
 
 }

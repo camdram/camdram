@@ -17,6 +17,7 @@ parameters:
     mailer_user:       your_gmail_username
     mailer_password:   your_gmail_password
     mailer_delivery_address: example@example.com
+    mailer_sender_address    : websupport@camdram.net
 
     current_time:      "2001-02-27 12:30:07"
 

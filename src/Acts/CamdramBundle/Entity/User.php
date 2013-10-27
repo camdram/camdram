@@ -6,6 +6,7 @@ use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use Acts\CamdramBundle\Entity\Person;
 
@@ -14,6 +15,7 @@ use Acts\CamdramBundle\Entity\Person;
  *
  * @ORM\Table(name="acts_users")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\UserRepository")
+ * @UniqueEntity(fields="email", message="An account already exists with that email address")
  */
 class User implements \Serializable, CamdramUserInterface
 {
@@ -46,6 +48,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="pass", type="string", length=32, nullable=true)
+     * @Assert\Length(min=8, max=100, minMessage="The password must be at least 8 characters long")
      */
     private $password;
 
@@ -103,7 +106,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="graduation", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $graduation;
 
@@ -184,6 +186,12 @@ class User implements \Serializable, CamdramUserInterface
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user")
      */
     private $external_users;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="is_email_verified", type="boolean")
+     */
+    private $is_email_verified = false;
 
     /**
      * Get id
@@ -809,5 +817,28 @@ class User implements \Serializable, CamdramUserInterface
     public function getType()
     {
         return 'native';
+    }
+
+    /**
+     * Set is_email_verified
+     *
+     * @param boolean $isEmailVerified
+     * @return User
+     */
+    public function setIsEmailVerified($isEmailVerified)
+    {
+        $this->is_email_verified = $isEmailVerified;
+    
+        return $this;
+    }
+
+    /**
+     * Get is_email_verified
+     *
+     * @return boolean 
+     */
+    public function getIsEmailVerified()
+    {
+        return $this->is_email_verified;
     }
 }
