@@ -14,7 +14,9 @@ facebook:
             response: {root: 'data'}
         current_user:
             path: /me
+            defaults: {fields: "id,name,email,username,picture"}
             arguments: []
+            response: {map: {picture: picture.data}}
         posts:
             path: /{id}/posts
             arguments: [id, limit]

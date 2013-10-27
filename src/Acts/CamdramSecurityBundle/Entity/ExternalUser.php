@@ -71,6 +71,12 @@ class ExternalUser implements CamdramUserInterface
      */
     private $email;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="profile_picture_url", type="string", length=255, nullable=true)
+     */
+    private $profile_picture_url;
 
     /**
      * Get id
@@ -291,5 +297,28 @@ class ExternalUser implements CamdramUserInterface
     public function getType()
     {
         return 'external';
+    }
+
+    /**
+     * Set profile_picture_url
+     *
+     * @param string $profilePictureUrl
+     * @return ExternalUser
+     */
+    public function setProfilePictureUrl($profilePictureUrl)
+    {
+        $this->profile_picture_url = $profilePictureUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get profile_picture_url
+     *
+     * @return string 
+     */
+    public function getProfilePictureUrl()
+    {
+        return $this->profile_picture_url;
     }
 }

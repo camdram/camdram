@@ -45,7 +45,7 @@ class ApiResponse implements \ArrayAccess, \Iterator, \Countable
 
     private function decompose($key)
     {
-        $parts = explode($key,'.',2);
+        $parts = explode('.',$key,2);
         if (count($parts) == 2) return $parts;
         else return false;
     }

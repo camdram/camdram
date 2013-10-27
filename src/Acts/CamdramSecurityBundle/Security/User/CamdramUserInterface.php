@@ -12,4 +12,6 @@ interface CamdramUserInterface extends UserInterface {
     public function getUsername();
 
     public function getType();
+
+    public function getProfilePictureUrl();
 }

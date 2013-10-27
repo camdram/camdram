@@ -188,12 +188,39 @@ header input[type=search]:focus {
   -moz-box-shadow:none;
 }
 
-#login-dropdown {
-  width:300px;
-  background:$light-grey;
+.dropdown {
   position:absolute;
   top:9999px;
   z-index:99;
+}
+
+#account-link img {
+  margin-right:3px;
+  box-shadow: 0 0 3px #fff;
+  margin-top:-7px;
+  margin-bottom:-4px;
+}
+
+#account-dropdown {
+  $default-float: right;
+  @include dropdown-container(list, true, 300px);
+  margin:0;
+  width:auto;
+  list-style:none;
+
+  a {
+    padding:0.2em 0.8em;
+    display:block;
+    &:hover {
+      background:#eee;
+    }
+  }
+
+}
+
+#login-dropdown {
+  width:300px;
+  background:$light-grey;
   color:white;
   font-size:0.8em;
   padding-top:1em;

@@ -1,19 +1,37 @@
 {% if app.user %}
-    <li class="has-dropdown">
-        {# {% if app.user.person %}<a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">{{ app.user.name }}</a>
-         {% else %}<a href="#">{{ app.user.name }}</a>{% endif %}#}
-        <a href="#" data-dropdown="account-dropdown" data-options="is_hover:true">{{ app.user.displayName }}</a>
-        <div class="f-dropdown content small" id="account-dropdown">
-            {% if app.user.person is defined and app.user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">My profile</a></li>{% endif %}
-            <a href="{{ path('acts_camdram_settings') }}">Settings</a>
-            <a href="{{ path('_security_logout') }}">Log out</a>
-        </div>
+    <li id="account-link" class="dropdown-link">
+        <a href="#">
+            {% if app.user.profilePictureUrl %}<img src="{{ app.user.profilePictureUrl }}" width="22" height="22"/>{% endif %}
+            {{ app.user.displayName }}
+        </a>
+        <ul id="account-dropdown" class="dropdown">
+            {% if app.user.type =='external' and app.user.user is not null %}
+                {% set main_user = app.user.user %}
+            {% else %}
+                {%  set main_user = app.user %}
+            {% endif %}
+            {% if main_user.person is defined and main_user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">My profile</a></li>{% endif %}
+            {% if app.user.type == 'external' and app.user.user is null %}<li><a href="#">Create Camdram password</a></li>{% endif %}
+
+            {% if main_user.type == 'native' %}
+                {% for service in ['facebook'] %}
+                    {% if not main_user.getExternalUserByService(service) %}
+                    <li><a href="{{ path('acts_external_login_entry', {service: service}) }}" class="icon-link">
+                        <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service ~ '.png') }}" alt="{{ service | capitalize }}" title="{{ service | capitalize }}" width="19" height="19" />
+                        Link account to {{ service | capitalize }}
+                    </a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <li><a href="{{ path('acts_camdram_settings') }}">Account Settings</a></li>
+            <li><a href="{{ path('_security_logout') }}">Log out</a></li>
+        </ul>
     </li>
 {% else %}
     <li>
         <a href="{{ path('acts_camdram_security_create_account') }}">Create an account</a>
     </li>
-    <li id="login-link">
+    <li id="login-link" class="dropdown-link">
 
         <a href="#">Log in</a>
             {% for service in services %}
@@ -22,7 +40,7 @@
                </a>
             {% endfor %}
 
-        <div id="login-dropdown">
+        <div id="login-dropdown" class="dropdown">
             <form action="{{ path('acts_camdram_security_login_check') }}" method="post">
                 <div class="row">
                     <div class="small-3 columns"><label for="login_email">Email</label></div>

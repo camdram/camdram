@@ -841,4 +841,9 @@ class User implements \Serializable, CamdramUserInterface
     {
         return $this->is_email_verified;
     }
+
+    public function getProfilePictureUrl()
+    {
+        // TODO: Implement getProfilePictureUrl() method.
+    }
 }

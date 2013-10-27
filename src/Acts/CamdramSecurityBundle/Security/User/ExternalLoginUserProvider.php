@@ -68,9 +68,20 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
         $user->setUsername($userinfo['username']);
         $user->setName($userinfo['name']);
         $user->setToken($access_token);
+
+        if (isset($userinfo['picture'])) {
+            if (isset($userinfo['picture']['url'])) {
+                if ($userinfo['picture']['is_silhouette'] === false) {
+                    $user->setProfilePictureUrl($userinfo['picture']['url']);
+                }
+            }
+            else $user->setProfilePictureUrl($userinfo['picture']);
+        }
+
         $this->em->persist($user);
         $this->em->flush();
         return $user;
     }
+
 
 }
