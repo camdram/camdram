@@ -66,10 +66,10 @@ class ViewPaginatorListener
                     $request->query->set('page', 1);
                 }
                 if (!$request->get('limit')) {
-                    $request->query->set('limit', ($request->getRequestFormat() == 'html') ? 10 : 50);
+                    $request->query->set('limit', $paginator->getMaxPerPage());
                 }
 
-                $paginator->setMaxPerPage($request->get('limit'));
+                if (!$paginator->getMaxPerPage()) $paginator->setMaxPerPage($request->get('limit'));
                 $paginator->setCurrentPage($request->get('page'));
 
                 $url = $this->router->generate($request->get('_route'), array('_format' => $request->getRequestFormat('')), true);

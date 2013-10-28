@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramBundle\Rest;
 
+use Pagerfanta\Pagerfanta;
 use Pagerfanta\PagerfantaInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,7 @@ class PaginatedCollection
      */
     public $query;
 
-    public function __construct(PagerfantaInterface $paginator, Request $request, $base_url)
+    public function __construct(Pagerfanta $paginator, Request $request, $base_url)
     {
         $this->data = $paginator->getCurrentPageResults();
         $this->total_count = $paginator->getNbResults();
@@ -65,6 +66,10 @@ class PaginatedCollection
         if ($paginator->hasNextPage()) {
             $query['page'] = $paginator->getNextPage();
             $this->urls['next'] = $base_url.'?'.http_build_query($query);
+            if ($paginator->getCurrentPage() < $paginator->getNbPages() - 1) {
+                $query['page'] = $paginator->getNbPages();;
+                $this->urls['end'] = $base_url.'?'.http_build_query($query);
+            }
         }
     }
 }

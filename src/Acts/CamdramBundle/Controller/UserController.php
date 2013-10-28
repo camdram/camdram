@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
@@ -52,6 +54,34 @@ class UserController extends AbstractRestController
     protected function getForm($society = null)
     {
         return $this->createForm(new UserType(), $society);
+    }
+
+    /**
+     * Action which returns a list of entities.
+     *
+     * If a search term 'q' is provided, then a text search is performed against Sphinx. Otherwise, a paginated
+     * collection of all entities is returned.
+     */
+    public function cgetAction(Request $request)
+    {
+        $this->checkAuthenticated();
+        if ($request->get('q')) {
+            /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
+            $search_provider = $this->get('acts.camdram.search_provider');
+            $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), array());
+        }
+        else {
+            $repo = $this->getRepository();
+            $qb = $repo->createQueryBuilder('e');
+            $adapter = new DoctrineORMAdapter($qb);
+            $data = new Pagerfanta($adapter);
+            $data->setMaxPerPage(25);
+        }
+
+        return $this->view($data, 200)
+            ->setTemplateVar('result')
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+        ;
     }
 
     public function newAceAction(Request $request, $identifier)

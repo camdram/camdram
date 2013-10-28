@@ -25,7 +25,8 @@ class AdminVoter implements VoterInterface
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         foreach ($token->getRoles() as $role) {
-            if ($role->getRole() == 'ROLE_ADMIN') return self::ACCESS_GRANTED;
+            if ($role->getRole() == 'ROLE_ADMIN'
+                || $role->getRole() == 'ROLE_SUPER_ADMIN') return self::ACCESS_GRANTED;
         }
 
         return self::ACCESS_ABSTAIN;

@@ -13,6 +13,10 @@
 
         <p><a href="{{ path('edit_user', {identifier: user.id}) }}">Edit</a></p>
 
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Registered:</strong> {% if user.registered > date('0000-00-00') %}{{ user.registered | date('Y-m-d') }}{% endif %}</td>
+        <p><strong>Last login:</strong> {% if user.login > date('0000-00-00') %}{{ user.login | date('Y-m-d') }}{% endif %}</td>
+
         {% if user.person %}
             <p>Linked to person <a href="{{ path('get_person', {identifier: user.person.slug}) }}">{{ user.person.name }}</a></p>
         {% endif %}
@@ -26,13 +30,7 @@
         </ul>
         {% endif %}
 
-        <h4>{{ user.name }} is the owner of:</h4>
-        <ul>
-            {% for entity in acl_entries(user) %}
-                <li><a href="{{ path('get_entity', {id: entity.id}) }}">{{ entity.name }}</a> ({{ entity.entityType }})</li>
-            {% endfor %}
-        </ul>
-        {% render url('new_user_ace', {identifier: user.id}) %}
+        <a href="{{ path('get_users') }}" class="button small">Back to user list</a>
     </div>
 
 </div>

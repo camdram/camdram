@@ -1,17 +1,17 @@
 {% if result.count != result.total_count %}
 <div class="row">
-    <div class="three columns">
-        <ul class="link-list left">
+    <div class="small-3 columns">
+        <ul class="inline-list left">
             {% if result.urls.start is defined %}<li><a href="{{ result.urls.start }}">First Page</a></li>{% endif %}
             {% if result.urls.previous is defined %}<li><a href="{{ result.urls.previous }}">Previous Page</a></li>{% endif %}
         </ul>
     </div>
-    <div class="six columns text-center">
+    <div class="small-6 columns text-center">
         Results {{ (result.query.page-1) * result.query.limit + 1}} - {{ (result.query.page-1) * result.query.limit + result.count }}
         / {{ result.total_count }}
     </div>
-    <div class="three columns">
-        <ul class="link-list right">
+    <div class="small-3 columns">
+        <ul class="inline-list right">
             {% if result.urls.next is defined %}<li><a href="{{ result.urls.next }}">Next Page</a></li>{% endif %}
             {% if result.urls.end is defined %}<li><a href="{{ result.urls.end }}">Last Page</a></li>{% endif %}
         </ul>

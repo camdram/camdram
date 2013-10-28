@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
 
 use Acts\CamdramBundle\Entity\Person;
 
@@ -113,6 +114,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="tel", type="string", length=50, nullable=true)
+     * @Serializer\Exclude()
      */
     private $tel;
 
@@ -120,6 +122,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="dbemail", type="boolean", nullable=true)
+     * @Serializer\Exclude()
      */
     private $db_email;
 
@@ -127,6 +130,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="dbphone", type="boolean", nullable=true)
+     * @Serializer\Exclude()
      */
     private $db_phone;
 
@@ -134,6 +138,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="forumnotify", type="boolean", nullable=true)
+     * @Serializer\Exclude()
      */
     private $forum_notify;
 
@@ -141,6 +146,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="threadmessages", type="boolean", nullable=true)
+     * @Serializer\Exclude()
      */
     private $thread_messages;
 
@@ -148,6 +154,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="reversetime", type="boolean", nullable=false)
+     * @Serializer\Exclude()
      */
     private $reverse_time;
 
@@ -155,6 +162,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="resetcode", type="string", length=32, nullable=true)
+     * @Serializer\Exclude()
      */
     private $reset_code;
 
@@ -169,6 +177,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var Person
      *
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="users")
+     * @Serializer\Exclude()
      *
      */
     private $person;
@@ -184,6 +193,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var array
      *
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user")
+     * @Serializer\Exclude()
      */
     private $external_users;
 
@@ -204,6 +214,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var array
      *
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="user")
+     * @Serializer\Exclude()
      */
     private $aces;
 
@@ -930,7 +941,9 @@ class User implements \Serializable, CamdramUserInterface
     public function getSecurityAces()
     {
         $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('type', 'security'));
+        $criteria->where(Criteria::expr()->eq('type', 'security'))
+            ->andWhere(Criteria::expr()->isNull('revoked_by'))
+            ->andWhere(Criteria::expr()->neq('granted_by', null));
         return $this->getAces()->matching($criteria);
     }
 

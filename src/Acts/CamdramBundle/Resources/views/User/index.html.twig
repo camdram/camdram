@@ -8,29 +8,45 @@
 
         <form action="{{ path('get_users') }}" method="get">
             <div class="row">
-                <div class="three columns">
+                <div class="large-3 columns">
                     <label for="user_search_box" class="right inline">Search</label>
                 </div>
-                <div class="three columns">
+                <div class="large-3 columns">
                     <input id="user_search_box"  type="text" name="q"/>
                 </div>
-                <div class="six columns">
-                    <input type="submit" class="button"/>
+                <div class="large-6 columns">
+                    <input type="submit" class="button small"/>
                 </div>
             </div>
         </form>
 
         {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
-        <hr/>
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date joined</th>
+                <th>Last login</th>
+            </tr>
+            </thead>
+        <tbody>
         {% for user in result.data %}
-            <div class="panel">
-                <h5>{{ user.name }}</h5>
-                <p><a href="{{ path('get_user', {identifier: user.id}) }}">View</a> |
-                    <a href="{{ path('edit_user', {identifier: user.id}) }}">Edit</a> |
-                    <a href="{{ path('remove_user', {identifier: user.id}) }}">Delete</a></p>
-            </div>
+        <tr>
+            <td><a href="{{ path('get_user', {identifier: user.id}) }}">View</a></td>
+            <td><a href="{{ path('edit_user', {identifier: user.id}) }}">Edit</a></td>
+            <td><a href="{{ path('remove_user', {identifier: user.id}) }}">Delete</a></td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{% if user.registered > date('0000-00-00') %}{{ user.registered | date('Y-m-d') }}{% endif %}</td>
+            <td>{% if user.login > date('0000-00-00') %}{{ user.login | date('Y-m-d') }}{% endif %}</td>
+        </tr>
         {% endfor %}
-        <hr/>
+        </tbody>
+        </table>
         {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
 
     </div>

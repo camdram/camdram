@@ -290,6 +290,11 @@ ul.dropdown {
   }
 }
 
+table {
+  border-collapse: collapse;
+  width:100%;
+}
+
 $panel-font-color-alt: #f00;
 .error_panel {
   @include panel(rgba(198, 15, 19, 0.1));
