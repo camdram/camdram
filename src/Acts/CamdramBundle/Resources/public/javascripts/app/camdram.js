@@ -316,10 +316,11 @@
         });*/
 
         $('.dropdown-link').each(function() {
-            $link = $(this);
-            $dropdown = $(this).find('.dropdown');
+            var $link = $(this);
+            var $dropdown = $('.dropdown', $link);
             $dropdown.hide();
             var hideEnabled = true;
+
             $link.mouseenter(function() {
                 $dropdown.css({
                     'position': 'absolute',

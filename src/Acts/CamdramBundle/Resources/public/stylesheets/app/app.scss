@@ -201,7 +201,7 @@ header input[type=search]:focus {
   margin-bottom:-4px;
 }
 
-#account-dropdown {
+ul.dropdown {
   $default-float: right;
   @include dropdown-container(list, true, 300px);
   margin:0;

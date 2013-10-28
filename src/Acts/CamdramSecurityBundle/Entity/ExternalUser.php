@@ -223,7 +223,11 @@ class ExternalUser implements CamdramUserInterface
      * @inheritdoc
      */
     public function getRoles() {
-        return array('ROLE_USER', 'ROLE_EXTERNAL', 'ROLE_'.strtoupper($this->getService()));
+        $roles = array('ROLE_USER');
+        if ($this->getUser()) {
+            $roles = array_merge($roles, $this->getUser()->getRoles());
+        }
+        return $roles;
     }
 
     /**

@@ -1,4 +1,7 @@
 {% if app.user %}
+    {% if has_role('ROLE_SUPER_ADMIN') %}
+        {{ include('ActsCamdramSecurityBundle:Default:toolbar_admin.html.twig') }}
+    {% endif %}
     <li id="account-link" class="dropdown-link">
         <a href="#">
             {% if app.user.type =='external' and app.user.user is not null %}
@@ -6,7 +9,7 @@
             {% else %}
                 {%  set main_user = app.user %}
             {% endif %}
-            {% if main_user.profilePictureUrl %}<img src="{{ app.user.profilePictureUrl }}" width="22" height="22"/>{% endif %}
+            {% if main_user.profilePictureUrl %}<img src="{{ main_user.profilePictureUrl }}" width="22" height="22"/>{% endif %}
             {{ main_user.displayName }}
         </a>
         <ul id="account-dropdown" class="dropdown">

@@ -30,7 +30,7 @@ class UserController extends AbstractRestController
     protected function checkAuthenticated()
     {
         $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
-        $this->get('camdram.security.utils')->ensureRole('ROLE_ADMIN');
+        $this->get('camdram.security.utils')->ensureRole('ROLE_SUPER_ADMIN');
     }
 
     protected function getEntity($identifier)

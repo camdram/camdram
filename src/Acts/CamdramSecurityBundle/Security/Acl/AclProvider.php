@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
+use Acts\CamdramBundle\Entity\Organisation;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Doctrine\ORM\EntityManager;
 
@@ -49,7 +50,7 @@ class AclProvider
         $ace = new AccessControlEntry;
         $ace->setUser($user);
 
-        $ace->setEntity($entity)
+        $ace->setEntityId($entity->getId())
             ->setCreatedAt(new \DateTime)
             ->setGrantedBy($granter)
             ->setGrantedAt(new \DateTime);

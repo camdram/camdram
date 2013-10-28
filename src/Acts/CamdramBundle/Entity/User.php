@@ -201,6 +201,13 @@ class User implements \Serializable, CamdramUserInterface
     private $profile_picture_url;
 
     /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="user")
+     */
+    private $aces;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -642,6 +649,15 @@ class User implements \Serializable, CamdramUserInterface
     public function getRoles()
     {
         $roles = array('ROLE_USER');
+
+        foreach ($this->getSecurityAces() as $ace) {
+            switch ($ace->getEntityId()) {
+                case -1: $roles[] = 'ROLE_SUPER_ADMIN'; break;
+                case -2: $roles[] = 'ROLE_ADMIN'; break;
+                case -3: $roles[] = 'ROLE_EDITOR'; break;
+            }
+        }
+
         return $roles;
     }
 
@@ -877,4 +893,45 @@ class User implements \Serializable, CamdramUserInterface
     {
         return $this->profile_picture_url;
     }
+
+    /**
+     * Add aces
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
+     * @return User
+     */
+    public function addAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
+    {
+        $this->aces[] = $aces;
+    
+        return $this;
+    }
+
+    /**
+     * Remove aces
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
+     */
+    public function removeAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
+    {
+        $this->aces->removeElement($aces);
+    }
+
+    /**
+     * Get aces
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAces()
+    {
+        return $this->aces;
+    }
+
+    public function getSecurityAces()
+    {
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq('type', 'security'));
+        return $this->getAces()->matching($criteria);
+    }
+
 }

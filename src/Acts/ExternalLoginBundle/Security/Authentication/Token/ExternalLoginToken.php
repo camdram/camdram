@@ -10,11 +10,12 @@ class ExternalLoginToken extends AbstractToken
      * @param string $accessToken The OAuth access token
      * @param array  $roles       Roles for the token
      */
-    public function __construct($service_name, array $roles = array())
+    public function __construct($service_name, $access_token, array $roles = array())
     {
         parent::__construct($roles);
-        parent::setAttribute('service_name', $service_name);
-        parent::setAuthenticated(count($roles) > 0);
+        $this->setAttribute('service_name', $service_name);
+        $this->setAuthenticated(count($roles) > 0);
+        $this->setAccessToken($access_token);
     }
 
     public function getServiceName()

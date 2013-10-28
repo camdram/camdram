@@ -38,7 +38,7 @@ class AccessControlEntry
     /**
      * @var \Acts\CamdramBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User", inversedBy="aces")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      * })

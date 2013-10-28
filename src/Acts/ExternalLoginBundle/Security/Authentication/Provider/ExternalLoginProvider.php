@@ -74,15 +74,14 @@ class ExternalLoginProvider implements AuthenticationProviderInterface
             catch (UsernameNotFoundException $e) {
                 $user = $this->userProvider->persistUser($userinfo, $token->getServiceName(), $token->getAccessToken());
             }
+            $token = new ExternalLoginToken($service->getName(), $token->getAccessToken(), $user->getRoles());
             $token->setUser($user);
-            $token->setAuthenticated(true);
         }
 
         $user = $token->getUser();
         if ($user instanceof UserInterface) {
             $this->userChecker->checkPostAuth($user);
         }
-
         return $token;
     }
 }

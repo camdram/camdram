@@ -45,7 +45,7 @@ class EmailDispatcher
             ->setFrom($this->from_address)
             ->setTo($user->getEmail())
             ->setBody(
-                $this->renderView(
+                $this->twig->render(
                     'ActsCamdramBundle:Email:resend_email_verification.txt.twig',
                     array(
                         'user'                     => $user,
@@ -54,7 +54,7 @@ class EmailDispatcher
                 )
             )
         ;
-        $this->get('mailer')->send($message);
+        $this->mailer->send($message);
     }
 
     public function sendEmailVerifyEmail(User $user, $token)

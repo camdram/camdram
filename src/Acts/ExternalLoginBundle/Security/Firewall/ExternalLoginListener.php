@@ -134,11 +134,10 @@ class ExternalLoginListener implements ListenerInterface
 
     protected function doAuthentication(Request $request, ServiceInterface $service)
     {
-        $token = new ExternalLoginToken($service->getName());
         try {
             $access_token = $service->getAccessToken($request, $this->getReturnUrl($request, $service->getName()));
-            $token->setAccessToken($access_token);
-            $this->authenticationManager->authenticate($token);
+            $token = new ExternalLoginToken($service->getName(), $access_token);
+            $token = $this->authenticationManager->authenticate($token);
 
             $this->sessionStrategy->onAuthentication($request, $token);
 
