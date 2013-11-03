@@ -8,15 +8,31 @@ virtual machine.
 1) Install programs
 --------------------
 
-On Linux, vagrant should be in the package repository. We also use NFS to set up 
-a shared folder between the two machines, and Git to mange to the source code.
+In addition to Vagrant, camdram uses NFS to set up a shared folder between the 
+two machines, and Git to mange to the source code.
+* [VirtualBox][1] - virtualizaion
+* Vagrant - for configuring development environments
+* Git - source code management
+* NFs 
 
-`sudo apt-get install vagrant nfs-kernel-server git-core`
+###Debian-based distributions, e.g. Ubuntu
+
+    $ sudo apt-get install vagrant nfs-kernel-server git-core
+
+###RPM-based distributions, e.g. Fedora
+
+    $ sudo yum install VirtualBox nfs-utils git-core
+
+The current version of Fedora (19) doesn't include vagrant in its package repository.
+Download the latest version of Vagrant from the [downloads][2] page and install, e.g.
+
+    $ wget http://files.vagrantup.com/packages/a40522f5fabccb9ddabad03d836e120ff5d14093/vagrant_1.3.5_x86_64.rpm
+    $ sudo yum install vagrant_1.3.5_x86_64.rpm`
 
 1) Create a checkout of the Camdram repository
 ----------------------------------------------
 
-Create an account on Gihub, then 'fork' this repository using the link above.
+Create an account on Github, then 'fork' this repository using the link above.
 
 Run `git clone https://github.com/YOUR-GITHUB-USERNAME/camdram.git`, which will pull a copy of
 the code into a new folder called 'camdram'
@@ -56,3 +72,6 @@ make this hostname point to the virtual machine.
    get in touch with one of the developers. It would probably be wise to get in
    touch before starting on any significant projects to avoid wasted effort!
  * Visit http://try.github.io/ if you're not familiar with Git.
+
+[1]: http://www.virtualbox.org/
+[2]: http://downloads.vagrantup.com/
