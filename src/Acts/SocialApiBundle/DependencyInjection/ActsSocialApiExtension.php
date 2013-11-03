@@ -25,7 +25,6 @@ class ActsSocialApiExtension extends Extension
         $configuration = new Configuration();
         $this->processDefaultConfiguration($configs);
         $config = $this->processConfiguration($configuration, $configs);
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
@@ -35,6 +34,8 @@ class ActsSocialApiExtension extends Extension
         $httpClient->addMethodCall('setMaxRedirects', array($config['http_client']['max_redirects']));
         $httpClient->addMethodCall('setIgnoreErrors', array($config['http_client']['ignore_errors']));
         $container->setDefinition('acts.social_api.http_client', $httpClient);
+
+        $container->setParameter('acts.social_api.user_agent', $config['http_client']['user_agent']);
 
         $api_names = array();
 

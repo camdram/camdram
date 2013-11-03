@@ -31,6 +31,8 @@ class OAuth2ApiTest extends \PHPUnit_Framework_TestCase
                 'path' => '/search',
                 'arguments' => array('q', 'type'),
                 'requires_authentication' => true,
+                'defaults' => array(),
+                'url_has_params' => false,
                 'method' => 'GET',
                 'response' => array('root' => null, 'map' => array())
             )
@@ -42,7 +44,7 @@ class OAuth2ApiTest extends \PHPUnit_Framework_TestCase
         $this->httpClient = $this->getMock('\Buzz\Client\Curl');
         $this->api = $this->getMockBuilder('\Acts\SocialApiBundle\Service\OAuth2Api')
             ->setMethods(array('httpRequest', 'doRequestToken', 'doAccessToken'))
-            ->setConstructorArgs(array($this->httpClient, new Inflector, 'facebook', $this->config))
+            ->setConstructorArgs(array($this->httpClient, new Inflector, 'facebook', 'test_agent', $this->config))
             ->getMock();
     }
 

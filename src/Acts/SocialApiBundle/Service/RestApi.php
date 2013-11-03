@@ -38,16 +38,22 @@ class RestApi
     private $inflector;
 
     /**
+     * @var string
+     */
+    private $user_agent;
+
+    /**
      * @param \Buzz\Client\ClientInterface $httpClient
      * @param \Acts\SocialApiBundle\Utils\Inflector $inflector
      * @param $name
      * @param array $config
      */
-    public function __construct(HttpClientInterface $httpClient, Inflector $inflector, $name, array $config)
+    public function __construct(HttpClientInterface $httpClient, Inflector $inflector, $name,  $user_agent, array $config)
     {
         $this->httpClient = $httpClient;
         $this->inflector = $inflector;
         $this->name = $name;
+        $this->user_agent = $user_agent;
         $this->config = $config;
     }
 
@@ -89,8 +95,9 @@ class RestApi
         $response = new HttpResponse();
 
         $headers = array_merge($headers,
-            array('User-Agent' => 'Camdram.net - websupport@camdram.net')
+            array('User-Agent' => $this->user_agent)
         );
+
         $request->setHeaders($headers);
         $request->setContent($content);
 
@@ -148,6 +155,7 @@ class RestApi
         else {
             $params = array();
         }
+
         $params = array_merge($config['defaults'], $params);
 
         $url = $this->config['base_url'].$config['path'];

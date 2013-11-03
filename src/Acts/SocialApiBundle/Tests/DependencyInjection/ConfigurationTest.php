@@ -80,6 +80,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'class' => 'rest',
                     'paths' => array()
                 )
+            ),
+            'http_client' => array(
+                'timeout' => 10,
+                 'verify_peer' => true,
+                 'max_redirects' => 5,
+                'ignore_errors' => true,
+                'user_agent' => ''
             )
         ), $config);
     }
@@ -111,7 +118,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'response' => array(
                     'root' => null,
                     'map' => array(),
-                )
+                ),
+                'url_has_params' => false,
+                'defaults' => array()
             )
         ), $config['apis']['facebook']['paths']);
     }

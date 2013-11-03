@@ -10,7 +10,7 @@ parameters:
 services:
     acts.social_api.apis.abstract.rest:
         class: %acts.social_api.apis.abstract.rest.class%
-        arguments: [@acts.social_api.http_client, @acts.social_api.inflector]
+        arguments: [@acts.social_api.http_client, @acts.social_api.inflector, %acts.social_api.user_agent%]
         abstract: true
 
     acts.social_api.apis.abstract.oauth1:

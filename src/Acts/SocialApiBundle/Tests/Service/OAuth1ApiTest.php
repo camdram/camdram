@@ -34,6 +34,8 @@ class OAuth1ApiTest extends \PHPUnit_Framework_TestCase
             'search' => array(
                 'path' => '/users/search.json',
                 'arguments' => array('q'),
+                'defaults' => array(),
+                'url_has_params' => false,
                 'requires_authentication' => true,
                 'method' => 'GET',
                 'response' => array('root' => null, 'map' => array('screen_name' => 'username'))
@@ -46,7 +48,7 @@ class OAuth1ApiTest extends \PHPUnit_Framework_TestCase
         $this->httpClient = $this->getMock('\Buzz\Client\Curl');
         $this->api = $this->getMockBuilder('\Acts\SocialApiBundle\Service\OAuth1Api')
             ->setMethods(array('httpRequest', 'generateNonce', 'getTimestamp', 'doRequestToken', 'doAccessToken'))
-            ->setConstructorArgs(array($this->httpClient, new Inflector, 'twitter', $this->config))
+            ->setConstructorArgs(array($this->httpClient, new Inflector, 'twitter', 'test_agent', $this->config))
             ->getMock();
 
         $this->api->expects($this->any())->method('generateNonce')
