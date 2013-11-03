@@ -31,7 +31,8 @@ swiftmailer:
     disable_delivery: true
 
 assetic:
-    use_controller: true
+    variables:
+        env: [test]
 
 fos_js_routing:
     request_context_base_url: /app_test.php
@@ -44,3 +45,6 @@ acts_sphinx_real_time:
 
 acts_time_mock:
     time_override: "2001-02-27 12:30:07"
+
+acts_external_login:
+    test: true

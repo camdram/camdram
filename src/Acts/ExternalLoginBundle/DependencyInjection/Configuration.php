@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('default_firewall')->defaultValue('public')->end()
                 ->scalarNode('user_provider_id')->isRequired()->cannotBeEmpty()->end()
+                ->booleanNode('test')->defaultFalse()->end()
                 ->arrayNode('services')
                     ->isRequired()
                     ->prototype('array')
