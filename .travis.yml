@@ -6,6 +6,7 @@ php:
 
 before_script: 
   - cp app/config/parameters.test.yml app/config/parameters.yml
+  - composer selfupdate
   - composer install
 
 script: phpunit -c app
