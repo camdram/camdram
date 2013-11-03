@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
@@ -739,6 +740,8 @@ class User implements \Serializable, CamdramUserInterface
 
         $this->registered = new \DateTime;
         $this->login = new \DateTime;
+
+        $this->aces = new ArrayCollection();
     }
 
     public function serialize()

@@ -1,0 +1,34 @@
+Feature: Signing up for a Camdram account
+  @cleanUsers @reset
+  In order perform non-readonly actions on Camdram
+  I need to be able to create a user account
+
+Scenario: I successfully sign up for an account
+  Given I am on "/create-account"
+  And I fill in the following:
+      | Name                                          | New User             |
+      | acts_camdrambundle_usertype_email             | new.user@camdram.net |
+      | acts_camdrambundle_usertype_password_password | testpassword         |
+      | Confirm password                              | testpassword         |
+      | acts_camdrambundle_usertype_occupation        | No                   |
+      | acts_camdrambundle_usertype_graduation        | 2012                 |
+  And I press "Register" without redirection
+  Then I should receive an email at "new.user@camdram.net" with:
+    """
+    new.user@camdram.net
+    """
+  When I follow the redirection
+  Then I should see "New User" in the "#account-link" element
+
+Scenario: I fill out the form incorrectly
+  Given I am on "/create-account"
+  And I fill in the following:
+    | Name                                          | New User             |
+    | acts_camdrambundle_usertype_email             | new.user@camdram.net |
+    | acts_camdrambundle_usertype_password_password | testpassword         |
+    | Confirm password                              | testpassword_???     |
+    | acts_camdrambundle_usertype_occupation        | No                   |
+    | acts_camdrambundle_usertype_graduation        | 2012                 |
+  And I press "Register"
+  Then I should be on "/create-account"
+  And I should see a "#acts_camdrambundle_usertype_password_password.error" element

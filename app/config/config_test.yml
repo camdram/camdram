@@ -22,6 +22,8 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
+    profiler:
+        enabled: true
 
 web_profiler:
     toolbar: false

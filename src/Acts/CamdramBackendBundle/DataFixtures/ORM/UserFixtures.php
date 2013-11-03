@@ -26,14 +26,14 @@ class UserFixtures extends AbstractFixture implements OrderedFixtureInterface
         $u->setPassword(md5('password'));
         $u->setName('Test User 1');
         $manager->persist($u);
-        $this->addReference('testuser2', $u);
+        $this->addReference('testuser1', $u);
 
         $u = new User;
         $u->setEmail('user2@camdram.net');
         $u->setPassword(md5('password'));
         $u->setName('Test User 2');
         $manager->persist($u);
-        $this->addReference('testuser1', $u);
+        $this->addReference('testuser2', $u);
 
         $u = new User;
         $u->setEmail('society1admin@camdram.net');

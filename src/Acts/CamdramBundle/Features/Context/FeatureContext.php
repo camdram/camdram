@@ -53,11 +53,10 @@ class FeatureContext extends MinkContext //MinkContext if you want to test web
      */
     private function login($email)
     {
-        $this->visit('/login/form');
+        $this->visit('/login');
         $this->fillField('form_email', $email);
         $this->fillField('form_password', 'password');
-        $this->pressButton('Login');
-        $this->printCurrentUrl();
+        $this->pressButton('login_button');
     }
 
     /**

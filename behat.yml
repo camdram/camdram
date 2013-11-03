@@ -1,8 +1,12 @@
 default:
     extensions:
+
         Behat\Symfony2Extension\Extension:
+            mink_driver: true
             kernel:
                 env: test
         Behat\MinkExtension\Extension:
-            base_url: http://peter.camdram.net/app_test.php/
-            goutte: ~
+            default_session: 'symfony2'
+            show_cmd: 'google-chrome %s'
+    filters:
+         tags: "~@ignore"

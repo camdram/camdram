@@ -52,7 +52,7 @@ class DefaultController extends Controller
             $last_email = '';
         }
 
-        if ($session->get('_security.last_exception') instanceof InsufficientAuthenticationException) {
+        if ($last_email && $session->get('_security.last_exception') instanceof InsufficientAuthenticationException) {
             return $this->render(
                 'ActsCamdramSecurityBundle:Default:relogin.html.twig',
                 array(

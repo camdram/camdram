@@ -8,5 +8,11 @@ before_script:
   - cp app/config/parameters.test.yml app/config/parameters.yml
   - composer selfupdate
   - composer install
+  - mysql -e 'CREATE DATABASE camdram_test;'
+  - php app/console doctrine:schema:update --force --env=test
+  - php app/console doctrine:fixtures:load --env=test
 
-script: phpunit -c app
+script:
+    - phpunit -c app
+    - app/behat @ActsCamdramBundle
+    - app/behat @ActsCamdramSecurityBundle

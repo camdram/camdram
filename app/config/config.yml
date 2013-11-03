@@ -121,6 +121,7 @@ fos_oauth_server:
     auth_code_class:     Acts\CamdramSecurityBundle\Entity\AuthCode
 
 acts_sphinx_real_time:
+    enabled: false
     clients:
         default: ~
     indexes:
