@@ -22,12 +22,6 @@ class ShowsDatesCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->addTimestamps($output);
-        $this->addTimePeriods($output);
-    }
-
-    private function addTimestamps(OutputInterface $output)
-    {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         /** @var $repo EntityRepository */
         $repo = $em->getRepository('ActsCamdramBundle:Show');
@@ -58,43 +52,6 @@ class ShowsDatesCommand extends ContainerAwareCommand
         }
         $em->flush();
     }
-
-    private function addTimePeriods(OutputInterface $output)
-    {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        /** @var $repo EntityRepository */
-        $repo = $em->getRepository('ActsCamdramBundle:Show');
-
-        /** @var $repo EntityRepository */
-        $period_repo = $em->getRepository('ActsCamdramBundle:TimePeriod');
-
-        $shows = $repo->findBy(array(),  array('start_at' => 'DESC'));
-        $i = 0;
-
-        foreach ($shows as $show) {
-            $periods = $period_repo->getTimePeriods($show->getStartAt(), $show->getEndAt());
-            foreach ($periods as $period) {
-                $found = false;
-                foreach ($show->getTimePeriods() as $existing_period) {
-                    if ($existing_period == $period) {
-                        $found = true;
-                        break;
-                    }
-                }
-
-                if (!$found) {
-                    $show->addTimePeriod($period);
-                    $output->writeln('Set time period of "'.$show->getName().'" to '.$period->getLongName());
-                }
-            }
-            $i++;
-            if ($i % 30 == 0) {
-                $em->flush();
-            }
-        }
-        $em->flush();
-    }
-
 
 
 }
