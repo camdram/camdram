@@ -28,9 +28,9 @@ class DevelopmentController extends Controller
 
         $data = array(
             'repo' => $api->doRepo($owner, $repo),
-            'inprogress' => $api->doIssues($owner, $repo, 'open', null, 'in-progress'),
-            'recent' => $api->doIssues($owner, $repo, 'open', 'created'),
-            'fixed' => $api->doIssues($owner, $repo, 'closed', 'updated'),
+            'inprogress' => $api->doIssues($owner, $repo, 'open', null, 'in-progress')->limit(10),
+            'recent' => $api->doIssues($owner, $repo, 'open', 'created')->limit(10),
+            'fixed' => $api->doIssues($owner, $repo, 'closed', 'updated')->limit(10),
         );
 
         $response = $this->render('ActsCamdramBundle:Development:activity.html.twig', $data);

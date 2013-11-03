@@ -60,6 +60,12 @@ class ApiResponse implements \ArrayAccess, \Iterator, \Countable
         }
     }
 
+    public function limit($number)
+    {
+        $this->data = array_slice($this->data, 0, $number);
+        return $this;
+    }
+
     public function offsetGet($key)
     {
         $key = $this->convertKey($key);

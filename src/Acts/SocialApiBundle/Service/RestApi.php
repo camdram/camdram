@@ -88,6 +88,9 @@ class RestApi
         $request  = new HttpRequest($method, $url);
         $response = new HttpResponse();
 
+        $headers = array_merge($headers,
+            array('User-Agent' => 'Camdram.net - websupport@camdram.net')
+        );
         $request->setHeaders($headers);
         $request->setContent($content);
 

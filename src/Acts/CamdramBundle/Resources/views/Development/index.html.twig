@@ -32,7 +32,7 @@
 
         <p>Below is a summary of recent development activity on camdram.</p>
 
-        {% render url('acts_camdram_development_activity') with {}, {'standalone': true} %}
+        {{ render(controller('ActsCamdramBundle:Development:activity'), {'strategy': 'esi'}) }}
     </div>
 </div>
 {% endblock %}
