@@ -264,11 +264,3 @@ $panel-font-color-alt: #f00;
 .error_panel {
   @include panel(rgba(198, 15, 19, 0.1));
 }
-
-@import "forms";
-@import "home";
-@import "diary";
-@import "venues";
-@import "entities";
-@import "uploadify";
-@import "autocomplete";
