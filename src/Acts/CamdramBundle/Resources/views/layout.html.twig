@@ -77,7 +77,7 @@
         <h1><a href="{{ path('acts_camdram_homepage') }}"><img src="{{ asset('bundles/actscamdram/images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
       </div>
       <div class="large-9 columns search">
-          <form action="/app_dev.php/entities" class="searchform" method="GET" id="search_form">
+          <form action="{{ path('get_entities') }}" class="searchform" method="GET" id="search_form">
               <i class="fa fa-search"></i>
               <input type="text" class="searchfield" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
               <div class="results">
