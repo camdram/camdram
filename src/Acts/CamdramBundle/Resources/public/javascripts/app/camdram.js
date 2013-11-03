@@ -153,12 +153,6 @@
             }).data( "autocomplete" )._renderItem = function( ul, item ) {
                 ul.attr('id', 'main_search_autocomplete');
                 text = item.name
-                if (item.entity_type == 'show') {
-                    var start_at = new Date(item.start_at);
-                    if (start_at.getFullYear()) { //is it a valid date?
-                        text += ' <em>(' + short_months[start_at.getMonth()] + ' ' + start_at.getFullYear() + ')</em>'
-                    }
-                }
 
                 var li = $( "<li>" )
                     .data( "item.autocomplete", item )
@@ -300,14 +294,6 @@
     $(function() {
         $(document).foundation();
         $('.news_media').newsFeedMedia();
-        $('#main_search_box').camdramAutocomplete({
-            select: function(item) { document.location = Routing.generate('get_entity', {id: item.id}); },
-            display: function(li, item) {
-                var type = $('<small>'+item.entity_type+'</small>').addClass('entity_'+item.entity_type);
-                li.children().prepend(type);
-            },
-            appendTo: '#search_form'
-        });
         $('a.fancybox').fancybox();
         /*$('.datepicker').datepicker({
             changeMonth: true,

@@ -17,8 +17,8 @@
 
   <title>{% block title %}{% endblock %} - Camdram</title>
   
-  <!-- Included CSS Files -->
-  <!-- H5BP stylesheets -->
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
 {% stylesheets output='css/main.css'
     'bundles/actscamdram/stylesheets/app/app.scss'
     'bundles/actsdiary/css/diary.css'
@@ -26,12 +26,9 @@
     'bundles/hoyesimagemanager/css/fancybox.css'%}
     <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
-  <!-- Foundation stylesheets -->
 
 {% block stylesheets %}{% endblock %}
 
-
-    <!-- Initialize JS Plugins -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
     {% javascripts output='js/deps.js'
@@ -47,6 +44,7 @@
     {% javascripts vars=['env'] output='js/main.{env}.js'
     'js/fos_js_routes.{env}.js'
     '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
+    '@ActsCamdramBundle/Resources/public/javascripts/app/autocomplete.js'
     '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -79,8 +77,15 @@
         <h1><a href="{{ path('acts_camdram_homepage') }}"><img src="{{ asset('bundles/actscamdram/images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
       </div>
       <div class="large-9 columns search">
-          <form method="get" action="{{ path('get_entities') }}" id="search_form">
-              <input type="search" name="q" id="main_search_box" placeholder="search for a show, person, society or venue" />
+          <form action="/app_dev.php/entities" class="searchform" method="GET" id="search_form">
+              <i class="fa fa-search"></i>
+              <input type="text" class="searchfield" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
+              <div class="results">
+                  <ul></ul>
+                  <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
+                  <div class="fulltext"><a href="#">...perform a search for &quot;<span class="query"></span>&quot;</a></div>
+              </div>
+              <i class="fa fa-spinner fa-spin"></i>
           </form>
       </div>
     </div>

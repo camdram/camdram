@@ -13,6 +13,7 @@ $topbar-margin-bottom: 0;
 $topbar-link-bg-hover: $light-grey;
 $topbar-link-font-size: 0.9em;
 $topbar-link-weight: normal;
+$topbar-breakpoint: 500px;
 
 $section-border-color: #e6e6e6;
 
@@ -123,6 +124,11 @@ header .logo {
     height:80px;
     background:url('../../images/header_separator.png') center right no-repeat;
   }
+  h1 {
+    font-size:1em;
+    margin:0;
+    margin:18px 0;
+  }
 }
 
 header .search {
@@ -136,56 +142,8 @@ header .search {
   }
 }
 
-//Search box / autocomplete
-
-#search_form {
-  border: 1px solid black;
-  border-radius: 20px;
-  box-shadow: 0px 0px 4px #888;
-  background:#fff;
-  z-index:50;
-  position:relative;
-}
-
-#search_form .ui-autocomplete {
-  position:static;
-  width:auto;
-  border:none;
-  background:#fff;
-  margin:8px;
-}
-
-#search_form .ui-autocomplete a {
-  border-top:1px solid #ddd;
-  padding:3px;
-  border-radius:0;
-}
-
-#search_form .ui-autocomplete a.ui-state-focus {
-  background:#f0f0f0;
-  border:none;
-  border-top:1px solid #ddd;
-  color:#000;
-  margin:0;
-}
-
-header .search input[type=search] {
-  border:none;
-  padding:0 15px 0 32px;
-  margin: 3px 3px 3px 12px;
-  outline:none;
-  background:url('../../images/search.png') left center no-repeat;
-  box-shadow:none;
-  -webkit-box-shadow:none;
-  -moz-box-shadow:none;
-}
-header input[type=search]:focus {
-  outline:none;
-  background:url('../../images/search.png') left center no-repeat;
-  border:none;
-  box-shadow:none;
-  -webkit-box-shadow:none;
-  -moz-box-shadow:none;
+.diary-week {
+  font-size:0.9em;
 }
 
 .dropdown {
@@ -306,3 +264,4 @@ $panel-font-color-alt: #f00;
 @import "venues";
 @import "entities";
 @import "uploadify";
+@import "autocomplete";
