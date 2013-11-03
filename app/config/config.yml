@@ -93,7 +93,8 @@ acts_camdram:
 
 acts_social_api:
       http_client:
-          timeout: 30
+          timeout: 30,
+          user_agent: 'Camdram.net - websupport@camdram.net'
       apis:
           facebook:
               client_id: %facebook_id%
