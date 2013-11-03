@@ -4,6 +4,11 @@ $(function() {
 
         var diary_queue = [];
 
+        var $container = $('#home-diary-container');
+        var $diary = $('#home-diary');
+        var $nav = $('#home-diary-nav');
+        var $overlay = $('.overlay', $container);
+
         var load_new_diary = function(url, direction) {
             diary_queue.push({url: url, direction: direction});
             if (diary_queue.length == 1) {
@@ -14,20 +19,22 @@ $(function() {
             if (diary_queue.length == 0) return;
             var opts = diary_queue[0];
 
+            $overlay.height($diary.height()).fadeIn(200);
+
             $.get(opts.url, function(data) {
 
-                var old_height = $('#home-diary-container').height();
-                $('#home-diary').attr('id', 'home-diary-old').css({
+                var old_height = $container.height();
+                $diary.attr('id', 'home-diary-old').css({
                     'position': 'absolute',
                     'height': old_height,
                     'width': '100%'
                 });
-                var html = $('<div/>').attr('id', 'home-diary').html(data);
-                $('#home-diary-container').append(html);
-                $('#home-diary').show();
-                var new_height = $('#home-diary-container').height();
-                $('#home-diary').hide();
-                $('#home-diary-container').height(old_height);
+                $diary = $('<div/>').attr('id', 'home-diary').html(data);
+                $container.append($diary);
+                $diary.show();
+                var new_height = $container.height();
+                $diary.hide();
+                $container.height(old_height);
 
                 var slide_diaries = function(cb) {
                     var hide_dir = (opts.direction === 'ltr') ? 'right' : 'left';
@@ -36,22 +43,23 @@ $(function() {
                     $('#home-diary-old').hide('slide', {direction: hide_dir}, 200, function() {
                         $('#home-diary-old').remove();
                     });
-                    $('#home-diary').hide().delay(50).show('slide', {direction: show_dir}, 200, function() {
+                    $diary.hide().delay(50).show('slide', {direction: show_dir}, 200, function() {
                         if (typeof cb !== 'undefined') cb();
                     });
                 }
 
+                $overlay.height($diary.height()).hide();
                 if (new_height > old_height) {
-                    $('#home-diary-container').animate({height: new_height},100, slide_diaries(function() {
-                        $('#home-diary-container').height('auto');
+                    $container.animate({height: new_height},100, slide_diaries(function() {
+                        $container.height('auto');
                         diary_queue.shift();
                         service_queue();
                     }));
                 }
                 else {
                     slide_diaries(function() {
-                        $('#home-diary-container').animate({height: new_height},100, function() {
-                            $('#home-diary-container').height('auto');
+                        $container.animate({height: new_height},100, function() {
+                            $container.height('auto');
                             diary_queue.shift();
                             service_queue();
                         });
@@ -61,39 +69,39 @@ $(function() {
         }
 
         var get_limits = function() {
-            var max_left = $('#home-diary-nav').offset().left + 30;
-            var min_left = max_left - 50 + $('#home-diary-nav').width() - 60;
-            $('#home-diary-nav li').each(function() {
+            var max_left = $nav.offset().left + 30;
+            var min_left = max_left - 50 + $nav.width() - 60;
+            $('li', $nav).each(function() {
                 min_left -= $(this).outerWidth();
             })
             return [min_left, max_left];
         }
         var focus_current = function(time) {
-            var left = - $('#home-diary-nav li.current').position().left + 60;
+            var left = - $('li.current', $nav).position().left + 60;
 
             var limits = get_limits();
             var limits_offset = $('#home-diary-nav').offset().left;
             if (left < limits[0] - limits_offset) left = limits[0] - limits_offset;
             if (left > limits[1] - limits_offset) left = limits[1] - limits_offset;
 
-            $('#home-diary-nav ul').animate({'left': left}, time);
+            $('ul', $nav).animate({'left': left}, time);
         }
         focus_current(0);
         var clickenable = true;
-        $('#home-diary-nav li.week-link').click(function() {
+        $('li.week-link', $nav).click(function() {
             if (clickenable) {
                 if ($(this).hasClass('current')) return;
                 var id = $(this).attr('data-period');
 
-                var last_sel = $('#home-diary-nav li.current');
-                $('#home-diary-nav li').removeClass('current');
+                var last_sel = $('li.current', $nav);
+                $('li', $nav).removeClass('current');
                 $(this).addClass('current');
                 var direction =  (last_sel.prevAll('.current').length > 0) ? 'ltr' : 'rtl';
 
                 load_new_diary(Routing.generate('acts_camdram_diary_period', {id: id}), direction);
 
-                var left = $(this).offset().left - $('#home-diary-nav').offset().left;
-                var max_right = $('#home-diary-nav').width() - $(this).width() - 60;
+                var left = $(this).offset().left - $nav.offset().left;
+                var max_right = $nav.width() - $(this).width() - 60;
                 if ($(document).width() < 500) {
                     if (left < 40 || left > max_right) {
                         focus_current(200);
@@ -108,10 +116,10 @@ $(function() {
 
         //Slider functions
 
-        var $slider = $('#home-diary-nav ul');
+        var $slider = $('ul', $nav);
 
         var limits = get_limits();
-        $('#home-diary-nav ul').draggable({
+        $slider.draggable({
             axis: 'x',
             containment: [limits[0], 0, limits[1], 0],
             distance: 10,
@@ -138,11 +146,11 @@ $(function() {
             return $('#wrapper > section').width() / 3;
         }
 
-        $('#home-diary-container .left-link a').click(function(e) {
+        $('.left-link a', $container).click(function(e) {
             move(get_move_size());
             e.preventDefault();
         });
-        $('#home-diary-container .right-link a').click(function(e) {
+        $('.right-link a', $container).click(function(e) {
             move(-get_move_size());
             e.preventDefault();
         });

@@ -13,8 +13,8 @@
 <div class="row">
     <div class="small-12 columns" id="home-diary-container">
         <div id="home-diary-nav">
-            <div class="left-link"><a href="" class="">&lt;</a></div>
-            <div class="right-link"><a href="">&gt;</a></div>
+            <div class="left-link"><a href="" class=""><i class="fa fa-caret-left"></i></a></div>
+            <div class="right-link"><a href=""><i class="fa fa-caret-right"></i></a></div>
             <ul>
                 <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
                 {% for period in periods %}
@@ -36,6 +36,7 @@
                 <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
             </ul>
         </div>
+        <div class="overlay"><div class="spinner"><i class="fa fa-spinner fa-spin"></i></div></div>
         <div id="home-diary">
             {{ render(url('acts_camdram_diary_period', {id: current_period.id}) , { 'strategy': 'esi'}) }}
         </div>
