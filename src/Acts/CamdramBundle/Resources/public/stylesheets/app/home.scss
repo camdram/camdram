@@ -113,7 +113,11 @@
 #home-diary-nav li {
   display:inline-block;
   font-size:0.8em;
-  padding: 0 0.8em;
+
+  a {
+    padding: 0 0.8em;
+    display:block;
+  }
 
   em {
     display:block;
