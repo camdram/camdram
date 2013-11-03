@@ -12,9 +12,9 @@
             {% if main_user.profilePictureUrl %}<img src="{{ main_user.profilePictureUrl }}" width="22" height="22"/>{% endif %}
             {{ main_user.displayName }}
         </a>
-        <ul id="account-dropdown" class="dropdown">
-            {% if main_user.person is defined and main_user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}">My profile</a></li>{% endif %}
-            {% if app.user.type == 'external' and app.user.user is null %}<li><a href="#">Create Camdram password</a></li>{% endif %}
+        <ul id="account-dropdown" class="topbar-dropdown">
+            {% if main_user.person is defined and main_user.person %} <li><a href="{{ path('get_person', {identifier: app.user.person.slug }) }}"><i class="fa fa-user fa-fw"></i> My profile</a></li>{% endif %}
+            {% if app.user.type == 'external' and app.user.user is null %}<li><a href="#"><i class="fa fa-key fa-fw"></i> Create Camdram password</a></li>{% endif %}
 
             {% if main_user.type == 'native' %}
                 {% for service in ['facebook'] %}
@@ -25,9 +25,9 @@
                     </a></li>
                     {% endif %}
                 {% endfor %}
-                <li><a href="{{ path('acts_camdram_security_settings') }}">Account Settings</a></li>
+                <li><a href="{{ path('acts_camdram_security_settings') }}"><i class="fa fa-cogs fa-fw"></i> Account Settings</a></li>
             {% endif %}
-            <li><a href="{{ path('_security_logout') }}">Log out</a></li>
+            <li><a href="{{ path('_security_logout') }}"><i class="fa fa-sign-out fa-fw"></i> Log out</a></li>
         </ul>
     </li>
 {% else %}
@@ -43,7 +43,7 @@
                </a>
             {% endfor %}
 
-        <div id="login-dropdown" class="dropdown">
+        <div id="login-dropdown" class="topbar-dropdown">
             <form action="{{ path('acts_camdram_security_login_check') }}" method="post">
                 <div class="row">
                     <div class="small-3 columns"><label for="login_email">Email</label></div>

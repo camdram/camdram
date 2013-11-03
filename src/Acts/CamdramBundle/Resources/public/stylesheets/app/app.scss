@@ -146,7 +146,7 @@ header .search {
   font-size:0.9em;
 }
 
-.dropdown {
+.topbar-dropdown {
   position:absolute;
   top:9999px;
   z-index:99;
@@ -159,7 +159,7 @@ header .search {
   margin-bottom:-4px;
 }
 
-ul.dropdown {
+ul.topbar-dropdown {
   $default-float: right;
   @include dropdown-container(list, true, 300px);
   margin:0;
@@ -253,6 +253,13 @@ table {
   width:100%;
 }
 
+#nav-edit-link {
+  line-height:inherit;
+  padding-top:0.7em;
+  i {
+    font-size:1.5em;
+  }
+}
 $panel-font-color-alt: #f00;
 .error_panel {
   @include panel(rgba(198, 15, 19, 0.1));

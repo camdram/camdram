@@ -303,7 +303,7 @@
 
         $('.dropdown-link').each(function() {
             var $link = $(this);
-            var $dropdown = $('.dropdown', $link);
+            var $dropdown = $('.topbar-dropdown', $link);
             $dropdown.hide();
             var hideEnabled = true;
 

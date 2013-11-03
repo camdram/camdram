@@ -108,17 +108,17 @@
         </ul>
           <ul class="right">
             <li class="has-dropdown">
-              <a href="#"><img src="{{ asset('/bundles/actscamdram/images/settings.png') }}"></a>
+              <a href="#" id="nav-edit-link"><i class="fa fa-edit"></i></a>
               <ul class="dropdown">
                   {% block option_links %}
                   {% endblock %}
                   {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with {items: {
-                    'add_show': {text: 'Create a new show', path: path('new_show')}
+                    'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
                   }} %}
                   {% if has_role('ROLE_EDITOR') %}
                   {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with { items: {
-                    'add_venue': {text: 'Create a new venue', path: path('new_venue')},
-                    'add_society': {text: 'Create a new society', path: path('new_society')}
+                    'add_venue': {text: 'Add a venue', path: path('new_venue'), icon: 'plus-circle'},
+                    'add_society': {text: 'Add a society', path: path('new_society'), icon: 'plus-circle'}
                   }} %}
                   {% endif %}
               </ul>

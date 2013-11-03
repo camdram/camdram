@@ -4,10 +4,10 @@
 
 {% block option_links %}
 {% if is_granted('EDIT', person) %}
-{% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~person.name~'"', path: path('edit_person', {identifier: person.slug})}} %}
+{% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~person.name~'"', path: path('edit_person', {identifier: person.slug}), icon: 'pencil'}} %}
 {% endif %}
 {% if is_granted('DELETE', person) %}
-{% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~person.name~'"', path: path('remove_person', {identifier: person.slug})}} %}
+{% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~person.name~'"', path: path('remove_person', {identifier: person.slug}), icon: 'eraser'}} %}
 {% endif %}
 {% endblock %}
 

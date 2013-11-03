@@ -6,11 +6,11 @@
 
 {% block option_links %}
     {% if is_granted('EDIT', society) %}
-    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~society.name~'"', path: path('edit_society', {identifier: society.slug})}} %}
+    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~society.name~'"', path: path('edit_society', {identifier: society.slug}), icon: 'pencil'}} %}
     {% endif %}
 
     {% if has_role('ROLE_EDITOR') %}
-    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~society.name~'"', path: path('remove_society', {identifier: society.slug})}} %}
+    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~society.name~'"', path: path('remove_society', {identifier: society.slug}), icon: 'eraser'}} %}
     {% endif %}
 {% endblock %}
 

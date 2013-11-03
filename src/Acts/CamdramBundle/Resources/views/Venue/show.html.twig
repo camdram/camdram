@@ -4,10 +4,10 @@
 {% block title %}Venue: {{ venue.name }}{% endblock %}
 
 {% block option_links %}
-{% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~venue.name~'"', path: path('edit_venue', {identifier: venue.slug})}} %}
+{% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~venue.name~'"', path: path('edit_venue', {identifier: venue.slug}), icon: 'pencil'}} %}
 
 {% if has_role('ROLE_EDITOR') %}
-    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~venue.name~'"', path: path('remove_venue', {identifier: venue.slug})}} %}
+    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~venue.name~'"', path: path('remove_venue', {identifier: venue.slug}), icon: 'eraser'}} %}
 {% endif %}
 {% endblock %}
 
