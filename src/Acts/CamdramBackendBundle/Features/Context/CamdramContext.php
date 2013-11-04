@@ -68,9 +68,6 @@ class CamdramContext extends MinkContext
         $purger = new ORMPurger($em);
         $executor = new ORMExecutor($em, $purger);
         $self = $this;
-        $executor->setLogger(function($message) use ($self) {
-            $self->printDebug($message);
-        });
         $executor->execute($fixtures, $append);
     }
 

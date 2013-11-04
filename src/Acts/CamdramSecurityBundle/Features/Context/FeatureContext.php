@@ -24,8 +24,7 @@ use Behat\Gherkin\Node\PyStringNode,
 /**
  * Feature context.
  */
-class FeatureContext extends CamdramContext //MinkContext if you want to test web
-                  implements KernelAwareInterface
+class FeatureContext extends CamdramContext
 {
     private $external_login_data = array(
         'facebook' => array('name' => 'Test Facebook User', 'username' => 'test.facebook.user',
