@@ -13,6 +13,10 @@
 
 {% block body %}
 
+{% if is_granted('EDIT', show) %}
+{{ include('ActsCamdramBundle:Show:admin-panel.html.twig') }}
+{% endif %}
+
 <div class="row">
 
     <div class="large-12 columns panel">

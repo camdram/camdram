@@ -11,7 +11,6 @@ class AccessControlEntryRepository extends EntityRepository
     public function aceExists(User $user, Entity $entity)
     {
         $qb = $this->createQueryBuilder('e');
-
         $query =$qb->select('COUNT(e.id) AS c')
                 ->where('e.user_id = :uid')
                 ->andWhere('e.entity_id = :entity_id')

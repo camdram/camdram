@@ -256,6 +256,7 @@ abstract class AbstractRestController extends FOSRestController
     {
         $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
         $view = $this->view($entity, 200)
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
             ->setTemplateVar($this->type)

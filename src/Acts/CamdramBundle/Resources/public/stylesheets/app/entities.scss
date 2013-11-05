@@ -1,3 +1,7 @@
+$include-html-classes: false;
+@import 'foundation/components/global';
+@import 'foundation/components/panels';
+
 #entity-header {
   @extend .panel;
 }
@@ -7,4 +11,12 @@
   margin:0 emCalc(-15);
   padding:emCalc(15) emCalc(30);
   width:auto;
+}
+
+.admin-panel {
+  @include panel(rgb(255,240,200), 1em 2em, false);
+}
+
+.approve-panel {
+  @include panel(rgb(255,255,100), 1em, false);
 }

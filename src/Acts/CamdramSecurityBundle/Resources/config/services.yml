@@ -106,3 +106,8 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter
         tags:
             - { name: security.voter }
+
+    camdram.security.voter.view:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter
+        tags:
+            - { name: security.voter }

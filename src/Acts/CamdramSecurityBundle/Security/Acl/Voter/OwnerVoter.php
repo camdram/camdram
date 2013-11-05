@@ -39,7 +39,7 @@ class OwnerVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($object instanceof Entity && $attributes == array('EDIT')) {
+        if ($object instanceof Entity && ($attributes == array('EDIT') || $attributes == array('VIEW'))) {
             if ($this->aclProvider->isOwner($token, $object)) {
                 return self::ACCESS_GRANTED;
             }

@@ -14,7 +14,10 @@ class ShowRepository extends EntityRepository
 
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
-        $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)');
+        $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true');
+
         $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
                 'p.show = s',
                 $qb->expr()->andX('p.start_date <= :end', 'p.end_date >= :start')
@@ -27,7 +30,9 @@ class ShowRepository extends EntityRepository
 
     public function findByTimePeriod(TimePeriod $period)
     {
-        $qb = $this->createQueryBuilder('s');
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true');
         $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
             'p.show = s',
             $qb->expr()->andX('p.start_date <= :end', 'p.end_date >= :start')
@@ -44,6 +49,8 @@ class ShowRepository extends EntityRepository
         $qb->leftJoin('s.performances', 'p')
             ->where('p.start_date < :end')
             ->andWhere('p.end_date > :start')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->setParameter('start', $period->getStartAt())
             ->setParameter('end', $period->getEndAt())
             ->orderBy('s.end_at - s.start_at', 'DESC')
@@ -56,6 +63,8 @@ class ShowRepository extends EntityRepository
         $query = $this->createQueryBuilder('s')
             ->where('s.end_at > CURRENT_TIMESTAMP()')
             ->andWhere('s.venue = :venue')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->orderBy('s.start_at', 'ASC')
             ->setParameter('venue', $venue)
             ->setParameter('now', $now)
@@ -68,6 +77,8 @@ class ShowRepository extends EntityRepository
         $query = $this->createQueryBuilder('s')
             ->where('s.end_at > :now')
             ->andWhere('s.society = :society')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->orderBy('s.start_at', 'ASC')
             ->setParameter('society', $society)
             ->setParameter('now', $now)
@@ -79,6 +90,8 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->where('s.start_at >= :now')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->join('ActsCamdramBundle:Role', 'r')
             ->andWhere('r.person = :person')
             ->orderBy('s.start_at', 'ASC')
@@ -92,7 +105,9 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->where('s.end_at >= :now')
-            ->where('s.start_at < :now')
+            ->andWhere('s.start_at < :now')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->join('ActsCamdramBundle:Role', 'r')
             ->andWhere('r.person = :person')
             ->orderBy('s.start_at', 'ASC')
@@ -106,6 +121,8 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->where('s.end_at < :now')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->join('ActsCamdramBundle:Role', 'r')
             ->andWhere('r.person = :person')
             ->orderBy('s.start_at', 'DESC')
@@ -119,6 +136,7 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->select('MAX(s.end_at)')
+            ->where('s.authorised_by is not null')
             ->setMaxResults(1)
             ->getQuery();
         return new \DateTime(current($query->getOneOrNullResult()));

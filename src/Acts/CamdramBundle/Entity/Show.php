@@ -113,9 +113,10 @@ class Show extends Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="authorizeid", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true)
      */
-    private $authorize_id;
+    private $authorised_by;
 
     /**
      * @var boolean
@@ -457,29 +458,6 @@ class Show extends Entity
     public function getAudextra()
     {
         return $this->audextra;
-    }
-
-    /**
-     * Set authorize_id
-     *
-     * @param integer $authorizeId
-     * @return Show
-     */
-    public function setAuthorizeId($authorizeId)
-    {
-        $this->authorize_id = $authorizeId;
-    
-        return $this;
-    }
-
-    /**
-     * Get authorize_id
-     *
-     * @return integer 
-     */
-    public function getAuthorizeId()
-    {
-        return $this->authorize_id;
     }
 
     /**
@@ -957,7 +935,7 @@ class Show extends Entity
 
     public function isIndexable()
     {
-        return $this->getAuthorizeId() !== null;
+        return $this->getAuthorisedBy() !== null;
     }
 
     /**
@@ -1075,5 +1053,28 @@ class Show extends Entity
         return count($this->getTechieAdverts()) > 0
                 || count($this->getAuditions()) > 0
                 || count($this->getApplications()) > 0;
+    }
+
+    /**
+     * Set authorised_by
+     *
+     * @param \Acts\CamdramBundle\Entity\User $authorisedBy
+     * @return Show
+     */
+    public function setAuthorisedBy(\Acts\CamdramBundle\Entity\User $authorisedBy = null)
+    {
+        $this->authorised_by = $authorisedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get authorised_by
+     *
+     * @return \Acts\CamdramBundle\Entity\User 
+     */
+    public function getAuthorisedBy()
+    {
+        return $this->authorised_by;
     }
 }

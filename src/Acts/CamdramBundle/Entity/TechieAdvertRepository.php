@@ -32,7 +32,7 @@ class TechieAdvertRepository extends EntityRepository
         $query = $query_res->createQueryBuilder('a')
             ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
             ->where('a.expiry >= CURRENT_DATE()')
-            ->andWhere('s.authorize_id > 0')
+            ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('s.name, a.expiry, s.society')
             ->getQuery();
@@ -45,7 +45,7 @@ class TechieAdvertRepository extends EntityRepository
         $query = $this->createQueryBuilder('a')
             ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
             ->where('a.expiry >= CURRENT_DATE()')
-            ->andWhere('s.authorize_id > 0')
+            ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.last_updated')
             ->setMaxResults($limit)

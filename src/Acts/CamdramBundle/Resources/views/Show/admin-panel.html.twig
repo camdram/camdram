@@ -1,0 +1,25 @@
+{% if is_owner(show) %}
+<div class="admin-panel">
+    <ul class="inline-list">
+        <li><a href="{{ path('edit_show', {identifier: show.slug}) }}"><i class="fa fa-pencil"></i> Edit this show</a></li>
+        {% if is_granted('DELETE', show) %}<li><a href="{{ path('remove_show', {identifier: show.slug}) }}"><i class="fa fa-eraser"></i> Delete this show</a></li>{% endif %}
+        <li><a href=""><i class="fa fa-plus-circle"></i> Add an audition</a></li>
+        <li><a href=""><i class="fa fa-plus-circle"></i> Add a technical team advert</a></li>
+        <li><a href=""><i class="fa fa-plus-circle"></i> Add a director/producer advert</a></li>
+    </ul>
+</div>
+{% endif %}
+{% if show.authorisedBy is null %}
+<div class="approve-panel">
+    {% if is_granted('APPROVE', show) %}
+        <p><em>This show is not yet visible to the public. <a href=""><i class="fa fa-check"></i> Approve this show</a></em></p>
+    {% else %}
+        <p><em>This show is not yet visible to the public - it is awaiting approval from
+                {% if show.society and show.venue %}someone on the <strong>{{ show.society.name }}</strong> committee or a representative of <strong>{{ show.venue.name }}</strong>
+                {% elseif show.society %}someone on the <strong>{{ show.society.name }}</strong> committee
+                {% elseif show.venue %}a representative of <strong>{{ show.venue.name }}</strong>
+                {% else %}a Camdram administrator{% endif %}
+            </em></p>
+    {% endif %}
+</div>
+{% endif %}
