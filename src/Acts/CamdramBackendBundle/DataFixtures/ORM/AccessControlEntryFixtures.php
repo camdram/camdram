@@ -15,6 +15,7 @@ class AccessControlEntryFixtures extends AbstractFixture implements OrderedFixtu
     */
     public function load(ObjectManager $manager)
     {
+        //Make the admin user an admin
         $e = new AccessControlEntry;
         $e->setUser($this->getReference('adminuser'));
         $e->setGrantedBy($this->getReference('testuser1'));
@@ -22,6 +23,18 @@ class AccessControlEntryFixtures extends AbstractFixture implements OrderedFixtu
         $e->setCreatedAt(new \DateTime('2001-01-01'));
         $e->setType('security');
         $manager->persist($e);
+
+        //Make user2 owner of all shows
+        $shows = $manager->getRepository('ActsCamdramBundle:Show')->findAll();
+        foreach ($shows as $show) {
+            $e = new AccessControlEntry;
+            $e->setUser($this->getReference('testuser2'));
+            $e->setGrantedBy($this->getReference('adminuser'));
+            $e->setEntityId($show->getId());
+            $e->setCreatedAt(new \DateTime('2001-01-01'));
+            $e->setType('show');
+            $manager->persist($e);
+        }
 
         $manager->flush();
     }
@@ -31,6 +44,6 @@ class AccessControlEntryFixtures extends AbstractFixture implements OrderedFixtu
      */
     public function getOrder()
     {
-        return 4;
+        return 3;
     }
 }
