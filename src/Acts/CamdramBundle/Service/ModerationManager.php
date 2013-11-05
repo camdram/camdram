@@ -1,6 +1,10 @@
 <?php
 namespace Acts\CamdramBundle\Service;
 
+use Acts\CamdramBundle\Entity\Entity;
+use Acts\CamdramBundle\Service\EmailDispatcher;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\RouterInterface;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -18,14 +22,16 @@ use Acts\CamdramBundle\Entity\Show;
 class ModerationManager
 {
     /**
-     * @var \Swift_Mailer
+     * @var \Acts\CamdramBundle\Entity\UserRepository
      */
-    protected $mailer;
+    private $repository;
 
-    public function __construct(
-        \Swift_Mailer $mailer)
+    private $dispatcher;
+
+    public function __construct(EntityManager $entityManager, EmailDispatcher $dispatcher)
     {
-        $this->mailer = $mailer;
+        $this->repository = $entityManager->getRepository('ActsCamdramBundle:User');
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -51,16 +57,21 @@ class ModerationManager
 
         if ($entity instanceof Show)
         {
-            // TODO implement
+            $users = $this->repository->findAdmins(AccessControlEntry::LEVEL_FULL_ADMIN);
+            if ($entity->getSociety()) {
+                $users = array_merge($users, $this->repository->findOrganisationAdmins($entity->getSociety()));
+            }
+            if ($entity->getVenue()) {
+                $users = array_merge($users, $this->repository->findOrganisationAdmins($entity->getVenue()));
+            }
         }
 
-        $users[] = $users;
         return $users;
     }
 
     /**
      * Email moderators for that Entity.
-     * 
+     *
      * Inform the moderators via email that the Entity needs to be moderated.
      * This action _should_ be invoked when a new Entity that needs moderation
      * is created. This action _may_ be called again for some other reason, e.g.
@@ -69,30 +80,20 @@ class ModerationManager
      */
     public function emailEntityModerators(Entity $entity)
     {
-        $moderators[] = $this->getModeratorsForEntity($entity)
-        /* Construct a list of email addresses to add to the 'To' field of the
-         * email.
-         * TODO Improve upon Camdram's current approach of emailing all moderators
-         * by explaining _why_ the moderator is receiving this email. This needs
-         * thought about the prescedence of a User's role. When emailing it'd be
-         * best to use a User's lowest privelage as the reason for receiving an
-         * email, e.g. a Camdram admin may also be a Society's admin, but send
-         * their email as if they are just the latter.
-         */
-        $message = \Swift_Message::newInstance()
-            ->setSubject('New show needs authorization on camdram.net')
-            ->setFrom($container->getParameter('mailer.username') . '@gmail.com');
-
-        foreach ($moderators as $moderator)
-        {
-            $message->addTo($moderator->getEmail())
+        if ($entity instanceof Show) {
+            $moderators = $this->getModeratorsForEntity($entity);
+            $owners = $this->repository->getEntityOwners($entity);
+            /* Construct a list of email addresses to add to the 'To' field of the
+             * email.
+             * TODO Improve upon Camdram's current approach of emailing all moderators
+             * by explaining _why_ the moderator is receiving this email. This needs
+             * thought about the prescedence of a User's role. When emailing it'd be
+             * best to use a User's lowest privelage as the reason for receiving an
+             * email, e.g. a Camdram admin may also be a Society's admin, but send
+             * their email as if they are just the latter.
+             */
+            $this->dispatcher->sendShowCreatedEmail($entity, $owners, $moderators);
         }
-        $message->setBody(
-            $this->renderView(
-                'ActsCadramBundle:Emails:show_auth_request.txt.twig',
-                array('entity' => $entity))
-            );
-        $this->mailer->send($message); 
     }
 }
 

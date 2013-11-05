@@ -83,10 +83,20 @@ services:
         class: Acts\CamdramBundle\Service\Search\DoctrineProvider
         arguments: [@service_container]
 
-    acts.camdram.search_provider.elasticsearch:
-        class: Acts\CamdramBundle\Service\Search\ElasticsearchProvider
-        arguments: [@service_container]
-
     acts.camdram.search_provider.sphinx:
         class: Acts\CamdramBundle\Service\Search\SphinxProvider
         arguments: [@service_container]
+
+    acts.camdram.email_dispatcher:
+        class: Acts\CamdramBundle\Service\EmailDispatcher
+        arguments: [@swiftmailer.mailer, @twig, %mailer_sender_address%]
+
+    acts.camdram.moderation_manager:
+        class: Acts\CamdramBundle\Service\ModerationManager
+        arguments: [@doctrine.orm.entity_manager, @acts.camdram.email_dispatcher]
+
+    acts.camdram.listener.moderation:
+        class: Acts\CamdramBundle\EventListener\ModerationListener
+        arguments: [@security.context, @doctrine.orm.entity_manager, @acts.camdram.moderation_manager]
+        tags:
+            - { name: kernel.event_listener, event: camdram.entity_created, method: onShowCreated }

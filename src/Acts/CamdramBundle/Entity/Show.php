@@ -1061,7 +1061,7 @@ class Show extends Entity
      * @param \Acts\CamdramBundle\Entity\User $authorisedBy
      * @return Show
      */
-    public function setAuthorisedBy(\Acts\CamdramBundle\Entity\User $authorisedBy = null)
+    public function setAuthorisedBy(User $authorisedBy = null)
     {
         $this->authorised_by = $authorisedBy;
     
@@ -1077,4 +1077,10 @@ class Show extends Entity
     {
         return $this->authorised_by;
     }
+
+    public function isAuthorised()
+    {
+        return $this->getAuthorisedBy() !== null;
+    }
+
 }

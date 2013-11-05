@@ -455,4 +455,19 @@ abstract class Entity
     {
         return true;
     }
+
+    /**
+     * Returns whether the entity requires approval by an administrator
+     *
+     * @return bool
+     */
+    public function isAuthorised()
+    {
+        return true;
+    }
+
+    public function setAuthorisedBy(User $user)
+    {
+
+    }
 }

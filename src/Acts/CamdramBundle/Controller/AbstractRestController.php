@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Event\CamdramEvents;
+use Acts\CamdramBundle\Event\EntityEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -144,6 +146,7 @@ abstract class AbstractRestController extends FOSRestController
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
+            $this->get('event_dispatcher')->dispatch(CamdramEvents::ENTITY_CREATED, new EntityEvent($form->getData(), $this->getUser()));
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         }
         else {

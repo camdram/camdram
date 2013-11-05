@@ -1,0 +1,47 @@
+<?php
+namespace Acts\CamdramBundle\EventListener;
+
+use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Event\EntityEvent;
+use Acts\CamdramBundle\Service\ModerationManager;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+
+/**
+ * Class AutoApproveListener
+ *
+ * Listens to creation events and either automatically approves the show or trigger sending an email
+ *
+ * @package Acts\CamdramBundle\EventListener
+ */
+class ModerationListener
+{
+    private $securityContext;
+    private $entityManager;
+    private $moderation;
+
+    public function __construct(SecurityContextInterface $securityContext, EntityManager $entityManager, ModerationManager $moderation)
+    {
+        $this->securityContext = $securityContext;
+        $this->entityManager = $entityManager;
+        $this->moderation = $moderation;
+    }
+
+    public function onShowCreated(EntityEvent $event)
+    {
+        $entity = $event->getEntity();
+        if (!$entity->isAuthorised()) {
+            if ($this->securityContext->isGranted('APPROVE', $entity)) {
+                //The current user is able to approve the show, so approve it straight away.
+                $entity->setAuthorisedBy($this->securityContext->getToken()->getUser());
+                $this->entityManager->flush();
+            }
+            else {
+                //Else Send an email
+                $this->moderation->emailEntityModerators($entity);
+            }
+        }
+    }
+
+}
