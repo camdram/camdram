@@ -40,6 +40,7 @@ class FeatureContext extends CamdramContext
     public function cleanUsers(ScenarioEvent $event)
     {
         $fixtures = array(new UserFixtures(), new AccessControlEntryFixtures());
+        $this->truncateTable('ActsCamdramSecurityBundle:AccessControlEntry');
         $this->truncateTable('ActsCamdramSecurityBundle:ExternalUser');
         $this->truncateTable('ActsCamdramBundle:User');
         $this->purgeDatabase($fixtures, true);

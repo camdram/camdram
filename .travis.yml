@@ -13,6 +13,4 @@ before_script:
   - php app/console doctrine:fixtures:load --env=test -n
 
 script:
-    - phpunit -c app
-    - app/behat @ActsCamdramBundle
-    - app/behat @ActsCamdramSecurityBundle
+    - ./runtests

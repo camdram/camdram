@@ -14,7 +14,7 @@ use Symfony\Component\BrowserKit\Request;
 /**
  * @RouteResource("Techie")
  */
-class TechieAdvertController extends AbstractRestController
+class TechieAdvertController extends FOSRestController
 {
     protected $class = 'Acts\\CamdramBundle\\Entity\\TechieAdvert';
 
@@ -39,7 +39,6 @@ class TechieAdvertController extends AbstractRestController
      */
     public function cgetAction()
     {
-        $startDate = 
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
             ->findCurrentOrderedByDateName();
 
@@ -50,8 +49,4 @@ class TechieAdvertController extends AbstractRestController
         return $view;
     }
 
-    protected function getForm($advert = null)
-    {
-        return $this->createForm(new TechieAdvertType(), $advert);
-    }
 }
