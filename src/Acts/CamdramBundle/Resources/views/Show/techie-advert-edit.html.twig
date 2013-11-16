@@ -1,0 +1,41 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Edit/Renew Technical Team Advert{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'edit_techie_advert' %}
+{{ include('@ActsCamdram/Show/admin-panel.html.twig', {show: form.vars.value.show}) }}
+
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Edit/Renew Technical Team Advert</h3>
+
+        <div class="panel">
+            <p>Use the form below to modify or extend your advert for technical positions.</p>
+            <p>
+                <strong>
+                    {% if form.vars.value.expiry < current_time() and form.vars.value.deadlineTime < current_time() %}
+                        This advert expired on
+                    {% else %}
+                        This advert will expire on
+                    {% endif %}
+                    {{ form.vars.value.expiry | date('jS F Y') }} at {{ form.vars.value.deadlineTime | date("g:i a") }}
+                </strong>
+            </p>
+            <p>If you simply want to renew or extend the advert simply check over the information and click 'Modify/Renew' below.
+                By default, the advert will be displayed for another 10 days from today. If you would like your advert to include
+                a specific deadline, please check the box below and enter a date and time.</p>
+        </div>
+
+        <form action="{{ path("put_show_techie_advert", {identifier: form.vars.value.show.slug, _method: 'put'}) }}" method="post">
+            {{ include('ActsCamdramBundle:Show:techie-advert-form.html.twig') }}
+            <div class="text-right">
+                <input type="submit" value="Edit/Renew" class="button"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

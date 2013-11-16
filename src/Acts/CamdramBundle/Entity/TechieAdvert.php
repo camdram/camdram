@@ -3,12 +3,17 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiry;
 
 /**
  * TechieAdvert
  *
  * @ORM\Table(name="acts_techies")
- * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\TechieAdvertRepository")
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\TechieAdvertRepository") @ORM\HasLifecycleCallbacks
+ * @UniqueEntity("show")
+ * @TechieAdvertExpiry()
  */
 class TechieAdvert
 {
@@ -55,7 +60,7 @@ class TechieAdvert
     /**
      * @var string
      *
-     * @ORM\Column(name="deadlinetime", type="string", nullable=false)
+     * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      */
     private $deadline_time;
 
@@ -63,6 +68,7 @@ class TechieAdvert
      * @var \DateTime
      *
      * @ORM\Column(name="expiry", type="date", nullable=false)
+     * @Assert\Date()
      */
     private $expiry;
 
@@ -71,19 +77,20 @@ class TechieAdvert
      *
      * @ORM\Column(name="display", type="boolean", nullable=false)
      */
-    private $display;
+    private $display = false;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="remindersent", type="boolean", nullable=false)
      */
-    private $reminder_sent;
+    private $reminder_sent = false;
 
     /**
      * @var string
      *
      * @ORM\Column(name="techextra", type="text", nullable=false)
+     * @Assert\Length(max=1140)
      */
     private $tech_extra;
 
@@ -93,6 +100,11 @@ class TechieAdvert
      * @ORM\Column(name="lastupdated", type="datetime", nullable=false)
      */
     private $last_updated;
+
+    public function __construct()
+    {
+        $this->setLastUpdated(new \DateTime);
+    }
 
 
     /**
@@ -165,7 +177,7 @@ class TechieAdvert
     public function setDeadline($deadline)
     {
         $this->deadline = $deadline;
-    
+
         return $this;
     }
 
@@ -338,5 +350,11 @@ class TechieAdvert
     public function getShow()
     {
         return $this->show;
+    }
+
+    /** @ORM\PreUpdate */
+    public function preUpdate()
+    {
+        $this->setLastUpdated(new \DateTime);
     }
 }

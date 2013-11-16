@@ -1,6 +1,7 @@
 {% spaceless %}
 <li>
-    <a href="{% if item.path is defined %}{{ item.path }}{% else %}#{% endif %}">
+    <a{% if item.id is defined and current_subnav_id is defined and item.id == current_subnav_id %} class="active"{% endif %}
+            href="{% if item.path is defined %}{{ item.path }}{% else %}#{% endif %}">
         {% if item.icon is defined %}<i class="fa fa-{{ item.icon }} fa-fw"></i>{% endif %}
         {{ item.text }}
     </a>

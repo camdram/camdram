@@ -4,6 +4,9 @@
 
 {% block body %}
 
+{% set current_subnav_id = 'edit_show' %}
+{{ include('@ActsCamdram/Show/admin-panel.html.twig', {show: form.vars.value}) }}
+
 <div class="row">
     <h3>Edit Show</h3>
     <form action="{{ path("put_show", {identifier: form.vars.value.slug, _method: 'put'}) }}" id="show_form" method="post">

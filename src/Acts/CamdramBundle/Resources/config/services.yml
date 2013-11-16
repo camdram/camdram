@@ -100,3 +100,16 @@ services:
         arguments: [@security.context, @doctrine.orm.entity_manager, @acts.camdram.moderation_manager]
         tags:
             - { name: kernel.event_listener, event: camdram.entity_created, method: onShowCreated }
+
+    acts.camdram.listener.vacancies:
+        class: Acts\CamdramBundle\EventListener\VacanciesListener
+        arguments: [@acts.time_service]
+        tags:
+            - { name: kernel.event_listener, event: camdram.techie_advert_created, method: onTechieAdvertCreated }
+            - { name: kernel.event_listener, event: camdram.techie_advert_edited, method: onTechieAdvertEdited }
+
+    acts.camdram.techie_advert_expiry_validator:
+        class: Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiryValidator
+        arguments: [@acts.time_service]
+        tags:
+            - { name: validator.constraint_validator, alias: camdram.techie_advert_expiry }

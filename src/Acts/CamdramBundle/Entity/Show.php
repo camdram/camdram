@@ -966,12 +966,22 @@ class Show extends Entity
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTechieAdverts()
+    public function getActiveTechieAdverts()
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->gte('expiry', new \DateTime()));
 
         return $this->techie_adverts->matching($criteria);
+    }
+
+    /**
+     * Get techie_adverts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTechieAdverts()
+    {
+        return $this->techie_adverts;
     }
 
     /**

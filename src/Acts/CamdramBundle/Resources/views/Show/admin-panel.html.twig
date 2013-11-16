@@ -1,10 +1,21 @@
-{% if is_owner(show) %}
+{% if is_granted('EDIT', show) %}
 <div class="admin-panel">
+    <h6>Show Administration: <a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h6>
     <ul class="inline-list">
-        <li><a href="{{ path('edit_show', {identifier: show.slug}) }}"><i class="fa fa-pencil"></i> Edit this show</a></li>
-        {% if is_granted('DELETE', show) %}<li><a href="{{ path('remove_show', {identifier: show.slug}) }}"><i class="fa fa-eraser"></i> Delete this show</a></li>{% endif %}
+        {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier:show.slug}), icon: 'pencil', text: 'Edit this show'} }) }}
+        {% if is_granted('DELETE', show) %}
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'delete_show', path: path('remove_show',{identifier:show.slug}), icon: 'eraser', text: 'Delete this show'} }) }}
+        {% endif %}
         <li><a href=""><i class="fa fa-plus-circle"></i> Add an audition</a></li>
-        <li><a href=""><i class="fa fa-plus-circle"></i> Add a technical team advert</a></li>
+        <li>
+            {% if show.techieAdverts | length == 0 %}
+                {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                    {item: {id: 'new_techie_advert', path: path('new_show_techie_advert',{identifier:show.slug}), icon: 'plus-circle', text: 'Add a technical team advert'} }) }}
+            {% else %}
+                {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                    {item: {id: 'edit_techie_advert', path: path('edit_show_techie_advert',{identifier:show.slug}), icon: 'pencil', text: 'Edit/renew technical team advert'} }) }}
+            {% endif %}
+        </li>
         <li><a href=""><i class="fa fa-plus-circle"></i> Add a director/producer advert</a></li>
     </ul>
 </div>

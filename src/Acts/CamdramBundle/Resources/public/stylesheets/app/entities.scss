@@ -15,6 +15,11 @@ $include-html-classes: false;
 
 .admin-panel {
   @include panel(rgb(255,240,200), 1em 2em, false);
+
+  li a.active {
+    color: black;
+    cursor: default;
+  }
 }
 
 .approve-panel {
