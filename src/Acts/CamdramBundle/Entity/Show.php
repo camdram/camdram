@@ -1052,6 +1052,16 @@ class Show extends Entity
      */
     public function getApplications()
     {
+        return $this->applications;
+    }
+
+    /**
+     * Get active applications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getActiveApplications()
+    {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->gte('deadline_date', new \DateTime()));
 

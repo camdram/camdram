@@ -2,9 +2,11 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramBundle\Event\CamdramEvents;
 use Acts\CamdramBundle\Event\TechieAdvertEvent;
+use Acts\CamdramBundle\Form\Type\ApplicationType;
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -164,6 +166,96 @@ class ShowController extends AbstractRestController
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:techie-advert-edit.html.twig');
+        }
+    }
+
+    private function getApplicationForm(Show $show, $obj = null)
+    {
+        if (!$obj) {
+            $obj = new Application();
+            $obj->setShow($show);
+        }
+        $form = $this->createForm(new ApplicationType(), $obj);
+        return $form;
+    }
+
+    /**
+     * @param $identifier
+     * @Rest\Get("/shows/{identifier}/application/new")
+     */
+    public function newApplicationAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $form = $this->getApplicationForm($show);
+        return $this->view($form, 200)
+            ->setData(array('show' => $show, 'form' => $form->createView()))
+            ->setTemplate('ActsCamdramBundle:Show:application-new.html.twig');
+    }
+
+    /**
+     * @param $identifier
+     * @Rest\Post("/shows/{identifier}/application")
+     */
+    public function postApplicationAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $form = $this->getApplicationForm($show);
+        $form->submit($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
+            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+        }
+        else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form')
+                ->setTemplate('ActsCamdramBundle:Show:application-new.html.twig');
+        }
+    }
+
+    /**
+     * @param $identifier
+     * @Rest\Get("/shows/{identifier}/application/edit")
+     */
+    public function editApplicationAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $application = $show->getApplications()->first();
+        $form = $this->getApplicationForm($show, $application);
+        return $this->view($form, 200)
+            ->setData(array('show' => $show, 'form' => $form->createView()))
+            ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
+    }
+
+    /**
+     * @param $identifier
+     * @Rest\Put("/shows/{identifier}/techie-advert")
+     */
+    public function putApplicationAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $application = $show->getApplications()->first();
+        $form = $this->getApplicationForm($show, $application);
+        $form->submit($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
+            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+        }
+        else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form')
+                ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
         }
     }
 }

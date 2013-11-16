@@ -15,14 +15,11 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('show_id')
-            ->add('society_id')
-            ->add('text')
-            ->add('deadline_date')
-            ->add('further_info')
-            ->add('deadline_time')
-            ->add('show')
-            ->add('society')
+            ->add('text', 'text', array('label' => 'Brief Description',
+                'attr' => array('placeholder' => 'e.g. "Applications to Direct" (your show name will be included automatically)')))
+            ->add('further_info', 'textarea', array('label' => 'Further Information'))
+            ->add('deadline_date', 'date', array('widget' => 'single_text'))
+            ->add('deadline_time', 'time', array('widget' => 'single_text'))
         ;
     }
     
