@@ -3,6 +3,7 @@
 namespace Acts\CamdramSecurityBundle\Features\Context;
 
 use Acts\CamdramBackendBundle\DataFixtures\ORM\AccessControlEntryFixtures;
+use Acts\CamdramBackendBundle\DataFixtures\ORM\ShowFixtures;
 use Acts\CamdramBackendBundle\DataFixtures\ORM\UserFixtures;
 use Acts\CamdramBackendBundle\Features\Context\CamdramContext;
 use Behat\Behat\Event\ScenarioEvent;
@@ -39,8 +40,7 @@ class FeatureContext extends CamdramContext
      */
     public function cleanUsers(ScenarioEvent $event)
     {
-        $fixtures = array(new UserFixtures(), new AccessControlEntryFixtures());
-        $this->truncateTable('ActsCamdramSecurityBundle:AccessControlEntry');
+        $fixtures = array(new UserFixtures());
         $this->truncateTable('ActsCamdramSecurityBundle:ExternalUser');
         $this->truncateTable('ActsCamdramBundle:User');
         $this->purgeDatabase($fixtures, true);

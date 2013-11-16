@@ -56,10 +56,12 @@ class CamdramContext extends MinkContext
 
     protected function truncateTable($entity_name)
     {
+        $this->setForeignKeyChecks(false);
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
         $metadata = $em->getMetadataFactory()->getMetadataFor($entity_name);
         $platform = $em->getConnection()->getDatabasePlatform();
-        $em->getConnection()->executeUpdate("DELETE FROM " . $metadata->getQuotedTableName($platform));
+        $em->getConnection()->executeUpdate("TRUNCATE " . $metadata->getQuotedTableName($platform));
+        $this->setForeignKeyChecks(true);
     }
 
     protected function purgeDatabase(array $fixtures, $append = false)
@@ -67,8 +69,13 @@ class CamdramContext extends MinkContext
         $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
         $purger = new ORMPurger($em);
         $executor = new ORMExecutor($em, $purger);
-        $self = $this;
         $executor->execute($fixtures, $append);
+    }
+
+    protected function setForeignKeyChecks($val)
+    {
+        $val = (int) $val;
+        $this->kernel->getContainer()->get('doctrine.orm.entity_manager')->getConnection()->exec("SET FOREIGN_KEY_CHECKS=$val;");
     }
 
     /**
