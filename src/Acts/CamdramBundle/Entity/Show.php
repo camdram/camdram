@@ -2,21 +2,75 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramBundle\Search\SearchableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Show
  *
- * @ORM\Table(name="acts_shows")
+ * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  */
-class Show extends Entity
+class Show implements SearchableInterface
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     */
+    private $image;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
+     */
+    private $facebook_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
+     */
+    private $twitter_id;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @Serializer\Expose
+     */
+    private $slug;
+
     /**
      * @var string
      *
@@ -728,14 +782,13 @@ class Show extends Entity
      */
     public function __construct()
     {
-        parent::__construct();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
         $this->entry_expiry = new \DateTime;
         $this->timestamp = new \DateTime;
     }
 
-    public function getEntityType()
+    public function getType()
     {
         return 'show';
     }
@@ -1191,4 +1244,152 @@ class Show extends Entity
         return $this->getAuthorisedBy() !== null;
     }
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Show
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Show
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return Show
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * Set twitter_id
+     *
+     * @param string $twitterId
+     * @return Show
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitter_id = $twitterId;
+    
+        return $this;
+    }
+
+    /**
+     * Get twitter_id
+     *
+     * @return string 
+     */
+    public function getTwitterId()
+    {
+        return $this->twitter_id;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @return Show
+     */
+    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+    
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Hoyes\ImageManagerBundle\Entity\Image 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Show
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 }

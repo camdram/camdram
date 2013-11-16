@@ -43,7 +43,7 @@ class NewsMention
 
     /** @var Entity
      *
-     * @ORM\ManyToOne(targetEntity="Entity", inversedBy="mentions")
+     * @ORM\ManyToOne(targetEntity="Organisation", inversedBy="mentions")
      */
     private $entity;
 

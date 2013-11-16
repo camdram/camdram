@@ -23,7 +23,7 @@ class News
 
     /** @var Entity
      *
-     * @ORM\ManyToOne(targetEntity="Entity", inversedBy="news")
+     * @ORM\ManyToOne(targetEntity="Organisation", inversedBy="news")
      */
     private $entity;
 

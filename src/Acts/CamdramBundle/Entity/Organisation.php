@@ -2,18 +2,69 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramBundle\Search\SearchableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Organisation
  *
- * @ORM\Table(name="acts_societies")
+ * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
  * @ORM\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({0 = "Society", 1 = "Venue"})
  */
-abstract class Organisation extends Entity
+abstract class Organisation implements SearchableInterface
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     */
+    private $image;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
+     */
+    private $facebook_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
+     */
+    private $twitter_id;
+
     /**
      * @var string
      *
@@ -32,13 +83,6 @@ abstract class Organisation extends Entity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="type", type="boolean", nullable=false)
-     */
-    private $type;
-
-    /**
-     * @var boolean
-     *
      * @ORM\Column(name="affiliate", type="boolean", nullable=false)
      */
     private $affiliate = 0;
@@ -51,6 +95,13 @@ abstract class Organisation extends Entity
     private $logo_url;
 
     /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @Serializer\Expose
+     */
+    private $slug;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="expires", type="date", nullable=false)
@@ -59,14 +110,7 @@ abstract class Organisation extends Entity
 
     public function __construct()
     {
-        parent::__construct();
         $this->expires = new \DateTime('0000-00-00');
-    }
-
-    public function setName($name)
-    {
-        parent::setName($name);
-
     }
 
     /**
@@ -113,29 +157,6 @@ abstract class Organisation extends Entity
     public function getCollege()
     {
         return $this->college;
-    }
-
-    /**
-     * Set type
-     *
-     * @param boolean $type
-     * @return Society
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return boolean 
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**
@@ -205,5 +226,158 @@ abstract class Organisation extends Entity
     public function getExpires()
     {
         return $this->expires;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Organisation
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Organisation
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return Organisation
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * Set twitter_id
+     *
+     * @param string $twitterId
+     * @return Organisation
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitter_id = $twitterId;
+    
+        return $this;
+    }
+
+    /**
+     * Get twitter_id
+     *
+     * @return string 
+     */
+    public function getTwitterId()
+    {
+        return $this->twitter_id;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @return Organisation
+     */
+    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+    
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Hoyes\ImageManagerBundle\Entity\Image 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Organisation
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    public function getRank()
+    {
+        return PHP_INT_MAX;
     }
 }

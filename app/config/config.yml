@@ -19,7 +19,6 @@ framework:
         name: camdram
     fragments: { path: /_fragment }
 
-
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
@@ -126,16 +125,57 @@ acts_sphinx_real_time:
     clients:
         default: ~
     indexes:
-        entity:
-            fields: [name, description, entity_type]
-            attributes: {rank: int}
+        show:
+            fields: [name, description]
+            attributes: {type: string, rank: int}
             persistence:
                 driver: orm
-                model: Acts\CamdramBundle\Entity\Entity
+                model: Acts\CamdramBundle\Entity\Show
                 listener:
                     is_indexable_callback: isIndexable
                 provider: ~
                 finder: ~
+            config:
+                min_prefix_len: 1
+                prefix_fields: [name]
+                enable_star: true
+                dict: keywords
+        venue:
+            fields: [name, description]
+            attributes: {type: string, rank: int}
+            persistence:
+                driver: orm
+                model: Acts\CamdramBundle\Entity\Venue
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                prefix_fields: [name]
+                enable_star: true
+                dict: keywords
+        society:
+            fields: [name, short_name, description]
+            attributes: {type: string, rank: int}
+            persistence:
+                driver: orm
+                model: Acts\CamdramBundle\Entity\Society
+                provider: ~
+                finder: ~
+            config:
+                min_prefix_len: 1
+                prefix_fields: [name]
+                enable_star: true
+                dict: keywords
+        person:
+            fields: [name, short_name, description]
+            attributes: {type: string, rank: int}
+            persistence:
+                driver: orm
+                model: Acts\CamdramBundle\Entity\Person
+                provider: ~
+                finder: ~
+                listener:
+                    is_indexable_callback: isIndexable
             config:
                 min_prefix_len: 1
                 prefix_fields: [name]

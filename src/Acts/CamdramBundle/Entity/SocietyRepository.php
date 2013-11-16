@@ -37,7 +37,7 @@ class SocietyRepository extends EntityRepository
     {
         /* Do we care about affiliation to ACTS anymore? */
         return $this->getEntityManager()
-            ->createQuery('SELECT s FROM ActsCamdramBundle:Society s WHERE s.type=0 ORDER BY s.college, s.name')
+            ->createQuery('SELECT s FROM ActsCamdramBundle:Society s ORDER BY s.college, s.name')
             ->getResult();
     }
 
