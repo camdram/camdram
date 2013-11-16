@@ -6,7 +6,15 @@
         {% if is_granted('DELETE', show) %}
             {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'delete_show', path: path('remove_show',{identifier:show.slug}), icon: 'eraser', text: 'Delete this show'} }) }}
         {% endif %}
-        <li><a href=""><i class="fa fa-plus-circle"></i> Add an audition</a></li>
+        <li>
+            {% if show.auditions | length == 0 %}
+                {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                {item: {id: 'edit_auditions', path: path('edit_show_auditions',{identifier:show.slug}), icon: 'plus-circle', text: 'Add an audition'} }) }}
+            {% else %}
+                {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                {item: {id: 'edit_auditions', path: path('edit_show_auditions',{identifier:show.slug}), icon: 'pencil', text: 'Edit auditions'} }) }}
+            {% endif %}
+        </li>
         <li>
             {% if show.techieAdverts | length == 0 %}
                 {{ include('@ActsCamdram/Navigation/nav-item.html.twig',

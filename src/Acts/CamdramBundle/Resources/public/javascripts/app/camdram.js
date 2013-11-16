@@ -182,92 +182,53 @@
     }
 
     $.fn.entityCollection = function(options) {
-
         var options = $.extend({
-            select: function(item) {
-                var container = $(this).parents('.entity_collection_container');
-                $(this).val('');
-
-                if ($('input[value=' + item.id + ']', container).length > 0) return;
-
-                var $input = $('.autocomplete_input', container);
-                var new_li = $('.template', container).clone();
-                new_li.find('.collection_name').html(item.name);
-                new_li.find('.collection_id').val(item.id);
-                new_li.removeClass('template');
-                $('ul', container).append(new_li);
-            },
-            placeholder: 'start typing to search'
+            max_items: 100,
+            min_items: 1,
+            initialiseRow: function() {},
+            add_link_selector: '.add_link'
         }, options);
 
-        $('.autocomplete_input', this).camdramAutocomplete(options);
-
         $(this).each(function() {
-            $('ul', this).find('.entity_collection_remove').live('click', function() {
-                $(this).parent().remove();
-                return false;
-            })
-        })
-    }
-
-    $.fn.initPerformances = function(options) {
-        var $self = $(this);
-        var index = $('.performance',$self).length;
-
-        var update_date_fields = function() {
-            var val = $('#acts_camdrambundle_showtype_multi_venue input:checked', $self).val();
-            switch (val) {
-                case 'single':
-                    $('.performances .venue-row', $self).hide();
-                    $('.main-venue-row', $self).show();
-                    break;
-                case 'multi':
-                    $('.performances .venue-row', $self).show();
-                    $('.main-venue-row', $self).hide();
-                    break;
-            }
-        };
-
-        var update_remove_links = function() {
-            if ($('.remove_performance').length > 1) {
-                $('.remove_performance', $self).show();
-            }
-            else {
-                $('.remove_performance', $self).hide();
-            }
-        }
-
-        $('input[type=date]', $self).live('change', function() {
             var $self = $(this);
-            $self.parents('.performance').find('input[type=date]').each(function(key, input) {
-                if (!$(input).val()) {
-                    $(input).val($self.val());
+            var index = $(this).children().length;
+            var $add_link = $(options.add_link_selector, $self.parent());
+
+            var update_links = function() {
+                if ($('.remove_link', $self).length > options.min_items) {
+                    $('.remove_link', $self).show();
                 }
+                else {
+                    $('.remove_link', $self).hide();
+                }
+
+                if ($('.remove_link', $self).length < options.max_items) {
+                    $add_link.show();
+                }
+                else {
+                    $add_link.hide();
+                }
+            }
+
+            $add_link.click(function(e) {
+                e.preventDefault();
+                var html = $self.attr('data-prototype').replace(/__name__/g, index);
+                $row = $(html);
+                $self.append($row);
+                update_links();
+                options.initialiseRow.apply($row);
+                index++;
             })
-        })
 
-        $('#acts_camdrambundle_showtype_multi_venue input', $self).change(update_date_fields)
-        $('.main-venue-row select', $self).change(function() {
-            $('.performances .venue-row select', $self).val($(this).val());
-        })
+            $('.remove_link', $self).live('click', function(e) {
+                e.preventDefault();
+                $(this).parentsUntil($self).remove();
+                update_links();
+            })
 
-        $('.add_performance').click(function(e) {
-            e.preventDefault();
-            var html = $('.performances', $self).attr('data-prototype').replace(/__name__/g, index);
-            $('.performances', $self).append($(html));
-            update_date_fields();
-            update_remove_links();
-            index++;
+            update_links();
+            $self.children().each(options.initialiseRow);
         })
-
-        $('.remove_performance', $self).live('click', function(e) {
-            e.preventDefault();
-            $(this).parents('.performance').remove();
-            update_remove_links();
-        })
-
-        update_remove_links();
-        update_date_fields();
     }
 
     $.fn.endlessScroll = function(options) {
@@ -295,11 +256,6 @@
         $(document).foundation();
         $('.news_media').newsFeedMedia();
         $('a.fancybox').fancybox();
-        /*$('.datepicker').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'dd/mm/yy' //D d M yy
-        });*/
 
         $('.dropdown-link').each(function() {
             var $link = $(this);

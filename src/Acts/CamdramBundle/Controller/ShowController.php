@@ -7,6 +7,7 @@ use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramBundle\Event\CamdramEvents;
 use Acts\CamdramBundle\Event\TechieAdvertEvent;
 use Acts\CamdramBundle\Form\Type\ApplicationType;
+use Acts\CamdramBundle\Form\Type\ShowAuditionsType;
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -256,6 +257,50 @@ class ShowController extends AbstractRestController
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
+        }
+    }
+
+    private function getAuditionsForm(Show $show)
+    {
+        return $this->createForm(new ShowAuditionsType(), $show);
+    }
+
+    /**
+     * @param $identifier
+     * @Rest\Get("/shows/{identifier}/auditions/edit")
+     */
+    public function editAuditionsAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $form = $this->getAuditionsForm($show);
+        return $this->view($form, 200)
+            ->setData(array('show' => $show, 'form' => $form->createView()))
+            ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
+    }
+
+    /**
+     * @param $identifier
+     * @Rest\Put("/shows/{identifier}/auditions")
+     */
+    public function putAuditionsAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $form = $this->getAuditionsForm($show);
+        $form->submit($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
+            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+        }
+        else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form')
+                ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
         }
     }
 }

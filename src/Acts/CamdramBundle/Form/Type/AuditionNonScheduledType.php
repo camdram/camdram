@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AuditionType extends AbstractType
+class AuditionNonScheduledType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,10 +15,9 @@ class AuditionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', 'date', array('widget' => 'single_text'))
-            ->add('start_time', 'time', array('widget' => 'single_text'))
-            ->add('end_time', 'time', array('widget' => 'single_text'))
-            ->add('location')
+            ->add('date', 'date', array('label' => 'Advert expiry date', 'widget' => 'single_text'))
+            ->add('start_time', 'time', array('label' => 'Advert expiry time', 'widget' => 'single_text'))
+            ->add('location', 'text', array('label' => 'Contact details'))
         ;
     }
     
@@ -37,6 +36,6 @@ class AuditionType extends AbstractType
      */
     public function getName()
     {
-        return 'acts_camdrambundle_audition';
+        return 'acts_camdrambundle_audition_non_scheduled';
     }
 }

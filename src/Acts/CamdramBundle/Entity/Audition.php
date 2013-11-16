@@ -38,7 +38,7 @@ class Audition
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="endtime", type="time", nullable=false)
+     * @ORM\Column(name="endtime", type="time", nullable=true)
      */
     private $end_time;
 
@@ -71,14 +71,14 @@ class Audition
      *
      * @ORM\Column(name="display", type="boolean", nullable=false)
      */
-    private $display;
+    private $display = false;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="nonscheduled", type="boolean", nullable=false)
      */
-    private $non_scheduled;
+    private $nonScheduled;
 
     /**
      * Get id
@@ -236,19 +236,19 @@ class Audition
      */
     public function setNonScheduled($nonScheduled)
     {
-        $this->non_scheduled = $nonScheduled;
+        $this->nonScheduled = $nonScheduled;
     
         return $this;
     }
 
     /**
-     * Get non_scheduled
+     * Get nonSheduled
      *
      * @return boolean 
      */
     public function getNonScheduled()
     {
-        return $this->non_scheduled;
+        return $this->nonScheduled;
     }
 
     /**

@@ -15,11 +15,11 @@ select {
   float:left;
 }
 
-.performances .performance:last-child {
+.entity_collection > div:last-child {
   border-bottom:1px solid #ddd;
 }
 
-.performance {
+.entity_collection > div {
   border-top:1px solid #ddd;
   padding:10px 0 0;
 }

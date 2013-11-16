@@ -170,7 +170,7 @@ class Show extends Entity
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Audition", mappedBy="show")
+     * @ORM\OneToMany(targetEntity="Audition", mappedBy="show", cascade={"all"}, orphanRemoval=true)
      */
     private $auditions;
 
@@ -1007,6 +1007,24 @@ class Show extends Entity
         $this->auditions->removeElement($auditions);
     }
 
+    public function mergeAuditions($auditions)
+    {
+        foreach ($auditions as $audition) {
+            $audition->setShow($this);
+            if (!$audition->getId()) {
+                $this->addAudition($audition);
+            }
+            else {
+                foreach ($this->auditions as $k => $a) {
+                    if ($a->getId() == $audition->getId()) {
+                        $this->auditions[$k] = $audition;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Get auditions
      *
@@ -1020,6 +1038,76 @@ class Show extends Entity
 
 
         return $this->auditions->matching($criteria);
+    }
+
+    public function getScheduledAuditions()
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->gte('date', new \DateTime()))
+            ->andWhere(Criteria::expr()->eq('nonScheduled', false));
+
+        return $this->auditions->matching($criteria);
+    }
+
+    public function setScheduledAuditions($auditions)
+    {
+        foreach ($this->getScheduledAuditions() as $k => $audition) {
+            $found = false;
+            foreach ($auditions as $a) {
+                if ($audition->getId() == $a->getId()) {
+                    $this->auditions[$k] = $a;
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $this->auditions->remove($k);
+            }
+        }
+
+        foreach ($auditions as &$audition) {
+            if (!$audition->getId()) {
+                $audition->setShow($this);
+                $audition->setNonScheduled(false);
+                $this->addAudition($audition);
+            }
+        }
+        return $this;
+    }
+
+    public function getNonScheduledAuditions()
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('nonScheduled', true));
+
+        return $this->auditions->matching($criteria);
+    }
+
+    public function setNonScheduledAuditions($auditions)
+    {
+         foreach ($this->getNonScheduledAuditions() as $k => $audition) {
+            $found = false;
+            foreach ($auditions as $a) {
+                if ($audition->getId() == $a->getId()) {
+                    $this->auditions[$k] = $a;
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $this->auditions->remove($k);
+            }
+        }
+
+        foreach ($auditions as &$audition) {
+            if (!$audition->getId()) {
+                $audition->setShow($this);
+                $audition->setNonScheduled(true);
+                $this->addAudition($audition);
+            }
+        }
+
+        return $this;
     }
 
     /**
