@@ -36,6 +36,7 @@
                         <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add an audition session</a></li>
                     </ul>
                 </div>
+                {% do form.scheduled_auditions.setRendered() %}
             </div>
 
             <div class="row">
@@ -52,6 +53,7 @@
                         <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add contact details</a></li>
                     </ul>
                 </div>
+                {% do form.non_scheduled_auditions.setRendered() %}
             </div>
 
             {{ form_rest(form) }}

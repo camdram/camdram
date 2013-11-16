@@ -20,7 +20,7 @@ class ShowAuditionsType extends AbstractType
     {
 
         $builder
-            ->add('aud_extra', 'textarea', array('label' => 'Information to display on auditions page'))
+            ->add('aud_extra', 'textarea', array('required' => false, 'label' => 'Information to display on auditions page'))
             ->add('scheduled_auditions', 'collection', array(
                 'type' => new AuditionType(),
                 'allow_add' => true,

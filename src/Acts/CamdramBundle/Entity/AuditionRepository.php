@@ -32,7 +32,7 @@ class AuditionRepository extends EntityRepository
             ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
             ->where('a.date >= CURRENT_DATE()')
             ->andWhere('a.display = 0')
-            ->andWhere('a.non_scheduled = 0')
+            ->andWhere('a.nonScheduled = 0')
             //->andWhere('s.authorize_id > 0')
             ->orderBy('s.name, a.date, a.start_time')
             ->getQuery();
@@ -58,7 +58,7 @@ class AuditionRepository extends EntityRepository
             ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
             ->where('a.date <= :enddate')
             ->andWhere('a.date >= :startdate')
-            ->andWhere('a.non_scheduled = 0')
+            ->andWhere('a.nonScheduled = 0')
             ->andWhere('a.date >= CURRENT_DATE()')
             ->setParameters(array(
                 'startdate' => date("Y/m/d", $startDate),
@@ -75,7 +75,7 @@ class AuditionRepository extends EntityRepository
         $query = $this->createQueryBuilder('a')
             ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
             ->where('a.date >= CURRENT_DATE()')
-            ->andWhere('a.non_scheduled = 0')
+            ->andWhere('a.nonScheduled = 0')
             ->andWhere('a.show IS NOT NULL')
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
