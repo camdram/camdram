@@ -22,7 +22,7 @@ class ViewVoter implements VoterInterface
                     return self::ACCESS_GRANTED;
                 }
             }
-            elseif ($object instanceof Entity) {
+            else {
                 return self::ACCESS_GRANTED;
             }
         }

@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
+use Acts\CamdramBundle\Search\SearchableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -24,7 +25,7 @@ class EditorVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($object instanceof Entity) {
+        if ($object instanceof SearchableInterface) {
             foreach ($token->getRoles() as $role) {
                 if ($role->getRole() == 'ROLE_EDITOR') return self::ACCESS_GRANTED;
             }

@@ -127,7 +127,7 @@ acts_sphinx_real_time:
     indexes:
         show:
             fields: [name, description]
-            attributes: {type: string, rank: int}
+            attributes: {name: string, description: string, type: string, slug: string, start_at: datetime, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Show
@@ -142,7 +142,7 @@ acts_sphinx_real_time:
                 dict: keywords
         venue:
             fields: [name, description]
-            attributes: {type: string, rank: int}
+            attributes: {name: string, short_name: string, description: string, slug: string,  type: string, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Venue
@@ -150,12 +150,12 @@ acts_sphinx_real_time:
                 finder: ~
             config:
                 min_prefix_len: 1
-                prefix_fields: [name]
+                prefix_fields: [name, short_name]
                 enable_star: true
                 dict: keywords
         society:
             fields: [name, short_name, description]
-            attributes: {type: string, rank: int}
+            attributes: {name: string, short_name: string, description: string, slug: string, type: string, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Society
@@ -163,12 +163,12 @@ acts_sphinx_real_time:
                 finder: ~
             config:
                 min_prefix_len: 1
-                prefix_fields: [name]
+                prefix_fields: [name, short_name]
                 enable_star: true
                 dict: keywords
         person:
-            fields: [name, short_name, description]
-            attributes: {type: string, rank: int}
+            fields: [name, description]
+            attributes: {name: string, description: string, type: string, slug: string, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Person
@@ -195,7 +195,7 @@ acts_sphinx_real_time:
                 dict: keywords
 
 fos_js_routing:
-    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*' ]
+    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'autocomplete_search' ]
     
 acts_time_mock:
     time_override: %current_time%

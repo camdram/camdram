@@ -3,8 +3,53 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "593421ff48afdd99f6725622f77780cc",
+    "hash": "2746cb8ccf45b5dcdffb364e9bd3a296",
     "packages": [
+        {
+            "name": "acts/sphinx-realtime-bundle",
+            "version": "dev-master",
+            "target-dir": "Acts/SphinxRealTimeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/camdram/sphinx-realtime-bundle.git",
+                "reference": "39abfda4a3dcfc356e38c1c4aa908f44f2052ea5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/39abfda4a3dcfc356e38c1c4aa908f44f2052ea5",
+                "reference": "39abfda4a3dcfc356e38c1c4aa908f44f2052ea5",
+                "shasum": ""
+            },
+            "require": {
+                "foolz/sphinxql-query-builder": "0.9.*",
+                "php": ">=5.3.0",
+                "symfony/symfony": ">=2.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Acts\\SphinxRealTimeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Peter Hoyes",
+                    "email": "pahoyes@gmail.com"
+                }
+            ],
+            "description": "A bundle for Symfony2 which automatically syncs Doctrine entities to a Sphinx real-time index.",
+            "keywords": [
+                "autocomplete",
+                "index",
+                "search",
+                "sphinx"
+            ],
+            "time": "2013-11-16 22:30:52"
+        },
         {
             "name": "acts/time-mock-bundle",
             "version": "dev-master",
@@ -12,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/time-mock-bundle.git",
-                "reference": "1f144e15b1404e220c0f32e28ed0b53c2d3c5b1b"
+                "reference": "70973415f3932f2fff65795bf044fa965dbabcc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/time-mock-bundle/zipball/1f144e15b1404e220c0f32e28ed0b53c2d3c5b1b",
-                "reference": "1f144e15b1404e220c0f32e28ed0b53c2d3c5b1b",
+                "url": "https://api.github.com/repos/camdram/time-mock-bundle/zipball/70973415f3932f2fff65795bf044fa965dbabcc4",
+                "reference": "70973415f3932f2fff65795bf044fa965dbabcc4",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +92,7 @@
                 "testing",
                 "time"
             ],
-            "time": "2013-07-22 20:59:14"
+            "time": "2013-11-16 14:48:25"
         },
         {
             "name": "behat/behat",
@@ -386,51 +431,6 @@
                 "symfony"
             ],
             "time": "2013-09-16 08:22:20"
-        },
-        {
-            "name": "camdram/sphinx-realtime-bundle",
-            "version": "dev-master",
-            "target-dir": "Acts/SphinxRealTimeBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/camdram/sphinx-realtime-bundle.git",
-                "reference": "9128374e509dfc92106db2cf03d08ca8fbc4d22f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/9128374e509dfc92106db2cf03d08ca8fbc4d22f",
-                "reference": "9128374e509dfc92106db2cf03d08ca8fbc4d22f",
-                "shasum": ""
-            },
-            "require": {
-                "foolz/sphinxql-query-builder": "0.9.*",
-                "php": ">=5.3.0",
-                "symfony/symfony": ">=2.1"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Acts\\SphinxRealTimeBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Peter Hoyes",
-                    "email": "pahoyes@gmail.com"
-                }
-            ],
-            "description": "A bundle for Symfony2 which automatically syncs Doctrine entities to a Sphinx real-time index.",
-            "keywords": [
-                "autocomplete",
-                "index",
-                "search",
-                "sphinx"
-            ],
-            "time": "2013-09-22 22:49:57"
         },
         {
             "name": "doctrine/annotations",
@@ -3392,7 +3392,7 @@
         "doctrine/doctrine-migrations-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
         "hoyes/symfony2-image-manager": 20,
-        "camdram/sphinx-realtime-bundle": 20
+        "acts/sphinx-realtime-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

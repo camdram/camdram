@@ -108,6 +108,11 @@ abstract class Organisation implements SearchableInterface
      */
     private $expires;
 
+    /**
+     * @ORM\OneToMany(targetEntity="News", mappedBy="entity")
+     */
+    private $news;
+
     public function __construct()
     {
         $this->expires = new \DateTime('0000-00-00');
@@ -379,5 +384,38 @@ abstract class Organisation implements SearchableInterface
     public function getRank()
     {
         return PHP_INT_MAX;
+    }
+
+    /**
+     * Add news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     * @return Organisation
+     */
+    public function addNew(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news[] = $news;
+    
+        return $this;
+    }
+
+    /**
+     * Remove news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     */
+    public function removeNew(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news->removeElement($news);
+    }
+
+    /**
+     * Get news
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getNews()
+    {
+        return $this->news;
     }
 }

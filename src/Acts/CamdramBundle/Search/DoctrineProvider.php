@@ -1,5 +1,5 @@
 <?php
-namespace Acts\CamdramBundle\Service\Search;
+namespace Acts\CamdramBundle\Search;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -23,7 +23,7 @@ class DoctrineProvider implements ProviderInterface
     }
 
 
-    public function executeAutocomplete($repository, $query, $limit, array $filters = array(), array $orderBy = array())
+    public function executeAutocomplete($indexes, $query, $limit, array $filters = array(), array $orderBy = array())
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $repo \Doctrine\ORM\EntityRepository */

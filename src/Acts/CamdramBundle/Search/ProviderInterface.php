@@ -1,5 +1,5 @@
 <?php
-namespace Acts\CamdramBundle\Service\Search;
+namespace Acts\CamdramBundle\Search;
 
 use Pagerfanta\PagerfantaInterface;
 
@@ -23,7 +23,7 @@ interface ProviderInterface
      * @param $offset
      * @return array
      */
-    public function executeAutocomplete($repository, $query, $limit, array $filters = array(), array $orderBy = array());
+    public function executeAutocomplete($repository, $query, $limit, array $orderBy = array());
 
     /**
      * @param $repository
@@ -33,4 +33,5 @@ interface ProviderInterface
      * @return \Pagerfanta\PagerfantaInterface;
      */
     public function executeTextSearch($repository, $query, array $filters = array(), array $orderBy = array());
+
 }

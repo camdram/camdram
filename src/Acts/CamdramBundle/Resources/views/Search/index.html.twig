@@ -6,7 +6,7 @@
     <div class="row">
     <h3>Search camdram.net</h3>
 
-    {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
+    {% include 'ActsCamdramBundle::paginator.html.twig' %}
     <hr/>
     {% for entity in result.data %}
         <div class="panel">
@@ -17,7 +17,7 @@
         </div>
     {% endfor %}
     <hr/>
-    {% include 'ActsCamdramBundle:Entity:paginator.html.twig' %}
+    {% include 'ActsCamdramBundle::paginator.html.twig' %}
 
     </div>
 

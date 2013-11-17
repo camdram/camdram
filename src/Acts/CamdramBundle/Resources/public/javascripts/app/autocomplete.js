@@ -112,7 +112,7 @@ Camdram.autocomplete.requestOptions = function() {
     else {
         $("#search_form .fa-spinner").fadeIn(100);
         // Activate the field
-        var url = Routing.generate('get_entities', {_format: 'json', q: typed, limit: 10, autocomplete: true});
+        var url = Routing.generate('autocomplete_search', {_format: 'json', q: typed, limit: 10, autocomplete: true});
         $.getJSON(url, function(data) {
             Camdram.autocomplete.displayResults(typed, data);
             Camdram.autocomplete.cache[typed] = data;
@@ -133,17 +133,16 @@ Camdram.autocomplete.displayResults = function(query, items) {
 
             // Add in the text
             var link = $("<a/>")
-                .attr('href', Routing.generate('get_entity', {id: result.id}))
+                .attr('href', Routing.generate('get_'+result.type, {identifier: result.slug}))
                 .addClass('resultText')
                 .appendTo(item)
                 .click(function(e) {
-                    console.log('ahahaha a');
                     e.preventDefault();
                     Camdram.autocomplete.chooseOption(e);
                 });
 
             // Add in the icon
-            switch (result.camdram_type) {
+            switch (result.type) {
                 case 'show' : var icon_class = "fa fa-ticket"; break;
                 case 'venue' : var icon_class = "fa fa-building"; break;
                 case 'society' : var icon_class = "fa fa-briefcase"; break;
@@ -153,10 +152,10 @@ Camdram.autocomplete.displayResults = function(query, items) {
 
             $('<span/>').text(result.name).appendTo(link);
 
-            if (result.camdram_type == 'show') {
-                var start_at = new Date(result.start_at);
-                if (start_at.getFullYear()) { //is it a valid date?
-                    $('<em/>').text(' (' + Camdram.autocomplete.short_months[start_at.getMonth()] + ' ' + start_at.getFullYear() + ')')
+            if (result.type == 'show') {
+                var date = new Date(result.date * 1000);
+                if (date.getFullYear()) { //is it a valid date?
+                    $('<em/>').text(' (' + Camdram.autocomplete.short_months[date.getMonth()] + ' ' + date.getFullYear() + ')')
                         .appendTo(link);
                 }
             }

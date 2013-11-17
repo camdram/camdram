@@ -80,11 +80,11 @@ services:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 105 }
 
     acts.camdram.search_provider.doctrine:
-        class: Acts\CamdramBundle\Service\Search\DoctrineProvider
+        class: Acts\CamdramBundle\Search\DoctrineProvider
         arguments: [@service_container]
 
     acts.camdram.search_provider.sphinx:
-        class: Acts\CamdramBundle\Service\Search\SphinxProvider
+        class: Acts\CamdramBundle\Search\SphinxProvider
         arguments: [@service_container]
 
     acts.camdram.email_dispatcher:

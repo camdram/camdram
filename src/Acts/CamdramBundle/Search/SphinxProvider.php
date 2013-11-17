@@ -1,6 +1,7 @@
 <?php
-namespace Acts\CamdramBundle\Service\Search;
+namespace Acts\CamdramBundle\Search;
 
+use Foolz\SphinxQL\Expression;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\PagerfantaInterface;
 use Foolz\SphinxQL\SphinxQL;
@@ -29,24 +30,21 @@ class  SphinxProvider implements ProviderInterface
      * @param $offset
      * @return array
      */
-    public function executeAutocomplete($repository, $q, $limit, array $filters = array(), array $orderBy = array())
+    public function executeAutocomplete($indexes, $q, $limit, array $orderBy = array())
     {
         if (empty($q)) return array();
 
-        $finder = $this->container->get('acts.sphinx_realtime.finder.'.$repository);
+        $client = $this->container->get('acts.sphinx_realtime.client.default');
 
-        $query = SphinxQL::forge()->select()->match('name', $q.'*');
-
-        foreach ($filters as $key => $value) {
-            $query->match($key, $value);
-        }
+        $query = SphinxQL::forge()->select('id', 'name', new Expression("EXIST('start_at', 0) as date"), 'slug', 'type')
+            ->from($indexes)->match('@relaxed','')->match('(name,short_name)', $q.'*')->limit($limit);
 
         foreach ($orderBy as $field => $direction) {
 
             $query->orderBy($field, $direction);
         }
 
-        $results = $finder->find($query, $limit);
+        $results = $client->query($query);
 
         return $results;
     }
@@ -58,10 +56,12 @@ class  SphinxProvider implements ProviderInterface
      * @param $offset
      * @return \Pagerfanta\PagerfantaInterface;
      */
-    public function executeTextSearch($repository, $q, array $filters = array(), array $orderBy = array())
+    public function executeTextSearch($indexes, $q, array $filters = array(), array $orderBy = array())
     {
-        $finder = $this->container->get('acts.sphinx_realtime.finder.'.$repository);
-        $query = SphinxQL::forge()->select()->match('(name,description)', $q);
+        $client = $this->container->get('acts.sphinx_realtime.client.default');
+
+        $query = SphinxQL::forge()->select()->from($indexes)->match('@relaxed','')
+            ->match('(name,short_name,description)', $q);
 
         foreach ($filters as $key => $value) {
             $query->match($key, $value);
@@ -71,6 +71,7 @@ class  SphinxProvider implements ProviderInterface
             $query->orderBy($field, $direction);
         }
 
-        return $finder->findPaginated($query);
+        //return $finder->findPaginated($query);
     }
+
 }
