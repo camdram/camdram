@@ -228,10 +228,10 @@ class News
     /**
      * Set entity
      *
-     * @param \Acts\CamdramBundle\Entity\Entity $entity
+     * @param \Acts\CamdramBundle\Entity\Organisation $entity
      * @return News
      */
-    public function setEntity(\Acts\CamdramBundle\Entity\Entity $entity = null)
+    public function setEntity(\Acts\CamdramBundle\Entity\Organisation $entity = null)
     {
         $this->entity = $entity;
     
@@ -241,7 +241,7 @@ class News
     /**
      * Get entity
      *
-     * @return \Acts\CamdramBundle\Entity\Entity 
+     * @return \Acts\CamdramBundle\Entity\Organisation
      */
     public function getEntity()
     {

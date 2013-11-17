@@ -4,8 +4,6 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-use Acts\CamdramBundle\Entity\Entity;
-
 /**
  * Grants access if
  */

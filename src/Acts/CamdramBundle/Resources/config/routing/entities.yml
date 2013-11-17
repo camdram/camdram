@@ -19,13 +19,6 @@ acts_camdram_search:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\SearchController"
 
-acts_camdram_entity_toolbar:
-    pattern: /entities/toolbar
-    defaults: { _controller: ActsCamdramBundle:Entity:toolbar }
-acts_camdram_entities:
-    type:     rest
-    resource: "Acts\CamdramBundle\Controller\EntityController"
-
 acts_camdram_termdates:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\TermDateController"

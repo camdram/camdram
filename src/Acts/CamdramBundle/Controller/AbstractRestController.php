@@ -12,8 +12,6 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
-use Acts\CamdramBundle\Entity\Entity;
-
 /**
  * Class AbstractRestController
  *
@@ -101,8 +99,6 @@ abstract class AbstractRestController extends FOSRestController
 
     /**
      * Return the Doctrine repository corresponding to the entity type represented by the child class.
-     *
-     * @return Doctrine\ORM\EntityRepository
      */
     abstract protected function getRepository();
 

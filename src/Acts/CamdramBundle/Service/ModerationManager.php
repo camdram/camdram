@@ -1,7 +1,6 @@
 <?php
 namespace Acts\CamdramBundle\Service;
 
-use Acts\CamdramBundle\Entity\Entity;
 use Acts\CamdramBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Doctrine\ORM\EntityManager;
@@ -51,7 +50,7 @@ class ModerationManager
      * Determine which Users are permitted to moderate the given Entity.
      * @return Users[] an array of Camdram Users.
      */
-    public function getModeratorsForEntity(Entity $entity)
+    public function getModeratorsForEntity($entity)
     {
         $users = array();
 
@@ -78,7 +77,7 @@ class ModerationManager
      * if an Entity hasn't been moderated after a period of time a reminder
      * email may need to be sent.
      */
-    public function emailEntityModerators(Entity $entity)
+    public function emailEntityModerators($entity)
     {
         if ($entity instanceof Show) {
             $moderators = $this->getModeratorsForEntity($entity);

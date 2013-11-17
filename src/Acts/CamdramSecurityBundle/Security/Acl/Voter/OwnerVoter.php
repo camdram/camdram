@@ -3,13 +3,8 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Acl\Model\AclProviderInterface;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
-use Acts\CamdramBundle\Entity\Entity;
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository;
 
 /**
  * Grants access if

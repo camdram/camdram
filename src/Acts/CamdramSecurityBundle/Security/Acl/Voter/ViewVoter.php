@@ -1,7 +1,6 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Acts\CamdramBundle\Entity\Entity;
 use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
