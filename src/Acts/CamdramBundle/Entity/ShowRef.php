@@ -19,7 +19,7 @@ class ShowRef
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private $refid;
 
     /**
      * @var \Show
@@ -44,9 +44,9 @@ class ShowRef
      *
      * @return integer 
      */
-    public function getId()
+    public function getRefId()
     {
-        return $this->id;
+        return $this->refid;
     }
 
     /**
