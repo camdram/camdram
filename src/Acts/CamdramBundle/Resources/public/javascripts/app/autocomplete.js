@@ -112,7 +112,7 @@ Camdram.autocomplete.requestOptions = function() {
     else {
         $("#search_form .fa-spinner").fadeIn(100);
         // Activate the field
-        var url = Routing.generate('autocomplete_search', {_format: 'json', q: typed, limit: 10, autocomplete: true});
+        var url = Routing.generate('autocomplete_entity', {_format: 'json', q: typed, limit: 10, autocomplete: true});
         $.getJSON(url, function(data) {
             Camdram.autocomplete.displayResults(typed, data);
             Camdram.autocomplete.cache[typed] = data;

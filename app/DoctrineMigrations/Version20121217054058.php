@@ -17,7 +17,6 @@ class Version20121217054058 extends AbstractMigration
         
         $this->addSql("CREATE TABLE acts_news (id INT AUTO_INCREMENT NOT NULL, entity_id INT DEFAULT NULL, remote_id VARCHAR(255) DEFAULT NULL, source VARCHAR(20) NOT NULL, body LONGTEXT NOT NULL, num_comments INT DEFAULT NULL, num_likes INT DEFAULT NULL, INDEX IDX_E030B31081257D5D (entity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         $this->addSql("ALTER TABLE acts_news ADD CONSTRAINT FK_E030B31081257D5D FOREIGN KEY (entity_id) REFERENCES acts_entities (id)");
-        $this->addSql("ALTER TABLE `acts_entities` ADD public TINYINT(1) NOT NULL, CHANGE `facebook_id` facebook_id VARCHAR(50) DEFAULT NULL, CHANGE `twitter_id` twitter_id VARCHAR(50) DEFAULT NULL");
     }
 
     public function down(Schema $schema)
@@ -26,6 +25,5 @@ class Version20121217054058 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql");
         
         $this->addSql("DROP TABLE acts_news");
-        $this->addSql("ALTER TABLE `acts_entities` DROP public, CHANGE `facebook_id` facebook_id INT DEFAULT NULL, CHANGE `twitter_id` twitter_id INT DEFAULT NULL");
     }
 }

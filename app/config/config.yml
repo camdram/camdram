@@ -195,7 +195,7 @@ acts_sphinx_real_time:
                 dict: keywords
 
 fos_js_routing:
-    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'autocomplete_search' ]
+    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'autocomplete_entity' ]
     
 acts_time_mock:
     time_override: %current_time%

@@ -36,10 +36,27 @@ class EntitiesSlugsCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $em->getConfiguration()->setSQLLogger(null);
 
-        $entity_res = $em->getRepository('ActsCamdramBundle:Entity');
-        $entities = $entity_res->createQueryBuilder('e')
-            ->where('e.slug is null')
+        $shows = $em->getRepository('ActsCamdramBundle:Show')->createQueryBuilder('s')->where('s.slug is null')
             ->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
+        $this->createSlugs($shows, $output);
+        $em->clear();
+
+        $orgs = $em->getRepository('ActsCamdramBundle:Organisation')->createQueryBuilder('o')->where('o.slug is null')
+            ->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
+        $this->createSlugs($orgs, $output);
+        $em->clear();
+
+        $people = $em->getRepository('ActsCamdramBundle:Person')->createQueryBuilder('p')->where('p.slug is null')
+            ->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
+        $this->createSlugs($people, $output);
+        $em->clear();
+
+        $output->write('<info>Done</info>');
+    }
+
+    protected function createSlugs($entities, OutputInterface $output)
+    {
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $count = 0;
         foreach ($entities as $row) {
@@ -57,7 +74,5 @@ class EntitiesSlugsCommand extends ContainerAwareCommand
         }
         $em->flush();
         $em->clear();
-
-        $output->write('<info>Done</info>');
     }
 }
