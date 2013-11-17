@@ -29,10 +29,11 @@ class ShowRefCreator
 
         if (!$show->getPrimaryRef()) {
             $year = $show->getStartAt()->format('y');
+            $refname = $year.'/'.str_replace('-','_',$show->getSlug());
 
             $ref = new ShowRef();
             $ref->setShow($show);
-            $ref->setRef($year.'/'.$show->getSlug());
+            $ref->setRef($refname);
             $this->entityManager->persist($ref);
             $show->setPrimaryRef($ref);
             $this->entityManager->flush();
