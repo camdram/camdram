@@ -2,14 +2,25 @@ parameters:
     database_driver:   pdo_mysql
     database_host:     localhost
     database_port:     ~
-    database_name:     camdram
-    database_user:     camdram
-    database_password: password
+    database_name_orm: camdram
+    database_user_orm: camdram
+    database_pass_orm: password
+    database_name_odm: jackalope
+    database_user_odm: jackalope
+    database_pass_odm: password
 
     test_database_name: camdram_test
     test_database_user: camdram_test
     test_database_password: password
 
+    # PHPCD-ODM Settings
+    phpcr_backend:
+        type: doctrinedbal
+        connection: odm
+    phpcr_workspace: default
+    phpcr_user: admin
+    phpcr_pass: admin
+    
     # During development send emails from your own gmail address e.g.
     # your_username@gmail.com.
     mailer_transport:  gmail
@@ -43,5 +54,5 @@ parameters:
     term_dates_ical: http://www.google.com/calendar/ical/cam.ac.uk_t5c3ocr5f5ehr8ln3ec4ile1g0%40group.calendar.google.com/public/basic.ics
 
     ruby_bin: /usr/bin/ruby
-    ruby_bin_dir: /usr/local/bin
+    ruby_bin_dir: /home/andrew/bin
     node_bin_dir: /usr/local/bin

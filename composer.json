@@ -34,7 +34,14 @@
         "behat/symfony2-extension": "1.0.*",
         "behat/mink-extension": "1.1.*",
         "behat/mink-goutte-driver": "1.0.*",
-        "acts/time-mock-bundle": "*"
+        "acts/time-mock-bundle": "*",
+        
+        "jackalope/jackalope-doctrine-dbal": "dev-master",
+        "doctrine/phpcr-bundle": "1.0.*",
+        "doctrine/phpcr-odm": "1.0.*",
+        "doctrine/data-fixtures": "1.0.0",
+        "symfony-cmf/symfony-cmf": "1.0.*",
+        "symfony-cmf/routing-auto-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

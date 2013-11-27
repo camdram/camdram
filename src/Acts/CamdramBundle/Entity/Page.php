@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Page
  *
  * @ORM\Table(name="acts_pages")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PageRepository")
  */
 class Page
 {
@@ -722,3 +722,4 @@ class Page
         return $this->searchable;
     }
 }
+

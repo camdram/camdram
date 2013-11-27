@@ -1,0 +1,21 @@
+cmf_routing_auto:
+    auto_route_mapping:
+        Acts\CamdramBundle\Document\Page:
+            content_path:
+                pages:
+                    provider:
+                        name: specified
+                        path: /cms/routes/page/infobase
+                    exists_action:
+                        strategy: use
+                    not_exists_action:
+                        strategy: create
+            content_name:
+                provider:
+                    name: content_method
+                    method: getSlug
+                exists_action:
+                    strategy: auto_increment
+                    pattern: -%d
+                not_exists_action:
+                    strategy: create

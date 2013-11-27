@@ -2,7 +2,8 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-
+    - { resource: routing_auto.yml }
+    
 framework:
     esi: { enabled: true }
     secret:          "%secret%"
@@ -46,19 +47,74 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   "%database_driver%"
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
-        mapping_types:
-            enum:       string
+        # Use separate databases for the ORM and ODM
+        default_connection: default
+        connections:
+            default:
+                # The ORM db connection, e.g. non-Infobase content
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name_orm%"
+                user:     "%database_user_orm%"
+                password: "%database_pass_orm%"        
+                charset:  UTF8
+                mapping_types:
+                    enum:       string
+            odm:
+                # ODM db connection, e.g. Infobase conent
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name_odm%"
+                user:     "%database_user_odm%"
+                password: "%database_pass_odm%"
+                charset:  UTF8
+                mapping_types:
+                    enum:       string
+   
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+        #default_entity_manager:   default
+       # entity_managers:
+       #     default:
+       #         connection: default
+       #         mappings:
+       #             ActsCamdramBundle: ~
+      #  entity_managers:
+       #     default:
+       #         connection: default
+        #        mappings:
+         #       ActsCamdramBundle: ~ 
 
+doctrine_phpcr:
+    session:
+        backend: %phpcr_backend%
+        workspace: %phpcr_workspace%
+        username: %phpcr_user%
+        password: %phpcr_pass%
+    # enable the ODM layer
+    odm:
+        auto_mapping: true
+        auto_generate_proxy_classes: %kernel.debug%
+
+sonata_block:
+    default_contexts: [cms]
+
+# Enable the DynamicRouter from the RoutingBundle    
+cmf_routing:
+    chain:
+        routers_by_id:
+            cmf_routing.dynamic_router: 20
+            router.default: 100
+    dynamic:
+        enabled: true
+        persistence:
+            phpcr:
+                route_basepath: /cms/routes/page
+        controllers_by_class:
+            Acts\CamdramBundle\Document\Page: Acts\CamdramBundle\Controller\DefaultPageController::pageAction
 
 # Swiftmailer Configuration
 swiftmailer:

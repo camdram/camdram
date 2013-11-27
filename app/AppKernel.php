@@ -33,6 +33,21 @@ class AppKernel extends Kernel
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
             new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
             new Acts\ExternalLoginBundle\ActsExternalLoginBundle(),
+            
+            // Bundles needed for the Content Management Framework (used by the Infobase).
+            new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
+            new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+            new Symfony\Cmf\Bundle\RoutingAutoBundle\CmfRoutingAutoBundle(),
+            new Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
+            new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
+            new Symfony\Cmf\Bundle\ContentBundle\CmfContentBundle(),
+            new Symfony\Cmf\Bundle\BlockBundle\CmfBlockBundle(),
+
+            // Dependencies of the CmfMenuBundle
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+            // Dependencies of the CmfBlockBundle
+            new Sonata\BlockBundle\SonataBlockBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
