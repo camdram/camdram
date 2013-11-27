@@ -5,9 +5,7 @@ use Acts\CamdramBundle\Entity\Organisation;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Doctrine\ORM\EntityManager;
 
-use Acts\CamdramBundle\Entity\Entity;
 use Acts\CamdramBundle\Entity\User;
-use Acts\CamdramBundle\Entity\Orgnisation;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository;
@@ -30,7 +28,7 @@ class AclProvider
         $this->repository = $entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
     }
 
-    public function isOwner(TokenInterface $token, Entity $entity)
+    public function isOwner(TokenInterface $token, $entity)
     {
         if (!$token->getUser() instanceof User) return false;
 
@@ -45,7 +43,7 @@ class AclProvider
         return $this->entityManager->getRepository('ActsCamdramBundle:Entity')->getByUser($user, $class_name);
     }
 
-    public function grantAccess(Entity $entity, User $user, User $granter)
+    public function grantAccess($entity, User $user, User $granter)
     {
         $ace = new AccessControlEntry;
         $ace->setUser($user);

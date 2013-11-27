@@ -61,4 +61,10 @@ class SecurityUtils
             throw new AccessDeniedException();
         }
     }
+
+    public function isOwner($object)
+    {
+        $token = $this->container->get('security.context')->getToken();
+        return $this->container->get('camdram.security.acl.provider')->isOwner($token, $object);
+    }
 }

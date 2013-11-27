@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Society
  *
- * @ORM\Table(name="acts_venues")
  * @ORM\Entity(repositoryClass="VenueRepository")
  */
 class Venue extends Organisation
@@ -97,7 +96,6 @@ class Venue extends Organisation
     {
         parent::__construct();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->setType(true);
     }
     
     /**
@@ -176,7 +174,7 @@ class Venue extends Organisation
         return new MapLocation($this->latitude, $this->longitude);
     }
 
-    public function getEntityType()
+    public function getType()
     {
         return 'venue';
     }

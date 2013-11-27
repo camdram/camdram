@@ -17,13 +17,13 @@
     <div class="large-9 columns">
         {{ form_widget(form.multi_venue) }}
 
-        <div class="performances" data-prototype="{% filter escape('html') %}{% include 'ActsCamdramBundle:Show:performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endfilter %}">
+        <div class="performances entity_collection" data-prototype="{% filter escape('html') %}{% include 'ActsCamdramBundle:Show:performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endfilter %}">
             {% for performance in form.performances %}
                 {% include 'ActsCamdramBundle:Show:performance-form.html.twig' %}
             {% endfor %}
         </div>
         <ul class="inline-list right performance-links">
-           <li> <a href="#" class="add_performance"">Add date range</a></li>
+           <li> <a href="#" class="add_link">Add date range</a></li>
         </ul>
     </div>
 </div>
@@ -81,3 +81,41 @@
 </div>
 
 {{ form_rest(form) }}
+
+<script>
+$(function() {
+
+    var update_date_fields = function() {
+        var val = $('#acts_camdrambundle_showtype_multi_venue input:checked').val();
+        switch (val) {
+            case 'single':
+                $('.performances .venue-row').hide();
+                $('.main-venue-row').show();
+                break;
+            case 'multi':
+                $('.performances .venue-row').show();
+                $('.main-venue-row').hide();
+                break;
+        }
+    };
+
+    $('input[type=date]').live('change', function() {
+        var $self = $(this);
+        $self.parents('.performance').find('input[type=date]').each(function(key, input) {
+            if (!$(input).val()) {
+                $(input).val($self.val());
+            }
+        })
+    })
+
+    $('#acts_camdrambundle_showtype_multi_venue input').change(update_date_fields)
+    $('.main-venue-row select').change(function() {
+        $('.performances .venue-row select').val($(this).val());
+    })
+
+    update_date_fields();
+    $('.performances').entityCollection({
+        initialiseRow: update_date_fields
+    });
+});
+</script>

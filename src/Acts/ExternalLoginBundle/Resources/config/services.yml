@@ -7,6 +7,11 @@ services:
         arguments: [@buzz.client, @security.http_utils]
         abstract: true
 
+    external_login.service.test:
+        class: Acts\ExternalLoginBundle\Security\Service\TestService
+        arguments: [@router, %kernel.environment%]
+        abstract: true
+
     external_login.service.social_api:
         class: Acts\ExternalLoginBundle\Security\Service\SocialApiService
         parent: external_login.service.abstract

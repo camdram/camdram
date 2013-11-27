@@ -2,16 +2,11 @@
 
 {% block title %}Show: {{ show.name }}{% endblock %}
 
-{% block option_links %}
-    {% if is_granted('EDIT', show) %}
-    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~show.name~'"', path: path('edit_show', {identifier: show.slug}), icon: 'pencil'}} %}
-    {% endif %}
-    {% if is_granted('DELETE', show) %}
-    {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Delete "'~show.name~'"', path: path('remove_show', {identifier: show.slug}), icon: 'eraser'}} %}
-    {% endif %}
-{% endblock %}
-
 {% block body %}
+
+{% if is_granted('EDIT', show) %}
+{{ include('ActsCamdramBundle:Show:admin-panel.html.twig') }}
+{% endif %}
 
 <div class="row">
 

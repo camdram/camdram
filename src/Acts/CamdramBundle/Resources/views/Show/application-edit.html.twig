@@ -1,0 +1,29 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Edit/Renew Technical Team Advert{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'edit_application' %}
+{{ include('@ActsCamdram/Show/admin-panel.html.twig', {show: form.vars.value.show}) }}
+
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Edit Director/Producer advert</h3>
+
+        <div class="panel">
+            <p>Use the form below to modify or extend your advert for core production team positions. The advert will be displayed
+            until the deadline date.</p>
+        </div>
+
+        <form action="{{ path("put_show_techie_advert", {identifier: form.vars.value.show.slug, _method: 'put'}) }}" method="post">
+            {{ include('ActsCamdramBundle:Show:application-form.html.twig') }}
+            <div class="text-right">
+                <input type="submit" value="Edit" class="button"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

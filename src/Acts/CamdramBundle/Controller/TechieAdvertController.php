@@ -2,18 +2,36 @@
  
 namespace Acts\CamdramBundle\Controller;
  
+use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 
 use Doctrine\Common\Collections\Criteria;
- 
+use Symfony\Component\BrowserKit\Request;
+
 
 /**
  * @RouteResource("Techie")
  */
 class TechieAdvertController extends FOSRestController
 {
+    protected $class = 'Acts\\CamdramBundle\\Entity\\TechieAdvert';
+
+    protected $type = 'techie';
+
+    protected $type_plural = 'techies';
+
+    public function getController()
+    {
+        return 'TechieAdvert';
+    }
+
+    public function getRepository()
+    {
+        return $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
+    }
+
     /**
      * cgetAction
      *
@@ -21,7 +39,6 @@ class TechieAdvertController extends FOSRestController
      */
     public function cgetAction()
     {
-        $startDate = 
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
             ->findCurrentOrderedByDateName();
 
@@ -31,4 +48,5 @@ class TechieAdvertController extends FOSRestController
         ;
         return $view;
     }
+
 }

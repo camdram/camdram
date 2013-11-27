@@ -21,12 +21,9 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('acts_camdram');
         $rootNode->children()
                 ->scalarNode('search_provider')->isRequired()->end()
-                ->scalarNode('time_override')->defaultNull()->end()
+                ->scalarNode('techies_advert_default_days')->isRequired()->end()
+                ->scalarNode('techies_advert_max_days')->isRequired()->end()
             ->end();
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
 
         return $treeBuilder;
     }

@@ -2,24 +2,65 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramBundle\Search\SearchableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
-
-use JMS\Serializer\Annotation\Exclude;
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Person
  *
- * @ORM\Table(name="acts_people_data")
+ * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="PersonRepository")
  */
-class Person extends Entity
+class Person implements SearchableInterface
 {
     /**
      * @var integer
      *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     */
+    private $image;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @Serializer\Expose
+     */
+    private $slug;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="mapto", type="integer", nullable=false)
-     * @Exclude
+     * @Serializer\Exclude
      */
     private $map_to;
 
@@ -27,14 +68,14 @@ class Person extends Entity
      * @var boolean
      *
      * @ORM\Column(name="norobots", type="boolean", nullable=false)
-     * @Exclude
+     * @Serializer\Exclude
      */
     private $no_robots;
 
     /**
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
-     * @Exclude
+     * @Serializer\Exclude
      */
     private $roles;
 
@@ -42,7 +83,7 @@ class Person extends Entity
      * @var User
      *
      * @ORM\OneToMany(targetEntity="User", mappedBy="person")
-     * @Exclude
+     * @Serializer\Exclude
      */
     private $users;
 
@@ -50,7 +91,7 @@ class Person extends Entity
      * @var array
      *
      * @ORM\OneToMany(targetEntity="NameAlias", mappedBy="person")
-     * @Exclude
+     * @Serializer\Exclude
      */
     private $aliases;
 
@@ -226,7 +267,7 @@ class Person extends Entity
         //Required by Doctrine as it can't handle irregular plurals...
     }
 
-    public function getEntityType()
+    public function getType()
     {
         return 'person';
     }
@@ -254,4 +295,152 @@ class Person extends Entity
         return count($this->getRoles()) > 0;
     }
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Person
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return Person
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * Set twitter_id
+     *
+     * @param string $twitterId
+     * @return Person
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitter_id = $twitterId;
+    
+        return $this;
+    }
+
+    /**
+     * Get twitter_id
+     *
+     * @return string 
+     */
+    public function getTwitterId()
+    {
+        return $this->twitter_id;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @return Person
+     */
+    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+    
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Hoyes\ImageManagerBundle\Entity\Image 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Person
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Person
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 }

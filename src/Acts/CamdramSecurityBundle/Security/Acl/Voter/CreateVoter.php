@@ -27,7 +27,10 @@ class CreateVoter implements VoterInterface
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         if (is_string($object) && $attributes == array('CREATE')) {
-            if ($object == 'Acts\\CamdramBundle\\Entity\\Show')  {
+            if ($object == 'Acts\\CamdramBundle\\Entity\\Show'
+                    || $object == 'Acts\\CamdramBundle\\Entity\\TechieAdvert'
+                    || $object == 'Acts\\CamdramBundle\\Entity\\Audition'
+                    || $object == 'Acts\\CamdramBundle\\Entity\\Application')  {
                 return self::ACCESS_GRANTED;
             }
         }

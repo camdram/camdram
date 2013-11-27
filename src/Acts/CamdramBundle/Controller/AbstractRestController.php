@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Event\CamdramEvents;
+use Acts\CamdramBundle\Event\EntityEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -9,8 +11,6 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-
-use Acts\CamdramBundle\Entity\Entity;
 
 /**
  * Class AbstractRestController
@@ -99,8 +99,6 @@ abstract class AbstractRestController extends FOSRestController
 
     /**
      * Return the Doctrine repository corresponding to the entity type represented by the child class.
-     *
-     * @return Doctrine\ORM\EntityRepository
      */
     abstract protected function getRepository();
 
@@ -144,6 +142,7 @@ abstract class AbstractRestController extends FOSRestController
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
+            $this->get('event_dispatcher')->dispatch(CamdramEvents::ENTITY_CREATED, new EntityEvent($form->getData(), $this->getUser()));
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         }
         else {
@@ -256,6 +255,7 @@ abstract class AbstractRestController extends FOSRestController
     {
         $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
         $view = $this->view($entity, 200)
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
             ->setTemplateVar($this->type)

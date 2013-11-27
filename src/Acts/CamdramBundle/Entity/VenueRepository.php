@@ -10,7 +10,6 @@ class VenueRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('v')
             ->orderBy('v.name')
-            ->where('v.type = 1')
             ->getQuery();
         return $query->getResult();
     }

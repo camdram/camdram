@@ -65,6 +65,8 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
             $show->setDescription($play['description']);
             $show->setAuthor($play['author']);
             $show->setCategory($play['category']);
+            $show->setAuthorisedBy($this->getReference('adminuser'));
+
             $this->allocateSociety($show);
 
             $start = clone $start_date;

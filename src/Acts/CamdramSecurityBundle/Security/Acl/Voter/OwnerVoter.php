@@ -3,13 +3,8 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Acl\Model\AclProviderInterface;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
-use Acts\CamdramBundle\Entity\Entity;
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository;
 
 /**
  * Grants access if
@@ -39,7 +34,7 @@ class OwnerVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($object instanceof Entity && $attributes == array('EDIT')) {
+        if ($attributes == array('EDIT') || $attributes == array('VIEW')) {
             if ($this->aclProvider->isOwner($token, $object)) {
                 return self::ACCESS_GRANTED;
             }

@@ -33,4 +33,47 @@ class UserRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+
+    public function findAdmins($min_level)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->innerJoin('u.aces', 'e')
+            ->where('e.type = :type')
+            ->andWhere('e.entity_id >= :level')
+            ->andWhere('e.granted_by IS NOT NULL')
+            ->andWhere('e.revoked_by IS NULL')
+            ->setParameter('level', $min_level)
+            ->setParameter('type', 'security')
+            ->getQuery();
+        return $query->getResult();
+}
+
+    public function findOrganisationAdmins(Organisation $org)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->innerJoin('u.aces', 'e')
+            ->where('e.type = :type')
+            ->andWhere('e.entity_id = :id')
+            ->andWhere('e.granted_by IS NOT NULL')
+            ->andWhere('e.revoked_by IS NULL')
+            ->setParameter('id', $org->getId())
+            ->setParameter('type', 'society')
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getEntityOwners(Entity $entity)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->innerJoin('u.aces', 'e')
+            ->where('e.type = :type')
+            ->andWhere('e.entity_id = :id')
+            ->andWhere('e.granted_by IS NOT NULL')
+            ->andWhere('e.revoked_by IS NULL')
+            ->setParameter('id', $entity->getId())
+            ->setParameter('type', 'show')
+            ->getQuery();
+        return $query->getResult();
+    }
+
 }

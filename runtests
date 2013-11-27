@@ -1,0 +1,3 @@
+phpunit -c app
+app/behat @ActsCamdramBundle
+app/behat @ActsCamdramSecurityBundle

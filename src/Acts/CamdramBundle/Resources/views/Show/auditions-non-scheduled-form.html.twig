@@ -1,0 +1,29 @@
+<div class="audition">
+    <div class="row">
+        <div class="large-3 column">
+            {{ form_label(audition.location) }}
+        </div>
+        <div class="large-9 columns">
+            {{ form_widget(audition.location) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="large-3 column">
+            {{ form_label(audition.date) }}
+        </div>
+        <div class="large-3 columns">
+            {{ form_widget(audition.date) }}
+        </div>
+        <div class="large-3 column">
+            {{ form_label(audition.start_time) }}
+        </div>
+        <div class="large-3 columns">
+            {{ form_widget(audition.start_time) }}
+        </div>
+    </div>
+    <ul class="inline-list">
+        <li> <a href="#" class="remove_link"><i class="fa fa-times"></i> Remove contact details</a></li>
+    </ul>
+    {{ form_rest(audition) }}
+</div>

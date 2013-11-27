@@ -2,21 +2,75 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramBundle\Search\SearchableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Show
  *
- * @ORM\Table(name="acts_shows")
+ * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  */
-class Show extends Entity
+class Show implements SearchableInterface
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     */
+    private $image;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
+     */
+    private $facebook_id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
+     */
+    private $twitter_id;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @Serializer\Expose
+     */
+    private $slug;
+
     /**
      * @var string
      *
@@ -113,9 +167,10 @@ class Show extends Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="authorizeid", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true)
      */
-    private $authorize_id;
+    private $authorised_by;
 
     /**
      * @var boolean
@@ -148,7 +203,8 @@ class Show extends Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="primaryref", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="ShowRef", inversedBy="show")
+     * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
      */
     private $primary_ref;
 
@@ -169,7 +225,7 @@ class Show extends Entity
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Audition", mappedBy="show")
+     * @ORM\OneToMany(targetEntity="Audition", mappedBy="show", cascade={"all"}, orphanRemoval=true)
      */
     private $auditions;
 
@@ -460,29 +516,6 @@ class Show extends Entity
     }
 
     /**
-     * Set authorize_id
-     *
-     * @param integer $authorizeId
-     * @return Show
-     */
-    public function setAuthorizeId($authorizeId)
-    {
-        $this->authorize_id = $authorizeId;
-    
-        return $this;
-    }
-
-    /**
-     * Get authorize_id
-     *
-     * @return integer 
-     */
-    public function getAuthorizeId()
-    {
-        return $this->authorize_id;
-    }
-
-    /**
      * Set entered
      *
      * @param boolean $entered
@@ -750,14 +783,13 @@ class Show extends Entity
      */
     public function __construct()
     {
-        parent::__construct();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
         $this->entry_expiry = new \DateTime;
         $this->timestamp = new \DateTime;
     }
 
-    public function getEntityType()
+    public function getType()
     {
         return 'show';
     }
@@ -957,7 +989,7 @@ class Show extends Entity
 
     public function isIndexable()
     {
-        return $this->getAuthorizeId() !== null;
+        return $this->getAuthorisedBy() !== null;
     }
 
     /**
@@ -988,12 +1020,22 @@ class Show extends Entity
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTechieAdverts()
+    public function getActiveTechieAdverts()
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->gte('expiry', new \DateTime()));
 
         return $this->techie_adverts->matching($criteria);
+    }
+
+    /**
+     * Get techie_adverts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTechieAdverts()
+    {
+        return $this->techie_adverts;
     }
 
     /**
@@ -1019,6 +1061,24 @@ class Show extends Entity
         $this->auditions->removeElement($auditions);
     }
 
+    public function mergeAuditions($auditions)
+    {
+        foreach ($auditions as $audition) {
+            $audition->setShow($this);
+            if (!$audition->getId()) {
+                $this->addAudition($audition);
+            }
+            else {
+                foreach ($this->auditions as $k => $a) {
+                    if ($a->getId() == $audition->getId()) {
+                        $this->auditions[$k] = $audition;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Get auditions
      *
@@ -1032,6 +1092,76 @@ class Show extends Entity
 
 
         return $this->auditions->matching($criteria);
+    }
+
+    public function getScheduledAuditions()
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->gte('date', new \DateTime()))
+            ->andWhere(Criteria::expr()->eq('nonScheduled', false));
+
+        return $this->auditions->matching($criteria);
+    }
+
+    public function setScheduledAuditions($auditions)
+    {
+        foreach ($this->getScheduledAuditions() as $k => $audition) {
+            $found = false;
+            foreach ($auditions as $a) {
+                if ($audition->getId() == $a->getId()) {
+                    $this->auditions[$k] = $a;
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $this->auditions->remove($k);
+            }
+        }
+
+        foreach ($auditions as &$audition) {
+            if (!$audition->getId()) {
+                $audition->setShow($this);
+                $audition->setNonScheduled(false);
+                $this->addAudition($audition);
+            }
+        }
+        return $this;
+    }
+
+    public function getNonScheduledAuditions()
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('nonScheduled', true));
+
+        return $this->auditions->matching($criteria);
+    }
+
+    public function setNonScheduledAuditions($auditions)
+    {
+         foreach ($this->getNonScheduledAuditions() as $k => $audition) {
+            $found = false;
+            foreach ($auditions as $a) {
+                if ($audition->getId() == $a->getId()) {
+                    $this->auditions[$k] = $a;
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $this->auditions->remove($k);
+            }
+        }
+
+        foreach ($auditions as &$audition) {
+            if (!$audition->getId()) {
+                $audition->setShow($this);
+                $audition->setNonScheduled(true);
+                $this->addAudition($audition);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -1064,6 +1194,16 @@ class Show extends Entity
      */
     public function getApplications()
     {
+        return $this->applications;
+    }
+
+    /**
+     * Get active applications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getActiveApplications()
+    {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->gte('deadline_date', new \DateTime()));
 
@@ -1075,5 +1215,182 @@ class Show extends Entity
         return count($this->getTechieAdverts()) > 0
                 || count($this->getAuditions()) > 0
                 || count($this->getApplications()) > 0;
+    }
+
+    /**
+     * Set authorised_by
+     *
+     * @param \Acts\CamdramBundle\Entity\User $authorisedBy
+     * @return Show
+     */
+    public function setAuthorisedBy(User $authorisedBy = null)
+    {
+        $this->authorised_by = $authorisedBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get authorised_by
+     *
+     * @return \Acts\CamdramBundle\Entity\User 
+     */
+    public function getAuthorisedBy()
+    {
+        return $this->authorised_by;
+    }
+
+    public function isAuthorised()
+    {
+        return $this->getAuthorisedBy() !== null;
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Show
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Show
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return Show
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * Set twitter_id
+     *
+     * @param string $twitterId
+     * @return Show
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitter_id = $twitterId;
+    
+        return $this;
+    }
+
+    /**
+     * Get twitter_id
+     *
+     * @return string 
+     */
+    public function getTwitterId()
+    {
+        return $this->twitter_id;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @return Show
+     */
+    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+    
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \Hoyes\ImageManagerBundle\Entity\Image 
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Show
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

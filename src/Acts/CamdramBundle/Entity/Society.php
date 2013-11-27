@@ -8,7 +8,6 @@ use JMS\Serializer\Annotation\Exclude;
 /**
  * Society
  *
- * @ORM\Table(name="acts_societies_new")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SocietyRepository")
  */
 class Society extends Organisation
@@ -29,7 +28,6 @@ class Society extends Organisation
     {
         parent::__construct();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->setType(false);
     }
 
     /**
@@ -65,7 +63,7 @@ class Society extends Organisation
         return $this->shows;
     }
 
-    public function getEntityType()
+    public function getType()
     {
         return 'society';
     }

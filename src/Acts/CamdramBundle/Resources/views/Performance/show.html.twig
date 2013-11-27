@@ -4,8 +4,8 @@
         {{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}
         {% if date(p.startdate) != date(p.enddate) %}
             {# Show the duration #}
-             - {{ p.enddate|date('D jS F Y') }}, 
-            {% if (date(p.excludedate) > date(p.startdate)) and (date(p.excludedate) < date(p.enddate)) %}
+             - {{ p.enddate|date('D jS F Y') }},
+            {% if (p.excludedate > p.startdate) and (p.excludedate < p.enddate) %}
                 (except {{ p.excludedate|date('jS') }}) 
             {% endif %}
         {% endif %}

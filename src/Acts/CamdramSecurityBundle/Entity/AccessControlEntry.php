@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AccessControlEntry
 {
+    const LEVEL_FULL_ADMIN = -1;
+    const LEVEL_ADMIN = -2;
+    const LEVEL_CONTENT_ADMIN = -3;
+
     /**
      * @var integer
      *

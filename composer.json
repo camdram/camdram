@@ -29,13 +29,13 @@
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "sabre/vobject": "2.0.*",
         "hoyes/symfony2-image-manager": "dev-master",
-        "camdram/sphinx-realtime-bundle": "dev-master",
+        "acts/sphinx-realtime-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
-        "behat/symfony2-extension": "1.0.*",
-        "behat/mink-extension": "1.1.*",
-        "behat/mink-goutte-driver": "1.0.*",
+        "behat/mink-extension": "*",
+        "behat/symfony2-extension": "1.1.*",
+        "behat/mink-browserkit-driver":  "*",
         "acts/time-mock-bundle": "*",
-        
+
         "jackalope/jackalope-doctrine-dbal": "dev-master",
         "doctrine/phpcr-bundle": "1.0.*",
         "doctrine/phpcr-odm": "1.0.*",
