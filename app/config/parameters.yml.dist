@@ -53,5 +53,5 @@ parameters:
     search_provider: doctrine
 
     ruby_bin: /usr/bin/ruby
-    ruby_bin_dir: /home/andrew/bin
+    ruby_bin_dir: /usr/local/bin
     node_bin_dir: /usr/local/bin
