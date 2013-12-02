@@ -7,6 +7,9 @@ app/config/parameters.yml
 app/config/sphinx*
 app/logs/*
 app/data/*
+app/jackalope
+app/phpcrodm
+app/phpcrodm.php
 build/
 vendor
 composer.phar
