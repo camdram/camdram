@@ -1,6 +1,8 @@
 <?php
 namespace Acts\CamdramBackendBundle\Command;
 
+use Acts\CamdramBundle\Entity\Week;
+use Acts\CamdramBundle\Entity\WeekName;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,7 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Sabre\VObject\Reader;
 use Acts\CamdramBundle\Entity\TimePeriod;
-use Acts\CamdramBundle\Entity\TimePeriodGroup;
 use Acts\CamdramBundle\Entity\TimePeriodRepository;
 
 class TimePeriodsUpdateCommand extends ContainerAwareCommand
@@ -24,126 +25,65 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Creating time periods from existing term dates');
-        $this->createFromTermDates($output);
+        for ($year = 1990; $year <= 2030; $year++) {
+            list($lent_start, $lent_end) = $this->addTerm('Lent', new \DateTime($year.'-01-17'), 0, 9, $output);
+            if (isset($michaelmas_end)) $this->addVacation('Christmas', $michaelmas_end, $lent_start, $output);
 
-        $output->writeln('Fetching ical file...');
-        list($terms, $min, $max) = $this->getCalendarData();
+            list($easter_start, $easter_end) = $this->addTerm('Easter', new \DateTime($year.'-04-25'), 0, 8, $output);
+            $this->addVacation('Easter', $lent_end, $easter_start, $output);
 
-        $output->writeln('Done');
-        $last_date = null;
-        $holidays = array(
-            'Lent' => 'Christmas',
-            'Easter' => 'Easter',
-            'Michaelmas' => 'Summer',
-        );
-
-        for ($year=$min; $year <= $max; $year++) {
-            foreach (array('Lent', 'Easter', 'Michaelmas') as $term_name) {
-                if (!isset($terms[$term_name.' term '.$year])) continue;
-                $term = $terms[$term_name.' term '.$year];
-
-                $term_start = $term['start'];
-                //Move start back to the previous Sunday
-                $startday = $term_start->format('N');
-                if ($startday < 7) $term_start->modify('-'.$startday.' days');
-
-                //Create holiday
-                if (!is_null($last_date)) {
-                    $holiday_name = $holidays[$term_name];
-                    $holiday_year = $last_date->format('Y');
-                    if ($last_date->format('Y') != $term_start->format('Y')) $holiday_year .= '/'.$term_start->format('Y');
-                    $this->createTerm($holiday_name, $holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year,
-                            $last_date, $term_start, $output, true);
-
-                    $this->createGroup($holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year, $last_date, $term_start, $output);
-                }
-
-                $num = 0;
-                $date = clone $term_start;
-
-                //Make Lent Term have 9 weeks to include LTM
-                if ($term_name == 'Lent') $term['end']->modify('+1 week');
-
-                while ($date < $term['end']) {
-                    $start = clone $date;
-                    $date->modify('+1 week');
-                    $end = clone $date;
-
-                    //Make Easter Term week 8 'May Week'
-                    if ($term_name == 'Easter' && $num == 8) {
-                        $this->createTerm('May Week', 'May Week', 'May Week '.$year, $start, $end, $output);
-                    }
-                    else {
-                        $this->createTerm('Week '.$num, $term_name.' Week '.$num, $term_name.' Term '.$year.' Week '.$num,
-                            $start, $end, $output);
-                    }
-                    $num++;
-                }
-                $last_date = clone $date;
-
-                //Create group
-                $this->createGroup($term_name. ' Term', $term_name.' Term '.$year, $term_start, $date, $output);
-            }
+            list($michaelmas_start, $michaelmas_end) = $this->addTerm('Michaelmas', new \DateTime($year.'-10-07'), 0, 8, $output);
+            $this->addVacation('Summer', $easter_end, $michaelmas_start, $output);
         }
     }
 
-    private function createGroup($name, $long, $start, $end, OutputInterface $output)
+    private function rewindToSunday(\DateTime $date)
+    {
+        $date = clone $date;
+        $day = $date->format('N');
+        if ($day < 7) $date->modify('-'.$day.' days');
+        return $date;
+    }
+
+    protected function addTerm($name, \DateTime $latest_start_date, $start_week, $end_week, OutputInterface $output)
+    {
+        $start_date = $this->rewindToSunday($latest_start_date);
+        $start_date->modify('-'.$start_week.' weeks');
+        $date = clone $start_date;
+        for ($week = $start_week; $week <= $end_week; $week++) {
+            $week_name = ($name == 'Easter' && $week == 8) ? 'May Week' : 'Week '.$week;
+
+            $this->createWeek($week_name, $name.' '.$week_name, $date, $output);
+            $date->modify('+1 week');
+        }
+        $this->createPeriod($name, $name.' Term', $name.' Term '.$date->format('Y'), $start_date, $date, $output);
+        return array($start_date, $date);
+    }
+
+    protected function addVacation($name, \DateTime $start, \DateTime $end, OutputInterface $output)
+    {
+        $start_year = $start->format('Y');
+        $end_year = $end->format('Y');
+        $year = ($start_year == $end_year) ? $start_year : $start_year.'/'.$end_year;
+
+        $this->createPeriod($name.' Vacation', $name.' Vacation', $name.' Vacation '.$year, $start, $end, $output);
+    }
+
+    private function createPeriod($short, $name, $long, $start, $end, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         /** @var $repo TimePeriodRepository */
-        $repo = $em->getRepository('ActsCamdramBundle:TimePeriodGroup');
-        $qb = $repo->createQueryBuilder('g');
+        $repo = $em->getRepository('ActsCamdramBundle:TimePeriod');
+        $qb = $repo->createQueryBuilder('p');
         $query = $qb
-            ->where($qb->expr()->andX('g.start_at <= :end', 'g.end_at >= :start'))
+            ->where($qb->expr()->andX('p.start_at < :end', 'p.end_at > :start'))
             ->setParameter('start', $start)->setParameter('end', $end)
             ->getQuery();
         $result = $query->getResult();
 
         if (count($result) == 0) {
-            $g = new TimePeriodGroup;
-            $g->setName($name)->setLongName($long)
-                ->setStartAt($start)->setEndAt($end);
-
-            $em->persist($g);
-            $em->flush();
-            $output->writeln('<info>Created time period group '.$long.'</info>');
-        }
-        else {
-            $g = current($result);
-            $output->writeln('Time period group '.$long. ' already exists');
-        }
-
-        /** @var $repo TimePeriodRepository */
-        $repo = $em->getRepository('ActsCamdramBundle:TimePeriod');
-        $qb = $repo->createQueryBuilder('p');
-        $query = $qb
-            ->where($qb->expr()->andX('p.start_at >= :start', 'p.end_at <= :end'))
-            ->setParameter('start', $start)->setParameter('end', $end)
-            ->getQuery();
-        foreach ($query->getResult() as $period) {
-            $g->addPeriod($period);
-            $period->setGroup($g);
-        }
-        $em->flush();
-    }
-
-    private function createTerm($short, $name, $long, $start, $end, OutputInterface $output, $holiday = false)
-    {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        /** @var $repo TimePeriodRepository */
-        $repo = $em->getRepository('ActsCamdramBundle:TimePeriod');
-        $qb = $repo->createQueryBuilder('p');
-        $query = $qb->select('count(p.id) AS c')
-            ->where($qb->expr()->andX('p.start_at < :end', 'p.end_at > :start'))
-            ->setParameter('start', $start)->setParameter('end', $end)
-            ->getQuery();
-        $result = $query->getResult();
-        $count = $result[0]['c'];
-        if ($count == 0) {
-
             $p = new TimePeriod;
-            $p->setShortName($short)->setName($name)->setLongName($long)
+            $p->setShortName($short)->setName($name)->setFullName($long)
                 ->setStartAt($start)->setEndAt($end);
 
             $em->persist($p);
@@ -151,94 +91,47 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
             $output->writeln('<info>Created time period '.$long.'</info>');
         }
         else {
-            $output->writeln('Time period '.$long. ' already exists');
+            $p = current($result);
+            $output->writeln('Time period '.$name. ' already exists');
         }
+
+        $repo = $em->getRepository('ActsCamdramBundle:WeekName');
+        $qb = $repo->createQueryBuilder('w');
+        $query = $qb
+            ->where($qb->expr()->andX('w.start_at >= :start', 'w.start_at < :end'))
+            ->setParameter('start', $start)->setParameter('end', $end)
+            ->getQuery();
+        foreach ($query->getResult() as $week) {
+            $p->addWeek($week);
+            $week->setTimePeriod($p);
+        }
+        $em->flush();
     }
 
-    private function getCalendarData()
-    {
-        $url = $this->getContainer()->getParameter('term_dates_ical');
-        $data = file_get_contents($url);
-        $calendar = Reader::read($data);
-
-        $terms = array();
-        $min_year = 9999;
-        $max_year = 0;
-
-        foreach($calendar->VEVENT as $event) {
-            $summary = $event->SUMMARY->value;
-            if (preg_match('/^Full (.*)$/i', $summary, $matches)) {
-                $start = $event->DTSTART->getDateTime();
-                $end = $event->DTEND->getDateTime();
-                $year = $start->format('Y');
-                $full_name = $matches[1].' '.$year;
-                if ($year < $min_year) $min_year = $year;
-                if ($year > $max_year) $max_year = $year;
-
-                if (isset($terms[$full_name])) {
-                    if ($start > $terms[$full_name]['end']) {
-                        $terms[$full_name]['end'] = $end;
-                    }
-                    elseif ($end < $terms[$full_name]['start']) {
-                        $terms[$full_name]['start'] = $start;
-                    }
-                }
-                else {
-                    $terms[$full_name] = array('start' => $start, 'end' => $end);
-                }
-            }
-
-        }
-        return array($terms, $min_year, $max_year);
-    }
-
-    private function createFromTermDates(OutputInterface $output)
+    private function createWeek($short_name, $name, $start, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $term_repo = $em->getRepository('ActsCamdramBundle:TermDate');
-        $term_dates = $term_repo->createQueryBuilder('d')
-            ->orderBy('d.start_date')
-            ->getQuery()->getResult();
-        $last_date = null;
-        $last_vacation = null;
+        /** @var $repo TimePeriodRepository */
+        $repo = $em->getRepository('ActsCamdramBundle:WeekName');
+        $qb = $repo->createQueryBuilder('w');
+        $query = $qb->select('count(w.id) AS c')
+            ->where($qb->expr()->andX('w.start_at = :start'))
+            ->setParameter('start', $start)
+            ->getQuery();
+        $result = $query->getResult();
+        $count = $result[0]['c'];
+        if ($count == 0) {
 
-        foreach ($term_dates as $term_date) {
-            $parts = explode(' ',$term_date->getName());
-            $term = $parts[0];
-            if ($term == 'Michaelmas' || $term == 'Lent' || $term == 'Easter') {
-                $year = $term_date->getStartDate()->format('Y');
-                $start = $term_date->getStartDate()->modify('-1 day');
-                $end = $term_date->getEndDate()->modify('-1 day');
+            $w= new WeekName();
+            $w->setShortName($short_name)->setName($name)
+                ->setStartAt($start);
 
-                if ($last_date != null) {
-                    $holiday_name = $last_vacation;
-                    $parts = explode(' ', $holiday_name);
-                    $holiday_name = $parts[0];
-                    $holiday_year = $parts[2];
-
-                    $this->createTerm($holiday_name, $holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year,
-                        $last_date, $start, $output, true);
-                    $this->createGroup($holiday_name.' Vacation', $holiday_name.' Vacation '.$holiday_year, $last_date, $start, $output);
-                }
-
-                $date = clone $start;
-                for ($num = $term_date->getFirstWeek(); $num <= $term_date->getLastWeek(); $num++) {
-                    $start = clone $date;
-                    $date->modify('+1 week');
-                    $end = clone $date;
-                    if ($term == 'Easter' && $num == 8) {
-                        $this->createTerm('May Week', 'May Week', 'May Week '.$year, $start, $end, $output);
-                    }
-                    else {
-                        $this->createTerm('Week '.$num, $term.' Week '.$num, $term.' Term '.$year.' Week '.$num,
-                            $start, $end, $output);
-                    }
-                }
-
-                $last_date = clone $date;
-                $last_vacation = $term_date->getVacation();
-                $this->createGroup($term. ' Term', $term.' Term '.$year, $start, $end, $output);
-            }
+            $em->persist($w);
+            $em->flush();
+            $output->writeln('<info>Created week '.$name.'</info>');
+        }
+        else {
+            $output->writeln('Week '.$name. ' already exists');
         }
     }
 
