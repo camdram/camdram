@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\DiaryBundle\Diary\Diary;
+use Acts\DiaryBundle\Diary\Label;
 use FOS\RestBundle\Controller\FOSRestController;
 use Acts\DiaryBundle\Event\MultiDayEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,47 +24,12 @@ class DiaryController extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction($year, $period)
+    public function indexAction()
     {
-        if (($query_year = $this->getRequest()->query->get('year')) && ($query_period = $this->getRequest()->query->get('period'))) {
-            return $this->redirect($this->generateUrl('acts_camdram_diary_select', array(
-                'year' => $query_year,
-                'period' => $query_period,
-            )));
-        }
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriodGroup');
-
-        if (!$year || !$period) {
-            $current_year = $this->get('acts.time_service')->getCurrentTime()->format('Y');
-            $group = $repo->getGroupAt($this->get('acts.time_service')->getCurrentTime());
-        }
-        else {
-            $current_year = $year;
-            $group = $repo->findOneByYearAndSlug($year, $period);
-        }
-
-        if ($group->getStartAt()->format('Y') != $current_year) {
-            return $this->redirect($this->generateUrl('acts_camdram_diary_select', array(
-                'year' => $group->getStartAt()->format('Y'),
-                'period' => $period,
-            )));
-        }
-
-        $years = $repo->getYears();
-
-        $final_date = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getLastShowDate();
-        $groups = $repo->findByYearBefore($current_year, $final_date);
-
-
-        return $this->render("ActsCamdramBundle:Diary:index.html.twig", array(
-            'years' => $years,
-            'current_year' => $current_year,
-            'groups' => $groups,
-            'current_group' => $group,
-            'provided_year' => $year,
-            'provided_period' => $period,
-        ));
+        $now = $this->get('acts.time_service')->getCurrentTime();
+        $week_start = $this->get('acts.camdram.week_manager')->previousSunday($now);
+        return $this->dateAction($week_start);
     }
 
     /**
@@ -72,103 +39,135 @@ class DiaryController extends FOSRestController
      */
     public function toolbarAction()
     {
+        $now = $this->get('acts.time_service')->getCurrentTime();
+        $current_year = $now->format('Y');
+
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $start_date = $repo->getFirstShowDate();
+        $end_date = $repo->getLastShowDate();
+        $years = range($start_date->format('Y'), $end_date->format('Y'));
+
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
+        $periods = $repo->findByYearBefore($current_year, $end_date);
+        $current_period = $repo->findAt($now);
 
 
         return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(
-
+            'years' => $years,
+            'current_year' => $current_year,
+            'periods' => $periods,
+            'current_period' => $current_period,
         ));
     }
 
-    public function contentAction($year, $period)
+    private function renderDiary(Diary $diary)
     {
-        $groups_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriodGroup');
-        $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $limit = $this->getRequest()->query->get('limit', 5);
-
-        if ($year && $period) {
-            $group = $groups_repo->findOneByYearAndSlug($year, $period);
-            $periods = $periods = $periods_repo->getTimePeriodsAt($group->getStartAt(), $limit);
+        $view = $this->view($diary)
+            ->setTemplateVar('diary');
+        if ($this->getRequest()->get('fragment') || $this->getRequest()->isXmlHttpRequest()) {
+            $view->setTemplate('ActsCamdramBundle:Diary:fragment.html.twig');
         }
         else {
-            $now = $this->get('acts.time_service')->getCurrentTime();
-            $periods = $periods = $periods_repo->getTimePeriodsAt($now, $limit);
+            $view->setTemplate('ActsCamdramBundle:Diary:index.html.twig');
         }
-
-        return $this->render("ActsCamdramBundle:Diary:content.html.twig", array(
-            'periods' => $periods
-        ));
+        return $view;
     }
 
-    /**
-     * Sub-action which actually renders the diary. Also called by the AJAX callback which loads new data
-     *
-     * If both $direction and $last_date are null then the current time period and the 5 following time periods are
-     * returned. If $direction is 'next', then the 3 time periods prior to $last_date are returned. If $direction is
-     * $previous then the time period prior to $last_date is returned.
-     *
-     * @param null|string $direction
-     * @param null|string $last_date
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function relativeAction($direction = null, $last_date = null)
+    public function yearAction($year)
     {
-        $periods_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $shows_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-
-        $last_date = new \DateTime($last_date);
-        $last_date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
-
-        if ($direction == 'next') {
-            $final_date = $shows_repo->getLastShowDate();
-            $limit = $this->getRequest()->get('limit', 3);
-            $periods = $periods_repo->findBetween($last_date, $final_date, $limit);
-        }
-        elseif ($direction == 'previous') {
-            $limit = $this->getRequest()->get('limit', 1);
-            $periods = $periods_repo->findBefore($last_date, $limit);
-        }
-
-        return $this->render("ActsCamdramBundle:Diary:content.html.twig", array(
-            'periods' => $periods
-        ));
+        $start_date = new \DateTime($year.'-01-01');
+        return $this->dateAction($start_date);
     }
 
-    /**
-     * Renders a single time period. Called multiple times by contentAction's template.
-     *
-     * @param $id Primary key of the time period to be rendered
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function periodAction($id)
+    public function periodAction($year, $period)
     {
-        $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $period = $time_repo->findOneById($id);
-        return $this->render('ActsCamdramBundle:Diary:period.html.twig', array('period' => $period));
+        $period = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')->getBySlugAndYear($period, $year);
+        if ($period) {
+            return $this->dateAction($period->getStartAt());
+        }
+        else {
+            throw $this->createNotFoundException('Invalid time period specified');
+        }
+    }
+
+    public function weekAction($year, $period, $week)
+    {
+        if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/',$week)) {
+            return $this->rangeAction($week);
+        }
+        elseif (preg_match('/[0-9]{2}\-[0-9]{2}/',$week)) {
+            return $this->rangeAction($year.'-'.$week);
+        }
+
+        $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
+        if ($week) {
+            return $this->dateAction($week->getStartAt());
+        }
+        else {
+            throw $this->createNotFoundException('Invalid week specified');
+        }
     }
 
     /**
-     * Renders the actually diary. It creates a Diary object, which is picked up by a response listener and
-     * rendered by the DiaryBundle, which deals with the logic of working out which events to put in which row.
+     * Renders a single week.
      *
-     * @param $id Primary key of the time period to be rendered
+     * @param $date \DateTime Start date of the week to be rendered
      * @return \Acts\DiaryBundle\Diary\Diary
      */
-    public function diaryAction($id)
+    public function singleWeekAction($date)
     {
-        /** @var $diary \Acts\DiaryBundle\Diary\Diary */
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $start_date = $week_manager->previousSunday(new \DateTime($date));
+        $end_date = clone $start_date;
+        $end_date->modify('+1 week');
         $diary = $this->get('acts.diary.factory')->createDiary();
+        $diary->setDateRange($start_date, $end_date);
 
-        $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $period = $time_repo->findOneById($id);
-        $diary->setDateRange($period->getStartAt(), $period->getEndAt());
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $performances = $repo->findInDateRange($start_date, $end_date);
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $shows = $repo->findByTimePeriod($period);
-
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromShows($shows);
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
         $diary->addEvents($events);
 
-
-        return $diary;
+        return $this->renderDiary($diary);
     }
+
+    public function dateAction($start)
+    {
+        if (is_string($start)) $start = new \DateTime($start);
+
+        if ($this->getRequest()->query->has('end')) {
+            $end = new \DateTime($this->getRequest()->query->get('end'));
+        }
+        elseif ($this->getRequest()->query->has('length')) {
+            $end = clone $start;
+            $end->modify($this->getRequest()->query->get('length'));
+        }
+        else {
+            $end = clone $start;
+            $end->modify('+8 weeks');
+        }
+
+        $diary = $this->get('acts.diary.factory')->createDiary();
+
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $performances = $repo->findInDateRange($start, $end);
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
+        $diary->addEvents($events);
+
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName');
+        foreach ($repo->findBetween($start, $end) as $name) {
+            $diary->addLabel(Label::TYPE_WEEK, $name->getShortName(), $name->getStartAt());
+        }
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
+        foreach ($repo->findIntersecting($start, $end) as $period) {
+            $diary->addLabel(Label::TYPE_PERIOD, $period->getFullName(), $period->getStartAt(), $period->getEndAt());
+        }
+
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $diary->setDateRange($week_manager->previousSunday($start), $week_manager->nextSunday($end));
+
+        return $this->renderDiary($diary);
+    }
+
 }

@@ -32,8 +32,7 @@ class HtmlRenderer
     public function render(Diary $diary)
     {
         $view = $diary->createView();
-        $html = $this->twig->render('ActsDiaryBundle:Diary:index.html.twig', array('diary' => $view));
-        return new Response($html);
+        return $this->twig->render('ActsDiaryBundle:Diary:index.html.twig', array('diary' => $view));
     }
 
 }

@@ -15,32 +15,30 @@ use Doctrine\ORM\Query\Expr;
 class PerformanceRepository extends EntityRepository
 {
     /**
-     * findAuthorizedJoinedToShow
+     * findInDateRange
      *
-     * Find all authorized performances between two dates, joined to the 
+     * Find all authorized performances between two dates, joined to the
      * corresponding show.
      *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
-     *
-     * @return array of performances
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return array
      */
-    public function findAuthorizedJoinedToShow($startDate, $endDate)
+    public function findInDateRange(\DateTime $start, \DateTime $end)
     {
-        $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Performance');
-        $query = $query_res->createQueryBuilder('p')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'p.show = s.id')
-            ->where('p.start_date <= :enddate')
-            ->andWhere('p.end_date >= :startdate')
-            ->andWhere('s.authorize_id > 0')
-            ->setParameters(array(
-                'startdate' => date("Y/m/d", $startDate),
-                'enddate' => date("Y/m/d", $endDate)
-                ))
-            ->orderBy('p.time, p.start_date, s.id, p.end_date')
-            ->getQuery();
-
-        return $query->getResult();
+        $qb = $this->createQueryBuilder('p')
+            ->join('p.show', 's')
+            ->leftjoin('s.venue', 'v')
+            ->addSelect('s')
+            ->addSelect('v')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andWhere('p.start_date <= :end')
+            ->andWhere('p.end_date >= :start')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+        ;
+        return $qb->getQuery()->getResult();
     }
 
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)

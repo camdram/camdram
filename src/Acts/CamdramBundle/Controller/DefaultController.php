@@ -34,15 +34,14 @@ class DefaultController extends Controller
         $start->modify('-4 weeks');
         $end = clone $now;
         $end->modify('+10 weeks');
-        $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $periods = $time_repo->findBetween($start, $end);
-
-        $current_period = $time_repo->getTimePeriodAt($now);
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $weeks = $week_manager->findBetween($start, $end);
+        $current_week = $week_manager->findAt($now);
 
         return $this->render('ActsCamdramBundle:Default:index.html.twig', array(
             'news' => $news,
-            'periods' => $periods,
-            'current_period' => $current_period,
+            'weeks' => $weeks,
+            'current_week' => $current_week,
         ));
     }
 
@@ -113,7 +112,7 @@ class DefaultController extends Controller
         foreach (array(1, 2, 5) as $years) {
             $date = clone $now;
             $date->modify('-'.$years.' years');
-            $period = $time_repo->getTimePeriodAt($date);
+            $period = $time_repo->findAt($date);
             if ($period) {
                 $shows = $show_repo->findMostInterestingByTimePeriod($period, 5);
                 if (count($shows) > 0) $data[$years] = $shows;

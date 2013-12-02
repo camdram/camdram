@@ -20,6 +20,8 @@ class Diary
      */
     private $events = array();
 
+    private $labels = array();
+
     /**
      * @var \DateTime
      */
@@ -65,6 +67,11 @@ class Diary
         $this->end_date = $end_date;
     }
 
+    public function addLabel($type, $text, \DateTime $start_at, \DateTime $end_at = null)
+    {
+        $this->labels[] = new Label($type, $text, $start_at, $end_at);
+    }
+
     /**
      * Create a DiaryView of this Diary (which contains details about how to render it)
      *
@@ -78,6 +85,7 @@ class Diary
         }
         $view->addEvents($this->events);
         $view->sort();
+        $view->addLabels($this->labels);
         return $view;
     }
 }

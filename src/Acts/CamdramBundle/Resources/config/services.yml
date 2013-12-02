@@ -119,3 +119,7 @@ services:
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: kernel.event_listener, event: camdram.entity_created, method: onShowCreated }
+
+    acts.camdram.week_manager:
+        class: Acts\CamdramBundle\Service\WeekManager
+        arguments: [@doctrine.orm.entity_manager]

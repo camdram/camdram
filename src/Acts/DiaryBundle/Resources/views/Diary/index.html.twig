@@ -1,5 +1,12 @@
 {% for week in diary.weeks %}
-    <div class="diary-week">
+
+    {% if week.periodLabel %}<h4 class="diary-period-label" data-start="{{ week.periodLabel.startAt | date('Y-m-d') }}" data-end="{{ week.periodLabel.endAt | date('Y-m-d') }}">
+        {{ week.periodLabel.text }}
+        </h4>{% endif %}
+
+    <div class="diary-week" data-start="{{ week.startAt | date('Y-m-d') }}" data-end="{{ week.endAt | date('Y-m-d') }}">
+    {% if week.label %}<h5 class="diary-week-label">{{ week.label.text }}</h5>{% endif %}
+
     <ul class="diary-header">
     {% for date in week.headerDates %}
         <li>{{ date | date('D j M') }}</li>

@@ -7,43 +7,13 @@
 
 <h3>Diary</h3>
 
-<div class="row">
-    <div class="large-6 columns">
-        <a class="button small" id="load_today" href="{{ url('acts_camdram_diary') }}">This week</a>
-        <button class="small" id="load_previous">Previous week</button>
-    </div>
-    <div class="large-6 columns text-right">
-        <form action="{{ url('acts_camdram_diary') }}" method="get" id="diary_jump_form">
-            Jump to
-            <select id="years" name="year">
-                {% for year in years %}
-                    <option value="{{ year }}"{% if current_year == year %} selected{% endif %}>{{ year }}</option>
-                {% endfor %}
-            </select>
-
-            <select id="periods" name="period">
-                {% for group in groups %}
-                    <option value="{{ group.slug }}"{% if current_group == group %} selected{% endif %}>{{ group.name }}</option>
-                {% endfor %}
-            </select>
-
-            <button class="button small">Go</button>
-        </form>
-    </div>
-</div>
+{{ render(controller('ActsCamdramBundle:Diary:toolbar')) }}
 
 <div id="diary">
-    {{ render(url("acts_camdram_diary_content", {year: provided_year, period: provided_period})) }}
+    {{ render_diary(diary) }}
 </div>
 
 {% javascripts output='js/diary.js' '@ActsCamdramBundle/Resources/public/javascripts/app/diary.js' %}
 <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
-<script>
-    $(function() {
-        add_diary_history("{{ current_year }}", "{{ current_group.slug }}", true);
-    })
-
-</script>
-
 {% endblock %}

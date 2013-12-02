@@ -1,23 +1,36 @@
 acts_camdram_diary:
-    pattern:  /
+    pattern: /
     defaults:
-      _controller: ActsCamdramBundle:Diary:index
-      year: ~
-      period: ~
+        _controller: ActsCamdramBundle:Diary:index
+
+acts_camdram_diary_date:
+    pattern:  /{start}
+    defaults:
+        _controller: ActsCamdramBundle:Diary:date
+    requirements:
+        start: "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
+
+acts_camdram_diary_year:
+    pattern:  /{year}
+    defaults:
+        _controller: ActsCamdramBundle:Diary:year
+    requirements:
+        year: "[0-9]{4}"
 
 acts_camdram_diary_period:
-    pattern:  /period/{id}
-    defaults: { _controller: ActsCamdramBundle:Diary:diary }
-
-acts_camdram_diary_relative:
-    pattern: /relative/{direction}/{last_date}
-    defaults: { _controller: ActsCamdramBundle:Diary:relative }
-
-acts_camdram_diary_content:
-    pattern: /content/{year}/{period}
-    defaults: { _controller: ActsCamdramBundle:Diary:content, year: ~, period: ~ }
-
-acts_camdram_diary_select:
     pattern:  /{year}/{period}
     defaults:
-      _controller: ActsCamdramBundle:Diary:index
+        _controller: ActsCamdramBundle:Diary:period
+    requirements:
+        year: "[0-9]{4}"
+
+acts_camdram_diary_week:
+    pattern:  /{year}/{period}/{week}
+    defaults:
+        _controller: ActsCamdramBundle:Diary:week
+    requirements:
+        year: "[0-9]{4}"
+
+acts_camdram_diary_single_week:
+    pattern:  /week/{date}
+    defaults: { _controller: ActsCamdramBundle:Diary:singleWeek }

@@ -2,7 +2,10 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * TimePeriod
@@ -38,9 +41,15 @@ class TimePeriod
     /**
      * @var string
      *
-     * @ORM\Column(name="long_name", type="string", length=255)
+     * @ORM\Column(name="full_name", type="string", length=255)
      */
-    private $long_name;
+    private $full_name;
+
+    /**
+     * @Gedmo\Slug(fields={"name"}, unique=false)
+     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     */
+    private $slug;
 
     /**
      * @var \DateTime
@@ -57,24 +66,16 @@ class TimePeriod
     private $end_at;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="holiday", type="boolean")
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="WeekName", mappedBy="time_period")
+     * @Serializer\Exclude
      */
-    private $holiday = false;
+    private $week_names;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="visible", type="boolean")
-     */
-    private $visible = true;
-
-    /**
-     * @var TimePeriodGroup
-     * @ORM\ManyToOne(targetEntity="TimePeriodGroup", inversedBy="periods")
-     */
-    private $group;
+    public function __construct()
+    {
+        $this->weeks = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -133,29 +134,6 @@ class TimePeriod
     }
 
     /**
-     * Set long_name
-     *
-     * @param string $longName
-     * @return TimePeriod
-     */
-    public function setLongName($longName)
-    {
-        $this->long_name = $longName;
-    
-        return $this;
-    }
-
-    /**
-     * Get long_name
-     *
-     * @return string 
-     */
-    public function getLongName()
-    {
-        return $this->long_name;
-    }
-
-    /**
      * Set start_at
      *
      * @param \DateTime $startAt
@@ -201,113 +179,116 @@ class TimePeriod
         return $this->end_at;
     }
 
+
     /**
-     * Set holiday
+     * Add weeks
      *
-     * @param boolean $holiday
+     * @param \Acts\CamdramBundle\Entity\WeekName $weeks
      * @return TimePeriod
      */
-    public function setHoliday($holiday)
+    public function addWeek(\Acts\CamdramBundle\Entity\WeekName $weeks)
     {
-        $this->holiday = $holiday;
+        $this->weeks[] = $weeks;
+
+        return $this;
+    }
+
+    /**
+     * Remove weeks
+     *
+     * @param \Acts\CamdramBundle\Entity\WeekName $weeks
+     */
+    public function removeWeek(\Acts\CamdramBundle\Entity\WeekName $weeks)
+    {
+        $this->weeks->removeElement($weeks);
+    }
+
+    /**
+     * Get weeks
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getWeeks()
+    {
+        return $this->weeks;
+    }
+
+    /**
+     * Set full_name
+     *
+     * @param string $fullName
+     * @return TimePeriod
+     */
+    public function setFullName($fullName)
+    {
+        $this->full_name = $fullName;
     
         return $this;
     }
 
     /**
-     * Get holiday
+     * Get full_name
      *
-     * @return boolean 
+     * @return string 
      */
-    public function getHoliday()
+    public function getFullName()
     {
-        return $this->holiday;
+        return $this->full_name;
     }
+
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Set visible
+     * Set slug
      *
-     * @param boolean $visible
+     * @param string $slug
      * @return TimePeriod
      */
-    public function setVisible($visible)
+    public function setSlug($slug)
     {
-        $this->visible = $visible;
+        $this->slug = $slug;
     
         return $this;
     }
 
     /**
-     * Get visible
+     * Get slug
      *
-     * @return boolean 
+     * @return string 
      */
-    public function getVisible()
+    public function getSlug()
     {
-        return $this->visible;
+        return $this->slug;
     }
 
     /**
-     * Add shows
+     * Add week_names
      *
-     * @param \Acts\CamdramBundle\Entity\Show $shows
+     * @param \Acts\CamdramBundle\Entity\WeekName $weekNames
      * @return TimePeriod
      */
-    public function addShow(\Acts\CamdramBundle\Entity\Show $shows)
+    public function addWeekName(\Acts\CamdramBundle\Entity\WeekName $weekNames)
     {
-        $this->shows[] = $shows;
+        $this->week_names[] = $weekNames;
     
         return $this;
     }
 
     /**
-     * Remove shows
+     * Remove week_names
      *
-     * @param \Acts\CamdramBundle\Entity\Show $shows
+     * @param \Acts\CamdramBundle\Entity\WeekName $weekNames
      */
-    public function removeShow(\Acts\CamdramBundle\Entity\Show $shows)
+    public function removeWeekName(\Acts\CamdramBundle\Entity\WeekName $weekNames)
     {
-        $this->shows->removeElement($shows);
+        $this->week_names->removeElement($weekNames);
     }
 
     /**
-     * Get shows
+     * Get week_names
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getShows()
+    public function getWeekNames()
     {
-        return $this->shows;
+        return $this->week_names;
     }
-
-    /**
-     * Set group
-     *
-     * @param \Acts\CamdramBundle\Entity\TimePeriodGroup $group
-     * @return TimePeriod
-     */
-    public function setGroup(\Acts\CamdramBundle\Entity\TimePeriodGroup $group = null)
-    {
-        $this->group = $group;
-    
-        return $this;
-    }
-
-    /**
-     * Get group
-     *
-     * @return \Acts\CamdramBundle\Entity\TimePeriodGroup 
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
 }

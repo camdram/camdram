@@ -17,17 +17,17 @@
             <div class="right-link"><a href=""><i class="fa fa-caret-right"></i></a></div>
             <ul>
                 <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
-                {% for period in periods %}
-                    <li data-period="{{ period.id }}" class="week-link{% if period == current_period %} current{% endif %}">
+                {% for week in weeks %}
+                    <li data-week-start="{{ week.startAt | date('Y-m-d') }}" class="week-link{% if week == current_week %} current{% endif %}">
                         <a>
-                            {{ period.name }}
+                            {{ week.name }}
                             <em>
-                                {% if period == current_period %}
+                                {% if week == current_week %}
                                     <strong>This week</strong>
-                                {% elseif period.startAt == current_period.endAt %}
+                                {% elseif week.startAt == current_week.endAt %}
                                     Next week
                                 {% else %}
-                                    {{ period.startAt | date_modify("+1 day") | date('j M') }} - {{ period.endAt | date('j M') }}
+                                    {{ week.startAt | date_modify("+1 day") | date('j M') }} - {{ week.endAt | date('j M') }}
                                 {% endif %}
                             </em>
                         </a>
@@ -38,7 +38,7 @@
         </div>
         <div class="overlay"><div class="spinner"><i class="fa fa-spinner fa-spin"></i></div></div>
         <div id="home-diary">
-            {{ render(url('acts_camdram_diary_period', {id: current_period.id}) , { 'strategy': 'esi'}) }}
+            {{ render(url('acts_camdram_diary_single_week', {fragment: true, date: current_week.startAt | date('Y-m-d')}) , { 'strategy': 'esi'}) }}
         </div>
     </div>
 </div>

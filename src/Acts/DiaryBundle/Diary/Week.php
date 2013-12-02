@@ -29,6 +29,16 @@ class Week
     private $end;
 
     /**
+     * @var string Some text describing this week
+     */
+    private $label;
+
+    /**
+     * @var string Some text describing a number of weeks, starting at this week
+     */
+    private $period_label;
+
+    /**
      * Weeks are created by passing their start date, from which the end date is calculated
      *
      * @param \DateTime $start
@@ -127,6 +137,38 @@ class Week
     public function getEndAt()
     {
         return $this->end;
+    }
+
+    /**
+     * @param \Acts\DiaryBundle\Diary\Label $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
+
+    /**
+     * @return \Acts\DiaryBundle\Diary\Label
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $period_label
+     */
+    public function setPeriodLabel($period_label)
+    {
+        $this->period_label = $period_label;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPeriodLabel()
+    {
+        return $this->period_label;
     }
 
     /**

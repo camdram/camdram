@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramBundle\Rest\EventListener;
 
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
@@ -76,11 +77,6 @@ class ViewPaginatorListener
 
                 $view->setData(new PaginatedCollection($paginator, $request, $url));
             }
-        }
-        elseif ($view instanceof Diary) {
-            $response = $this->diary_renderer->render($view);
-            $response->setSharedMaxAge(60);
-            $event->setResponse($response);
         }
     }
 }

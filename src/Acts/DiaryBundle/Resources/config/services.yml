@@ -1,6 +1,7 @@
 parameters:
     acts.diary.factory.class: Acts\DiaryBundle\Diary\DiaryFactory
     acts.diary.renderer.html.class: Acts\DiaryBundle\Diary\Renderer\HtmlRenderer
+    acts.diary.twig_extension.class: Acts\DiaryBundle\Twig\DiaryExtension
 
 services:
     acts.diary.factory:
@@ -9,3 +10,8 @@ services:
     acts.diary.renderer.html:
         class: %acts.diary.renderer.html.class%
         arguments: [@twig]
+
+    acts.diary.twig_extension:
+        class: %acts.diary.twig_extension.class%
+        tags:
+            - { name: twig.extension }

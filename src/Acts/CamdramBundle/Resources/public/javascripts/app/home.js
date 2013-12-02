@@ -91,14 +91,14 @@ $(function() {
         $('li.week-link', $nav).click(function() {
             if (clickenable) {
                 if ($(this).hasClass('current')) return;
-                var id = $(this).attr('data-period');
+                var date = $(this).attr('data-week-start');
 
                 var last_sel = $('li.current', $nav);
                 $('li', $nav).removeClass('current');
                 $(this).addClass('current');
                 var direction =  (last_sel.prevAll('.current').length > 0) ? 'ltr' : 'rtl';
 
-                load_new_diary(Routing.generate('acts_camdram_diary_period', {id: id}), direction);
+                load_new_diary(Routing.generate('acts_camdram_diary_single_week', {date: date}), direction);
 
                 var left = $(this).offset().left - $nav.offset().left;
                 var max_right = $nav.width() - $(this).width() - 60;

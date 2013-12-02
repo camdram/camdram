@@ -28,17 +28,16 @@ class ShowRepository extends EntityRepository
         return current($result);
     }
 
-    public function findByTimePeriod(TimePeriod $period)
+    public function findInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true');
-        $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
-            'p.show = s',
-            $qb->expr()->andX('p.start_date <= :end', 'p.end_date >= :start')
-        ))
-            ->setParameter('start', $period->getStartAt())
-            ->setParameter('end', $period->getEndAt());
+            ->andWhere('s.entered = true')
+            ->join('s.performances', 'p')
+            ->andWhere('p.start_date <= :end')
+            ->andWhere('p.end_date >= :start')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
         return $qb->getQuery()->getResult();
     }
 
@@ -132,11 +131,27 @@ class ShowRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function getFirstShowDate()
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select('MIN(s.start_at)')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andWhere('s.start_at IS NOT NULL')
+            ->andWhere('s.start_at > :min')
+            ->setMaxResults(1)
+            ->setParameter('min', new \DateTime('1990-01-01'))
+            ->getQuery();
+       // var_dump($query->getSQL());die();
+        return new \DateTime(current($query->getOneOrNullResult()));
+    }
+
     public function getLastShowDate()
     {
         $query = $this->createQueryBuilder('s')
             ->select('MAX(s.end_at)')
             ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->setMaxResults(1)
             ->getQuery();
         return new \DateTime(current($query->getOneOrNullResult()));

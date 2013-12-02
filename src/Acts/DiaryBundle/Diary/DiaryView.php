@@ -99,6 +99,35 @@ class DiaryView
         }
     }
 
+    public function addLabel(Label $label)
+    {
+        if ($label->getType() == Label::TYPE_WEEK) {
+            $this->getWeekForDate($label->getStartAt())->setLabel($label);
+        }
+        elseif ($label->getType() == Label::TYPE_PERIOD) {
+            $found = false;
+            foreach ($this->weeks as $week) {
+                if ($week->contains($label->getStartAt())) {
+                    $week->setPeriodLabel($label);
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found && count($this->weeks) > 0 && $label->getStartAt() < reset($this->weeks)->getStartAt()) {
+                //We haven't found a corresponding week. The start date is before the beginning of the period, so
+                // add the period label to the first week.
+                reset($this->weeks)->setPeriodLabel($label);
+            }
+        }
+    }
+
+    public function addLabels(array $labels)
+    {
+        foreach ($labels as $label) {
+            $this->addLabel($label);
+        }
+    }
+
     /**
      * Once all the events have been added, this sorts the weeks, rows, and items into the correct order.
      */
@@ -120,6 +149,13 @@ class DiaryView
     {
         $this->start_date = $start_date;
         $this->end_date = $end_date;
+
+        //Ensure all weeks in the period are present
+        $date = clone $start_date;
+        while ($date < $end_date) {
+            $this->getWeekForDate($date);
+            $date->modify('+1 week');
+        }
     }
 
 }

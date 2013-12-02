@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="large-6 columns">
+        <a class="button small" id="load_today" href="{{ url('acts_camdram_diary') }}">This week</a>
+        <button class="small" id="load_previous">Previous week</button>
+    </div>
+    <div class="large-6 columns text-right">
+        <form action="{{ url('acts_camdram_diary') }}" method="get" id="diary_jump_form">
+            Jump to
+            <select id="years" name="year">
+                {% for year in years %}
+                    <option value="{{ year }}"{% if current_year == year %} selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+
+            <select id="periods" name="period">
+                {% for period in periods %}
+                    <option value="{{ period.slug }}"{% if current_period == period %} selected{% endif %}>{{ period.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button class="button small">Go</button>
+        </form>
+    </div>
+</div>

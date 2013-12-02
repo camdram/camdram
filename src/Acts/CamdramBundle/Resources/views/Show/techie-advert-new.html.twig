@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'new_techie_advert' %}
-{{ include('@ActsCamdram/Show/admin-panel.html.twig') }}
+{{ include('@ActsCamdram/Show/admin-panel.html.twig', {show: form.vars.value.show}) }}
 
 <div class="row">
     <div class="large-12 columns">
@@ -18,7 +18,7 @@
                 If you would like to advertise a specific deadline, please check the box below and enter a date and time.</p>
         </div>
 
-        <form action="{{ path("post_show_techie_advert", {identifier: show.slug}) }}" method="post">
+        <form action="{{ path("post_show_techie_advert", {identifier: form.vars.value.show.slug}) }}" method="post">
             {{ include('ActsCamdramBundle:Show:techie-advert-form.html.twig') }}
             <div class="row">
                 <div class="large-6">

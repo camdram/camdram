@@ -44,7 +44,7 @@ class ShowRef
      *
      * @return integer 
      */
-    public function getRefId()
+    public function getRefid()
     {
         return $this->refid;
     }
@@ -107,4 +107,5 @@ class ShowRef
     
         return $this;
     }
+
 }
