@@ -11,3 +11,14 @@ services:
         arguments: [ ["/cms/pages", "/cms/routes"], ]
         tags:
             - { name: doctrine_phpcr.initializer }
+
+    acts.camdram.menu_provider:
+        class: Symfony\Cmf\Bundle\MenuBundle\Provider\PhpcrMenuProvider
+        arguments:
+            - '@cmf_menu.factory'
+            - '@doctrine_phpcr'
+            - /cms/pages
+        tags:
+            - { name: knp_menu.provider }
+            - { name: cmf_request_aware }
+

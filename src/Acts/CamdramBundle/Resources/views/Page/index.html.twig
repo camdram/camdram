@@ -3,11 +3,16 @@
 {% block title %}{{ page.title }}{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="large-12 columns"><h3>{{ page.title }}</h3></div>
+     <div class="row">
+        <div class="large-3 columns side-nav">
+            {{ knp_menu_render('infobase', {'currentAsLink' : false, 'template' : 'ActsCamdramBundle:Navigation:knp_menu_sidebar.html.twig'}) }}
+        </div>
+        <div class="large-9 columns">
+            <h3>{{ page.title }}</h3>
+            {{ page.content|raw|camdram_markdown }}
+        </div>
     </div>
     <div class="row">
-        {{ page.content|raw }}
     </div>
 {% endblock %}
 

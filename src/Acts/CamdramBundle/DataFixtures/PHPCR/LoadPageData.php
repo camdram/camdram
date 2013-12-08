@@ -54,8 +54,12 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $parent = $dm->find(null, '/cms/pages');
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $root_page = new CmsPage();
+        $root_page->setSlug('infobase');
+        $root_page->setTitle('infobase');
+        $root_page->setParent($parent);
         // This magic number is based on inspection of the existing Camdram database.
-        $this->add_child_nodes($dm, $em, 119, $parent);
+        $this->add_child_nodes($dm, $em, 119, $root_page);
         
     }
 

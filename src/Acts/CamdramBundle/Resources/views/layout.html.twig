@@ -106,6 +106,7 @@
           'societies': {'text': 'Societies', 'path': path('get_societies')},
           'venues': {'text': 'Venues', 'path': path('get_venues')},
           }, current_id: current_navigation_id} %}
+          {% include 'ActsCamdramBundle:Navigation:cmf-menu-dropdown.html.twig' with {current_id: current_navigation_id} %}
         </ul>
           <ul class="right">
             <li class="has-dropdown">

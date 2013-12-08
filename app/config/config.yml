@@ -115,6 +115,9 @@ cmf_routing:
         controllers_by_class:
             Acts\CamdramBundle\Document\Page: Acts\CamdramBundle\Controller\DefaultPageController::pageAction
 
+knp_menu:
+    twig: true
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

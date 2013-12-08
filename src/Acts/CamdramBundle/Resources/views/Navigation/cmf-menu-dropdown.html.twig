@@ -1,0 +1,7 @@
+{% if current_id is not defined %}{% set current_id = '' %}{% endif %}
+<li class="has-dropdown {% if 'infobase' == current_id %}active{% endif %}"><a href="#">
+     Infobase</a>
+    {{ knp_menu_render('infobase', {'template' : 'ActsCamdramBundle:Navigation:knp_menu_dropdown.html.twig'}) }}
+
+</li>
+
