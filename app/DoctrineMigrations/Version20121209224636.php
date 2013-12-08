@@ -74,6 +74,10 @@ class Version20121209224636 extends AbstractMigration
 
         $this->addSql('ALTER TABLE `acts_mailinglists_members` ENGINE = INNODB, CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci');
 
+        $this->addSql('ALTER TABLE `acts_pages`  MODIFY `title` BLOB, MODIFY `fulltitle` BLOB, MODIFY `help` BLOB');
+        $this->addSql('ALTER TABLE `acts_pages`  MODIFY `title` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            MODIFY `fulltitle` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+            MODIFY `help` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL');
         $this->addSql('ALTER TABLE `acts_pages` ENGINE = INNODB, CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci');
         $this->addSql("ALTER TABLE `acts_pages` CHANGE `title` title VARCHAR(255) NOT NULL,
             CHANGE `fulltitle` fulltitle VARCHAR(255) NOT NULL,

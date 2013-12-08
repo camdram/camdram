@@ -21,7 +21,7 @@ class Version20131117013449 extends AbstractMigration
         $this->addSql("ALTER TABLE acts_people_data ADD CONSTRAINT FK_567E1F8F3DA5256D FOREIGN KEY (image_id) REFERENCES images (id)");
         $this->addSql("CREATE INDEX IDX_567E1F8F3DA5256D ON acts_people_data (image_id)");
         $this->addSql("CREATE UNIQUE INDEX slugs ON acts_people_data (slug)");
-        $this->addSql("ALTER TABLE acts_shows ADD image_id INT DEFAULT NULL, ADD facebook_id VARCHAR(50) DEFAULT NULL, ADD twitter_id VARCHAR(50) DEFAULT NULL, ADD slug VARCHAR(128) DEFAULT NULL, DROP onlinebookingurl, DROP facebookurl, DROP otherurl, CHANGE id id INT AUTO_INCREMENT NOT NULL");
+        $this->addSql("ALTER TABLE acts_shows CHANGE onlinebookingurl onlinebookingurl VARCHAR(2083) DEFAULT NULL, CHANGE facebookurl facebookurl VARCHAR(2083) DEFAULT NULL, CHANGE otherurl otherurl VARCHAR(2083) DEFAULT NULL, ADD image_id INT DEFAULT NULL, ADD facebook_id VARCHAR(50) DEFAULT NULL, ADD twitter_id VARCHAR(50) DEFAULT NULL, ADD slug VARCHAR(128) DEFAULT NULL, CHANGE id id INT AUTO_INCREMENT NOT NULL");
         $this->addSql("ALTER TABLE acts_shows ADD CONSTRAINT FK_1A1A53FE3DA5256D FOREIGN KEY (image_id) REFERENCES images (id)");
         $this->addSql("UPDATE acts_shows AS s LEFT JOIN acts_users AS u ON  s.authorizeid = u.id set s.authorizeid = NULL WHERE u.id IS NULL");
         $this->addSql("ALTER TABLE acts_shows ADD CONSTRAINT FK_1A1A53FE5FB42679 FOREIGN KEY (authorizeid) REFERENCES acts_users (id)");
@@ -157,7 +157,7 @@ class Version20131117013449 extends AbstractMigration
         $this->addSql("DROP INDEX IDX_1A1A53FE3DA5256D ON acts_shows");
         $this->addSql("DROP INDEX IDX_1A1A53FE5FB42679 ON acts_shows");
         $this->addSql("DROP INDEX slugs ON acts_shows");
-        $this->addSql("ALTER TABLE acts_shows ADD onlinebookingurl LONGTEXT DEFAULT NULL, ADD facebookurl LONGTEXT DEFAULT NULL, ADD otherurl LONGTEXT DEFAULT NULL, DROP image_id, DROP facebook_id, DROP twitter_id, DROP slug, CHANGE id id INT NOT NULL");
+        $this->addSql("ALTER TABLE acts_shows DROP image_id, DROP facebook_id, DROP twitter_id, DROP slug, CHANGE id id INT NOT NULL");
         $this->addSql("ALTER TABLE acts_societies DROP FOREIGN KEY FK_D8C37643DA5256D");
         $this->addSql("DROP INDEX IDX_D8C37643DA5256D ON acts_societies");
         $this->addSql("DROP INDEX slugs ON acts_societies");

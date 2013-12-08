@@ -279,6 +279,22 @@ class Show implements SearchableInterface
     private $multi_venue;
 
     /**
+     * @var string
+     * @ORM\Column(name="facebookurl", type="string", length=2083, nullable=true)
+     */
+    private $facebook_url;
+    /**
+     * @var string
+     * @ORM\Column(name="otherurl", type="string", length=2083, nullable=true)
+     */
+    private $other_url;
+    /**
+     * @var string
+     * @ORM\Column(name="onlinebookingurl", type="string", length=2083, nullable=true)
+     */
+    private $online_booking_url;
+
+    /**
      * Set dates
      *
      * @param string $dates
