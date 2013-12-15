@@ -59,8 +59,15 @@ make this hostname point to the virtual machine.
 
     `192.168.150.10         joe.camdram.net`
 
+5) Read the Wiki
+----------------
 
-3) Write some code
+[The Wiki][3] has various pieces of information about both the current and in-development 
+versions of Camdram. Reading through those pages can give insight into the more esoteric
+parts of the system.
+
+
+6) Write some code
 --------------------
 
  * The site uses the Symfony PHP framework - read the documentation at 
@@ -75,3 +82,4 @@ make this hostname point to the virtual machine.
 
 [1]: http://www.virtualbox.org/
 [2]: http://downloads.vagrantup.com/
+[3]: http://github.com/camdram/camdram/wiki
