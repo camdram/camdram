@@ -20,8 +20,8 @@ class InitCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = $this->getApplication()->find('camdram:users:identities');
-        $arguments = array('command' => 'camdram:users:identities');
+        $command = $this->getApplication()->find('camdram:external-users:generate');
+        $arguments = array('command' => 'camdram:external-users:generate');
         $command->run(new ArrayInput($arguments), $output);
 
         $command = $this->getApplication()->find('camdram:entities:slugs');
