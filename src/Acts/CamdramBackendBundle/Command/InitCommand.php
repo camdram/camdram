@@ -14,7 +14,7 @@ class InitCommand extends ContainerAwareCommand
     {
         $this
             ->setName('camdram:init')
-            ->setDescription('Initialise a new instsallation of camdram')
+            ->setDescription('Initialise a new installation of camdram')
         ;
     }
 
