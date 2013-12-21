@@ -1,0 +1,35 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Issue - {{ issue.id}}{% endblock %}
+
+{% block body %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+
+    <div class="twelve columns">
+
+        <h3>Viewing issue {{ issue.id }}</h3>
+        <p>State: {{ issue.state }}</p>
+        {%- if issue.state == 'unassigned' -%}
+            unassigned
+        {% elseif issue.state == 'assigned' -%}
+            assigned to {{ issue.owner }}
+        {% elseif issue.state == 'closed' -%}
+            closed
+        {%- endif -%}
+        <h3>Latest email</h3>
+        <h5>From: {{ issue.from|raw }}</h5>
+        <h5>To: {{ issue.to|raw }}. CC: {{ issue.cc|raw }}</h5>
+        <h5>Subject: {{ issue.subject }}. Received: {{ issue.datetime|date('d/m/Y, H:m') }}</h5>
+        <p>{{ issue.body|nl2br }}</p>
+        <h3>Previous Emails</h3>
+        {# TODO modify the Support entity to contain a collection of the 
+           previous emails.
+        #}
+        <a href="{{ path('get_issues') }}" class="button small"><i class="fa fa-arrow-left"></i> Back to issue list</a>
+    </div>
+
+</div>
+
+{% endblock %}
+

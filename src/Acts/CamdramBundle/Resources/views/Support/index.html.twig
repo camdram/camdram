@@ -1,0 +1,54 @@
+{% macro table(issues) %}
+    <table>
+    <thead>
+    <tr>
+        <th align=center><b>ID</b></th>
+        <th align=center><b>From</b></th>
+        <th align=center><b>Subject</b></th>
+        <th><b>Action</b></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in issues %}
+        <tr>
+        <td>{{ i.id }}</td><td>{{ i.from|raw }}</td><td>
+            <a href="{{ path('get_issue', {identifier: i.id}) }}">{{ i.subject|raw ?: '(No Subject)'}}</a>
+        </td><td></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+{% endmacro %}
+
+{% import _self as issues %}
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Camdram.net - support manager{% endblock %}
+
+{% block body %}
+  <div class="row">
+      <h3>Issues</h3>
+      <div class="row">
+        <div class="twelve columns">
+            <h4>Issues assigned to you</h4>
+            {% if my_issues is not empty %}
+                {{ issues.table(my_issues) }}
+            {% else %}
+                <p>No unresolved issues are currently assigned to you.</p>
+            {% endif %}
+            <h4>Unassigned issues</h4>
+            {% if unassigned_issues is not empty %}
+                {{ issues.table(unassigned_issues) }}
+            {% else %}
+                <p>No unresolved issues are currently unassigned.</p>
+            {% endif %}
+            <h4>Issues assigned to other users</h4>
+            {% if other_peoples_issues is not empty %}
+                {{ issues.table(other_peoples_issues) }}
+            {% else %}
+                <p>No unresolved issues are currently assigned to other people.</p>
+            {% endif %}
+        </div>
+      </div>
+  </div>
+{% endblock %}
