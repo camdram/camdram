@@ -1,6 +1,12 @@
 <li id="admin-link" class="dropdown-link">
     <a href="#">Administration</a>
     <ul id="admin-dropdown" class="topbar-dropdown">
-        <li><a href="{{ path('get_users') }}"><i class="fa fa-user fa-fw"></i> User Admin</a></li>
+        {% if has_role('ROLE_ADMIN') %}
+            <li><a href="{{ path('get_issues') }}"><i class="fa fa-warning fa-fw"></i> Issues</a></li>
+        {% endif %}
+        {% if has_role('ROLE_SUPER_ADMIN') %}
+            <li><a href="{{ path('get_users') }}"><i class="fa fa-user fa-fw"></i> User Admin</a></li>
+        {% endif %}
     </ul>
 </li>
+

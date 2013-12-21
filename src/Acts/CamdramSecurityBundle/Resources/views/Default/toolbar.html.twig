@@ -1,5 +1,5 @@
 {% if app.user %}
-    {% if has_role('ROLE_SUPER_ADMIN') %}
+    {% if has_role('ROLE_ADMIN') %}
         {{ include('ActsCamdramSecurityBundle:Default:toolbar_admin.html.twig') }}
     {% endif %}
     <li id="account-link" class="dropdown-link">
@@ -67,3 +67,4 @@
         </div>
     </li>
 {% endif %}
+

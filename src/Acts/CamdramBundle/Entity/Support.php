@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Support
@@ -66,9 +67,10 @@ class Support
     /**
      * @var integer
      *
-     * @ORM\Column(name="ownerid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="ownerid", referencedColumnName="id", nullable=true)
      */
-    private $owner_id;
+    private $owner;
 
     /**
      * @var string
@@ -83,7 +85,6 @@ class Support
      * @ORM\Column(name="datetime", type="datetime", nullable=false)
      */
     private $date_time;
-
 
     /**
      * Get id
@@ -234,30 +235,31 @@ class Support
     }
 
     /**
-     * Set owner_id
+     * Set owner
      *
-     * @param integer $ownerId
+     * @param \Acts\CamdramBundle\Entity\User $owner
      * @return Support
      */
-    public function setOwnerId($ownerId)
+    public function setOwner(User $owner = null)
     {
-        $this->owner_id = $ownerId;
+        $this->owner = $ownerId;
     
         return $this;
     }
 
     /**
-     * Get owner_id
+     * Get owner
      *
-     * @return integer 
+     * @return \Acts\CamdramBundle\Entity\User
      */
-    public function getOwnerId()
+    public function getOwner()
     {
-        return $this->owner_id;
+        return $this->owner;
     }
 
     /**
      * Set state
+     * state for issues should be one of [unassigned, assigned, closed]
      *
      * @param string $state
      * @return Support
@@ -302,3 +304,4 @@ class Support
         return $this->date_time;
     }
 }
+

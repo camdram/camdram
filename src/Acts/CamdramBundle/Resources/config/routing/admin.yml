@@ -1,7 +1,12 @@
 acts_camdram_user_toolbar:
     pattern: /groups/toolbar
     defaults: { _controller: ActsCamdramBundle:User:toolbar }
+acts_camdram_issues:
+    type:     rest
+    prefix:   /
+    resource: "Acts\CamdramBundle\Controller\SupportController"
 acts_camdram_users:
     type:     rest
     prefix:   /
     resource: "Acts\CamdramBundle\Controller\UserController"
+
