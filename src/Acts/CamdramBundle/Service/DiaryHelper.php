@@ -33,21 +33,21 @@ class DiaryHelper
      * Generate an event from a 'performance' of a show (which actually represents a range of performances)
      *
      * @param Show $show
-     * @param Performance $perf
+     * @param Performance $performance
      * @return MultiDayEvent
      */
-    public function createEventFromPerformance(Show $show, Performance $perf)
+    public function createEventFromPerformance(Performance $performance)
     {
         $event = new MultiDayEvent();
-        $event->setName($show->getName());
-        $event->setStartDate($perf->getStartDate());
-        $event->setEndDate($perf->getEndDate());
-        $event->setStartTime($perf->getTime());
-        $event->setVenue($perf->getVenueName());
+        $event->setName($performance->getShow()->getName());
+        $event->setStartDate($performance->getStartDate());
+        $event->setEndDate($performance->getEndDate());
+        $event->setStartTime($performance->getTime());
+        $event->setVenue($performance->getVenueName());
 
-        $event->setLink($this->router->generate('get_show', array('identifier' => $show->getSlug())));
-        if ($perf->getVenue()) {
-            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $perf->getVenue()->getSlug())));
+        $event->setLink($this->router->generate('get_show', array('identifier' => $performance->getShow()->getSlug())));
+        if ($performance->getVenue()) {
+            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $performance->getVenue()->getSlug())));
         }
         return $event;
     }
@@ -63,7 +63,7 @@ class DiaryHelper
         $events = array();
         foreach($shows as $show) {
             foreach ($show->getPerformances() as $perf) {
-                $event = $this->createEventFromPerformance($show, $perf);
+                $event = $this->createEventFromPerformance($perf);
                 $events[] = $event;
             }
         }
@@ -80,7 +80,7 @@ class DiaryHelper
     {
         $events = array();
         foreach($performances as $performance) {
-            $event = $this->createEventFromPerformance($performance->getShow(), $performance);
+            $event = $this->createEventFromPerformance($performance);
             $events[] = $event;
         }
         return $events;
