@@ -51,7 +51,6 @@ class SupportController extends AbstractRestController
     protected function getForm($society = null)
     {
         return Null;
-        //return $this->createForm(new UserType(), $society);
     }
 
     /**
@@ -68,6 +67,7 @@ class SupportController extends AbstractRestController
      *
      * Issues are grouped into those that are assigned to the logged in user,
      * unassigned issues, and issues assigned to other users.
+     *
      */
     public function cgetAction()
     {
@@ -93,11 +93,40 @@ class SupportController extends AbstractRestController
 
     /**
      * Action for pages that represent a single issue.
+     *
      */
     public function getAction($identifier)
     {
-        $this->checkAuthenticated();
+        $this->checkAuthorised();
         $issue = $this->getEntity($identifier);
+        if ($this->getRequest()->query->has('action')) {
+            $action = $this->getRequest()->query->get('action');
+            $user_is_owner =  $issue->getOwner()->getId() == $this->getUser()->getId() ? true : false;
+            // Assign or reassign an issue.
+            if ($action == 'assign') {
+                $issue->setOwner($this->getUser());
+                $issue->setState('assigned');
+            }
+            // Issue owners may reject issues that are assigned to them.
+            else if (($action == 'rejectassign') && 
+                     ($issue->getState() == 'assigned') && 
+                     ($user_is_owner == true)) {
+                $issue->setOwner(null);
+                $issue->setState('unassigned');
+            }
+            // Admins may delete unassigned issues. Owners may resolve them. 
+            else if ((($action == 'delete') && ($issue->getState() == 'unassigned')) || 
+                     (($action == 'resolve') && ($issue->getState() == 'assigned') && ($user_is_owner == true))) {
+                $issue->setState('closed');
+            }
+            else if ($action == 'reopen') {
+                $issue->setOwner(null);
+                $issue->setState('unassigned');
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($issue);
+            $em->flush();
+        }
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
         $view = $this->view($issue, 200)
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
@@ -106,6 +135,6 @@ class SupportController extends AbstractRestController
 
         return $view;
     }
-
+    
 }
 

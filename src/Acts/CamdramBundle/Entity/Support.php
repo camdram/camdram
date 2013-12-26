@@ -242,7 +242,7 @@ class Support
      */
     public function setOwner(User $owner = null)
     {
-        $this->owner = $ownerId;
+        $this->owner = $owner;
     
         return $this;
     }

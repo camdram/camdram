@@ -8,21 +8,27 @@
 
     <div class="twelve columns">
 
-        <h3>Viewing issue {{ issue.id }}</h3>
-        <p>State: {{ issue.state }}</p>
-        {%- if issue.state == 'unassigned' -%}
-            unassigned
+        <h4>Viewing issue {{ issue.id }}</h4>
+        <p>State: {{ issue.state }}. 
+        {% if issue.state == 'unassigned' -%}
+            <a href="{{ url('get_issue',{identifier: issue.id, action : 'assign'}) }}">Assign this issue to me</a>
         {% elseif issue.state == 'assigned' -%}
-            assigned to {{ issue.owner }}
+            Assigned to 
+            {% if issue.owner.id == app.user.id -%}
+                me. <a href="{{ url('get_issue',{identifier: issue.id, action : 'rejectassign'}) }}">Reject assignment</a> or <a href="{{ url('get_issue',{identifier: issue.id, action : 'resolve'}) }}">close this issue</a>.
+            {% else -%}
+                {{ issue.owner }}. <a href="{{ url('get_issue',{identifier: issue.id, action : 'assign'}) }}">Reassign this issue to me</a>
+            {% endif -%}
         {% elseif issue.state == 'closed' -%}
-            closed
-        {%- endif -%}
-        <h3>Latest email</h3>
+            <a href="{{ url('get_issue',{identifier: issue.id, action : 'reopen'}) }}">Reopen this issue</a>
+        {% endif -%}
+        </p>
+        <h4>Latest email</h4>
         <h5>From: {{ issue.from|raw }}</h5>
         <h5>To: {{ issue.to|raw }}. CC: {{ issue.cc|raw }}</h5>
         <h5>Subject: {{ issue.subject }}. Received: {{ issue.datetime|date('d/m/Y, H:m') }}</h5>
         <p>{{ issue.body|nl2br }}</p>
-        <h3>Previous Emails</h3>
+        <h4>Previous Emails</h4>
         {# TODO modify the Support entity to contain a collection of the 
            previous emails.
         #}
