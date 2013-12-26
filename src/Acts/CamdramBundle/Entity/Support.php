@@ -87,6 +87,33 @@ class Support
     private $date_time;
 
     /**
+     * @ORM\OneToMany(targetEntity="Support", mappedBy="parent")
+     * @ORM\OrderBy({"id"="DESC"})
+     */
+    private $children;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Support", inversedBy="children")
+     * @ORM\JoinColumn(name="supportid", referencedColumnName="id")
+     */
+    private $parent;
+
+    public function __construct() 
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+   
+    /**
+     * Get children
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+
+    /**
      * Get id
      *
      * @return integer 
