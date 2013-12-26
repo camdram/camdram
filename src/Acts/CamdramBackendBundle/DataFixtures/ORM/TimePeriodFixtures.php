@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramBackendBundle\DataFixtures\ORM;
 
+use Acts\CamdramBundle\Entity\WeekName;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -20,51 +21,47 @@ class TimePeriodFixtures extends AbstractFixture implements OrderedFixtureInterf
         $end_date = new \DateTime("2001-12-31 00:00:00");
 
         $date = clone $start_date;
-        $groups = array();
+        $periods = array();
         while ($date < $end_date) {
-            $g = new TimePeriodGroup();
-            $g->setStartAt(clone $date);
+            $p = new TimePeriod();
+            $p->setStartAt(clone $date);
 
             $month = $date->format('F');
             $date->modify("+4 weeks");
             if ($month == $date->format('F')) $date->modify("+1 week");
 
-            $g->setEndAt(clone $date);
-            $g->setName($g->getStartAt()->format("F"));
-            $g->setLongName($g->getStartAt()->format("F Y"));
-            $manager->persist($g);
-            $groups[] = $g;
+            $p->setEndAt(clone $date);
+            $p->setShortName($p->getStartAt()->format("M"));
+            $p->setName($p->getStartAt()->format("F"));
+            $p->setFullName($p->getStartAt()->format("F Y"));
+            $manager->persist($p);
+            $periods[] = $p;
         }
         $manager->flush();
 
         $date = clone $start_date;
         $week_counter = 1;
-        $cur_group = 0;
+        $cur_period = 0;
         while ($date < $end_date) {
-            $p = new TimePeriod();
-            $p->setStartAt(clone $date);
+            $w = new WeekName();
+            $w->setStartAt(clone $date);
             $date->modify("+1 week");
-            $p->setEndAt(clone $date);
 
-            if ($p->getStartAt() >= $groups[$cur_group]->getEndAt()) {
-                $cur_group+= 1;
+            if ($w->getStartAt() >= $periods[$cur_period]->getEndAt()) {
+                $cur_period+= 1;
                 $week_counter = 1;
             }
 
-            $p->setShortName("Week $week_counter");
-            $p->setName($p->getStartAt()->format("F")." Week $week_counter");
-            $p->setLongName($p->getStartAt()->format("F Y")." Week $week_counter");
+            $w->setShortName("Week $week_counter");
+            $w->setName($w->getStartAt()->format("F")." Week $week_counter");
 
-
-            $p->setGroup($groups[$cur_group]);
-
-            $manager->persist($p);
+            $manager->persist($w);
             $week_counter++;
         }
         $manager->flush();
 
-        $this->setReference('start_group', $groups[0]);
-        $this->setReference('end_group', $groups[count($groups)-7]);
+        $this->setReference('start_group', $periods[0]);
+        $this->setReference('end_group', $periods[count($periods)-7]);
     }
 
     /**
