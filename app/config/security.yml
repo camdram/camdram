@@ -16,12 +16,16 @@ security:
             id: camdram.security.external_user.provider
 
     firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
 
         public:
             pattern: ^/.*
             anonymous: true
             switch_user: { role: ROLE_ADMIN, parameter: _switch_to_user }
             entry_point: camdram.security.entry_point
+            fos_oauth: true
             logout:
                 path: /logout
                 target: /

@@ -47,7 +47,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             // Dependencies of the CmfBlockBundle
-            new Sonata\BlockBundle\SonataBlockBundle()
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

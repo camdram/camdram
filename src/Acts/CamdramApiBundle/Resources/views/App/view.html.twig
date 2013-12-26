@@ -1,0 +1,31 @@
+{% extends 'ActsCamdramApiBundle::layout.html.twig' %}
+{% set current_api_nav_id = 'apps' %}
+
+{% block title %}{{ ex_app.name }} - API{% endblock %}
+
+{% block api_body %}
+
+    <h4>My Apps</h4>
+    <h5>{{ ex_app.name }}</h5>
+
+    <p>
+        <strong>App ID:</strong> {{ ex_app.publicId }}
+    </p>
+    <p>
+        <strong>App secret:</strong> {{ ex_app.secret }}<br />
+        <a href="#">Regenerate secret</a>
+    </p>
+
+    <form method="post" action="{{ path('put_app', {app_id: ex_app.randomId, _method: 'put'}) }}">
+        {{ form_widget(form) }}
+
+        <div class="row">
+            <div class="large-9 large-offset-3 columns">
+                <input type="submit" class="button" value="Save"/>
+                <p><a href="{{ path('remove_app', {app_id: ex_app.randomId}) }}">Delete app</a></p>
+                <p><a href="{{ path('get_apps') }}">Return to My Apps</a></p>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

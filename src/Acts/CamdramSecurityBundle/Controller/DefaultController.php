@@ -52,6 +52,12 @@ class DefaultController extends Controller
             $last_email = '';
         }
 
+        if ($session->has('_security.target_path')) {
+            if (false !== strpos($session->get('_security.target_path'), $this->generateUrl('fos_oauth_server_authorize'))) {
+                $session->set('_fos_oauth_server.ensure_logout', true);
+            }
+        }
+
         if ($last_email && $session->get('_security.last_exception') instanceof InsufficientAuthenticationException) {
             return $this->render(
                 'ActsCamdramSecurityBundle:Default:relogin.html.twig',
