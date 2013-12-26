@@ -1,19 +1,18 @@
 <?php
-// src/Acme/ApiBundle/Entity/AccessToken.php
+namespace Acts\CamdramApiBundle\Entity;
 
-namespace Acts\CamdramSecurityBundle\Entity;
-
+use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
+use Doctrine\ORM\Mapping as ORM;
+use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
-use FOS\OAuthServerBundle\Model\ClientInterface;
-use Doctrine\ORM\Mapping as ORM;
-
 /**
+ * API Access Tokens
+ *
+ * @ORM\Table(name="acts_api_refresh_tokens")
  * @ORM\Entity
- * @ORM\Table(name="acts_auth_codes")
  */
-class AuthCode extends BaseAuthCode
+class RefreshToken extends BaseRefreshToken
 {
     /**
      * @ORM\Id
@@ -33,6 +32,7 @@ class AuthCode extends BaseAuthCode
      */
     protected $user;
 
+
     /**
      * Get id
      *
@@ -46,8 +46,8 @@ class AuthCode extends BaseAuthCode
     /**
      * Set client
      *
-     * @param \Acts\CamdramSecurityBundle\Entity\ExternalApp $client
-     * @return AuthCode
+     * @param \Acts\CamdramApiBundle\Entity\ApiApp $client
+     * @return RefreshToken
      */
     public function setClient(ClientInterface $client)
     {
@@ -59,7 +59,7 @@ class AuthCode extends BaseAuthCode
     /**
      * Get client
      *
-     * @return \Acts\CamdramSecurityBundle\Entity\ExternalApp 
+     * @return \Acts\CamdramApiBundle\Entity\ApiApp 
      */
     public function getClient()
     {
@@ -70,9 +70,9 @@ class AuthCode extends BaseAuthCode
      * Set user
      *
      * @param \Acts\CamdramBundle\Entity\User $user
-     * @return AuthCode
+     * @return RefreshToken
      */
-    public function setUser(UserInterface $user)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
     

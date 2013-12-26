@@ -220,6 +220,12 @@ class User implements \Serializable, CamdramUserInterface
     private $aces;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Acts\CamdramApiBundle\Entity\ExternalApp", mappedBy="users")
+     * @Serializer\Exclude()
+     */
+    private $apps;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -950,4 +956,37 @@ class User implements \Serializable, CamdramUserInterface
         return $this->getAces()->matching($criteria);
     }
 
+
+    /**
+     * Add apps
+     *
+     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
+     * @return User
+     */
+    public function addApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
+    {
+        $this->apps[] = $apps;
+    
+        return $this;
+    }
+
+    /**
+     * Remove apps
+     *
+     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
+     */
+    public function removeApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
+    {
+        $this->apps->removeElement($apps);
+    }
+
+    /**
+     * Get apps
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApps()
+    {
+        return $this->apps;
+    }
 }

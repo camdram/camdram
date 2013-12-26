@@ -1409,4 +1409,73 @@ class Show implements SearchableInterface
     {
         return $this->slug;
     }
+
+    /**
+     * Set facebook_url
+     *
+     * @param string $facebookUrl
+     * @return Show
+     */
+    public function setFacebookUrl($facebookUrl)
+    {
+        $this->facebook_url = $facebookUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_url
+     *
+     * @return string 
+     */
+    public function getFacebookUrl()
+    {
+        return $this->facebook_url;
+    }
+
+    /**
+     * Set other_url
+     *
+     * @param string $otherUrl
+     * @return Show
+     */
+    public function setOtherUrl($otherUrl)
+    {
+        $this->other_url = $otherUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get other_url
+     *
+     * @return string 
+     */
+    public function getOtherUrl()
+    {
+        return $this->other_url;
+    }
+
+    /**
+     * Set online_booking_url
+     *
+     * @param string $onlineBookingUrl
+     * @return Show
+     */
+    public function setOnlineBookingUrl($onlineBookingUrl)
+    {
+        $this->online_booking_url = $onlineBookingUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get online_booking_url
+     *
+     * @return string 
+     */
+    public function getOnlineBookingUrl()
+    {
+        return $this->online_booking_url;
+    }
 }

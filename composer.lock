@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "b82df98fb496fbfec8a515fc355a4df5",
+    "hash": "4cdcd2d8fdfde9e834b274cb678aad03",
     "packages": [
         {
             "name": "acts/external-login-bundle",
@@ -321,12 +321,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Mink.git",
-                "reference": "9016e77222ab4a282a49ad6335f1ed96c9324c0e"
+                "reference": "00ad9e6959d00508e6be2697c5c4bef54635a2cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Mink/zipball/9016e77222ab4a282a49ad6335f1ed96c9324c0e",
-                "reference": "9016e77222ab4a282a49ad6335f1ed96c9324c0e",
+                "url": "https://api.github.com/repos/Behat/Mink/zipball/00ad9e6959d00508e6be2697c5c4bef54635a2cc",
+                "reference": "00ad9e6959d00508e6be2697c5c4bef54635a2cc",
                 "shasum": ""
             },
             "require": {
@@ -368,7 +368,7 @@
                 "testing",
                 "web"
             ],
-            "time": "2013-12-19 08:31:11"
+            "time": "2013-12-26 08:55:33"
         },
         {
             "name": "behat/mink-browserkit-driver",
@@ -1892,21 +1892,21 @@
         },
         {
             "name": "friendsofsymfony/oauth-server-bundle",
-            "version": "1.3.1",
+            "version": "1.4.0",
             "target-dir": "FOS/OAuthServerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git",
-                "reference": "8152cf15b846ca797c9f041458847620f4024c5d"
+                "reference": "0742ea3cf59944aa9f0e821b9f8b6a88f541a83c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/8152cf15b846ca797c9f041458847620f4024c5d",
-                "reference": "8152cf15b846ca797c9f041458847620f4024c5d",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/0742ea3cf59944aa9f0e821b9f8b6a88f541a83c",
+                "reference": "0742ea3cf59944aa9f0e821b9f8b6a88f541a83c",
                 "shasum": ""
             },
             "require": {
-                "friendsofsymfony/oauth2-php": "~1.0.4",
+                "friendsofsymfony/oauth2-php": "~1.1.0",
                 "php": ">=5.3.3",
                 "symfony/framework-bundle": "~2.1",
                 "symfony/security-bundle": "~2.1"
@@ -1952,20 +1952,20 @@
                 "oauth2",
                 "server"
             ],
-            "time": "2013-06-26 13:57:14"
+            "time": "2013-10-30 00:32:09"
         },
         {
             "name": "friendsofsymfony/oauth2-php",
-            "version": "1.0.9",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/oauth2-php.git",
-                "reference": "f1c7fdf35cab264ca006e8189d8097166ebccf2a"
+                "reference": "f5b6f7559e1c0bf91847050ddde2c3e5f66ae3f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/oauth2-php/zipball/f1c7fdf35cab264ca006e8189d8097166ebccf2a",
-                "reference": "f1c7fdf35cab264ca006e8189d8097166ebccf2a",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/oauth2-php/zipball/f5b6f7559e1c0bf91847050ddde2c3e5f66ae3f5",
+                "reference": "f5b6f7559e1c0bf91847050ddde2c3e5f66ae3f5",
                 "shasum": ""
             },
             "require": {
@@ -1975,7 +1975,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -2003,7 +2003,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2013-10-08 22:55:49"
+            "time": "2013-12-26 09:15:50"
         },
         {
             "name": "friendsofsymfony/rest",
@@ -2132,12 +2132,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "0df9223ec1cee7fb56a803b2db1fd8b2c81fd001"
+                "reference": "97386dda06ce50f3c20e2b6658e668679d637f41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/0df9223ec1cee7fb56a803b2db1fd8b2c81fd001",
-                "reference": "0df9223ec1cee7fb56a803b2db1fd8b2c81fd001",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/97386dda06ce50f3c20e2b6658e668679d637f41",
+                "reference": "97386dda06ce50f3c20e2b6658e668679d637f41",
                 "shasum": ""
             },
             "require": {
@@ -2204,7 +2204,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-12-15 20:09:02"
+            "time": "2013-12-26 15:40:18"
         },
         {
             "name": "guzzle/common",
@@ -3175,12 +3175,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c9db00f8821b2cc7238732529f8d4007296a630c"
+                "reference": "e92cb54c24e990c505be1b4af82e962d55d092df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c9db00f8821b2cc7238732529f8d4007296a630c",
-                "reference": "c9db00f8821b2cc7238732529f8d4007296a630c",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/e92cb54c24e990c505be1b4af82e962d55d092df",
+                "reference": "e92cb54c24e990c505be1b4af82e962d55d092df",
                 "shasum": ""
             },
             "require": {
@@ -3234,7 +3234,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-12-14 13:52:08"
+            "time": "2013-12-26 13:24:17"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -3523,12 +3523,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5144da9525d24346bf009ff28f10cbaa1f0f166e"
+                "reference": "65f363ac44058796a8e1428cf41e6d92d8a75ddc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5144da9525d24346bf009ff28f10cbaa1f0f166e",
-                "reference": "5144da9525d24346bf009ff28f10cbaa1f0f166e",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/65f363ac44058796a8e1428cf41e6d92d8a75ddc",
+                "reference": "65f363ac44058796a8e1428cf41e6d92d8a75ddc",
                 "shasum": ""
             },
             "type": "library",
@@ -3558,7 +3558,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2013-12-05 15:25:07"
+            "time": "2013-12-25 11:17:50"
         },
         {
             "name": "sabre/vobject",
@@ -4166,12 +4166,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony-cmf/CoreBundle.git",
-                "reference": "f5b6ec2d5c32d742a4ce087f07c3defbf5a83049"
+                "reference": "6a3547d7f6558286ea21be31e2215f465cc51202"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony-cmf/CoreBundle/zipball/f5b6ec2d5c32d742a4ce087f07c3defbf5a83049",
-                "reference": "f5b6ec2d5c32d742a4ce087f07c3defbf5a83049",
+                "url": "https://api.github.com/repos/symfony-cmf/CoreBundle/zipball/6a3547d7f6558286ea21be31e2215f465cc51202",
+                "reference": "6a3547d7f6558286ea21be31e2215f465cc51202",
                 "shasum": ""
             },
             "require": {
@@ -4218,7 +4218,7 @@
             "keywords": [
                 "Symfony CMF"
             ],
-            "time": "2013-12-21 10:07:53"
+            "time": "2013-12-26 14:37:06"
         },
         {
             "name": "symfony-cmf/media-bundle",
@@ -4811,12 +4811,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "50c39b946befce1ebfe4a68bcec0872b84037ea0"
+                "reference": "c86e8c11e2fe5f0f798db1831fd8bffe14f671a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/50c39b946befce1ebfe4a68bcec0872b84037ea0",
-                "reference": "50c39b946befce1ebfe4a68bcec0872b84037ea0",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/c86e8c11e2fe5f0f798db1831fd8bffe14f671a8",
+                "reference": "c86e8c11e2fe5f0f798db1831fd8bffe14f671a8",
                 "shasum": ""
             },
             "require": {
@@ -4911,7 +4911,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-12-23 15:46:26"
+            "time": "2013-12-26 08:07:40"
         },
         {
             "name": "twig/extensions",

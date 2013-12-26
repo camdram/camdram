@@ -1,0 +1,24 @@
+{% extends 'ActsCamdramApiBundle::authorize_layout.html.twig' %}
+
+{% block title %}Authorise{% endblock %}
+
+{% block body %}
+    <div class="text-center">
+        <h3>Log in with Camdram</h3>
+        <p>The app <strong>{{ client.name }}</strong> (<a href="{{ client.website }}" target="_blank">{{ client.website }}</a>)
+            would like to access your details on Camdram.</p>
+        <p>Click 'Allow' if you trust this app and would like to allow {{ client.name }} to read and write data
+            to/from Camdram on your behalf. Otherwise, click 'Deny' and you will taken back to where you came from.</p>
+        <form action="{{ path('fos_oauth_server_authorize') }}" method="POST" class="fos_oauth_server_authorize" {{ form_enctype(form) }}>
+            <input type="submit" name="accepted" value="Allow" class="button" />
+            <input type="submit" name="rejected" value="Deny" class="button alert" />
+
+            {{ form_row(form.client_id) }}
+            {{ form_row(form.response_type) }}
+            {{ form_row(form.redirect_uri) }}
+            {{ form_row(form.state) }}
+            {{ form_row(form.scope) }}
+            {{ form_rest(form) }}
+        </form>
+    </div>
+{% endblock %}

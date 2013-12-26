@@ -1,0 +1,9 @@
+parameters:
+#    acts_camdram_api.example.class: Acts\CamdramApiBundle\Example
+
+services:
+    acts.camdram.type.college:
+        class: Acts\CamdramApiBundle\Form\Type\AppType
+        arguments: ~
+        tags:
+            - { name: form.type, alias: app_type }

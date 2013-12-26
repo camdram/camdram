@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Tests\Controller;
+namespace Acts\CamdramApiBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

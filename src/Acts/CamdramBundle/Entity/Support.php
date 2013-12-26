@@ -331,4 +331,3 @@ class Support
         return $this->date_time;
     }
 }
-

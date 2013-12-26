@@ -175,10 +175,13 @@ acts_social_api:
 
 fos_oauth_server:
     db_driver:           orm
-    client_class:        Acts\CamdramSecurityBundle\Entity\ExternalApp
-    access_token_class:  Acts\CamdramSecurityBundle\Entity\AccessToken
-    refresh_token_class: Acts\CamdramSecurityBundle\Entity\RefreshToken
-    auth_code_class:     Acts\CamdramSecurityBundle\Entity\AuthCode
+    client_class:        Acts\CamdramApiBundle\Entity\ExternalApp
+    access_token_class:  Acts\CamdramApiBundle\Entity\AccessToken
+    refresh_token_class: Acts\CamdramApiBundle\Entity\RefreshToken
+    auth_code_class:     Acts\CamdramApiBundle\Entity\AuthCode
+    service:
+        options:
+            supported_scopes: write
 
 acts_sphinx_real_time:
     clients:
