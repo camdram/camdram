@@ -40,7 +40,7 @@ class DoctrineProvider implements ProviderInterface
     }
 
 
-    public function executeTextSearch($repository, $query, array $filters = array(), array $orderBy = array())
+    public function executeTextSearch($repository, $query, $offset, $limit, array $orderBy = array())
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $repo \Doctrine\ORM\EntityRepository */
@@ -49,6 +49,8 @@ class DoctrineProvider implements ProviderInterface
         $qb = $repo->createQueryBuilder('e')
             ->where('e.name LIKE :input')
             ->orWhere('e.description LIKE :input')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
             ->setParameter(':input', '%'.$query.'%');
 
         $adapter = new DoctrineORMAdapter($qb);
