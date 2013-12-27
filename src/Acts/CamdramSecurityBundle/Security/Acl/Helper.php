@@ -20,7 +20,6 @@ class Helper
      */
     private $securityContext;
 
-
     private $aclProvider;
 
     public function __construct(SecurityContextInterface $securityContext, AclProvider $aclProvider)
@@ -35,18 +34,7 @@ class Helper
             if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) return false;
         }
 
-        if (is_string($object)) {
-            //asking for a class identity
-            return $this->securityContext->isGranted($attributes, $object);
-        }
-        else {
-            $granted = $this->securityContext->isGranted($attributes, $object);
-            if ($granted === false) {
-                $identity = new ObjectIdentity('class', get_class($object));
-                $granted = $this->securityContext->isGranted($attributes, $identity);
-            }
-            return $granted;
-        }
+        return $this->securityContext->isGranted($attributes, $object);
     }
 
     public function ensureGranted($attributes, $object, $fully_authenticated = true)
