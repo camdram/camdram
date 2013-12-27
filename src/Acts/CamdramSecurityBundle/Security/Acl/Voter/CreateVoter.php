@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
+use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -26,12 +27,13 @@ class CreateVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (is_string($object) && $attributes == array('CREATE')) {
-            if ($object == 'Acts\\CamdramBundle\\Entity\\Show'
-                    || $object == 'Acts\\CamdramBundle\\Entity\\TechieAdvert'
-                    || $object == 'Acts\\CamdramBundle\\Entity\\Audition'
-                    || $object == 'Acts\\CamdramBundle\\Entity\\Application')  {
-                return self::ACCESS_GRANTED;
+        if ($object instanceof ClassIdentity && $attributes == array('CREATE')) {
+            switch ($object->getClassName()) {
+                case 'Acts\\CamdramBundle\\Entity\\Show':
+                case 'Acts\\CamdramBundle\\Entity\\TechieAdvert':
+                case 'Acts\\CamdramBundle\\Entity\\Audition':
+                case 'Acts\\CamdramBundle\\Entity\\Application':
+                    return self::ACCESS_GRANTED;
             }
         }
         return self::ACCESS_ABSTAIN;
