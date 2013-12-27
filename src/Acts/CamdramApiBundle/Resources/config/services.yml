@@ -2,7 +2,7 @@ parameters:
 #    acts_camdram_api.example.class: Acts\CamdramApiBundle\Example
 
 services:
-    acts.camdram.type.college:
+    acts_camdram_api.type.app_type:
         class: Acts\CamdramApiBundle\Form\Type\AppType
         arguments: ~
         tags:
