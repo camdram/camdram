@@ -51,7 +51,7 @@ class WeekName
 
     /**
      * @var TimePeriod
-     * @ORM\ManyToOne(targetEntity="TimePeriod", inversedBy="weeks")
+     * @ORM\ManyToOne(targetEntity="TimePeriod", inversedBy="week_names")
      */
     private $time_period;
 

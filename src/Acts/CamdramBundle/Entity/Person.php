@@ -88,6 +88,14 @@ class Person implements SearchableInterface
     private $users;
 
     /**
+     * @var User
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="person")
+     * @Serializer\Exclude
+     */
+    private $externalUsers;
+
+    /**
      * @var array
      *
      * @ORM\OneToMany(targetEntity="NameAlias", mappedBy="person")
@@ -442,5 +450,38 @@ class Person implements SearchableInterface
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Add externalUsers
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
+     * @return Person
+     */
+    public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
+    {
+        $this->externalUsers[] = $externalUsers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove externalUsers
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
+     */
+    public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
+    {
+        $this->externalUsers->removeElement($externalUsers);
+    }
+
+    /**
+     * Get externalUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getExternalUsers()
+    {
+        return $this->externalUsers;
     }
 }
