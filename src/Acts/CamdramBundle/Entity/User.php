@@ -719,6 +719,7 @@ class User implements \Serializable, CamdramUserInterface
         $this->login = new \DateTime;
 
         $this->aces = new ArrayCollection();
+        $this->external_users = new ArrayCollection();
     }
 
     public function serialize()
