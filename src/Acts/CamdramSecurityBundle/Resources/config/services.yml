@@ -20,7 +20,7 @@ services:
 
     camdram.security.authentication_success_handler:
         class: Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler
-        arguments: [@security.context, @camdram.security.name_utils, @camdram.security.user.provider, @camdram.security.user_linker, @security.http_utils, 'public']
+        arguments: [@security.context, @camdram.security.name_utils, @camdram.security.user.provider, @camdram.security.external_user.provider, @camdram.security.user_linker, @security.http_utils, 'public']
 
     camdram.security.entry_point:
         class: Acts\CamdramSecurityBundle\Security\EntryPoint\CamdramLoginEntryPoint

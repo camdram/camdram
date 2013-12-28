@@ -79,6 +79,13 @@ class ExternalUser implements CamdramUserInterface
     private $profile_picture_url;
 
     /**
+     * @var \Acts\CamdramBundle\Entity\Person
+     *
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="externalUsers")
+     */
+    private $person;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -324,5 +331,32 @@ class ExternalUser implements CamdramUserInterface
     public function getProfilePictureUrl()
     {
         return $this->profile_picture_url;
+    }
+
+    /**
+     * Set person
+     *
+     * @param \Acts\CamdramBundle\Entity\Person $person
+     * @return ExternalUser
+     */
+    public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
+    {
+        $this->person = $person;
+    
+        return $this;
+    }
+
+    /**
+     * Get person
+     *
+     * @return \Acts\CamdramBundle\Entity\Person 
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    public function __toString() {
+        return $this->getId().':'.$this->getName();
     }
 }
