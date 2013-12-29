@@ -7,17 +7,17 @@
     "packages": [
         {
             "name": "acts/external-login-bundle",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "target-dir": "Acts/ExternalLoginBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/external-login-bundle.git",
-                "reference": "49710b176ebaa6486167deefcd1dba848b113eb3"
+                "reference": "8c1f70624ea5054fc33e3b47b0e072e3bd7881f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/external-login-bundle/zipball/49710b176ebaa6486167deefcd1dba848b113eb3",
-                "reference": "49710b176ebaa6486167deefcd1dba848b113eb3",
+                "url": "https://api.github.com/repos/camdram/external-login-bundle/zipball/8c1f70624ea5054fc33e3b47b0e072e3bd7881f4",
+                "reference": "8c1f70624ea5054fc33e3b47b0e072e3bd7881f4",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "social",
                 "twitter"
             ],
-            "time": "2013-12-24 19:10:15"
+            "time": "2013-12-28 04:35:45"
         },
         {
             "name": "acts/social-api-bundle",
@@ -887,7 +887,8 @@
                 {
                     "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/"
+                    "homepage": "http://www.jwage.com/",
+                    "role": "Creator"
                 },
                 {
                     "name": "Guilherme Blanco",
@@ -2012,17 +2013,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSRest.git",
-                "reference": "9a84df8220553e2ae3163b8325a3c4c2e9792426"
+                "reference": "0.8.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRest/zipball/9a84df8220553e2ae3163b8325a3c4c2e9792426",
-                "reference": "9a84df8220553e2ae3163b8325a3c4c2e9792426",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRest/zipball/0.8.0",
+                "reference": "0.8.0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/http-foundation": "~2.0"
+                "symfony/http-foundation": ">=2.0,<3.0"
             },
             "type": "library",
             "extra": {
@@ -2548,16 +2549,16 @@
         },
         {
             "name": "jackalope/jackalope",
-            "version": "1.0.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jackalope/jackalope.git",
-                "reference": "2347eb2082f188a82f5f93b9b50d052df6d70be7"
+                "reference": "605a3fb6d83c906d19ad88b2347be9453c96a19f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jackalope/jackalope/zipball/2347eb2082f188a82f5f93b9b50d052df6d70be7",
-                "reference": "2347eb2082f188a82f5f93b9b50d052df6d70be7",
+                "url": "https://api.github.com/repos/jackalope/jackalope/zipball/605a3fb6d83c906d19ad88b2347be9453c96a19f",
+                "reference": "605a3fb6d83c906d19ad88b2347be9453c96a19f",
                 "shasum": ""
             },
             "require": {
@@ -2597,7 +2598,7 @@
             "keywords": [
                 "phpcr"
             ],
-            "time": "2013-12-14 15:22:44"
+            "time": "2013-11-06 10:28:46"
         },
         {
             "name": "jackalope/jackalope-doctrine-dbal",
@@ -3036,7 +3037,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -4346,17 +4347,17 @@
         },
         {
             "name": "symfony-cmf/routing",
-            "version": "1.1.x-dev",
+            "version": "dev-master",
             "target-dir": "Symfony/Cmf/Component/Routing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony-cmf/Routing.git",
-                "reference": "747fbc7111584beec6c1dcee192e93a06eeacb17"
+                "reference": "9f816afdf6e6441b89dc0d2782b89ef2d096a0fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/747fbc7111584beec6c1dcee192e93a06eeacb17",
-                "reference": "747fbc7111584beec6c1dcee192e93a06eeacb17",
+                "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/9f816afdf6e6441b89dc0d2782b89ef2d096a0fd",
+                "reference": "9f816afdf6e6441b89dc0d2782b89ef2d096a0fd",
                 "shasum": ""
             },
             "require": {
@@ -4400,7 +4401,7 @@
                 "database",
                 "routing"
             ],
-            "time": "2013-12-14 15:25:03"
+            "time": "2013-11-28 12:30:45"
         },
         {
             "name": "symfony-cmf/routing-auto-bundle",
@@ -4457,17 +4458,17 @@
         },
         {
             "name": "symfony-cmf/routing-bundle",
-            "version": "1.1.x-dev",
+            "version": "dev-master",
             "target-dir": "Symfony/Cmf/Bundle/RoutingBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony-cmf/RoutingBundle.git",
-                "reference": "96d0649c6fb415cb06ed7a689d69e52bcce544dd"
+                "reference": "3dbf813e78fd2849ef1a3e1afd4775e05d87c9f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony-cmf/RoutingBundle/zipball/96d0649c6fb415cb06ed7a689d69e52bcce544dd",
-                "reference": "96d0649c6fb415cb06ed7a689d69e52bcce544dd",
+                "url": "https://api.github.com/repos/symfony-cmf/RoutingBundle/zipball/3dbf813e78fd2849ef1a3e1afd4775e05d87c9f5",
+                "reference": "3dbf813e78fd2849ef1a3e1afd4775e05d87c9f5",
                 "shasum": ""
             },
             "require": {
@@ -4519,7 +4520,7 @@
                 "database",
                 "routing"
             ],
-            "time": "2013-12-16 16:46:20"
+            "time": "2013-12-02 11:45:09"
         },
         {
             "name": "symfony-cmf/symfony-cmf",

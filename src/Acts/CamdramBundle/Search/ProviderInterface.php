@@ -32,6 +32,6 @@ interface ProviderInterface
      * @param $offset
      * @return \Pagerfanta\PagerfantaInterface;
      */
-    public function executeTextSearch($repository, $query, array $filters = array(), array $orderBy = array());
+    public function executeTextSearch($repository, $query, $offset, $limit, array $orderBy = array());
 
 }

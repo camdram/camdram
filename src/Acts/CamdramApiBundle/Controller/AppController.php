@@ -18,7 +18,7 @@ class AppController extends FOSRestController
 {
     private function checkAuthenticated()
     {
-        if (!$this->get('security.context')->isGranted('IS_FULLY_AUTHENTICATED')) {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new AuthenticationException();
         }
     }

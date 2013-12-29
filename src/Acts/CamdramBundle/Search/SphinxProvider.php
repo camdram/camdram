@@ -1,7 +1,10 @@
 <?php
 namespace Acts\CamdramBundle\Search;
 
+use Acts\SphinxRealTimeBundle\Paginator\FantaPaginatorAdapter;
+use Acts\SphinxRealTimeBundle\Paginator\RawPaginatorAdapter;
 use Foolz\SphinxQL\Expression;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\PagerfantaInterface;
 use Foolz\SphinxQL\SphinxQL;
@@ -56,22 +59,20 @@ class  SphinxProvider implements ProviderInterface
      * @param $offset
      * @return \Pagerfanta\PagerfantaInterface;
      */
-    public function executeTextSearch($indexes, $q, array $filters = array(), array $orderBy = array())
+    public function executeTextSearch($indexes, $q, $offset, $limit, array $orderBy = array())
     {
         $client = $this->container->get('acts.sphinx_realtime.client.default');
 
         $query = SphinxQL::forge()->select()->from($indexes)->match('@relaxed','')
+            ->limit($limit)->offset($offset)
             ->match('(name,short_name,description)', $q);
-
-        foreach ($filters as $key => $value) {
-            $query->match($key, $value);
-        }
 
         foreach ($orderBy as $field => $direction) {
             $query->orderBy($field, $direction);
         }
 
-        //return $finder->findPaginated($query);
+        $results = $client->query($query);
+        return $results;
     }
 
 }

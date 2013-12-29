@@ -21,8 +21,6 @@ class PersonType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('no_robots', null, array('required' => false))
-            ->add('facebook_id')
-            ->add('twitter_id')
         ;
     }
 

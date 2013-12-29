@@ -45,9 +45,11 @@ class SearchController extends FOSRestController
         $search_provider = $this->get('acts.camdram.search_provider');
 
         $limit = $request->get('limit', 10);
+        $page = $request->get('page', 1);
+        $offset = ($page - 1) * $limit;
 
         $data = $search_provider->executeTextSearch(array('show', 'society', 'venue', 'person'),
-            $request->get('q'), $limit, array('rank' => 'DESC'));
+            $request->get('q'), $offset, $limit, array('rank' => 'DESC'));
 
         $view = $this->view($data, 200)
             ->setTemplateVar('result')

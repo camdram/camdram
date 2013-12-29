@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Event\CamdramEvents;
 use Acts\CamdramBundle\Event\EntityEvent;
+use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -117,7 +118,7 @@ abstract class AbstractRestController extends FOSRestController
     public function newAction()
     {
         $this->checkAuthenticated();
-        $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
+        $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', new ClassIdentity($this->class));
 
         $form = $this->getForm();
         return $this->view($form, 200)
@@ -132,7 +133,7 @@ abstract class AbstractRestController extends FOSRestController
     public function postAction(Request $request)
     {
         $this->checkAuthenticated();
-        $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
+        $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', new ClassIdentity($this->class));
 
         $form = $this->getForm();
         $form->bind($request);

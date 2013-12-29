@@ -2,18 +2,12 @@
 namespace Acts\CamdramSecurityBundle\Security\Handler;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Acts\CamdramSecurityBundle\Security\User\ExternalLoginUserProvider;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Router;
 use Acts\CamdramSecurityBundle\Security\NameUtils;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Symfony\Component\Security\Http\HttpUtils;
@@ -41,12 +35,19 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
      */
     private $userLinker;
 
-    public function __construct(SecurityContext $context, NameUtils $nameUtils, CamdramUserProvider $userProvider,
-                                UserLinker $userLinker, HttpUtils $httpUtils, $providerKey)
+    /** @var  \Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider */
+    private $camdramUserProvider;
+
+    /** @var \Acts\CamdramSecurityBundle\Security\User\ExternalLoginUserProvider */
+    private $externalUserProvider;
+
+    public function __construct(SecurityContext $context, NameUtils $nameUtils, CamdramUserProvider $camdramUserProvider,
+                                ExternalLoginUserProvider $externalUserProvider, UserLinker $userLinker, HttpUtils $httpUtils, $providerKey)
     {
         $this->securityContext = $context;
         $this->nameUtils = $nameUtils;
-        $this->userProvider = $userProvider;
+        $this->camdramUserProvider = $camdramUserProvider;
+        $this->externalUserProvider = $externalUserProvider;
         $this->userLinker = $userLinker;
         $this->setProviderKey($providerKey);
         parent::__construct($httpUtils, array());
@@ -69,16 +70,16 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 
             $camdram_token = $this->userLinker->findCamdramToken($token, $last_token);
             $external_token = $this->userLinker->findExternalToken($token, $last_token);
-//var_dump($camdram_token, $external_token);
 
             if ($camdram_token && $external_token && $camdram_token !== $external_token) {
                 $camdram_user = $camdram_token->getUser();
                 $external_user = $external_token->getUser();
 
                 if ($camdram_user instanceof ExternalUser) $camdram_user = $camdram_user->getUser();
-                $camdram_user = $this->userProvider->refreshUser($camdram_user);
+                $camdram_user = $this->camdramUserProvider->refreshUser($camdram_user);
+                $external_user = $this->externalUserProvider->refreshUser($external_user);
 
-                if ($camdram_user && $external_user && !$external_user->getUser()) {
+                if ($camdram_user && $external_user && $external_user->getUser() != $camdram_user) {
                     //We're attempted to link a Camdram account to an external account, or maybe someone else
                     //has tried to log in a separate browser window, so try to intelligently compare the names
                     if ($this->nameUtils->isSamePerson($camdram_user->getName(), $external_user->getName())
@@ -100,7 +101,6 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
                         && $external_user->getUser()->getId() == $camdram_user->getId()
                         && $camdram_token instanceof UsernamePasswordToken) {
                     $this->securityContext->setToken($camdram_token);
-                    $token = $camdram_token;
                 }
             }
 

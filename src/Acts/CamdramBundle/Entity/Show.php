@@ -203,7 +203,7 @@ class Show implements SearchableInterface
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ShowRef", inversedBy="show")
+     * @ORM\OneToOne(targetEntity="ShowRef")
      * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
      */
     private $primary_ref;
