@@ -131,9 +131,11 @@ class DefaultController extends Controller
         $external_user = $this->getUser();
         $user->setName($external_user->getName());
         $user->setEmail($external_user->getEmail());
+        $user->setPerson($external_user->getPerson());
         $user->setIsEmailVerified(true);
 
-        //Raven accounts don't give us a name, so need to decide whether to include it in the form or not
+        //Raven accounts don't give us a name but the others do,
+        //so need to decide whether to include a 'name' field in the form or not
         $type = new CreatePasswordType(!(bool)$user->getName());
         $form = $this->createForm($type, $user);
 

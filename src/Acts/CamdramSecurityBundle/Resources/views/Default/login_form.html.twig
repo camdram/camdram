@@ -1,14 +1,3 @@
-<ul class="inline-list">
-    <li>Log in using</li>
-    {% for service in services %}
-        <li><a href="{{ path('acts_external_login_entry', {service: service.name}) }}" class="icon-link">
-                <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service.name ~ '.png') }}" alt="{{ service.name | capitalize }}" title="{{ service.name | capitalize }}" width="19" height="19" />
-                {{ service.name | capitalize }}
-            </a></li>
-    {% endfor %}
-</ul>
-<p>Or, if you have already registered, use your e-mail address and password:</p>
-
 <form method="post" action="{{ path('acts_camdram_security_login_check') }}">
 
     <div class="row">

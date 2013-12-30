@@ -11,7 +11,7 @@ use Acts\CamdramBundle\Entity\User;
 * @ORM\Table(name="acts_external_users")
 * @ORM\Entity
 */
-class ExternalUser implements CamdramUserInterface
+class ExternalUser implements CamdramUserInterface, \Serializable
 {
     /**
     * @var integer
@@ -358,5 +358,18 @@ class ExternalUser implements CamdramUserInterface
 
     public function __toString() {
         return $this->getId().':'.$this->getName();
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+                $this->id, $this->name, $this->email, $this->service,
+                $this->remote_id, $this->username
+            ));
+    }
+    public function unserialize($serialized)
+    {
+        list($this->id, $this->name, $this->email, $this->service,
+            $this->remote_id, $this->username) = unserialize($serialized);
     }
 }

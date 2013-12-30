@@ -49,13 +49,12 @@ class PersonController extends AbstractRestController
         if (!$this->getUser()) {
             throw new AuthenticationException();
         }
-        if ($person->getUsers()->count() == 0 && $person->getExternalUsers()->count() == 0) {
-            $name_utils = $this->get('camdram.security.name_utils');
-            if ($name_utils->isSamePerson($this->getUser()->getName(), $person->getName())) {
-                $this->getUser()->setPerson($person);
-                $this->getDoctrine()->getManager()->flush();
-            }
+        $name_utils = $this->get('camdram.security.name_utils');
+        if (true || $name_utils->isSamePerson($this->getUser()->getName(), $person->getName())) {
+            $this->getUser()->setPerson($person);
+            $this->getDoctrine()->getManager()->flush();
         }
+
         return $this->redirect($this->generateUrl('get_person', array('identifier' => $identifier)));
     }
 
