@@ -64,12 +64,11 @@ class SupportController extends AbstractRestController
 
     /**
      * Action which returns a collection of issues.
-     *
      * Issues are grouped into those that are assigned to the logged in user,
      * unassigned issues, and issues assigned to other users.
      *
      */
-    public function cgetAction()
+    public function cgetAction(Request $request)
     {
         $this->checkAuthorised();
         $mine = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')->findBy(
