@@ -1,7 +1,7 @@
 parameters:
-#    acts_camdram_backend.example.class: Acts\CamdramBackendBundle\Example
+    acts_camdram_backend.database_tools.class: Acts\CamdramBackendBundle\Service\DatabaseTools
 
 services:
-#    acts_camdram_backend.example:
-#        class: %acts_camdram_backend.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    acts_camdram_backend.database_tools:
+        class: %acts_camdram_backend.database_tools.class%
+        arguments: [@doctrine.orm.entity_manager]

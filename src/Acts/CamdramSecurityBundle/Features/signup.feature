@@ -1,9 +1,9 @@
 Feature: Signing up for a Camdram account
-  @cleanUsers @reset
   In order perform non-readonly actions on Camdram
   I need to be able to create a user account
 
 Scenario: I successfully sign up for an account
+  @cleanUsers
   Given I am on "/create-account"
   And I fill in the following:
       | Name                                          | New User             |
@@ -21,6 +21,7 @@ Scenario: I successfully sign up for an account
   Then I should see "New User" in the "#account-link" element
 
 Scenario: I fill out the form incorrectly
+  @cleanUsers
   Given I am on "/create-account"
   And I fill in the following:
     | Name                                          | New User             |
