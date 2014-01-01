@@ -5,10 +5,6 @@ Feature: Linking user accounts together
   Background:
     Given the user "John Smith" with the email "user1@camdram.net" and the password "password"
 
-  Scenario: Dump the homepage for testing purposes
-    When I go to the homepage
-    Then print last response
-
   Scenario: I log into Facebook after logging into a Camdram account
     Given I am logged in as "user1@camdram.net" with "password"
     When I log in using "Facebook" as "John Smith"
