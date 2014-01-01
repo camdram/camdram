@@ -58,9 +58,10 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
         $root_page->setSlug('infobase');
         $root_page->setTitle('infobase');
         $root_page->setParent($parent);
+        $dm->persist($root_page);
         // This magic number is based on inspection of the existing Camdram database.
         $this->add_child_nodes($dm, $em, 119, $root_page);
-        
+        $dm->flush();
     }
 
     /**
