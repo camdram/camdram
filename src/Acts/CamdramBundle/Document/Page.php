@@ -9,9 +9,8 @@ use Knp\Menu\NodeInterface;
 /**
  * @PHPCR\Document(referenceable=true)
  */
-class Page implements RouteReferrersReadInterface, NodeInterface
+class Page extends ContentTrait implements RouteReferrersReadInterface, NodeInterface
 {
-    use ContentTrait;
 
     /**
      * @PHPCR\Children()

@@ -2,13 +2,24 @@ parameters:
     database_driver:   pdo_mysql
     database_host:     localhost
     database_port:     ~
-    database_name:     camdram
-    database_user:     camdram
-    database_password: password
+    database_name_orm:     camdram
+    database_user_orm:     camdram
+    database_pass_orm:     password
+    database_name_odm:     camdram
+    database_user_odm:     camdram
+    database_pass_odm:     password
 
     test_database_name: camdram_test
     test_database_user: travis
     test_database_password: ~
+
+    # PHPCD-ODM Settings
+    phpcr_backend:
+        type: doctrinedbal
+        connection: odm
+    phpcr_workspace: default
+    phpcr_user: admin
+    phpcr_pass: admin
 
     # During development send emails from your own gmail address e.g.
     # your_username@gmail.com.
