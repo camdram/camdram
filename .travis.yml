@@ -10,9 +10,9 @@ before_script:
   - composer install
   - mysql -e 'CREATE DATABASE camdram_test;'
   - php app/console doctrine:schema:update --force --env=test
-  - php app/console doctrine:phpcr:init
-  - php app/console doctrine:phpcr:repository:init
-  - php app/console doctrine:phpcr:fixtures:load -n
+  - php app/console doctrine:phpcr:init --env=test
+  - php app/console doctrine:phpcr:repository:init --env=test
+  - php app/console doctrine:phpcr:fixtures:load --env=test -n
 
 script:
     - ./runtests
