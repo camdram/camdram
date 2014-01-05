@@ -117,7 +117,7 @@ class UserContext extends BehatContext implements KernelAwareInterface
      */
     public function login($email, $password)
     {
-        $this->getMinkContext()->visit('/login');
+        $this->getMinkContext()->visit('/auth/login');
         $this->getMinkContext()->fillField('form_email', $email);
         $this->getMinkContext()->fillField('form_password', $password);
         $this->getMinkContext()->pressButton('login_button');

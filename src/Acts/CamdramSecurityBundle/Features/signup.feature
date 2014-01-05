@@ -4,7 +4,7 @@ Feature: Signing up for a Camdram account
 
 Scenario: I successfully sign up for an account
   @cleanUsers
-  Given I am on "/create-account"
+  Given I am on "/auth/create-account"
   And I fill in the following:
       | Name                                          | New User             |
       | acts_camdrambundle_usertype_email             | new.user@camdram.net |
@@ -22,7 +22,7 @@ Scenario: I successfully sign up for an account
 
 Scenario: I fill out the form incorrectly
   @cleanUsers
-  Given I am on "/create-account"
+  Given I am on "/auth/create-account"
   And I fill in the following:
     | Name                                          | New User             |
     | acts_camdrambundle_usertype_email             | new.user@camdram.net |
@@ -31,5 +31,5 @@ Scenario: I fill out the form incorrectly
     | acts_camdrambundle_usertype_occupation        | No                   |
     | acts_camdrambundle_usertype_graduation        | 2012                 |
   And I press "Register"
-  Then I should be on "/create-account"
+  Then I should be on "/auth/create-account"
   And I should see a "#acts_camdrambundle_usertype_password_password.error" element
