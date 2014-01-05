@@ -5,13 +5,18 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\CamdramBundle\Event\CamdramEvents;
 use Acts\CamdramBundle\Event\EntityEvent;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ODM\PHPCR\Mapping\Annotations\PreUpdate;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Gedmo\Sluggable\Util as Sluggable;
 
 /**
  * Class AbstractRestController
@@ -108,6 +113,7 @@ abstract class AbstractRestController extends FOSRestController
      * The Type objects are defined in src\CamdramBundle\Form\Type, which define what a form looks like for each class,
      * including validation rules.
      *
+     * @param null $entity
      * @return Symfony\Component\Form\AbstractType
      */
     abstract protected function getForm($entity = null);
@@ -261,8 +267,33 @@ abstract class AbstractRestController extends FOSRestController
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
             ->setTemplateVar($this->type)
         ;
-
         return $view;
+    }
+
+    /**
+     * Action called by Camdram v1 which triggers creating fields only used by v1, e.g. the slug
+     *
+     * @param $id
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function upgradeAction($id)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getRepository()->findOneById($id);
+        if (!$entity) {
+            throw new NotFoundHttpException('Not found');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $entity->setSlug(Sluggable\Urlizer::urlize($entity->getName(), '-'));
+        $changeset = array();
+        $this->getDoctrine()->getManager()->getEventManager()->dispatchEvent('preUpdate', new PreUpdateEventArgs($entity, $this->getDoctrine()->getManager(), $changeset));
+        $this->preSave($entity);
+        $em->flush();
+
+        $this->getDoctrine()->getManager()->getEventManager()->dispatchEvent('postUpdate', new LifecycleEventArgs($entity, $this->getDoctrine()->getManager()));
+
+        return $this->view(array('success' => true), 200);
     }
 
 }
