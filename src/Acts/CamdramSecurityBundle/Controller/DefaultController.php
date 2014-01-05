@@ -171,7 +171,7 @@ class DefaultController extends Controller
 
     public function linkUserAction(Request $request)
     {
-        $link_token = $this->getRequest()->getSession()->get(AuthenticationSuccessHandler::NEW_TOKEN);
+        $link_token = $request->getSession()->get(AuthenticationSuccessHandler::NEW_TOKEN);
         if (!$link_token) {
             return $this->redirect($this->generateUrl('acts_camdram_homepage'));
         }
