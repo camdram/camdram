@@ -63,15 +63,20 @@ class SocietyController extends AbstractRestController
      */
     public function getShowsAction($identifier)
     {
-        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
         $now = $this->get('acts.time_service')->getCurrentTime();
-        $shows = $show_repo->getUpcomingBySociety($now, $this->getEntity($identifier));
+        $performances = $performance_repo->getUpcomingBySociety($now, $this->getEntity($identifier));
 
         $diary = $this->get('acts.diary.factory')->createDiary();
 
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromShows($shows);
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
         $diary->addEvents($events);
 
-        return $diary;
+        $view = $this->view($diary, 200)
+            ->setTemplateVar('diary')
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':shows.html.twig')
+        ;
+
+        return $view;
     }
 }

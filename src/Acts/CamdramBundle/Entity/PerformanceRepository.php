@@ -60,11 +60,35 @@ class PerformanceRepository extends EntityRepository
         return $count;
     }
 
+    public function getUpcomingBySociety(\DateTime $now, Society $society)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->join('p.show', 's')
+            ->leftjoin('s.venue', 'v')
+            ->addSelect('s')
+            ->addSelect('v')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andWhere('p.end_date > :now')
+            ->andWhere('s.society = :society')
+            ->orderBy('p.start_date', 'ASC')
+            ->setParameter('society', $society)
+            ->setParameter('now', $now)
+            ->getQuery();
+        return $query->getResult();
+    }
+
     public function getUpcomingByVenue(\DateTime $now, Venue $venue)
     {
         $query = $this->createQueryBuilder('p')
-            ->where('p.end_date > :now')
-            ->andWhere('p.venue = :venue')
+            ->join('p.show', 's')
+            ->join('s.venue', 'v')
+            ->addSelect('s')
+            ->addSelect('v')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andWhere('p.end_date > :now')
+            ->andWhere('s.venue = :venue')
             ->orderBy('p.start_date', 'ASC')
             ->setParameter('venue', $venue)
             ->setParameter('now', $now)
