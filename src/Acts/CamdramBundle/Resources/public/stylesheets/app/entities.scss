@@ -7,10 +7,7 @@ $include-html-classes: false;
 }
 
 #show-vacancies {
-  background: #ffff00;
-  margin:0 emCalc(-15);
-  padding:emCalc(15) emCalc(30);
-  width:auto;
+  @include panel(rgb(255,240,153), 1em 2em, false);
 }
 
 .admin-panel {
