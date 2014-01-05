@@ -32,14 +32,14 @@ class Support
     /**
      * @var string
      *
-     * @ORM\Column(name="from", type="string", nullable=false)
+     * @ORM\Column(name="`from`", type="string", nullable=false)
      */
     private $from;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="to", type="string", nullable=false)
+     * @ORM\Column(name="`to`", type="string", nullable=false)
      */
     private $to;
 
@@ -311,12 +311,12 @@ class Support
     /**
      * Set date_time
      *
-     * @param \DateTime $dateTime
      * @return Support
+     * @ORM\PrePersist
      */
-    public function setDateTime($dateTime)
+    public function setDateTime()
     {
-        $this->date_time = $dateTime;
+        $this->date_time = new \DateTime();
     
         return $this;
     }

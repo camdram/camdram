@@ -42,12 +42,31 @@
         {{ show_issue.email(issue) }}
 <div class="row">
     <div class="large-12 columns">
-        <h4>Previous Emails</h4>
+        <h4>Post reply to this issue</h4>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        
+        {{ form_row(form.to, { 'attr' : {'multiple' : 'multiple'} }) }}
+        {{ form_row(form.cc, { 'attr' : {'multiple' : 'multiple' } }) }}
+        {{ form_row(form.bcc, { 'attr' : {'multiple' : 'multiple' } }) }}
+        {{ form_row(form.subject) }}
+        {{ form_row(form.body, { 'label' : 'Message' }) }}
+
+        {{ form_row(form.send, { 'label' : 'Send' }) }}
+        {{ form_end(form) }}
     </div>
 </div>
-        {% for child in issue.children %}
-            {{ show_issue.email(child) }}
-        {% endfor %}
+<div class="row">
+    <div class="large-12 columns">
+        <h4>Previous Emails</h4>
+        {%- if issue.children is empty -%}
+            There are no previous emails associated with this issue.</div>
+        {%- endif -%}
+    </div>
+</div>
+    {% for child in issue.children %}
+        {{ show_issue.email(child) }}
+    {% endfor %}
 <div class="row">
     <div class="large-12 columns">
         <a href="{{ path('get_issues') }}" class="button small"><i class="fa fa-arrow-left"></i> Back to issue list</a>

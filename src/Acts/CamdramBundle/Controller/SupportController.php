@@ -2,11 +2,15 @@
  
 namespace Acts\CamdramBundle\Controller;
  
+use Symfony\Component\HttpFoundation\Request;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations\Post;
 
 use Doctrine\Common\Collections\Criteria;
  
+use Acts\CamdramBundle\Form\Type\SupportType;
 use Acts\CamdramBundle\Entity\Support;
 
 /**
@@ -92,6 +96,32 @@ class SupportController extends AbstractRestController
     }
 
     /**
+     * @param $identifier
+     * @Post("/issues/{identifier}/reply")
+     */
+    public function postReplyAction(Request $request, $identifier)
+    {
+        $reply = new Support();
+        $form = $this->createForm(new SupportType(), $reply);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $from = addslashes(htmlspecialchars($this->getUser()->getName() . " <support-$identifier@camdram.net>"));
+            $reply->setFrom($from);
+            $reply->setTo(htmlspecialchars($reply->getTo()));
+            $reply->setCc(htmlspecialchars($reply->getCc()));
+            $reply->setSubject(htmlspecialchars($reply->getSubject()));
+            $reply->setBody(str_replace(chr(13), "", $reply->getBody()));
+            $reply->setSupportId(intval($identifier));
+            $em->persist($reply);
+            $em->flush();
+            // TODO send the actual email.
+        }
+        return $this->redirect($this->generateUrl('get_issue',
+                    array('identifier' => $identifier)));
+    }
+
+    /**
      * Action for pages that represent a single issue.
      *
      */
@@ -127,12 +157,20 @@ class SupportController extends AbstractRestController
             $em->persist($issue);
             $em->flush();
         }
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
-        $view = $this->view($issue, 200)
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
-            ->setTemplateVar('issue')
-        ;
 
+        $reply = new Support();
+        $reply->setTo(htmlspecialchars_decode($issue->getFrom()));
+        $reply->setSubject('Re: ' . $issue->getSubject());
+        $reply->setBody("\n\n\n--\nSent by " . $this->getUser()->getName() . " on behalf of camdram.net websupport\nFor further correspondence relating to this email, contact support-" . $issue->getId() . "@camdram.net\nFor new enquries, contact websupport@camdram.net."
+            );
+        $form = $this->createForm(new SupportType(), $reply, array(
+            'action' => $this->generateUrl('post_issue_reply', array('identifier' => $identifier))));
+
+        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
+        $view = $this->view(array('issue' => $issue, 
+                                  'form' => $form->createView()), 200)
+                  ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
+        ;
         return $view;
     }
     
