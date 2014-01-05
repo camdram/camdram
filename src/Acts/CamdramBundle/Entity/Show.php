@@ -1221,7 +1221,7 @@ class Show implements SearchableInterface
     public function getActiveApplications()
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('deadline_date', new \DateTime()));
+            ->where(Criteria::expr()->gte('deadlineDate', new \DateTime()));
 
         return $this->applications->matching($criteria);
     }

@@ -67,7 +67,7 @@ class Application
      *
      * @ORM\Column(name="deadlinedate", type="date", nullable=false)
      */
-    private $deadline_date;
+    private $deadlineDate;
 
     /**
      * @var string
@@ -171,7 +171,7 @@ class Application
      */
     public function setDeadlineDate($deadlineDate)
     {
-        $this->deadline_date = $deadlineDate;
+        $this->deadlineDate = $deadlineDate;
     
         return $this;
     }
@@ -183,7 +183,7 @@ class Application
      */
     public function getDeadlineDate()
     {
-        return $this->deadline_date;
+        return $this->deadlineDate;
     }
 
     /**
