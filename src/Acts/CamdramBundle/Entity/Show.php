@@ -1034,7 +1034,7 @@ class Show implements SearchableInterface
     /**
      * Get techie_adverts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getActiveTechieAdverts()
     {
@@ -1228,9 +1228,9 @@ class Show implements SearchableInterface
 
     public function hasVacancies()
     {
-        return count($this->getTechieAdverts()) > 0
+        return count($this->getActiveTechieAdverts()) > 0
                 || count($this->getAuditions()) > 0
-                || count($this->getApplications()) > 0;
+                || count($this->getActiveApplications()) > 0;
     }
 
     /**

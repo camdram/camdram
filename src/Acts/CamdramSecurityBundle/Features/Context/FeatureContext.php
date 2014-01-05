@@ -5,13 +5,15 @@ namespace Acts\CamdramSecurityBundle\Features\Context;
 use Acts\CamdramBackendBundle\DataFixtures\ORM\AccessControlEntryFixtures;
 use Acts\CamdramBackendBundle\DataFixtures\ORM\ShowFixtures;
 use Acts\CamdramBackendBundle\DataFixtures\ORM\UserFixtures;
-use Acts\CamdramBackendBundle\Features\Context\CamdramContext;
+use Acts\CamdramBackendBundle\Features\Context\SymfonyContext;
+use Acts\CamdramBackendBundle\Features\Context\UserContext;
+use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Event\ScenarioEvent;
+use Behat\MinkExtension\Context\MinkContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 
-use Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
+use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
@@ -25,45 +27,20 @@ use Behat\Gherkin\Node\PyStringNode,
 /**
  * Feature context.
  */
-class FeatureContext extends CamdramContext
+class FeatureContext extends BehatContext
 {
-    private $external_login_data = array(
-        'facebook' => array('name' => 'Test Facebook User', 'username' => 'test.facebook.user',
-            'id' => 1234, 'email' => 'test@facebook.com', 'picture' => 'http://test.com/facebook-profile-picture.png'),
-        'google' => array('name' => 'Test Google User', 'username' => 'test.google.user',
-            'id' => 5678, 'email' => 'test@gmail.com', 'picture' => 'http://test.com/google-profile-picture.png'),
-        'raven' => array('name' => null, 'username' => 'abc123', 'id' => null, 'email' => 'abc123@cam.ac.uk', 'picture' => null),
-    );
-
-    /**
-     * @BeforeScenario @cleanUsers
-     */
-    public function cleanUsers(ScenarioEvent $event)
-    {
-        $fixtures = array(new UserFixtures());
-        $this->truncateTable('ActsCamdramSecurityBundle:ExternalUser');
-        $this->truncateTable('ActsCamdramBundle:User');
-        $this->purgeDatabase($fixtures, true);
+    public function __construct(array $params) {
+        $this->useContext('mink', new MinkContext());
+        $this->useContext('users', new UserContext());
+        $this->useContext('symfony', new SymfonyContext());
     }
 
-
     /**
-     * @Given /^I am logged in using "([^"]*)"$/
-     * @When /^I log in using "([^"]*)"$/
+     * @return \Behat\MinkExtension\Context\MinkContext
      */
-    public function iAmLoggedInUsing($service)
+    private function getMinkContext()
     {
-        $service = strtolower($service);
-        $this->visit('/extauth/redirect/'.$service);
-        $data = $this->external_login_data[$service];
-
-        $this->fillField('ID', $data['id']);
-        $this->fillField('Username', $data['username']);
-        $this->fillField('Name', $data['name']);
-        $this->fillField('Email', $data['email']);
-        $this->fillField('picture', $data['picture']);
-
-        $this->pressButton('Submit');
+        return $this->getMainContext()->getSubcontext('mink');
     }
 
 }

@@ -57,34 +57,6 @@ class ShowRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getUpcomingByVenue(\DateTime $now, Venue $venue)
-    {
-        $query = $this->createQueryBuilder('s')
-            ->where('s.end_at > CURRENT_TIMESTAMP()')
-            ->andWhere('s.venue = :venue')
-            ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
-            ->orderBy('s.start_at', 'ASC')
-            ->setParameter('venue', $venue)
-            ->setParameter('now', $now)
-            ->getQuery();
-        return $query->getResult();
-    }
-
-    public function getUpcomingBySociety(\DateTime $now, Society $society)
-    {
-        $query = $this->createQueryBuilder('s')
-            ->where('s.end_at > :now')
-            ->andWhere('s.society = :society')
-            ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
-            ->orderBy('s.start_at', 'ASC')
-            ->setParameter('society', $society)
-            ->setParameter('now', $now)
-            ->getQuery();
-        return $query->getResult();
-    }
-
     public function getUpcomingByPerson(\DateTime $now, Person $person)
     {
         $query = $this->createQueryBuilder('s')

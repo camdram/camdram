@@ -50,85 +50,6 @@ class Version20131117013449 extends AbstractMigration
         $this->addSql("ALTER TABLE acts_shows ADD start_at DATETIME DEFAULT NULL, ADD end_at DATETIME DEFAULT NULL");
         $this->addSql("CREATE TABLE acts_time_period_groups (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, long_name VARCHAR(255) NOT NULL, start_at DATETIME NOT NULL, end_at DATETIME NOT NULL, slug VARCHAR(128) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
 
-        $this->addSql("CREATE FUNCTION `slugify`(dirty_string varchar(200), id INT) RETURNS varchar(200) CHARSET utf8
-                  DETERMINISTIC
-              BEGIN
-                  DECLARE x, y , z, i Int;
-                  Declare temp_string, new_string VarChar(200) CHARSET utf8;
-                  Declare is_allowed Bool;
-                  Declare c, check_char VarChar(1);
-
-                  set temp_string = LOWER(dirty_string);
-
-                  Set temp_string = replace(temp_string, '&', ' and ');
-
-                  Select temp_string Regexp('[^a-z0-9\-]+') into x;
-                  If x = 1 then
-                      set z = 1;
-                      While z <= Char_length(temp_string) Do
-                          Set c = Substring(temp_string, z, 1);
-                          Set is_allowed = False;
-                          If !((ascii(c) = 45) or (ascii(c) >= 48 and ascii(c) <= 57) or (ascii(c) >= 97 and ascii(c) <= 122)) Then
-                              Set temp_string = Replace(temp_string, c, '-');
-                          End If;
-                          set z = z + 1;
-                      End While;
-                  End If;
-
-                  Select temp_string Regexp(\"^-|-$|'\") into x;
-                  If x = 1 Then
-                      Set temp_string = Replace(temp_string, \"'\", '');
-                      Set z = Char_length(temp_string);
-                      Set y = Char_length(temp_string);
-                      Dash_check: While z > 1 Do
-                          If Strcmp(SubString(temp_string, -1, 1), '-') = 0 Then
-                              Set temp_string = Substring(temp_string,1, y-1);
-                              Set y = y - 1;
-                          Else
-                              Leave Dash_check;
-                          End If;
-                          Set z = z - 1;
-                      End While;
-                  End If;
-
-                  Repeat
-                      Select temp_string Regexp(\"--\") into x;
-                      If x = 1 Then
-                          Set temp_string = Replace(temp_string, \"--\", \"-\");
-                      End If;
-                  Until x <> 1 End Repeat;
-
-                  If LOCATE('-', temp_string) = 1 Then
-                      Set temp_string = SUBSTRING(temp_string, 2);
-                  End If;
-
-                  SET temp_string = CONCAT(temp_string, '-', SUBSTR(UUID(),1,5));
-
-                  Return temp_string;
-              END
-              ");
-
-
-        $this->addSql("CREATE TRIGGER `shows_insert` BEFORE INSERT ON `acts_shows`
-               FOR EACH ROW BEGIN
-                     IF NOT NEW.id AND NEW.slug IS NULL THEN
-                         SET NEW.slug = slugify(NEW.title, NEW.id);
-                     END IF;
-              END");
-
-        $this->addSql("CREATE TRIGGER `people_insert` BEFORE INSERT ON `acts_people_data`
-               FOR EACH ROW BEGIN
-                         IF NOT NEW.id AND NEW.slug IS NULL THEN
-                               SET NEW.slug = slugify(NEW.name, NEW.id);
-                         END IF;
-                  END");
-
-        $this->addSql("CREATE TRIGGER `societies_insert` BEFORE INSERT ON `acts_societies`
-               FOR EACH ROW BEGIN
-                  IF NOT NEW.id AND NEW.slug IS NULL THEN
-                       SET NEW.slug = slugify(NEW.name, NEW.id);
-                  END IF;
-               END");
     }
 
     public function down(Schema $schema)
@@ -166,11 +87,6 @@ class Version20131117013449 extends AbstractMigration
         $this->addSql("ALTER TABLE acts_users DROP is_email_verified, DROP profile_picture_url");
         $this->addSql("ALTER TABLE acts_time_periods DROP FOREIGN KEY FK_51B4603BFE54D947");
         $this->addSql("DROP TABLE acts_time_period_groups");
-
-        $this->addSql("DROP TRIGGER IF EXISTS `people_insert`");
-        $this->addSql("DROP TRIGGER IF EXISTS `shows_insert`");
-        $this->addSql("DROP TRIGGER IF EXISTS `societies_insert`");
-        $this->addSql("DROP FUNCTION `slugify`");
 
         $this->addSql("DROP TABLE acts_time_periods");
         $this->addSql("ALTER TABLE acts_shows DROP start_at, DROP end_at");

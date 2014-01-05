@@ -17,7 +17,7 @@
 {% block body %}
 
 <div class="row">
-    <div class="twelve columns panel">
+    <div class="large-12 columns panel">
          {% if society.image %}
              <div class="row">
                  <div class="three columns"><a href="{{ image_url(society.image, 1024, 768) }}" class="fancybox">{{ render_image(society.image, 205, 200) }}</a></div>
@@ -33,9 +33,10 @@
     </div><!-- twelve columns panel -->
 </div><!-- row -->
 <div class="row">
-    <h3>Shows</h3>
-    {% render url('get_society_shows', {identifier: society.slug}) %}
-</div><!-- row -->
+    <div class="large-12 columns">
+        {{ render(url('get_society_shows', {identifier: society.slug})) }}
+    </div>
+</div>
 <br/>
 
 {% endblock %}

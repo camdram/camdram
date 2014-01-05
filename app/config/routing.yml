@@ -16,7 +16,8 @@ acts_camdram:
 
 acts_camdram_security:
     resource: "@ActsCamdramSecurityBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /auth
+    schemes:  [https]
 
 # Internal routing configuration to handle ESI
 #_internal:

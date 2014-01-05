@@ -34,37 +34,14 @@
     <li>
         <a href="{{ path('acts_camdram_security_create_account') }}">Create an account</a>
     </li>
-    <li id="login-link" class="dropdown-link">
+    <li id="login-link">
 
-        <a href="#">Log in</a>
+        <a href="{{ path('acts_camdram_security_login') }}">Log in </a>
             {% for service in services %}
                <a href="{{ path('acts_external_login_entry', {service: service.name}) }}" class="icon-link">
                     <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service.name ~ '.png') }}" alt="{{ service.name | capitalize }}" title="{{ service.name | capitalize }}" width="19" height="19" />
                </a>
             {% endfor %}
-
-        <div id="login-dropdown" class="topbar-dropdown">
-            <form action="{{ path('acts_camdram_security_login_check') }}" method="post">
-                <div class="row">
-                    <div class="small-3 columns"><label for="login_email">Email</label></div>
-                    <div class="small-9 columns"><input type="text" name="email" id="login_email" required /></div>
-                </div>
-                <div class="row">
-                    <div class="small-3 columns"><label for="login_password">Password</label></div>
-                    <div class="small-9 columns"><input type="password" name="password" id="login_password" required /></div>
-                </div>
-                <div class="row">
-                    <div class="small-8 columns">
-                        <label><input type="checkbox" name="_remember_me" id="login_remember_me"/>
-                        Remember me</label>
-                    </div>
-                    <div class="small-4 columns text-right">
-                        <input type="submit" id="header_login_button" class="button small" value="Log in" />
-                    </div>
-                </div>
-            </form>
-
-        </div>
     </li>
 {% endif %}
 

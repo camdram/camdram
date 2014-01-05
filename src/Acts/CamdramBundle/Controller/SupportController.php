@@ -2,12 +2,11 @@
  
 namespace Acts\CamdramBundle\Controller;
  
-use Symfony\Component\HttpFoundation\Request;
-
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Post;
 
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Criteria;
  
 use Acts\CamdramBundle\Form\Type\SupportType;
@@ -73,7 +72,7 @@ class SupportController extends AbstractRestController
      * unassigned issues, and issues assigned to other users.
      *
      */
-    public function cgetAction()
+    public function cgetAction(Request $request)
     {
         $this->checkAuthorised();
         $mine = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')->findBy(
@@ -169,8 +168,9 @@ class SupportController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
         $view = $this->view(array('issue' => $issue, 
                                   'form' => $form->createView()), 200)
-                  ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
         ;
+
         return $view;
     }
     
