@@ -9,7 +9,7 @@
               'about-us': {'text': 'About Us'},
               'development': {'text': 'Development', 'path': path('acts_camdram_development')},
               'api': {'text': 'API', 'path': path('acts_camdram_api_homepage')},
-              'contact-us': {'text': 'Contact Us'},
+              'contact-us': {'text': 'Contact Us', 'path': path('acts_camdram_contact_us')},
           }, current_id: current_navigation_id} %}
       </ul>
 
@@ -107,7 +107,7 @@
         <div class="large-4 columns">
             <h5>About</h5>
             <a href="#">Privacy policy</a><br/>
-            <a href="mailto:websupport@camdram.net">Contact Us</a><br/>
+            <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a><br/>
         </div>
     </div>
 

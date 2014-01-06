@@ -43,4 +43,17 @@ class EmailDispatcher
         ;
         $this->mailer->send($message);
     }
+
+    public function sendContactUsEmail($from, $subject, $message)
+    {
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($from)
+            ->setReplyTo($from)
+            ->setTo($this->from_address)
+            ->setBody($message)
+        ;
+        $this->mailer->send($message);
+    }
 }
