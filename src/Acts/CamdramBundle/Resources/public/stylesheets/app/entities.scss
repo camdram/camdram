@@ -22,3 +22,13 @@ $include-html-classes: false;
 .approve-panel {
   @include panel(rgb(255,255,100), 1em, false);
 }
+
+.news-link {
+  @include panel(rgb(230,230,230), 1em, false);
+  margin-bottom:10px;
+  font-size:0.8em;
+
+  h6 {
+    margin:0;
+  }
+}

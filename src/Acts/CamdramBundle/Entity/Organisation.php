@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Organisation
  *
  * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="OrganisationRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({0 = "Society", 1 = "Venue"})
@@ -333,6 +333,30 @@ abstract class Organisation implements SearchableInterface
     public function getTwitterId()
     {
         return $this->twitter_id;
+    }
+
+    public function setSocialId($service, $id)
+    {
+        switch ($service) {
+            case 'facebook': $this->setFacebookId($id); break;
+            case 'twitter': $this->setTwitterId($id); break;
+        }
+    }
+
+    public function getSocialId($service)
+    {
+        switch ($service) {
+            case 'facebook': return $this->getFacebookId();
+            case 'twitter': return $this->getTwitterId();
+        }
+    }
+
+    public function getSocialUrl($service)
+    {
+        switch ($service) {
+            case 'facebook': return 'http://www.facebook.com/'.$this->getFacebookId();
+            case 'twitter': return 'twitter.com/intent/user?user_id='.$this->getTwitterId();
+        }
     }
 
     /**
