@@ -104,17 +104,48 @@ class SupportController extends AbstractRestController
         $form = $this->createForm(new SupportType(), $reply);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            // Store the reply in the database.
             $em = $this->getDoctrine()->getManager();
-            $from = addslashes(htmlspecialchars($this->getUser()->getName() . " <support-$identifier@camdram.net>"));
+            $from_address = "support-$identifier@camdram.net";
+            $from = $this->getUser()->getName() . " <$from_address>";
             $reply->setFrom($from);
-            $reply->setTo(htmlspecialchars($reply->getTo()));
-            $reply->setCc(htmlspecialchars($reply->getCc()));
-            $reply->setSubject(htmlspecialchars($reply->getSubject()));
-            $reply->setBody(str_replace(chr(13), "", $reply->getBody()));
-            $reply->setSupportId(intval($identifier));
+            $reply->setParent($this->getEntity($identifier));
+            $reply->setState('assigned');
             $em->persist($reply);
             $em->flush();
-            // TODO send the actual email.
+            // Send the actual email.
+            $message = \Swift_Message::newInstance()
+                ->setSubject($reply->getSubject())
+                ->setFrom(array($from_address => $this->getUser()->getName()))
+                ->setBody($reply->getBody());
+            $emails = imap_rfc822_parse_adrlist($reply->getTo(), '');
+            foreach ($emails as $id => $val) {
+                if ($val->personal != '') {
+                    $message->addTo($val->mailbox . "@" . $val->host, $val->personal);
+                }
+                else {
+                    $message->addTo($val->mailbox . "@" . $val->host);
+                }
+            }
+            $emails = imap_rfc822_parse_adrlist($reply->getCc(), '');
+            foreach ($emails as $id => $val) {
+                if ($val->personal != '') {
+                    $message->addCc($val->mailbox . "@" . $val->host, $val->personal);
+                }
+                else {
+                    $message->addCc($val->mailbox . "@" . $val->host);
+                }
+            }
+            $emails = imap_rfc822_parse_adrlist($form->get('bcc')->getData(), '');
+            foreach ($emails as $id => $val) {
+                if ($val->personal != '') {
+                    $message->addBcc($val->mailbox . "@" . $val->host, $val->personal);
+                }
+                else {
+                    $message->addBcc($val->mailbox . "@" . $val->host);
+                }
+            }
+            $this->get('mailer')->send($message);
         }
         return $this->redirect($this->generateUrl('get_issue',
                     array('identifier' => $identifier)));
@@ -130,7 +161,12 @@ class SupportController extends AbstractRestController
         $issue = $this->getEntity($identifier);
         if ($this->getRequest()->query->has('action')) {
             $action = $this->getRequest()->query->get('action');
-            $user_is_owner =  $issue->getOwner()->getId() == $this->getUser()->getId() ? true : false;
+            if ($issue->getOwner() != null && $issue->getOwner()->getId() == $this->getUser()->getId()) {
+                $user_is_owner =  true;
+            }
+            else {
+                $user_is_owner = false;
+            }
             // Assign or reassign an issue.
             if ($action == 'assign') {
                 $issue->setOwner($this->getUser());
