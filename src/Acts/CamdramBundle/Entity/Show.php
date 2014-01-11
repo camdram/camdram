@@ -151,7 +151,7 @@ class Show implements SearchableInterface
      *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
      * @Serializer\Exclude
-     * @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $society;
 
@@ -160,7 +160,7 @@ class Show implements SearchableInterface
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
      * @Serializer\Exclude
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $venue;
 
@@ -168,7 +168,7 @@ class Show implements SearchableInterface
      * @var integer
      *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $authorised_by;
 

@@ -51,18 +51,11 @@ class Role
     private $order;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="pid", type="integer", nullable=true)
-     */
-    private $person_id;
-
-    /**
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
      * @Exclude
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $show;
@@ -72,7 +65,7 @@ class Role
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="roles")
      * @Exclude
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="pid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $person;
@@ -178,29 +171,6 @@ class Role
     public function getOrder()
     {
         return $this->order;
-    }
-
-    /**
-     * Set person_id
-     *
-     * @param integer $personId
-     * @return Role
-     */
-    public function setPersonId($personId)
-    {
-        $this->person_id = $personId;
-    
-        return $this;
-    }
-
-    /**
-     * Get person_id
-     *
-     * @return integer 
-     */
-    public function getPersonId()
-    {
-        return $this->person_id;
     }
 
     /**

@@ -39,18 +39,11 @@ class Application
     private $show;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="socid", type="integer", nullable=true)
-     */
-    private $society_id;
-
-    /**
      * @var \Society
      *
      * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="socid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     private $society;
@@ -115,29 +108,6 @@ class Application
     public function getShowId()
     {
         return $this->show_id;
-    }
-
-    /**
-     * Set society_id
-     *
-     * @param integer $societyId
-     * @return Application
-     */
-    public function setSocietyId($societyId)
-    {
-        $this->society_id = $societyId;
-    
-        return $this;
-    }
-
-    /**
-     * Get society_id
-     *
-     * @return integer 
-     */
-    public function getSocietyId()
-    {
-        return $this->society_id;
     }
 
     /**

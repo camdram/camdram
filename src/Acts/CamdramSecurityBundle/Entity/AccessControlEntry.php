@@ -90,6 +90,13 @@ class AccessControlEntry
      */
     private $revoked_at;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="contact", type="boolean")
+     */
+    private $contact = 0;
+
 
     /**
      * Get id
@@ -306,5 +313,28 @@ class AccessControlEntry
     public function getEntityId()
     {
         return $this->entity_id;
+    }
+
+    /**
+     * Set contact
+     *
+     * @param boolean $contact
+     * @return AccessControlEntry
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+    
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return boolean 
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 }

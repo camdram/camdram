@@ -60,17 +60,10 @@ class Performance
     private $time;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="venid", type="integer", nullable=true)
-     */
-    private $venue_id;
-
-    /**
      * @var \Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $venue;
 
@@ -210,29 +203,6 @@ class Performance
     public function getTime()
     {
         return $this->time;
-    }
-
-    /**
-     * Set venue_id
-     *
-     * @param integer $venueId
-     * @return Performance
-     */
-    public function setVenueId($venueId)
-    {
-        $this->venue_id = $venueId;
-    
-        return $this;
-    }
-
-    /**
-     * Get venue_id
-     *
-     * @return integer 
-     */
-    public function getVenueId()
-    {
-        return $this->venue_id;
     }
 
     /**

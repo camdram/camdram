@@ -41,7 +41,7 @@ class Version20131117013449 extends AbstractMigration
         $this->addSql("DROP INDEX UNIQ_75B14F685F37A13B ON acts_access_tokens");
         $this->addSql("ALTER TABLE acts_access DROP FOREIGN KEY FK_2DAB5064C81B28E0");
         $this->addSql("ALTER TABLE acts_access DROP FOREIGN KEY FK_2DAB5064539B0606");
-        $this->addSql("ALTER TABLE acts_access DROP contact, CHANGE uid uid INT DEFAULT NULL, CHANGE type type VARCHAR(20) NOT NULL, CHANGE revokedate revokedate DATE DEFAULT NULL");
+        $this->addSql("ALTER TABLE acts_access CHANGE uid uid INT DEFAULT NULL, CHANGE type type VARCHAR(20) NOT NULL, CHANGE revokedate revokedate DATE DEFAULT NULL");
         $this->addSql("ALTER TABLE acts_access ADD CONSTRAINT FK_2DAB5064C81B28E0 FOREIGN KEY (revokeid) REFERENCES acts_users (id) ON DELETE SET NULL");
         $this->addSql("ALTER TABLE acts_access ADD CONSTRAINT FK_2DAB5064539B0606 FOREIGN KEY (uid) REFERENCES acts_users (id) ON DELETE CASCADE");
         $this->addSql("DROP INDEX UNIQ_1A3F91E75F37A13B ON acts_refresh_tokens");
@@ -60,7 +60,7 @@ class Version20131117013449 extends AbstractMigration
         $this->addSql("DROP TABLE acts_external_users");
         $this->addSql("ALTER TABLE acts_access DROP FOREIGN KEY FK_2DAB5064539B0606");
         $this->addSql("ALTER TABLE acts_access DROP FOREIGN KEY FK_2DAB5064C81B28E0");
-        $this->addSql("ALTER TABLE acts_access ADD contact TINYINT(1) NOT NULL, CHANGE uid uid INT NOT NULL, CHANGE type type VARCHAR(255) NOT NULL, CHANGE revokedate revokedate DATE NOT NULL");
+        $this->addSql("ALTER TABLE acts_access CHANGE uid uid INT NOT NULL, CHANGE type type VARCHAR(255) NOT NULL, CHANGE revokedate revokedate DATE NOT NULL");
         $this->addSql("ALTER TABLE acts_access ADD CONSTRAINT FK_2DAB5064539B0606 FOREIGN KEY (uid) REFERENCES acts_users (id)");
         $this->addSql("ALTER TABLE acts_access ADD CONSTRAINT FK_2DAB5064C81B28E0 FOREIGN KEY (revokeid) REFERENCES acts_users (id)");
         $this->addSql("CREATE UNIQUE INDEX UNIQ_75B14F685F37A13B ON acts_access_tokens (token)");
