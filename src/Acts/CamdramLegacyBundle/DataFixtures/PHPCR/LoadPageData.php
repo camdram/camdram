@@ -1,7 +1,5 @@
 <?php
-
-// src/Acme/BasicCmsBundle/DataFixtures/PHPCR/LoadPageData.php
-namespace Acts\CamdramBundle\DataFixtures\PHPCR;
+namespace Acts\CamdramLegacyBundle\DataFixtures\PHPCR;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -13,7 +11,7 @@ use PHPCR\Util\NodeHelper;
 
 use Gedmo\Sluggable\Util as Sluggable;
 
-use Acts\CamdramBundle\Entity\Page as Page;
+use Acts\CamdramLegacyBundle\Entity\Page as Page;
 use Acts\CamdramBundle\Document\Page as CmsPage;
 
 class LoadPageData implements FixtureInterface, ContainerAwareInterface
@@ -72,7 +70,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
      */    
     private function add_child_nodes($dm, $em, $parent_id, $parent)
     {
-        $pages = $em->createQuery('SELECT p FROM ActsCamdramBundle:Page p WHERE p.parent_id = :pid AND p.ghost = 0')
+        $pages = $em->createQuery('SELECT p FROM ActsCamdramLegacyBundle:Page p WHERE p.parent_id = :pid AND p.ghost = 0')
             ->setParameter('pid', $parent_id)
             ->getResult();
         foreach ($pages as $page) {

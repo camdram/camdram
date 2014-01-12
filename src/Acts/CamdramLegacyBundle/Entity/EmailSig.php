@@ -21,17 +21,10 @@ class EmailSig
      */
     private $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="uid", type="integer", nullable=false)
-     */
-    private $user_id;
-
    /**
-     * @var \User
+     * @var \Acts\CamdramBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
      * })
@@ -53,29 +46,6 @@ class EmailSig
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set user_id
-     *
-     * @param integer $userId
-     * @return EmailSig
-     */
-    public function setUserId($userId)
-    {
-        $this->user_id = $userId;
-    
-        return $this;
-    }
-
-    /**
-     * Get user_id
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
     }
 
     /**

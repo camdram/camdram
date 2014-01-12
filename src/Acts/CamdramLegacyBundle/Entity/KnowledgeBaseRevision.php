@@ -53,9 +53,9 @@ class KnowledgeBaseRevision
     private $user_id;
 
     /**
-     * @var \User
+     * @var \Acts\CamdramBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })

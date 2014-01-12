@@ -29,9 +29,9 @@ class Review
     private $show_id;
 
     /**
-     * @var \Show
+     * @var \Acts\CamdramBundle\Entity\Show
      *
-     * @ORM\ManyToOne(targetEntity="Show")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
      * })
@@ -53,16 +53,9 @@ class Review
     private $from;
 
     /**
-     * @var integer
+     * @var \Acts\CamdramBundle\Entity\User
      *
-     * @ORM\Column(name="uid", type="integer", nullable=false)
-     */
-    private $user_id;
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
      * })
@@ -155,29 +148,6 @@ class Review
     public function getFrom()
     {
         return $this->from;
-    }
-
-    /**
-     * Set user_id
-     *
-     * @param integer $userId
-     * @return Review
-     */
-    public function setUserId($userId)
-    {
-        $this->user_id = $userId;
-    
-        return $this;
-    }
-
-    /**
-     * Get user_id
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
     }
 
     /**
