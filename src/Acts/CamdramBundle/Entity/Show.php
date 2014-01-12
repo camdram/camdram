@@ -203,7 +203,7 @@ class Show implements SearchableInterface
     /**
      * @var integer
      *
-     * @ORM\OneToOne(targetEntity="ShowRef")
+     * @ORM\OneToOne(targetEntity="Acts\CamdramLegacyBundle\Entity\ShowRef")
      * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
      */
     private $primary_ref;

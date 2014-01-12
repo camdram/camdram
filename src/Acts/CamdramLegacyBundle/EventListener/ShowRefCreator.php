@@ -1,8 +1,8 @@
 <?php
-namespace Acts\CamdramBundle\EventListener;
+namespace Acts\CamdramLegacyBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramBundle\Entity\ShowRef;
+use Acts\CamdramLegacyBundle\Entity\ShowRef;
 use Acts\CamdramBundle\Event\EntityEvent;
 use Doctrine\ORM\EntityManager;
 

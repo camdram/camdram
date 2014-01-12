@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramLegacyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,7 +24,7 @@ class ShowRef
     /**
      * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="Show")
+     * @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\Show")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * })

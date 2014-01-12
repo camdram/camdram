@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramLegacyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

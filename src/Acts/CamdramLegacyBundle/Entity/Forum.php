@@ -1,16 +1,16 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramLegacyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Store
+ * Forum
  *
- * @ORM\Table(name="acts_stores")
+ * @ORM\Table(name="acts_forums")
  * @ORM\Entity
  */
-class Store
+class Forum
 {
     /**
      * @var integer
@@ -31,9 +31,16 @@ class Store
     /**
      * @var string
      *
-     * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
+     * @ORM\Column(name="description", type="text", nullable=false)
      */
-    private $short_name;
+    private $description;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orderid", type="integer", nullable=false)
+     */
+    private $order_id;
 
 
     /**
@@ -50,7 +57,7 @@ class Store
      * Set name
      *
      * @param string $name
-     * @return Store
+     * @return Forum
      */
     public function setName($name)
     {
@@ -70,25 +77,48 @@ class Store
     }
 
     /**
-     * Set short_name
+     * Set description
      *
-     * @param string $shortName
-     * @return Store
+     * @param string $description
+     * @return Forum
      */
-    public function setShortName($shortName)
+    public function setDescription($description)
     {
-        $this->short_name = $shortName;
+        $this->description = $description;
     
         return $this;
     }
 
     /**
-     * Get short_name
+     * Get description
      *
      * @return string 
      */
-    public function getShortName()
+    public function getDescription()
     {
-        return $this->short_name;
+        return $this->description;
+    }
+
+    /**
+     * Set order_id
+     *
+     * @param integer $orderId
+     * @return Forum
+     */
+    public function setOrderId($orderId)
+    {
+        $this->order_id = $orderId;
+    
+        return $this;
+    }
+
+    /**
+     * Get order_id
+     *
+     * @return integer 
+     */
+    public function getOrderId()
+    {
+        return $this->order_id;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramLegacyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * using the PHPCR. This class only defines 'getters' as a consequence.
 
  * @ORM\Table(name="acts_pages")
- * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PageRepository")
+ * @ORM\Entity(repositoryClass="Acts\CamdramLegacyBundle\Entity\PageRepository")
  */
 class Page
 {

@@ -1,16 +1,16 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramLegacyBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * IncludeText
+ * Store
  *
- * @ORM\Table(name="acts_includes")
+ * @ORM\Table(name="acts_stores")
  * @ORM\Entity
  */
-class IncludeText
+class Store
 {
     /**
      * @var integer
@@ -31,9 +31,9 @@ class IncludeText
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="text", nullable=false)
+     * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
      */
-    private $text;
+    private $short_name;
 
 
     /**
@@ -50,7 +50,7 @@ class IncludeText
      * Set name
      *
      * @param string $name
-     * @return IncludeText
+     * @return Store
      */
     public function setName($name)
     {
@@ -70,25 +70,25 @@ class IncludeText
     }
 
     /**
-     * Set text
+     * Set short_name
      *
-     * @param string $text
-     * @return IncludeText
+     * @param string $shortName
+     * @return Store
      */
-    public function setText($text)
+    public function setShortName($shortName)
     {
-        $this->text = $text;
+        $this->short_name = $shortName;
     
         return $this;
     }
 
     /**
-     * Get text
+     * Get short_name
      *
      * @return string 
      */
-    public function getText()
+    public function getShortName()
     {
-        return $this->text;
+        return $this->short_name;
     }
 }
