@@ -3,12 +3,14 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Performance
  *
  * @ORM\Table(name="acts_performances")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PerformanceRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Performance
 {
@@ -35,6 +37,7 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="startdate", type="date", nullable=false)
+     * @Serializer\Expose
      */
     private $start_date;
 
@@ -42,6 +45,7 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="enddate", type="date", nullable=false)
+     * @Serializer\Expose
      */
     private $end_date;
 
@@ -49,6 +53,7 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="excludedate", type="date", nullable=true)
+     * @Serializer\Expose
      */
     private $exclude_date;
 
@@ -56,6 +61,7 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="time", type="time", nullable=false)
+     * @Serializer\Expose
      */
     private $time;
 
@@ -71,6 +77,7 @@ class Performance
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $venue_name;
 

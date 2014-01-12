@@ -3,19 +3,19 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Society
  *
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SocietyRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Society extends Organisation
 {
 
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="society")
-     * @Exclude
      */
     private $shows;
 

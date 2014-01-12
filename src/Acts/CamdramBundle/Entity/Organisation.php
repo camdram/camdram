@@ -16,6 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({0 = "Society", 1 = "Venue"})
+ * @Serializer\ExclusionPolicy("all")
  */
 abstract class Organisation implements SearchableInterface
 {
@@ -26,6 +27,7 @@ abstract class Organisation implements SearchableInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Serializer\XmlAttribute
+     * @Serializer\Expose
      */
     private $id;
 
@@ -34,6 +36,7 @@ abstract class Organisation implements SearchableInterface
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Serializer\Expose
      */
     private $name;
 
@@ -41,6 +44,7 @@ abstract class Organisation implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Serializer\Expose
      */
     private $description;
 
@@ -55,6 +59,7 @@ abstract class Organisation implements SearchableInterface
      * @var int
      *
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
+     * @Serializer\Expose
      */
     private $facebook_id;
 
@@ -62,6 +67,7 @@ abstract class Organisation implements SearchableInterface
      * @var int
      *
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
+     * @Serializer\Expose
      */
     private $twitter_id;
 
@@ -70,6 +76,7 @@ abstract class Organisation implements SearchableInterface
      *
      * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
      * @Assert\NotBlank(groups={"new"})
+     * @Serializer\Expose
      */
     private $short_name;
 
@@ -77,6 +84,7 @@ abstract class Organisation implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="college", type="string", length=100, nullable=true)
+     * @Serializer\Expose
      */
     private $college;
 

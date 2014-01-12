@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Show implements SearchableInterface
 {
@@ -25,6 +26,7 @@ class Show implements SearchableInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Serializer\XmlAttribute
+     * @Serializer\Expose()
      */
     private $id;
 
@@ -33,6 +35,7 @@ class Show implements SearchableInterface
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Serializer\Expose()
      */
     private $name;
 
@@ -40,6 +43,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Serializer\Expose()
      */
     private $description;
 
@@ -82,6 +86,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $author;
 
@@ -89,6 +94,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="prices", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $prices = '';
 
@@ -96,7 +102,6 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="photourl", type="text", nullable=true)
-     * @Serializer\Exclude
      */
     private $photo_url = '';
 
@@ -104,6 +109,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $venue_name = '';
 
@@ -111,7 +117,6 @@ class Show implements SearchableInterface
      * @var \DateTime
      *
      * @ORM\Column(name="excludedate", type="date", length=255, nullable=true)
-     * @Serializer\Exclude
      */
     private $exclude_date;
 
@@ -119,6 +124,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="society", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $society_name = '';
 
@@ -126,7 +132,6 @@ class Show implements SearchableInterface
      * @var boolean
      *
      * @ORM\Column(name="techsend", type="boolean", nullable=false)
-     * @Serializer\Exclude
      */
     private $tech_send = false;
 
@@ -134,7 +139,6 @@ class Show implements SearchableInterface
      * @var boolean
      *
      * @ORM\Column(name="actorsend", type="boolean", nullable=false)
-     * @Serializer\Exclude
      */
     private $actor_send = false;
 
@@ -142,7 +146,6 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="audextra", type="text", nullable=true)
-     * @Serializer\Exclude
      */
     private $audextra;
 
@@ -150,7 +153,6 @@ class Show implements SearchableInterface
      * @var Society
      *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
-     * @Serializer\Exclude
      * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $society;
@@ -159,7 +161,6 @@ class Show implements SearchableInterface
      * @var Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
-     * @Serializer\Exclude
      * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $venue;
@@ -190,6 +191,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="category", type="string", length=255, nullable=false)
+     * @Serializer\Expose
      */
     private $category;
 
@@ -197,6 +199,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="bookingcode", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $booking_code;
 
@@ -240,7 +243,6 @@ class Show implements SearchableInterface
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
-     * @Serializer\Exclude
      */
     private $roles;
 
@@ -249,7 +251,7 @@ class Show implements SearchableInterface
      *
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_date" = "ASC"})
-     * @Serializer\Exclude
+     * @Serializer\Expose
      */
     private $performances;
 

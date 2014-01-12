@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation as Serializer;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Society
  *
  * @ORM\Entity(repositoryClass="VenueRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Venue extends Organisation
 {
@@ -18,6 +19,7 @@ class Venue extends Organisation
      * @var string
      *
      * @ORM\Column(name="address", type="text", nullable=true)
+     * @Serializer\Expose
      */
     private $address;
 
@@ -25,6 +27,7 @@ class Venue extends Organisation
      * @var float
      *
      * @ORM\Column(name="latitude", type="float", nullable=true)
+     * @Serializer\Expose
      */
     private $latitude;
 
@@ -32,12 +35,12 @@ class Venue extends Organisation
      * @var float
      *
      * @ORM\Column(name="longitude", type="float", nullable=true)
+     * @Serializer\Expose
      */
     private $longitude;
 
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="venue")
-     * @Exclude
      */
     private $shows;
 
