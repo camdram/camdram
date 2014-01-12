@@ -52,9 +52,17 @@ class PerformanceRepository extends EntityRepository
 
         $result = $qb->getQuery()->getResult();
         $count = 0;
+        $max_end = clone $end;
+        $max_end->modify('-1 day');
         foreach ($result as $p) {
-            $count += $p->getEndDate()->diff($p->getStartDate())->d + 1;
-            if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0) $count--;
+            $start_at = $p->getStartDate();
+            $end_at = $p->getEndDate();
+            if ($start_at < $start) $start_at = $start;
+            if ($end_at > $end) $end_at = $max_end;
+            
+            $count += $end_at->diff($start_at)->d + 1;
+            if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0
+                && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) $count--;
         }
 
         return $count;
