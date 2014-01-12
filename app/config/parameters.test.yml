@@ -30,8 +30,6 @@ parameters:
     mailer_delivery_address: example@example.com
     mailer_sender_address    : websupport@camdram.net
 
-    current_time:      "2001-02-27 12:30:07"
-
     locale:            en
     secret:            "default secret"
 

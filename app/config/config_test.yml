@@ -51,8 +51,5 @@ acts_camdram:
 acts_sphinx_real_time:
     enabled: false
 
-acts_time_mock:
-    time_override: "2001-02-27 12:30:07"
-
 acts_external_login:
     test: true

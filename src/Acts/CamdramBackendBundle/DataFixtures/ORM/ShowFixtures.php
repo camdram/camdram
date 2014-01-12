@@ -39,10 +39,10 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
         $file = __DIR__.'/../../Resources/data/shows.yml';
         $plays = Yaml::parse(file_get_contents($file));
         $max = count($plays)-1;
-        mt_srand(1423.343);
+        mt_srand(microtime(true));
 
-        $start_date = $this->getReference('start_group')->getStartAt();
-        $end_date = $this->getReference('end_group')->getEndAt();
+        $start_date = new \DateTime('-6 months');
+        $end_date = new \DateTime('+18 months');
         $diff = $end_date->diff($start_date, true);
         $total_weeks = $diff->days/7;
 
@@ -58,7 +58,7 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
         $this->society_ids = array_map(function($val) { return $val['id']; },
             $this->society_repo->createQueryBuilder('s')->select('s.id')->getQuery()->getArrayResult());
 
-        for ($i=0; $i<150; $i++) {
+        for ($i=0; $i<250; $i++) {
             $show = new Show;
             $play = $plays[mt_rand(0,$max)];
             $show->setName($play['name']);
