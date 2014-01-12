@@ -106,10 +106,10 @@ class Keyword
     /**
      * Set page
      *
-     * @param \Acts\CamdramBundle\Entity\Page $page
+     * @param \Acts\CamdramLegacyBundle\Entity\Page $page
      * @return Keyword
      */
-    public function setPage(\Acts\CamdramBundle\Entity\Page $page = null)
+    public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)
     {
         $this->page = $page;
     
@@ -119,7 +119,7 @@ class Keyword
     /**
      * Get page
      *
-     * @return \Acts\CamdramBundle\Entity\Page 
+     * @return \Acts\CamdramLegacyBundle\Entity\Page
      */
     public function getPage()
     {

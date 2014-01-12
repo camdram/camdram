@@ -175,10 +175,10 @@ class KnowledgeBaseRevision
     /**
      * Set page
      *
-     * @param \Acts\CamdramBundle\Entity\Page $page
+     * @param \Acts\CamdramLegacyBundle\Entity\Page $page
      * @return KnowledgeBaseRevision
      */
-    public function setPage(\Acts\CamdramBundle\Entity\Page $page = null)
+    public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)
     {
         $this->page = $page;
     
@@ -188,7 +188,7 @@ class KnowledgeBaseRevision
     /**
      * Get page
      *
-     * @return \Acts\CamdramBundle\Entity\Page 
+     * @return \Acts\CamdramLegacyBundle\Entity\Page
      */
     public function getPage()
     {
