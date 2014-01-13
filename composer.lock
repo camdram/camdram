@@ -7,17 +7,17 @@
     "packages": [
         {
             "name": "acts/external-login-bundle",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "target-dir": "Acts/ExternalLoginBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/external-login-bundle.git",
-                "reference": "8c1f70624ea5054fc33e3b47b0e072e3bd7881f4"
+                "reference": "856e8b18429483d3162632d83c06ebf36192ee58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/external-login-bundle/zipball/8c1f70624ea5054fc33e3b47b0e072e3bd7881f4",
-                "reference": "8c1f70624ea5054fc33e3b47b0e072e3bd7881f4",
+                "url": "https://api.github.com/repos/camdram/external-login-bundle/zipball/856e8b18429483d3162632d83c06ebf36192ee58",
+                "reference": "856e8b18429483d3162632d83c06ebf36192ee58",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "social",
                 "twitter"
             ],
-            "time": "2013-12-28 04:35:45"
+            "time": "2014-01-12 17:18:55"
         },
         {
             "name": "acts/social-api-bundle",
@@ -887,8 +887,7 @@
                 {
                     "name": "Jonathan Wage",
                     "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/",
-                    "role": "Creator"
+                    "homepage": "http://www.jwage.com/"
                 },
                 {
                     "name": "Guilherme Blanco",
