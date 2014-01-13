@@ -75,6 +75,13 @@ class SupportController extends AbstractRestController
     public function cgetAction(Request $request)
     {
         $this->checkAuthorised();
+        
+        $request = $this->getRequest();
+        if ($request->query->has('action') && $request->query->has('id')) {
+            $issue = $this->getEntity($request->query->get('id'));
+            $this->processRequestData($request, $issue);
+        }
+
         $mine = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')->findBy(
                     array('state' => 'assigned', 'support_id' => 0, 'owner' => $this->getUser()->getId())
                     );
@@ -159,38 +166,9 @@ class SupportController extends AbstractRestController
     {
         $this->checkAuthorised();
         $issue = $this->getEntity($identifier);
-        if ($this->getRequest()->query->has('action')) {
-            $action = $this->getRequest()->query->get('action');
-            if ($issue->getOwner() != null && $issue->getOwner()->getId() == $this->getUser()->getId()) {
-                $user_is_owner =  true;
-            }
-            else {
-                $user_is_owner = false;
-            }
-            // Assign or reassign an issue.
-            if ($action == 'assign') {
-                $issue->setOwner($this->getUser());
-                $issue->setState('assigned');
-            }
-            // Issue owners may reject issues that are assigned to them.
-            else if (($action == 'rejectassign') && 
-                     ($issue->getState() == 'assigned') && 
-                     ($user_is_owner == true)) {
-                $issue->setOwner(null);
-                $issue->setState('unassigned');
-            }
-            // Admins may delete unassigned issues. Owners may resolve them. 
-            else if ((($action == 'delete') && ($issue->getState() == 'unassigned')) || 
-                     (($action == 'resolve') && ($issue->getState() == 'assigned') && ($user_is_owner == true))) {
-                $issue->setState('closed');
-            }
-            else if ($action == 'reopen') {
-                $issue->setOwner(null);
-                $issue->setState('unassigned');
-            }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($issue);
-            $em->flush();
+        $request = $this->getRequest();
+        if ($request->query->has('action')) {
+            $this->processRequestData($request, $issue);
         }
 
         $reply = new Support();
@@ -210,5 +188,42 @@ class SupportController extends AbstractRestController
         return $view;
     }
     
+    /**
+     * Handle the data in the request object.
+     */
+    private function processRequestData(Request $request, $issue)
+    {
+        $action = $this->getRequest()->query->get('action');
+        if ($issue->getOwner() != null && $issue->getOwner()->getId() == $this->getUser()->getId()) {
+            $user_is_owner =  true;
+        }
+        else {
+            $user_is_owner = false;
+        }
+        // Assign or reassign an issue.
+        if ($action == 'assign') {
+            $issue->setOwner($this->getUser());
+            $issue->setState('assigned');
+        }
+        // Issue owners may reject issues that are assigned to them.
+        else if (($action == 'rejectassign') && 
+                ($issue->getState() == 'assigned') && 
+                ($user_is_owner == true)) {
+            $issue->setOwner(null);
+            $issue->setState('unassigned');
+        }
+        // Admins may delete unassigned issues. Owners may resolve them. 
+        else if ((($action == 'delete') && ($issue->getState() == 'unassigned')) || 
+                (($action == 'resolve') && ($issue->getState() == 'assigned') && ($user_is_owner == true))) {
+            $issue->setState('closed');
+        }
+        else if ($action == 'reopen') {
+            $issue->setOwner(null);
+            $issue->setState('unassigned');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($issue);
+        $em->flush();
+    }
 }
 
