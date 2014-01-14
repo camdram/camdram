@@ -79,7 +79,7 @@
  </nav>
 
   <section id="content">
-
+  <br/>
 {% block body %}
 {% endblock %}
   </section>
@@ -106,9 +106,10 @@
         </div>
         <div class="large-4 columns">
             <h5>About</h5>
-            <a href="#">Privacy policy</a><br/>
+            <a href="{{ path('acts_camdram_privacy') }}">Privacy policy</a><br/>
             <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a><br/>
         </div>
     </div>
 
 {% endblock %}
+
