@@ -11,7 +11,7 @@ use Acts\CamdramBundle\Entity\User;
 * @ORM\Table(name="acts_external_users")
 * @ORM\Entity
 */
-class ExternalUser implements CamdramUserInterface
+class ExternalUser implements CamdramUserInterface, \Serializable
 {
     /**
     * @var integer
@@ -77,6 +77,13 @@ class ExternalUser implements CamdramUserInterface
      * @ORM\Column(name="profile_picture_url", type="string", length=255, nullable=true)
      */
     private $profile_picture_url;
+
+    /**
+     * @var \Acts\CamdramBundle\Entity\Person
+     *
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="externalUsers")
+     */
+    private $person;
 
     /**
      * Get id
@@ -324,5 +331,45 @@ class ExternalUser implements CamdramUserInterface
     public function getProfilePictureUrl()
     {
         return $this->profile_picture_url;
+    }
+
+    /**
+     * Set person
+     *
+     * @param \Acts\CamdramBundle\Entity\Person $person
+     * @return ExternalUser
+     */
+    public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
+    {
+        $this->person = $person;
+    
+        return $this;
+    }
+
+    /**
+     * Get person
+     *
+     * @return \Acts\CamdramBundle\Entity\Person 
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    public function __toString() {
+        return $this->getId().':'.$this->getName();
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+                $this->id, $this->name, $this->email, $this->service,
+                $this->remote_id, $this->username
+            ));
+    }
+    public function unserialize($serialized)
+    {
+        list($this->id, $this->name, $this->email, $this->service,
+            $this->remote_id, $this->username) = unserialize($serialized);
     }
 }

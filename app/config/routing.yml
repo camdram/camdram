@@ -1,3 +1,7 @@
+acts_camdram_api:
+    resource: "@ActsCamdramApiBundle/Resources/config/routing.yml"
+    prefix:   /api
+
 acts_external_login:
     resource: "@ActsExternalLoginBundle/Resources/config/routing.yml"
     prefix:   /extauth
@@ -12,7 +16,8 @@ acts_camdram:
 
 acts_camdram_security:
     resource: "@ActsCamdramSecurityBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /auth
+    schemes:  [https]
 
 # Internal routing configuration to handle ESI
 #_internal:

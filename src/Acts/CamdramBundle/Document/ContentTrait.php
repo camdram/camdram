@@ -2,9 +2,10 @@
 
 namespace Acts\CamdramBundle\Document;
 
+use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
 
-trait ContentTrait
+class ContentTrait
 {
     /**
      * @PHPCR\Id()

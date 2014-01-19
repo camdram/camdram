@@ -1,0 +1,36 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% set current_navigation_id = 'contact-us' %}
+{% block title %}Contact Us{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="twelve columns">
+        <h2>Contact Us</h2>
+
+        <h3>Bugs and feature requests</h3>
+        <p>If you've found a problem with Camdram or have an idea for a new feature, we invite you to create an 'issue'
+            on our Github page
+            (<a href="http://github.com/camdram/camdram/issues" target="_blank">https://github.com/camdram/camdram/issues</a>).
+            This allows us to easily keep track of and prioritise bugs and feature requests, and means you will automatically
+            receive email notifications when someone is working on the issue and when it is fixed.
+        </p>
+        <p>
+            Camdram is an open source project run entirely by volunteers. If you know how to fix a bug then you are more
+            than welcome to do so and submit a 'pull request' on Github!
+        </p>
+
+        <h3>Data errors</h3>
+        <p>If there's a problem related to the data on Camdram (e.g. a show hasn't been authorised, or some information
+            is wrong), then please contact <a href="mailto:websupport@camdram.net">websupport@camdram.net</a> or use the
+            form below, and one of the Camdram editors will get back to you.</p>
+
+        <form action="{{ path('acts_camdram_contact_us_send') }}" method="post">
+            {{ form_widget(form) }}
+            <div class="text-right">
+                <input type="submit" class="button" value="Send"/>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

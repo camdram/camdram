@@ -17,3 +17,11 @@ acts_camdram_play:
     defaults: { _controller: ActsCamdramBundle:Play:display }
     requirements:
         mid: .*
+acts_camdram_contact:
+    resource: "routing/contact_us.yml"
+acts_camdram_privacy:
+    path: /privacy
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: 'ActsCamdramBundle:Static:privacy.html.twig'
+

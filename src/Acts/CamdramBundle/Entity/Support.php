@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @ORM\Table(name="acts_support")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Support
 {
@@ -32,14 +33,14 @@ class Support
     /**
      * @var string
      *
-     * @ORM\Column(name="from", type="string", nullable=false)
+     * @ORM\Column(name="`from`", type="string", nullable=false)
      */
     private $from;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="to", type="string", nullable=false)
+     * @ORM\Column(name="`to`", type="string", nullable=false)
      */
     private $to;
 
@@ -87,6 +88,32 @@ class Support
     private $date_time;
 
     /**
+     * @ORM\OneToMany(targetEntity="Support", mappedBy="parent")
+     * @ORM\OrderBy({"id"="DESC"})
+     */
+    private $children;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Support", inversedBy="children")
+     * @ORM\JoinColumn(name="supportid", referencedColumnName="id")
+     */
+    private $parent;
+
+    public function __construct() 
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+   
+    /**
+     * Get children
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -94,19 +121,6 @@ class Support
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set support_id
-     *
-     * @param integer $supportId
-     * @return Support
-     */
-    public function setSupportId($supportId)
-    {
-        $this->support_id = $supportId;
-    
-        return $this;
     }
 
     /**
@@ -127,7 +141,7 @@ class Support
      */
     public function setFrom($from)
     {
-        $this->from = $from;
+        $this->from = htmlspecialchars($from);
     
         return $this;
     }
@@ -139,18 +153,19 @@ class Support
      */
     public function getFrom()
     {
-        return $this->from;
+        return htmlspecialchars_decode($this->from);
     }
 
     /**
-     * Set to
+     * Set to. HTML special characters are automatically [un]escaped when
+     * getting or setting.
      *
      * @param string $to
      * @return Support
      */
     public function setTo($to)
     {
-        $this->to = $to;
+        $this->to = htmlspecialchars($to);
     
         return $this;
     }
@@ -162,7 +177,7 @@ class Support
      */
     public function getTo()
     {
-        return $this->to;
+        return htmlspecialchars_decode($this->to);
     }
 
     /**
@@ -173,7 +188,7 @@ class Support
      */
     public function setCc($cc)
     {
-        $this->cc = $cc;
+        $this->cc = htmlspecialchars($cc);
     
         return $this;
     }
@@ -185,7 +200,7 @@ class Support
      */
     public function getCc()
     {
-        return $this->cc;
+        return htmlspecialchars_decode($this->cc);
     }
 
     /**
@@ -196,7 +211,7 @@ class Support
      */
     public function setSubject($subject)
     {
-        $this->subject = $subject;
+        $this->subject = htmlspecialchars($subject);
     
         return $this;
     }
@@ -208,7 +223,7 @@ class Support
      */
     public function getSubject()
     {
-        return $this->subject;
+        return htmlspecialchars_decode($this->subject);
     }
 
     /**
@@ -219,7 +234,7 @@ class Support
      */
     public function setBody($body)
     {
-        $this->body = $body;
+        $this->body = str_replace(chr(13), "", $body);
     
         return $this;
     }
@@ -242,7 +257,7 @@ class Support
      */
     public function setOwner(User $owner = null)
     {
-        $this->owner = $ownerId;
+        $this->owner = $owner;
     
         return $this;
     }
@@ -284,12 +299,12 @@ class Support
     /**
      * Set date_time
      *
-     * @param \DateTime $dateTime
      * @return Support
+     * @ORM\PrePersist()
      */
-    public function setDateTime($dateTime)
+    public function setDateTime()
     {
-        $this->date_time = $dateTime;
+        $this->date_time = new \DateTime('now');
     
         return $this;
     }
@@ -302,6 +317,52 @@ class Support
     public function getDateTime()
     {
         return $this->date_time;
+    }
+
+    /**
+     * Add children
+     *
+     * @param \Acts\CamdramBundle\Entity\Support $children
+     * @return Support
+     */
+    public function addChildren(\Acts\CamdramBundle\Entity\Support $children)
+    {
+        $this->children[] = $children;
+    
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \Acts\CamdramBundle\Entity\Support $children
+     */
+    public function removeChildren(\Acts\CamdramBundle\Entity\Support $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Acts\CamdramBundle\Entity\Support $parent
+     * @return Support
+     */
+    public function setParent(\Acts\CamdramBundle\Entity\Support $parent = null)
+    {
+        $this->parent = $parent;
+    
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \Acts\CamdramBundle\Entity\Support 
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }
 

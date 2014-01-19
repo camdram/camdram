@@ -22,9 +22,11 @@ class AdminVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        foreach ($token->getRoles() as $role) {
-            if ($role->getRole() == 'ROLE_ADMIN'
-                || $role->getRole() == 'ROLE_SUPER_ADMIN') return self::ACCESS_GRANTED;
+        if (is_object($object) && $this->supportsClass(get_class($object))) {
+            foreach ($token->getRoles() as $role) {
+                if ($role->getRole() == 'ROLE_ADMIN'
+                    || $role->getRole() == 'ROLE_SUPER_ADMIN') return self::ACCESS_GRANTED;
+            }
         }
 
         return self::ACCESS_ABSTAIN;
@@ -40,6 +42,6 @@ class AdminVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return true;
+        return substr($class, 0, 5) == 'Acts\\';
     }
 }

@@ -173,6 +173,11 @@ class VenueController extends AbstractRestController
         $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
         $diary->addEvents($events);
 
-        return $diary;
+        $view = $this->view($diary, 200)
+            ->setTemplateVar('diary')
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':shows.html.twig')
+        ;
+
+        return $view;
     }
 }

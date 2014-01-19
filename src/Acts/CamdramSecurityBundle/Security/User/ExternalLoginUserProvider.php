@@ -32,11 +32,11 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
         return $this->em->getRepository('ActsCamdramSecurityBundle:ExternalUser')->findOneBy(array('remote_id' => $id));
     }
 
-    public function loadUserByServiceAndId($service, $id)
+    public function loadUserByServiceAndUsername($service, $username)
     {
         $user = $this->em->getRepository('ActsCamdramSecurityBundle:ExternalUser')->findOneBy(array(
             'service' => $service,
-            'remote_id' => $id
+            'username' => $username
         ));
         if (!$user) {
             throw new UsernameNotFoundException();
@@ -50,7 +50,7 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        $user = $this->loadUserByServiceAndId($user->getService(), $user->getRemoteId());
+        $user = $this->loadUserByServiceAndUsername($user->getService(), $user->getUsername());
         return $user;
     }
 

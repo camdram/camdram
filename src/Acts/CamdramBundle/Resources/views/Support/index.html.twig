@@ -1,4 +1,4 @@
-{% macro table(issues) %}
+{% macro table(issues, actions) %}
     <table>
     <thead>
     <tr>
@@ -11,9 +11,15 @@
     <tbody>
     {% for i in issues %}
         <tr>
-        <td>{{ i.id }}</td><td>{{ i.from|raw }}</td><td>
+        <td>{{ i.id }}</td><td>{{ i.from|raw }}</td>
+        <td>
             <a href="{{ path('get_issue', {identifier: i.id}) }}">{{ i.subject|raw ?: '(No Subject)'}}</a>
-        </td><td></td>
+        </td>
+        <td>
+        {%- for key, val in actions -%}
+            <a href="{{ path('get_issues', {id : i.id, action : key}) }}">{{ val }}</a>{{ loop.last ? '' : ' | ' }}
+        {%- endfor -%}
+        </td>
         </tr>
     {% endfor %}
     </tbody>
@@ -32,19 +38,21 @@
         <div class="twelve columns">
             <h4>Issues assigned to you</h4>
             {% if my_issues is not empty %}
-                {{ issues.table(my_issues) }}
+                {{ issues.table(my_issues, { 'rejectassign' : 'Reject assignment',
+                    'resolve' : 'Resolve' }) }}
             {% else %}
                 <p>No unresolved issues are currently assigned to you.</p>
             {% endif %}
             <h4>Unassigned issues</h4>
             {% if unassigned_issues is not empty %}
-                {{ issues.table(unassigned_issues) }}
+                {{ issues.table(unassigned_issues, { 'assign' : 'Assign', 
+                    'delete' : 'Delete (Resolve)' }) }}
             {% else %}
                 <p>No unresolved issues are currently unassigned.</p>
             {% endif %}
             <h4>Issues assigned to other users</h4>
             {% if other_peoples_issues is not empty %}
-                {{ issues.table(other_peoples_issues) }}
+                {{ issues.table(other_peoples_issues, { 'rejectassign' : 'Reject assignment' }) }}
             {% else %}
                 <p>No unresolved issues are currently assigned to other people.</p>
             {% endif %}

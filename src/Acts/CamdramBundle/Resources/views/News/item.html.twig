@@ -1,27 +1,31 @@
-<div class="row news_item">
+<div class="row news-item">
     {% if item.picture and item.links|length == 0 %}
-    <div class="two columns mobile-one">
+    <div class="small-2 columns">
             <img src="{{ item.picture }}"/>
     </div>
-    <div class="ten columns">
+    <div class="small-10 columns">
     {% else %}
-    <div class="twelve columns">
+    <div class="large-12 columns">
     {% endif %}
         <p>
-            <strong><a href="{{ path('get_entity', {id: item.entity.id}) }}">{{ item.entity.name }}</a> posted:</strong>
+            <strong>
+                {% if item.entity.type == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
+                    {% elseif item.entity.type == 'society' %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
+                    {{ item.entity.name }}</a> posted:</strong>
             {{ item.body | detect_links }}
         </p>
         <p><em>{{ item.getPostedAt() | date('jS F Y g:i a') }}</em></p>
         {% for link in item.links %}
-            <div class="news_link panel row">
+            <div class="news-link">
+                <div class="row">
 
                 {% if link.picture %}
-                <div class="three columns mobile-one">
+                <div class="small-3 columns">
                     <img src="{{ link.picture }}"/>
                 </div>
-                <div class="nine columns">
+                <div class="small-9 columns">
                 {% else %}
-                <div class="twelve columns">
+                <div class="small-12 columns">
                 {% endif %}
                         <h6><a href="{{ link.link }}">{{ link.name }}</a></h6>
                         {% if link.description %}<p>{{ link.description }}</p>
@@ -32,7 +36,7 @@
                             {% endif %}
                         {% endif %}
                 </div>
-
+                </div>
             </div>
         {% endfor %}
     </div>

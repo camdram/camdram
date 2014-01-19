@@ -3,9 +3,16 @@ imports:
 
 doctrine:
     dbal:
-        dbname:   "%test_database_name%"
-        user:     "%test_database_user%"
-        password: "%test_database_password%"
+      default_connection: default
+      connections:
+          default:
+              dbname:   "%test_database_name%"
+              user:     "%test_database_user%"
+              password: "%test_database_password%"
+          odm:
+              dbname:   "%test_database_name%"
+              user:     "%test_database_user%"
+              password: "%test_database_password%"
 
 monolog:
     handlers:
@@ -43,9 +50,6 @@ acts_camdram:
 
 acts_sphinx_real_time:
     enabled: false
-
-acts_time_mock:
-    time_override: "2001-02-27 12:30:07"
 
 acts_external_login:
     test: true

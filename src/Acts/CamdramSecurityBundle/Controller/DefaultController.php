@@ -5,6 +5,7 @@ namespace Acts\CamdramSecurityBundle\Controller;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
+use Acts\CamdramSecurityBundle\Form\Type\CreatePasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ForgottenPasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ResetPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
@@ -52,6 +53,12 @@ class DefaultController extends Controller
             $last_email = '';
         }
 
+        if ($session->has('_security.target_path')) {
+            if (false !== strpos($session->get('_security.target_path'), $this->generateUrl('fos_oauth_server_authorize'))) {
+                $session->set('_fos_oauth_server.ensure_logout', true);
+            }
+        }
+
         if ($last_email && $session->get('_security.last_exception') instanceof InsufficientAuthenticationException) {
             return $this->render(
                 'ActsCamdramSecurityBundle:Default:relogin.html.twig',
@@ -76,6 +83,9 @@ class DefaultController extends Controller
 
     public function createAccountAction(Request $request)
     {
+        if ($this->getUser()) {
+            return $this->redirect($this->generateUrl('acts_camdram_homepage'));
+        }
         $user = new User;
 
         $form = $this->createForm(new RegistrationType(), $user);
@@ -112,9 +122,56 @@ class DefaultController extends Controller
         return $this->render('ActsCamdramSecurityBundle:Default:create_account_complete.html.twig', array());
     }
 
+    public function createPasswordAction(Request $request)
+    {
+        if (!$this->getUser() instanceof ExternalUser) {
+            return $this->redirect($this->generateUrl('acts_camdram_homepage'));
+        }
+        $user = new User;
+        $external_user = $this->getUser();
+        $user->setName($external_user->getName());
+        $user->setEmail($external_user->getEmail());
+        $user->setPerson($external_user->getPerson());
+        $user->setIsEmailVerified(true);
+
+        //Raven accounts don't give us a name but the others do,
+        //so need to decide whether to include a 'name' field in the form or not
+        $type = new CreatePasswordType(!(bool)$user->getName());
+        $form = $this->createForm($type, $user);
+
+        if ($request->getMethod() == 'POST') {
+            $form->submit($request);
+            if ($form->isValid()) {
+                /** @var \Acts\CamdramBundle\Entity\User $user */
+                $user = $form->getData();
+                $factory = $this->get('security.encoder_factory');
+                $encoder = $factory->getEncoder($user);
+                $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
+                $user->setPassword($password);
+
+                $user->addExternalUser($external_user);
+                $external_user->setUser($user);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $token = new UsernamePasswordToken($user, $user->getPassword(), 'public', $user->getRoles());
+                $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::REGISTRATION_COMPLETE, new UserEvent($user));
+                $this->get('security.context')->setToken($token);
+                $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
+                return $this->redirect($this->generateUrl('acts_camdram_security_create_account_complete'));
+            }
+
+        }
+        return $this->render('ActsCamdramSecurityBundle:Default:create_password.html.twig', array(
+                'form' => $form->createView(),
+            ));
+    }
+
     public function linkUserAction(Request $request)
     {
-        $link_token = $this->getRequest()->getSession()->get(AuthenticationSuccessHandler::NEW_TOKEN);
+        $link_token = $request->getSession()->get(AuthenticationSuccessHandler::NEW_TOKEN);
         if (!$link_token) {
             return $this->redirect($this->generateUrl('acts_camdram_homepage'));
         }

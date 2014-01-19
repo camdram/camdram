@@ -3,12 +3,14 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Performance
  *
  * @ORM\Table(name="acts_performances")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PerformanceRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Performance
 {
@@ -35,6 +37,7 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="startdate", type="date", nullable=false)
+     * @Serializer\Expose
      */
     private $start_date;
 
@@ -42,6 +45,7 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="enddate", type="date", nullable=false)
+     * @Serializer\Expose
      */
     private $end_date;
 
@@ -49,6 +53,7 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="excludedate", type="date", nullable=true)
+     * @Serializer\Expose
      */
     private $exclude_date;
 
@@ -56,21 +61,15 @@ class Performance
      * @var \DateTime
      *
      * @ORM\Column(name="time", type="time", nullable=false)
+     * @Serializer\Expose
      */
     private $time;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="venid", type="integer", nullable=true)
-     */
-    private $venue_id;
 
     /**
      * @var \Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $venue;
 
@@ -78,6 +77,7 @@ class Performance
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $venue_name;
 
@@ -210,29 +210,6 @@ class Performance
     public function getTime()
     {
         return $this->time;
-    }
-
-    /**
-     * Set venue_id
-     *
-     * @param integer $venueId
-     * @return Performance
-     */
-    public function setVenueId($venueId)
-    {
-        $this->venue_id = $venueId;
-    
-        return $this;
-    }
-
-    /**
-     * Get venue_id
-     *
-     * @return integer 
-     */
-    public function getVenueId()
-    {
-        return $this->venue_id;
     }
 
     /**

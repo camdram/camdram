@@ -1,6 +1,8 @@
 Camdram.net
 ========================
 
+[![Build Status](https://travis-ci.org/camdram/camdram.png?branch=master)](https://travis-ci.org/camdram/camdram)
+
 The easiest way to get started with Camdram development is to use Vagrant 
 (http://www.vagrantup.com/), which automatically set up a correctly-configured
 virtual machine.

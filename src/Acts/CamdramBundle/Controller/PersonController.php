@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 
 use FOS\RestBundle\Controller\FOSRestController;
@@ -10,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Form\Type\PersonType;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 
 /**
@@ -36,6 +38,24 @@ class PersonController extends AbstractRestController
     protected function getForm($person = null)
     {
         return $this->createForm(new PersonType(), $person);
+    }
+
+    /**
+     * * @Rest\Get("/people/{identifier}/link")
+     */
+    public function linkAction($identifier)
+    {
+        $person = $this->getEntity($identifier);
+        if (!$this->getUser()) {
+            throw new AuthenticationException();
+        }
+        $name_utils = $this->get('camdram.security.name_utils');
+        if (true || $name_utils->isSamePerson($this->getUser()->getName(), $person->getName())) {
+            $this->getUser()->setPerson($person);
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return $this->redirect($this->generateUrl('get_person', array('identifier' => $identifier)));
     }
 
     /**

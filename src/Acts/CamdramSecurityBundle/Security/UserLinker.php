@@ -60,11 +60,13 @@ class UserLinker
 
     public function linkUsers(CamdramUserInterface $user1, CamdramUserInterface $user2)
     {
-        if ($user1 instanceof ExternalUser && $user1->getUser()) {
-            $user1 = $user1->getUser();
-        }
-        if ($user2 instanceof ExternalUser && $user2->getUser()) {
-            $user2 = $user2->getUser();
+        if ($user1 instanceof ExternalUser && $user2 instanceof ExternalUser) {
+            if ($user1->getUser()) {
+                $user1 = $user1->getUser();
+            }
+            elseif ($user2->getUser()) {
+                $user2 = $user2->getUser();
+            }
         }
 
         if ($user1 instanceof ExternalUser && $user2 instanceof User) {
@@ -76,7 +78,7 @@ class UserLinker
             $external_user = $user2;
         }
 
-        if (isset($camdram_user) && isset($external_user)) {
+        if (isset($camdram_user) && isset($external_user) && $external_user->getUser() !== $camdram_user) {
             $external_user->setUser($camdram_user);
             $camdram_user->addExternalUser($external_user);
             $this->entityManager->flush();

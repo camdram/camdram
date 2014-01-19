@@ -29,14 +29,14 @@ class ApplicationRepository extends EntityRepository
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Application');
         $query = $query_res->createQueryBuilder('a')
-            ->where('a.deadline_date <= :enddate')
-            ->andWhere('a.deadline_date >= :startdate')
-            ->andWhere('a.deadline_date >= CURRENT_DATE()')
+            ->where('a.deadlineDate <= :enddate')
+            ->andWhere('a.deadlineDate >= :startdate')
+            ->andWhere('a.deadlineDate >= CURRENT_DATE()')
             ->setParameters(array(
                 'startdate' => date("Y/m/d", $startDate),
                 'enddate' => date("Y/m/d", $endDate)
                 ))
-            ->orderBy('a.deadline_date')
+            ->orderBy('a.deadlineDate')
             ->getQuery();
 
         return $query->getResult();
@@ -45,8 +45,8 @@ class ApplicationRepository extends EntityRepository
     public function findLatest($limit)
     {
         $query = $this->createQueryBuilder('a')
-            ->where('a.deadline_date >= CURRENT_DATE()')
-            ->orderBy('a.deadline_date', 'DESC')
+            ->where('a.deadlineDate >= CURRENT_DATE()')
+            ->orderBy('a.deadlineDate', 'DESC')
             ->setMaxResults($limit)
             ->getQuery();
         return $query->getResult();

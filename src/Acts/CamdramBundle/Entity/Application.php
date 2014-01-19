@@ -39,18 +39,11 @@ class Application
     private $show;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="socid", type="integer", nullable=true)
-     */
-    private $society_id;
-
-    /**
      * @var \Society
      *
      * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="socid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     private $society;
@@ -67,7 +60,7 @@ class Application
      *
      * @ORM\Column(name="deadlinedate", type="date", nullable=false)
      */
-    private $deadline_date;
+    private $deadlineDate;
 
     /**
      * @var string
@@ -118,29 +111,6 @@ class Application
     }
 
     /**
-     * Set society_id
-     *
-     * @param integer $societyId
-     * @return Application
-     */
-    public function setSocietyId($societyId)
-    {
-        $this->society_id = $societyId;
-    
-        return $this;
-    }
-
-    /**
-     * Get society_id
-     *
-     * @return integer 
-     */
-    public function getSocietyId()
-    {
-        return $this->society_id;
-    }
-
-    /**
      * Set text
      *
      * @param string $text
@@ -171,7 +141,7 @@ class Application
      */
     public function setDeadlineDate($deadlineDate)
     {
-        $this->deadline_date = $deadlineDate;
+        $this->deadlineDate = $deadlineDate;
     
         return $this;
     }
@@ -183,7 +153,7 @@ class Application
      */
     public function getDeadlineDate()
     {
-        return $this->deadline_date;
+        return $this->deadlineDate;
     }
 
     /**

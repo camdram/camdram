@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Show implements SearchableInterface
 {
@@ -25,6 +26,7 @@ class Show implements SearchableInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Serializer\XmlAttribute
+     * @Serializer\Expose()
      */
     private $id;
 
@@ -33,6 +35,7 @@ class Show implements SearchableInterface
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Serializer\Expose()
      */
     private $name;
 
@@ -40,6 +43,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Serializer\Expose()
      */
     private $description;
 
@@ -82,6 +86,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $author;
 
@@ -89,6 +94,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="prices", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $prices = '';
 
@@ -96,7 +102,6 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="photourl", type="text", nullable=true)
-     * @Serializer\Exclude
      */
     private $photo_url = '';
 
@@ -104,6 +109,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $venue_name = '';
 
@@ -111,7 +117,6 @@ class Show implements SearchableInterface
      * @var \DateTime
      *
      * @ORM\Column(name="excludedate", type="date", length=255, nullable=true)
-     * @Serializer\Exclude
      */
     private $exclude_date;
 
@@ -119,6 +124,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="society", type="string", length=255, nullable=true)
+     * @Serializer\Expose()
      */
     private $society_name = '';
 
@@ -126,7 +132,6 @@ class Show implements SearchableInterface
      * @var boolean
      *
      * @ORM\Column(name="techsend", type="boolean", nullable=false)
-     * @Serializer\Exclude
      */
     private $tech_send = false;
 
@@ -134,7 +139,6 @@ class Show implements SearchableInterface
      * @var boolean
      *
      * @ORM\Column(name="actorsend", type="boolean", nullable=false)
-     * @Serializer\Exclude
      */
     private $actor_send = false;
 
@@ -142,7 +146,6 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="audextra", type="text", nullable=true)
-     * @Serializer\Exclude
      */
     private $audextra;
 
@@ -150,8 +153,7 @@ class Show implements SearchableInterface
      * @var Society
      *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
-     * @Serializer\Exclude
-     * @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $society;
 
@@ -159,8 +161,7 @@ class Show implements SearchableInterface
      * @var Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
-     * @Serializer\Exclude
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $venue;
 
@@ -168,7 +169,7 @@ class Show implements SearchableInterface
      * @var integer
      *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $authorised_by;
 
@@ -190,6 +191,7 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="category", type="string", length=255, nullable=false)
+     * @Serializer\Expose
      */
     private $category;
 
@@ -197,13 +199,14 @@ class Show implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="bookingcode", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $booking_code;
 
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="ShowRef", inversedBy="show")
+     * @ORM\OneToOne(targetEntity="Acts\CamdramLegacyBundle\Entity\ShowRef")
      * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
      */
     private $primary_ref;
@@ -240,7 +243,6 @@ class Show implements SearchableInterface
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
-     * @Serializer\Exclude
      */
     private $roles;
 
@@ -249,7 +251,7 @@ class Show implements SearchableInterface
      *
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_date" = "ASC"})
-     * @Serializer\Exclude
+     * @Serializer\Expose
      */
     private $performances;
 
@@ -1034,7 +1036,7 @@ class Show implements SearchableInterface
     /**
      * Get techie_adverts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getActiveTechieAdverts()
     {
@@ -1221,16 +1223,16 @@ class Show implements SearchableInterface
     public function getActiveApplications()
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('deadline_date', new \DateTime()));
+            ->where(Criteria::expr()->gte('deadlineDate', new \DateTime()));
 
         return $this->applications->matching($criteria);
     }
 
     public function hasVacancies()
     {
-        return count($this->getTechieAdverts()) > 0
+        return count($this->getActiveTechieAdverts()) > 0
                 || count($this->getAuditions()) > 0
-                || count($this->getApplications()) > 0;
+                || count($this->getActiveApplications()) > 0;
     }
 
     /**
@@ -1408,5 +1410,74 @@ class Show implements SearchableInterface
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set facebook_url
+     *
+     * @param string $facebookUrl
+     * @return Show
+     */
+    public function setFacebookUrl($facebookUrl)
+    {
+        $this->facebook_url = $facebookUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get facebook_url
+     *
+     * @return string 
+     */
+    public function getFacebookUrl()
+    {
+        return $this->facebook_url;
+    }
+
+    /**
+     * Set other_url
+     *
+     * @param string $otherUrl
+     * @return Show
+     */
+    public function setOtherUrl($otherUrl)
+    {
+        $this->other_url = $otherUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get other_url
+     *
+     * @return string 
+     */
+    public function getOtherUrl()
+    {
+        return $this->other_url;
+    }
+
+    /**
+     * Set online_booking_url
+     *
+     * @param string $onlineBookingUrl
+     * @return Show
+     */
+    public function setOnlineBookingUrl($onlineBookingUrl)
+    {
+        $this->online_booking_url = $onlineBookingUrl;
+    
+        return $this;
+    }
+
+    /**
+     * Get online_booking_url
+     *
+     * @return string 
+     */
+    public function getOnlineBookingUrl()
+    {
+        return $this->online_booking_url;
     }
 }

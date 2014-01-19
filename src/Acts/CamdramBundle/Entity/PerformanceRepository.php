@@ -52,19 +52,51 @@ class PerformanceRepository extends EntityRepository
 
         $result = $qb->getQuery()->getResult();
         $count = 0;
+        $max_end = clone $end;
+        $max_end->modify('-1 day');
         foreach ($result as $p) {
-            $count += $p->getEndDate()->diff($p->getStartDate())->d + 1;
-            if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0) $count--;
+            $start_at = $p->getStartDate();
+            $end_at = $p->getEndDate();
+            if ($start_at < $start) $start_at = $start;
+            if ($end_at > $end) $end_at = $max_end;
+            
+            $count += $end_at->diff($start_at)->d + 1;
+            if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0
+                && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) $count--;
         }
 
         return $count;
     }
 
+    public function getUpcomingBySociety(\DateTime $now, Society $society)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->join('p.show', 's')
+            ->leftjoin('s.venue', 'v')
+            ->addSelect('s')
+            ->addSelect('v')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andWhere('p.end_date > :now')
+            ->andWhere('s.society = :society')
+            ->orderBy('p.start_date', 'ASC')
+            ->setParameter('society', $society)
+            ->setParameter('now', $now)
+            ->getQuery();
+        return $query->getResult();
+    }
+
     public function getUpcomingByVenue(\DateTime $now, Venue $venue)
     {
         $query = $this->createQueryBuilder('p')
-            ->where('p.end_date > :now')
-            ->andWhere('p.venue = :venue')
+            ->join('p.show', 's')
+            ->join('s.venue', 'v')
+            ->addSelect('s')
+            ->addSelect('v')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andWhere('p.end_date > :now')
+            ->andWhere('s.venue = :venue')
             ->orderBy('p.start_date', 'ASC')
             ->setParameter('venue', $venue)
             ->setParameter('now', $now)

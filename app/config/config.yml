@@ -175,10 +175,13 @@ acts_social_api:
 
 fos_oauth_server:
     db_driver:           orm
-    client_class:        Acts\CamdramSecurityBundle\Entity\ExternalApp
-    access_token_class:  Acts\CamdramSecurityBundle\Entity\AccessToken
-    refresh_token_class: Acts\CamdramSecurityBundle\Entity\RefreshToken
-    auth_code_class:     Acts\CamdramSecurityBundle\Entity\AuthCode
+    client_class:        Acts\CamdramApiBundle\Entity\ExternalApp
+    access_token_class:  Acts\CamdramApiBundle\Entity\AccessToken
+    refresh_token_class: Acts\CamdramApiBundle\Entity\RefreshToken
+    auth_code_class:     Acts\CamdramApiBundle\Entity\AuthCode
+    service:
+        options:
+            supported_scopes: write
 
 acts_sphinx_real_time:
     clients:
@@ -255,9 +258,6 @@ acts_sphinx_real_time:
 
 fos_js_routing:
     routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'autocomplete_entity' ]
-    
-acts_time_mock:
-    time_override: %current_time%
 
 parameters:
     security.authentication.trust_resolver.class: Acts\ExternalLoginBundle\Security\Authentication\AuthenticationTrustResolver

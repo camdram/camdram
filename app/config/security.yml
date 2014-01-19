@@ -16,16 +16,22 @@ security:
             id: camdram.security.external_user.provider
 
     firewalls:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
 
         public:
             pattern: ^/.*
             anonymous: true
             switch_user: { role: ROLE_ADMIN, parameter: _switch_to_user }
             entry_point: camdram.security.entry_point
+            fos_oauth: true
             logout:
                 path: /logout
                 target: /
             form_login:
+                check_path: /auth/login_check
+                login_path: /auth/login
                 username_parameter: email
                 password_parameter: password
                 success_handler:  camdram.security.authentication_success_handler
@@ -44,7 +50,7 @@ security:
 
     access_control:
 #        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
-        - { path ^/settings.*, roles: IS_AUTHENTICATED_FULLY }
+        - { path ^/auth/settings.*, roles: IS_AUTHENTICATED_FULLY }
 
     encoders:
         Acts\CamdramBundle\Entity\User:

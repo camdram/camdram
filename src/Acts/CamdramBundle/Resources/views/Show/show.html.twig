@@ -37,16 +37,16 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% if show.techieAdverts | length > 0 %}
+        {% if show.activeTechieAdverts | length > 0 %}
             <p>We are looking for:
-            {% for advert in show.techieAdverts %}
+            {% for advert in show.activeTechieAdverts %}
                 {% for p in advert.positions|split("\n") %}
                     {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}{{ p }}
                 {%- endfor %}
                 - <a href="{{ path('get_techies') }}#advert-{{ advert.id }}">more details</a></p>
             {% endfor %}
         {% endif %}
-        {% for advert in show.applications %}
+        {% for advert in show.activeApplications %}
             <p>{{ advert.text() }} -
             <a href="{{ path('get_applications') }}#application-{{ advert.id }}">more details</a></p>
         {% endfor %}

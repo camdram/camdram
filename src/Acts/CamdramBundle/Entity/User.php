@@ -168,13 +168,6 @@ class User implements \Serializable, CamdramUserInterface
     private $reset_code;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="person_id", type="integer", nullable=true)
-     */
-    private $person_id;
-
-    /**
      * @var Person
      *
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="users")
@@ -191,8 +184,6 @@ class User implements \Serializable, CamdramUserInterface
     private $upgraded_at;
 
     /**
-     * @var array
-     *
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user")
      * @Serializer\Exclude()
      */
@@ -218,6 +209,12 @@ class User implements \Serializable, CamdramUserInterface
      * @Serializer\Exclude()
      */
     private $aces;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Acts\CamdramApiBundle\Entity\ExternalApp", mappedBy="users")
+     * @Serializer\Exclude()
+     */
+    private $apps;
 
     /**
      * Get id
@@ -679,29 +676,6 @@ class User implements \Serializable, CamdramUserInterface
     }
 
     /**
-     * Set person_id
-     *
-     * @param integer $personId
-     * @return User
-     */
-    public function setPersonId($personId)
-    {
-        $this->person_id = $personId;
-    
-        return $this;
-    }
-
-    /**
-     * Get person_id
-     *
-     * @return integer 
-     */
-    public function getPersonId()
-    {
-        return $this->person_id;
-    }
-
-    /**
      * Set person
      *
      * @param \Acts\CamdramBundle\Entity\Person $person
@@ -710,6 +684,9 @@ class User implements \Serializable, CamdramUserInterface
     public function setPerson(Person $person = null)
     {
         $this->person = $person;
+        foreach ($this->getExternalUsers() as $external_user) {
+            $external_user->setPerson($person);
+        }
         return $this;
     }
 
@@ -742,19 +719,20 @@ class User implements \Serializable, CamdramUserInterface
         $this->login = new \DateTime;
 
         $this->aces = new ArrayCollection();
+        $this->external_users = new ArrayCollection();
     }
 
     public function serialize()
     {
         return serialize(array(
                 $this->id, $this->name, $this->email, $this->password, $this->registered,
-                $this->login, $this->occupation, $this->graduation, $this->person_id, $this->is_email_verified
+                $this->login, $this->occupation, $this->graduation, $this->is_email_verified
         ));
     }
     public function unserialize($serialized)
     {
         list($this->id, $this->name, $this->email, $this->password, $this->registered,
-            $this->login, $this->occupation, $this->graduation, $this->person_id,
+            $this->login, $this->occupation, $this->graduation,
             $this->is_email_verified) = unserialize($serialized);
     }
 
@@ -950,4 +928,37 @@ class User implements \Serializable, CamdramUserInterface
         return $this->getAces()->matching($criteria);
     }
 
+
+    /**
+     * Add apps
+     *
+     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
+     * @return User
+     */
+    public function addApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
+    {
+        $this->apps[] = $apps;
+    
+        return $this;
+    }
+
+    /**
+     * Remove apps
+     *
+     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
+     */
+    public function removeApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
+    {
+        $this->apps->removeElement($apps);
+    }
+
+    /**
+     * Get apps
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApps()
+    {
+        return $this->apps;
+    }
 }

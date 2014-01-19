@@ -37,7 +37,7 @@ class ShowVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($object instanceof Show && $attributes == array('EDIT') && $attributes == array('APPROVE')) {
+        if ($object instanceof Show && ($attributes == array('EDIT') || $attributes == array('APPROVE'))) {
             if ($object->getVenue()) {
                 if ($this->aclProvider->isOwner($token, $object->getVenue())) return self::ACCESS_GRANTED;
             }

@@ -42,9 +42,9 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         $api->authenticateAsSelf();
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        $entity_repo = $em->getRepository('ActsCamdramBundle:Entity');
+        $org_repo = $em->getRepository('ActsCamdramBundle:Organisation');
         $news_repo = $em->getRepository('ActsCamdramBundle:News');
-        $entities = $entity_repo->findWithService($service_name);
+        $entities = $org_repo->findWithService($service_name);
         foreach ($entities as $entity) {
             $news = $api->doPosts($entity->getSocialId($service_name));
             foreach ($news as $item) {
@@ -71,7 +71,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
 
         $news->setPostedAt(new \DateTime($item['created_at']));
         $news->setSource($service_name);
-        $news->setPublic($entity->getPublic());
+        $news->setPublic(true);
 
         if (isset($item['picture'])) $news->setPicture($item['picture']);
 
@@ -91,8 +91,12 @@ class EntitiesNewsCommand extends ContainerAwareCommand
             }
         }
         if (isset($item['mentions'])) {
-            foreach ($item['mentions'] as $mention) {
-                $m = $mention[0];
+            foreach ($item['mentions'] as $m) {
+                if (isset($m[0])) $m = $m[0];
+                if ($service_name == 'twitter') {
+                    $m['offset'] = $m['indices'][0];
+                    $m['length'] = $m['indicies'][1] - $m['indicies'][0];
+                }
                 $this->addMention($news, $m['name'], $m['id'], $service_name, $m['offset'], $m['length']);
             }
         }

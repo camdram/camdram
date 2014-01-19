@@ -39,13 +39,8 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
         $social->get('twitter')->authenticateAsSelf();
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        // Link venues to Facebook/Twitter accounts
-        $venues_rep = $em->getRepository('ActsCamdramBundle:Venue');
+        $venues_rep = $em->getRepository('ActsCamdramBundle:Organisation');
         $this->linkEntities($venues_rep->findAll(), $output);
-
-        // Link societies to Facebook/Twitter accounts
-        $societies_rep = $em->getRepository('ActsCamdramBundle:Society');
-        $this->linkEntities($societies_rep->findAll(), $output);
     }
 
     /**
@@ -57,6 +52,8 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
         $social = $this->getContainer()->get('acts.social_api.provider');
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
+        $dialog = $this->getHelperSet()->get('dialog');
+
         foreach ($entities as $entity) {
             foreach (array('facebook', 'twitter') as $api) {
                 if (is_null($entity->getSocialId($api))) {
@@ -64,15 +61,25 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
 
                     if (count($data) > 0) {
                         similar_text($data[0]['name'], $entity->getName(), $percent);
+                        $url = $this->getSocialUrl($api, $data[0]['id']);
                         if ($percent > 70) {
-                            $entity->setSocialId($api, $data[0]['id']);
-                            $output->writeln('Added '.ucfirst($api).' page/account "'.$data[0]['name'].'" for entity '.$entity->getName());
+                            $question = 'Would you like to add '.ucfirst($api).' page/account "'.$data[0]['name'].'" ('.$url.') for entity '.$entity->getName().'?';
+                            if ($dialog->askConfirmation($output, "<question>$question</question>\n")) {
+                                $entity->setSocialId($api, $data[0]['id']);
+                            }
                             $em->flush();
                         }
                     }
                 }
 
             }
+        }
+    }
+
+    private function getSocialUrl($service, $id) {
+        switch ($service) {
+            case 'facebook': return 'http://www.facebook.com/'.$id;
+            case 'twitter': return 'http://twitter.com/account/redirect_by_id?id='.$id;
         }
     }
 }

@@ -68,7 +68,7 @@ class Event
      *
      * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="socid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
      * })
      */
     private $society;

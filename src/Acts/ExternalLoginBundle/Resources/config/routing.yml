@@ -1,9 +1,0 @@
-acts_external_login_auth:
-    pattern: /login/{service}
-
-acts_external_login_entry:
-    pattern: /redirect/{service}
-
-acts_external_login_test_login:
-    pattern: /test-login/{service}
-    defaults: { _controller: ActsExternalLoginBundle:Default:testLogin }
