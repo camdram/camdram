@@ -73,11 +73,15 @@ class DiaryHelper
     /**
      * Generate an array of events from an array of performances
      *
-     * @param array $performances
+     * @param array|Traversible $performances
      * @return array
      */
-    public function createEventsFromPerformances(array $performances)
+    public function createEventsFromPerformances($performances)
     {
+        if (!is_array($performances) && !$performances instanceof \Traversable) {
+            throw new \InvalidArgumentException('$performances must either be an array or a Traversable object');
+        }
+
         $events = array();
         foreach($performances as $performance) {
             $event = $this->createEventFromPerformance($performance);
@@ -86,3 +90,4 @@ class DiaryHelper
         return $events;
     }
 }
+
