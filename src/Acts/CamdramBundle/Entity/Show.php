@@ -1480,4 +1480,74 @@ class Show implements SearchableInterface
     {
         return $this->online_booking_url;
     }
+    
+    /** 
+
+    Returns an array of performances, in ascending date order, with the following fields set:
+        date  => Performance Date
+        time  => Performance Time
+        venue => Venue (string)
+
+    date and time are descended from php DateTime objects
+
+    */
+    public function getAllPerformances()
+    {
+        $ret = array();
+        foreach ($this->getPerformances() as $performance) {
+            $current_day = clone $performance->getStartDate(); //ate'] . " " . $perf['time']);
+            $end_day = $performance->getEndDate(); //ate'] . " " . $perf['time']);
+            $exclude = $performance->getExcludeDate();
+            $time = $performance->getTime();
+            if ($performance->getVenue() != null) {
+                $venue = $performance->getVenue()->getName();
+            }
+            else {
+                $venue = $performance->getVenueName();
+            }
+            while($current_day <= $end_day) {
+                if ($current_day != $exclude) {
+                    array_push($ret, array( 'date' => $current_day, 'time' => $time,  'venue' => $venue ));
+                }
+                $current_day = clone $current_day;
+                $current_day->modify('+1 day');
+            }
+        }
+        usort($ret, array($this, 'cmpPerformances'));
+        return $ret;
+    }
+        /*    switch ($this->getMultiVenue()) {
+                case 'single':
+                    foreach ($this->getPerformances() as $performance) {
+                        $performance->setVenue($this->getVenue());
+                        $performance->setVenueName($this->getVenueName());
+                    }
+                    break;
+                case 'multi':
+                    $venue = venueName($perf);
+                    if($venue === "" || !$venue){
+                        $venue = venueName(getShowRow($showid));
+                    }
+                                }
+
+    /** 
+     * compare two performance objects, returning -1 if $a is before $b, 1 if 
+     * it's after, or 0 if they're at the same time.
+     * Used by getAllPerformances()
+     */
+    private function cmpPerformances($a, $b)
+    {
+        if($a['date'] < $b['date']){
+            return -1;
+        }else if($a['date'] > $b['date']){
+            return 1;
+        }else if($a['time'] < $b['time']){
+            return -1;
+        }else if($a['time'] > $b['time']){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
 }
+

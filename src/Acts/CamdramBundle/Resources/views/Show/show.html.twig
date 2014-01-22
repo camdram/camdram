@@ -75,5 +75,12 @@
         </div>
 </div>
 <br/>
+<div class="row">
+    <div class="12 columns">
+        <p>If you're involved in the show you may want to use our 
+        <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug }) }}">sign in sheet</a>. 
+        You can also download a version in <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug, '_format': 'csv' }) }}">CSV format</a>.</p>
+    </div>
+</div>
 
 {% endblock %}
