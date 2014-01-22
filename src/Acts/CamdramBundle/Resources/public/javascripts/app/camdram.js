@@ -166,19 +166,34 @@
 
     $.fn.entitySearch = function(options) {
        var options = $.extend({
-           select: function(item) {
-               $(this).siblings('input[type=hidden]').val(item.id);
-           },
            placeholder: 'start typing to search'
-       }, options)
-       $(this).camdramAutocomplete(options)
+       }, options);
+        var $self = $(this);
 
-       $(this).each(function() {
-           $(this).attr('placeholder', options.placeholder)
-               .change(function() {
-                   $(this).siblings('input[type=hidden]').val('');
-               });
-       })
+        var tokenize = function(str) {
+            return $.trim(str).toLowerCase().replace(/[\(\)]/g, '').split(/[\s\-_]+/);
+        }
+
+        var filter = function(items) {
+            for (var i in items) {
+                items[i].tokens = tokenize(items[i].name).concat(tokenize(items[i].short_name));
+            }
+            return items;
+        }
+
+        $self.typeahead({
+           name: options.route,
+           valueKey: 'name',
+           prefetch: {url: Routing.generate(options.route, {_format: 'json'}), ttl: 15*60, filter: filter},
+           remote: {url: Routing.generate(options.route, {q: 'QUERY'}), wildcard: 'QUERY', filter: filter}
+       }).on('typeahead:selected', function (object, datum) {
+            $self.parent().siblings('input[type=hidden]').val(datum.id);
+       });
+
+       $(this).change(function() {
+           $self.parent().siblings('input[type=hidden]').val('');
+       }).attr('placeholder', options.placeholder);
+
     }
 
     $.fn.entityCollection = function(options) {
