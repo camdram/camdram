@@ -17,18 +17,18 @@
             <div class="right-link"><a href=""><i class="fa fa-caret-right"></i></a></div>
             <ul>
                 <li class="diary-link"><a href="{{ url('acts_camdram_diary') }}">View more in diary</a></li>
-                {% for week in weeks %}
+                {%- for week in weeks -%}
                     <li data-week-start="{{ week.startAt | date('Y-m-d') }}" class="week-link{% if week == current_week %} current{% endif %}">
                         <a>
                             {{ week.name }}
                             <em>
-                                {% if week == current_week %}
+                                {%- if week == current_week -%}
                                     <strong>This week</strong>
-                                {% elseif week.startAt == current_week.endAt %}
+                                {%- elseif week.startAt == current_week.endAt -%}
                                     Next week
-                                {% else %}
+                                {%- else -%}
                                     {{ week.startAt | date_modify("+1 day") | date('j M') }} - {{ week.endAt | date('j M') }}
-                                {% endif %}
+                                {%- endif -%}
                             </em>
                         </a>
                     </li>
