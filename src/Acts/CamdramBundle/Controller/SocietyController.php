@@ -55,6 +55,36 @@ class SocietyController extends AbstractRestController
         return $view;
     }
 
+    public function getVacanciesAction($identifier)
+    {
+        $society = $this->getEntity($identifier);
+        $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
+        $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
+        $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+
+        $data = array(
+            'society' => $society,
+            'auditions' => $auditions_repo->findUpcomingBySociety($society, 10),
+            'techie_ads' => $techie_repo->findLatestBySociety($society, 10),
+            'app_ads' => $applications_repo->findLatestBySociety($society, 10),
+        );
+        return $this->view($data, 200)
+            ->setTemplateVar('vacancies')
+            ->setTemplate('ActsCamdramBundle:Society:vacancies.html.twig')
+            ;
+    }
+
+    public function getNewsAction($identifier)
+    {
+        $society = $this->getEntity($identifier);
+        $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
+
+        return $this->view($news_repo->getRecentByOrganisation($society, 30), 200)
+            ->setTemplateVar('news')
+            ->setTemplate('ActsCamdramBundle:Organisation:news.html.twig')
+            ;
+    }
+
     /**
      * Render a diary of the shows put on by this society.
      *
@@ -74,7 +104,7 @@ class SocietyController extends AbstractRestController
 
         $view = $this->view($diary, 200)
             ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':shows.html.twig')
+            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
         ;
 
         return $view;

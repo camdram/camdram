@@ -55,7 +55,7 @@ class AuditionRepository extends EntityRepository
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
         $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+            ->leftJoin('a.show', 's')
             ->where('a.date <= :enddate')
             ->andWhere('a.date >= :startdate')
             ->andWhere('a.nonScheduled = 0')
@@ -70,17 +70,38 @@ class AuditionRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findUpcoming($limit)
+
+    private function getUpcomingQuery($limit)
     {
-        $query = $this->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.show', 's')
             ->where('a.date >= CURRENT_DATE()')
-            ->andWhere('a.nonScheduled = 0')
+            ->andWhere('a.nonScheduled = false')
             ->andWhere('a.show IS NOT NULL')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
-            ->setMaxResults($limit)
-            ->getQuery();
-        return $query->getResult();
+            ->setMaxResults($limit);
+    }
+
+    public function findUpcoming($limit)
+    {
+        return $this->getUpcomingQuery($limit)->getQuery()->getResult();
+    }
+
+
+    public function findUpcomingBySociety(Society $society, $limit)
+    {
+        return $this->getUpcomingQuery($limit)
+            ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
+            ->getQuery()->getResult();
+    }
+
+    public function findUpcomingByVenue(Venue $venue, $limit)
+    {
+        return $this->getUpcomingQuery($limit)
+            ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+            ->getQuery()->getResult();
     }
 }

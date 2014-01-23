@@ -38,6 +38,13 @@ class CamdramExtension extends \Twig_Extension
         );
     }
 
+    public function getFunctions()
+    {
+        return array(
+            'requires_article' => new \Twig_Function_Method($this, 'requiresArticle')
+        );
+    }
+
     public function camdramMarkdown($text)
     {
         return $this->textService->convertMarkdown($text);
@@ -56,6 +63,14 @@ class CamdramExtension extends \Twig_Extension
     public function truncate($text, $length)
     {
         return $this->textService->truncate($text, $length);
+    }
+
+    public function requiresArticle($string)
+    {
+        $string = strtolower($string);
+        return (substr($string, -7) == 'theatre'
+            || substr($string, -7) == 'society')
+            && substr($string,0, 3) != 'the';
     }
 
     public function getName()

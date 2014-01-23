@@ -359,12 +359,27 @@ abstract class Organisation implements SearchableInterface
         }
     }
 
+    public function getFacebookUrl()
+    {
+        return 'http://www.facebook.com/'.$this->getFacebookId();
+    }
+
+    public function getTwitterUrl()
+    {
+        return 'https://twitter.com/account/redirect_by_id/'.$this->getTwitterId();
+    }
+
     public function getSocialUrl($service)
     {
         switch ($service) {
-            case 'facebook': return 'http://www.facebook.com/'.$this->getFacebookId();
-            case 'twitter': return 'twitter.com/intent/user?user_id='.$this->getTwitterId();
+            case 'facebook': return $this->getFacebookUrl();
+            case 'twitter': return $this->getTwitterUrl();
         }
+    }
+
+    public function hasSocialId()
+    {
+        return $this->getFacebookId() || $this->getTwitterId();
     }
 
     /**

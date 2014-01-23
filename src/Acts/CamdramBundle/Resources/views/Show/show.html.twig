@@ -26,9 +26,9 @@
     </div>
 </div>
 {% if show.hasVacancies() %}
-<div id="show-vacancies" class="row">
+<div class="vacancies-panel" class="row">
     <div class="large-12">
-        <h3>Get Involved</h3>
+        <h5>Get involved with <em>{{ show.name }}</em>:</h5>
         {% if show.auditions | length > 0 %}
         <p>Auditions are being held at the times below - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
             <ul>

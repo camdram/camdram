@@ -61,6 +61,36 @@ class VenueController extends AbstractRestController
         return $view;
     }
 
+    public function getVacanciesAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
+        $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
+        $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+
+        $data = array(
+            'venue' => $venue,
+            'auditions' => $auditions_repo->findUpcomingByVenue($venue, 10),
+            'techie_ads' => $techie_repo->findLatestByVenue($venue, 10),
+            'app_ads' => $applications_repo->findLatestByVenue($venue, 10),
+        );
+        return $this->view($data, 200)
+            ->setTemplateVar('vacancies')
+            ->setTemplate('ActsCamdramBundle:Venue:vacancies.html.twig')
+        ;
+    }
+
+    public function getNewsAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
+
+        return $this->view($news_repo->getRecentByOrganisation($venue, 30), 200)
+            ->setTemplateVar('news')
+            ->setTemplate('ActsCamdramBundle:Organisation:news.html.twig')
+            ;
+    }
+
     /**
      * Render a Google Map in an iframe. If $identifier is specified then a small map will be output with a single
      * marker. Otherwise a large map will be output with a marker for each venue.
@@ -175,7 +205,7 @@ class VenueController extends AbstractRestController
 
         $view = $this->view($diary, 200)
             ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':shows.html.twig')
+            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
         ;
 
         return $view;
