@@ -36,6 +36,7 @@
         '@ActsCamdramBundle/Resources/public/javascripts/foundation/custom.modernizr.js'
         '@ActsCamdramBundle/Resources/public/javascripts/foundation/foundation.min.js'
         '@ActsCamdramBundle/Resources/public/javascripts/moment.js'
+        '@ActsCamdramBundle/Resources/public/javascripts/typeahead.js'
         '@ActsDiaryBundle/Resources/public/js/diary.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
         '@HoyesImageManagerBundle/Resources/public/js/jquery.uploadify.js'
@@ -43,7 +44,7 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         {% javascripts vars=['env'] output='js/main.{env}.js'
-        'js/fos_js_routes.js'
+        'js/fos_js_routes.{env}.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/autocomplete.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}

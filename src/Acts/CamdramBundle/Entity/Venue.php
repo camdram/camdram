@@ -181,4 +181,5 @@ class Venue extends Organisation
     {
         return 'venue';
     }
+
 }

@@ -42,13 +42,35 @@ class ApplicationRepository extends EntityRepository
         return $query->getResult();
     }
 
+    private function getLatestQuery($limit)
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.show', 's')
+            ->where('a.deadlineDate >= CURRENT_DATE()')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered != false')
+            ->orderBy('a.deadlineDate', 'DESC')
+            ->setMaxResults($limit);
+    }
+
     public function findLatest($limit)
     {
-        $query = $this->createQueryBuilder('a')
-            ->where('a.deadlineDate >= CURRENT_DATE()')
-            ->orderBy('a.deadlineDate', 'DESC')
-            ->setMaxResults($limit)
-            ->getQuery();
-        return $query->getResult();
+        return $this->getLatestQuery($limit)->getQuery()->getResult();
+    }
+
+    public function findLatestBySociety(Society $society, $limit)
+    {
+        $qb = $this->getLatestQuery($limit);
+        $qb->leftJoin('s.society', 'y')->andWhere(
+                    $qb->expr()->orX('y = :society', 'a.society = :society')
+            )->setParameter('society', $society)
+            ->getQuery()->getResult();
+    }
+
+    public function findLatestByVenue(Venue $venue, $limit)
+    {
+        $qb = $this->getLatestQuery($limit);
+        $qb->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+            ->getQuery()->getResult();
     }
 }

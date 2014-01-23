@@ -34,4 +34,16 @@ class NewsRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function getRecentByOrganisation(Organisation $org, $count)
+    {
+        $query = $this->createQueryBuilder('n')
+            ->orderBy('n.posted_at', 'DESC')
+            ->where('n.public = true')
+            ->andWhere('n.entity = :org')
+            ->setParameter('org', $org)
+            ->setMaxResults($count)
+            ->getQuery();
+        return $query->getResult();
+    }
+
 }

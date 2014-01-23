@@ -103,82 +103,36 @@
         })
     }
 
-    $.fn.camdramAutocomplete = function(options) {
-        var options = $.extend({
-            route: 'get_entities',
-            minLength: 2,
-            delay: 100,
-            select: function(item) {},
-            display: function(li, item) {},
-            open: function(e, ui) {},
-            close: function(e, ui) {},
-            appendTo: null
-        }, options);
-
-        var cache = {};
-
-        $(this).each(function() {
-            var $self = $(this);
-            var url = '';
-
-            $self.autocomplete({
-                minLength: options.minLength,
-                delay: options.delay,
-                source: function(req, resp) {
-                    var query = req.term;
-                    if (typeof cache[query] != 'undefined') {
-                        resp(cache[query]);
-                    }
-                    else {
-                        var url = Routing.generate(options.route, {_format: 'json', q: req.term, limit: 10, autocomplete: true});
-                        $.getJSON(url, function(data) {
-                            resp(data);
-                        })
-                    }
-
-                },
-                focus: function(event, ui) {
-                    $self.val( ui.item.name );
-                    return false;
-                },
-                select: function(event, ui) {
-                    $self.val( ui.item.name );
-                    options.select.apply($self, [ui.item]);
-                    return false;
-                },
-                appendTo: options.appendTo,
-                open: options.open,
-                close: options.close
-
-            }).data( "autocomplete" )._renderItem = function( ul, item ) {
-                ul.attr('id', 'main_search_autocomplete');
-                text = item.name
-
-                var li = $( "<li>" )
-                    .data( "item.autocomplete", item )
-                    .append( "<a>" + text + "</a>" )
-                    .addClass('autocomplete_item')
-                options.display(li, item);
-                return li.appendTo( ul );
-            };;
-        })
-    }
-
     $.fn.entitySearch = function(options) {
        var options = $.extend({
-           select: function(item) {
-               $(this).siblings('input[type=hidden]').val(item.id);
-           },
            placeholder: 'start typing to search'
-       }, options)
-       $(this).camdramAutocomplete(options)
+       }, options);
+        var $self = $(this);
 
-       $(this).each(function() {
-           $(this).attr('placeholder', options.placeholder)
-               .change(function() {
-                   $(this).siblings('input[type=hidden]').val('');
-               });
-       })
+        var tokenize = function(str) {
+            return $.trim(str).toLowerCase().replace(/[\(\)]/g, '').split(/[\s\-_]+/);
+        }
+
+        var filter = function(items) {
+            for (var i in items) {
+                items[i].tokens = tokenize(items[i].name).concat(tokenize(items[i].short_name));
+            }
+            return items;
+        }
+
+        $self.typeahead({
+           name: options.route,
+           valueKey: 'name',
+           prefetch: {url: Routing.generate(options.route, {_format: 'json'}), filter: filter},
+           remote: {url: Routing.generate(options.route, {q: 'QUERY'}), wildcard: 'QUERY', filter: filter}
+       }).on('typeahead:selected', function (object, datum) {
+            $self.parent().siblings('input[type=hidden]').val(datum.id);
+       });
+
+       $(this).change(function() {
+           $self.parent().siblings('input[type=hidden]').val('');
+       }).attr('placeholder', options.placeholder);
+
     }
 
     $.fn.entityCollection = function(options) {

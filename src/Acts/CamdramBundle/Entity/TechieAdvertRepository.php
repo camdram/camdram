@@ -40,17 +40,33 @@ class TechieAdvertRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findLatest($limit)
-    {
-        $query = $this->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+    private function getLatestQuery($limit) {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.show', 's')
             ->where('a.expiry >= CURRENT_DATE()')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.last_updated')
-            ->setMaxResults($limit)
-            ->getQuery();
-        return $query->getResult();
+            ->setMaxResults($limit);
+    }
+
+    public function findLatest($limit)
+    {
+        return $this->getLatestQuery($limit)->getQuery()->getResult();
+    }
+
+    public function findLatestBySociety(Society $society, $limit)
+    {
+        return $this->getLatestQuery($limit)
+            ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
+            ->getQuery()->getResult();
+    }
+
+    public function findLatestByVenue(Venue $venue, $limit)
+    {
+        return $this->getLatestQuery($limit)
+            ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+            ->getQuery()->getResult();
     }
 
 }

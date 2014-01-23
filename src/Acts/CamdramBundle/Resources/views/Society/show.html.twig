@@ -33,11 +33,31 @@
     </div><!-- twelve columns panel -->
 </div><!-- row -->
 <div class="row">
+    <div class="large-{% if society.hasSocialId %}6{% else %}12{% endif %} columns">
+        {{ render(controller('ActsCamdramBundle:Society:getVacancies', {identifier: society.slug}), {'strategy': 'esi'}) }}
+    </div>
+    {% if society.hasSocialId %}
+        <div class="large-6 columns">
+            <ul class="inline-list right">
+                {% if society.facebookId %}<li>
+                    <a href="{{ society.getFacebookUrl() }}" target="_blank">
+                        <img src="{{ asset('/bundles/actscamdramsecurity/images/facebook.png') }}" alt=""/> Facebook</a>
+                    </li>{% endif %}
+                {% if society.twitterId %}<li>
+                    <a href="{{ society.getTwitterUrl() }}" target="_blank">
+                        <img src="{{ asset('/bundles/actscamdramsecurity/images/twitter.png') }}" alt=""/> Twitter</a>
+                    </li>{% endif %}
+            </ul>
+            <h5>News</h5>
+            {{ render(controller('ActsCamdramBundle:Society:getNews', {identifier: society.slug}), {'strategy': 'esi'}) }}
+        </div>
+    {% endif %}
+</div>
+<div class="row">
     <div class="large-12 columns">
         {{ render(url('get_society_shows', {identifier: society.slug})) }}
     </div>
 </div>
-<br/>
 
 {% endblock %}
 
