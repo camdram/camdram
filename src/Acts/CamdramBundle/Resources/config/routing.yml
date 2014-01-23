@@ -24,6 +24,10 @@ acts_camdram_privacy:
     defaults:
         _controller: FrameworkBundle:Template:template
         template: 'ActsCamdramBundle:Static:privacy.html.twig'
+acts_camdram_roles:
+    type:     rest
+    prefix:   /
+    resource: "Acts\CamdramBundle\Controller\RoleController"
 acts_camdram_signinsheet:
     pattern: /shows/{slug}/signinsheet.{_format}
     defaults: { _controller: ActsCamdramBundle:Signinsheet:index, slug: ~, _format: html }

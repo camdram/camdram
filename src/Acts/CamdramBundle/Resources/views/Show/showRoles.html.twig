@@ -1,13 +1,20 @@
 {% spaceless %}
 {% set current_role = null %}
+<span id="{{ id }}">
 {%- for role in roles -%}
-    {% if role.role != current_role %}
-        {{ current_role is not null ? '<br/>' }}
+    {%- if editable or  (role.role != current_role) -%}
+        {{ current_role is not null ? '</div>' }}
+        <div {% if editable %}id="role_{{ role.id }}"{% endif %}>
+        {%- if editable -%}
+            <i class="fa fa-arrows-v"></i> 
+        {% endif %}
         {{ role.role }} - 
         {% set current_role = role.role %}
     {%- else -%}
         , 
-    {% endif %}
+    {%- endif -%}
     <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a>
 {%- endfor -%}
+</div>
 {% endspaceless %}
+

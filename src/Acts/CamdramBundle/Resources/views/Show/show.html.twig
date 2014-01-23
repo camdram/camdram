@@ -61,17 +61,17 @@
     {% endif %}
         <div class="{{ num_cols }} columns">
             <h3>Cast</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('cast')} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('cast'), id: 'sortable', editable: is_granted('EDIT', show)} %}
         </div>
     {% if show.getRolesByType('band')|length > 0 %}
         <div class="large-4 columns">
             <h3>Band</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('band')} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('band'), id: 'todo', editable: is_granted('EDIT', show)} %}
         </div>
     {% endif %}
         <div class="{{ num_cols }} columns end">
             <h3>Production Team</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('prod')} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('prod'), id: 'todo2', editable: is_granted('EDIT', show)} %}
         </div>
 </div>
 <br/>
@@ -83,4 +83,20 @@
     </div>
 </div>
 
+{% if is_granted('EDIT', show) %}
+<script>
+    $("#sortable").sortable({
+        axis: "y", 
+        items: "> div",
+        stop: function(event, ui) {
+            jQuery.ajax({
+                url: "{{ url('patch_roles_reorder') }}",
+                type: 'PATCH',
+                data: $(this).sortable('serialize')
+            });
+        }
+    });
+</script>
+{% endif %}
 {% endblock %}
+
