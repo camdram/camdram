@@ -11,7 +11,8 @@
 <div class="row">
 
     <div class="large-12 columns panel">
-    <div class="large-4 columns">
+    <div class="large-4 columns text-center">
+        {% if show.image %}<a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 205, 200) }}</a>{% endif %}
     </div>
     
     <div class="large-8 columns">
