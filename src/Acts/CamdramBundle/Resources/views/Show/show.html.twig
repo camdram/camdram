@@ -55,24 +55,25 @@
 </div>
 {% endif %}
 <div class="row">
-    {% if show.getRolesByType('band')|length > 0 %}
+    {% set display_band = (show.getRolesByType('band')|length > 0) or is_granted('EDIT', show) %}
+    {% if display_band == true %}
         {% set num_cols = "large-4" %}
     {% else %}
         {% set num_cols = "large-6" %}
     {% endif %}
         <div class="{{ num_cols }} columns">
             <h3>Cast</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('cast'), id: 'sortable', editable: is_granted('EDIT', show)} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'cast', id: 'sortable'} %}
         </div>
-    {% if show.getRolesByType('band')|length > 0 %}
+    {% if display_band == true %}
         <div class="large-4 columns">
             <h3>Band</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('band'), id: 'todo', editable: is_granted('EDIT', show)} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'band', id: 'todo'} %}
         </div>
     {% endif %}
         <div class="{{ num_cols }} columns end">
             <h3>Production Team</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('prod'), id: 'todo2', editable: is_granted('EDIT', show)} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'prod', id: 'todo2'} %}
         </div>
 </div>
 <br/>

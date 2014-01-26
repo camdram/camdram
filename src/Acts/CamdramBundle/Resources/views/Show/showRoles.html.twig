@@ -1,4 +1,6 @@
 {% spaceless %}
+{% set roles = show.getRolesByType(type) %}
+{% set editable = is_granted('EDIT', show) %}
 {% set current_role = null %}
 <span id="{{ id }}">
 {%- for role in roles -%}
@@ -15,6 +17,10 @@
     {%- endif -%}
     <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a>
 {%- endfor -%}
-</div>
+{{ roles|length > 0 ? '</div>' }}
+{% if editable %}
+    <br/>
+    {% render url('new_show_role', {identifier: show.slug, type: type}) %}
+{% endif %}
 {% endspaceless %}
 

@@ -11,6 +11,17 @@ use Doctrine\ORM\Query\Expr as Expr;
  */
 class RoleRepository extends EntityRepository
 {
+    /**
+     * Get the maximum order value for this show and role type.
+     */
+    public function getMaxOrderByShowType(Show $show, $type)
+    {
+        $role = $this->findOneBy(
+            array('type' => $type, 'show' => $show),
+            array('order' => 'DESC')
+            );
+        return $role->getOrder();
+    }
 
     public function getUpcomingByPerson(\DateTime $now, Person $person)
     {
