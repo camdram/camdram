@@ -31,7 +31,8 @@ class RoleController extends FOSRestController
         $role_ids = $request->request->get('role');
         $i = 0;
         $j = 0;
-        foreach ($repo->findById($role_ids) as $role) {
+        foreach ($role_ids as $id) {
+            $role = $repo->findOneById($id);
             $can_reorder = $this->get('camdram.security.acl.helper')->isGranted('EDIT', $role->getShow());
             if (($role->getOrder() != $i) && $can_reorder) {
                 $role->setOrder($i);
