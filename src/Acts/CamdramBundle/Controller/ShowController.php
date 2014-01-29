@@ -376,5 +376,30 @@ class ShowController extends AbstractRestController
         }
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
+
+    /**
+     * Remove a role from a show.
+     */
+    public function removeRoleAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('role');
+        $role = $em->getRepository('ActsCamdramBundle:Role')
+                    ->findOneById($id);
+        if ($role != null) {
+            $person = $role->getPerson();
+            $show->removeRole($role);
+            $em->remove($role);
+            $em->flush();
+            // Ensure the person is not an orphan.
+            if ($person->getRoles()->isEmpty()) {
+                $em->remove($person);
+                $em->flush();
+            }
+        }
+        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+    }
 }
 

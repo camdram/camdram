@@ -2,22 +2,23 @@
 {% set roles = show.getRolesByType(type) %}
 {% set editable = is_granted('EDIT', show) %}
 {% set current_role = null %}
-<span id="{{ id }}">
+<div id="{{ id }}">
 {%- for role in roles -%}
     {%- if editable or  (role.role != current_role) -%}
-        {{ current_role is not null ? '</div>' }}
+        {{ not loop.first ? '</div>' }}
         <div {% if editable %}id="role_{{ role.id }}"{% endif %}>
-        {%- if editable -%}
-            <i class="fa fa-arrows-v"></i> 
-        {% endif %}
         {{ role.role }} - 
         {% set current_role = role.role %}
     {%- else -%}
         , 
     {%- endif -%}
     <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a>
+    {% if editable %}
+        &nbsp;<i class="fa fa-arrows-v"></i>&nbsp;<span data-tooltip class="has-tip" title="Remove this role."><a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a></span>
+    {% endif %}
+    {{ loop.last ? '</div>' }}
 {%- endfor -%}
-{{ roles|length > 0 ? '</div>' }}
+</div>
 {% if editable %}
     <br/>
     {% render url('new_show_role', {identifier: show.slug, type: type}) %}
