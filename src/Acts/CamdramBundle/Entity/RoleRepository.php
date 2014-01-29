@@ -63,4 +63,21 @@ class RoleRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * Called before removing an entity. Ensure that there are no gaps in the 
+     * ordering value given to each role.
+     */
+    public function removeRoleFromOrder($role)
+    {
+        $query = $this->createQueryBuilder()
+            ->update('ActsCamdramBundle:Role', 'r')
+            ->set('r.order', 'r.order -1')
+            ->where('r.order > :removed_idx')
+            ->andWhere('r.type = :type')
+            ->setParameters(array('removed_idx' => $role->getOrder(), 'type' => $role->getType()))
+            ->getQuery();
+
+        return $query->execute();
+    }
 }
+

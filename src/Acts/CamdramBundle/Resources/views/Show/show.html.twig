@@ -63,17 +63,17 @@
     {% endif %}
         <div class="{{ num_cols }} columns">
             <h3>Cast</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'cast', id: 'sortable'} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'cast', id: 'sortable-cast'} %}
         </div>
     {% if display_band == true %}
         <div class="large-4 columns">
             <h3>Band</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'band', id: 'todo'} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'band', id: 'sortable-band'} %}
         </div>
     {% endif %}
         <div class="{{ num_cols }} columns end">
             <h3>Production Team</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'prod', id: 'todo2'} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'prod', id: 'sortable-prod'} %}
         </div>
 </div>
 <br/>
@@ -87,7 +87,7 @@
 
 {% if is_granted('EDIT', show) %}
 <script>
-    $("#sortable").sortable({
+    $("div[id|='sortable']").sortable({
         axis: "y", 
         items: "> div",
         stop: function(event, ui) {

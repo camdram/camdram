@@ -386,11 +386,12 @@ class ShowController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('role');
-        $role = $em->getRepository('ActsCamdramBundle:Role')
-                    ->findOneById($id);
+        $role_repo = $em->getRepository('ActsCamdramBundle:Role');
+        $role = $role_repo->findOneById($id);
         if ($role != null) {
             $person = $role->getPerson();
             $show->removeRole($role);
+            $role_repo->removeRoleFromOrder($role);
             $em->remove($role);
             $em->flush();
             // Ensure the person is not an orphan.
