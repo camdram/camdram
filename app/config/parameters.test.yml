@@ -1,17 +1,13 @@
 parameters:
-    database_driver:   pdo_mysql
+    database_driver:   pdo_sqlite
     database_host:     localhost
     database_port:     ~
-    database_name_orm:     camdram
-    database_user_orm:     camdram
-    database_pass_orm:     password
-    database_name_odm:     camdram
-    database_user_odm:     camdram
-    database_pass_odm:     password
-
-    test_database_name: camdram_test
-    test_database_user: travis
-    test_database_password: ~
+    database_name_orm:     ~
+    database_user_orm:     ~
+    database_pass_orm:     ~
+    database_name_odm:     ~
+    database_user_odm:     ~
+    database_pass_odm:     ~
 
     # PHPCD-ODM Settings
     phpcr_backend:
