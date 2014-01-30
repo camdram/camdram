@@ -11,7 +11,6 @@ before_script:
   - composer install
   - php app/console doctrine:phpcr:init --env=test
   - php app/console doctrine:phpcr:repository:init --env=test
-  - php app/console doctrine:phpcr:fixtures:load --env=test -n
 
 script:
     - ./runtests
