@@ -2,8 +2,10 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Acts\CamdramBundle\Entity\Application;
-use Acts\CamdramBundle\Entity\TechieAdvert;
+use Acts\CamdramBundle\Entity\Application,
+    Acts\CamdramBundle\Entity\Person,
+    Acts\CamdramBundle\Entity\Role,
+    Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramBundle\Event\CamdramEvents;
 use Acts\CamdramBundle\Event\TechieAdvertEvent;
 use Acts\CamdramBundle\Form\Type\ApplicationType;
@@ -13,10 +15,12 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramBundle\Form\Type\ShowType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
+use Gedmo\Sluggable\Util as Sluggable;
 
 /**
  * Class ShowController
@@ -303,4 +307,100 @@ class ShowController extends AbstractRestController
                 ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
         }
     }
+
+    /**
+     * Get a form for adding a single role to a show.
+     *
+     * @param $identifier
+     */
+    public function newRoleAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $role = new Role();
+        $role->setType($request->query->get('type'));
+        $form = $this->createForm(new RoleType(), $role, array(
+            'action' => $this->generateUrl('post_show_role', array('identifier' => $identifier))));
+
+        return $this->view($form, 200)
+            ->setData(array('show' => $show, 'form' => $form->createView()))
+            ->setTemplate('ActsCamdramBundle:Show:role-new.html.twig');
+    }
+
+    /**
+     * Create a new role associated with this show.
+     *
+     * Creates a new person if they're not already part of Camdram.
+     * @param $identifier
+     */
+    public function postRoleAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $role = new Role();
+        $form = $this->createForm(new RoleType(), $role);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            /* Try and find the person. TODO slug will be unique, but not the best
+             * way for searching. E.g. john-smith, john-smith1 may both be slugs.
+             * A better approach may be to do a case-insensitive search by name and
+             * choose the most recent record. Such behaviour is more than what the
+             * existing codebase does.
+             * TODO - Split on commas to allow adding multiple people for the same
+             *        role.
+             */
+            $name = trim($form->get('name')->getData());
+            $slug = Sluggable\Urlizer::urlize($name, '-');
+            $person_repo = $em->getRepository('ActsCamdramBundle:Person');
+            $person = $person_repo->findOneBySlug($slug);
+            if ($person == null) {
+                $person = New Person();
+                $person->setName($name);
+                $person->setSlug($slug);
+                $em->persist($person);
+            }
+            $role->setPerson($person);
+            $order = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')
+                        ->getMaxOrderByShowType($show, $role->getType());
+            $role->setOrder(++$order);
+            $role->setShow($show);
+            $em->persist($role);
+
+            $person->addRole($role);
+            $show->addRole($role);
+            $em->flush();
+        }
+        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+    }
+
+    /**
+     * Remove a role from a show.
+     */
+    public function removeRoleAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('role');
+        $role_repo = $em->getRepository('ActsCamdramBundle:Role');
+        $role = $role_repo->findOneById($id);
+        if ($role != null) {
+            $person = $role->getPerson();
+            $show->removeRole($role);
+            $role_repo->removeRoleFromOrder($role);
+            $em->remove($role);
+            $em->flush();
+            // Ensure the person is not an orphan.
+            if ($person->getRoles()->isEmpty()) {
+                $em->remove($person);
+                $em->flush();
+            }
+        }
+        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+    }
 }
+

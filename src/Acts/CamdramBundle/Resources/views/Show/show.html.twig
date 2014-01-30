@@ -11,7 +11,8 @@
 <div class="row">
 
     <div class="large-12 columns panel">
-    <div class="large-4 columns">
+    <div class="large-4 columns text-center">
+        {% if show.image %}<a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 205, 200) }}</a>{% endif %}
     </div>
     
     <div class="large-8 columns">
@@ -54,24 +55,25 @@
 </div>
 {% endif %}
 <div class="row">
-    {% if show.getRolesByType('band')|length > 0 %}
+    {% set display_band = (show.getRolesByType('band')|length > 0) or is_granted('EDIT', show) %}
+    {% if display_band == true %}
         {% set num_cols = "large-4" %}
     {% else %}
         {% set num_cols = "large-6" %}
     {% endif %}
         <div class="{{ num_cols }} columns">
             <h3>Cast</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('cast'), id: 'sortable', editable: is_granted('EDIT', show)} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'cast', id: 'sortable-cast'} %}
         </div>
-    {% if show.getRolesByType('band')|length > 0 %}
+    {% if display_band == true %}
         <div class="large-4 columns">
             <h3>Band</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('band'), id: 'todo', editable: is_granted('EDIT', show)} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'band', id: 'sortable-band'} %}
         </div>
     {% endif %}
         <div class="{{ num_cols }} columns end">
             <h3>Production Team</h3>
-            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {'roles': show.getRolesByType('prod'), id: 'todo2', editable: is_granted('EDIT', show)} %}
+            {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'prod', id: 'sortable-prod'} %}
         </div>
 </div>
 <br/>
@@ -85,7 +87,7 @@
 
 {% if is_granted('EDIT', show) %}
 <script>
-    $("#sortable").sortable({
+    $("div[id|='sortable']").sortable({
         axis: "y", 
         items: "> div",
         stop: function(event, ui) {
