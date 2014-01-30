@@ -13,7 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * Show
  *
- * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
+ * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="show_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  * @Serializer\ExclusionPolicy("all")
  */
@@ -276,6 +276,9 @@ class Show implements SearchableInterface
      */
     private $freebase_id;
 
+    /**
+     * @Serializer\Expose
+     */
     protected $entity_type = 'show';
 
     private $multi_venue;
@@ -807,9 +810,9 @@ class Show implements SearchableInterface
         $this->timestamp = new \DateTime;
     }
 
-    public function getType()
+    public function getEntityType()
     {
-        return 'show';
+        return $this->entity_type;
     }
 
     /**

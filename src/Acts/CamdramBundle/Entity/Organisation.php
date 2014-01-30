@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * Organisation
  *
- * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
+ * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="org_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="OrganisationRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
@@ -112,7 +112,7 @@ abstract class Organisation implements SearchableInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expires", type="date", nullable=false)
+     * @ORM\Column(name="expires", type="date", nullable=true)
      */
     private $expires;
 
@@ -120,11 +120,6 @@ abstract class Organisation implements SearchableInterface
      * @ORM\OneToMany(targetEntity="News", mappedBy="entity")
      */
     private $news;
-
-    public function __construct()
-    {
-        $this->expires = new \DateTime('0000-00-00');
-    }
 
     /**
      * Set short_name

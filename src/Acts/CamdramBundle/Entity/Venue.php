@@ -44,6 +44,9 @@ class Venue extends Organisation
      */
     private $shows;
 
+    /**
+     * @Serializer\Expose
+     */
     protected $entity_type = 'venue';
 
     /**
@@ -97,7 +100,6 @@ class Venue extends Organisation
      */
     public function __construct()
     {
-        parent::__construct();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -177,9 +179,9 @@ class Venue extends Organisation
         return new MapLocation($this->latitude, $this->longitude);
     }
 
-    public function getType()
+    public function getEntityType()
     {
-        return 'venue';
+        return $this->entity_type;
     }
 
 }

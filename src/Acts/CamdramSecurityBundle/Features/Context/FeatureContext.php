@@ -35,12 +35,4 @@ class FeatureContext extends BehatContext
         return $this->getMainContext()->getSubcontext('mink');
     }
 
-    /**
-     * @ScenarioEvent
-     */
-    public function beforeScenario()
-    {
-        $this->getSubcontext('mink')->getSession()->reset();
-    }
-
 }

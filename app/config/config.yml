@@ -56,7 +56,8 @@ doctrine:
                 port:     "%database_port%"
                 dbname:   "%database_name_orm%"
                 user:     "%database_user_orm%"
-                password: "%database_pass_orm%"        
+                password: "%database_pass_orm%"
+                path:     "%kernel.root_dir%/data/orm.db"
                 charset:  UTF8
                 mapping_types:
                     enum:       string
@@ -68,6 +69,7 @@ doctrine:
                 dbname:   "%database_name_odm%"
                 user:     "%database_user_odm%"
                 password: "%database_pass_odm%"
+                path:     "%kernel.root_dir%/data/odm.db"
                 charset:  UTF8
                 mapping_types:
                     enum:       string
@@ -75,24 +77,11 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-        #default_entity_manager:   default
-       # entity_managers:
-       #     default:
-       #         connection: default
-       #         mappings:
-       #             ActsCamdramBundle: ~
-      #  entity_managers:
-       #     default:
-       #         connection: default
-        #        mappings:
-         #       ActsCamdramBundle: ~ 
 
 doctrine_phpcr:
     session:
-        backend: %phpcr_backend%
-        workspace: %phpcr_workspace%
-        username: %phpcr_user%
-        password: %phpcr_pass%
+        backend: {type: doctrinedbal, connection: odm}
+        workspace: default
     # enable the ODM layer
     odm:
         auto_mapping: true
@@ -101,7 +90,7 @@ doctrine_phpcr:
 sonata_block:
     default_contexts: [cms]
 
-# Enable the DynamicRouter from the RoutingBundle    
+# Enable the DynamicRouter from the RoutingBundle
 cmf_routing:
     chain:
         routers_by_id:
@@ -189,7 +178,7 @@ acts_sphinx_real_time:
     indexes:
         show:
             fields: [name, description]
-            attributes: {name: string, description: string, type: string, slug: string, start_at: datetime, rank: int}
+            attributes: {name: string, description: string, entity_type: string, slug: string, start_at: datetime, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Show
@@ -204,7 +193,7 @@ acts_sphinx_real_time:
                 dict: keywords
         venue:
             fields: [name, description]
-            attributes: {name: string, short_name: string, description: string, slug: string,  type: string, rank: int}
+            attributes: {name: string, short_name: string, description: string, slug: string,  entity_type: string, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Venue
@@ -217,7 +206,7 @@ acts_sphinx_real_time:
                 dict: keywords
         society:
             fields: [name, short_name, description]
-            attributes: {name: string, short_name: string, description: string, slug: string, type: string, rank: int}
+            attributes: {name: string, short_name: string, description: string, slug: string, entity_type: string, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Society
@@ -230,7 +219,7 @@ acts_sphinx_real_time:
                 dict: keywords
         person:
             fields: [name, description]
-            attributes: {name: string, description: string, type: string, slug: string, rank: int}
+            attributes: {name: string, description: string, entity_type: string, slug: string, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Person
@@ -261,3 +250,4 @@ fos_js_routing:
 
 parameters:
     security.authentication.trust_resolver.class: Acts\ExternalLoginBundle\Security\Authentication\AuthenticationTrustResolver
+    test.client.class: Acts\CamdramBackendBundle\Test\Client

@@ -666,7 +666,6 @@ class User implements \Serializable, CamdramUserInterface
                 case -3: $roles[] = 'ROLE_EDITOR'; break;
             }
         }
-
         return $roles;
     }
 

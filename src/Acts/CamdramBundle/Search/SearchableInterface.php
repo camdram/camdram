@@ -3,7 +3,7 @@ namespace Acts\CamdramBundle\Search;
 
 interface SearchableInterface {
 
-    public function getType();
+    public function getEntityType();
 
     public function getId();
 

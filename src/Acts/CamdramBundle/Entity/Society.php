@@ -19,6 +19,9 @@ class Society extends Organisation
      */
     private $shows;
 
+    /**
+     * @Serializer\Expose
+     */
     protected $entity_type = 'society';
 
     /**
@@ -26,7 +29,6 @@ class Society extends Organisation
      */
     public function __construct()
     {
-        parent::__construct();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -63,9 +65,9 @@ class Society extends Organisation
         return $this->shows;
     }
 
-    public function getType()
+    public function getEntityType()
     {
-        return 'society';
+        return $this->entity_type;
     }
 
 }

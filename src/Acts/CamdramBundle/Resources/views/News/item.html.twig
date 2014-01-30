@@ -9,8 +9,8 @@
     {% endif %}
         <p>
             <strong>
-                {% if item.entity.type == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
-                    {% elseif item.entity.type == 'society' %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
+                {% if item.entity.entityType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
+                    {% elseif item.entity.entityType == 'society' %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
                     {{ item.entity.name }}</a> posted:</strong>
             {{ item.body | detect_links }}
         </p>
