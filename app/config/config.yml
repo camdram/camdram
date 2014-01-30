@@ -34,13 +34,11 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        [ ActsCamdramBundle ]
-    ruby: %ruby_bin%
     filters:
         cssrewrite:
             apply_to: '\.css$'
-        compass:
-            plugins: ['zurb-foundation']
-            bin: %ruby_bin_dir%/compass
+        scssphp:
+            import_paths: ["%kernel.root_dir%/../vendor/zurb/foundation/scss"]
             apply_to: "\.scss$"
 
 # Doctrine Configuration

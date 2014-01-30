@@ -35,6 +35,8 @@
         "behat/mink-extension": "1.1.*",
         "behat/mink-goutte-driver": "1.0.*",
         "acts/time-mock-bundle": "*",
+        "zurb/foundation": "4.*",
+        "leafo/scssphp": "0.0.9",
 
         "jackalope/jackalope-doctrine-dbal": "dev-master",
         "doctrine/phpcr-bundle": "1.0.*",
