@@ -10,11 +10,11 @@
     <hr/>
     {% for entity in result.data %}
         <div class="panel">
-            <h5> <div class="entity_type entity_{{ entity.type }}">{{ entity.type }}</div>
-                <a href="{% if entity.type == 'show' %}{{ path('get_show', {identifier: entity.slug}) }}
-    {%- elseif entity.type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
-    {%- elseif entity.type == 'society' %}{{ path('get_society', {identifier: entity.slug}) }}
-    {%- elseif entity.type == 'venue' %}{{ path('get_venue', {identifier: entity.slug}) }}
+            <h5> <div class="entity_type entity_{{ entity.entity_type }}">{{ entity.entity_type }}</div>
+                <a href="{% if entity.entity_type == 'show' %}{{ path('get_show', {identifier: entity.slug}) }}
+    {%- elseif entity.entity_type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
+    {%- elseif entity.entity_type == 'society' %}{{ path('get_society', {identifier: entity.slug}) }}
+    {%- elseif entity.entity_type == 'venue' %}{{ path('get_venue', {identifier: entity.slug}) }}
     {%- endif %}">{{ entity.name }}</a>
 
             </h5>
