@@ -21,12 +21,7 @@ monolog:
 
 # Assetic Configuration
 assetic:
-    variables:
-        env: [prod]
     filters:
-        uglifyjs:
-            bin: %node_bin_dir%/uglifyjs
+        closure:
             apply_to: "\.js$"
-        uglifycss:
-            bin: %node_bin_dir%/uglifycss
-            apply_to: "\.css$"
+            compression_level: ADVANCED_OPTIMIZATIONS

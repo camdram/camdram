@@ -37,11 +37,6 @@ web_profiler:
 swiftmailer:
     disable_delivery: true
 
-assetic:
-    variables:
-        env: [test]
-
-
 fos_js_routing:
     request_context_base_url: /app_test.php
 

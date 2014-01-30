@@ -43,8 +43,12 @@
         '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        {% javascripts vars=['env'] output='js/main.{env}.js'
-        'js/fos_js_routes.{env}.js'
+        {% if app.environment == 'prod' %}
+            <script src="{{ asset('js/fos_js_routes.js') }}"></script>
+        {% else %}
+            <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        {% endif %}
+        {% javascripts output='js/main.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/autocomplete.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}
