@@ -29,7 +29,7 @@
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
         "sabre/vobject": "2.0.*",
         "hoyes/symfony2-image-manager": "dev-master",
-        "camdram/sphinx-realtime-bundle": "dev-master",
+        "camdram/sphinx-realtime-bundle": "0.1.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "behat/symfony2-extension": "1.0.*",
         "behat/mink-extension": "1.1.*",

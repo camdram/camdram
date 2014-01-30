@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f70bd5d1262cb7a1a70d101ed40aa576",
+    "hash": "93bec21a91ed1ce1394e9fe993694ab4",
     "packages": [
         {
             "name": "acts/external-login-bundle",
@@ -589,17 +589,17 @@
         },
         {
             "name": "camdram/sphinx-realtime-bundle",
-            "version": "dev-master",
+            "version": "0.1.0",
             "target-dir": "Acts/SphinxRealTimeBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/sphinx-realtime-bundle.git",
-                "reference": "79d12152d56648fdc6e0a24f0a87ef15d56842c4"
+                "reference": "618c6324514631a79b14dd8478684367d40e2d70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/79d12152d56648fdc6e0a24f0a87ef15d56842c4",
-                "reference": "79d12152d56648fdc6e0a24f0a87ef15d56842c4",
+                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/618c6324514631a79b14dd8478684367d40e2d70",
+                "reference": "618c6324514631a79b14dd8478684367d40e2d70",
                 "shasum": ""
             },
             "require": {
@@ -630,7 +630,7 @@
                 "search",
                 "sphinx"
             ],
-            "time": "2013-11-17 00:29:04"
+            "time": "2014-01-26 16:35:02"
         },
         {
             "name": "doctrine/annotations",
@@ -5094,7 +5094,6 @@
         "doctrine/doctrine-migrations-bundle": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
         "hoyes/symfony2-image-manager": 20,
-        "camdram/sphinx-realtime-bundle": 20,
         "jackalope/jackalope-doctrine-dbal": 20,
         "symfony-cmf/routing-auto-bundle": 20
     },
