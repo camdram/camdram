@@ -339,8 +339,8 @@ class ShowController extends AbstractRestController
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
-        $role = new Role();
-        $form = $this->createForm(new RoleType(), $role);
+        $base_role = new Role();
+        $form = $this->createForm(new RoleType(), $base_role);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -350,29 +350,31 @@ class ShowController extends AbstractRestController
              * A better approach may be to do a case-insensitive search by name and
              * choose the most recent record. Such behaviour is more than what the
              * existing codebase does.
-             * TODO - Split on commas to allow adding multiple people for the same
-             *        role.
              */
-            $name = trim($form->get('name')->getData());
-            $slug = Sluggable\Urlizer::urlize($name, '-');
-            $person_repo = $em->getRepository('ActsCamdramBundle:Person');
-            $person = $person_repo->findOneBySlug($slug);
-            if ($person == null) {
-                $person = New Person();
-                $person->setName($name);
-                $person->setSlug($slug);
-                $em->persist($person);
-            }
-            $role->setPerson($person);
-            $order = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')
-                        ->getMaxOrderByShowType($show, $role->getType());
-            $role->setOrder(++$order);
-            $role->setShow($show);
-            $em->persist($role);
+            $names = explode(",", $form->get('name')->getData());
+            foreach ($names as $name) {
+                $role = clone $base_role;
+                $name = trim($name);
+                $slug = Sluggable\Urlizer::urlize($name, '-');
+                $person_repo = $em->getRepository('ActsCamdramBundle:Person');
+                $person = $person_repo->findOneBySlug($slug);
+                if ($person == null) {
+                    $person = New Person();
+                    $person->setName($name);
+                    $person->setSlug($slug);
+                    $em->persist($person);
+                }
+                $role->setPerson($person);
+                $order = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')
+                            ->getMaxOrderByShowType($show, $role->getType());
+                $role->setOrder(++$order);
+                $role->setShow($show);
+                $em->persist($role);
 
-            $person->addRole($role);
-            $show->addRole($role);
-            $em->flush();
+                $person->addRole($role);
+                $show->addRole($role);
+                $em->flush();
+            }
         }
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
