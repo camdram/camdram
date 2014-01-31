@@ -52,11 +52,12 @@ doctrine:
                 driver:   "%database_driver%"
                 host:     "%database_host%"
                 port:     "%database_port%"
-                dbname:   "%database_name_orm%"
-                user:     "%database_user_orm%"
-                password: "%database_pass_orm%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_pass%"
                 path:     "%kernel.root_dir%/data/orm.db"
                 charset:  UTF8
+                schema_filter: ~^(?!phpcr_)~
                 mapping_types:
                     enum:       string
             odm:
@@ -64,9 +65,9 @@ doctrine:
                 driver:   "%database_driver%"
                 host:     "%database_host%"
                 port:     "%database_port%"
-                dbname:   "%database_name_odm%"
-                user:     "%database_user_odm%"
-                password: "%database_pass_odm%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_pass%"
                 path:     "%kernel.root_dir%/data/odm.db"
                 charset:  UTF8
                 mapping_types:
