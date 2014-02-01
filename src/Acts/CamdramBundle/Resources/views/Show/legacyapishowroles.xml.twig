@@ -1,0 +1,5 @@
+    <item>
+      <name>{{ role.person.name }}</name>
+      <role>{{ role.role }}</role>
+      <url>{{ url('get_person', {identifier: role.person.slug, from_show: show.slug}) }}</url>
+    </item>
