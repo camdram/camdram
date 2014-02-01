@@ -1511,9 +1511,9 @@ class Show implements SearchableInterface
             }
             while($current_day <= $end_day) {
                 if ($current_day != $exclude) {
-		                $datetime = clone $current_day;
+                    $datetime = clone $current_day;
 		    
-		                $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
+                    $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
                     array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue ));
                 }
                 $current_day = clone $current_day;
