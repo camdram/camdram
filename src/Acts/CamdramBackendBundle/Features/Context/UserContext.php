@@ -4,11 +4,13 @@ namespace Acts\CamdramBackendBundle\Features\Context;
 
 use Acts\CamdramBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Behat\Behat\Context\BehatContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\TableNode;
 
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
@@ -18,39 +20,8 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
 /**
  * Feature context.
  */
-class UserContext extends BehatContext implements KernelAwareInterface
+class UserContext extends AbstractContext
 {
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    private $tables = array();
-
-    /**
-     * @return \Behat\MinkExtension\Context\MinkContext
-     */
-    private function getMinkContext()
-    {
-        return $this->getMainContext()->getSubcontext('mink');
-    }
-
-    private function getDbTools()
-    {
-        return $this->kernel->getContainer()->get('acts_camdram_backend.database_tools');
-    }
-
-    /**
-     * Sets HttpKernel instance.
-     * This method will be automatically called by Symfony2Extension ContextInitializer.
-     *
-     * @param KernelInterface $kernel
-     */
-    public function setKernel(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
     /**
      * @Given /^the user "([^"]*)" with the email "([^"]*)" and the password "([^"]*)"$/
      */
@@ -64,7 +35,7 @@ class UserContext extends BehatContext implements KernelAwareInterface
         $hashed_password = $encoder->encodePassword($password, $user->getSalt());
         $user->setPassword($hashed_password);
 
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $em = $this->getEntityManager();
 
         $em->persist($user);
         $em->flush();
@@ -76,7 +47,7 @@ class UserContext extends BehatContext implements KernelAwareInterface
      */
     public function createAdminUser($name, $email, $password)
     {
-        $em = $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $em = $this->getEntityManager();
 
         $user = $this->createUser($name, $email, $password);
 
@@ -104,29 +75,77 @@ class UserContext extends BehatContext implements KernelAwareInterface
 
 
     private $external_login_data = array(
-        'facebook' => array('name' => 'Test Facebook User', 'username' => 'test.facebook.user',
-            'id' => 1234, 'email' => 'test@facebook.com', 'picture' => 'http://test.com/facebook-profile-picture.png'),
         'google' => array('name' => 'Test Google User', 'username' => 'test.google.user',
             'id' => 5678, 'email' => 'test@gmail.com', 'picture' => 'http://test.com/google-profile-picture.png'),
         'raven' => array('name' => null, 'username' => 'abc123', 'id' => null, 'email' => 'abc123@cam.ac.uk', 'picture' => null),
     );
 
     /**
+     * @Given /^the external "([^"]*)" user:$/
+     */
+    public function createExternalUser($service, TableNode $table)
+    {
+        $external_user = new ExternalUser();
+        $external_user->setService(strtolower($service));
+
+        $em = $this->getEntityManager();
+
+        foreach ($table->getRowsHash() as $field => $value) {
+            switch ($field) {
+                case 'name' : $external_user->setName($value); break;
+                case 'id'   : $external_user->setRemoteId($value); break;
+                case 'email' : $external_user->setEmail($value); break;
+                case 'username' : $external_user->setUsername($value); break;
+                case 'picture' : $external_user->setProfilePictureUrl($value); break;
+                case 'user':
+                    $user = $em->getRepository('ActsCamdramBundle:User')->findOneByEmail($value);
+                    $external_user->setUser($user);
+                    break;
+            }
+        }
+        $em->persist($external_user);
+        $em->flush();
+    }
+
+
+    /**
      * @Given /^I am logged in using "([^"]*)" as "([^"]*)"$/
      * @When /^I log in using "([^"]*)" as "([^"]*)"$/
      */
-    public function iAmLoggedInUsing($service, $name)
+    public function iAmLoggedInUsing($service, $username)
     {
         $service = strtolower($service);
         $this->getMinkContext()->visit('/extauth/redirect/'.$service);
-        $data = $this->external_login_data[$service];
-        $this->getMinkContext()->fillField('ID', $data['id']);
-        $this->getMinkContext()->fillField('Username', $data['username']);
-        $this->getMinkContext()->fillField('Name', $name);
-        $this->getMinkContext()->fillField('Email', $data['email']);
-        $this->getMinkContext()->fillField('picture', $data['picture']);
+        $this->getMinkContext()->fillField('Username', $username);
         $this->getMinkContext()->pressButton('Submit');
     }
+
+    /**
+     * @Given /^I am logged in using "([^"]*)" as "([^"]*)" with name "([^"]*)"$/
+     * @When /^I log in using "([^"]*)" as "([^"]*)" with name "([^"]*)"$/
+     */
+    public function iLogInUsingAsWithName($service, $username, $name)
+    {
+        $service = strtolower($service);
+        $this->getMinkContext()->visit('/extauth/redirect/'.$service);
+        $this->getMinkContext()->fillField('Username', $username);
+        $this->getMinkContext()->fillField('Name', $name);
+        $this->getMinkContext()->pressButton('Submit');
+    }
+
+    /**
+     * @Given /^I am logged in using "([^"]*)" as "([^"]*)" with email "([^"]*)"$/
+     * @When /^I log in using "([^"]*)" as "([^"]*)" with email "([^"]*)"$/
+     */
+    public function iLogInUsingAsWithEmail($service, $username, $email)
+    {
+        $service = strtolower($service);
+        $this->getMinkContext()->visit('/extauth/redirect/'.$service);
+        $this->getMinkContext()->fillField('Username', $username);
+        $this->getMinkContext()->fillField('Email', $email);
+        $this->getMinkContext()->pressButton('Submit');
+    }
+
 
     /**
      * @Then /^I log out$/
