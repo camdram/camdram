@@ -50,6 +50,13 @@ Run the command below to generate a SQLite datastore which contains randomly-gen
 
     php app/console camdram:database:update
 
+Note: if you get errors at this step - or in the next step, you get a blank page from the webserver,
+you may need to set 
+
+  date.timezone = Europe/London
+
+in the php.ini file for the PHP Command Line. In Mint this is at /etc/php5/cli/php.ini
+
 5) Run the web server
 ---------------------------
 

@@ -18,12 +18,12 @@ class LegacyApiController extends Controller
      * @param null|string $slug
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request, $slug = null, $_format)
+    public function indexAction(Request $request, $slug = "", $id = "", $_format)
     {
         $repo= $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
-	if(is_numeric($slug))
+	if($id != "" && is_numeric($id) )
 	{
-	    $show = $repo->find($slug);
+	    $show = $repo->find($id);
 	}
         else
 	{
