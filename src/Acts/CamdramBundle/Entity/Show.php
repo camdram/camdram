@@ -1489,7 +1489,7 @@ class Show implements SearchableInterface
     Returns an array of performances, in ascending date order, with the following fields set:
         date     => Performance Date
         time     => Performance Time
-	datetime => Performance date and time
+        datetime => Performance date and time
         venue    => Venue (string)
 
     date, time and datetime are descended from php DateTime objects
@@ -1511,9 +1511,9 @@ class Show implements SearchableInterface
             }
             while($current_day <= $end_day) {
                 if ($current_day != $exclude) {
-		    $datetime = clone $current_day;
+		                $datetime = clone $current_day;
 		    
-		    $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
+		                $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
                     array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue ));
                 }
                 $current_day = clone $current_day;
