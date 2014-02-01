@@ -34,10 +34,7 @@ class AclProvider
         if ($token->getUser() instanceof ExternalUser) $user = $token->getUser()->getUser();
         elseif ($token->getUser() instanceof User) $user = $token->getUser();
 
-        if (!$user instanceof User) return false;
-
-        /** @var $user User */
-        $user = $token->getUser();
+        if (!isset($user) || !$user instanceof User) return false;
 
         return $this->repository->aceExists($user, $entity);
     }
