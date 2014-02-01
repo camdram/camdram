@@ -138,6 +138,7 @@ acts_camdram:
     search_provider: %search_provider%
     techies_advert_default_days: 15
     techies_advert_max_days: 40
+    data_dir: "%kernel.root_dir%/data"
 
 acts_social_api:
       http_client:
