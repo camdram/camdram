@@ -1,6 +1,6 @@
 {% spaceless %}
 {% set roles = show.getRolesByType(type) %}
-{% set editable = is_granted('EDIT', show) %}
+{% set editable = is_granted('EDIT', show, true) %}
 {% set current_role = null %}
 <div id="{{ id }}">
 {%- for role in roles -%}

@@ -2,6 +2,7 @@
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Acts\CamdramBundle\Entity\Organisation;
+use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\EntityRepository;
 use Acts\CamdramBundle\Entity\User;
 use Doctrine\ORM\Query\Expr;
@@ -9,9 +10,12 @@ use Doctrine\ORM\Query\Expr;
 class AccessControlEntryRepository extends EntityRepository
 {
 
-    public function aceExists(User $user, $entity)
+    public function aceExists(CamdramUserInterface $user, $entity)
     {
-        switch ($entity->getType()) {
+        if ($user instanceof ExternalUser) $user = $user->getUser();
+        if (!$user instanceof User) return false;
+
+        switch ($entity->getEntityType()) {
             case 'show': $type = 'show'; break;
             case 'society':case 'venue': $type = 'society'; break;
             default: $type = '';
