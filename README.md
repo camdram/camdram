@@ -1,35 +1,24 @@
-Camdram.net
+Camdram
 ========================
+
+The portal website for student theatre in Cambridge
 
 [![Build Status](https://travis-ci.org/camdram/camdram.png?branch=master)](https://travis-ci.org/camdram/camdram)
 
-The easiest way to get started with Camdram development is to use Vagrant 
-(http://www.vagrantup.com/), which automatically set up a correctly-configured
-virtual machine.
+Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. If you encounter any problems with the below, please create a Github issue or send an e-mail to websupport@camdram.net
 
 1) Install programs
 --------------------
 
-In addition to Vagrant, camdram uses NFS to set up a shared folder between the 
-two machines, and Git to mange to the source code.
-* [VirtualBox][1] - virtualizaion
-* Vagrant - for configuring development environments
-* Git - source code management
-* NFs 
+Use one of the following commands to install the necessary packages required to run Camdram
 
 ###Debian-based distributions, e.g. Ubuntu
 
-    $ sudo apt-get install vagrant nfs-kernel-server git-core
+    $ sudo apt-get install git-core php5 php5-cli curl php5-curl php5-intl php5-sqlite php-apc php5-gd
 
 ###RPM-based distributions, e.g. Fedora
 
-    $ sudo yum install VirtualBox nfs-utils git-core
-
-The current version of Fedora (19) doesn't include vagrant in its package repository.
-Download the latest version of Vagrant from the [downloads][2] page and install, e.g.
-
-    $ wget http://files.vagrantup.com/packages/a40522f5fabccb9ddabad03d836e120ff5d14093/vagrant_1.3.5_x86_64.rpm
-    $ sudo yum install vagrant_1.3.5_x86_64.rpm`
+    $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
 1) Create a checkout of the Camdram repository
 ----------------------------------------------
@@ -39,37 +28,55 @@ Create an account on Github, then 'fork' this repository using the link above.
 Run `git clone https://github.com/YOUR-GITHUB-USERNAME/camdram.git`, which will pull a copy of
 the code into a new folder called 'camdram'
 
-3) Start up the virtual machine
--------------------------------
-
-Navigate to the folder with the source code and start up the virtual machine
+Change into the newly created 'camdram' directory before proceeding:
 
     cd camdram
-    vagrant up
-    
-The initial set-up will take a little while (it has to download a ~300 Mb virtual
-machine image and install the necessary programs). When you've finished work for
-the time being, run `vagrant suspend` to suspend the virtual machine. `vagrant up`
-will start up the machine again.
 
-4) Add a line to /etc/hosts
+3) Install PHP dependencies
+-------------------------------
+
+Symfony (and therefore Camdram) uses Composer to download the PHP libraries it uses. First, install composer locally inside the Camdram source code folder:
+
+    curl -sS https://getcomposer.org/installer | php
+
+This downloads a file named 'composer.phar'. Run this to download all the PHP libaries:
+
+    php composer.phar install -n
+
+4) Create a database
 ---------------------------
 
-The virtual machine contains a virtual host which expects the hostname 
-`YOUR-USERNAME.camdram.net`. Add a line similar to the following to /etc/hosts to
-make this hostname point to the virtual machine.
+Run the command below to generate a SQLite datastore which contains randomly-generated sample data
 
-    `192.168.150.10         joe.camdram.net`
+    php app/console camdram:database:update
 
-5) Read the Wiki
+5) Run the web server
+---------------------------
+
+Run `php app/console server:run` to start a web server. You should then be able to visit [http://localhost:8000/app_dev.php](http://localhost:8000/app_dev.php) in your web browser
+
+The 'app_dev.php' in the URL launches Camdram in the 'development' environment, which is optimized for the frequent code changes that occur when doing development work. It also contains a useful toolbar at the foot of the page which contains, amongst other information, useful information about load times, memory usage and the number of SQL queries run.
+
+6) Read the Wiki
 ----------------
 
-[The Wiki][3] has various pieces of information about both the current and in-development 
+[The Wiki][1] has various pieces of information about both the current and in-development 
 versions of Camdram. Reading through those pages can give insight into the more esoteric
 parts of the system.
 
+7) Pull in other people's changes
+-------------------------------------
 
-6) Write some code
+At a later date, once your local repository has become out of sync with Gituhb (because other people have committed code), you can run the following commands to pull in other people's changes and update your checkout:
+
+    git pull
+    php composer.phar install
+    php app/console camdram:database:update
+
+This will pull in the latest code, update any changes to the dependencies and update the database. The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
+
+
+8) Write some code
 --------------------
 
  * The site uses the Symfony PHP framework - read the documentation at 
@@ -82,6 +89,13 @@ parts of the system.
    touch before starting on any significant projects to avoid wasted effort!
  * Visit http://try.github.io/ if you're not familiar with Git.
 
-[1]: http://www.virtualbox.org/
-[2]: http://downloads.vagrantup.com/
-[3]: http://github.com/camdram/camdram/wiki
+9) Commit some code
+----------------------
+
+ * Run `git add file1.php file2.php` for each file you wish to include in the commit
+ * Run `git commit` and enter a message describing the changes you have made
+ * Run `git push` to send your changes to Github
+
+It is good practice to include the relevant issue number (prefixed with a hash #) at the end of the commit message - this will cause your commit message to appear on the issue page on Github.
+
+[1]: http://github.com/camdram/camdram/wiki
