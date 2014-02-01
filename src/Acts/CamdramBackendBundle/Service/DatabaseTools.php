@@ -15,19 +15,12 @@ class DatabaseTools
         $this->em = $em;
     }
 
-    public function truncate($entity_name)
+    public function resetDatabase()
     {
-        $this->setForeignKeyChecks(false);
-        $metadata = $this->em->getMetadataFactory()->getMetadataFor($entity_name);
-        $platform = $this->em->getConnection()->getDatabasePlatform();
-        $this->em->getConnection()->executeUpdate("TRUNCATE " . $metadata->getQuotedTableName($platform));
-        $this->setForeignKeyChecks(true);
-    }
-
-    protected function setForeignKeyChecks($val)
-    {
-        $val = (int) $val;
-        $this->em->getConnection()->exec("SET FOREIGN_KEY_CHECKS=$val;");
+        $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
+        $tool = new \Doctrine\ORM\Tools\SchemaTool($this->em);
+        $tool->dropDatabase();
+        $tool->createSchema($metadatas);
     }
 
 }

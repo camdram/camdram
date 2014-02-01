@@ -133,7 +133,7 @@ Camdram.autocomplete.displayResults = function(query, items) {
 
             // Add in the text
             var link = $("<a/>")
-                .attr('href', Routing.generate('get_'+result.type, {identifier: result.slug}))
+                .attr('href', Routing.generate('get_'+result.entity_type, {identifier: result.slug}))
                 .addClass('resultText')
                 .appendTo(item)
                 .click(function(e) {
@@ -142,7 +142,7 @@ Camdram.autocomplete.displayResults = function(query, items) {
                 });
 
             // Add in the icon
-            switch (result.type) {
+            switch (result.entity_type) {
                 case 'show' : var icon_class = "fa fa-ticket"; break;
                 case 'venue' : var icon_class = "fa fa-building"; break;
                 case 'society' : var icon_class = "fa fa-briefcase"; break;
@@ -152,7 +152,7 @@ Camdram.autocomplete.displayResults = function(query, items) {
 
             $('<span/>').text(result.name).appendTo(link);
 
-            if (result.type == 'show') {
+            if (result.entity_type == 'show') {
                 var date = new Date(result.date * 1000);
                 if (date.getFullYear()) { //is it a valid date?
                     $('<em/>').text(' (' + Camdram.autocomplete.short_months[date.getMonth()] + ' ' + date.getFullYear() + ')')

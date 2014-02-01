@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramBundle\Search;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
@@ -23,20 +24,26 @@ class DoctrineProvider implements ProviderInterface
     }
 
 
-    public function executeAutocomplete($indexes, $query, $limit, array $filters = array(), array $orderBy = array())
+    public function executeAutocomplete($indexes, $search_query, $limit, array $filters = array(), array $orderBy = array())
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $repo \Doctrine\ORM\EntityRepository */
-        $repo = $em->getRepository('ActsCamdramBundle:'.ucfirst($repository));
+        $results = array();
+        foreach ($indexes as $index) {
+            $repo = $em->getRepository('ActsCamdramBundle:'.ucfirst($index));
 
-        $query = $repo->createQueryBuilder('e')
-            ->select('partial e.{id, name, description}')
-            ->where('e.name LIKE :input')
-            ->setParameter('input', '%'.$query.'%')
-            ->setMaxResults($limit)
-            ->getQuery();
+            $query = $repo->createQueryBuilder('e')
+                ->select('partial e.{id, name, description, slug}')
+                ->where('e.name LIKE :input')
+                ->setParameter('input', '%'.$search_query.'%')
+                ->setMaxResults($limit)
+                ->getQuery();
+            foreach ($query->getResult() as $result) {
+                $results[] = $result;
+            }
+        }
 
-        return $query->getResult();
+        return array_slice($results, 0, $limit);
     }
 
 

@@ -20,8 +20,7 @@ monolog:
             level: info
 
 assetic:
-    variables:
-        env: [dev]
+    use_controller: true
 
 swiftmailer:
     delivery_address: %mailer_delivery_address%

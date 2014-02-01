@@ -2,8 +2,10 @@
 namespace Acts\CamdramBundle\Search;
 
 use Acts\SphinxRealTimeBundle\Paginator\FantaPaginatorAdapter;
-use Acts\SphinxRealTimeBundle\Paginator\RawPaginatorAdapter;
+use Acts\SphinxRealTimeBundle\Paginator\RawPartialResults;
+use Acts\SphinxRealTimeBundle\Paginator\SphinxQLAdapter;
 use Foolz\SphinxQL\Expression;
+use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\PagerfantaInterface;
@@ -39,7 +41,7 @@ class  SphinxProvider implements ProviderInterface
 
         $client = $this->container->get('acts.sphinx_realtime.client.default');
 
-        $query = SphinxQL::forge()->select('id', 'name', new Expression("EXIST('start_at', 0) as date"), 'slug', 'type')
+        $query = SphinxQL::forge()->select('id', 'name', new Expression("EXIST('start_at', 0) as date"), 'slug', 'entity_type')
             ->from($indexes)->match('@relaxed','')->match('(name,short_name)', $q.'*')->limit($limit);
 
         foreach ($orderBy as $field => $direction) {
@@ -61,18 +63,19 @@ class  SphinxProvider implements ProviderInterface
      */
     public function executeTextSearch($indexes, $q, $offset, $limit, array $orderBy = array())
     {
-        $client = $this->container->get('acts.sphinx_realtime.client.default');
+        if (trim($q) == '') return new Pagerfanta(new ArrayAdapter(array()));
 
+        $client = $this->container->get('acts.sphinx_realtime.client.default');
         $query = SphinxQL::forge()->select()->from($indexes)->match('@relaxed','')
             ->limit($limit)->offset($offset)
             ->match('(name,short_name,description)', $q);
 
+
         foreach ($orderBy as $field => $direction) {
             $query->orderBy($field, $direction);
         }
-
-        $results = $client->query($query);
-        return $results;
+        $paginator = new Pagerfanta(new FantaPaginatorAdapter(new SphinxQLAdapter($client, $query)));
+        return $paginator;
     }
 
 }

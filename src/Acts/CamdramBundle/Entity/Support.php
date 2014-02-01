@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  * Support
  *
  * @ORM\Table(name="acts_support")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SupportRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Support

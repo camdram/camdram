@@ -2,20 +2,21 @@
 
 namespace Application\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration,
-    Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Auto-generated Migration: Please modify to your need!
+ * Auto-generated Migration: Please modify to your needs!
  */
-class Version20130102010947 extends AbstractMigration
+class Version20140131003444 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
 
-        $this->addSql("ALTER TABLE acts_termdates CHANGE firstweek firstweek INT NOT NULL, CHANGE lastweek lastweek INT NOT NULL");
+        //This is just to 'reset' the migrations
+        $this->addSql('DELETE FROM migration_versions where version < 20140111200737');
     }
 
     public function down(Schema $schema)
@@ -23,6 +24,5 @@ class Version20130102010947 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
 
-        $this->addSql("ALTER TABLE acts_termdates CHANGE firstweek firstweek TINYINT(1) NOT NULL, CHANGE lastweek lastweek TINYINT(1) NOT NULL");
     }
 }

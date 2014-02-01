@@ -6,8 +6,9 @@ $include-html-classes: false;
   @extend .panel;
 }
 
-#show-vacancies {
+.vacancies-panel {
   @include panel(rgb(255,240,153), 1em 2em, false);
+  border-radius:10px;
 }
 
 .admin-panel {

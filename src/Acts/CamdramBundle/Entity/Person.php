@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Person
  *
- * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
+ * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="people_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="PersonRepository")
  */
 class Person implements SearchableInterface
@@ -103,6 +103,9 @@ class Person implements SearchableInterface
      */
     private $aliases;
 
+    /**
+     * @Serializer\Expose
+     */
     protected $entity_type = 'person';
 
     /**
@@ -275,9 +278,9 @@ class Person implements SearchableInterface
         //Required by Doctrine as it can't handle irregular plurals...
     }
 
-    public function getType()
+    public function getEntityType()
     {
-        return 'person';
+        return $this->entity_type;
     }
 
     /**

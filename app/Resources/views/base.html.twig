@@ -18,7 +18,7 @@
         <title>{% block title %}{% endblock %} - Camdram</title>
 
 
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         {% stylesheets output='css/main.css'
         'bundles/actscamdram/stylesheets/app/*.scss'
         'bundles/actsdiary/css/diary.css'
@@ -36,14 +36,19 @@
         '@ActsCamdramBundle/Resources/public/javascripts/foundation/custom.modernizr.js'
         '@ActsCamdramBundle/Resources/public/javascripts/foundation/foundation.min.js'
         '@ActsCamdramBundle/Resources/public/javascripts/moment.js'
+        '@ActsCamdramBundle/Resources/public/javascripts/typeahead.js'
         '@ActsDiaryBundle/Resources/public/js/diary.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
         '@HoyesImageManagerBundle/Resources/public/js/jquery.uploadify.js'
         '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        {% javascripts vars=['env'] output='js/main.{env}.js'
-        'js/fos_js_routes.js'
+        {% if app.environment == 'prod' %}
+            <script src="{{ asset('js/fos_js_routes.js') }}"></script>
+        {% else %}
+            <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        {% endif %}
+        {% javascripts output='js/main.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/autocomplete.js'
         '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}

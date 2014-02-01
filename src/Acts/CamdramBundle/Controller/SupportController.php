@@ -88,9 +88,8 @@ class SupportController extends AbstractRestController
         $unassigned = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')->findBy(
                     array('state' => 'unassigned', 'support_id' => 0)
                     );
-        $others = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')->findBy(
-                    array('state' => 'assigned', 'support_id' => 0)
-                    );            
+        $others = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')
+                      ->getOtherUsersIssues($this->getUser());
 
         $view = $this->view(array('my_issues' => $mine, 
                                   'unassigned_issues' => $unassigned, 

@@ -1,0 +1,7 @@
+_main:
+    resource: routing.yml
+
+acts_camdram_security:
+    resource: "@ActsCamdramSecurityBundle/Resources/config/routing.yml"
+    prefix:   /auth
+    schemes:  ~

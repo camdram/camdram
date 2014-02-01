@@ -1,26 +1,11 @@
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     localhost
-    database_port:     ~
-    database_name_orm: camdram
-    database_user_orm: camdram
-    database_pass_orm: password
-    database_name_odm: jackalope
-    database_user_odm: jackalope
-    database_pass_odm: password
+    database_driver: pdo_sqlite
+    database_host: localhost
+    database_port: ~
+    database_name: ~
+    database_user: ~
+    database_pass: ~
 
-    test_database_name: camdram_test
-    test_database_user: camdram_test
-    test_database_password: password
-
-    # PHPCD-ODM Settings
-    phpcr_backend:
-        type: doctrinedbal
-        connection: odm
-    phpcr_workspace: default
-    phpcr_user: admin
-    phpcr_pass: admin
-    
     # During development send emails from your own gmail address e.g.
     # your_username@gmail.com.
     mailer_transport:  gmail
@@ -45,11 +30,5 @@ parameters:
     github_id:                  1234
     github_secret:              s3cr3t
 
-    baseurl: http://www.camdram.net
-
     map_center: [52.20531,0.12179]
     search_provider: doctrine
-
-    ruby_bin: /usr/bin/ruby
-    ruby_bin_dir: /usr/local/bin
-    node_bin_dir: /usr/local/bin

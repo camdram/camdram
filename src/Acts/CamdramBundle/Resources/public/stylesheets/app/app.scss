@@ -84,7 +84,7 @@ header {
     @media #{$medium} {
 
       left:50%;
-      margin-left:-$row-width / 2;
+      margin-left: $row-width * -0.5;
     }
   }
 }

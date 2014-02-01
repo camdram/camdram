@@ -5,7 +5,6 @@ namespace Acts\CamdramBackendBundle\Features\Context;
 use Acts\CamdramBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Behat\Behat\Context\BehatContext;
-use Behat\Behat\Event\ScenarioEvent;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
@@ -69,7 +68,6 @@ class UserContext extends BehatContext implements KernelAwareInterface
 
         $em->persist($user);
         $em->flush();
-        $this->tables['ActsCamdramBundle:User'] = true;
         return $user;
     }
 
@@ -90,25 +88,6 @@ class UserContext extends BehatContext implements KernelAwareInterface
         $ace->setCreatedAt(new \DateTime());
         $em->persist($ace);
         $em->flush();
-        $this->tables['ActsCamdramSecurityBundle:AccessControlEntry'] = true;
-    }
-
-    /**
-     * @AfterScenario @cleanUsers
-     */
-    public function cleanUsers(ScenarioEvent $event)
-    {
-        $this->tables['ActsCamdramBundle:User'] = true;
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function cleanDB(ScenarioEvent $event)
-    {
-        foreach ($this->tables as $table => $val) {
-            $this->getDbTools()->truncate($table);
-        }
     }
 
     /**
@@ -141,15 +120,12 @@ class UserContext extends BehatContext implements KernelAwareInterface
         $service = strtolower($service);
         $this->getMinkContext()->visit('/extauth/redirect/'.$service);
         $data = $this->external_login_data[$service];
-
         $this->getMinkContext()->fillField('ID', $data['id']);
         $this->getMinkContext()->fillField('Username', $data['username']);
         $this->getMinkContext()->fillField('Name', $name);
         $this->getMinkContext()->fillField('Email', $data['email']);
         $this->getMinkContext()->fillField('picture', $data['picture']);
-
         $this->getMinkContext()->pressButton('Submit');
-        $this->tables['ActsCamdramSecurityBundle:ExternalUser'] = true;
     }
 
     /**

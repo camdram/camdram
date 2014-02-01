@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Exception\ExpectationException;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
@@ -134,15 +135,23 @@ class SymfonyContext extends BehatContext implements KernelAwareInterface
             }
         }
 
-        throw new ExpectationException($error, $this->getSession());
+        throw new ExpectationException($error, $this->getMinkContext()->getSession());
     }
 
+
     /**
-     * @BeforeScenario @reset
+     * @BeforeScenario
      */
     public function reset(ScenarioEvent $event)
     {
         $this->getMinkContext()->getSession()->reset();
     }
 
+    /**
+     * @BeforeScenario
+     */
+    public function resetDb()
+    {
+        $this->kernel->getContainer()->get('acts_camdram_backend.database_tools')->resetDatabase();
+    }
 }

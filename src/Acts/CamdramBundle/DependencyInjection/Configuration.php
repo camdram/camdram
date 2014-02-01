@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('search_provider')->isRequired()->end()
                 ->scalarNode('techies_advert_default_days')->isRequired()->end()
                 ->scalarNode('techies_advert_max_days')->isRequired()->end()
+                ->scalarNode('data_dir')->isRequired()->end()
             ->end();
 
         return $treeBuilder;

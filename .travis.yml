@@ -9,11 +9,8 @@ before_script:
   - cp app/config/parameters.test.yml app/config/parameters.yml
   - composer selfupdate
   - composer install
-  - mysql -e 'CREATE DATABASE camdram_test;'
-  - php app/console doctrine:schema:update --force --env=test
   - php app/console doctrine:phpcr:init --env=test
   - php app/console doctrine:phpcr:repository:init --env=test
-  - php app/console doctrine:phpcr:fixtures:load --env=test -n
 
 script:
     - ./runtests

@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * Organisation
  *
- * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="slugs",columns={"slug"})})
+ * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="org_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="OrganisationRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
@@ -112,7 +112,7 @@ abstract class Organisation implements SearchableInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expires", type="date", nullable=false)
+     * @ORM\Column(name="expires", type="date", nullable=true)
      */
     private $expires;
 
@@ -120,11 +120,6 @@ abstract class Organisation implements SearchableInterface
      * @ORM\OneToMany(targetEntity="News", mappedBy="entity")
      */
     private $news;
-
-    public function __construct()
-    {
-        $this->expires = new \DateTime('0000-00-00');
-    }
 
     /**
      * Set short_name
@@ -359,12 +354,27 @@ abstract class Organisation implements SearchableInterface
         }
     }
 
+    public function getFacebookUrl()
+    {
+        return 'http://www.facebook.com/'.$this->getFacebookId();
+    }
+
+    public function getTwitterUrl()
+    {
+        return 'https://twitter.com/account/redirect_by_id/'.$this->getTwitterId();
+    }
+
     public function getSocialUrl($service)
     {
         switch ($service) {
-            case 'facebook': return 'http://www.facebook.com/'.$this->getFacebookId();
-            case 'twitter': return 'twitter.com/intent/user?user_id='.$this->getTwitterId();
+            case 'facebook': return $this->getFacebookUrl();
+            case 'twitter': return $this->getTwitterUrl();
         }
+    }
+
+    public function hasSocialId()
+    {
+        return $this->getFacebookId() || $this->getTwitterId();
     }
 
     /**

@@ -1,18 +1,16 @@
 imports:
     - { resource: config.yml }
 
+
 doctrine:
     dbal:
-      default_connection: default
-      connections:
-          default:
-              dbname:   "%test_database_name%"
-              user:     "%test_database_user%"
-              password: "%test_database_password%"
-          odm:
-              dbname:   "%test_database_name%"
-              user:     "%test_database_user%"
-              password: "%test_database_password%"
+        default_connection: default
+        connections:
+            default:
+                dbname: camdram
+                driver: pdo_sqlite
+                path: ~
+                memory: true
 
 monolog:
     handlers:
@@ -25,6 +23,7 @@ monolog:
             level: info
 
 framework:
+    router:   { resource: "%kernel.root_dir%/config/routing_test.yml" }
     test: ~
     session:
         storage_id: session.storage.mock_file
@@ -37,10 +36,6 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
-
-assetic:
-    variables:
-        env: [test]
 
 fos_js_routing:
     request_context_base_url: /app_test.php

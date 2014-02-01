@@ -1,0 +1,12 @@
+#organisation-news {
+  max-height:400px;
+  overflow-y:scroll;
+  border:1px solid #ccc;
+  font-size:0.9em;
+  padding:0.5em;
+  clear:both;
+
+  .row {
+    margin:0;
+  }
+}

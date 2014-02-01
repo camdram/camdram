@@ -1,0 +1,4 @@
+{% extends 'ActsCamdramBundle:Organisation:vacancies.html.twig' %}
+{% block vacancies_panel_title %}
+    <h5>Get involved with shows at {% if requires_article(venue.name) %}the{% endif %} {{ venue.name }}:</h5>
+{% endblock %}
