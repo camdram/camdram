@@ -45,7 +45,7 @@ class SecurityUtils
         return array();
     }
 
-    public function isGranted($attributes, $object, $fully_authenticated = true)
+    public function isGranted($attributes, $object=null, $fully_authenticated = true)
     {
         return $this->container->get('camdram.security.acl.helper')->isGranted($attributes, $object, $fully_authenticated);
     }

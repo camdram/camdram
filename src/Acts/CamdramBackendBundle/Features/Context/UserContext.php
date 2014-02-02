@@ -155,4 +155,14 @@ class UserContext extends AbstractContext
         $this->getMinkContext()->visit('/logout');
     }
 
+    /**
+     * @Given /^I delete the session cookie$/
+     */
+    public function deleteTheSessionCookie()
+    {
+        $cookies = $this->getMinkContext()->getSession()->getDriver()->getClient()->getCookieJar();
+        $cookies->expire('MOCKSESSID');
+    }
+
+
 }
