@@ -42,6 +42,10 @@ Symfony (and therefore Camdram) uses Composer to download the PHP libraries it u
 This downloads a file named 'composer.phar'. Run this to download all the PHP libaries:
 
     php composer.phar install -n
+    
+If this generates an error `unable to open database file`, check if the subdirectory app/data exists.  If not, create it (`mkdir app/data`).  
+
+If app/data/orm.db and app/data/odm.db already exist, delete them or chown them to your user and try again.
 
 4) Create a database
 ---------------------------
