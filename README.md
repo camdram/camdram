@@ -20,7 +20,7 @@ Use one of the following commands to install the necessary packages required to 
 
     $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
-1) Create a checkout of the Camdram repository
+2) Create a checkout of the Camdram repository
 ----------------------------------------------
 
 Create an account on Github, then 'fork' this repository using the link above.
