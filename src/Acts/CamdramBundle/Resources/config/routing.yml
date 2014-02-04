@@ -32,11 +32,4 @@ acts_camdram_signinsheet:
     pattern: /shows/{slug}/signinsheet.{_format}
     defaults: { _controller: ActsCamdramBundle:Signinsheet:index, slug: ~, _format: html }
     requirements: { _format: (csv|html), _method: GET }
-acts_camdram_legacyapi:
-    pattern: /legacyapi/show/slug/{slug}.{_format}
-    defaults: {_controller: ActsCamdramBundle:LegacyApi:index, slug: "", _format: xml, id: 0}
-    requirements: { _format: (xml), _method: GET }
-acts_camdram_legacyapi_byid:
-    pattern: /legacyapi/show/id/{id}.{_format}
-    defaults: {_controller: ActsCamdramBundle:LegacyApi:index, slug: "", _format: xml, id: 0}
-    requirements: { _format: (xml), _method: GET }
+
