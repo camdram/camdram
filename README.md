@@ -66,7 +66,9 @@ The 'app_dev.php' in the URL launches Camdram in the 'development' environment, 
 
 [The Wiki][1] has various pieces of information about both the current and in-development 
 versions of Camdram. Reading through those pages can give insight into the more esoteric
-parts of the system. In particular, the following wiki pages detail how to create a server set-up that's more similar to the live version of Camdram:
+parts of the system.
+
+The following wiki pages detail how to create a server set-up that's more similar to the live version of Camdram:
 
  * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
  * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
