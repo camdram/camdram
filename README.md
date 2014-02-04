@@ -14,13 +14,13 @@ Use one of the following commands to install the necessary packages required to 
 
 ###Debian-based distributions, e.g. Ubuntu
 
-    $ sudo apt-get install git-core php5 php5-cli curl php5-curl php5-intl php5-sqlite php-apc php5-gd
+    $ sudo apt-get install git-core php5 php5-cli curl php5-curl php5-intl php5-sqlite php-apc php5-gd php5-json
 
 ###RPM-based distributions, e.g. Fedora
 
     $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
-1) Create a checkout of the Camdram repository
+2) Create a checkout of the Camdram repository
 ----------------------------------------------
 
 Create an account on Github, then 'fork' this repository using the link above.
@@ -42,6 +42,10 @@ Symfony (and therefore Camdram) uses Composer to download the PHP libraries it u
 This downloads a file named 'composer.phar'. Run this to download all the PHP libaries:
 
     php composer.phar install -n
+    
+If this generates an error `unable to open database file`, check if the subdirectory app/data exists.  If not, create it (`mkdir app/data`).  
+
+If app/data/orm.db and app/data/odm.db already exist, delete them or chown them to your user and try again.
 
 4) Create a database
 ---------------------------

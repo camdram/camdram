@@ -38,11 +38,11 @@
         "zurb/foundation": "4.*",
         "leafo/scssphp": "0.0.9",
 
-        "jackalope/jackalope-doctrine-dbal": "dev-master",
+        "jackalope/jackalope-doctrine-dbal": "1.0.*",
         "doctrine/phpcr-bundle": "1.0.*",
         "doctrine/phpcr-odm": "1.0.*",
         "symfony-cmf/symfony-cmf": "1.0.*",
-        "symfony-cmf/routing-auto-bundle": "dev-master"
+        "symfony-cmf/routing-auto-bundle": "1.0.*"
     },
     "scripts": {
         "post-install-cmd": [

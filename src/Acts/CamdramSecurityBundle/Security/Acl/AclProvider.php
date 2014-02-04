@@ -2,6 +2,7 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
 use Acts\CamdramBundle\Entity\Organisation;
+use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Doctrine\ORM\EntityManager;
 
@@ -30,10 +31,10 @@ class AclProvider
 
     public function isOwner(TokenInterface $token, $entity)
     {
-        if (!$token->getUser() instanceof User) return false;
+        if ($token->getUser() instanceof ExternalUser) $user = $token->getUser()->getUser();
+        elseif ($token->getUser() instanceof User) $user = $token->getUser();
 
-        /** @var $user User */
-        $user = $token->getUser();
+        if (!isset($user) || !$user instanceof User) return false;
 
         return $this->repository->aceExists($user, $entity);
     }

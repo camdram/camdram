@@ -42,6 +42,17 @@
                         <input type="password" id="form_password" name="password" required="required"{% if error %} class="error"{% endif %} />
                     </div>
                 </div>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <input type="hidden" name="_remember_me" value="1"/>
+                {% else %}
+                <div class="row">
+                    <div class="large-9 columns large-offset-3">
+                        <label for=form_remember_me><input type="checkbox" id="form_remember_me" name="_remember_me" value="1" />
+                            Remember who I am on this computer
+                        </label>
+                    </div>
+                </div>
+                {% endif %}
 
                 <div class="row">
                     <div class="large-6 columns">

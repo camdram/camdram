@@ -14,7 +14,7 @@
     <div class="large-4 columns text-center">
         {% if show.image %}<a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 205, 200) }}</a>{% endif %}
     </div>
-    
+
     <div class="large-8 columns">
         {% if show.society %}
             <p><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
@@ -77,10 +77,17 @@
         </div>
 </div>
 <br/>
+{% if not is_granted('EDIT', show, true) and is_granted('EDIT', show, false) %}
 <div class="row">
-    <div class="12 columns">
-        <p>If you're involved in the show you may want to use our 
-        <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug }) }}">sign in sheet</a>. 
+    <div class="large-12 columns">
+        <p><a href="{{ path('get_show_roles', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in again to edit roles on this show</a></p>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="large-12 columns">
+        <p>If you're involved in the show you may want to use our
+        <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug }) }}">sign in sheet</a>.
         You can also download a version in <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug, '_format': 'csv' }) }}">CSV format</a>.</p>
     </div>
 </div>
@@ -88,7 +95,7 @@
 {% if is_granted('EDIT', show) %}
 <script>
     $("div[id|='sortable']").sortable({
-        axis: "y", 
+        axis: "y",
         items: "> div",
         stop: function(event, ui) {
             jQuery.ajax({

@@ -27,7 +27,7 @@
                                 {%- elseif week.startAt == current_week.endAt -%}
                                     Next week
                                 {%- else -%}
-                                    {{ week.startAt | date_modify("+1 day") | date('j M') }} - {{ week.endAt | date('j M') }}
+                                    {{ week.startAt | date('j M') }} - {{ week.endAt | date_modify("-1 day") | date('j M') }}
                                 {%- endif -%}
                             </em>
                         </a>

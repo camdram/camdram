@@ -308,6 +308,13 @@ class ShowController extends AbstractRestController
         }
     }
 
+    public function getRolesAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        return $this->getAction($identifier);
+    }
+
     /**
      * Get a form for adding a single role to a show.
      *
@@ -316,7 +323,7 @@ class ShowController extends AbstractRestController
     public function newRoleAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
 
         $role = new Role();
         $role->setType($request->query->get('type'));

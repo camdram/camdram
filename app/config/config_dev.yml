@@ -28,3 +28,5 @@ swiftmailer:
 fos_js_routing:
     request_context_base_url: /app_dev.php
 
+acts_external_login:
+    test: %external_login_test_mode%
