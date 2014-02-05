@@ -59,7 +59,7 @@ Run the command below to generate a SQLite datastore which contains randomly-gen
 
 Run `php app/console server:run` to start a web server. You should then be able to visit [http://localhost:8000/app_dev.php](http://localhost:8000/app_dev.php) in your web browser
 
-The 'app_dev.php' in the URL launches Camdram in the 'development' environment, which is optimized for the frequent code changes that occur when doing development work. It also contains a useful toolbar at the foot of the page which contains, amongst other information, useful information about load times, memory usage and the number of SQL queries run.
+The 'app_dev.php' in the URL launches Camdram in the 'development' environment, which is optimized for the frequent code changes that occur when doing development work. It also contains a useful toolbar at the foot of the page which contains, amongst other information, useful information about load times, memory usage and the number of SQL queries run. [Read more about Symfony's environments here](https://github.com/camdram/camdram/wiki/The-Symfony-environments), including information about how to use the 'production' environment.
 
 6) Read the Wiki
 ----------------
@@ -67,6 +67,15 @@ The 'app_dev.php' in the URL launches Camdram in the 'development' environment, 
 [The Wiki][1] has various pieces of information about both the current and in-development 
 versions of Camdram. Reading through those pages can give insight into the more esoteric
 parts of the system.
+
+The following wiki pages detail how to create a server set-up that's more similar to the live version of Camdram:
+
+ * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
+ * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
+ * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
+ * [Sphinx setup guide](https://github.com/camdram/camdram/wiki/Sphinx%20setup%20guide)
+
+You can also [read information about Camdram's suite of tests](https://github.com/camdram/camdram/wiki/Running-and-creating-tests)
 
 7) Pull in other people's changes
 -------------------------------------
