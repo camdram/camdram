@@ -17,7 +17,7 @@
             until the deadline date.</p>
         </div>
 
-        <form action="{{ path("put_show_techie_advert", {identifier: form.vars.value.show.slug, _method: 'put'}) }}" method="post">
+        <form action="{{ path("put_show_application", {identifier: form.vars.value.show.slug, _method: 'put'}) }}" method="post">
             {{ include('ActsCamdramBundle:Show:application-form.html.twig') }}
             <div class="text-right">
                 <input type="submit" value="Edit" class="button"/>

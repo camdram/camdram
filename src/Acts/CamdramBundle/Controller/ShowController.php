@@ -165,7 +165,7 @@ class ShowController extends AbstractRestController
             $this->get('event_dispatcher')->dispatch(CamdramEvents::TECHIE_ADVERT_EDITED, new TechieAdvertEvent($form->getData()));
             $em->persist($form->getData());
             $em->flush();
-            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+            return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));
         }
         else {
             return $this->view($form, 400)
@@ -241,7 +241,7 @@ class ShowController extends AbstractRestController
 
     /**
      * @param $identifier
-     * @Rest\Put("/shows/{identifier}/techie-advert")
+     * @Rest\Put("/shows/{identifier}/application")
      */
     public function putApplicationAction(Request $request, $identifier)
     {
@@ -255,7 +255,7 @@ class ShowController extends AbstractRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
-            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+            return $this->routeRedirectView('edit_show_application', array('identifier' => $show->getSlug()));
         }
         else {
             return $this->view($form, 400)
