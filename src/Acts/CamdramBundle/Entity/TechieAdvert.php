@@ -104,6 +104,8 @@ class TechieAdvert
     public function __construct()
     {
         $this->setLastUpdated(new \DateTime);
+        $this->setDeadlineTime(new \DateTime('00:00'));
+        $this->setExpiry(new \DateTime('+10 days'));
     }
 
 
