@@ -1,12 +1,27 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
+{% set current_navigation_id = 'shows' %}
 {% block title %}Shows{% endblock %}
 
 {% block body %}
 
-    <div class="row">
-
+<div class="row">
+    <div class="large-12 columns">
+        <h2>Shows</h2>
+        <h5>New on Camdram</h5>
+        <ul class="large-block-grid-2" id="venues_list">
+        {% for show in result.data %}
+            <li>
+                <div class="panel">
+                    <h5><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h5>
+                    <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
+                    <p>{{ show.description | truncate(200) | strip_new_lines | camdram_markdown }}</p>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
     </div>
+</div>
 
 {% endblock %}
 

@@ -12,6 +12,16 @@ use Doctrine\ORM\Query\Expr as Expr;
 class ShowRepository extends EntityRepository
 {
 
+    public function selectAll()
+    {
+        //Need to add a 'created_at' field...
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->orderBy('s.id', 'desc');
+        return $qb;
+    }
+
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)')

@@ -242,7 +242,7 @@ abstract class AbstractRestController extends FOSRestController
         }
         else {
             $repo = $this->getRepository();
-            $qb = $repo->createQueryBuilder('e');
+            $qb = $repo->selectAll()->getQuery();
             $adapter = new DoctrineORMAdapter($qb);
             $data = new Pagerfanta($adapter);
         }
