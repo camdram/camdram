@@ -39,7 +39,11 @@
         <h4>Latest email</h4>
     </div>
 </div>
+    {%- if issue.children is empty -%}
         {{ show_issue.email(issue) }}
+    {%- else -%}
+        {{ show_issue.email(issue.children[0]) }}
+    {%- endif -%}
 <div class="row">
     <div class="large-12 columns">
         <h4>Post reply to this issue</h4>
@@ -64,9 +68,12 @@
         {%- endif -%}
     </div>
 </div>
-    {% for child in issue.children %}
+    {% for child in issue.children[1:] %}
         {{ show_issue.email(child) }}
     {% endfor %}
+    {% if issue.children is not empty %}
+        {{ show_issue.email(issue) }}
+    {% endif %}
 <div class="row">
     <div class="large-12 columns">
         <a href="{{ path('get_issues') }}" class="button small"><i class="fa fa-arrow-left"></i> Back to issue list</a>
