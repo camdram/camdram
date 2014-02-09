@@ -23,12 +23,12 @@ class ApiShow
     /**
      * @Exclude
      */
-    private $controller;
+    private $router;
 
-    public function  __construct($show, $controller)
+    public function  __construct($show, $router)
     {
-	$this->show = $show;
-	$this->controller  = $controller;
+        $this->show = $show;
+        $this->router  = $router;
     }
 
     /**
@@ -88,7 +88,7 @@ class ApiShow
 
     public function getCamdramshowurl()
     {
-        return $this->controller->generateUrl('get_show', array('identifier' =>  $this->show->getSlug()), true);
+        return $this->router->generate('get_show', array('identifier' =>  $this->show->getSlug()), true);
     }
 
 
@@ -120,11 +120,11 @@ class ApiShow
    
     public function getPerformances()
     {
-	$callback = function($value)
-	{
-	    return new ApiPerformance($value, $this->controller);	  
-	};
-	return array_map($callback, $this->show->getAllPerformances());
+        $callback = function($value)
+        {
+            return new ApiPerformance($value, $this->controller);         
+        };
+        return array_map($callback, $this->show->getAllPerformances());
     }
 
     /**
@@ -163,10 +163,10 @@ class ApiShow
 
     private function wrapRoles($type)
     {
-	$callback = function($value)
-	{
-	    return new ApiRole($value, $this->show, $this->controller);
-	};
+        $callback = function($value)
+        {
+            return new ApiRole($value, $this->show, $this->router);
+        };
         return array_map($callback, $this->show->getRolesByType($type)->toArray(false));
     }
     

@@ -1,11 +1,7 @@
 acts_camdram_legacy_homepage:
     path:  /hello/{name}
     defaults: { _controller: ActsCamdramLegacyBundle:Default:index }
-acts_camdram_legacyapi_show_byid:
-    pattern: /api/show/byid/{id}.{format}
-    defaults: { _controller: ActsCamdramLegacyBundle:LegacyApi:show, slug: "", _format: xml }
-    requirements: { _format: (xml), _method: GET }
-acts_camdram_legacyapi_show_byslug:
-    pattern: /api/show/byslug/{slug}.{format}
-    defaults: { _controller: ActsCamdramLegacyBundle:LegacyApi:show, id: null, _format: xml }
-    requirements: { _format: (xml), _method: GET }
+acts_camdram_legacyapi_show:
+    pattern: /showdata.php
+    defaults: { _controller: ActsCamdramLegacyBundle:LegacyApi:show, type: xml }
+    requirements: { type: (xml), _method: GET }

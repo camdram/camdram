@@ -23,18 +23,18 @@ class ApiRole
     /**
      * @Exclude
      */
-    private $controller;
+    private $router;
 
     /**
      * @Exclude
      */
     private $show;
 
-    public function  __construct($role, $show, $controller)
+    public function  __construct($role, $show, $router)
     {
 	$this->role = $role;
 	$this->show = $show;
-	$this->controller  = $controller;
+	$this->router  = $router;
     }
 
     /**
@@ -64,7 +64,7 @@ class ApiRole
     
     public function getUrl()
     {
-	return $this->controller->generateUrl('get_person', array('identifier' => $this->role->getPerson()->getSlug(), 'fromShow' => $this->show->getSlug()), true);
+	return $this->router->generate('get_person', array('identifier' => $this->role->getPerson()->getSlug(), 'fromShow' => $this->show->getSlug()), true);
     }	
 
 }
