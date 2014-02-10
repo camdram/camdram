@@ -20,6 +20,11 @@
 
 <div class="row">
     <div class="large-12 columns">
+        <a href="{{ path('get_issues') }}" class="button small"><i class="fa fa-arrow-left"></i> Back to issue list</a>
+    </div>
+</div>
+<div class="row">
+    <div class="large-12 columns">
 
         <h4>Viewing issue {{ issue.id }}</h4>
         <p>State: {{ issue.state }}. 
@@ -78,7 +83,6 @@
     <div class="large-12 columns">
         <a href="{{ path('get_issues') }}" class="button small"><i class="fa fa-arrow-left"></i> Back to issue list</a>
     </div>
-
 </div>
 
 {% endblock %}
