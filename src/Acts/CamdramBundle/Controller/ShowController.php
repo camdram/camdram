@@ -93,6 +93,22 @@ class ShowController extends AbstractRestController
     }
 
     /**
+     * Render the Admin Panel
+     */
+    public function adminPanelAction($show)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $admins = $em->getRepository('ActsCamdramBundle:User')->getEntityOwners($show);
+        $pending_admins = $em->getRepository('ActsCamdramBundle:PendingAccess')->findByResource($show);
+        return $this->render(
+            'ActsCamdramBundle:Show:admin-panel.html.twig',
+            array('show' => $show,
+                  'admins' => $admins,
+                  'pending_admins' => $pending_admins)
+            );
+    }
+
+    /**
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/techie-advert/new")
      */

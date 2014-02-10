@@ -38,6 +38,30 @@
     list below. If multiple people have the same role, add their names separated by a 
     comma. Drag and drop a person's name to change the order the roles are displayed
     in.</p>
+    <p>Currently the following people have access to this resource <strong>specifically</strong>
+    (note that administrators for the society, venue, or Camdram are not listed here).<br/>
+    {% if admins is empty %}
+        There are no administrators for this show.
+    {% endif %} 
+    {% for admin in admins %}
+        {%- if admin.person -%}
+            <a href="{{ path('get_person', {identifier: admim.person.slug}) }}">{{ admin.name }}</a>
+        {%- else -%}
+            {{ admin.name }}
+        {%- endif -%}
+        {{- not loop.last ? ',' }}
+    {% endfor %}
+    </p>
+    <p>
+    {% if pending_admins is empty %}
+        There are no pending administrators for this show.
+    {% else %}
+        The following people will be admins, pending creating an account.<br/>
+        {% for pending in pending_admins %}
+            {{ pending.email }}
+            {{- not loop.last ? ',' }}
+        {% endfor %}
+    {% endif %}
 </div>
 {% endif %}
 {% if show.authorisedBy is null %}

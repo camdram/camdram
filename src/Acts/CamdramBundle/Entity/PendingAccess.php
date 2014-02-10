@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PendingAccess
  *
  * @ORM\Table(name="acts_pendingaccess")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PendingAccessRepository")
  */
 class PendingAccess
 {

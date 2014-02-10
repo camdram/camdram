@@ -62,7 +62,7 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getEntityOwners(Entity $entity)
+    public function getEntityOwners($entity)
     {
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')

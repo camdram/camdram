@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'edit_auditions' %}
-{{ include('@ActsCamdram/Show/admin-panel.html.twig', {show: form.vars.value}) }}
+{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: form.vars.value})) }}
 
 <div class="row">
     <div class="large-12 columns">

@@ -5,7 +5,7 @@
 {% block body %}
 
 {% if is_granted('EDIT', show) %}
-{{ include('ActsCamdramBundle:Show:admin-panel.html.twig') }}
+{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
 {% endif %}
 
 <div class="row">
