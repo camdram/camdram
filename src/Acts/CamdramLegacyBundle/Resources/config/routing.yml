@@ -1,3 +1,7 @@
 acts_camdram_legacy_homepage:
     path:  /hello/{name}
     defaults: { _controller: ActsCamdramLegacyBundle:Default:index }
+acts_camdram_legacyapi_show:
+    pattern: /showdata.php
+    defaults: { _controller: ActsCamdramLegacyBundle:LegacyApi:show, type: xml }
+    requirements: { type: (xml), _method: GET }
