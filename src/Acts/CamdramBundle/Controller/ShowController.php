@@ -95,11 +95,14 @@ class ShowController extends AbstractRestController
     /**
      * Render the Admin Panel
      */
-    public function adminPanelAction($show)
+    public function adminPanelAction(Show $show)
     {
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository('ActsCamdramBundle:User')->getEntityOwners($show);
         $pending_admins = $em->getRepository('ActsCamdramBundle:PendingAccess')->findByResource($show);
+        if ($show->getSociety()) $admins[] = $show->getSociety();
+        if ($show->getVenue()) $admins[] = $show->getVenue();
+
         return $this->render(
             'ActsCamdramBundle:Show:admin-panel.html.twig',
             array('show' => $show,

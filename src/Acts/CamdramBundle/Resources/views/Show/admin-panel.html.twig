@@ -34,33 +34,34 @@
             {% endif %}
         </li>
     </ul>
-    <p>You can add new people to your production simply by adding them to the appropriate
-    list below. If multiple people have the same role, add their names separated by a 
-    comma. Drag and drop a person's name to change the order the roles are displayed
-    in.</p>
-    <p>Currently the following people have access to this resource <strong>specifically</strong>
-    (note that administrators for the society, venue, or Camdram are not listed here).<br/>
-    {% if admins is empty %}
-        There are no administrators for this show.
-    {% endif %} 
+
+    <p>
+    {% if admins is not empty %}
+        The following people and/or groups can edit this show:
+    {% endif %}
     {% for admin in admins %}
-        {%- if admin.person -%}
-            <a href="{{ path('get_person', {identifier: admim.person.slug}) }}">{{ admin.name }}</a>
-        {%- else -%}
-            {{ admin.name }}
-        {%- endif -%}
+        {%- if admin.person is defined %}
+            {%- if admin.person -%}
+                <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
+            {%- else -%}
+                {{ admin.name }}
+            {%- endif -%}
+        {%- elseif admin.entityType == 'society' %}
+            <a href="{{ path('get_society', {identifier: admin.slug}) }}">{{ admin.name }}</a>
+        {%- elseif admin.entityType == 'venue' %}
+            <a href="{{ path('get_venue', {identifier: admin.slug}) }}">{{ admin.name }}</a>
+        {%- endif %}
         {{- not loop.last ? ',' }}
     {% endfor %}
     </p>
+    {% if pending_admins is not empty %}
     <p>
-    {% if pending_admins is empty %}
-        There are no pending administrators for this show.
-    {% else %}
-        The following people will be admins, pending creating an account.<br/>
+        The following people will be admins, pending creating an account:
         {% for pending in pending_admins %}
             {{ pending.email }}
             {{- not loop.last ? ',' }}
         {% endfor %}
+        </p>
     {% endif %}
 </div>
 {% endif %}
