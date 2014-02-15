@@ -93,7 +93,7 @@ services:
 
     acts.camdram.moderation_manager:
         class: Acts\CamdramBundle\Service\ModerationManager
-        arguments: [@doctrine.orm.entity_manager, @acts.camdram.email_dispatcher]
+        arguments: [@doctrine.orm.entity_manager, @acts.camdram.email_dispatcher, @camdram.security.acl.provider, @security.context]
 
     acts.camdram.listener.moderation:
         class: Acts\CamdramBundle\EventListener\ModerationListener

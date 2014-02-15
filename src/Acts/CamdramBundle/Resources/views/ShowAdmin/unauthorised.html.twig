@@ -1,3 +1,4 @@
+{% if shows | length > 0 %}
 <h5>Unauthorised shows</h5>
 <ul class="large-block-grid-2" id="venues_list">
     {% for show in shows %}
@@ -8,10 +9,6 @@
                 <p>{{ show.description | truncate(200) | strip_new_lines | camdram_markdown }}</p>
             </div>
         </li>
-    {% else %}
-        <li>All shows have been authorised</li>
     {% endfor %}
 </ul>
-
-
-
+{% endif %}

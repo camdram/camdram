@@ -48,6 +48,15 @@ class AclProvider
         return $ids;
     }
 
+    public function getOrganisationIdsByUser(User $user)
+    {
+        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'society');
+        $ids = array_map(function($ace) {
+            return $ace->getEntityId();
+        }, $aces);
+        return $ids;
+    }
+
     public function grantAccess($entity, User $user, User $granter)
     {
         $ace = new AccessControlEntry;

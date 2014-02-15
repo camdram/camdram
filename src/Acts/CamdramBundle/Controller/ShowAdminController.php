@@ -44,7 +44,9 @@ class ShowAdminController extends Controller
 
     public function cgetUnauthorisedAction(Request $request)
     {
-        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findUnauthorised();
+        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_USER');
+
+        $shows = $this->get('acts.camdram.moderation_manager')->getEntitiesToModerate();
         return $this->render('ActsCamdramBundle:ShowAdmin:unauthorised.html.twig', array('shows' => $shows));
     }
 

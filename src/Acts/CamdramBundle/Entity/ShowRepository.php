@@ -31,6 +31,28 @@ class ShowRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findUnauthorisedBySociety(Society $society)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.authorised_by is null')
+            ->andWhere('s.entered = true')
+            ->andWhere('s.society = :society')
+            ->setParameter('society', $society)
+            ->join('s.performances', 'p');
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findUnauthorisedByVenue(Venue $venue)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.authorised_by is null')
+            ->andWhere('s.entered = true')
+            ->andWhere('s.venue = :venue')
+            ->setParameter('venue', $venue)
+            ->join('s.performances', 'p');
+        return $qb->getQuery()->getResult();
+    }
+
     public function findIdsByDate($ids)
     {
         if (count($ids) == 0) return array();
