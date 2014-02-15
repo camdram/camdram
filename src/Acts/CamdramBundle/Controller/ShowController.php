@@ -123,6 +123,14 @@ class ShowController extends AbstractRestController
             ->setTemplate('ActsCamdramBundle:Show:techie-advert-new.html.twig');
     }
 
+    public function approveAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
+        $this->get('acts.camdram.moderation_manager')->approveEntity($show);
+        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+    }
+
     /**
      * @param $identifier
      * @Rest\Post("/shows/{identifier}/techie-advert")

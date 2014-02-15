@@ -67,7 +67,10 @@
 {% if show.authorisedBy is null %}
 <div class="approve-panel">
     {% if is_granted('APPROVE', show) %}
-        <p><em>This show is not yet visible to the public. <a href=""><i class="fa fa-check"></i> Approve this show</a></em></p>
+        <form action="{{ path('approve_show', {identifier: show.slug, _method: 'PATCH'}) }}" method="post">
+            <em>This show is not yet visible to the public.</em>
+            <button class="button right small"><i class="fa fa-check"></i> Approve this show</button>
+        </form>
     {% else %}
         <p><em>This show is not yet visible to the public - it is awaiting approval from
                 {% if show.society and show.venue %}someone on the <strong>{{ show.society.name }}</strong> committee or a representative of <strong>{{ show.venue.name }}</strong>

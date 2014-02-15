@@ -93,6 +93,18 @@ class ModerationManager
         return $users;
     }
 
+    public function approveEntity($entity)
+    {
+        if ($entity instanceof Show && !$entity->isAuthorised()) {
+            $entity->setAuthorisedBy($this->securityContext->getToken()->getUser());
+            $this->entityManager->flush();
+
+            $repo = $this->entityManager->getRepository('ActsCamdramBundle:User');
+            $owners = $repo->getEntityOwners($entity);
+            $this->dispatcher->sendShowApprovedEmail($entity, $owners);
+        }
+    }
+
     /**
      * Email moderators for that Entity.
      *

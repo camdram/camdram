@@ -28,7 +28,7 @@ class EmailDispatcher
         }
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('New show needs authorization on camdram.net: '.$show->getName())
+            ->setSubject('New show needs authorization on Camdram: '.$show->getName())
             ->setFrom($this->from_address)
             ->setTo($emails)
             ->setBody(
@@ -36,6 +36,29 @@ class EmailDispatcher
                     'ActsCamdramBundle:Email:show_created.txt.twig',
                     array(
                         'owners' => $owners,
+                        'show' => $show,
+                    )
+                )
+            )
+        ;
+        $this->mailer->send($message);
+    }
+
+    public function sendShowApprovedEmail(Show $show, array $owners)
+    {
+        $emails = array();
+        foreach ($owners as $user) {
+            $emails[$user->getEmail()] = $user->getName();
+        }
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Show authorised on Camdram: '.$show->getName())
+            ->setFrom($this->from_address)
+            ->setTo($emails)
+            ->setBody(
+                $this->twig->render(
+                    'ActsCamdramBundle:Email:show_approved.txt.twig',
+                    array(
                         'show' => $show,
                     )
                 )
