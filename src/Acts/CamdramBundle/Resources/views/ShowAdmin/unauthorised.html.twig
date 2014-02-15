@@ -1,0 +1,17 @@
+<h5>Unauthorised shows</h5>
+<ul class="large-block-grid-2" id="venues_list">
+    {% for show in shows %}
+        <li>
+            <div class="panel">
+                <h5><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h5>
+                <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
+                <p>{{ show.description | truncate(200) | strip_new_lines | camdram_markdown }}</p>
+            </div>
+        </li>
+    {% else %}
+        <li>All shows have been authorised</li>
+    {% endfor %}
+</ul>
+
+
+

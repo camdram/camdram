@@ -22,6 +22,27 @@ class ShowRepository extends EntityRepository
         return $qb;
     }
 
+    public function findUnauthorised()
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.authorised_by is null')
+            ->andWhere('s.entered = true')
+            ->join('s.performances', 'p');
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findIdsByDate($ids)
+    {
+        if (count($ids) == 0) return array();
+
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.id IN (:ids)')
+            ->andWhere('s.entered = true')
+            ->orderBy('s.start_at', 'desc')
+            ->setParameter('ids', $ids);
+        return $qb->getQuery()->getResult();
+    }
+
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)')
@@ -124,7 +145,6 @@ class ShowRepository extends EntityRepository
             ->setMaxResults(1)
             ->setParameter('min', new \DateTime('1990-01-01'))
             ->getQuery();
-       // var_dump($query->getSQL());die();
         return new \DateTime(current($query->getOneOrNullResult()));
     }
 

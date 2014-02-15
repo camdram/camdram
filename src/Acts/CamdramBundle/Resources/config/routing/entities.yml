@@ -39,3 +39,11 @@ acts_camdram_techieadverts:
 acts_camdram_timeperiods:
     type:     rest
     resource: "Acts\CamdramBundle\Controller\TimePeriodController"
+
+acts_camdram_show_admin:
+    pattern: /show-admin
+    defaults: { _controller: ActsCamdramBundle:ShowAdmin:cget }
+
+acts_camdram_show_unauthorised:
+    pattern: /show-admin/unauthorised
+    defaults: { _controller: ActsCamdramBundle:ShowAdmin:cgetUnauthorised }

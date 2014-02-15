@@ -39,9 +39,13 @@ class AclProvider
         return $this->repository->aceExists($user, $entity);
     }
 
-    public function getEntitiesByUser(User $user, $class_name = null)
+    public function getShowIdsByUser(User $user)
     {
-        return $this->entityManager->getRepository('ActsCamdramBundle:Entity')->getByUser($user, $class_name);
+        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'show');
+        $ids = array_map(function($ace) {
+            return $ace->getEntityId();
+        }, $aces);
+        return $ids;
     }
 
     public function grantAccess($entity, User $user, User $granter)

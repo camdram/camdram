@@ -63,6 +63,7 @@
                   {% block option_links %}
                   {% endblock %}
                   {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with {items: {
+                    'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
                     'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
                   }} %}
                   {% if has_role('ROLE_EDITOR') %}
