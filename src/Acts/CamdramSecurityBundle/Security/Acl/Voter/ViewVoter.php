@@ -39,6 +39,6 @@ class ViewVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class == 'Acts\\CamdramBundle\\Entity\\Show';
+        return strpos($class, 'Acts\\CamdramBundle\\Entity\\Show') !== false;
     }
 }

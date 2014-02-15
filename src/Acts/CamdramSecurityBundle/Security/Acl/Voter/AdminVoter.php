@@ -42,6 +42,6 @@ class AdminVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return substr($class, 0, 5) == 'Acts\\';
+        return strpos($class, 'Acts\\') !== false;
     }
 }

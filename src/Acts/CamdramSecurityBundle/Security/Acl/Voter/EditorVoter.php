@@ -43,12 +43,12 @@ class EditorVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class == 'Acts\\CamdramBundle\\Entity\\Show'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Society'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Venue'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Person'
-            || $class == 'Acts\\CamdramBundle\\Entity\\TechieAdvert'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Audition'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Application';
+        return strpos($class, 'Acts\\CamdramBundle\\Entity\\Show') !== false
+            || strpos($class, 'Acts\\CamdramBundle\\Entity\\Society') !== false
+            || strpos($class, 'Acts\\CamdramBundle\\Entity\\Venue') !== false
+            || strpos($class, 'Acts\\CamdramBundle\\Entity\\Person') !== false
+            || strpos($class, 'Acts\\CamdramBundle\\Entity\\TechieAdvert') !== false
+            || strpos($class, 'Acts\\CamdramBundle\\Entity\\Audition') !== false
+            || strpos($class, 'Acts\\CamdramBundle\\Entity\\Application') !== false;
     }
 }

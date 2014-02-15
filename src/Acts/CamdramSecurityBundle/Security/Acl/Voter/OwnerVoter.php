@@ -52,9 +52,6 @@ class OwnerVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class == 'Acts\\CamdramBundle\\Entity\\Show'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Society'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Venue'
-            || $class == 'Acts\\CamdramBundle\\Entity\\Person';
+        return strpos($class, 'Acts\\CamdramBundle\\Entity') !== false;
     }
 }

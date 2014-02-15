@@ -37,6 +37,6 @@ class ProfileVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class == 'Acts\\CamdramBundle\\Entity\\Person';
+        return strpos($class, 'Acts\\CamdramBundle\\Entity\\Person') !== false;
     }
 }
