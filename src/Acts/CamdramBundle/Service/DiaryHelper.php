@@ -1,9 +1,11 @@
 <?php
 namespace Acts\CamdramBundle\Service;
 
+use Acts\CamdramBundle\Entity\Audition;
 use Acts\DiaryBundle\Event\MultiDayEvent;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
+use Acts\DiaryBundle\Event\SingleDayEvent;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -86,6 +88,31 @@ class DiaryHelper
         foreach($performances as $performance) {
             $event = $this->createEventFromPerformance($performance);
             $events[] = $event;
+        }
+        return $events;
+    }
+
+    public function createEventFromAudition(Audition $audition)
+    {
+        $event = new SingleDayEvent();
+        $event->setName($audition->getShow()->getName());
+        $event->setLink($this->router->generate('get_auditions').'#auditions-'.$audition->getShow()->getId());
+        $event->setDate($audition->getDate());
+        $event->setStartTime($audition->getStartTime());
+        $event->setEndTime($audition->getEndTime());
+        $event->setVenue($audition->getLocation());
+        return $event;
+    }
+
+    public function createEventsFromAuditions($auditions)
+    {
+        if (!is_array($auditions) && !$auditions instanceof \Traversable) {
+            throw new \InvalidArgumentException('$auditions must either be an array or a Traversable object');
+        }
+
+        $events = array();
+        foreach ($auditions as $audition) {
+            $events[] = $this->createEventFromAudition($audition);
         }
         return $events;
     }

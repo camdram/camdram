@@ -33,43 +33,13 @@ class AuditionRepository extends EntityRepository
             ->where('a.date >= CURRENT_DATE()')
             ->andWhere('a.display = 0')
             ->andWhere('a.nonScheduled = 0')
-            //->andWhere('s.authorize_id > 0')
+            ->andWhere('s.authorised_by IS NOT NULL')
+            ->andWhere('s.entered = true')
             ->orderBy('s.name, a.date, a.start_time')
             ->getQuery();
 
         return $query->getResult();
     }
-
-    /**
-     * findScheduledJoinedToShow
-     *
-     * Find all auditions between two dates that should be shown on the
-     * diary page, joined to the corresponding show.
-     *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
-     *
-     * @return array of auditions
-     */
-    public function findScheduledJoinedToShow($startDate, $endDate)
-    {
-        $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
-        $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('a.date <= :enddate')
-            ->andWhere('a.date >= :startdate')
-            ->andWhere('a.nonScheduled = 0')
-            ->andWhere('a.date >= CURRENT_DATE()')
-            ->setParameters(array(
-                'startdate' => date("Y/m/d", $startDate),
-                'enddate' => date("Y/m/d", $endDate)
-                ))
-            ->orderBy('a.date')
-            ->getQuery();
-
-        return $query->getResult();
-    }
-
 
     private function getUpcomingQuery($limit)
     {

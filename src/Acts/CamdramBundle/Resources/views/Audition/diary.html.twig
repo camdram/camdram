@@ -1,61 +1,18 @@
-<div class="row" xmlns="http://www.w3.org/1999/html">
-    <!-- div class="twelve columns" -->
-    {% spaceless %}
-    {% set columnIdx = 0 %}
-    {% set columnDate =  startDate %}
-    {% set in_list = false %}
-    {% for audition in auditions %}
-        {% set columnDate = startDate|date_modify("+#{columnIdx} day") %}
+{% extends 'ActsCamdramBundle::vacancies.html.twig' %}
 
-        {% for i in range(0,6) %}
-            {% if audition.date != columnDate %}
-                {# Pad until we're in the right column #}
-                {% if columnIdx == 0 and not in_list %}
-                    <tr>
-                {% endif %}
-                {% if in_list == true %}
-                    </td>
-                    {% set in_list = false %}
-                {% else %}
-                    <td></td>
-                {% endif %}
-                {% set columnIdx = columnIdx + 1 %}
-                {% if columnIdx > 6 %}
-                    </tr>
-                    {% set columnIdx = 0 %}
-                {% endif %}
-                {% set columnDate = startDate|date_modify("+#{columnIdx} day") %}
+{% block title %}Auditions Diary{% endblock %}
+{% set current_vacancies_id='auditions' %}
 
-            {% endif %}
-        {% endfor %}
+{% block vacancies_body %}
+    <ul class="inline-list right">
+        <li><a href="{{ path('get_auditions') }}">List view</a></li>
+        <li>Diary view</li>
+    </ul>
 
-        {% if columnIdx == 0 %}
-            <tr>
-        {% endif %}
-        {% if not in_list %}
-            <td><a href="#"<strong>Auditions</strong> (click)</a><br>
-            {% set in_list = true %}
-        {% endif %}
-            {{ audition.show.name }}<br>
-    {% endfor %}
-    
-    {# Make sure the last row is complete  #}
-    {% if in_list %}
-        </td>
-        {% set columnIdx = columnIdx + 1 %}
-        {% if columnIdx > 6 %}
-            </tr>
-            {% set columnIdx = 0 %}
-        {% endif %}
-    {% endif %}
-    {% for i in range(0,6) %}
-        {% if columnIdx != 0 %}
-            <td></td>
-            {% set columnIdx = (columnIdx + 1) % 7 %}
-        {% endif %}
-    {% endfor %}
-    </tr>
-    {% endspaceless %}
-    <!-- /div -->
+<h3>Auditions</h3>
+
+<div id="diary">
+    {{ render_diary(diary) }}
 </div>
 
+{% endblock %}

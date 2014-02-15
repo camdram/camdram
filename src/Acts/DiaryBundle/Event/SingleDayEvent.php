@@ -8,7 +8,7 @@ namespace Acts\DiaryBundle\Event;
  *
  * @package Acts\DiaryBundle\Event
  */
-class SingleEvent extends AbstractEvent implements SingleEventInterface
+class SingleDayEvent extends AbstractEvent implements SingleDayEventInterface
 {
     /**
      * @var \DateTime

@@ -4,7 +4,13 @@
 {% set current_vacancies_id='auditions' %}
 
 {% block vacancies_body %}
-        <h3>Auditions</h3>
+
+    <ul class="inline-list right">
+        <li>List view</li>
+        <li><a href="{{ path('get_auditions_diary') }}">Diary view</a></li>
+    </ul>
+
+    <h3>Auditions</h3>
 
     {% spaceless %}
     {% set currentName = null %}
@@ -18,7 +24,9 @@
                 {% set currentName = a.show.name %}
                 <hr>
                 <div id="auditions-{{ a.show.id }}">
-                <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5><ul>
+                <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5>
+                    <p>{{ a.show.audextra }}</p>
+                    <ul>
             {% endif %}
             <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
         {% endif %}

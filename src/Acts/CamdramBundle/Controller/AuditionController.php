@@ -1,13 +1,13 @@
 <?php
- 
+
 namespace Acts\CamdramBundle\Controller;
- 
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Audition;
 
 use Doctrine\Common\Collections\Criteria;
- 
+
 
 /**
  * @RouteResource("Audition")
@@ -24,30 +24,19 @@ class AuditionController extends FOSRestController
         ;
         return $view;
     }
-    
-    /**
-     * weeksPerformancesAction
-     *
-     * Generates the table data for displaying the show performances in 
-     * the week beggining with $startOfWeek
-     *
-     * @param DateTime $startOfWeek The start date of the week.
-     */
-    public function weeksAuditionsAction($startOfWeek)
+
+    public function cgetDiaryAction()
     {
-        $startDate = $startOfWeek->getTimestamp();
-        $endDate = clone $startOfWeek;
-        $endDate = $endDate->modify("+6 days")->getTimestamp();
+        $diary = $this->get('acts.diary.factory')->createDiary();
 
-        $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
-        
-        $auditions = $repo->findScheduledJoinedToShow($startDate, $endDate);
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate();
 
-        $view = $this->view(array('startDate' => $startDate, 'endDate' => $endDate, 'auditions' => $auditions), 200)
-            ->setTemplate("ActsCamdramBundle:Audition:diary.html.twig")
-            ->setTemplateVar('auditions')
-        ;
-        
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromAuditions($auditions);
+        $diary->addEvents($events);
+
+        $view = $this->view($diary)
+            ->setTemplateVar('diary')
+            ->setTemplate('ActsCamdramBundle:Audition:diary.html.twig');
         return $view;
     }
 }

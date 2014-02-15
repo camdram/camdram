@@ -20,7 +20,7 @@
         <div class="diary-item diary-{{ item.numberOfDays }}-days{% if item.startIndex != last_index + 1 %} diary-skip-left-{{ item.startIndex - last_index - 1 }}{% endif %}">
             <span class="diary-time">{{ item.startAt | date('g:ia') }}{% if item.endAt %}-{{ item.endAt | date('g:ia') }}{% endif %}</span>
             {% if item.event.link %}<a href="{{ item.event.link }}">{{ item.event.name }}</a>
-            {% else %}{{ item.name }}{% endif %}
+            {% else %}{{ item.event.name }}{% endif %}
             {% if item.event.venue %}<span class="diary-venue">
                     {% if item.event.venueLink %}<a href="{{ item.event.venueLink }}">{{ item.event.venue }}</a>
                     {% else %}{{ item.event.venue }}
