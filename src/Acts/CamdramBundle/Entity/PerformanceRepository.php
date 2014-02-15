@@ -44,9 +44,8 @@ class PerformanceRepository extends EntityRepository
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->where($qb->expr()->andX('p.end_date > :start', 'p.end_date < :end'))
-            ->orWhere($qb->expr()->andX('p.start_date > :start', 'p.start_date < :end'))
-            ->orWhere($qb->expr()->andX('p.start_date < :start', 'p.end_date > :end'))
+        $qb->where('p.start_date <= :end')
+            ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
 

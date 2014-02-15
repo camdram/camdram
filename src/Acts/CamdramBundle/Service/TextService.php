@@ -1,6 +1,8 @@
 <?php
 namespace Acts\CamdramBundle\Service;
 
+use Doctrine\Common\Inflector\Inflector;
+
 /**
  * Class TextService
  *
@@ -81,6 +83,11 @@ class TextService
     {
         if (strlen($text) <= $length) return $text;
         else return substr($text, 0, $length).'&hellip;';
+    }
+
+    public function pluralize($word)
+    {
+        return Inflector::pluralize($word);
     }
 
 }

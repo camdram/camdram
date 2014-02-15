@@ -35,6 +35,7 @@ class CamdramExtension extends \Twig_Extension
             'detect_links' => new \Twig_Filter_Method($this, 'detectLinks', array('is_safe' => array('html'))),
             'strip_new_lines' => new \Twig_Filter_Method($this, 'stripNewLines'),
             'truncate' => new \Twig_Filter_Method($this, 'truncate', array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'plural' => new \Twig_Filter_Method($this, 'pluralize'),
         );
     }
 
@@ -71,6 +72,12 @@ class CamdramExtension extends \Twig_Extension
         return (substr($string, -7) == 'theatre'
             || substr($string, -7) == 'society')
             && substr($string,0, 3) != 'the';
+    }
+
+    public function pluralize($word, $number)
+    {
+        if ($number == 1) return $word;
+        else return $this->textService->pluralize($word);
     }
 
     public function getName()
