@@ -1,14 +1,19 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * PendingAccess
  *
+ * PendingAccess acts as an Access Control Entry (ACE) in the case where the
+ * user doesn't have an account on Camdram. In a typical case, a show is entered
+ * on Camdram by a society or venue administrator. Pending access entries are 
+ * created when a show-specific admin doesn't have an account on Camdram 
+ * (determined by the given email address). The person is prompted
  * @ORM\Table(name="acts_pendingaccess")
- * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PendingAccessRepository")
+ * @ORM\Entity(repositoryClass="PendingAccessRepository")
  */
 class PendingAccess
 {

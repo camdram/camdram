@@ -1,11 +1,16 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Service;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramBundle\Entity\User,
+    Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class for constructing and sending emails. Emails are typically sent as a 
+ * result of an event occurring, such as a user changing their email address.
+ */
 class EmailDispatcher
 {
     private $mailer;
@@ -94,4 +99,32 @@ class EmailDispatcher
         ;
         $this->mailer->send($message);
     }
+    
+    /**
+     * Send an email informing someone that they've been granted access to a
+     * resource (show, society, or venue), pending creating a new account on Camdram.
+     */
+    public function sendPendingAceEmail(PendingAccess $ace)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setFrom($this->from_address)
+            ->setTo($ace->getEmail());
+        /* Get the resource and pass it to the template. */
+        if ($ace->getType() == 'show')
+        {
+            $show = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
+            $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
+                ->setBody(
+                    $this->twig->render(
+                        'ActsCamdramBundle:Email:pending_ace.txt.twig',
+                        array(
+                            'ace' => $ace,
+                            'entity' => $show
+                        )
+                    )
+                );
+        }
+        $this->mailer->send($message);
+    }
 }
+

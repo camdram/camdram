@@ -6,8 +6,8 @@ use Acts\CamdramBundle\Entity\Application,
     Acts\CamdramBundle\Entity\Person,
     Acts\CamdramBundle\Entity\Role,
     Acts\CamdramBundle\Entity\TechieAdvert;
-use Acts\CamdramBundle\Event\CamdramEvents;
-use Acts\CamdramBundle\Event\TechieAdvertEvent;
+use Acts\CamdramBundle\Event\CamdramEvents,
+    Acts\CamdramBundle\Event\TechieAdvertEvent;
 use Acts\CamdramBundle\Form\Type\ApplicationType;
 use Acts\CamdramBundle\Form\Type\ShowAuditionsType;
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
@@ -99,7 +99,7 @@ class ShowController extends AbstractRestController
     {
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository('ActsCamdramBundle:User')->getEntityOwners($show);
-        $pending_admins = $em->getRepository('ActsCamdramBundle:PendingAccess')->findByResource($show);
+        $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         if ($show->getSociety()) $admins[] = $show->getSociety();
         if ($show->getVenue()) $admins[] = $show->getVenue();
 

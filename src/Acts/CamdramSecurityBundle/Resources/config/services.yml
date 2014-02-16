@@ -68,6 +68,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
             - { name: kernel.event_listener, event: camdram_security.email_changed, method: onEmailChangeEvent }
+            - { name: kernel.event_listener, event: camdram_security.pending_acccess_created, method: onPendingAccessCreatedEvent }
 
     camdram.security.email_dispatcher:
         class: Acts\CamdramSecurityBundle\Service\EmailDispatcher
@@ -111,3 +112,4 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter
         tags:
             - { name: security.voter }
+

@@ -1,0 +1,23 @@
+{%- if (ace.type == 'show') or (ace.type == 'society') -%}
+    You have been granted pending access to edit the {{ entity.entity_type }} '{{ entity.name }}' on Camdram. 
+    {%- if entity.entity_type == 'show' -%}
+        This will allow you to change the show description people see when visiting the site, and to add other information such as production team/cast lists and production team adverts.
+    {%- elseif entity.entity_type == 'society' -%}
+        This will allow you to change the society description people see when visiting the site, and to add shows funded by the society.
+    {%- elseif entity.entity_type == 'venue' -%}
+        This will allow you to change the venue description people see when visiting the site, and to add shows performing at the venue.
+    {%- endif -%}
+{%- elseif ace.type == 'security' -%}
+    {% if ace.rid == constant('Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry::LEVEL_FULL_ADMIN') %}
+        {% set admin = 'a full administrator' %}
+    {% elseif ace.rid == constant('Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry::LEVEL_ADMIN') %}
+        {% set admin = 'an administrator' %}
+    {% elseif ace.rid == constant('Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry::LEVEL_CONTENT_ADMIN') %}
+        {% set admin = 'a content administrator' %}
+    {% endif %}
+    You have been granted pending access as {{ admin }} on Camdram.
+{%- endif -%}
+To make use of this, you must create an account at at http://www.camdram.net.
+
+{% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
+

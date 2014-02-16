@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\Table(name="acts_shows_people_link")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\RoleRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Role
 {
@@ -219,3 +220,4 @@ class Role
         return $this->person;
     }
 }
+

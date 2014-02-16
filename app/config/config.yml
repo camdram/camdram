@@ -173,6 +173,7 @@ fos_oauth_server:
             supported_scopes: write
 
 acts_sphinx_real_time:
+    enabled: false
     clients:
         default: ~
     indexes:

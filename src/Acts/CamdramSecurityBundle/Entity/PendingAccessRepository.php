@@ -1,7 +1,9 @@
 <?php
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+
+use Acts\CamdramBundle\Entity\Show;
 
 class PendingAccessRepository extends EntityRepository
 {
