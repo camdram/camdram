@@ -97,7 +97,7 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 
                 //If a user has now logged in with both a camdram and external login, keep the camdram token as it has
                 //greater rights
-                if ($external_user->getUser()
+                if ($external_user->getUser() && $camdram_user
                         && $external_user->getUser()->getId() == $camdram_user->getId()
                         && $camdram_token instanceof UsernamePasswordToken) {
                     $this->securityContext->setToken($camdram_token);
