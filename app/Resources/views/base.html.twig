@@ -18,7 +18,8 @@
         <title>{% block title %}{% endblock %} - Camdram</title>
 
 
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+        <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
         {% stylesheets output='css/main.css'
         'bundles/actscamdram/stylesheets/app/*.scss'
         'bundles/actsdiary/css/diary.css'
@@ -39,7 +40,8 @@
         '@ActsCamdramBundle/Resources/public/javascripts/typeahead.js'
         '@ActsDiaryBundle/Resources/public/js/diary.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
-        '@HoyesImageManagerBundle/Resources/public/js/jquery.uploadify.js'
+        '@HoyesImageManagerBundle/Resources/public/js/plupload.full.min.js'
+        '@HoyesImageManagerBundle/Resources/public/js/upload_widget.js'
         '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}

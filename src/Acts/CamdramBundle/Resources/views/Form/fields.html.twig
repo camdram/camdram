@@ -12,69 +12,6 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block image_upload_widget %}
-    {% spaceless %}
-        <div class="row">
-       <div class="large-3 columns">
-            {{ form_label(form) }}
-        </div>
-        <div class="large-9 columns">
-            <input type="hidden"{{ block('widget_attributes') }} value="{% if data %}{{ data.id }}{% endif %}"/>
-            <div id="{{ id }}_uploadify_queue" class="uploadify-queue"></div>
-            <div id="{{ id }}_{{ preview_div }}" class="uploadify-preview">{% if data %}{{ render_image(data, 250, 200) }}{% endif %}</div>
-            <button class="button uploadify-remove" id="{{ id }}_remove"{% if not data %} style="display:none;"{% endif %}>Remove Image</button>
-            <div class="uploadify">
-
-            <div id="{{ id }}_uploadify"></div>
-            <script type="text/javascript">
-                $(function(){
-                    $("#{{id}}_uploadify").uploadify({
-                        swf  : '{{ asset('bundles/hoyesimagemanager/uploadify.swf') }}',
-                        uploader    : '{{ path(post_route) }}',
-                        cancelImg : '{{ asset('bundles/hoyesimagemanager/images/cancel.png') }}',
-                        formData   : {
-                            _uploadify : true,
-                            _sessionid : '{{ session }}',
-                            width: 250,
-                            height: 200
-                        },
-                        height: 37,
-                        fileTypeDesc: 'All Images',
-                        fileTypeExts: '*.png;*.jpg;*.jpeg;*.gif',
-                        buttonText: 'Select File',
-                        multi: false,
-                        auto      : true,
-                        debug: false,
-                        queueID: '{{ id }}_uploadify_queue',
-                        onUploadSuccess  : function(file, data) {
-                            response = $.parseJSON(data);
-                            var img = $('<img/>').attr('src', response.url)
-                                    .attr('width', response.width).attr('height', response.height);
-                            var anchor = $('<a/>').attr('href', response.full_url).html(img);
-                            $('#{{ id }}_{{ preview_div }}').html(anchor);
-                            anchor.fancybox();
-                            $('#{{ id }}').attr('value', response.id);
-                            $('#{{ id }}_remove').show();
-                        },
-                        onUploadError: function(e, i, h, d) {
-                            console.log(e, i, h, d);
-                        }
-                    });
-                    $('#{{ id }}_remove').click(function(e) {
-                        e.preventDefault();
-                        $('#{{ id }}_{{ preview_div }}').html('');
-                        $('#{{ id }}').attr('value', '');
-                        $(this).hide();
-                        return false;
-                    })
-                });
-            </script>
-            </div>
-        </div>
-        </div>
-    {% endspaceless %}
-{% endblock %}
-
 {% block entity_collection_widget %}
     <div  id="{{ id }}" class="entity_collection_container">
         <div class="row">
