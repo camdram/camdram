@@ -41,7 +41,8 @@ class DateSlugHandler implements SlugHandlerInterface
         $om = $ea->getObjectManager();
         $isInsert = $om->getUnitOfWork()->isScheduledForInsert($object);
         $this->options = array_merge(
-            array('separator' => '-', 'dateField' => 'date', 'format' => 'Y'),
+            array('separator' => '-', 'dateField' => 'date', 'format' => 'Y',
+                'check_included' => true),
             $config['handlers'][get_called_class()]
         );
 
@@ -62,7 +63,9 @@ class DateSlugHandler implements SlugHandlerInterface
         $date = $accessor->getValue($object, $this->options['dateField']);
         if ($date instanceof \DateTime) {
             $year = $date->format($this->options['format']);
-            $config['prefix'] = $year . $this->options['separator'];
+            if (!$this->options['check_included'] || strpos($slug, $year) === false) {
+                $config['prefix'] = $year . $this->options['separator'];
+            }
         }
     }
 
