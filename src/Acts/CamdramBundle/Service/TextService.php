@@ -18,14 +18,14 @@ class TextService
      * @var array the regexes used to convert markdown taken from the old camdram codebase
      */
     protected $markdown_regexs = array(
-        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-]+)\]/'             => '<a href="http://$1" rel="ext" target="_blank">$1</a>',
-        '/\[L:([a-zA-Z0-9\.:\\/\_\-]+)\]/'                  => '<a href="$1" rel="ext" target="_blank">$1</a>',
-        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-]+);([^\]]+)\]/'    => '<a href="http://$1" rel="ext" target="_blank">$2</a>',
-        '/\[L:([a-zA-Z0-9\.:\\/\_\-]+);([^\]]+)\]/'         => '<a href="$1" rel="ext" target="_blank">$2</a>',
-        '/\[E:([a-zA-Z0-9\.@\_\-]+)\]/'                     => '<a href="mailto:$1">$1</a>',
-        '/\[E:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'            => '<a href="mailto:$1">$2</a>',
-        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+)\]/'             => '<a href="mailto:$1">$1</a>',
-        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'    => '<a href="mailto:$1">$2</a>',
+        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-\?\&]+)\]/'          => '<a href="http://$1" rel="ext" target="_blank">$1</a>',
+        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+)\]/'               => '<a href="$1" rel="ext" target="_blank">$1</a>',
+        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-\?\&]+);([^\]]+)\]/' => '<a href="http://$1" rel="ext" target="_blank">$2</a>',
+        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+);([^\]]+)\]/'      => '<a href="$1" rel="ext" target="_blank">$2</a>',
+        '/\[E:([a-zA-Z0-9\.@\_\-]+)\]/'                      => '<a href="mailto:$1">$1</a>',
+        '/\[E:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'             => '<a href="mailto:$1">$2</a>',
+        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+)\]/'              => '<a href="mailto:$1">$1</a>',
+        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'     => '<a href="mailto:$1">$2</a>',
     );
 
     protected $allowed_tags = '<b><i><u><strong><em><p><ul><li><ol><br><green><red><pre><hr>';
@@ -45,9 +45,9 @@ class TextService
     }
 
     protected $link_regexes = array(
-        '/((?<!")https?\:\\/\\/[a-zA-Z0-9%\-\_\.\\/]+[a-zA-Z0-9%\-\_\\/])/' =>  '<a href="$1" rel="ext" target="_blank">$1</a>',
-        '/((?<!["\\/])www\.[a-zA-Z0-9%\-\_\.\\/]+[a-zA-Z0-9%\-\_\\/])/'     =>  '<a href="http://$1" rel="ext" target="_blank">$1</a>',
-        '/([a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\]+\.[a-zA-Z0-9\-\_\.]+)/'      =>  '<a href="mailto:$1">$1</a>',
+        '/((?<!")https?\:\\/\\/[a-zA-Z0-9%\-\_\.\\/\?&=]+[a-zA-Z0-9%\-\_\\/])/' =>  '<a href="$1" rel="ext" target="_blank">$1</a>',
+        '/((?<!["\\/])www\.[a-zA-Z0-9%\-\_\.\\/\?&=]+[a-zA-Z0-9%\-\_\\/])/'     =>  '<a href="http://$1" rel="ext" target="_blank">$1</a>',
+        '/([a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_=]+\.[a-zA-Z0-9\-\_\.]+)/'      =>  '<a href="mailto:$1">$1</a>',
     );
 
     /**
