@@ -74,77 +74,11 @@ class SymfonyContext extends BehatContext implements KernelAwareInterface
     }
 
     /**
-     * @return
-     * @throws \RuntimeException
-     */
-    protected function getSymfonyProfile()
-    {
-        $client = $this->getMinkContext()->getSession()->getDriver()->getClient();
-
-        $profile = $client->getProfile();
-
-        if (false === $profile) {
-            throw new \RuntimeException(
-                'Emails cannot be tested as the profiler is '.
-                'disabled.'
-            );
-        }
-
-        return $profile;
-    }
-
-    /**
-     * @Given /^I should receive an email at "(?P<email>[^"]+)" with:$/
-     */
-    public function iShouldReceiveAnEmail($email,  PyStringNode $text)
-    {
-        $error     = sprintf('No message sent to "%s"', $email);
-        $profile   = $this->getSymfonyProfile();
-        $collector = $profile->getCollector('swiftmailer');
-
-        foreach ($collector->getMessages() as $message) {
-            // Checking the recipient email and the X-Swift-To
-            // header to handle the RedirectingPlugin.
-            // If the recipient is not the expected one, check
-            // the next mail.
-            $correctRecipient = array_key_exists(
-                $email, $message->getTo()
-            );
-            $headers = $message->getHeaders();
-            $correctXToHeader = false;
-            if ($headers->has('X-Swift-To')) {
-                $correctXToHeader = array_key_exists($email,
-                    $headers->get('X-Swift-To')->getFieldBodyModel()
-                );
-            }
-
-            if (!$correctRecipient && !$correctXToHeader) {
-                continue;
-            }
-
-            try {
-                // checking the content
-                return assertContains(
-                    $text->getRaw(), $message->getBody()
-                );
-            } catch (AssertException $e) {
-                $error = sprintf(
-                    'An email has been found for "%s" but without '.
-                    'the text "%s".', $email, $text->getRaw()
-                );
-            }
-        }
-
-        throw new ExpectationException($error, $this->getMinkContext()->getSession());
-    }
-
-
-    /**
      * @BeforeScenario
      */
     public function reset(ScenarioEvent $event)
     {
-        $this->getMinkContext()->getSession()->reset();
+        $this->getMinkContext()->getSession()->restart();
     }
 
     /**

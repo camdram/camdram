@@ -11,12 +11,7 @@ Scenario: I successfully sign up for an account
       | Confirm password                              | testpassword         |
       | acts_camdrambundle_usertype_occupation        | No                   |
       | acts_camdrambundle_usertype_graduation        | 2012                 |
-  And I press "Register" without redirection
-  Then I should receive an email at "new.user@camdram.net" with:
-    """
-    new.user@camdram.net
-    """
-  When I follow the redirection
+  And I press "Register"
   Then I should see "New User" in the "#account-link" element
 
 Scenario: I fill out the form incorrectly
