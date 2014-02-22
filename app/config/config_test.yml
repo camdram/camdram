@@ -13,14 +13,7 @@ doctrine:
                 memory: true
 
 monolog:
-    handlers:
-        main:
-            type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: error
-        firephp:
-            type:  firephp
-            level: info
+    handlers: ~
 
 framework:
     router:   { resource: "%kernel.root_dir%/config/routing_test.yml" }

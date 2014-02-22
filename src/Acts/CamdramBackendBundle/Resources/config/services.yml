@@ -5,3 +5,9 @@ services:
     acts_camdram_backend.database_tools:
         class: %acts_camdram_backend.database_tools.class%
         arguments: [@doctrine.orm.entity_manager]
+
+    acts_camdram_backend.log_procesor:
+        class: Acts\CamdramBackendBundle\Logger\LogProcessor
+        arguments:  [@service_container]
+        tags:
+            - { name: monolog.processor, method: processRecord }

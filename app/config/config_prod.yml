@@ -17,6 +17,11 @@ monolog:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+            channels: ["!camdram"]
+        actions:
+            type:     stream
+            path:     "%kernel.logs_dir%/%kernel.environment%.action.log"
+            channels: ["camdram"]
 
 
 # Assetic Configuration

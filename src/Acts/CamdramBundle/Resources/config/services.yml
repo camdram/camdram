@@ -95,6 +95,12 @@ services:
         class: Acts\CamdramBundle\Service\ModerationManager
         arguments: [@doctrine.orm.entity_manager, @acts.camdram.email_dispatcher, @camdram.security.acl.provider, @security.context]
 
+    acts.camdram.listener.doctrine_event_logger:
+        class: Acts\CamdramBundle\EventListener\DoctrineEventLogger
+        arguments: [@monolog.logger.camdram]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
     acts.camdram.listener.moderation:
         class: Acts\CamdramBundle\EventListener\ModerationListener
         arguments: [@security.context, @doctrine.orm.entity_manager, @acts.camdram.moderation_manager]
