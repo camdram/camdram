@@ -7,7 +7,7 @@
     {%- if editable or  (role.role != current_role) %}
         {{ not loop.first ? '</div></div>' }}
         <div class="row" {% if editable %}id="role_{{ role.id }}"{% endif %}>
-        <div class="large-11 columns">
+        <div class="small-11 columns">
         {{ role.role }} - 
         {% set current_role = role.role %}
     {%- else -%}
@@ -15,7 +15,7 @@
     {% endif %}
     <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a>
     {%- if editable -%}
-    </div><div class-"large-1 columns"><i class="fa fa-arrows-v"></i>&nbsp;<span data-tooltip class="has-tip" title="Remove this role."><a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a></span>
+    </div><div class-"small-1 columns"><i class="fa fa-arrows-v"></i>&nbsp;<span data-tooltip class="has-tip" title="Remove this role."><a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a></span>
     {%- endif -%}
     {{ loop.last ? '</div></div>' }}
 {%- endfor -%}

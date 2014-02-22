@@ -69,3 +69,10 @@ textarea {
     max-width: none;
   }
 }
+
+@media #{$small} {
+  label.right {
+    float:none !important;
+    text-align:left;
+  }
+}
