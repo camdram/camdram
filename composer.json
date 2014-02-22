@@ -37,6 +37,8 @@
         "acts/time-mock-bundle": "*",
         "zurb/foundation": "4.*",
         "leafo/scssphp": "0.0.9",
+        "zendframework/zend-feed": "~2.2",
+        "zendframework/zend-servicemanager": "~2.2",
 
         "jackalope/jackalope-doctrine-dbal": "1.0.*",
         "doctrine/phpcr-bundle": "1.0.*",

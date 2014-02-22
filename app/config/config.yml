@@ -130,6 +130,8 @@ fos_rest:
             html: true
         view_response_listener: 'force'
         failed_validation: HTTP_BAD_REQUEST
+    service:
+        view_handler: acts.camdram_api.view_handler
     body_listener: true
     format_listener: true
     access_denied_listener: true
