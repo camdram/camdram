@@ -103,6 +103,15 @@ $include-html-classes: false;
   }
 }
 
+#home-diary {
+  width:100%;
+  overflow-x:auto;
+
+  .diary-week {
+    min-width:900px;
+  }
+}
+
 #home-diary-nav {
   overflow:hidden;
 }
