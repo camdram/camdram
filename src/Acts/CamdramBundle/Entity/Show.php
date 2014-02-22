@@ -69,7 +69,11 @@ class Show implements SearchableInterface
     private $twitter_id;
 
     /**
-     * @Gedmo\Slug(fields={"name"})
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\DateSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="dateField", value="start_at"),
+     *      })
+     * }, fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      * @Serializer\Expose
      */

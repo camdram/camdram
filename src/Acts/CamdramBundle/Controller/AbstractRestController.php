@@ -285,7 +285,7 @@ abstract class AbstractRestController extends FOSRestController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $entity->setSlug(Sluggable\Urlizer::urlize($entity->getName(), '-'));
+        $entity->setSlug('__id__');
         $changeset = array();
         $this->getDoctrine()->getManager()->getEventManager()->dispatchEvent('preUpdate', new PreUpdateEventArgs($entity, $this->getDoctrine()->getManager(), $changeset));
         $this->preSave($entity);

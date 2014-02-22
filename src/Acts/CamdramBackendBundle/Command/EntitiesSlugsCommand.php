@@ -25,29 +25,34 @@ class EntitiesSlugsCommand extends ContainerAwareCommand
         $this
             ->setName('camdram:entities:slugs')
             ->setDescription('Generate slugs for entities that do not have one')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'Whether to regenerate all slugs')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Generating slugs for entities without one</info>');
-        ini_set('memory_limit', '-1');
+
+        $search_all = (bool) $input->getOption('all');
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $em->getConfiguration()->setSQLLogger(null);
 
-        $shows = $em->getRepository('ActsCamdramBundle:Show')->createQueryBuilder('s')->where('s.slug is null')
-            ->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
+        $qb = $em->getRepository('ActsCamdramBundle:Show')->createQueryBuilder('s');
+        if (!$search_all) $qb->where('s.slug is null');
+        $shows = $qb->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
         $this->createSlugs($shows, $output);
         $em->clear();
 
-        $orgs = $em->getRepository('ActsCamdramBundle:Organisation')->createQueryBuilder('o')->where('o.slug is null')
-            ->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
+        $qb = $em->getRepository('ActsCamdramBundle:Organisation')->createQueryBuilder('o');
+        if (!$search_all) $qb->where('o.slug is null');
+        $orgs = $qb->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
         $this->createSlugs($orgs, $output);
         $em->clear();
 
-        $people = $em->getRepository('ActsCamdramBundle:Person')->createQueryBuilder('p')->where('p.slug is null')
-            ->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
+        $qb = $em->getRepository('ActsCamdramBundle:Person')->createQueryBuilder('p');
+        if (!$search_all) $qb->where('p.slug is null');
+        $people = $qb->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
         $this->createSlugs($people, $output);
         $em->clear();
 
@@ -62,7 +67,7 @@ class EntitiesSlugsCommand extends ContainerAwareCommand
         foreach ($entities as $row) {
             $e = $row[0];
 
-            $e->setSlug(Sluggable\Urlizer::urlize($e->getName(), '-'));
+            $e->setSlug('__id__');
 
             $count++;
             if ($count % 100 == 0) {
