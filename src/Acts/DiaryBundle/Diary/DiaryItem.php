@@ -83,7 +83,7 @@ class DiaryItem
     /**
      * @param \DateTime $end_at
      */
-    public function setEndAt(\DateTime $end_at)
+    public function setEndAt($end_at)
     {
         $this->end_at = $end_at;
     }
