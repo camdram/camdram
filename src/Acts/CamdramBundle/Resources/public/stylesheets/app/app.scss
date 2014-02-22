@@ -47,6 +47,26 @@ html, body {
   min-height: 100%;
   margin-bottom: -$footer-height;
 
+  &:before {
+    content: "";
+    position:absolute;
+    display:block;
+    max-width:$row-width;
+    background:$white;
+    width:100%;
+    padding: 0 emCalc(15);
+    box-sizing:border-box;
+
+    bottom:0;
+    top:0;
+    z-index:-1;
+
+    @media only screen and (min-width: $row-width) {
+      left:50%;
+      margin-left: $row-width * -0.5;
+    }
+  }
+
   &:after {
     content: "";
     display: block;
@@ -71,23 +91,7 @@ header {
   background:$white;
   word-wrap:break-word;
 
-  &:before {
-    content: "";
-    position:absolute;
-    width:100%;
-    max-width:$row-width;
-    background:$white;
 
-    bottom:0;
-    top:0;
-    z-index:-1;
-
-    @media #{$medium} {
-
-      left:50%;
-      margin-left: $row-width * -0.5;
-    }
-  }
 }
 
 #content {
@@ -96,8 +100,12 @@ header {
     font-size: emCalc(14);
   }
 
-  ul.list {
-    margin-left: 1em;
+  ul {
+    list-style-position: inside;
+  }
+
+  img {
+    margin-bottom:0.8em;
   }
 }
 
