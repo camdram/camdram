@@ -91,7 +91,7 @@ class DiaryRow
         $item = new DiaryItem();
         $item->setEvent($event);
         $item->setStartAt($event->getStartTime());
-        $item->getEndAt($event->getEndTime());
+        $item->setEndAt($event->getEndTime());
 
         if ($event instanceof SingleDayEventInterface) {
             $item->setNumberOfDays(1);

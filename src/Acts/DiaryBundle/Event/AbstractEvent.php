@@ -145,6 +145,6 @@ abstract class AbstractEvent implements EventInterface
      */
     public function setEndTime(\DateTime $end_time)
     {
-        $this->start_time = $end_time;
+        $this->end_time = $end_time;
     }
 }
