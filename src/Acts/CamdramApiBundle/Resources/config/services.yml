@@ -7,3 +7,24 @@ services:
         arguments: ~
         tags:
             - { name: form.type, alias: app_type }
+
+    acts.camdram_api.feed_annotation_reader:
+        class: Acts\CamdramApiBundle\AnnotationReader\FeedAnnotationReader
+        arguments: [@annotation_reader]
+
+    acts.camdram_api.view_handler:
+        parent: fos_rest.view_handler.default
+        calls:
+            - ['registerHandler', [ 'rss', [@acts.camdram_api.feed_view_handler, 'createResponse'] ] ]
+
+    acts.camdram_api.entity_url_generator:
+        class: Acts\CamdramApiBundle\Service\EntityUrlGenerator
+        arguments: [@router]
+
+    acts.camdram_api.feed_view_handler:
+        class: Acts\CamdramApiBundle\View\FeedViewHandler
+        arguments:
+            - @acts.camdram_api.feed_annotation_reader
+            - @twig
+            - @acts.camdram_api.entity_url_generator
+            - %mailer_sender_address%

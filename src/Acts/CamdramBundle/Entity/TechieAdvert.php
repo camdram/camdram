@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiry;
+use Acts\CamdramApiBundle\Annotation as Api;
 
 /**
  * TechieAdvert
@@ -13,6 +14,9 @@ use Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiry;
  * @ORM\Table(name="acts_techies")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\TechieAdvertRepository") @ORM\HasLifecycleCallbacks
  * @UniqueEntity("show")
+ * @Api\Feed(name="Camdram.net - Production Team Vacancies", titleField="feed_title",
+ *     description="Production Team Vacancies advertised for shows in Cambridge",
+ *     template="ActsCamdramBundle:TechieAdvert:rss.html.twig")
  * @TechieAdvertExpiry()
  */
 class TechieAdvert
@@ -103,7 +107,7 @@ class TechieAdvert
 
     public function __construct()
     {
-        $this->setLastUpdated(new \DateTime);
+        $this->setUpdatedAt(new \DateTime);
         $this->setDeadlineTime(new \DateTime('00:00'));
         $this->setExpiry(new \DateTime('+10 days'));
     }
@@ -314,7 +318,7 @@ class TechieAdvert
      * @param \DateTime $lastUpdated
      * @return TechieAdvert
      */
-    public function setLastUpdated($lastUpdated)
+    public function setUpdatedAt($lastUpdated)
     {
         $this->last_updated = $lastUpdated;
     
@@ -326,7 +330,12 @@ class TechieAdvert
      *
      * @return \DateTime 
      */
-    public function getLastUpdated()
+    public function getUpdatedAt()
+    {
+        return $this->last_updated;
+    }
+
+    public function getCreatedAt()
     {
         return $this->last_updated;
     }
@@ -357,6 +366,17 @@ class TechieAdvert
     /** @ORM\PreUpdate */
     public function preUpdate()
     {
-        $this->setLastUpdated(new \DateTime);
+        $this->setUpdatedAt(new \DateTime);
     }
+
+    public function getFeedTitle()
+    {
+        return $this->getShow()->getName(). ' - last updated '.$this->getUpdatedAt()->format('D, j M Y H:i T');
+    }
+
+    public function getSlug()
+    {
+        return $this->getShow()->getSlug();
+    }
+
 }

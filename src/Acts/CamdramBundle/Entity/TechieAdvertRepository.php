@@ -34,7 +34,7 @@ class TechieAdvertRepository extends EntityRepository
             ->where('a.expiry >= CURRENT_DATE()')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
-            ->orderBy('s.name, a.expiry, s.society')
+            ->orderBy('a.expiry, s.name, s.society')
             ->getQuery();
         /* AJF58 - need to sort this by minimum startdate and enddate of performances */
         return $query->getResult();
@@ -67,6 +67,18 @@ class TechieAdvertRepository extends EntityRepository
         return $this->getLatestQuery($limit)
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
+    }
+
+    public function findOneByShowSlug($slug)
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.show', 's')
+            ->where('s.slug = :slug')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = 1')
+            ->setParameter('slug', $slug)
+            ->getQuery()->getOneOrNullResult();
+            ;
     }
 
 }

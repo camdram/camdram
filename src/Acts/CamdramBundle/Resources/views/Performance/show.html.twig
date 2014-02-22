@@ -10,7 +10,11 @@
             {% endif %}
         {% endif %}
         {% if p.venue %}
-            at <a href="{{ path('get_venue', {identifier:p.venue.slug}) }}">{{ p.venue.name|e }}</a>
+            at {% if disable_links is defined -%}
+                {{ p.venue.name }}
+            {%- else -%}
+                <a href="{{ path('get_venue', {identifier:p.venue.slug}) }}">{{ p.venue.name }}</a>
+            {%- endif %}
         {% elseif p.venuename is not empty %}
              at {{ p.venuename }}
         {% else %}

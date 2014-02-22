@@ -10,7 +10,7 @@
     {% for ad in techie_ads %}
         <li><a href="{{ path('get_show', {identifier: ad.show.slug}) }}">{{ ad.show.name }}</a> is looking for:
             {{ ad.getPositionsOneLine() }}
-            - <a href="{{ path('get_techies') }}#advert-{{ ad.id }}">more details</a>
+            - <a href="{{ path('get_techie', {identifier: ad.slug}) }}">more details</a>
         </li>
     {% endfor %}
     {% for ad in app_ads %}

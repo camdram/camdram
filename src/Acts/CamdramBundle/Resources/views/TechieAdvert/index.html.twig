@@ -10,7 +10,7 @@
     {% spaceless %}
     {% for a in techieadverts %}
         <hr>
-        <div id="advert-{{ a.id }}">
+        <div id="{{ a.show.slug }}">
         <h4><a href="{{ path('get_show',
             {identifier: a.show.slug}) }}">{{ a.show.name }}</a></h4>
         <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with { 'performances' : a.show.performances} %}</p>
