@@ -9,8 +9,6 @@ before_script:
   - cp app/config/parameters.test.yml app/config/parameters.yml
   - composer selfupdate
   - composer install
-  - php app/console doctrine:phpcr:init --env=test
-  - php app/console doctrine:phpcr:repository:init --env=test
 
 script:
     - ./runtests
