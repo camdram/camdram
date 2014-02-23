@@ -3,6 +3,8 @@ namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+use Acts\CamdramBundle\Entity\Organisation;
+
 class UserRepository extends EntityRepository
 {
 

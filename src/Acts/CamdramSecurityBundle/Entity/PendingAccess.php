@@ -4,6 +4,8 @@ namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Acts\CamdramSecurityBundle\Entity\User;
+
 /**
  * PendingAccess
  *
@@ -14,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  * (determined by the given email address). The person is prompted
  * @ORM\Table(name="acts_pendingaccess")
  * @ORM\Entity(repositoryClass="PendingAccessRepository")
+ * @ORM\EntityListeners({"\Acts\CamdramSecurityBundle\EventListener\PendingAccessListener"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class PendingAccess
 {
@@ -50,9 +54,10 @@ class PendingAccess
     /**
      * @var integer
      *
-     * @ORM\Column(name="issuerid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
+     * @ORM\JoinColumn(name="issuerid", referencedColumnName="id", nullable=false)
      */
-    private $issuer_id;
+    private $issuer;
 
     /**
      * @var \DateTime
@@ -103,8 +108,14 @@ class PendingAccess
      */
     public function setEmail($email)
     {
-        $this->email = $email;
-    
+        /* Store emails in a Camdram v1 compatible way, i.e. strip cam.ac.uk
+         * and hermes.cam.ac.uk suffixes. This modification is identical to the
+         * EmailtoUser function in v1 as a result.
+         */
+        $email=ereg_replace("[^[:alnum:]@.+-]", "", $email);
+        $email=ereg_replace("@cam.ac.uk","",$email);
+        $email=ereg_replace("@hermes.cam.ac.uk","",$email); 
+        $this->email = strtolower($email);
         return $this;
     }
 
@@ -115,7 +126,12 @@ class PendingAccess
      */
     public function getEmail()
     {
-        return $this->email;
+        /* Add missing suffix, if required. */
+        $email = $this->email;
+        if (($email != '') && !strchr($email,'@')) {
+            $email .= "@cam.ac.uk";
+        }
+        return $email;
     }
 
     /**
@@ -144,35 +160,38 @@ class PendingAccess
     /**
      * Set issuer_id
      *
-     * @param integer $issuerId
+     * @param \Acts\CamdramSecurityBundle\Entity\User $owner
      * @return PendingAccess
      */
-    public function setIssuerId($issuerId)
+    public function setIssuer(\Acts\CamdramSecurityBundle\Entity\User $issuer = null)
     {
-        $this->issuer_id = $issuerId;
+        $this->issuer= $issuer;
     
         return $this;
     }
 
     /**
-     * Get issuer_id
+     * Get issuer
      *
-     * @return integer 
+     * @return \Acts\CamdramSecurityBundle\Entity\User $issuer
      */
-    public function getIssuerId()
+    public function getIssuer()
     {
-        return $this->issuer_id;
+        return $this->issuer;
     }
 
     /**
      * Set creation_date
      *
-     * @param \DateTime $creationDate
+     * This should only be called by Doctrine during PrePersit, but must be 
+     * declared as a public function.
+     *
      * @return PendingAccess
+     * @ORM\PrePersist()
      */
-    public function setCreationDate($creationDate)
+    public function setCreationDate()
     {
-        $this->creation_date = $creationDate;
+        $this->creation_date = new \DateTime();
     
         return $this;
     }
@@ -187,3 +206,4 @@ class PendingAccess
         return $this->creation_date;
     }
 }
+
