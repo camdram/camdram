@@ -31,7 +31,7 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
             new DefinitionDecorator('acts.camdram.search_provider.'.$config['search_provider'])
         );
 
-        $container->getDefinition('acts.camdram.listener.vacancies')->addArgument($config['techies_advert_default_days']);
+        $container->getDefinition('acts.camdram.listener.techie_advert')->addArgument($config['techies_advert_default_days']);
         $container->getDefinition('acts.camdram.techie_advert_expiry_validator')->addArgument($config['techies_advert_max_days']);
 
         $dataDir = $container->getParameterBag()->resolveValue($config['data_dir']);

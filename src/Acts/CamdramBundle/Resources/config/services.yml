@@ -112,12 +112,11 @@ services:
         tags:
             - { name: doctrine.entity_listener }
 
-    acts.camdram.listener.vacancies:
-        class: Acts\CamdramBundle\EventListener\VacanciesListener
+    acts.camdram.listener.techie_advert:
+        class: Acts\CamdramBundle\EventListener\TechieAdvertListener
         arguments: [@acts.time_service]
         tags:
-            - { name: kernel.event_listener, event: camdram.techie_advert_created, method: onTechieAdvertCreated }
-            - { name: kernel.event_listener, event: camdram.techie_advert_edited, method: onTechieAdvertEdited }
+            - { name: doctrine.entity_listener }
 
     acts.camdram.techie_advert_expiry_validator:
         class: Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiryValidator

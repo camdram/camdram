@@ -12,7 +12,8 @@ use Acts\CamdramApiBundle\Annotation as Api;
  * TechieAdvert
  *
  * @ORM\Table(name="acts_techies")
- * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\TechieAdvertRepository") @ORM\HasLifecycleCallbacks
+ * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\TechieAdvertRepository")
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\TechieAdvertListener" })
  * @UniqueEntity("show")
  * @Api\Feed(name="Camdram.net - Production Team Vacancies", titleField="feed_title",
  *     description="Production Team Vacancies advertised for shows in Cambridge",
@@ -361,12 +362,6 @@ class TechieAdvert
     public function getShow()
     {
         return $this->show;
-    }
-
-    /** @ORM\PreUpdate */
-    public function preUpdate()
-    {
-        $this->setUpdatedAt(new \DateTime);
     }
 
     public function getFeedTitle()

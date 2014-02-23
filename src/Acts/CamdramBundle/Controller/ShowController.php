@@ -6,8 +6,6 @@ use Acts\CamdramBundle\Entity\Application,
     Acts\CamdramBundle\Entity\Person,
     Acts\CamdramBundle\Entity\Role,
     Acts\CamdramBundle\Entity\TechieAdvert;
-use Acts\CamdramBundle\Event\CamdramEvents,
-    Acts\CamdramBundle\Event\TechieAdvertEvent;
 use Acts\CamdramBundle\Form\Type\ApplicationType;
 use Acts\CamdramBundle\Form\Type\ShowAuditionsType;
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
@@ -125,7 +123,6 @@ class ShowController extends AbstractRestController
         $form->submit($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $this->get('event_dispatcher')->dispatch(CamdramEvents::TECHIE_ADVERT_CREATED, new TechieAdvertEvent($form->getData()));
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
@@ -167,7 +164,6 @@ class ShowController extends AbstractRestController
         $form->submit($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $this->get('event_dispatcher')->dispatch(CamdramEvents::TECHIE_ADVERT_EDITED, new TechieAdvertEvent($form->getData()));
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));

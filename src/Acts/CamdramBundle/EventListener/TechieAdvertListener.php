@@ -2,10 +2,7 @@
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\TechieAdvert;
-use Acts\CamdramBundle\Event\TechieAdvertEvent;
 use Acts\TimeMockBundle\Service\TimeService;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Class VacanciesListener
@@ -14,7 +11,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @package Acts\CamdramBundle\EventListener
  */
-class VacanciesListener
+class TechieAdvertListener
 {
     private $timeService;
 
@@ -24,14 +21,15 @@ class VacanciesListener
         $this->default_expiry_days = $default_expiry_days;
     }
 
-    public function onTechieAdvertCreated(TechieAdvertEvent $event)
+    public function prePersist(TechieAdvert $techieAdvert)
     {
-        $this->updateExpiryDate($event->getTechieAdvert());
+        $this->updateExpiryDate($techieAdvert);
     }
 
-    public function onTechieAdvertEdited(TechieAdvertEvent $event)
+    public function preUpdate(TechieAdvert $techieAdvert)
     {
-        $this->updateExpiryDate($event->getTechieAdvert());
+        $techieAdvert->setUpdatedAt($this->timeService->getCurrentTime());
+        $this->updateExpiryDate($techieAdvert);
     }
 
     private function updateExpiryDate(TechieAdvert $techieAdvert)
