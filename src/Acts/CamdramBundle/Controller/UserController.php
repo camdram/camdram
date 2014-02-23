@@ -16,7 +16,7 @@ use Acts\CamdramBundle\Form\Type\AddAclType;
  */
 class UserController extends AbstractRestController
 {
-    protected $class = 'Acts\\CamdramBundle\\Entity\\User';
+    protected $class = 'Acts\\CamdramSecurityBundle\\Entity\\User';
 
     protected $type = 'user';
 
