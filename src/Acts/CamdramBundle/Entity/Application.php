@@ -21,13 +21,7 @@ class Application
      */
     private $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="showid", type="integer", nullable=true)
-     */
-    private $show_id;
-    
+   
     /**
      * @var \Show
      *
@@ -74,7 +68,7 @@ class Application
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      */
-    private $deadline_time;
+    private $deadlineTime;
 
 
     /**
@@ -87,29 +81,7 @@ class Application
         return $this->id;
     }
 
-    /**
-     * Set show_id
-     *
-     * @param integer $showId
-     * @return Application
-     */
-    public function setShowId($showId)
-    {
-        $this->show_id = $showId;
-    
-        return $this;
-    }
-
-    /**
-     * Get show_id
-     *
-     * @return integer 
-     */
-    public function getShowId()
-    {
-        return $this->show_id;
-    }
-
+ 
     /**
      * Set text
      *
@@ -180,26 +152,26 @@ class Application
     }
 
     /**
-     * Set deadline_time
+     * Set deadlineTime
      *
      * @param \DateTime $deadlineTime
      * @return Application
      */
     public function setDeadlineTime($deadlineTime)
     {
-        $this->deadline_time = $deadlineTime;
+        $this->deadlineTime = $deadlineTime;
     
         return $this;
     }
 
     /**
-     * Get deadline_time
+     * Get deadlineTime
      *
      * @return \DateTime 
      */
     public function getDeadlineTime()
     {
-        return $this->deadline_time;
+        return $this->deadlineTime;
     }
 
     /**
