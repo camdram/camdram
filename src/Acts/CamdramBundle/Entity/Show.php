@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="show_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener" })
  * @Serializer\ExclusionPolicy("all")
  */
 class Show implements SearchableInterface

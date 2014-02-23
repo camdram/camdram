@@ -8,6 +8,7 @@ use Acts\CamdramBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -33,12 +34,16 @@ class ModerationManager
 
     private $securityContext;
 
-    public function __construct(EntityManager $entityManager, EmailDispatcher $dispatcher, AclProvider $aclProvider, SecurityContextInterface $context)
+    private $logger;
+
+    public function __construct(EntityManager $entityManager, EmailDispatcher $dispatcher,
+                                AclProvider $aclProvider, SecurityContextInterface $context, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
         $this->aclProvider = $aclProvider;
         $this->securityContext = $context;
+        $this->logger = $logger;
     }
 
     /**
@@ -93,7 +98,7 @@ class ModerationManager
         return $users;
     }
 
-    public function approveEntity($entity)
+    public function approveEntity(Show $entity)
     {
         if ($entity instanceof Show && !$entity->isAuthorised()) {
             $entity->setAuthorisedBy($this->securityContext->getToken()->getUser());
@@ -102,6 +107,21 @@ class ModerationManager
             $repo = $this->entityManager->getRepository('ActsCamdramBundle:User');
             $owners = $repo->getEntityOwners($entity);
             $this->dispatcher->sendShowApprovedEmail($entity, $owners);
+            $this->logger->info('Show authorised', array('id' => $entity->getId(), 'name' => $entity->getName()));
+        }
+    }
+
+    public function autoApproveOrEmailModerators(Show $entity)
+    {
+        if (!$entity->isAuthorised()) {
+            if ($this->securityContext->isGranted('APPROVE', $entity)) {
+                //The current user is able to approve the show, so approve it straight away.
+                $this->approveEntity($entity);
+            }
+            else {
+                //Else Send an email
+                $this->emailEntityModerators($entity);
+            }
         }
     }
 
@@ -130,6 +150,7 @@ class ModerationManager
              * their email as if they are just the latter.
              */
             $this->dispatcher->sendShowCreatedEmail($entity, $owners, $moderators);
+            $this->logger->info('Authorisation e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
         }
     }
 }

@@ -30,18 +30,7 @@ class ModerationListener
 
     public function onShowCreated(EntityEvent $event)
     {
-        $entity = $event->getEntity();
-        if (!$entity->isAuthorised()) {
-            if ($this->securityContext->isGranted('APPROVE', $entity)) {
-                //The current user is able to approve the show, so approve it straight away.
-                $entity->setAuthorisedBy($this->securityContext->getToken()->getUser());
-                $this->entityManager->flush();
-            }
-            else {
-                //Else Send an email
-                $this->moderation->emailEntityModerators($entity);
-            }
-        }
+
     }
 
 }

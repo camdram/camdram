@@ -11,3 +11,7 @@ services:
         arguments:  [@service_container]
         tags:
             - { name: monolog.processor, method: processRecord }
+
+    acts_camdram_backend.doctrine.entity_listener_resolver:
+        class: Acts\CamdramBackendBundle\Doctrine\EntityListenerResolver
+        arguments: [@service_container]

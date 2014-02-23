@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBackendBundle;
 
+use Acts\CamdramBackendBundle\DependencyInjection\Compiler\DoctrineEntityListenerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -14,4 +16,10 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class ActsCamdramBackendBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new DoctrineEntityListenerPass());
+    }
 }

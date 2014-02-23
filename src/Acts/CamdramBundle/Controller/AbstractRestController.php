@@ -2,18 +2,13 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Acts\CamdramBundle\Event\CamdramEvents;
-use Acts\CamdramBundle\Event\EntityEvent;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ODM\PHPCR\Mapping\Annotations\PreUpdate;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Gedmo\Sluggable\Util as Sluggable;
@@ -57,18 +52,6 @@ abstract class AbstractRestController extends FOSRestController
      * @return null
      */
     protected function checkAuthenticated()
-    {
-
-    }
-
-    /**
-     * Called immediately prior to saving or updating an entity.
-     *
-     * @param $entity mixed the entity that is about to be saved
-     * @param null|mixed $oldEntity the entity, prior to having its changes applied,
-     *      if applicable.
-     */
-    protected function preSave($entity, $oldEntity=null)
     {
 
     }
@@ -145,11 +128,9 @@ abstract class AbstractRestController extends FOSRestController
         $form->bind($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $this->preSave($form->getData());
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
-            $this->get('event_dispatcher')->dispatch(CamdramEvents::ENTITY_CREATED, new EntityEvent($form->getData(), $this->getUser()));
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         }
         else {
@@ -187,7 +168,6 @@ abstract class AbstractRestController extends FOSRestController
 
         $form->bind($request);
         if ($form->isValid()) {
-            $this->preSave($form->getData(), $entity);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
@@ -288,7 +268,6 @@ abstract class AbstractRestController extends FOSRestController
         $entity->setSlug('__id__');
         $changeset = array();
         $this->getDoctrine()->getManager()->getEventManager()->dispatchEvent('preUpdate', new PreUpdateEventArgs($entity, $this->getDoctrine()->getManager(), $changeset));
-        $this->preSave($entity);
         $em->flush();
 
         $this->getDoctrine()->getManager()->getEventManager()->dispatchEvent('postUpdate', new LifecycleEventArgs($entity, $this->getDoctrine()->getManager()));

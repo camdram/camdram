@@ -79,6 +79,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+        entity_listener_resolver: acts_camdram_backend.doctrine.entity_listener_resolver
 
 doctrine_phpcr:
     session:

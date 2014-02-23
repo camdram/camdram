@@ -93,7 +93,12 @@ services:
 
     acts.camdram.moderation_manager:
         class: Acts\CamdramBundle\Service\ModerationManager
-        arguments: [@doctrine.orm.entity_manager, @acts.camdram.email_dispatcher, @camdram.security.acl.provider, @security.context]
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @acts.camdram.email_dispatcher
+            - @camdram.security.acl.provider
+            - @security.context
+            - @monolog.logger.camdram
 
     acts.camdram.listener.doctrine_event_logger:
         class: Acts\CamdramBundle\EventListener\DoctrineEventLogger
@@ -101,11 +106,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
-    acts.camdram.listener.moderation:
-        class: Acts\CamdramBundle\EventListener\ModerationListener
-        arguments: [@security.context, @doctrine.orm.entity_manager, @acts.camdram.moderation_manager]
+    acts.camdram.listener.show:
+        class: Acts\CamdramBundle\EventListener\ShowListener
+        arguments: [@acts.camdram.moderation_manager]
         tags:
-            - { name: kernel.event_listener, event: camdram.entity_created, method: onShowCreated }
+            - { name: doctrine.entity_listener }
 
     acts.camdram.listener.vacancies:
         class: Acts\CamdramBundle\EventListener\VacanciesListener
