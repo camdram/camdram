@@ -63,7 +63,13 @@ class EmailBuilder
      * @ORM\Column(name="IncludeAuditions", type="boolean")
      */
     private $includeAuditions;
-
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="IncludeApplications", type="boolean")
+     */
+    private $includeApplications;
 
     /**
      * @Gedmo\Slug(fields={"name"})
