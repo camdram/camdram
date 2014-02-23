@@ -2,7 +2,7 @@
 namespace Acts\CamdramSecurityBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\PendingAccess,
-    Acts\CamdramBundle\Entity\User;
+    Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent,
     Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;

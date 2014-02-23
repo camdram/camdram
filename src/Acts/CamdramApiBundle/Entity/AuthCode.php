@@ -28,7 +28,7 @@ class AuthCode extends BaseAuthCode
     protected $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
      */
     protected $user;
 
@@ -68,7 +68,7 @@ class AuthCode extends BaseAuthCode
     /**
      * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\User $user
+     * @param \Acts\CamdramSecurityBundle\Entity\User $user
      * @return AccessToken
      */
     public function setUser(UserInterface $user = null)
@@ -81,7 +81,7 @@ class AuthCode extends BaseAuthCode
     /**
      * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getUser()
     {

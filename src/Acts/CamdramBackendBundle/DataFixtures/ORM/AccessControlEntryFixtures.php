@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Symfony\Component\Yaml\Yaml;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 
 class AccessControlEntryFixtures extends AbstractFixture implements OrderedFixtureInterface
 {

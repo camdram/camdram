@@ -7,7 +7,7 @@ use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 
 class UserLinker
 {

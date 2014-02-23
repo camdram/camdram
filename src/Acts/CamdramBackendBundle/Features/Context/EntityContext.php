@@ -5,7 +5,7 @@ namespace Acts\CamdramBackendBundle\Features\Context;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Behat\Behat\Context\BehatContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
@@ -88,7 +88,7 @@ class EntityContext extends AbstractContext
     public function showOwner($email, $show_name)
     {
         $em = $this->getEntityManager();
-        $user = $em->getRepository('ActsCamdramBundle:User')->findOneByEmail($email);
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
         $show = $em->getRepository('ActsCamdramBundle:Show')->findOneByName($show_name);
         $this->kernel->getContainer()->get('camdram.security.acl.provider')->grantAccess($show, $user, $this->getAuthoriseUser());
     }

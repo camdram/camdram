@@ -1,7 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Event;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\EventDispatcher\Event;
 
 class UserEvent extends Event

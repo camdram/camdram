@@ -67,8 +67,13 @@ services:
         arguments: [@camdram.security.email_dispatcher, @camdram.security.token_generator]
         tags:
             - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
-            - { name: kernel.event_listener, event: camdram_security.email_changed, method: onEmailChangeEvent }
             - { name: kernel.event_listener, event: camdram_security.pending_acccess_created, method: onPendingAccessCreatedEvent }
+
+    camdram.security.listener.user:
+        class: Acts\CamdramSecurityBundle\EventListener\UserListener
+        arguments: [@camdram.security.email_dispatcher, @camdram.security.token_generator]
+        tags:
+            - { name: doctrine.entity_listener }
 
     camdram.security.email_dispatcher:
         class: Acts\CamdramSecurityBundle\Service\EmailDispatcher

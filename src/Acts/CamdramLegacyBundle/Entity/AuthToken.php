@@ -44,9 +44,9 @@ class AuthToken
     private $user_id;
 
     /**
-     * @var \Acts\CamdramBundle\Entity\User
+     * @var \Acts\CamdramSecurityBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
@@ -166,10 +166,10 @@ class AuthToken
     /**
      * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\User $user
+     * @param \Acts\CamdramSecurityBundle\Entity\User $user
      * @return AuthToken
      */
-    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
+    public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
     {
         $this->user = $user;
     
@@ -179,7 +179,7 @@ class AuthToken
     /**
      * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getUser()
     {

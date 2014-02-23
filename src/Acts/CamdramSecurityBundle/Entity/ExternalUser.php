@@ -3,7 +3,6 @@ namespace Acts\CamdramSecurityBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Acts\CamdramBundle\Entity\User;
 
 /**
 * External User
@@ -25,7 +24,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User", inversedBy="external_users")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="external_users")
      */
     private $user;
 
@@ -285,7 +284,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     /**
      * Set linked_user
      *
-     * @param \Acts\CamdramBundle\Entity\User $linkedUser
+     * @param User $linkedUser
      * @return ExternalUser
      */
     public function setUser(User $user = null)
@@ -298,7 +297,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     /**
      * Get linked_user
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return User
      */
     public function getUser()
     {

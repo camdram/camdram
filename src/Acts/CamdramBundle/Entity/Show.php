@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramSecurityBundle\Entity\User;
 
 /**
  * Show
@@ -173,7 +174,7 @@ class Show implements SearchableInterface
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $authorised_by;
@@ -1246,7 +1247,7 @@ class Show implements SearchableInterface
     /**
      * Set authorised_by
      *
-     * @param \Acts\CamdramBundle\Entity\User $authorisedBy
+     * @param \Acts\CamdramSecurityBundle\Entity\User $authorisedBy
      * @return Show
      */
     public function setAuthorisedBy(User $authorisedBy = null)
@@ -1259,7 +1260,7 @@ class Show implements SearchableInterface
     /**
      * Get authorised_by
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getAuthorisedBy()
     {

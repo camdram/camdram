@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 class VenuesLocationCommand extends ContainerAwareCommand

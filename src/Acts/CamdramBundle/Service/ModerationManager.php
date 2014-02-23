@@ -2,7 +2,7 @@
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Society;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
@@ -82,7 +82,7 @@ class ModerationManager
     public function getModeratorsForEntity($entity)
     {
         $users = array();
-        $repo = $this->entityManager->getRepository('ActsCamdramBundle:User');
+        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
         if ($entity instanceof Show)
         {
@@ -104,7 +104,7 @@ class ModerationManager
             $entity->setAuthorisedBy($this->securityContext->getToken()->getUser());
             $this->entityManager->flush();
 
-            $repo = $this->entityManager->getRepository('ActsCamdramBundle:User');
+            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $owners = $repo->getEntityOwners($entity);
             $this->dispatcher->sendShowApprovedEmail($entity, $owners);
             $this->logger->info('Show authorised', array('id' => $entity->getId(), 'name' => $entity->getName()));
@@ -138,7 +138,7 @@ class ModerationManager
     {
         if ($entity instanceof Show) {
             $moderators = $this->getModeratorsForEntity($entity);
-            $repo = $this->entityManager->getRepository('ActsCamdramBundle:User');
+            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $owners = $repo->getEntityOwners($entity);
             /* Construct a list of email addresses to add to the 'To' field of the
              * email.

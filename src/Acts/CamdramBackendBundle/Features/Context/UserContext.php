@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBackendBundle\Features\Context;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Behat\Behat\Context\BehatContext;
@@ -98,7 +98,7 @@ class UserContext extends AbstractContext
                 case 'username' : $external_user->setUsername($value); break;
                 case 'picture' : $external_user->setProfilePictureUrl($value); break;
                 case 'user':
-                    $user = $em->getRepository('ActsCamdramBundle:User')->findOneByEmail($value);
+                    $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($value);
                     $external_user->setUser($user);
                     break;
             }

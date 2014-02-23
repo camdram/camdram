@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramSecurityBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +16,8 @@ use Acts\CamdramBundle\Entity\Person;
  * User
  *
  * @ORM\Table(name="acts_users")
- * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\UserRepository")
+ * @ORM\Entity(repositoryClass="UserRepository")
+ * @ORM\EntityListeners({"Acts\CamdramSecurityBundle\EventListener\UserListener" })
  * @UniqueEntity(fields="email", message="An account already exists with that email address")
  */
 class User implements \Serializable, CamdramUserInterface
@@ -100,7 +101,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="occupation", type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
      */
     private $occupation;
 
@@ -170,7 +170,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * @var Person
      *
-     * @ORM\ManyToOne(targetEntity="Person", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="users")
      * @Serializer\Exclude()
      *
      */

@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 
 class ExternalUsersCommand extends ContainerAwareCommand
@@ -25,7 +25,7 @@ class ExternalUsersCommand extends ContainerAwareCommand
         $output->writeln('<info>Creating identities for users based on their email addresses</info>');
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $users = $em->getRepository('ActsCamdramBundle:User')->findAll();
+        $users = $em->getRepository('ActsCamdramSecurityBundle:User')->findAll();
 
         foreach ($users as $user) {
             if (preg_match('/^[a-z]+[0-9]+$/i',$user->getEmail(), $matches)) {

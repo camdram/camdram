@@ -40,9 +40,9 @@ class AccessControlEntry
     private $type;
 
     /**
-     * @var \Acts\CamdramBundle\Entity\User
+     * @var User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User", inversedBy="aces")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="aces")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      * })
@@ -57,9 +57,9 @@ class AccessControlEntry
     private $user_id;
 
     /**
-     * @var \Acts\CamdramBundle\Entity\User
+     * @var User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
      * })
@@ -74,9 +74,9 @@ class AccessControlEntry
     private $created_at;
 
     /**
-     * @var \Acts\CamdramBundle\Entity\User
+     * @var User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="revokeid", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      * })
@@ -180,10 +180,10 @@ class AccessControlEntry
     /**
      * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\User $user
+     * @param User $user
      * @return AccessControlEntry
      */
-    public function setUser(\Acts\CamdramBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     
@@ -193,7 +193,7 @@ class AccessControlEntry
     /**
      * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return User
      */
     public function getUser()
     {
@@ -203,10 +203,10 @@ class AccessControlEntry
     /**
      * Set granted_by
      *
-     * @param \Acts\CamdramBundle\Entity\User $grantedBy
+     * @param User $grantedBy
      * @return AccessControlEntry
      */
-    public function setGrantedBy(\Acts\CamdramBundle\Entity\User $grantedBy = null)
+    public function setGrantedBy(User $grantedBy = null)
     {
         $this->granted_by = $grantedBy;
     
@@ -216,7 +216,7 @@ class AccessControlEntry
     /**
      * Get granted_by
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return User
      */
     public function getGrantedBy()
     {
@@ -226,10 +226,10 @@ class AccessControlEntry
     /**
      * Set revoker
      *
-     * @param \Acts\CamdramBundle\Entity\User $revoker
+     * @param User $revoker
      * @return AccessControlEntry
      */
-    public function setRevokedBy(\Acts\CamdramBundle\Entity\User $revoker = null)
+    public function setRevokedBy(User $revoker = null)
     {
         $this->revoked_by = $revoker;
     
@@ -239,7 +239,7 @@ class AccessControlEntry
     /**
      * Get revoker
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return User 
      */
     public function getRevokedBy()
     {

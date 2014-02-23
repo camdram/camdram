@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 use Acts\CamdramSecurityBundle\Form\Type\LoginType,
     Acts\CamdramSecurityBundle\Form\Type\RegistrationType,
     Acts\CamdramSecurityBundle\Entity\UserIdentity,
-    Acts\CamdramBundle\Entity\User,
+    Acts\CamdramSecurityBundle\Entity\User,
     Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -142,7 +142,7 @@ class DefaultController extends Controller
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
             if ($form->isValid()) {
-                /** @var \Acts\CamdramBundle\Entity\User $user */
+                /** @var \Acts\CamdramSecurityBundle\Entity\User $user */
                 $user = $form->getData();
                 $factory = $this->get('security.encoder_factory');
                 $encoder = $factory->getEncoder($user);
@@ -210,13 +210,12 @@ class DefaultController extends Controller
 
     public function confirmEmailAction($email, $token)
     {
-        $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User')->findOneByEmail($email);
+        $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
         if ($user && !$user->getIsEmailVerified()) {
             $expected_token = $this->get('camdram.security.token_generator')->generateEmailConfirmationToken($user);
             if ($token == $expected_token) {
                 $user->setIsEmailVerified(true);
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::EMAIL_VERIFIED, new UserEvent($user));
                 return $this->render('ActsCamdramSecurityBundle:Default:confirm_email.html.twig', array(
                     'confirm_user' => $user,
                     'services'      => $this->get('external_login.service_provider')->getServices(),
@@ -235,7 +234,7 @@ class DefaultController extends Controller
             $form->submit($this->getRequest());
             if ($form->isValid()) {
                 $data = $form->getData();
-                $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User')->findOneByEmail($data['email']);
+                $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($data['email']);
                 if ($user) {
                     $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
                     $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
@@ -255,7 +254,7 @@ class DefaultController extends Controller
 
     public function resetPasswordAction($email, $token)
     {
-        $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User')->findOneByEmail($email);
+        $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
         if ($user) {
             $expected_token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
             if ($token == $expected_token) {

@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Acts\CamdramBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 class UsersPeopleMapCommand extends ContainerAwareCommand
@@ -27,7 +26,7 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $utils = $this->getContainer()->get('camdram.security.name_utils');
 
-        $users = $em->createQuery('SELECT u FROM ActsCamdramBundle:User u WHERE u.person_id IS NULL')->getResult();
+        $users = $em->createQuery('SELECT u FROM ActsCamdramSecurityBundle:User u WHERE u.person_id IS NULL')->getResult();
         $count = 0;
 
         foreach ($users as $user) {

@@ -3,7 +3,7 @@ namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -21,7 +21,7 @@ class ProfileVoterTest extends \PHPUnit_Framework_TestCase
     private $token;
 
     /**
-     * @var \Acts\CamdramBundle\Entity\User
+     * @var \Acts\CamdramSecurityBundle\Entity\User
      */
     private $user;
 

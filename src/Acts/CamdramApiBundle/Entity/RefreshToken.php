@@ -28,7 +28,7 @@ class RefreshToken extends BaseRefreshToken
     protected $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
      */
     protected $user;
 
@@ -69,7 +69,7 @@ class RefreshToken extends BaseRefreshToken
     /**
      * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\User $user
+     * @param \Acts\CamdramSecurityBundle\Entity\User $user
      * @return RefreshToken
      */
     public function setUser(UserInterface $user = null)
@@ -82,7 +82,7 @@ class RefreshToken extends BaseRefreshToken
     /**
      * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getUser()
     {

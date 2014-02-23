@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramApiBundle\Entity;
 
+use Acts\CamdramSecurityBundle\Entity\User;
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,7 +41,7 @@ class ExternalApp extends BaseClient
     protected $app_type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
     protected $user;
@@ -76,7 +77,7 @@ class ExternalApp extends BaseClient
     protected $updated_at;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Acts\CamdramBundle\Entity\User", inversedBy="apps")
+     * @ORM\ManyToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\User", inversedBy="apps")
      * @ORM\JoinTable(name="acts_api_authorisations")
      */
     private $users;
@@ -126,10 +127,10 @@ class ExternalApp extends BaseClient
     /**
      * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\User $user
+     * @param \Acts\CamdramSecurityBundle\Entity\User $user
      * @return ApiApp
      */
-    public function setUser(\Acts\CamdramBundle\Entity\User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
         $this->organisation = null;
@@ -141,7 +142,7 @@ class ExternalApp extends BaseClient
     /**
      * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getUser()
     {
@@ -334,10 +335,10 @@ class ExternalApp extends BaseClient
     /**
      * Add users
      *
-     * @param \Acts\CamdramBundle\Entity\User $users
+     * @param \Acts\CamdramSecurityBundle\Entity\User $users
      * @return ExternalApp
      */
-    public function addUser(\Acts\CamdramBundle\Entity\User $users)
+    public function addUser(User $users)
     {
         $this->users[] = $users;
     
@@ -347,9 +348,9 @@ class ExternalApp extends BaseClient
     /**
      * Remove users
      *
-     * @param \Acts\CamdramBundle\Entity\User $users
+     * @param \Acts\CamdramSecurityBundle\Entity\User $users
      */
-    public function removeUser(\Acts\CamdramBundle\Entity\User $users)
+    public function removeUser(User $users)
     {
         $this->users->removeElement($users);
     }

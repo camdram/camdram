@@ -1,7 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Service;
 
-use Acts\CamdramBundle\Entity\User,
+use Acts\CamdramSecurityBundle\Entity\User,
     Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;

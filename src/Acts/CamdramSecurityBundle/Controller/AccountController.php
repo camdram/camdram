@@ -2,8 +2,6 @@
 
 namespace Acts\CamdramSecurityBundle\Controller;
 
-use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
-use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
 use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,7 +25,6 @@ class AccountController extends Controller
                 $user = $form->getData();
                 $user->setIsEmailVerified(false);
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::EMAIL_CHANGED, new UserEvent($user));
                 return $this->render('ActsCamdramSecurityBundle:Account:change_email_complete.html.twig');
             }
             return $this->render('ActsCamdramSecurityBundle:Account:change_email.html.twig', array(
@@ -55,7 +52,6 @@ class AccountController extends Controller
                 $user->setPassword($password);
 
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::PASSWORD_CHANGED, new UserEvent($user));
 
                 return $this->render('ActsCamdramSecurityBundle:Account:change_password_complete.html.twig');
             }

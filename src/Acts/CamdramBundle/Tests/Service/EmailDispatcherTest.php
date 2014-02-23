@@ -4,7 +4,7 @@ namespace Acts\CamdramBundle\Tests\Service;
 
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Service\DiaryHelper;
 use Acts\CamdramBundle\Service\EmailDispatcher;
 

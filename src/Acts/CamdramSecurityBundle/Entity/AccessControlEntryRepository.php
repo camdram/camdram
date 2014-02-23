@@ -4,7 +4,6 @@ namespace Acts\CamdramSecurityBundle\Entity;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\EntityRepository;
-use Acts\CamdramBundle\Entity\User;
 use Doctrine\ORM\Query\Expr;
 
 class AccessControlEntryRepository extends EntityRepository

@@ -53,9 +53,9 @@ class Review
     private $from;
 
     /**
-     * @var \Acts\CamdramBundle\Entity\User
+     * @var \Acts\CamdramSecurityBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
      * })
@@ -199,10 +199,10 @@ class Review
     /**
      * Set user
      *
-     * @param \Acts\CamdramBundle\Entity\User $user
+     * @param \Acts\CamdramSecurityBundle\Entity\User $user
      * @return Review
      */
-    public function setUser(\Acts\CamdramBundle\Entity\User $user = null)
+    public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
     {
         $this->user = $user;
     
@@ -212,7 +212,7 @@ class Review
     /**
      * Get user
      *
-     * @return \Acts\CamdramBundle\Entity\User 
+     * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getUser()
     {

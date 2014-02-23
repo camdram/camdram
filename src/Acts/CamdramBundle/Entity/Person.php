@@ -6,6 +6,7 @@ use Acts\CamdramBundle\Search\SearchableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Validator\Constraints as Assert;
+use Acts\CamdramSecurityBundle\Entity\User;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -80,15 +81,15 @@ class Person implements SearchableInterface
     private $roles;
 
     /**
-     * @var User
+     * @var \Acts\CamdramSecurityBundle\Entity\User
      *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", mappedBy="person")
      * @Serializer\Exclude
      */
     private $users;
 
     /**
-     * @var User
+     * @var \Acts\CamdramSecurityBundle\Entity\ExternalUser
      *
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="person")
      * @Serializer\Exclude
@@ -205,10 +206,10 @@ class Person implements SearchableInterface
     /**
      * Add users
      *
-     * @param \Acts\CamdramBundle\Entity\User $users
+     * @param \Acts\CamdramSecurityBundle\Entity\User $users
      * @return Person
      */
-    public function addUser(\Acts\CamdramBundle\Entity\User $users)
+    public function addUser(User $users)
     {
         $this->users[] = $users;
     
@@ -218,9 +219,9 @@ class Person implements SearchableInterface
     /**
      * Remove users
      *
-     * @param \Acts\CamdramBundle\Entity\User $users
+     * @param \Acts\CamdramSecurityBundle\Entity\User $users
      */
-    public function removeUser(\Acts\CamdramBundle\Entity\User $users)
+    public function removeUser(User $users)
     {
         $this->users->removeElement($users);
     }
@@ -238,7 +239,7 @@ class Person implements SearchableInterface
     /**
      * Add aliases
      *
-     * @param \Acts\CamdramBundle\Entity\NameAlias $aliases
+     * @param \Acts\CamdramSecurityBundle\Entity\NameAlias $aliases
      * @return Person
      */
     public function addAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)

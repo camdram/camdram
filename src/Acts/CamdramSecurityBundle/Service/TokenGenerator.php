@@ -1,7 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Service;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class TokenGenerator

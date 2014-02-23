@@ -10,7 +10,7 @@ security:
     providers:
         main:
             entity:
-                class: Acts\CamdramBundle\Entity\User
+                class: Acts\CamdramSecurityBundle\Entity\User
                 property: email
         external_login:
             id: camdram.security.external_user.provider
@@ -53,7 +53,7 @@ security:
         - { path ^/auth/settings.*, roles: IS_AUTHENTICATED_FULLY }
 
     encoders:
-        Acts\CamdramBundle\Entity\User:
+        Acts\CamdramSecurityBundle\Entity\User:
             id: camdram.security.encoder.legacy_md5
 
 acts_external_login:

@@ -10,7 +10,7 @@ use Acts\CamdramSecurityBundle\Form\Type\LoginType,
     Acts\CamdramSecurityBundle\Form\Type\UserType,
     Acts\CamdramSecurityBundle\Entity\UserIdentity,
     Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserTokenService,
-    Acts\CamdramBundle\Entity\User,
+    Acts\CamdramSecurityBundle\Entity\User,
     Acts\CamdramBundle\Entity\Person;
 
 class SetupController extends Controller

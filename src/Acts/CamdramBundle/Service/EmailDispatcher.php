@@ -2,7 +2,7 @@
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
 use Symfony\Component\Routing\RouterInterface;

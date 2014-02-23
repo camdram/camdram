@@ -3,7 +3,7 @@ namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

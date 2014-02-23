@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramSecurityBundle\Entity\User;
 
 /**
  * Support
@@ -68,7 +69,7 @@ class Support
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="ownerid", referencedColumnName="id", nullable=true)
      */
     private $owner;
@@ -252,7 +253,7 @@ class Support
     /**
      * Set owner
      *
-     * @param \Acts\CamdramBundle\Entity\User $owner
+     * @param \Acts\CamdramSecurityBundle\Entity\User $owner
      * @return Support
      */
     public function setOwner(User $owner = null)
@@ -265,7 +266,7 @@ class Support
     /**
      * Get owner
      *
-     * @return \Acts\CamdramBundle\Entity\User
+     * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getOwner()
     {

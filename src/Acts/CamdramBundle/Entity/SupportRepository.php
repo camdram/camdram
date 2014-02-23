@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 use Doctrine\ORM\Query\Expr;

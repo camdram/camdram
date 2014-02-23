@@ -40,7 +40,7 @@ class CreatePasswordType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acts\CamdramBundle\Entity\User'
+            'data_class' => 'Acts\CamdramSecurityBundle\Entity\User'
         ));
     }
 

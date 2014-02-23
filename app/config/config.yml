@@ -242,7 +242,7 @@ acts_sphinx_real_time:
             fields: [name]
             persistence:
                 driver: orm
-                model: Acts\CamdramBundle\Entity\User
+                model: Acts\CamdramSecurityBundle\Entity\User
                 listener: ~
                 provider: ~
                 finder: ~

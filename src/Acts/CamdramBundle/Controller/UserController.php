@@ -7,7 +7,7 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Form\Type\UserType;
 use Acts\CamdramBundle\Form\Type\AddAclType;
 
@@ -48,7 +48,7 @@ class UserController extends AbstractRestController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:User');
+        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User');
     }
 
     protected function getForm($society = null)

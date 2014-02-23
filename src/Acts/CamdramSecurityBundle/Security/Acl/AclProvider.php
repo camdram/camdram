@@ -6,7 +6,7 @@ use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Doctrine\ORM\EntityManager;
 
-use Acts\CamdramBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository;
