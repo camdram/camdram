@@ -22,6 +22,7 @@ class EntityListenerResolver extends DefaultEntityListenerResolver
 
     public function resolve($className)
     {
+        if (substr($className, 0, 1) == '\\') $className = substr($className, 1);
         if (isset($this->mapping[$className]) && $this->container->has($this->mapping[$className])) {
             return $this->container->get($this->mapping[$className]);
         }
