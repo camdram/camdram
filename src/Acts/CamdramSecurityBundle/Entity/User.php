@@ -266,9 +266,8 @@ class User implements \Serializable, CamdramUserInterface
          * and hermes.cam.ac.uk suffixes. This modification is identical to the
          * EmailtoUser function in v1 as a result.
          */
-        $email=ereg_replace("[^[:alnum:]@.+-]", "", $email);
-        $email=ereg_replace("@cam.ac.uk","",$email);
-        $email=ereg_replace("@hermes.cam.ac.uk","",$email); 
+        /*$email=preg_replace("/@cam.ac.uk$/i","",$email);
+        $email=preg_replace("/@hermes.cam.ac.uk$/i","",$email);*/
         $this->email = strtolower($email);
         return $this;
     }
@@ -282,9 +281,9 @@ class User implements \Serializable, CamdramUserInterface
     {
         /* Add missing suffix, if required. */
         $email = $this->email;
-        if (($email != '') && !strchr($email,'@')) {
+        /*if ($email && strchr($email,'@') === false) {
             $email .= "@cam.ac.uk";
-        }
+        }*/
         return $email;
     }
 
