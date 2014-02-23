@@ -44,7 +44,7 @@ class ApplicationRepository extends EntityRepository
 
     private function getLatestQuery($limit)
     {
-        $now = new DateTime();
+        $now = new \DateTime();
     
         return $this->createQueryBuilder('a')
             ->leftJoin('a.show', 's')

@@ -256,7 +256,6 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     }
     
     private function addApplications(ObjectManager $manager, Show $show){
-        print("Adding applications for show " . $show->getName() . "\n");
         $application = new Application();
         $application->setText("Random text " . mt_rand(1,100));
         $application->setDeadlineDate(new \DateTime(mt_rand(-5,15) . " days"));
@@ -267,7 +266,6 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     }
     
     private function addTechieAdverts(ObjectManager $manager, Show $show){
-        print("Adding tech adverts for show " . $show->getName() . "\n");
         $num_roles_to_seek = mt_rand(1,count($this->roles)-1);
         $roles_to_seek = $this->roles;
         shuffle($roles_to_seek);
@@ -295,13 +293,14 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
         
         $techieAdvert->setDisplay(mt_rand(0,4)>0);
         
-        
         $techExtra = "";
         
         if(mt_rand(0,1)==1){
             $techExtra = "Short Tech Extra";
         }else if(mt_rand(0,1)==1){
-            $techExtra = "A very very long tech extra because some people don't know when to stop. You know the type, they will go on and on about the show hoping to persuade you to do it because it is exciting with scaffolding and balloons and probably a raised forestage";
+            $techExtra = "A very very long tech extra because some people don't know when to stop. You know the type,"
+            . "they will go on and on about the show hoping to persuade you to do it because it is exciting with"
+            . "scaffolding and balloons and probably a raised forestage";
         }
         
         $techieAdvert->setTechExtra($techExtra);
@@ -311,7 +310,6 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     }
     
     private function addAuditions(ObjectManager $manager, Show $show){
-        print("Adding auditions for show " . $show->getName() . "\n");
         $numScheduledAuditions = mt_rand(1,3);
         
         for($i = 0; $i<$numScheduledAuditions; $i++){
