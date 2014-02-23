@@ -101,6 +101,9 @@ class DiaryItem
      */
     public function setNumberOfDays($days)
     {
+        if ($days < 1 || $days > 7) {
+            throw new \InvalidArgumentException(sprintf('%s is not a valid diary item number of days', $days));
+        }
         $this->num_days = $days;
     }
 
@@ -123,8 +126,11 @@ class DiaryItem
     /**
      * @param $index
      */
-    public function setIndex($index)
+    public function setStartIndex($index)
     {
+        if ($index < 0 || $index > 6) {
+            throw new \InvalidArgumentException(sprintf('%s is not a valid diary item start index', $index));
+        }
         $this->index = $index;
     }
 

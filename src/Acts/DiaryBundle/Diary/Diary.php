@@ -84,7 +84,6 @@ class Diary
             $view->setDateRange($this->start_date, $this->end_date);
         }
         $view->addEvents($this->events);
-        $view->sort();
         $view->addLabels($this->labels);
         return $view;
     }
