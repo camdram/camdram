@@ -50,7 +50,7 @@ class Week
     }
 
     /**
-     * Given a particular date, returns the date of the beginning of the week that it would be in
+     * Given a particular date, returns the date of the beginning of the week
      *
      * @param \DateTime $date
      * @return \DateTime
@@ -82,9 +82,12 @@ class Week
      * @return bool
      */
     public function intersects(\DateTime $start, \DateTime $end) {
-        return $this->start <= $start && $start < $this->end
-            || $this->start <= $end && $end < $this->end
-            || $start < $this->start && $this->end < $end;
+        return $this->start <= $end && $start < $this->end;
+    }
+
+    protected function createRow(EventInterface $event)
+    {
+        return new DiaryRow($event->getStartTime(), $this->getStartAt());
     }
 
     public function addEvent(EventInterface $event)
@@ -98,7 +101,7 @@ class Week
         }
 
         //No such row exists, so we create one
-        $row = new DiaryRow($event->getStartTime(), $this->getStartAt());
+        $row = $this->createRow($event);
         $row->addEvent($event);
         $id = $row->getStartTime()->format('U');
 
@@ -120,6 +123,7 @@ class Week
      */
     public function getRows()
     {
+        ksort($this->rows);
         return $this->rows;
     }
 
@@ -169,17 +173,6 @@ class Week
     public function getPeriodLabel()
     {
         return $this->period_label;
-    }
-
-    /**
-     * Once all the events have been added, this sorts the rows and items into the correct order.
-     */
-    public function sort()
-    {
-        ksort($this->rows);
-        foreach ($this->rows as $row) {
-            $row->sort();
-        }
     }
 
     /**

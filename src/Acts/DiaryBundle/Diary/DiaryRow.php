@@ -29,11 +29,13 @@ class DiaryRow
         $this->start_date = $start_date;
     }
 
-    public function calculateIndex(\DateTime $date)
+    private function calculateIndex(\DateTime $date)
     {
         $diff = $this->start_date->diff($date, false);
         $days = $diff->days;
         if ($diff->invert) $days *= -1;
+        if ($days < 0) $days = 0;
+        if ($days > 6) $days = 6;
         return $days;
     }
 
@@ -73,17 +75,20 @@ class DiaryRow
         elseif ($event instanceof MultiDayEventInterface) {
             $start_index = $this->calculateIndex($event->getStartDate());
             $end_index = $this->calculateIndex($event->getEndDate());
-            if ($event->getStartTime() == new \DateTime('2013-02-17 13:45:00')) {
-            }
             return $this->rangeIsFree($start_index, $end_index);
         }
     }
 
-    private function addItem(DiaryItem $item)
+    public function addItem(DiaryItem $item)
     {
-        if ($item->getStartIndex() < 0) $item->setIndex(0);
-        if ($item->getEndIndex() > 6) $item->setNumberOfDays(7 - $item->getStartIndex());
         $this->items[$item->getStartIndex()] = $item;
+
+        if (!$this->start || $item->getStartAt() < $this->start) {
+            $this->start = $item->getStartAt();
+        }
+        if (!$this->end || $item->getStartAt() > $this->end) {
+            $this->end = $item->getStartAt();
+        }
     }
 
     public function addEvent(EventInterface $event)
@@ -95,22 +100,22 @@ class DiaryRow
 
         if ($event instanceof SingleDayEventInterface) {
             $item->setNumberOfDays(1);
-            $item->setIndex($this->calculateIndex($event->getDate()));
-            $this->items[] = $item;
+            $item->setStartIndex($this->calculateIndex($event->getDate()));
+            $this->addItem($item);
         }
         elseif ($event instanceof MultiDayEventInterface) {
             if ($event->getStartDate() < $event->getExcludeDate()
                     && $event->getExcludeDate() < $event->getEndDate()) {
                 $start_index = $this->calculateIndex($event->getStartDate());
                 $end_index = $this->calculateIndex($event->getExcludeDate());
-                $item->setIndex($start_index);
+                $item->setStartIndex($start_index);
                 $item->setNumberOfDays($end_index - $start_index);
                 $this->addItem($item);
 
                 $item2 = clone $item;
                 $start_index = $this->calculateIndex($event->getExcludeDate());
                 $end_index = $this->calculateIndex($event->getEndDate());
-                $item2->setIndex($start_index+1);
+                $item2->setStartIndex($start_index+1);
                 $item2->setNumberOfDays($end_index - $start_index);
                 $this->addItem($item2);
             }
@@ -118,28 +123,19 @@ class DiaryRow
 
                 $start_index = $this->calculateIndex($event->getStartDate());
                 $end_index = $this->calculateIndex($event->getEndDate());
-                $item->setIndex($start_index);
-                $item->setNumberOfDays($end_index - $start_index + 1);
-                $this->addItem($item);
+                $numberOfDays = $end_index - $start_index + 1;
+                if ($numberOfDays > 0) {
+                    $item->setStartIndex($start_index);
+                    $item->setNumberOfDays($end_index - $start_index + 1);
+                    $this->addItem($item);
+                }
             }
         }
-
-
-        if (!$this->start || $item->getStartAt() < $this->start) {
-            $this->start = $item->getStartAt();
-        }
-        if (!$this->end || $item->getStartAt() > $this->end) {
-            $this->end = $item->getStartAt();
-        }
-    }
-
-    public function sort()
-    {
-        ksort($this->items);
     }
 
     public function getItems()
     {
+        ksort($this->items);
         return $this->items;
     }
 
@@ -148,8 +144,13 @@ class DiaryRow
         return $this->start;
     }
 
-    public function setEndTime()
+    public function getEndTime()
     {
         return $this->end;
+    }
+
+    public function getStartDate()
+    {
+        return $this->start_date;
     }
 }

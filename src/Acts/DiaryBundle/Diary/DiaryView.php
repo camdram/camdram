@@ -33,6 +33,7 @@ class DiaryView
 
     public function getWeeks()
     {
+        ksort($this->weeks);
         return $this->weeks;
     }
 
@@ -125,17 +126,6 @@ class DiaryView
     {
         foreach ($labels as $label) {
             $this->addLabel($label);
-        }
-    }
-
-    /**
-     * Once all the events have been added, this sorts the weeks, rows, and items into the correct order.
-     */
-    public function sort()
-    {
-        ksort($this->weeks);
-        foreach ($this->weeks as $week) {
-            $week->sort();
         }
     }
 
