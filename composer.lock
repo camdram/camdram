@@ -60,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/social-api-bundle.git",
-                "reference": "fe2f1f6f3493d8d06fbf6b9dfc7ce29cac5d0ae0"
+                "reference": "d15baa7c8d12f1e7451bc05f251c6b8fecdce229"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/social-api-bundle/zipball/fe2f1f6f3493d8d06fbf6b9dfc7ce29cac5d0ae0",
-                "reference": "fe2f1f6f3493d8d06fbf6b9dfc7ce29cac5d0ae0",
+                "url": "https://api.github.com/repos/camdram/social-api-bundle/zipball/d15baa7c8d12f1e7451bc05f251c6b8fecdce229",
+                "reference": "d15baa7c8d12f1e7451bc05f251c6b8fecdce229",
                 "shasum": ""
             },
             "require": {
@@ -1118,12 +1118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineFixturesBundle.git",
-                "reference": "42ac886c2c669d793dc9d6258a7296edb0d5e933"
+                "reference": "351bcc4de9ff58bac8d72bb3ef0b7481377bb25e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/42ac886c2c669d793dc9d6258a7296edb0d5e933",
-                "reference": "42ac886c2c669d793dc9d6258a7296edb0d5e933",
+                "url": "https://api.github.com/repos/doctrine/DoctrineFixturesBundle/zipball/351bcc4de9ff58bac8d72bb3ef0b7481377bb25e",
+                "reference": "351bcc4de9ff58bac8d72bb3ef0b7481377bb25e",
                 "shasum": ""
             },
             "require": {
@@ -1149,8 +1149,10 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                    "name": "Fabien Potencier2",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Symfony Community",
@@ -1167,7 +1169,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2013-12-31 08:56:10"
+            "time": "2014-02-22 15:01:12"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -3237,12 +3239,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "08f09c20805695212ebe713b6706b8efb24f96e7"
+                "reference": "6b81ac8153be8ae33a877a79be3f61809f1448d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/08f09c20805695212ebe713b6706b8efb24f96e7",
-                "reference": "08f09c20805695212ebe713b6706b8efb24f96e7",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/6b81ac8153be8ae33a877a79be3f61809f1448d9",
+                "reference": "6b81ac8153be8ae33a877a79be3f61809f1448d9",
                 "shasum": ""
             },
             "require": {
@@ -3252,7 +3254,7 @@
             "require-dev": {
                 "aws/aws-sdk-php": "~2.4.8",
                 "doctrine/couchdb": "dev-master",
-                "mlehner/gelf-php": "1.0.*",
+                "graylog2/gelf-php": "~1.0",
                 "phpunit/phpunit": "~3.7.0",
                 "raven/raven": "~0.5",
                 "ruflin/elastica": "0.90.*"
@@ -3262,7 +3264,7 @@
                 "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
-                "mlehner/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
                 "raven/raven": "Allow sending log messages to a Sentry server",
                 "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
             },
@@ -3296,7 +3298,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-02-20 10:38:44"
+            "time": "2014-02-23 15:06:45"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -4470,12 +4472,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony-cmf/RoutingBundle.git",
-                "reference": "96d0649c6fb415cb06ed7a689d69e52bcce544dd"
+                "reference": "84591c5b13815ebb472d51e88f420247d296d560"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony-cmf/RoutingBundle/zipball/96d0649c6fb415cb06ed7a689d69e52bcce544dd",
-                "reference": "96d0649c6fb415cb06ed7a689d69e52bcce544dd",
+                "url": "https://api.github.com/repos/symfony-cmf/RoutingBundle/zipball/84591c5b13815ebb472d51e88f420247d296d560",
+                "reference": "84591c5b13815ebb472d51e88f420247d296d560",
                 "shasum": ""
             },
             "require": {
@@ -4527,7 +4529,7 @@
                 "database",
                 "routing"
             ],
-            "time": "2013-12-16 16:46:20"
+            "time": "2014-02-22 13:10:43"
         },
         {
             "name": "symfony-cmf/symfony-cmf",
@@ -4708,12 +4710,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/MonologBundle.git",
-                "reference": "71ad844ac29401f86619f9d643393265451e858b"
+                "reference": "bf582cd118b5700126ea49cb1c0b90ac2cd6f0f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/71ad844ac29401f86619f9d643393265451e858b",
-                "reference": "71ad844ac29401f86619f9d643393265451e858b",
+                "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/bf582cd118b5700126ea49cb1c0b90ac2cd6f0f0",
+                "reference": "bf582cd118b5700126ea49cb1c0b90ac2cd6f0f0",
                 "shasum": ""
             },
             "require": {
@@ -4761,7 +4763,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2014-02-19 14:49:26"
+            "time": "2014-02-22 16:31:59"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -4824,12 +4826,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "79baf8da48c5b72a3d544ac9421a019273b0feba"
+                "reference": "872647a8b2ffa18fd10a9908bc2cf03b6406f68a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/79baf8da48c5b72a3d544ac9421a019273b0feba",
-                "reference": "79baf8da48c5b72a3d544ac9421a019273b0feba",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/872647a8b2ffa18fd10a9908bc2cf03b6406f68a",
+                "reference": "872647a8b2ffa18fd10a9908bc2cf03b6406f68a",
                 "shasum": ""
             },
             "require": {
@@ -4931,7 +4933,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-02-20 21:26:25"
+            "time": "2014-02-22 07:00:45"
         },
         {
             "name": "twig/extensions",
