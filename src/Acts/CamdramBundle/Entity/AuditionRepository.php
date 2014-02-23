@@ -28,13 +28,15 @@ class AuditionRepository extends EntityRepository
     public function findCurrentOrderedByNameDate()
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
+        $now = new \DateTime();
         $query = $query_res->createQueryBuilder('a')
             ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
-            ->where('a.date >= CURRENT_DATE()')
+            ->where('a.date >= :now')
             ->andWhere('a.display = 0')
             ->andWhere('a.nonScheduled = 0')
             ->andWhere('s.authorised_by IS NOT NULL')
             ->andWhere('s.entered = true')
+            ->setParameters(array('now' => $now))
             ->orderBy('s.name, a.date, a.start_time')
             ->getQuery();
 
@@ -43,13 +45,15 @@ class AuditionRepository extends EntityRepository
 
     private function getUpcomingQuery($limit)
     {
+        $now = new \DateTime();
         return $this->createQueryBuilder('a')
             ->leftJoin('a.show', 's')
-            ->where('a.date >= CURRENT_DATE()')
+            ->where('a.date >= :now')
             ->andWhere('a.nonScheduled = false')
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = true')
+            ->setParameters(array('now' => $now))
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
             ->setMaxResults($limit);
