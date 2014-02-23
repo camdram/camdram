@@ -23,7 +23,7 @@ class ApplicationController extends FOSRestController
     {
         $startDate = 
         $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
-            ->findScheduledOrderedByDeadline(mktime(0,0,0), mktime(0, 0, 0, 1, 1, 2034));
+            ->findScheduledOrderedByDeadline(new \DateTime(), new \DateTime("2034/1/1"));
 
         $view = $this->view($applications, 200)
             ->setTemplate("ActsCamdramBundle:Application:index.html.twig")

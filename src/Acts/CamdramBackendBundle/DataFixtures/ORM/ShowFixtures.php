@@ -9,6 +9,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Symfony\Component\Yaml\Yaml;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Entity\TechieAdvert;
+use Acts\CamdramBundle\Entity\Audition;
+use Acts\CamdramBundle\Entity\Application;
 
 class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -137,6 +140,19 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
             }
             $show->updateVenues();
             $show->updateTimes();
+                       
+            if(mt_rand(0,1) == 1){
+                $this->addAuditions($manager, $show);
+            }
+                       
+            if(mt_rand(0,1) == 1){
+                $this->addApplications($manager, $show);
+            }
+            
+            if(mt_rand(0,1) == 1){
+                $this->addTechieAdverts($manager, $show);
+            }
+            
         }
         $manager->flush();
     }
@@ -237,5 +253,89 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     public function getOrder()
     {
         return 2;
+    }
+    
+    private function addApplications(ObjectManager $manager, Show $show){
+        print("Adding applications for show " . $show->getName() . "\n");
+        $application = new Application();
+        $application->setText("Random text " . mt_rand(1,100));
+        $application->setDeadlineDate(new \DateTime(mt_rand(-5,15) . " days"));
+        $application->setFurtherInfo("Further Info text " . mt_rand(1,100));
+        $application->setDeadlineTime(new \DateTime(mt_rand(0,23) . ":" . mt_rand(0,3) * 15));
+        $application->setShow($show);       
+        $manager->persist($application);    
+    }
+    
+    private function addTechieAdverts(ObjectManager $manager, Show $show){
+        print("Adding tech adverts for show " . $show->getName() . "\n");
+        $num_roles_to_seek = mt_rand(1,count($this->roles)-1);
+        $roles_to_seek = $this->roles;
+        shuffle($roles_to_seek);
+        
+        $roles_to_seek = array_splice($roles_to_seek, 0, $num_roles_to_seek);        
+        
+        $techieAdvert = new TechieAdvert();
+        $techieAdvert->setPositions(implode("\n", $roles_to_seek));
+        $techieAdvert->setContact("Random Contact " . mt_rand(1,100));
+        $techieAdvert->setDeadline(false);
+        
+        $expiry = new \DateTime(mt_rand(-15,60) . ' days');
+        
+        $techieAdvert->setExpiry($expiry);
+        
+        if(mt_rand(0,4)>0){
+            $techieAdvert->setDeadline(true);
+            $hour = mt_rand(10, 22);
+            $minute = mt_rand(0,3)*15;
+            
+            $deadline = $expiry->format("j M $hour:$minute");            
+                        
+            $techieAdvert->setDeadlineTime($expiry);
+        }
+        
+        $techieAdvert->setDisplay(mt_rand(0,4)>0);
+        
+        
+        $techExtra = "";
+        
+        if(mt_rand(0,1)==1){
+            $techExtra = "Short Tech Extra";
+        }else if(mt_rand(0,1)==1){
+            $techExtra = "A very very long tech extra because some people don't know when to stop. You know the type, they will go on and on about the show hoping to persuade you to do it because it is exciting with scaffolding and balloons and probably a raised forestage";
+        }
+        
+        $techieAdvert->setTechExtra($techExtra);
+        $techieAdvert->setShow($show);
+        
+        $manager->persist($techieAdvert);        
+    }
+    
+    private function addAuditions(ObjectManager $manager, Show $show){
+        print("Adding auditions for show " . $show->getName() . "\n");
+        $numScheduledAuditions = mt_rand(1,3);
+        
+        for($i = 0; $i<$numScheduledAuditions; $i++){
+            $audition = new Audition();
+            $audition->setDate(new \DateTime(mt_rand(-5,10) . " days"));
+
+            $hour = mt_rand(10, 19);
+            $minute = mt_rand(0,3)*15;
+            
+            $startTime = new \DateTime($hour.':'.$minute);
+            $endTime = clone $startTime;
+            $endTime->add(\DateInterval::createFromDateString(mt_rand(2,4). " hours"));
+            
+            $audition->setStartTime($startTime);
+            $audition->setEndTime($endTime);
+            
+            $audition->setLocation("Random Location " . mt_rand(1,50));
+            
+            $audition->setDisplay(mt_rand(0,3)>0);
+            
+            $audition->setShow($show);
+            $audition->setNonScheduled(false);
+            
+            $manager->persist($audition);
+        }
     }
 }

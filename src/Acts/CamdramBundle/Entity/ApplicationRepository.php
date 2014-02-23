@@ -20,8 +20,8 @@ class ApplicationRepository extends EntityRepository
      * Find all applications between two dates that should be shown on the
      * diary page.
      *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
+     * @param DateTime $startDate start date 
+     * @param DateTime $endDate end date
      *
      * @return array of applications
      */
@@ -31,12 +31,12 @@ class ApplicationRepository extends EntityRepository
         $query = $query_res->createQueryBuilder('a')
             ->where('a.deadlineDate <= :enddate')
             ->andWhere('a.deadlineDate >= :startdate')
-            ->andWhere('a.deadlineDate >= CURRENT_DATE()')
             ->setParameters(array(
-                'startdate' => date("Y/m/d", $startDate),
-                'enddate' => date("Y/m/d", $endDate)
+                'startdate' => $startDate,
+                'enddate' =>  $endDate
                 ))
             ->orderBy('a.deadlineDate')
+            ->addOrderBy('a.deadlineTime')
             ->getQuery();
 
         return $query->getResult();
@@ -44,12 +44,17 @@ class ApplicationRepository extends EntityRepository
 
     private function getLatestQuery($limit)
     {
+        $now = new DateTime();
+    
         return $this->createQueryBuilder('a')
             ->leftJoin('a.show', 's')
-            ->where('a.deadlineDate >= CURRENT_DATE()')
+            ->where('a.deadlineDate >= :now')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered != false')
-            ->orderBy('a.deadlineDate', 'DESC')
+            ->setParameters(array(
+                'now' => $now))
+            ->orderBy('a.deadlineDate','DESC')
+            ->addOrderBy('a.deadlineTime','DESC')
             ->setMaxResults($limit);
     }
 

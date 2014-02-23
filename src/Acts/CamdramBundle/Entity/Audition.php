@@ -50,13 +50,6 @@ class Audition
     private $location;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="showid", type="integer", nullable=true)
-     */
-    private $show_id;
-
-    /**
      * @var \Show
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="auditions")
@@ -182,28 +175,6 @@ class Audition
         return $this->location;
     }
 
-    /**
-     * Set show_id
-     *
-     * @param integer $showId
-     * @return Audition
-     */
-    public function setShowId($showId)
-    {
-        $this->show_id = $showId;
-    
-        return $this;
-    }
-
-    /**
-     * Get show_id
-     *
-     * @return integer 
-     */
-    public function getShowId()
-    {
-        return $this->show_id;
-    }
 
     /**
      * Set display
