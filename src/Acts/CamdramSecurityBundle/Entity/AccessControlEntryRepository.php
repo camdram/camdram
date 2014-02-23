@@ -17,6 +17,7 @@ class AccessControlEntryRepository extends EntityRepository
         switch ($entity->getEntityType()) {
             case 'show': $type = 'show'; break;
             case 'society':case 'venue': $type = 'society'; break;
+            case 'emailBuilder' : $type = 'emailBuilder'; break;
             default: $type = '';
         }
 

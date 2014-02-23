@@ -151,6 +151,13 @@ class TechieAdvert
     {
         return preg_replace('/\r?\n/',", ",$this->positions);
     }
+    
+    public function getPositionsArray()
+    {
+        $positions = array_map('trim', explode("\n", $this->positions));
+        natcasesort($positions);
+        return $positions;
+    }
 
     /**
      * Set contact
@@ -374,4 +381,27 @@ class TechieAdvert
         return $this->getShow()->getSlug();
     }
 
+
+    /**
+     * Set last_updated
+     *
+     * @param \DateTime $lastUpdated
+     * @return TechieAdvert
+     */
+    public function setLastUpdated($lastUpdated)
+    {
+        $this->last_updated = $lastUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get last_updated
+     *
+     * @return \DateTime 
+     */
+    public function getLastUpdated()
+    {
+        return $this->last_updated;
+    }
 }

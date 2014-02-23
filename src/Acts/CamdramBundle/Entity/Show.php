@@ -1333,7 +1333,7 @@ class Show implements SearchableInterface
     {
         return $this->description;
     }
-
+        
     /**
      * Set facebook_id
      *
@@ -1495,6 +1495,33 @@ class Show implements SearchableInterface
         return $this->online_booking_url;
     }
     
+    public function getFirstPerformance()
+    {
+        $allPerformances = $this->getAllPerformances();
+        if(count($allPerformances) == 0){
+            return null;
+        }
+        return $allPerformances[0];
+    }
+    
+    public function getLastPerformance()
+    {
+        $allPerformances = $this->getAllPerformances();
+        if(count($allPerformances) == 0){
+            return null;
+        }
+        return end($allPerformances);
+    }
+
+    /**
+        Non-serialised cache variable for getAllPerformances() as this could be expensive
+        
+        Note - because of how PHP copies arrays, we don't need to worry about the return of the function being changed - 
+        http://stackoverflow.com/questions/1532618/is-there-a-function-to-make-a-copy-of-a-php-array-to-another#1533214
+     */
+
+    private $allPerformancesCache;
+    
     /** 
 
     Returns an array of performances, in ascending date order, with the following fields set:
@@ -1508,6 +1535,10 @@ class Show implements SearchableInterface
     */
     public function getAllPerformances()
     {
+        if($this->allPerformancesCache != null){
+            $ret = $this->allPerformancesCache;
+            return $ret;
+        }
         $ret = array();
         foreach ($this->getPerformances() as $performance) {
             $current_day = clone $performance->getStartDate(); //ate'] . " " . $perf['time']);
@@ -1525,13 +1556,14 @@ class Show implements SearchableInterface
 		    $datetime = clone $current_day;
 		    
 		    $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
-                    array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue ));
+                    array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue, 'year' => $datetime->format('Y') ));
                 }
                 $current_day = clone $current_day;
                 $current_day->modify('+1 day');
             }
         }
         usort($ret, array($this, 'cmpPerformances'));
+        $this ->allPerformancesCache = $ret;
         return $ret;
     }
         /*    switch ($this->getMultiVenue()) {
@@ -1568,4 +1600,3 @@ class Show implements SearchableInterface
         }
     }
 }
-

@@ -11,5 +11,11 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class EmailBuilderRepository extends EntityRepository
-{
+{    
+    public function selectAll()
+    {    
+        $qb = $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'desc');
+        return $qb;
+    }
 }

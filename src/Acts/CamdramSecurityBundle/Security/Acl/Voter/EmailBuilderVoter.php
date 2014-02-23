@@ -1,22 +1,33 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
+use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
+use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramBundle\Entity\Show;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * Grants access if
  */
-class CreateVoter implements VoterInterface
+class EmailBuilderVoter implements VoterInterface
 {
+    /**
+     * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
+     */
+    private $aclProvider;
+
+    public function __construct(AclProvider $aclProvider)
+    {
+        $this->aclProvider = $aclProvider;
+    }
+
     public function supportsAttribute($attribute)
     {
-        return $attribute == 'CREATE';
+        return $attribute == 'EDIT'
+            || $attribute == 'APPROVE'
+            || $attribute == 'CREATE';
     }
 
     /**
@@ -27,14 +38,8 @@ class CreateVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($object instanceof ClassIdentity && $attributes == array('CREATE')) {
-            switch ($object->getClassName()) {
-                case 'Acts\\CamdramBundle\\Entity\\Show':
-                case 'Acts\\CamdramBundle\\Entity\\TechieAdvert':
-                case 'Acts\\CamdramBundle\\Entity\\Audition':
-                case 'Acts\\CamdramBundle\\Entity\\Application':
-                case 'Acts\\CamdramBundle\\Entity\\EmailBuilder':
-                    return self::ACCESS_GRANTED;
+        if ($object instanceof EmailBuilder) {
+            return self::ACCESS_GRANTED;
             }
         }
         return self::ACCESS_ABSTAIN;
@@ -50,6 +55,6 @@ class CreateVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return strpos($class, 'Acts\\CamdramBundle\\Entity\\Show') !== false;
+        return strpos($class, 'Acts\\CamdramBundle\\Entity\\EmailBuilder') !== false;
     }
 }

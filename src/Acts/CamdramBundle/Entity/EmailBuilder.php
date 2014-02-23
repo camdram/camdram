@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * EmailBuilder
@@ -63,12 +64,20 @@ class EmailBuilder
      */
     private $includeAuditions;
 
+
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="IncludeApplications", type="boolean")
+     * @Gedmo\Slug(fields={"name"})
+     * @var string    
+     * @ORM\Column(name="Slug", type="string")
      */
-    private $includeApplications;
+    private $slug;
+    
+    /**
+     * @var string    
+     * @ORM\Column(name="Name", type="string")
+     */
+    
+    private $name;
 
 
     /**
@@ -149,7 +158,7 @@ class EmailBuilder
     {
         return $this->subject;
     }
-
+    
     /**
      * Set introduction
      *
@@ -240,5 +249,51 @@ class EmailBuilder
     public function getIncludeApplications()
     {
         return $this->includeApplications;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param \slug $slug
+     * @return EmailBuilder
+     */
+    public function setSlug(\slug $slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return \slug 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return EmailBuilder
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

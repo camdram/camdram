@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\EmailBuilder;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository;
 
@@ -77,6 +78,8 @@ class AclProvider
         }
         elseif ($entity instanceof Organisation) {
             $ace->setType('society');
+        }elseif ($entity instanceof EmailBuilder) {
+            $ace->setType('emailBuilder');
         }
 
         $this->entityManager->persist($ace);

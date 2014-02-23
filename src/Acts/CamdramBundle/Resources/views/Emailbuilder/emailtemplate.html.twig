@@ -1,0 +1,140 @@
+{% block body %}
+<div dir="ltr">
+<table 
+    width="100%" 
+    cellpadding="0" 
+    cellspacing="0"
+    style="font-family:Times">
+    <tbody>
+        <tr>
+            <td>
+                <table 
+                    id="main" 
+                    width="700" 
+                    align="center" 
+                    cellpadding="0" 
+                    cellspacing="15" 
+                    bgcolor="ffffff" 
+                    style="border:3px solid rgb(21,96,189);font-family:sans-serif"
+                    >
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <a href="http://cuadc.org/" style="color:rgb(74,114,175)">
+                                        <img class="" src="http://cuadc.org/wp-content/themes/cuadc/Images/logo.png" alt="CUADC Logo" style="display: block; margin-left: auto; margin-right: auto;">
+                                    </a>
+                                    <table id="header" cellpadding="10" cellspacing="0" align="center">
+                                        <tbody>
+                                            <tr>
+                                                <td width="680">
+                                                    <h1 style="margin-top:0px;margin-right:0px;margin-left:0px;padding:0px;font-family:&#39;Lucida Grande&#39;,&#39;Lucida Sans&#39;,&#39;Lucida Sans Unicode&#39;,sans-serif;font-size:34px;text-align:center;margin-bottom:0px!important">
+                                                        Production Team Vacancies
+                                                    </h1>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table 
+                                        id="content-1" 
+                                        cellpadding="0" 
+                                        cellspacing="0" 
+                                        align="center">
+                                        <tbody>
+                                            <tr>
+                                                <td width="670">
+                                                    {{ emailbuilder.Introduction }}
+                                                    {% if techieAdvertRoles is defined %}
+                                                        <h2 style="font-family:Arial,Helvetica,sans-serif;font-size:24px;padding-bottom:0px;margin:0px 0px 0.8em;text-align:center"> By Role: </h2>
+                                                        {% for role in techieAdvertRoles %}
+                                                            <h3>{{role.position}}</h3>
+                                                            <ul>
+                                                                {% for show in role.shows %}
+                                                                    <li style='clear:right'>
+                                                                        <a href="#{{show.slug}}">
+                                                                            {{ show.name }}
+                                                                        </a>
+                                                                        {% if show.firstPerformance != null %}
+                                                                        <i style='float:right'>
+                                                                            {% if show.firstPerformance.date == show.lastPerformance.date %}
+                                                                                {{ show.firstPerformance.date | date("jS M") }}
+                                                                            {% elseif show.firstPerformance.year == show.lastPerformance.year %}
+                                                                                {{ show.firstPerformance.date | date("jS M") }}
+                                                                                -
+                                                                                {{ show.lastPerformance.date | date("jS M") }}
+                                                                            {% else %}
+                                                                                {{ show.firstPerformance.date | date("jS M Y") }}
+                                                                                -
+                                                                                {{ show.lastPerformance.date | date("jS M Y") }}
+                                                                            {% endif %}
+                                                                        </i>
+                                                                        {% endif %}
+                                                                        </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    <h2 style="font-family:Arial,Helvetica,sans-serif;font-size:24px;padding-bottom:0px;margin:0px 0px 0.8em;text-align:center"> By Show: </h2>
+                                                    {% for showData in shows %}
+                                                        <a name='{{ showData.show.slug }}' />
+                                                        <a href='{{ path('get_show', {identifier: showData.show.slug}) }}' >
+                                                        <h3 >{{ showData.show.Name }}</h3>
+                                                        </a>
+                                                        {% if showData.show.society %}
+                                                            <p>                                                        
+                                                            {{ showData.show.society.name }}
+                                                           </p>                                                            
+                                                        {% endif %}
+                                                        <p style='clear:right'>
+                                                        {% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': showData.show.performances } %}
+                                                        </p>
+                                                        <p>
+                                                        {{ showData.show.description | camdram_markdown }}
+                                                        </p>
+                                                        {% if showData.techieAdvert is defined %}
+                                                        Production Roles:
+                                                        <ul>                                                        
+                                                            {% for position in showData.techieAdvert.positionsArray %}
+                                                                <li>{{ position }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                        <p>
+                                                            {{ showData.techieAdvert.techExtra }}
+                                                        </p>
+                                                        {% endif %}
+                                                        
+                                                        
+                                                    {% endfor %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table 
+        id="bottom-message" 
+        cellpadding="20"
+        cellspacing="0"
+        width="600"
+        align="center">
+        <tbody>
+            <tr>
+                <td align="center">
+                    <p style="margin:0px;padding:0px;font-size:12px;font-family:Arial,Helvetica,sans-serif;line-height:1.5;color:rgb(63,64,66)">
+                        To be removed from the list, send an email to 
+                        <a href="mailto:soc-adc-techies-unsubscribe@lists.cam.ac.uk" style="color:rgb(74,114,175)">
+                            soc-adc-techies-unsubscribe@lists.cam.ac.uk
+                        </a>
+                        and you will be automatically removed
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
