@@ -34,6 +34,8 @@ assetic:
     debug:          "%kernel.debug%"
     use_controller: false
     bundles:        [ ActsCamdramBundle ]
+    workers:
+        cache_busting: ~
     filters:
         cssrewrite:
             apply_to: '\.css$'
