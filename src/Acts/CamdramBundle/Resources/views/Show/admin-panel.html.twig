@@ -33,6 +33,10 @@
                 {item: {id: 'edit_application', path: path('edit_show_application',{identifier:show.slug}), icon: 'pencil', text: 'Edit director/producer advert'} }) }}
             {% endif %}
         </li>
+        <li>
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+            {item: {id: 'new_admin', path: path('new_show_admin',{identifier:show.slug}), icon: 'plus-circle', text: 'Add a show admin'} }) }}
+        </li>
     </ul>
 
     <p>

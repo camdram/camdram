@@ -262,8 +262,14 @@ class User implements \Serializable, CamdramUserInterface
      */
     public function setEmail($email)
     {
-        $this->email = $email;
-    
+        /* Store emails in a Camdram v1 compatible way, i.e. strip cam.ac.uk
+         * and hermes.cam.ac.uk suffixes. This modification is identical to the
+         * EmailtoUser function in v1 as a result.
+         */
+        $email=ereg_replace("[^[:alnum:]@.+-]", "", $email);
+        $email=ereg_replace("@cam.ac.uk","",$email);
+        $email=ereg_replace("@hermes.cam.ac.uk","",$email); 
+        $this->email = strtolower($email);
         return $this;
     }
 
@@ -274,7 +280,12 @@ class User implements \Serializable, CamdramUserInterface
      */
     public function getEmail()
     {
-        return $this->email;
+        /* Add missing suffix, if required. */
+        $email = $this->email;
+        if (($email != '') && !strchr($email,'@')) {
+            $email .= "@cam.ac.uk";
+        }
+        return $email;
     }
 
     /**
@@ -961,3 +972,4 @@ class User implements \Serializable, CamdramUserInterface
         return $this->apps;
     }
 }
+

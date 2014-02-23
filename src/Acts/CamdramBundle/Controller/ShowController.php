@@ -15,6 +15,8 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramBundle\Form\Type\ShowType;
+use Acts\CamdramSecurityBundle\Entity\PendingAccess,
+    Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -314,6 +316,88 @@ class ShowController extends AbstractRestController
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
         return $this->getAction($identifier);
+    }
+
+    /**
+     * Get a form for adding an admin to a show.
+     *
+     * @param $identifier
+     */
+    public function newAdminAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
+
+        $ace = new PendingAccess();
+        $ace->setRid($show->getId());
+        $ace->setType('show');
+        $ace->setIssuer($this->getUser());
+        $form = $this->createForm(new PendingAccessType(), $ace, array(
+            'action' => $this->generateUrl('post_show_admin', array('identifier' => $identifier))));
+
+        return $this->view($form, 200)
+            ->setData(array('show' => $show, 'form' => $form->createView()))
+            ->setTemplate('ActsCamdramSecurityBundle:PendingAccess:new.html.twig');
+    }
+
+    /**
+     * Create a new admin associated with this show.
+     *
+     * If the given email address isn't associated with an existing user, then
+     * they will be given a pending access token, and invited via email to 
+     * create an account.
+     * 
+     * An explicit ACE will be created if the user doesn't already have access 
+     * to the show by some other means, e.g. they are an admin for the show's
+     * funding society, the venue the show is being performed at, or have
+     * suitable site-wide privileges.
+     * 
+     * @param $identifier
+     */
+    public function postAdminAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $pending_ace = new PendingAccess();
+        $form = $this->createForm(new PendingAccessType(), $pending_ace);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            /* Check if the ACE doesn't need to be created for various reasons. */
+            /* Is this person already an admin? */
+            $already_admin = False;
+            $admins = $this->get('acts.camdram.moderation_manager')
+                        ->getModeratorsForEntity($show);
+            foreach ($admins as $admin) {
+                if ($admin->getEmail() == $pending_ace->getEmail()) {
+                    $already_admin = True;
+                    break;
+                }
+            }
+            if ($already_admin == False) {
+                /* If this person is already a Camdram user then grant access immediately. */
+                $em = $this->getDoctrine()->getManager();
+                $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
+                                    ->findOneByEmail($pending_ace->getEmail());
+                if ($existing_user != null) {
+                    $this->get('camdram.security.acl.provider')
+                        ->grantAccess($show, $existing_user, $this->getUser());
+                }
+                else {
+                    /* This is an unknown email address. Check if they've already
+                     * got a pending access token for this resource, otherwise
+                     * create the pending access token.
+                     */
+                    $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
+                    if ($pending_repo->isDuplicate($pending_ace) == False) {
+                        $pending_ace->setIssuer($this->getUser());
+                        $em->persist($pending_ace);
+                        $em->flush();
+                    }
+                }
+            }
+        }
+        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
     /**
