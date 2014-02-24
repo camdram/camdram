@@ -312,6 +312,8 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     private function addAuditions(ObjectManager $manager, Show $show){
         $numScheduledAuditions = mt_rand(1,3);
         
+        $show->setAuditionsExtra("Make sure that you know where you are going.");
+        
         for($i = 0; $i<$numScheduledAuditions; $i++){
             $audition = new Audition();
             $audition->setDate(new \DateTime(mt_rand(-5,10) . " days"));

@@ -520,12 +520,12 @@ class Show implements SearchableInterface
     }
 
     /**
-     * Set audextra
+     * Set Auditions Extra
      *
      * @param string $audextra
      * @return Show
      */
-    public function setAudextra($audextra)
+    public function setAuditionsExtra($audextra)
     {
         $this->audextra = $audextra;
     
@@ -537,7 +537,7 @@ class Show implements SearchableInterface
      *
      * @return string 
      */
-    public function getAudextra()
+    public function getAuditionsExtra()
     {
         return $this->audextra;
     }
@@ -1332,6 +1332,31 @@ class Show implements SearchableInterface
     public function getDescription()
     {
         return $this->description;
+    }
+    
+    /**
+     * Get a brief description, suitable for show emails etc.
+     *
+     * @return string;
+     */
+    public function getDescriptionBrief()
+    {
+        $description = trim($this->getDescription());
+        $newline = strpos($description, "\n");
+        if(! ($newline === false))
+        {
+            $description = substr($description, 0, $newline);
+        }
+        $wordOffsets = array();
+        
+        $wordCount = preg_match_all("/\b\w/", $description, $wordOffsets, PREG_OFFSET_CAPTURE);
+        
+        if($wordCount > 100)
+        {
+            $description = substr($description, 0, $wordOffsets[0][100][1]) . "...";
+        }
+              
+        return $description;
     }
         
     /**

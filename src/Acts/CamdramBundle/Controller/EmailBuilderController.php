@@ -55,7 +55,54 @@ class EmailBuilderController extends AbstractRestController
         $rolesSearching = array();
         $shows = array();
         
-        $data = array('emailbuilder' => $emailbuilder);
+        $data = array(
+            'emailbuilder' => $emailbuilder,
+            'showauditionsheader' => false,
+            'showswithapplications' => false,
+             );
+        
+        if($emailbuilder->getIncludeApplications()){
+            $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
+                ->findScheduledOrderedByDeadline(new \DateTime(), new \DateTime("2034/1/1"));
+            $nonShowApplications = array();
+            
+            foreach($applications as $application){
+                if($application->getShow() != null){
+                    $show = $application->getShow();
+                    if(! array_key_exists($show->getSlug(), $shows))
+                    {
+                        $shows[$show->getSlug()] = array('show' => $show);
+                    }
+                    $shows[$show->getSlug()]['applications'] = $application;
+                    $data['showswithapplications'] = true;
+                }else{
+                    $nonShowApplications[] = $application;                  
+                }
+            }
+            
+            if(count($nonShowApplications)>0){
+                $data['nonShowApplications'] = $nonShowApplications;
+            }
+        }
+        
+        if($emailbuilder->getIncludeAuditions()){
+            $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate();
+            foreach($auditions as $audition){
+                $show = $audition->getShow();
+                
+                if(! array_key_exists($show->getSlug(), $shows))
+                {
+                    $shows[$show->getSlug()] = array('show' => $show);
+                }
+                if(! array_key_exists('auditions', $shows[$show->getSlug()]))
+                {
+                    $shows[$show->getSlug()]['auditions'] = array();
+                }
+                
+                $shows[$show->getSlug()]['auditions'][] = $audition;
+                $data['showauditionsheader'] = true;
+            }            
+        }
         
         
         if($emailbuilder->getIncludeTechieAdverts()){
@@ -87,25 +134,30 @@ class EmailBuilderController extends AbstractRestController
                 }
             }
             
-            uasort($rolesSearching, array($this, 'PositionCmp'));
-            
-            foreach($rolesSearching as $roleSearching)
+            foreach(array_keys($rolesSearching) as $role)
             {
-                uasort($roleSearching['shows'], array($this, 'ShowDateCmp'));
+                uasort($rolesSearching[$role]['shows'], array($this, 'ShowDateCmp'));
             }
-    
             
+            uasort($rolesSearching, array($this, 'PositionCmp'));
+                        
             if(count($rolesSearching) > 0)
             {
-                $data['techieAdvertRoles'] = $$rolesSearching;            
+                $data['techieAdvertRoles'] = $rolesSearching;
             }
-        }            
+        }
+        
+        uasort($shows, array($this, 'ShowDataDateCmp'));
         
         $data['shows'] = $shows;
         
         
         return $this->view($data, 200)
             ->setTemplate('ActsCamdramBundle:Emailbuilder:emailtemplate.html.twig');
+    }
+    
+    private function ShowDataDateCmp($a, $b){
+        return $this->ShowDateCmp($a['show'],$b['show']);
     }
     
     private function ShowDateCmp($a, $b){
