@@ -83,7 +83,7 @@ services:
 
     camdram.security.email_dispatcher:
         class: Acts\CamdramSecurityBundle\Service\EmailDispatcher
-        arguments: [@swiftmailer.mailer, @twig, %mailer_sender_address%]
+        arguments: [@doctrine.orm.entity_manager, @swiftmailer.mailer, @twig, %mailer_sender_address%]
 
     ### Authorization voters
 

@@ -1,8 +1,10 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Service;
 
+use Doctrine\ORM\EntityManager;
 use Acts\CamdramSecurityBundle\Entity\User,
-    Acts\CamdramBundle\Entity\Show;
+    Acts\CamdramSecurityBundle\Entity\PendingAccess;
+use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
 use Symfony\Component\Routing\RouterInterface;
@@ -13,12 +15,17 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class EmailDispatcher
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
     private $mailer;
     private $twig;
     private $from_address;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, $from_address)
+    public function __construct(EntityManager $em, \Swift_Mailer $mailer, \Twig_Environment $twig, $from_address)
     {
+        $this->em = $em;
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->from_address = $from_address;
@@ -112,12 +119,13 @@ class EmailDispatcher
         /* Get the resource and pass it to the template. */
         if ($ace->getType() == 'show')
         {
-            $show = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
+            $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
             $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
                 ->setBody(
                     $this->twig->render(
                         'ActsCamdramBundle:Email:pending_ace.txt.twig',
                         array(
+                            'is_pending' => true,
                             'ace' => $ace,
                             'entity' => $show
                         )
