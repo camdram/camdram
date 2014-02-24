@@ -625,11 +625,16 @@ class Show implements SearchableInterface
     }
 
     /**
-     * Get booking_code
+     * Get booking_code - for Doctrine compatibility only
      *
      * @return string 
      */
     public function getBookingCode()
+    {
+        return $this->booking_code;
+    }
+
+    public function getBookingUrl()
     {
         return $this->booking_code;
     }
@@ -1434,14 +1439,14 @@ class Show implements SearchableInterface
         return $this;
     }
 
-    /**
-     * Get facebook_url
-     *
-     * @return string 
-     */
     public function getFacebookUrl()
     {
-        return $this->facebook_url;
+        return 'http://www.facebook.com/'.$this->getFacebookId();
+    }
+
+    public function getTwitterUrl()
+    {
+        return 'https://twitter.com/account/redirect_by_id/'.$this->getTwitterId();
     }
 
     /**

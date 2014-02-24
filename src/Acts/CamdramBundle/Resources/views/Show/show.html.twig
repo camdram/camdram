@@ -12,6 +12,22 @@
 <div class="row">
 
     <div class="large-12 columns panel">
+        <ul class="inline-list right">
+            {% if show.bookingUrl %}
+                <li><a href="{{ show.bookingUrl }}" target="_blank"><i class="fa fa-ticket"></i> Buy tickets
+                        {% if show.prices %}({{ show.prices }}){% endif %}</a>
+                </li>
+            {% endif %}
+            {% if show.facebookId %}<li>
+                <a href="{{ show.getFacebookUrl() }}" target="_blank">
+                    <img src="{{ asset('/bundles/actscamdramsecurity/images/facebook.png') }}" alt=""/></a>
+                </li>{% endif %}
+            {% if show.twitterId %}<li>
+                <a href="{{ show.getTwitterUrl() }}" target="_blank">
+                    <img src="{{ asset('/bundles/actscamdramsecurity/images/twitter.png') }}" alt=""/></a>
+                </li>{% endif %}
+        </ul>
+
         {% if show.society %}
             <p class="show-society"><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
         {% endif %}
