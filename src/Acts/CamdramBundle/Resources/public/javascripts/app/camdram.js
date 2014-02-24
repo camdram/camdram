@@ -211,6 +211,13 @@
         $('.news_media').newsFeedMedia();
         $('a.fancybox').fancybox();
 
+        if (!Modernizr.inputtypes.date) {
+            $('input[type=date]').datepicker({
+                dateFormat: 'yy-mm-dd',
+                constrainInput: true
+            });
+        }
+
         $('.dropdown-link').each(function() {
             var $link = $(this);
             var $dropdown = $('.topbar-dropdown', $link);
