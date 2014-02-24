@@ -67,7 +67,6 @@ services:
         arguments: [@camdram.security.email_dispatcher, @camdram.security.token_generator]
         tags:
             - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
-            - { name: kernel.event_listener, event: camdram_security.pending_acccess_created, method: onPendingAccessCreatedEvent }
 
     camdram.security.listener.pending_access:
         class: Acts\CamdramSecurityBundle\EventListener\PendingAccessListener
