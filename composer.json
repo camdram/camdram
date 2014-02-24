@@ -1,9 +1,10 @@
 {
-    "name": "camdram.net",
-    "description": "camdram.net",
+    "name": "camdram/camdram",
+    "description": "Camdram - The portal website for student theatre in Cambridge",
     "autoload": {
         "psr-0": { "": "src/" }
     },
+    "license" : "GPL-2.0",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "~2.4",
@@ -22,8 +23,8 @@
         "friendsofsymfony/rest-bundle": "0.12.*",
         "jms/serializer-bundle": "0.12.*",
         "friendsofsymfony/oauth-server-bundle": "1.4.*",
-        "acts/external-login-bundle": "0.1.*",
         "acts/social-api-bundle": "0.1.*",
+        "acts/external-login-bundle": "0.1.*",
         "egeloen/google-map-bundle" : "2.0.*",
         "pagerfanta/pagerfanta": "1.0.*",
         "friendsofsymfony/jsrouting-bundle": "1.1.*",
