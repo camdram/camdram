@@ -51,7 +51,7 @@
                 {% for p in advert.positions|split("\n") %}
                     {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}{{ p }}
                 {%- endfor %}
-                - <a href="{{ path('get_techies') }}#advert-{{ advert.id }}">more details</a></p>
+                - <a href="{{ path('get_techie', {identifier: advert.slug}) }}">more details</a></p>
             {% endfor %}
         {% endif %}
         {% for advert in show.activeApplications %}
