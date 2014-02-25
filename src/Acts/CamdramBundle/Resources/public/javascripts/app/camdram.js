@@ -8,6 +8,44 @@
 
     var short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+    // This function is called on the document later, but also
+    // on extra elements as they are added to the page.
+    var fixHtml = function(elementsToFix){
+        $('.news_media', elementsToFix).newsFeedMedia();
+        $('a.fancybox', elementsToFix).fancybox();
+
+        if (!Modernizr.inputtypes.date) {
+            $('input[type=date]', elementsToFix).datepicker({
+                dateFormat: 'yy-mm-dd',
+                constrainInput: true
+            });
+        }
+
+        $('.dropdown-link', elementsToFix).each(function() {
+            var $link = $(this);
+            var $dropdown = $('.topbar-dropdown', $link);
+            $dropdown.hide();
+            var hideEnabled = true;
+
+            $link.mouseenter(function() {
+                $dropdown.css({
+                    'position': 'absolute',
+                    'top': $link.offset().top + $link.height(),
+                    'left': $link.offset().left + $link.outerWidth() - $dropdown.outerWidth()
+                }).show();
+                $dropdown.show();
+            }).mouseleave(function() {
+                    if (hideEnabled) $dropdown.hide();
+                });
+            $('input', $dropdown).bind('invalid',function() {
+                hideEnabled = false;
+                window.setTimeout(function() {
+                    hideEnabled = true;
+                },200);
+            })
+        })
+    };
+
     $.fn.scrollTo = function(options) {
         var options = $.extend({
             speed: 500,
@@ -169,6 +207,7 @@
                 var html = $self.attr('data-prototype').replace(/__name__/g, index);
                 $row = $(html);
                 $self.append($row);
+                fixHtml($row);
                 update_links();
                 options.initialiseRow.apply($row);
                 index++;
@@ -208,39 +247,7 @@
 
     $(function() {
         $(document).foundation();
-        $('.news_media').newsFeedMedia();
-        $('a.fancybox').fancybox();
-
-        if (!Modernizr.inputtypes.date) {
-            $('input[type=date]').datepicker({
-                dateFormat: 'yy-mm-dd',
-                constrainInput: true
-            });
-        }
-
-        $('.dropdown-link').each(function() {
-            var $link = $(this);
-            var $dropdown = $('.topbar-dropdown', $link);
-            $dropdown.hide();
-            var hideEnabled = true;
-
-            $link.mouseenter(function() {
-                $dropdown.css({
-                    'position': 'absolute',
-                    'top': $link.offset().top + $link.height(),
-                    'left': $link.offset().left + $link.outerWidth() - $dropdown.outerWidth()
-                }).show();
-                $dropdown.show();
-            }).mouseleave(function() {
-                    if (hideEnabled) $dropdown.hide();
-                });
-            $('input', $dropdown).bind('invalid',function() {
-                hideEnabled = false;
-                window.setTimeout(function() {
-                    hideEnabled = true;
-                },200);
-            })
-        })
+        fixHtml($(document));
     });
 
 })(jQuery, window);
