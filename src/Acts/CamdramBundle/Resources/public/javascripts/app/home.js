@@ -122,7 +122,7 @@ $(function() {
         $slider.draggable({
             axis: 'x',
             containment: [limits[0], 0, limits[1], 0],
-            distance: 10,
+            distance: 2,
             start: function() { clickenable = false;},
             stop: function() { window.setTimeout(function() { clickenable = true; }, 100); }
         })
