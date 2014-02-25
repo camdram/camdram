@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Entity;
 
+use Acts\CamdramBundle\Entity\Organisation;
 use Doctrine\ORM\EntityRepository;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -38,6 +39,12 @@ class PendingAccessRepository extends EntityRepository
             ->setParameter('rid', $resource->getId());
         if ($resource instanceof Show) {
             $qb->setParameter('type', 'show');
+        }
+        elseif ($resource instanceof Organisation) {
+            $qb->setParameter('type', 'society');
+        }
+        else {
+            return array();
         }
         return $qb->getQuery()->getResult();
     }

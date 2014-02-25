@@ -365,5 +365,40 @@ class Support
     {
         return $this->parent;
     }
-}
 
+    /**
+     * Set support_id
+     *
+     * @param integer $supportId
+     * @return Support
+     */
+    public function setSupportId($supportId)
+    {
+        $this->support_id = $supportId;
+
+        return $this;
+    }
+
+    /**
+     * Add children
+     *
+     * @param \Acts\CamdramBundle\Entity\Support $children
+     * @return Support
+     */
+    public function addChild(\Acts\CamdramBundle\Entity\Support $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \Acts\CamdramBundle\Entity\Support $children
+     */
+    public function removeChild(\Acts\CamdramBundle\Entity\Support $children)
+    {
+        $this->children->removeElement($children);
+    }
+}

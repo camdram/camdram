@@ -122,6 +122,13 @@ abstract class Organisation implements SearchableInterface
     private $news;
 
     /**
+     * @var \Society
+     *
+     * @ORM\OneToMany(targetEntity="Application", mappedBy="society")
+     */
+    private $applications;
+
+    /**
      * Set short_name
      *
      * @param string $shortName
@@ -459,5 +466,69 @@ abstract class Organisation implements SearchableInterface
     public function getNews()
     {
         return $this->news;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->news = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     * @return Organisation
+     */
+    public function addNews(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news[] = $news;
+
+        return $this;
+    }
+
+    /**
+     * Remove news
+     *
+     * @param \Acts\CamdramBundle\Entity\News $news
+     */
+    public function removeNews(\Acts\CamdramBundle\Entity\News $news)
+    {
+        $this->news->removeElement($news);
+    }
+
+    /**
+     * Add applications
+     *
+     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @return Organisation
+     */
+    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    {
+        $this->applications[] = $applications;
+
+        return $this;
+    }
+
+    /**
+     * Remove applications
+     *
+     * @param \Acts\CamdramBundle\Entity\Application $applications
+     */
+    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    {
+        $this->applications->removeElement($applications);
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApplications()
+    {
+        return $this->applications;
     }
 }

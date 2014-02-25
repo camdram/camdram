@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  *
  * @RouteResource("Society")
  */
-class SocietyController extends AbstractRestController
+class SocietyController extends OrganisationController
 {
     protected $class = 'Acts\\CamdramBundle\\Entity\\Society';
 
@@ -71,17 +71,6 @@ class SocietyController extends AbstractRestController
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')
             ->setTemplate('ActsCamdramBundle:Society:vacancies.html.twig')
-            ;
-    }
-
-    public function getNewsAction($identifier)
-    {
-        $society = $this->getEntity($identifier);
-        $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
-
-        return $this->view($news_repo->getRecentByOrganisation($society, 30), 200)
-            ->setTemplateVar('news')
-            ->setTemplate('ActsCamdramBundle:Organisation:news.html.twig')
             ;
     }
 

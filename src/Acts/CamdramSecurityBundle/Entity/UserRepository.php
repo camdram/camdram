@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Entity;
 
+use Acts\CamdramBundle\Entity\Show;
 use Doctrine\ORM\EntityRepository;
 
 use Acts\CamdramBundle\Entity\Organisation;
@@ -48,24 +49,19 @@ class UserRepository extends EntityRepository
             ->setParameter('type', 'security')
             ->getQuery();
         return $query->getResult();
-}
-
-    public function findOrganisationAdmins(Organisation $org)
-    {
-        $query = $this->createQueryBuilder('u')
-            ->innerJoin('u.aces', 'e')
-            ->where('e.type = :type')
-            ->andWhere('e.entity_id = :id')
-            ->andWhere('e.granted_by IS NOT NULL')
-            ->andWhere('e.revoked_by IS NULL')
-            ->setParameter('id', $org->getId())
-            ->setParameter('type', 'society')
-            ->getQuery();
-        return $query->getResult();
     }
 
     public function getEntityOwners($entity)
     {
+        if ($entity instanceof Show) {
+            $type = 'show';
+        }
+        elseif ($entity instanceof Organisation) {
+            $type = 'society';
+        }
+        else {
+            return array();
+        }
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
@@ -73,7 +69,7 @@ class UserRepository extends EntityRepository
             ->andWhere('e.granted_by IS NOT NULL')
             ->andWhere('e.revoked_by IS NULL')
             ->setParameter('id', $entity->getId())
-            ->setParameter('type', 'show')
+            ->setParameter('type', $type)
             ->getQuery();
         return $query->getResult();
     }

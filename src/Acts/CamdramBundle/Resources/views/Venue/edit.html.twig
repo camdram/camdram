@@ -5,6 +5,8 @@
 
 {% block body %}
 
+{{ render(controller('ActsCamdramBundle:Venue:adminPanel', {org: form.vars.value})) }}
+
 <div class="row">
     <h3>Edit Venue</h3>
     <form action="{{ path("put_venue", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post">

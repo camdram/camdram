@@ -39,6 +39,11 @@ class AclProvider
         return $this->repository->aceExists($user, $entity);
     }
 
+    public function getOwners($entity)
+    {
+        return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($entity);
+    }
+
     public function getShowIdsByUser(User $user)
     {
         $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'show');

@@ -22,7 +22,7 @@ use Ivory\GoogleMap\Events\MouseEvent,
  * Controller for REST actions for venues. Inherits from AbstractRestController.
  * @RouteResource("Venue")
  */
-class VenueController extends AbstractRestController
+class VenueController extends OrganisationController
 {
 
     protected $class = 'Acts\\CamdramBundle\\Entity\\Venue';
@@ -78,17 +78,6 @@ class VenueController extends AbstractRestController
             ->setTemplateVar('vacancies')
             ->setTemplate('ActsCamdramBundle:Venue:vacancies.html.twig')
         ;
-    }
-
-    public function getNewsAction($identifier)
-    {
-        $venue = $this->getEntity($identifier);
-        $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
-
-        return $this->view($news_repo->getRecentByOrganisation($venue, 30), 200)
-            ->setTemplateVar('news')
-            ->setTemplate('ActsCamdramBundle:Organisation:news.html.twig')
-            ;
     }
 
     /**

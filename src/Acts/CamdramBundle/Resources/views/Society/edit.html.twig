@@ -5,6 +5,10 @@
 
 {% block body %}
 
+
+{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: form.vars.value})) }}
+
+
 <div class="row">
     <h3>Edit Society</h3>
     <form action="{{ path("put_society", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post">

@@ -1,0 +1,30 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Edit Show Applications{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'edit_application' %}
+{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: form.vars.value.society})) }}
+
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Edit show applications advertisement</h3>
+
+        <div class="panel">
+            <p>Use the form below to modify or extend your show applications advertisement. The advert will be displayed
+            until the deadline date.</p>
+        </div>
+
+        <form action="{{ path("put_society_application", {identifier: form.vars.value.society.slug, _method: 'put'}) }}" method="post">
+            {{ include('ActsCamdramBundle:Organisation:application-form.html.twig') }}
+            <div class="text-right">
+                <a href="{{ path('remove_society_application', {identifier: form.vars.value.society.slug}) }}" class="button">Delete</a>
+                <input type="submit" value="Edit" class="button"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

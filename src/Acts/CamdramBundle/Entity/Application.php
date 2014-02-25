@@ -35,7 +35,7 @@ class Application
     /**
      * @var \Society
      *
-     * @ORM\ManyToOne(targetEntity="Society")
+     * @ORM\ManyToOne(targetEntity="Organisation", inversedBy="applications")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="socid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
@@ -200,10 +200,10 @@ class Application
     /**
      * Set society
      *
-     * @param \Acts\CamdramBundle\Entity\Society $society
+     * @param \Acts\CamdramBundle\Entity\Organisation $society
      * @return Application
      */
-    public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
+    public function setSociety(Organisation $society = null)
     {
         $this->society = $society;
     
@@ -213,7 +213,7 @@ class Application
     /**
      * Get society
      *
-     * @return \Acts\CamdramBundle\Entity\Society 
+     * @return \Acts\CamdramBundle\Entity\Organisation
      */
     public function getSociety()
     {
