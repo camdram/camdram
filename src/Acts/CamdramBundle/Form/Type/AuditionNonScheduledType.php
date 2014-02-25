@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Acts\CamdramBundle\Form\Type\FutureDateType;
 
 class AuditionNonScheduledType extends AbstractType
 {
@@ -15,7 +16,7 @@ class AuditionNonScheduledType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', 'date', array('label' => 'Advert expiry date', 'widget' => 'single_text'))
+            ->add('date', new FutureDateType(), array('label' => 'Advert expiry date', 'widget' => 'single_text'))
             ->add('start_time', 'time', array('label' => 'Advert expiry time', 'widget' => 'single_text'))
             ->add('location', 'text', array('label' => 'Contact details'))
         ;

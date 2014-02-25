@@ -35,6 +35,31 @@ input[type=time] {
   max-width:120px;
 }
 
+.futuredatespan {
+    position: relative;
+    line-height: 0;        
+    display: inline-block;    
+    
+    .message { display: none; }
+     &.inPast .pastMessage, &.dateError .errorMessage{
+            position: absolute;
+            display: inline-block;
+            font-size: 80%;
+            color: #ff0000;
+     }
+     &.inPast, &.dateError {
+        input {
+            background-color: #ff9999;
+        }                
+    }
+}
+
+.no-js .futuredatespan .noJsMessage {
+    position: absolute;
+    display: inline-block;
+    font-size: 80%;
+}
+
 textarea {
   height:10em;
 }

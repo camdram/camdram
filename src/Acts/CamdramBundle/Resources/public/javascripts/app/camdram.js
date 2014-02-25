@@ -7,6 +7,35 @@
     }
 
     var short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    var futureDateProcess = function(futureDateSpan){
+        futureDateSpan.removeClass("inPast inFuture today blank dateError");
+        var input = $('input',futureDateSpan);
+        var value = input.val();
+        if(value == "")
+        {
+            futureDateSpan.addClass("blank");
+            return;
+        }
+        var now = new Date();
+        var date = new Date(value);
+        if( isNaN(date) || isNaN( date.getTime() ) )
+        {
+            futureDateSpan.addClass("dateError");
+        }
+        else if(date.toDateString() == now.toDateString())
+        {
+            futureDateSpan.addClass("today");
+        }
+        else if(date < now)
+        {
+            futureDateSpan.addClass("inPast");
+        }
+        else
+        {   
+            futureDateSpan.addClass("inFuture");
+        }
+    };
 
     // This function is called on the document later, but also
     // on extra elements as they are added to the page.
@@ -20,6 +49,14 @@
                 constrainInput: true
             });
         }
+        
+        $('.futuredatespan', elementsToFix).each(function() {
+            var futureDateSpan = $(this);
+            $('input', futureDateSpan).change(futureDateSpan, function(evt){
+                futureDateProcess(evt.data);
+            });
+            futureDateProcess(futureDateSpan);
+        });
 
         $('.dropdown-link', elementsToFix).each(function() {
             var $link = $(this);
