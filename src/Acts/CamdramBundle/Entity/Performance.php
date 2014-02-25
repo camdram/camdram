@@ -28,7 +28,7 @@ class Performance
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="performances")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $show;

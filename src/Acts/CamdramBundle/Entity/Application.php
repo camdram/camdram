@@ -27,7 +27,7 @@ class Application
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="applications")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="showid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     private $show;
