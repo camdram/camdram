@@ -76,7 +76,7 @@ services:
 
     camdram.security.listener.user:
         class: Acts\CamdramSecurityBundle\EventListener\UserListener
-        arguments: [@camdram.security.email_dispatcher, @camdram.security.token_generator]
+        arguments: [@doctrine.orm.entity_manager, @camdram.security.email_dispatcher, @camdram.security.token_generator]
         tags:
             - { name: doctrine.entity_listener }
 
