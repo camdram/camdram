@@ -74,9 +74,18 @@ class EmailBuilder
     /**
      * @var boolean
      *
-     * @ORM\Column(name="IncludeApplications", type="boolean")
+     * @ORM\Column(name="IncludeShowApplications", type="boolean")
      */
-    private $includeApplications;
+    private $includeShowApplications;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="IncludeSocietyApplications", type="boolean")
+     */
+    private $includeSocietyApplications;
+
 
     /**
      * @Gedmo\Slug(fields={"name"})
@@ -266,26 +275,49 @@ class EmailBuilder
     }
 
     /**
-     * Set includeApplications
+     * Set includeShowApplications
      *
-     * @param boolean $includeApplications
+     * @param boolean $includeShowApplications
      * @return EmailBuilder
      */
-    public function setIncludeApplications($includeApplications)
+    public function setIncludeShowApplications($includeApplications)
     {
-        $this->includeApplications = $includeApplications;
+        $this->includeShowApplications = $includeApplications;
 
         return $this;
     }
 
     /**
-     * Get includeApplications
+     * Get includeShowApplications
      *
      * @return boolean 
      */
-    public function getIncludeApplications()
+    public function getIncludeShowApplications()
     {
-        return $this->includeApplications;
+        return $this->includeShowApplications;
+    }
+
+    /**
+     * Set includeSocietyApplications
+     *
+     * @param boolean $includeSocietyApplications
+     * @return EmailBuilder
+     */
+    public function setIncludeSocietyApplications($includeApplications)
+    {
+        $this->includeSocietyApplications = $includeApplications;
+
+        return $this;
+    }
+
+    /**
+     * Get includeSocietyApplications
+     *
+     * @return boolean 
+     */
+    public function getIncludeSocietyApplications()
+    {
+        return $this->includeSocietyApplications;
     }
 
     /**
@@ -363,6 +395,7 @@ class EmailBuilder
     public function __construct()
     {
         $this->showFilter = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->showFilterMode == self::FILTERMODEALL;
     }
 
     /**

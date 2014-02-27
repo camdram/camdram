@@ -30,7 +30,8 @@ class EmailBuilderType extends AbstractType
             ->add('Title')
             ->add('IncludeTechieAdverts', 'checkbox', array('required' => false))
             ->add('IncludeAuditions', 'checkbox', array('required' => false))
-            ->add('IncludeApplications', 'checkbox', array('required' => false))
+            ->add('IncludeShowApplications', 'checkbox', array('required' => false))
+            ->add('IncludeSocietyApplications', 'checkbox', array('required' => false))
             ->add('ShowFilterMode', 'choice', array(
                 'choices' => array(
                     EmailBuilder::FILTERMODEALL => "All Shows",

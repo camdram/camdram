@@ -63,6 +63,19 @@ class EmailBuilderController extends AbstractRestController
         return $this->view($data, 200)
             ->setTemplate('ActsCamdramBundle:Emailbuilder:preview.html.twig');
     }
+    
+    private function includeShow($emailBuilder, $show)
+    {
+        if($emailBuilder->getShowFilterMode() == EmailBuilder::FILTERMODEINCLUDE)
+        {
+            return $emailBuilder->getShowFilter()->contains($show);
+        }
+        if($emailBuilder->getShowFilterMode() == EmailBuilder::FILTERMODEEXCLUDE)
+        {
+            return ! ($emailBuilder->getShowFilter()->contains($show));
+        }
+        return true;
+    }
 
     private function getTemplateData($identifier)
     {
@@ -80,14 +93,25 @@ class EmailBuilderController extends AbstractRestController
         // Array with keys representing SoicetyIds needed.
         $organisationIdsToLoad = array();
         
-        if($emailbuilder->getIncludeApplications()){
+        if($emailbuilder->getIncludeShowApplications() || $emailbuilder->getIncludeSocietyApplications()){
             $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
                 ->findScheduledOrderedByDeadline(new \DateTime(), new \DateTime("2034/1/1"));
             $nonShowApplications = array();
             
             foreach($applications as $application){
-                if($application->getShow() != null){
-                    $show = $application->getShow();
+
+                $show = $application->getShow();
+
+                if($show != null){
+
+                    if(!$emailbuilder->getIncludeShowApplications()){
+                        continue;
+                    }
+                    
+                    if(!$this->includeShow($emailbuilder, $show)){
+                        continue;
+                    }                   
+
                     if(! array_key_exists($show->getId(), $shows))
                     {
                         $shows[$show->getId()] = array('show' => $show);
@@ -95,6 +119,9 @@ class EmailBuilderController extends AbstractRestController
                     $shows[$show->getId()]['applications'] = $application;
                     $data['showswithapplications'] = true;
                 }else{
+                    if(!$emailbuilder->getIncludeSocietyApplications()){
+                        continue;
+                    }
                     $nonShowApplications[] = $application;                  
                     $organisationIdsToLoad[$application->getSociety()->getId()] = 1;
                 }
@@ -109,6 +136,10 @@ class EmailBuilderController extends AbstractRestController
             $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate();
             foreach($auditions as $audition){
                 $show = $audition->getShow();
+                
+                if(!$this->includeShow($emailbuilder, $show)){
+                    continue;
+                }
                 
                 if(! array_key_exists($show->getId(), $shows))
                 {
@@ -134,7 +165,9 @@ class EmailBuilderController extends AbstractRestController
             
                 $positions = $techieAdvert->getPositionsArray();
                 
-                // todo: filter
+                if(!$this->includeShow($emailbuilder, $show)){
+                    continue;
+                }
                 
                 if(count($positions)>0){
                 
