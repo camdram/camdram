@@ -49,6 +49,38 @@ class EmailBuilderController extends AbstractRestController
     {
         return $this->editAction($identifier);
     }
+    
+    public function putAction(Request $request, $identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+
+        $form = $this->getForm($entity);
+
+        $form->bind($request);
+        if ($form->isValid()) {
+        
+            $oldRet = parent::putAction($request, $identifier);
+        
+            if ($form->get('SaveAndSend')->isClicked()) {
+                $emailDispatcher = $this->get('acts.camdram.email_dispatcher');
+                
+                $data = $this->getTemplateData($identifier);
+                
+                $emailBody = $this->renderView(
+                    'ActsCamdramBundle:Emailbuilder:emailtemplate.html.twig',
+                    $data);
+                
+                $emailDispatcher->sendBuilderEmail($entity, $emailBody);
+                return $oldRet;
+            }
+        }
+        else
+        {
+            return parent::putAction($request, $identifier);
+        }        
+    }
   
     
      /**

@@ -45,6 +45,7 @@ class EmailBuilderType extends AbstractType
                 'property' => 'nameAndPerformanceRange',
                 'choices' => $showsForFilter
                 ))
+            ->add('SaveAndSend', 'submit')
         ;
     }
 
