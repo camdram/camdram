@@ -23,6 +23,7 @@ class EmailBuilderType extends AbstractType
             ->add('FromAddress')
             ->add('Subject')
             ->add('Introduction')
+            ->add('Title')
             ->add('IncludeTechieAdverts', 'checkbox', array('required' => false))
             ->add('IncludeAuditions', 'checkbox', array('required' => false))
             ->add('IncludeApplications', 'checkbox', array('required' => false))
