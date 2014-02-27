@@ -25,7 +25,7 @@
                 <hr>
                 <div id="auditions-{{ a.show.id }}">
                 <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5>
-                    <p>{{ a.show.auditionsExtra }}</p>
+                    <p>{{ a.show.audExtra }}</p>
                     <ul>
             {% endif %}
             <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>

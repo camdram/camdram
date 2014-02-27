@@ -520,29 +520,6 @@ class Show implements SearchableInterface
     }
 
     /**
-     * Set Auditions Extra
-     *
-     * @param string $audextra
-     * @return Show
-     */
-    public function setAuditionsExtra($audextra)
-    {
-        $this->audextra = $audextra;
-    
-        return $this;
-    }
-
-    /**
-     * Get audextra
-     *
-     * @return string 
-     */
-    public function getAuditionsExtra()
-    {
-        return $this->audextra;
-    }
-
-    /**
      * Set entered
      *
      * @param boolean $entered
