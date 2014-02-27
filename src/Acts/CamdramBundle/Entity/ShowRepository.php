@@ -211,5 +211,21 @@ class ShowRepository extends EntityRepository
                     ->getQuery();
         return $query->getResult();
     }
+    
+    public function GetShowsWithAnyUpcomingAdvert()
+    {
+        $today = new \DateTime('today');
+        $query = $this->createQueryBuilder('s')
+                      ->leftJoin('s.techie_adverts','t', 'WITH', 's = t.show and t.expiry > :today')
+                      ->leftJoin('s.auditions','aud', 'WITH', 's = aud.show and aud.date >=:today')
+                      ->leftJoin('s.applications','app', 'WITH', 's = app.show and app.deadlineDate >= :today')
+                      ->where('s.authorised_by is not null')
+                      ->andWhere('s.entered = true')
+                      ->andWhere('t.id is not null or app.id is not null or aud.id is not null')
+                      ->setParameter('today', $today)
+                      ->orderBy('s.start_at', 'ASC')
+                      ->getQuery();
+        return $query->getResult();                    
+    }
 
 }

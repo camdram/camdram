@@ -1520,6 +1520,24 @@ class Show implements SearchableInterface
         return $this->online_booking_url;
     }
     
+    public function getNameAndPerformanceRange()
+    {
+        $firstPerformance = $this->getFirstPerformance();
+        $lastPerformance = $this->getLastPerformance();
+        
+        if(is_null($firstPerformance))
+        {
+            return $this->getName() . " (dates tbc)";
+        }
+
+        if($firstPerformance['date'] == $lastPerformance['date'])
+        {
+            return $this->getName() . " " . $firstPerformance['date']->format("jS M Y");
+        }
+    
+        return $this->getName() . " " . $firstPerformance['date']->format("jS M Y") . " - " . $lastPerformance['date']->format("jS M Y");
+    }    
+    
     public function getFirstPerformance()
     {
         $allPerformances = $this->getAllPerformances();
@@ -1623,5 +1641,28 @@ class Show implements SearchableInterface
         }else{
             return 0;
         }
+    }
+
+    /**
+     * Set audextra
+     *
+     * @param string $audextra
+     * @return Show
+     */
+    public function setAudextra($audextra)
+    {
+        $this->audextra = $audextra;
+
+        return $this;
+    }
+
+    /**
+     * Get audextra
+     *
+     * @return string 
+     */
+    public function getAudextra()
+    {
+        return $this->audextra;
     }
 }

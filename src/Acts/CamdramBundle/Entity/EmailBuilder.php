@@ -4,11 +4,11 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Acts\CamdramBundle\Entity\Show;
 
 /**
  * EmailBuilder
- *
- * @ORM\Table()
+ * @ORM\Table(name="acts_emailbuilder", uniqueConstraints={@ORM\UniqueConstraint(name="email_builder_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\EmailBuilderRepository")
  */
 class EmailBuilder
@@ -83,7 +83,9 @@ class EmailBuilder
      * @var string    
      * @ORM\Column(name="Slug", type="string")
      */
+          
     private $slug;
+    
     
     /**
      * @var string    
@@ -91,7 +93,29 @@ class EmailBuilder
      */
     
     private $name;
-
+    
+    /** 
+     * @var array
+     * @ORM\ManyToMany(targetEntity="Show")
+     * @ORM\JoinTable(
+     *     name="acts_EmailBuilderShows", 
+     *     joinColumns={@ORM\JoinColumn(name="EmailBuilderId", referencedColumnName="id", nullable=false)}, 
+     *     inverseJoinColumns={@ORM\JoinColumn(name="Showid", referencedColumnName="id", nullable=false)}
+     * )
+     */
+    private $showFilter;
+    
+    /**
+     * @var integer    
+     * @ORM\Column(name="ShowFilterMode", type="integer")
+     */
+    
+    private $showFilterMode;
+    
+    const FILTERMODEALL = 0;
+    const FILTERMODEINCLUDE = 1;
+    const FILTERMODEEXCLUDE = 2;
+   
 
     /**
      * Get id
@@ -331,5 +355,69 @@ class EmailBuilder
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->showFilter = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set showFilterMode
+     *
+     * @param integer $showFilterMode
+     * @return EmailBuilder
+     */
+    public function setShowFilterMode($showFilterMode)
+    {
+        $this->showFilterMode = $showFilterMode;
+
+        return $this;
+    }
+
+    /**
+     * Get showFilterMode
+     *
+     * @return integer 
+     */
+    public function getShowFilterMode()
+    {
+        return $this->showFilterMode;
+    }
+
+    /**
+     * Add showFilter
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $showFilter
+     * @return EmailBuilder
+     */
+    public function addShowFilter(\Acts\CamdramBundle\Entity\Show $showFilter)
+    {
+        $this->showFilter[] = $showFilter;
+
+        return $this;
+    }
+
+    /**
+     * Remove showFilter
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $showFilter
+     */
+    public function removeShowFilter(\Acts\CamdramBundle\Entity\Show $showFilter)
+    {
+        $this->showFilter->removeElement($showFilter);
+    }
+
+    /**
+     * Get showFilter
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getShowFilter()
+    {
+        return $this->showFilter;
     }
 }

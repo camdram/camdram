@@ -5,6 +5,8 @@ namespace Acts\CamdramBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Acts\CamdramBundle\Entity\EmailBuilder;
+use Acts\CamdramBundle\Entity\Show;
 
 /**
  * Class EmailBuilderType
@@ -17,6 +19,8 @@ class EmailBuilderType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $showsForFilter = $options['showRepository']->GetShowsWithAnyUpcomingAdvert();
+    
         $builder
             ->add('Name')
             ->add('ToAddress')
@@ -27,13 +31,27 @@ class EmailBuilderType extends AbstractType
             ->add('IncludeTechieAdverts', 'checkbox', array('required' => false))
             ->add('IncludeAuditions', 'checkbox', array('required' => false))
             ->add('IncludeApplications', 'checkbox', array('required' => false))
+            ->add('ShowFilterMode', 'choice', array(
+                'choices' => array(
+                    EmailBuilder::FILTERMODEALL => "All Shows",
+                    EmailBuilder::FILTERMODEINCLUDE => "Only these shows",
+                    EmailBuilder::FILTERMODEEXCLUDE => "Exclude these shows" )
+                    ))
+            ->add('ShowFilter', 'entity', array(
+                'expanded' => true, 
+                'multiple' => true,
+                'class' => "ActsCamdramBundle:Show",
+                'property' => 'nameAndPerformanceRange',
+                'choices' => $showsForFilter
+                ))
         ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acts\CamdramBundle\Entity\EmailBuilder'
+            'data_class' => 'Acts\CamdramBundle\Entity\EmailBuilder',
+            'showRepository' => null
         ));
     }
 
