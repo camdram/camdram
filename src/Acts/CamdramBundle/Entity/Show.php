@@ -520,6 +520,29 @@ class Show implements SearchableInterface
     }
 
     /**
+     * Set audextra
+     *
+     * @param string $audextra
+     * @return Show
+     */
+    public function setAudextra($audextra)
+    {
+        $this->audextra = $audextra;
+
+        return $this;
+    }
+
+    /**
+     * Get audextra
+     *
+     * @return string 
+     */
+    public function getAudextra()
+    {
+        return $this->audextra;
+    }
+
+    /**
      * Set entered
      *
      * @param boolean $entered
@@ -1620,26 +1643,4 @@ class Show implements SearchableInterface
         }
     }
 
-    /**
-     * Set audextra
-     *
-     * @param string $audextra
-     * @return Show
-     */
-    public function setAudextra($audextra)
-    {
-        $this->audextra = $audextra;
-
-        return $this;
-    }
-
-    /**
-     * Get audextra
-     *
-     * @return string 
-     */
-    public function getAudextra()
-    {
-        return $this->audextra;
-    }
 }
