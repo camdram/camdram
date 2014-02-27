@@ -42,6 +42,13 @@ class EmailBuilder
      * @ORM\Column(name="Subject", type="string", length=255)
      */
     private $subject;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Title", type="string", length=255)
+     */
+    private $title;
 
     /**
      * @var string
@@ -301,5 +308,28 @@ class EmailBuilder
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return EmailBuilder
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }
