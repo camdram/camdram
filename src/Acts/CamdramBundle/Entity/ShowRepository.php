@@ -197,5 +197,19 @@ class ShowRepository extends EntityRepository
             ->getQuery();
         return new \DateTime(current($query->getOneOrNullResult()));
     }
+    
+    /**
+     *  Takes a list of shows and loads all associated performances in one database hit.
+     */
+    public function GetShowsWithAllPerformances($showIdsArray)    
+    {
+        $query = $this->createQueryBuilder('s')
+                    ->leftJoin('s.performances','p')
+                    ->addSelect('p')
+                    ->where('s.id in (:ids)')
+                    ->setParameter('ids',$showIdsArray)
+                    ->getQuery();
+        return $query->getResult();
+    }
 
 }

@@ -13,5 +13,15 @@
         </div>
     </form>
 </div>
-
+<div class="row">
+    <h3>Preview</h3>
+    <p>
+    Save to update
+    </p>
+    <iframe 
+        src="{{ path('get_emailbuilder_preview', { identifier: form.vars.value.slug }) }}" 
+    width = "100%"
+    height= "600px";
+    />
+</div>
 {% endblock %}

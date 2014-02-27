@@ -28,9 +28,11 @@ class ApplicationRepository extends EntityRepository
     public function findScheduledOrderedByDeadline($startDate, $endDate)
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Application');
-        $query = $query_res->createQueryBuilder('a')
+        $query = $query_res->createQueryBuilder('a') 
+            ->leftJoin('a.show', 's')       
             ->where('a.deadlineDate <= :enddate')
-            ->andWhere('a.deadlineDate >= :startdate')
+            ->andWhere('a.deadlineDate >= :startdate')            
+            ->andWhere('s.id IS NULL OR (s.authorised_by IS NOT NULL and s.entered != false)') // s.id is null means it's a society - no authorisation needed
             ->setParameters(array(
                 'startdate' => $startDate,
                 'enddate' =>  $endDate
@@ -49,8 +51,7 @@ class ApplicationRepository extends EntityRepository
         return $this->createQueryBuilder('a')
             ->leftJoin('a.show', 's')
             ->where('a.deadlineDate >= :now')
-            ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered != false')
+            ->andWhere('s.id IS NULL OR (s.authorised_by IS NOT NULL and s.entered != false)') // s.id is null means it's a society - no authorisation needed            
             ->setParameters(array(
                 'now' => $now))
             ->orderBy('a.deadlineDate','DESC')

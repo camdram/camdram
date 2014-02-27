@@ -40,15 +40,31 @@ class EmailBuilderController extends AbstractRestController
     {
         return $this->createForm(new EmailBuilderType(), $emailBuilder);
     }
+    
+    
+    /**
+     * We never show a read only version of the Email Builder
+     */
+    public function getAction($identifier)
+    {
+        return $this->editAction($identifier);
+    }
   
     
      /**
-     * Generate the Email from the current settings
+     * Preview the current template - essentially generating the email template with wrapping <html> tags
      *
      * @Rest\Get("/emailbuilders/{identifier}/preview")
      * @param $identifier
      */
     public function getPreviewAction($identifier)
+    {
+        $data = $this->getTemplateData($identifier);
+        return $this->view($data, 200)
+            ->setTemplate('ActsCamdramBundle:Emailbuilder:preview.html.twig');
+    }
+
+    private function getTemplateData($identifier)
     {
         $emailbuilder = $this->getEntity($identifier);
                
@@ -60,6 +76,9 @@ class EmailBuilderController extends AbstractRestController
             'showauditionsheader' => false,
             'showswithapplications' => false,
              );
+             
+        // Array with keys representing SoicetyIds needed.
+        $organisationIdsToLoad = array();
         
         if($emailbuilder->getIncludeApplications()){
             $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
@@ -69,14 +88,15 @@ class EmailBuilderController extends AbstractRestController
             foreach($applications as $application){
                 if($application->getShow() != null){
                     $show = $application->getShow();
-                    if(! array_key_exists($show->getSlug(), $shows))
+                    if(! array_key_exists($show->getId(), $shows))
                     {
-                        $shows[$show->getSlug()] = array('show' => $show);
+                        $shows[$show->getId()] = array('show' => $show);
                     }
-                    $shows[$show->getSlug()]['applications'] = $application;
+                    $shows[$show->getId()]['applications'] = $application;
                     $data['showswithapplications'] = true;
                 }else{
                     $nonShowApplications[] = $application;                  
+                    $organisationIdsToLoad[$application->getSociety()->getId()] = 1;
                 }
             }
             
@@ -90,16 +110,16 @@ class EmailBuilderController extends AbstractRestController
             foreach($auditions as $audition){
                 $show = $audition->getShow();
                 
-                if(! array_key_exists($show->getSlug(), $shows))
+                if(! array_key_exists($show->getId(), $shows))
                 {
-                    $shows[$show->getSlug()] = array('show' => $show);
+                    $shows[$show->getId()] = array('show' => $show);
                 }
-                if(! array_key_exists('auditions', $shows[$show->getSlug()]))
+                if(! array_key_exists('auditions', $shows[$show->getId()]))
                 {
-                    $shows[$show->getSlug()]['auditions'] = array();
+                    $shows[$show->getId()]['auditions'] = array();
                 }
                 
-                $shows[$show->getSlug()]['auditions'][] = $audition;
+                $shows[$show->getId()]['auditions'][] = $audition;
                 $data['showauditionsheader'] = true;
             }            
         }
@@ -125,12 +145,12 @@ class EmailBuilderController extends AbstractRestController
                         $rolesSearching[$position]['shows'][] = $show;
                     }
 
-                    if(! array_key_exists($show->getSlug(), $shows))
+                    if(! array_key_exists($show->getId(), $shows))
                     {
-                        $shows[$show->getSlug()] = array('show' => $show);
+                        $shows[$show->getId()] = array('show' => $show);
                     }
                     
-                    $shows[$show->getSlug()]['techieAdvert'] =  $techieAdvert;
+                    $shows[$show->getId()]['techieAdvert'] =  $techieAdvert;
                 }
             }
             
@@ -147,13 +167,29 @@ class EmailBuilderController extends AbstractRestController
             }
         }
         
+        // Load all shows and their performances
+        
+        $allShows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->GetShowsWithAllPerformances(array_keys($shows));
+       
+        foreach($allShows as $show)
+        {
+            $society = $show->getSociety();
+            if(! is_null($society)){
+                $organisationIdsToLoad[$society->getId()] = 1;
+            }
+            $venue = $show->getVenue();
+            if(! is_null($venue)){
+                $organisationIdsToLoad[$venue->getId()] = 1;            
+            }
+        }
+        
+        $this->getDoctrine()->getRepository('ActsCamdramBundle:Organisation')->findById(array_keys($organisationIdsToLoad));
+        
         uasort($shows, array($this, 'ShowDataDateCmp'));
         
-        $data['shows'] = $shows;
+        $data['shows'] = $shows;       
         
-        
-        return $this->view($data, 200)
-            ->setTemplate('ActsCamdramBundle:Emailbuilder:emailtemplate.html.twig');
+        return $data;
     }
     
     private function ShowDataDateCmp($a, $b){
