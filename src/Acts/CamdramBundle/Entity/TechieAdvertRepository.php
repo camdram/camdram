@@ -30,7 +30,8 @@ class TechieAdvertRepository extends EntityRepository
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:TechieAdvert');
         $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+            ->leftJoin('a.show', 's')
+            ->addSelect('s')
             ->where('a.expiry >= CURRENT_DATE()')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')

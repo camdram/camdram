@@ -20,9 +20,6 @@ class AuditionRepository extends EntityRepository
      * Find all auditions between two dates that should be shown on the
      * diary page, joined to the corresponding show.
      *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
-     *
      * @return array of auditions
      */
     public function findCurrentOrderedByNameDate()
@@ -30,7 +27,8 @@ class AuditionRepository extends EntityRepository
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
         $now = new \DateTime();
         $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+            ->leftJoin('show', 's')
+            ->addSelect('s')
             ->where('a.date >= :now')
             ->andWhere('a.display = 0')
             ->andWhere('a.nonScheduled = 0')

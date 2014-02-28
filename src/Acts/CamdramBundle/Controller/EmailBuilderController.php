@@ -347,6 +347,9 @@ class EmailBuilderController extends AbstractRestController
                     $shows[$show->getId()]['techieAdvert'] =  $techieAdvert;
                 }
             }
+    
+            // Load all shows and their performances                
+            $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->GetShowsWithAllPerformances(array_keys($shows));
             
             foreach(array_keys($rolesSearching) as $role)
             {
@@ -360,18 +363,20 @@ class EmailBuilderController extends AbstractRestController
                 $data['techieAdvertRoles'] = $rolesSearching;
             }
         }
-        
-        // Load all shows and their performances
-        
-        $allShows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->GetShowsWithAllPerformances(array_keys($shows));
-       
-        foreach($allShows as $show)
+        else
         {
-            $society = $show->getSociety();
+            // Load all shows and their performances        
+           $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->GetShowsWithAllPerformances(array_keys($shows));
+        }
+        
+      
+        foreach($shows as $showdata)
+        {
+            $society = $showdata['show']->getSociety();
             if(! is_null($society)){
                 $organisationIdsToLoad[$society->getId()] = 1;
             }
-            $venue = $show->getVenue();
+            $venue = $showdata['show']->getVenue();
             if(! is_null($venue)){
                 $organisationIdsToLoad[$venue->getId()] = 1;            
             }

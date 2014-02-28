@@ -29,7 +29,8 @@ class ApplicationRepository extends EntityRepository
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Application');
         $query = $query_res->createQueryBuilder('a') 
-            ->leftJoin('a.show', 's')       
+            ->leftJoin('a.show', 's')
+            ->addSelect('s')
             ->where('a.deadlineDate <= :enddate')
             ->andWhere('a.deadlineDate >= :startdate')            
             ->andWhere('s.id IS NULL OR (s.authorised_by IS NOT NULL and s.entered != false)') // s.id is null means it's a society - no authorisation needed
