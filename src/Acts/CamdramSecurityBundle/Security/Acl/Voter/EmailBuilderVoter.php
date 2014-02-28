@@ -25,21 +25,23 @@ class EmailBuilderVoter implements VoterInterface
 
     public function supportsAttribute($attribute)
     {
-        return $attribute == 'EDIT'
-            || $attribute == 'APPROVE'
-            || $attribute == 'CREATE';
+        return $attribute == 'EDIT';
     }
 
     /**
      * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     * @param \Acts\CamdramBundle\Entity\Show $object
+     * @param \Acts\CamdramBundle\Entity\EmailBuilder $object
      * @param array $attributes
      * @return int
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         if ($object instanceof EmailBuilder) {
-            return self::ACCESS_GRANTED;
+            if ($attributes == array('EDIT') || $attributes == array('VIEW')) {
+                if ($this->aclProvider->isOwner($token, $object))
+                {
+                    return self::ACCESS_GRANTED;
+                }
             }
         }
         return self::ACCESS_ABSTAIN;

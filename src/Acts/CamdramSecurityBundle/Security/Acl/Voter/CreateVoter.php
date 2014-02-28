@@ -33,7 +33,6 @@ class CreateVoter implements VoterInterface
                 case 'Acts\\CamdramBundle\\Entity\\TechieAdvert':
                 case 'Acts\\CamdramBundle\\Entity\\Audition':
                 case 'Acts\\CamdramBundle\\Entity\\Application':
-                case 'Acts\\CamdramBundle\\Entity\\EmailBuilder':
                     return self::ACCESS_GRANTED;
             }
         }

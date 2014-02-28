@@ -12,6 +12,8 @@ use Acts\CamdramBundle\Entity\EmailBuilder;
 use Acts\CamdramBundle\Form\Type\EmailBuilderType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Acts\CamdramSecurityBundle\Entity\PendingAccess,
+    Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 
 
 /**
@@ -50,6 +52,104 @@ class EmailBuilderController extends AbstractRestController
         return $this->editAction($identifier);
     }
     
+    /**
+     * Render the Admin Panel
+     */
+    public function adminPanelAction($identifier)
+    {
+        $emailBuilder = $this->getEntity($identifier);
+        $em = $this->getDoctrine()->getManager();
+        $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($emailBuilder);
+        $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($emailBuilder);
+
+        return $this->render(
+            'ActsCamdramBundle:Emailbuilder:admin-panel.html.twig',
+            array('emailbuilder' => $emailBuilder,
+                  'admins' => $admins,
+                  'pending_admins' => $pending_admins
+                  )
+            );
+    }
+    
+    /**
+     * Get a form for adding an admin to a show.
+     *
+     * @param $identifier
+     */
+    public function newAdminAction($identifier)
+    {
+        $emailBuilder = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $emailBuilder, false);
+
+        $ace = new PendingAccess();
+        $ace->setRid($emailBuilder->getId());
+        $ace->setType('emailBuilder');
+        $ace->setIssuer($this->getUser());
+        $form = $this->createForm(new PendingAccessType(), $ace, array(
+            'action' => $this->generateUrl('post_emailbuilder_admin', array('identifier' => $identifier))));
+
+        return $this->view($form, 200)
+            ->setData(array('show' => $show, 'form' => $form->createView()))
+            ->setTemplate('ActsCamdramSecurityBundle:PendingAccess:new.html.twig');
+    }
+    
+    /**
+     * Create a new admin associated with this emailBuilder.
+     *
+     * If the given email address isn't associated with an existing user, then
+     * they will be given a pending access token, and invited via email to 
+     * create an account.
+     * 
+     * @param $identifier
+     */
+    public function postAdminAction(Request $request, $identifier)
+    {
+        $emailBuilder = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $emailBuilder);
+
+        $pending_ace = new PendingAccess();
+        $form = $this->createForm(new PendingAccessType(), $pending_ace);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            /* Check if the ACE doesn't need to be created for various reasons. */
+            /* Is this person already an admin? */
+            $already_admin = False;
+            $admins = $this->get('acts.camdram.moderation_manager')
+                        ->getModeratorsForEntity($emailBuilder);
+            foreach ($admins as $admin) {
+                if ($admin->getEmail() == $pending_ace->getEmail()) {
+                    $already_admin = True;
+                    break;
+                }
+            }
+            if ($already_admin == False) {
+                /* If this person is already a Camdram user then grant access immediately. */
+                $em = $this->getDoctrine()->getManager();
+                $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
+                                    ->findOneByEmail($pending_ace->getEmail());
+                if ($existing_user != null) {
+                    $this->get('camdram.security.acl.provider')
+                        ->grantAccess($emailBuilder, $existing_user, $this->getUser());
+                }
+                else {
+                    /* This is an unknown email address. Check if they've already
+                     * got a pending access token for this resource, otherwise
+                     * create the pending access token.
+                     */
+                    $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
+                    if ($pending_repo->isDuplicate($pending_ace) == False) {
+                        $pending_ace->setIssuer($this->getUser());
+                        $em->persist($pending_ace);
+                        $em->flush();
+                    }
+                }
+            }
+        }
+        return $this->routeRedirectView('get_emailbuilder', array('identifier' => $emailBuilder->getSlug()));
+    }
+
+
+    
     public function putAction(Request $request, $identifier)
     {
         $this->checkAuthenticated();
@@ -73,8 +173,8 @@ class EmailBuilderController extends AbstractRestController
                     $data);
                 
                 $emailDispatcher->sendBuilderEmail($entity, $emailBody);
-                return $oldRet;
             }
+            return $oldRet;
         }
         else
         {

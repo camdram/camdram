@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Acts\CamdramBundle\Entity\Show;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * EmailBuilder
@@ -121,10 +122,20 @@ class EmailBuilder
     
     private $showFilterMode;
     
+    
+    /**
+     * @Serializer\Expose
+     */
+    protected $entity_type = 'emailBuilder';
+    
     const FILTERMODEALL = 0;
     const FILTERMODEINCLUDE = 1;
     const FILTERMODEEXCLUDE = 2;
-   
+
+    public function getEntityType()
+    {
+        return $this->entity_type;
+    }   
 
     /**
      * Get id

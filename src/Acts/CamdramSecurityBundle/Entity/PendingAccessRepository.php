@@ -5,6 +5,7 @@ use Acts\CamdramBundle\Entity\Organisation;
 use Doctrine\ORM\EntityRepository;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\EmailBuilder;
 
 class PendingAccessRepository extends EntityRepository
 {
@@ -43,6 +44,9 @@ class PendingAccessRepository extends EntityRepository
         elseif ($resource instanceof Organisation) {
             $qb->setParameter('type', 'society');
         }
+        elseif ($resource instanceof EmailBuilder) {
+            $qb->setParameter('type', 'emailBuilder');
+        }        
         else {
             return array();
         }

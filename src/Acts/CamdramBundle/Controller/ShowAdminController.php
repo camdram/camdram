@@ -38,7 +38,10 @@ class ShowAdminController extends Controller
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_USER');
 
         $ids = $this->get('camdram.security.acl.provider')->getShowIdsByUser($this->getUser());
-        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
+        
+        $orgids = $this->get('camdram.security.acl.provider')->getOrganisationIdsByUser($this->getUser());
+        
+        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsOrOrganisationByDate($ids, $orgids);
         return $this->render('ActsCamdramBundle:ShowAdmin:index.html.twig', array('shows' => $shows));
     }
 

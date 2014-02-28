@@ -64,6 +64,21 @@ class ShowRepository extends EntityRepository
             ->setParameter('ids', $ids);
         return $qb->getQuery()->getResult();
     }
+    
+    public function findIdsOrOrganisationByDate($showids, $orgids)
+    {
+        if (count($showids) == 0 && count($orgids) == 0) return array();
+        
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.society','soc')
+            ->leftJoin('s.venue','ven')
+            ->where('s.id IN (:ids) or soc.id in (:orgids) or ven.id in (:orgids)')
+            ->andWhere('s.entered = true')
+            ->orderBy('s.start_at', 'desc')
+            ->setParameter('ids', $showids)
+            ->setParameter('orgids', $orgids);
+        return $qb->getQuery()->getResult();
+    }
 
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {

@@ -1,9 +1,9 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
-{% block title %}Email Builder - {{ form.vars.value.subject }} - Edit{% endblock %}
+{% block title %}Email Builder - {{ form.vars.value.name }} - Edit{% endblock %}
 
 {% block body %}
-
+{{ render(controller('ActsCamdramBundle:Emailbuilder:adminPanel', {identifier: form.vars.value.slug})) }}
 <div class="row">
     <h3>Edit Builder</h3>
     <form action="{{ path("put_emailbuilder", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post" class="custom">
