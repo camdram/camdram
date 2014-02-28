@@ -14,7 +14,8 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess,
     Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
-
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 
 /**
  * Class EmailBuilderController
@@ -69,6 +70,30 @@ class EmailBuilderController extends AbstractRestController
                   'pending_admins' => $pending_admins
                   )
             );
+    }
+    
+    public function cgetAction(Request $request){
+        $repo = $this->getRepository();
+        if ($this->get('camdram.security.acl.helper')->isGranted('ROLE_ADMIN'))
+        {
+            $qb = $repo->selectAll()->getQuery();
+        }
+        else
+        {
+            $ids = $this->get('camdram.security.acl.provider')->getEmailBuilderIdsByUser($this->getUser());      
+            
+            $qb = $repo->queryByIds($ids);
+        }
+
+        $adapter = new DoctrineORMAdapter($qb);
+        $data = new Pagerfanta($adapter);
+        
+        $view = $this->view($data, 200)
+            ->setTemplateVar('result')
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+        ;
+
+        return $view;
     }
     
     /**

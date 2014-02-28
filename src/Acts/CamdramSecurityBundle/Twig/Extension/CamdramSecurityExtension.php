@@ -29,6 +29,7 @@ class CamdramSecurityExtension extends \Twig_Extension
             'is_granted' => new \Twig_Function_Method($this, 'isGranted'),
             'is_owner' => new \Twig_Function_Method($this, 'isOwner'),
             'has_role' => new \Twig_Function_Method($this, 'hasRole'),
+            'has_emailBuilder' => new \Twig_Function_Method($this, 'hasEmailBuilder'),
         );
     }
 
@@ -58,6 +59,11 @@ class CamdramSecurityExtension extends \Twig_Extension
     public function hasRole($role)
     {
         return $this->utils->hasRole($role);
+    }
+
+    public function hasEmailBuilder()
+    {
+        return $this->utils->hasEmailBuilder();
     }
 
     /**

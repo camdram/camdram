@@ -1,0 +1,41 @@
+{% if is_granted('EDIT', emailbuilder) %}
+<div class="admin-panel">
+    <h6>Email Builder Administration:</h6>
+    <ul class="inline-list">
+        <li>
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+            {item: {id: 'new_admin', path: path('new_emailbuilder_admin',{identifier:emailbuilder.slug}), icon: 'plus-circle', text: 'Add an administrator'} }) }}
+        </li>
+    </ul>
+
+    <p>
+    {% if admins is not empty %}
+        The following people and/or groups can edit this show:
+    {% endif %}
+    {% for admin in admins %}
+        {%- if admin.person is defined %}
+            {%- if admin.person -%}
+                <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
+            {%- else -%}
+                {{ admin.name }}
+            {%- endif -%}
+        {%- elseif admin.entityType == 'society' %}
+            <a href="{{ path('get_society', {identifier: admin.slug}) }}">{{ admin.name }}</a>
+        {%- elseif admin.entityType == 'venue' %}
+            <a href="{{ path('get_venue', {identifier: admin.slug}) }}">{{ admin.name }}</a>
+        {%- endif %}
+        {{- not loop.last ? ',' }}
+    {% endfor %}
+    </p>
+    {% if pending_admins is not empty %}
+    <p>
+        The following people will be admins, pending creating an account:
+        {% for pending in pending_admins %}
+            {{ pending.email }}
+            {{- not loop.last ? ',' }}
+        {% endfor %}
+        </p>
+    {% endif %}
+
+</div>
+{% endif %}

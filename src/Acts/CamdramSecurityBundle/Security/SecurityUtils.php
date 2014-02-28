@@ -8,6 +8,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface,
 use Acts\CamdramSecurityBundle\Security\Service\ServiceInterface,
     Acts\CamdramSecurityBundle\Security\Acl\Dbal\AclListProvider;
 
+use Acts\CamdramSecurityBundle\Entity\User;
+
 class SecurityUtils
 {
     /**
@@ -54,6 +56,17 @@ class SecurityUtils
     {
         return $this->container->get('security.context')->isGranted($role);
     }
+
+    public function hasEmailBuilder()
+    { 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if(! $user instanceof User){
+                return false;
+        }
+        $aclProvider = $this->container->get('camdram.security.acl.provider');
+        return $this->hasRole('ROLE_ADMIN') || count($aclProvider->getEmailBuilderIdsByUser($user)) > 0;
+    }
+
 
     public function ensureRole($role)
     {

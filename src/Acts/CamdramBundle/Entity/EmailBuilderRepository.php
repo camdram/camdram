@@ -18,4 +18,13 @@ class EmailBuilderRepository extends EntityRepository
             ->orderBy('s.id', 'desc');
         return $qb;
     }
+    
+    public function queryByIds($ids)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->where('s.id in (:ids)')
+            ->setParameter('ids', $ids)
+            ->orderBy('s.id', 'desc');
+        return $qb;    
+    }    
 }
