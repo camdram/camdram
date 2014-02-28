@@ -234,6 +234,8 @@ class ShowRepository extends EntityRepository
                       ->leftJoin('s.techie_adverts','t', 'WITH', 's = t.show and t.expiry > :today')
                       ->leftJoin('s.auditions','aud', 'WITH', 's = aud.show and aud.date >=:today')
                       ->leftJoin('s.applications','app', 'WITH', 's = app.show and app.deadlineDate >= :today')
+                      ->leftJoin('s.performances','p')
+                      ->addSelect('p')
                       ->where('s.authorised_by is not null')
                       ->andWhere('s.entered = true')
                       ->andWhere('t.id is not null or app.id is not null or aud.id is not null')
