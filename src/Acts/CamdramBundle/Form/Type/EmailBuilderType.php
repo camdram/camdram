@@ -45,16 +45,19 @@ class EmailBuilderType extends AbstractType
                 'class' => "ActsCamdramBundle:Show",
                 'property' => 'nameAndPerformanceRange',
                 'choices' => $showsForFilter
-                ))
-            ->add('SaveAndSend', 'submit')
-        ;
+                ));
+        if($options['showSend'])
+        {
+            $builder->add('SaveAndSend', 'submit');
+        }
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\EmailBuilder',
-            'showRepository' => null
+            'showRepository' => null,
+            'showSend' => false
         ));
     }
 

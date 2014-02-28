@@ -41,7 +41,10 @@ class EmailBuilderController extends AbstractRestController
 
     protected function getForm($emailBuilder = null)
     {
-        return $this->createForm(new EmailBuilderType(), $emailBuilder, array('showRepository' => $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show')));
+        return $this->createForm(new EmailBuilderType(), $emailBuilder, array(
+                    'showRepository' => $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show'),
+                    'showSend' => ! is_null($emailBuilder)
+                    ));
     }
     
     
