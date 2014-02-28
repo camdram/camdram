@@ -124,6 +124,14 @@ class EmailBuilder
     
     
     /**
+     * @var string    
+     * @ORM\Column(name="UnsubscribeAddress", type="string")
+     */ 
+    
+    private $unsubscribeAddress;
+    
+    
+    /**
      * @Serializer\Expose
      */
     protected $entity_type = 'emailBuilder';
@@ -463,5 +471,28 @@ class EmailBuilder
     public function getShowFilter()
     {
         return $this->showFilter;
+    }
+
+    /**
+     * Set unsubscribeAddress
+     *
+     * @param string $unsubscribeAddress
+     * @return EmailBuilder
+     */
+    public function setUnsubscribeAddress($unsubscribeAddress)
+    {
+        $this->unsubscribeAddress = $unsubscribeAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get unsubscribeAddress
+     *
+     * @return string 
+     */
+    public function getUnsubscribeAddress()
+    {
+        return $this->unsubscribeAddress;
     }
 }
