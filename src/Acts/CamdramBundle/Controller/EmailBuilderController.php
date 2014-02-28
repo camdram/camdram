@@ -193,11 +193,15 @@ class EmailBuilderController extends AbstractRestController
                 
                 $data = $this->getTemplateData($identifier);
                 
-                $emailBody = $this->renderView(
+                $emailHtmlBody = $this->renderView(
                     'ActsCamdramBundle:Emailbuilder:emailtemplate.html.twig',
                     $data);
+                    
+                $emailTextBody = $this->renderView(
+                    'ActsCamdramBundle:Emailbuilder:emailtemplate.txt.twig',
+                    $data);                    
                 
-                $emailDispatcher->sendBuilderEmail($entity, $emailBody);
+                $emailDispatcher->sendBuilderEmail($entity, $emailTextBody, $emailHtmlBody);
             }
             return $oldRet;
         }

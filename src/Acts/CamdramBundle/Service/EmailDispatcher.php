@@ -81,13 +81,14 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
     
-    public function sendBuilderEmail(EmailBuilder $emailBuilder, $body)
+    public function sendBuilderEmail(EmailBuilder $emailBuilder, $bodyText, $bodyHtml)
     {
         $message = \Swift_Message::newInstance()
             ->setSubject($emailBuilder->getSubject())
             ->setFrom($emailBuilder->getFromAddress())
             ->setTo($emailBuilder->getToAddress())
-            ->setBody($body , 'text/html');
+            ->setBody($bodyText)
+            ->addPart($bodyHtml , 'text/html');
         $this->mailer->send($message);
     }
 }
