@@ -16,6 +16,7 @@ use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess,
+    Acts\CamdramSecurityBundle\Entity\AccessControlEntry,
     Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -400,6 +401,31 @@ class ShowController extends AbstractRestController
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
+    /**
+     * Request to be an admin associated with this show.
+     *
+     * 
+     * @param $identifier
+     */
+    public function requestAdminAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        if ($this->get('camdram.security.acl.helper')->isGranted('EDIT', $show)) {
+            // TODO add a no-action return code.
+            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $ace = new AccessControlEntry();
+            $ace->setUser($this->getUser())
+                ->setEntityId($show->getId())
+                ->setCreatedAt(new \DateTime)
+                ->setType('request-show');
+            $em->persist($ace);
+            $em->flush();
+            return $this->render("ActsCamdramBundle:Show:access_requested.html.twig");
+        }
+    }
+    
     /**
      * Get a form for adding a single role to a show.
      *

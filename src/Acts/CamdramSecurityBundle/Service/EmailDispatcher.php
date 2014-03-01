@@ -2,7 +2,8 @@
 namespace Acts\CamdramSecurityBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Acts\CamdramSecurityBundle\Entity\User,
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry,
+    Acts\CamdramSecurityBundle\Entity\User,
     Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
@@ -109,7 +110,39 @@ class EmailDispatcher
     
     /**
      * Send an email informing someone that they've been granted access to a
-     * resource (show, society, or venue), pending creating a new account on Camdram.
+     * resource (show, society, or venue).
+     */
+    public function sendAceEmail(AccessControlEntry $ace)
+    {
+        $email = $ace->getUser()->getEmail();
+        if ($email && strchr($email,'@') === false) {
+            $email .= "@cam.ac.uk";
+        }
+        $message = \Swift_Message::newInstance()
+            ->setFrom($this->from_address)
+            ->setTo($email);
+        /* Get the resource and pass it to the template. */
+        if ($ace->getType() == 'show')
+        {
+            $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
+            $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
+                ->setBody(
+                    $this->twig->render(
+                        'ActsCamdramBundle:Email:ace.txt.twig',
+                        array(
+                            'is_pending' => $is_pending,
+                            'ace' => $ace,
+                            'entity' => $show
+                        )
+                    )
+                );
+        }
+        $this->mailer->send($message);
+    }
+
+    /**
+     * Send an email informing someone that they've been granted access to a
+     * resource (show, society, or venue).
      */
     public function sendPendingAceEmail(PendingAccess $ace)
     {
@@ -123,7 +156,7 @@ class EmailDispatcher
             $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
                 ->setBody(
                     $this->twig->render(
-                        'ActsCamdramBundle:Email:pending_ace.txt.twig',
+                        'ActsCamdramBundle:Email:ace.txt.twig',
                         array(
                             'is_pending' => true,
                             'ace' => $ace,
@@ -132,6 +165,40 @@ class EmailDispatcher
                     )
                 );
         }
+        $this->mailer->send($message);
+    }
+
+    /**
+     * Request administrator privileges for a show
+     */
+    public function sendShowAdminReqEmail(AccessControlEntry $ace)
+    {
+        $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
+        $owners = $this->em->getRepository('ActsCamdramSecurityBundle:User')
+                    ->getEntityOwners($show);
+        $emails = array();
+        foreach ($owners as $user) {
+            $email = $user->getEmail();
+            if ($email && strchr($email,'@') === false) {
+                $email .= "@cam.ac.uk";
+            }
+            $emails[$email] = $user->getName();
+        }
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Show access request on Camdram: '.$show->getName())
+            ->setFrom($this->from_address)
+            ->setTo($emails)
+            ->setBody(
+                $this->twig->render(
+                    'ActsCamdramBundle:Email:show_access_requested.txt.twig',
+                    array(
+                        'ace' => $ace,
+                        'show' => $show
+                    )
+                )
+            )
+        ;
         $this->mailer->send($message);
     }
 }

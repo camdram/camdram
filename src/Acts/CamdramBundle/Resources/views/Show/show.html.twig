@@ -112,6 +112,13 @@
         <p>If you're involved in the show you may want to use our
         <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug }) }}">sign in sheet</a>.
         You can also download a version in <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug, '_format': 'csv' }) }}">CSV format</a>.</p>
+        {% if app.user %} 
+            {% if not is_granted('EDIT', show) %}
+                <p>If you'd like to change the information about this show, you can <a href="{{ path('request_show_admin', { identifier: show.slug }) }}">request to be an admin</a>.</p>
+            {% endif %}
+        {% else %}
+            <p>Log in to be able to request to be an admin for this show.</p>
+        {% endif %}
     </div>
 </div>
 

@@ -88,10 +88,10 @@ class ModerationManager
         {
             $users = $repo->findAdmins(AccessControlEntry::LEVEL_FULL_ADMIN);
             if ($entity->getSociety()) {
-                $users = array_merge($users, $repo->findOrganisationAdmins($entity->getSociety()));
+                $users = array_merge($users, $repo->getEntityOwners($entity->getSociety()));
             }
             if ($entity->getVenue()) {
-                $users = array_merge($users, $repo->findOrganisationAdmins($entity->getVenue()));
+                $users = array_merge($users, $repo->getEntityOwners($entity->getVenue()));
             }
         }
 
