@@ -2,13 +2,13 @@
 <p>
     {% if performance_num > 0 -%}
         <strong>{{ performance_num }}</strong> {{ 'performance' | plural(performance_num) }} of
-    {%- endif %}
+    {% endif %}
     <strong>{{ show_num }}</strong> {{ 'show' | plural(show_num) }}<br />
     {% if performance_num == 1 %}is{% else %}are{% endif %} happening
-    {%- if venue_num > 0 -%}
+    {% if venue_num > 0 -%}
         in <strong>{{ venue_num }}</strong> {{ 'venue' | plural(venue_num) }}<br/>
-    {%- endif %}
-    {%- if people_num > 0 -%}
+    {% endif %}
+    {% if people_num > 0 -%}
         involving <strong>{{ people_num }}</strong> {{ 'person' | plural(people_num) }}
-    {%- endif %}
+    {% endif %}
 </p>
