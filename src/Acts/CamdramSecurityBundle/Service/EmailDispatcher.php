@@ -129,7 +129,7 @@ class EmailDispatcher
                     $this->twig->render(
                         'ActsCamdramBundle:Email:ace.txt.twig',
                         array(
-                            'is_pending' => $is_pending,
+                            'is_pending' => false, //$is_pending,
                             'ace' => $ace,
                             'entity' => $show
                         )

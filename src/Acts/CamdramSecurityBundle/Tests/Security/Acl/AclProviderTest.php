@@ -2,6 +2,7 @@
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
@@ -90,6 +91,44 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('\InvalidArgumentException');
         new ClassIdentity('\AnInvalidClassName');
+    }
+
+    public function testGetEntityIdsByUser_InvalidClass()
+    {
+        $user = new User;
+        $user->setEmail('testuser@camdram.net');
+
+        $this->setExpectedException('\ReflectionException');
+        $this->aclProvider->getEntityIdsByUser($user, '\AnInvalidClassName');
+    }
+
+    public function testGetEntityIdsByUser_NonOwnableClass()
+    {
+        $user = new User;
+        $user->setEmail('testuser@camdram.net');
+
+        $this->setExpectedException('\InvalidArgumentException');
+        $this->aclProvider->getEntityIdsByUser($user, '\\Acts\\CamdramBundle\\Entity\\News');
+    }
+
+    public function testGetEntityIdsByUser_ValidClass()
+    {
+        $user = new User;
+        $user->setEmail('testuser@camdram.net');
+
+        $ace1 = new AccessControlEntry();
+        $ace1->setType('show');
+        $ace1->setEntityId(32);
+        $ace2 = new AccessControlEntry();
+        $ace2->setType('show');
+        $ace2->setEntityId(44);
+        $aces = array($ace1, $ace2);
+
+        $this->repository->expects($this->once())->method('findByUserAndType')->with($user, 'show')->will($this->returnValue($aces));
+
+        $retAces = $this->aclProvider->getEntityIdsByUser($user, '\\Acts\\CamdramBundle\\Entity\\Show');
+        $this->assertEquals(32, $retAces[0]);
+        $this->assertEquals(44, $retAces[1]);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramBundle\Search\SearchableInterface;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +20,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener" })
  * @Serializer\ExclusionPolicy("all")
  */
-class Show implements SearchableInterface
+class Show implements SearchableInterface, OwnableInterface
 {
     /**
      * @var integer
@@ -1559,5 +1560,10 @@ class Show implements SearchableInterface
         }else{
             return 0;
         }
+    }
+
+    public static function getAceType()
+    {
+        return 'show';
     }
 }

@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramBundle\Search\SearchableInterface;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,7 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\DiscriminatorMap({0 = "Society", 1 = "Venue"})
  * @Serializer\ExclusionPolicy("all")
  */
-abstract class Organisation implements SearchableInterface
+abstract class Organisation implements SearchableInterface, OwnableInterface
 {
     /**
      * @var integer
@@ -530,5 +531,10 @@ abstract class Organisation implements SearchableInterface
     public function getApplications()
     {
         return $this->applications;
+    }
+
+    public static function getAceType()
+    {
+        return 'society';
     }
 }

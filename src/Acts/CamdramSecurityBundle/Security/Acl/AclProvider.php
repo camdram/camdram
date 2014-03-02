@@ -3,6 +3,7 @@ namespace Acts\CamdramSecurityBundle\Security\Acl;
 
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Doctrine\ORM\EntityManager;
 
@@ -29,7 +30,7 @@ class AclProvider
         $this->repository = $entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
     }
 
-    public function isOwner(TokenInterface $token, $entity)
+    public function isOwner(TokenInterface $token, OwnableInterface $entity)
     {
         if ($token->getUser() instanceof ExternalUser) $user = $token->getUser()->getUser();
         elseif ($token->getUser() instanceof User) $user = $token->getUser();
@@ -39,30 +40,32 @@ class AclProvider
         return $this->repository->aceExists($user, $entity);
     }
 
-    public function getOwners($entity)
+    public function getOwners(OwnableInterface $entity)
     {
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($entity);
     }
 
-    public function getShowIdsByUser(User $user)
+    public function getEntityIdsByUser(User $user, $class)
     {
-        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'show');
-        $ids = array_map(function ($ace) {
+        $reflection = new \ReflectionClass($class);
+        if (!$reflection->implementsInterface('Acts\\CamdramSecurityBundle\\Security\\OwnableInterface')) {
+            throw new \InvalidArgumentException(sprintf('"%s" is not an ownable class - it must implement OwnableInterface', $class));
+        }
+
+        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUserAndType($user, $class::getAceType());
+        $ids = array_map(function (AccessControlEntry $ace) {
             return $ace->getEntityId();
         }, $aces);
         return $ids;
     }
 
-    public function getOrganisationIdsByUser(User $user)
+    public function getEntitiesByUser(User $user, $class)
     {
-        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'society');
-        $ids = array_map(function ($ace) {
-            return $ace->getEntityId();
-        }, $aces);
-        return $ids;
+        $ids = $this->getEntityIdsByUser($user, $class);
+        return $this->entityManager->getRepository($class)->find($ids);
     }
 
-    public function grantAccess($entity, User $user, User $granter)
+    public function grantAccess(OwnableInterface $entity, User $user, User $granter)
     {
         $ace = new AccessControlEntry;
         $ace->setUser($user);
@@ -70,13 +73,8 @@ class AclProvider
         $ace->setEntityId($entity->getId())
             ->setCreatedAt(new \DateTime)
             ->setGrantedBy($granter)
-            ->setGrantedAt(new \DateTime);
-
-        if ($entity instanceof Show) {
-            $ace->setType('show');
-        } elseif ($entity instanceof Organisation) {
-            $ace->setType('society');
-        }
+            ->setGrantedAt(new \DateTime)
+            ->setType($entity->getAceType());
 
         $this->entityManager->persist($ace);
         $this->entityManager->flush();
