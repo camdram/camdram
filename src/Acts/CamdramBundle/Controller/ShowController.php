@@ -145,7 +145,7 @@ class ShowController extends AbstractRestController
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
-        $techie_advert = $show->getTechieAdverts()->first();
+        $techie_advert = $show->getTechieAdvert();
         $form = $this->getTechieAdvertForm($show, $techie_advert);
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
@@ -161,7 +161,7 @@ class ShowController extends AbstractRestController
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
-        $techie_advert = $show->getTechieAdverts()->first();
+        $techie_advert = $show->getTechieAdvert();
         $form = $this->getTechieAdvertForm($show, $techie_advert);
         $form->submit($request);
         if ($form->isValid()) {

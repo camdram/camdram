@@ -16,7 +16,7 @@
             {% endif %}
         </li>
         <li>
-            {% if show.techieAdverts | length == 0 %}
+            {% if show.techieAdvert is not null %}
                 {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
                     {item: {id: 'new_techie_advert', path: path('new_show_techie_advert',{identifier:show.slug}), icon: 'plus-circle', text: 'Add technical team advert'} }) }}
             {% else %}

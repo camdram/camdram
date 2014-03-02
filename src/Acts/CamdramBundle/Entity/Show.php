@@ -225,11 +225,11 @@ class Show implements SearchableInterface
     private $timestamp;
 
     /**
-     * @var array
+     * @var TechieAdvert
      *
-     * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
+     * @ORM\OneToOne(targetEntity="TechieAdvert", mappedBy="show")
      */
-    private $techie_adverts;
+    private $techie_advert;
 
     /**
      * @var array
@@ -1025,49 +1025,41 @@ class Show implements SearchableInterface
     }
 
     /**
-     * Add techie_adverts
+     * Add techie_advert
      *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdvert
      * @return Show
      */
-    public function addTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    public function setTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdvert)
     {
-        $this->techie_adverts[] = $techieAdverts;
+        $this->techie_advert = $techieAdvert;
     
         return $this;
     }
 
+
     /**
-     * Remove techie_adverts
+     * Get techie_advert if it is active
      *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     * @return \Acts\CamdramBundle\Entity\TechieAdvert
      */
-    public function removeTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    public function getActiveTechieAdvert()
     {
-        $this->techie_adverts->removeElement($techieAdverts);
+        $advert = $this->getTechieAdvert();
+        if(is_null($advert) || $advert->getExpiry() < new \DateTime()){
+            return null;
+        }
+        return $advert;
     }
 
     /**
-     * Get techie_adverts
+     * Get techie_advert
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Acts\CamdramBundle\Entity\TechieAdvert
      */
-    public function getActiveTechieAdverts()
+    public function getTechieAdvert()
     {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('expiry', new \DateTime()));
-
-        return $this->techie_adverts->matching($criteria);
-    }
-
-    /**
-     * Get techie_adverts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTechieAdverts()
-    {
-        return $this->techie_adverts;
+        return $this->techie_advert;
     }
 
     /**
@@ -1244,7 +1236,7 @@ class Show implements SearchableInterface
 
     public function hasVacancies()
     {
-        return count($this->getActiveTechieAdverts()) > 0
+        return (!is_null($this->getActiveTechieAdvert()))
                 || count($this->getAuditions()) > 0
                 || count($this->getActiveApplications()) > 0;
     }

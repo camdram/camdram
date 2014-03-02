@@ -61,14 +61,12 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        {% if show.activeTechieAdverts | length > 0 %}
+        {% if show.activeTechieAdvert is not null %}
             <p>We are looking for:
-            {% for advert in show.activeTechieAdverts %}
-                {% for p in advert.positions|split("\n") %}
-                    {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}{{ p }}
-                {%- endfor %}
-                - <a href="{{ path('get_techie', {identifier: advert.slug}) }}">more details</a></p>
-            {% endfor %}
+            {% for p in show.activeTechieAdvert.positions|split("\n") %}
+                {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}{{ p }}
+            {%- endfor %}
+            - <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
         {% endif %}
         {% for advert in show.activeApplications %}
             <p>{{ advert.text() }} -

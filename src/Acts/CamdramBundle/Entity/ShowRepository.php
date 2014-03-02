@@ -231,7 +231,7 @@ class ShowRepository extends EntityRepository
     {
         $today = new \DateTime('today');
         $query = $this->createQueryBuilder('s')
-                      ->leftJoin('s.techie_adverts','t', 'WITH', 's = t.show and t.expiry > :today')
+                      ->leftJoin('s.techie_advert','t', 'WITH', 's = t.show and t.expiry > :today')
                       ->leftJoin('s.auditions','aud', 'WITH', 's = aud.show and aud.date >=:today')
                       ->leftJoin('s.applications','app', 'WITH', 's = app.show and app.deadlineDate >= :today')
                       ->leftJoin('s.performances','p')
