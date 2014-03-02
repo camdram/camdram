@@ -77,7 +77,7 @@ class ShowController extends AbstractRestController
     public function adminPanelAction(Show $show)
     {
         $em = $this->getDoctrine()->getManager();
-        $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($show);
+        $admins = $this->get('camdram.security.acl.provider')->getOwners($show);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         if ($show->getSociety()) $admins[] = $show->getSociety();
         if ($show->getVenue()) $admins[] = $show->getVenue();
