@@ -27,7 +27,7 @@ class AuditionRepository extends EntityRepository
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
         $now = new \DateTime();
         $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('show', 's')
+            ->leftJoin('a.show', 's')
             ->addSelect('s')
             ->where('a.date >= :now')
             ->andWhere('a.display = 0')
