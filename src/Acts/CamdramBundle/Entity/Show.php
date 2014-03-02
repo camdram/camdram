@@ -241,9 +241,9 @@ class Show implements SearchableInterface
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Application", mappedBy="show")
+     * @ORM\OneToOne(targetEntity="Application", mappedBy="show")
      */
-    private $applications;
+    private $application;
 
     /**
      *
@@ -1189,56 +1189,49 @@ class Show implements SearchableInterface
     }
 
     /**
-     * Add applications
+     * Set application
      *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @param \Acts\CamdramBundle\Entity\Application $application
      * @return Show
      */
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    public function setApplication(\Acts\CamdramBundle\Entity\Application $application)
     {
-        $this->applications[] = $applications;
+        $this->application = $application;
     
         return $this;
     }
 
     /**
-     * Remove applications
+     * Get application
      *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @return \Acts\CamdramBundle\Entity\Application 
      */
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    public function getApplication()
     {
-        $this->applications->removeElement($applications);
+        return $this->application;
     }
 
     /**
-     * Get applications
+     * Get active application
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Acts\CamdramBundle\Entity\Application 
      */
-    public function getApplications()
+    public function getActiveApplication()
     {
-        return $this->applications;
-    }
-
-    /**
-     * Get active applications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getActiveApplications()
-    {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('deadlineDate', new \DateTime()));
-
-        return $this->applications->matching($criteria);
+        $application = $this->getApplication();
+        
+        if(is_null($application) || $application->getDeadlineDateTime() < new \DateTime()){
+            return null;
+        }
+        
+        return $application;
     }
 
     public function hasVacancies()
     {
         return (!is_null($this->getActiveTechieAdvert()))
                 || count($this->getAuditions()) > 0
-                || count($this->getActiveApplications()) > 0;
+                || (! is_null($this->getActiveApplication()));
     }
 
     /**
@@ -1588,9 +1581,8 @@ class Show implements SearchableInterface
             }
             while($current_day <= $end_day) {
                 if ($current_day != $exclude) {
-		    $datetime = clone $current_day;
-		    
-		    $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
+                    $datetime = clone $current_day;
+                    $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
                     array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue, 'year' => $datetime->format('Y') ));
                 }
                 $current_day = clone $current_day;

@@ -68,10 +68,10 @@
             {%- endfor %}
             - <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
         {% endif %}
-        {% for advert in show.activeApplications %}
-            <p>{{ advert.text() }} -
-            <a href="{{ path('get_applications') }}#application-{{ advert.id }}">more details</a></p>
-        {% endfor %}
+        {% if show.activeApplication is not null %}
+            <p>{{ show.activeApplication.text() }} -
+            <a href="{{ path('get_applications') }}#application-{{ show.activeApplication.id }}">more details</a></p>
+        {% endif %}
     </div>
 </div>
 {% endif %}
