@@ -28,11 +28,13 @@ class TechieAdvertRepository extends EntityRepository
      */
     public function findCurrentOrderedByDateName()
     {
+        $now = new \DateTime();
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:TechieAdvert');
         $query = $query_res->createQueryBuilder('a')
             ->leftJoin('a.show', 's')
             ->addSelect('s')
-            ->where('a.expiry >= CURRENT_DATE()')
+            ->where('a.expiry >= :now')
+            ->setParameter('now', $now)
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.expiry, s.name, s.society')
@@ -42,9 +44,11 @@ class TechieAdvertRepository extends EntityRepository
     }
 
     private function getLatestQuery($limit) {
+        $now = new \DateTime();
         return $this->createQueryBuilder('a')
             ->leftJoin('a.show', 's')
-            ->where('a.expiry >= CURRENT_DATE()')
+            ->where('a.expiry >= :now')
+            ->setParameter('now', $now)
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.last_updated')
