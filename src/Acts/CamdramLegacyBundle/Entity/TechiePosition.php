@@ -39,7 +39,7 @@ class TechiePosition
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,14 +55,14 @@ class TechiePosition
     public function setPosition($position)
     {
         $this->position = $position;
-    
+
         return $this;
     }
 
     /**
      * Get position
      *
-     * @return string 
+     * @return string
      */
     public function getPosition()
     {
@@ -78,14 +78,14 @@ class TechiePosition
     public function setOrderId($orderId)
     {
         $this->order_id = $orderId;
-    
+
         return $this;
     }
 
     /**
      * Get order_id
      *
-     * @return float 
+     * @return float
      */
     public function getOrderId()
     {

@@ -47,7 +47,7 @@ class AclProvider
     public function getShowIdsByUser(User $user)
     {
         $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'show');
-        $ids = array_map(function($ace) {
+        $ids = array_map(function ($ace) {
             return $ace->getEntityId();
         }, $aces);
         return $ids;
@@ -56,7 +56,7 @@ class AclProvider
     public function getOrganisationIdsByUser(User $user)
     {
         $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'society');
-        $ids = array_map(function($ace) {
+        $ids = array_map(function ($ace) {
             return $ace->getEntityId();
         }, $aces);
         return $ids;
@@ -74,8 +74,7 @@ class AclProvider
 
         if ($entity instanceof Show) {
             $ace->setType('show');
-        }
-        elseif ($entity instanceof Organisation) {
+        } elseif ($entity instanceof Organisation) {
             $ace->setType('society');
         }
 
@@ -83,4 +82,3 @@ class AclProvider
         $this->entityManager->flush();
     }
 }
-

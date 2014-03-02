@@ -55,11 +55,9 @@ class UserRepository extends EntityRepository
     {
         if ($entity instanceof Show) {
             $type = 'show';
-        }
-        elseif ($entity instanceof Organisation) {
+        } elseif ($entity instanceof Organisation) {
             $type = 'society';
-        }
-        else {
+        } else {
             return array();
         }
         $query = $this->createQueryBuilder('u')

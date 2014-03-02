@@ -58,19 +58,18 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
         if ($score > 85) {
             //We're very certain that these are the same person
             $this->linkUserAndPerson($user, $person, $output);
-        }
-        elseif ($score > 70) {
+        } elseif ($score > 70) {
             if ($dialog->askConfirmation($output,$this->buildQuestion($user, $person, $score))) {
                 $this->linkUserAndPerson($user, $person, $output);
                 $utils->registerEquivalence($user->getName(), $person->getName(), true);
-            }
-            else {
+            } else {
                 $utils->registerEquivalence($user->getName(), $person->getName(), false);
             }
         }
     }
 
-    private function buildQuestion($user, $person, $score) {
+    private function buildQuestion($user, $person, $score)
+    {
         $question = '<question>Link user "'.$user->getName().'" to person "'.$person->getName()
             .'" (similarity: '.$score.'/100) ';
 
@@ -82,11 +81,9 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
             $show = $role->getShow();
             if ($show && $show->getDates()) {
                 $question .= $role->getRole().' '.$show->getDates().', ';
-            }
-            elseif ($show && $show->getTimestamp()->format('U') > 0) {
+            } elseif ($show && $show->getTimestamp()->format('U') > 0) {
                 $question .= $role->getRole().' in '.$show->getTimestamp()->format('Y').', ';
-            }
-            else {
+            } else {
                 $question .= $role->getRole().', ';
             }
 

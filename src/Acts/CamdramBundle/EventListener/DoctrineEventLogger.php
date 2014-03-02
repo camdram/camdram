@@ -36,28 +36,24 @@ class DoctrineEventLogger implements EventSubscriber
                 'id' => $object->getId(),
                 'name' => $object->getName()
             );
-        }
-        elseif ($object instanceof AccessControlEntry) {
+        } elseif ($object instanceof AccessControlEntry) {
             return array(
                 'type' => $object->getType(),
                 'id' => $object->getEntityId(),
                 'user' => $object->getUser()->getId().'/'.$object->getUser()->getEmail()
             );
-        }
-        else {
+        } else {
             $accessor = PropertyAccess::createPropertyAccessor();
             $data = array();
             try {
                 $id = $accessor->getValue($object, 'id');
                 $data['id'] = $id;
-            }
-            catch (NoSuchPropertyException $e) {
+            } catch (NoSuchPropertyException $e) {
             }
             try {
                 $name = $accessor->getValue($object, 'name');
                 $data['name'] = $name;
-            }
-            catch (NoSuchPropertyException $e) {
+            } catch (NoSuchPropertyException $e) {
             }
 
             return $data;

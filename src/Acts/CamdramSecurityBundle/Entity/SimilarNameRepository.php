@@ -23,11 +23,11 @@ class SimilarNameRepository extends EntityRepository
         $res = $query->getOneOrNullResult();
         if ($res) {
             return $res->getEquivalence() ? SimilarName::EQUIVALENT : SimilarName::NOT_EQUIVALENT;
-        }
-        else return SimilarName::UNKNOWN;
+        } else return SimilarName::UNKNOWN;
     }
 
-    public function saveEquivalence($name1, $name2, $equivalent) {
+    public function saveEquivalence($name1, $name2, $equivalent)
+    {
         $sn = new SimilarName();
         $sn->setName1($name1);
         $sn->setName2($name2);

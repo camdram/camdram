@@ -76,7 +76,8 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
         }
     }
 
-    private function getSocialUrl($service, $id) {
+    private function getSocialUrl($service, $id)
+    {
         switch ($service) {
             case 'facebook': return 'http://www.facebook.com/'.$id;
             case 'twitter': return 'http://twitter.com/account/redirect_by_id?id='.$id;

@@ -74,7 +74,7 @@ class Review
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -90,14 +90,14 @@ class Review
     public function setShowId($showId)
     {
         $this->show_id = $showId;
-    
+
         return $this;
     }
 
     /**
      * Get show_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getShowId()
     {
@@ -113,14 +113,14 @@ class Review
     public function setReview($review)
     {
         $this->review = $review;
-    
+
         return $this;
     }
 
     /**
      * Get review
      *
-     * @return string 
+     * @return string
      */
     public function getReview()
     {
@@ -136,14 +136,14 @@ class Review
     public function setFrom($from)
     {
         $this->from = $from;
-    
+
         return $this;
     }
 
     /**
      * Get from
      *
-     * @return string 
+     * @return string
      */
     public function getFrom()
     {
@@ -159,14 +159,14 @@ class Review
     public function setCreated($created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -182,14 +182,14 @@ class Review
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 
     /**
      * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\Show 
+     * @return \Acts\CamdramBundle\Entity\Show
      */
     public function getShow()
     {
@@ -205,7 +205,7 @@ class Review
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 

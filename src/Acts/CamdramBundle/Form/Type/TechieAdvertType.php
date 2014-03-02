@@ -23,7 +23,7 @@ class TechieAdvertType extends AbstractType
             ->add('tech_extra', 'textarea', array('label' => 'Further information that might be useful to people applying for this/these positions'))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

@@ -74,7 +74,7 @@ class SearchCache
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -90,14 +90,14 @@ class SearchCache
     public function setKeyword($keyword)
     {
         $this->keyword = $keyword;
-    
+
         return $this;
     }
 
     /**
      * Get keyword
      *
-     * @return string 
+     * @return string
      */
     public function getKeyword()
     {
@@ -113,14 +113,14 @@ class SearchCache
     public function setText($text)
     {
         $this->text = $text;
-    
+
         return $this;
     }
 
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -136,14 +136,14 @@ class SearchCache
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -159,14 +159,14 @@ class SearchCache
     public function setUrl($url)
     {
         $this->url = $url;
-    
+
         return $this;
     }
 
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -182,14 +182,14 @@ class SearchCache
     public function setSIndex($sIndex)
     {
         $this->s_index = $sIndex;
-    
+
         return $this;
     }
 
     /**
      * Get s_index
      *
-     * @return integer 
+     * @return integer
      */
     public function getSIndex()
     {
@@ -205,14 +205,14 @@ class SearchCache
     public function setObsolete($obsolete)
     {
         $this->obsolete = $obsolete;
-    
+
         return $this;
     }
 
     /**
      * Get obsolete
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getObsolete()
     {
@@ -228,14 +228,14 @@ class SearchCache
     public function setLinkCode($linkCode)
     {
         $this->link_code = $linkCode;
-    
+
         return $this;
     }
 
     /**
      * Get link_code
      *
-     * @return string 
+     * @return string
      */
     public function getLinkCode()
     {

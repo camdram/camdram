@@ -74,7 +74,7 @@ class EmailItem
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -90,14 +90,14 @@ class EmailItem
     public function setEmailid($emailid)
     {
         $this->emailid = $emailid;
-    
+
         return $this;
     }
 
     /**
      * Get emailid
      *
-     * @return integer 
+     * @return integer
      */
     public function getEmailid()
     {
@@ -113,14 +113,14 @@ class EmailItem
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -136,14 +136,14 @@ class EmailItem
     public function setText($text)
     {
         $this->text = $text;
-    
+
         return $this;
     }
 
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -159,14 +159,14 @@ class EmailItem
     public function setOrderId($orderId)
     {
         $this->order_id = $orderId;
-    
+
         return $this;
     }
 
     /**
      * Get order_id
      *
-     * @return float 
+     * @return float
      */
     public function getOrderId()
     {
@@ -182,14 +182,14 @@ class EmailItem
     public function setCreatorId($creatorId)
     {
         $this->creator_id = $creatorId;
-    
+
         return $this;
     }
 
     /**
      * Get creator_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCreatorId()
     {
@@ -205,14 +205,14 @@ class EmailItem
     public function setCreated($created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -228,14 +228,14 @@ class EmailItem
     public function setProtect($protect)
     {
         $this->protect = $protect;
-    
+
         return $this;
     }
 
     /**
      * Get protect
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getProtect()
     {

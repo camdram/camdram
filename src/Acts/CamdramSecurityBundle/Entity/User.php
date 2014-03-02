@@ -219,7 +219,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -235,14 +235,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -275,7 +275,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -296,14 +296,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setRegistered($registered)
     {
         $this->registered = $registered;
-    
+
         return $this;
     }
 
     /**
      * Get registered
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getRegistered()
     {
@@ -319,14 +319,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setLogin($login)
     {
         $this->login = $login;
-    
+
         return $this;
     }
 
     /**
      * Get login
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLogin()
     {
@@ -342,14 +342,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setContact($contact)
     {
         $this->contact = $contact;
-    
+
         return $this;
     }
 
     /**
      * Get contact
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getContact()
     {
@@ -365,14 +365,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setAlumni($alumni)
     {
         $this->alumni = $alumni;
-    
+
         return $this;
     }
 
     /**
      * Get alumni
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAlumni()
     {
@@ -388,14 +388,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setPublishEmail($publishEmail)
     {
         $this->publish_email = $publishEmail;
-    
+
         return $this;
     }
 
     /**
      * Get publish_email
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPublishEmail()
     {
@@ -411,14 +411,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setForumNotify($forumNotify)
     {
         $this->forum_notify = $forumNotify;
-    
+
         return $this;
     }
 
     /**
      * Get forum_notify
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getForumNotify()
     {
@@ -434,14 +434,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setHearAbout($hearAbout)
     {
         $this->hear_about = $hearAbout;
-    
+
         return $this;
     }
 
     /**
      * Get hear_about
      *
-     * @return string 
+     * @return string
      */
     public function getHearAbout()
     {
@@ -457,14 +457,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setOccupation($occupation)
     {
         $this->occupation = $occupation;
-    
+
         return $this;
     }
 
     /**
      * Get occupation
      *
-     * @return string 
+     * @return string
      */
     public function getOccupation()
     {
@@ -480,14 +480,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setGraduation($graduation)
     {
         $this->graduation = $graduation;
-    
+
         return $this;
     }
 
     /**
      * Get graduation
      *
-     * @return string 
+     * @return string
      */
     public function getGraduation()
     {
@@ -503,14 +503,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setTel($tel)
     {
         $this->tel = $tel;
-    
+
         return $this;
     }
 
     /**
      * Get tel
      *
-     * @return string 
+     * @return string
      */
     public function getTel()
     {
@@ -526,14 +526,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setDbEmail($dbEmail)
     {
         $this->db_email = $dbEmail;
-    
+
         return $this;
     }
 
     /**
      * Get db_email
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDbEmail()
     {
@@ -549,14 +549,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setDbPhone($dbPhone)
     {
         $this->db_phone = $dbPhone;
-    
+
         return $this;
     }
 
     /**
      * Get db_phone
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDbPhone()
     {
@@ -572,14 +572,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setThreadMessages($threadMessages)
     {
         $this->thread_messages = $threadMessages;
-    
+
         return $this;
     }
 
     /**
      * Get thread_messages
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getThreadMessages()
     {
@@ -595,14 +595,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setReverseTime($reverseTime)
     {
         $this->reverse_time = $reverseTime;
-    
+
         return $this;
     }
 
     /**
      * Get reverse_time
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getReverseTime()
     {
@@ -618,14 +618,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setResetCode($resetCode)
     {
         $this->reset_code = $resetCode;
-    
+
         return $this;
     }
 
     /**
      * Get reset_code
      *
-     * @return string 
+     * @return string
      */
     public function getResetCode()
     {
@@ -641,14 +641,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -702,7 +702,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get person
      *
-     * @return \Acts\CamdramBundle\Entity\Person 
+     * @return \Acts\CamdramBundle\Entity\Person
      */
     public function getPerson()
     {
@@ -754,14 +754,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setUpgraded($upgraded)
     {
         $this->upgraded = $upgraded;
-    
+
         return $this;
     }
 
     /**
      * Get upgraded
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getUpgraded()
     {
@@ -777,14 +777,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setUpgradedAt($upgradedAt)
     {
         $this->upgraded_at = $upgradedAt;
-    
+
         return $this;
     }
 
     /**
      * Get upgraded_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpgradedAt()
     {
@@ -809,7 +809,7 @@ class User implements \Serializable, CamdramUserInterface
         if (!$this->getProfilePictureUrl()) {
             $this->setProfilePictureUrl($externalUser->getProfilePictureUrl());
         }
-    
+
         return $this;
     }
 
@@ -826,7 +826,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get external_users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getExternalUsers()
     {
@@ -857,14 +857,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setIsEmailVerified($isEmailVerified)
     {
         $this->is_email_verified = $isEmailVerified;
-    
+
         return $this;
     }
 
     /**
      * Get is_email_verified
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsEmailVerified()
     {
@@ -881,14 +881,14 @@ class User implements \Serializable, CamdramUserInterface
     public function setProfilePictureUrl($profilePictureUrl)
     {
         $this->profile_picture_url = $profilePictureUrl;
-    
+
         return $this;
     }
 
     /**
      * Get profile_picture_url
      *
-     * @return string 
+     * @return string
      */
     public function getProfilePictureUrl()
     {
@@ -904,7 +904,7 @@ class User implements \Serializable, CamdramUserInterface
     public function addAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
     {
         $this->aces[] = $aces;
-    
+
         return $this;
     }
 
@@ -921,7 +921,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get aces
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAces()
     {
@@ -947,7 +947,7 @@ class User implements \Serializable, CamdramUserInterface
     public function addApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
     {
         $this->apps[] = $apps;
-    
+
         return $this;
     }
 
@@ -964,11 +964,10 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get apps
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getApps()
     {
         return $this->apps;
     }
 }
-

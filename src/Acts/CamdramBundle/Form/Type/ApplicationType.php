@@ -22,7 +22,7 @@ class ApplicationType extends AbstractType
             ->add('deadline_time', 'time', array('widget' => 'single_text'))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

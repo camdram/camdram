@@ -128,4 +128,3 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter
         tags:
             - { name: security.voter }
-

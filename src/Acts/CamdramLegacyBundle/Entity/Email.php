@@ -27,7 +27,7 @@ class Email
      * @ORM\Column(name="userid", type="integer", nullable=true)
      */
     private $user_id;
-    
+
     /**
      * @var \Acts\CamdramSecurityBundle\Entity\User
      *
@@ -84,7 +84,7 @@ class Email
     /**
      * Get email_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getEmailId()
     {
@@ -100,14 +100,14 @@ class Email
     public function setUserId($userId)
     {
         $this->user_id = $userId;
-    
+
         return $this;
     }
 
     /**
      * Get user_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getUserId()
     {
@@ -123,14 +123,14 @@ class Email
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -146,14 +146,14 @@ class Email
     public function setPublicAdd($publicAdd)
     {
         $this->public_add = $publicAdd;
-    
+
         return $this;
     }
 
     /**
      * Get public_add
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPublicAdd()
     {
@@ -169,14 +169,14 @@ class Email
     public function setSummary($summary)
     {
         $this->summary = $summary;
-    
+
         return $this;
     }
 
     /**
      * Get summary
      *
-     * @return string 
+     * @return string
      */
     public function getSummary()
     {
@@ -192,14 +192,14 @@ class Email
     public function setFrom($from)
     {
         $this->from = $from;
-    
+
         return $this;
     }
 
     /**
      * Get from
      *
-     * @return integer 
+     * @return integer
      */
     public function getFrom()
     {
@@ -215,14 +215,14 @@ class Email
     public function setListId($listId)
     {
         $this->list_id = $listId;
-    
+
         return $this;
     }
 
     /**
      * Get list_id
      *
-     * @return string 
+     * @return string
      */
     public function getListId()
     {
@@ -238,14 +238,14 @@ class Email
     public function setDeleteOnSend($deleteOnSend)
     {
         $this->delete_on_send = $deleteOnSend;
-    
+
         return $this;
     }
 
     /**
      * Get delete_on_send
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeleteOnSend()
     {
@@ -261,7 +261,7 @@ class Email
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 

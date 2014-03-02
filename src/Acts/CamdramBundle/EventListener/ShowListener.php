@@ -43,4 +43,4 @@ class ShowListener
     {
         $this->updateFields($show, $event->getObjectManager());
     }
-} 
+}

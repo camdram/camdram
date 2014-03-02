@@ -71,8 +71,7 @@ class DiaryRow
         if ($event instanceof SingleDayEventInterface) {
             $index = $this->calculateIndex($event->getDate());
             return $this->rangeIsFree($index, $index);
-        }
-        elseif ($event instanceof MultiDayEventInterface) {
+        } elseif ($event instanceof MultiDayEventInterface) {
             $start_index = $this->calculateIndex($event->getStartDate());
             $end_index = $this->calculateIndex($event->getEndDate());
             return $this->rangeIsFree($start_index, $end_index);
@@ -102,8 +101,7 @@ class DiaryRow
             $item->setNumberOfDays(1);
             $item->setStartIndex($this->calculateIndex($event->getDate()));
             $this->addItem($item);
-        }
-        elseif ($event instanceof MultiDayEventInterface) {
+        } elseif ($event instanceof MultiDayEventInterface) {
             if ($event->getStartDate() < $event->getExcludeDate()
                     && $event->getExcludeDate() < $event->getEndDate()) {
                 $start_index = $this->calculateIndex($event->getStartDate());
@@ -118,8 +116,7 @@ class DiaryRow
                 $item2->setStartIndex($start_index+1);
                 $item2->setNumberOfDays($end_index - $start_index);
                 $this->addItem($item2);
-            }
-            else {
+            } else {
 
                 $start_index = $this->calculateIndex($event->getStartDate());
                 $end_index = $this->calculateIndex($event->getEndDate());

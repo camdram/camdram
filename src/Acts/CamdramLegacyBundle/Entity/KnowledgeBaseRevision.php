@@ -73,7 +73,7 @@ class KnowledgeBaseRevision
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -89,14 +89,14 @@ class KnowledgeBaseRevision
     public function setPageId($pageId)
     {
         $this->page_id = $pageId;
-    
+
         return $this;
     }
 
     /**
      * Get page_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getPageId()
     {
@@ -112,14 +112,14 @@ class KnowledgeBaseRevision
     public function setText($text)
     {
         $this->text = $text;
-    
+
         return $this;
     }
 
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -135,14 +135,14 @@ class KnowledgeBaseRevision
     public function setUserId($userId)
     {
         $this->user_id = $userId;
-    
+
         return $this;
     }
 
     /**
      * Get user_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getUserId()
     {
@@ -158,14 +158,14 @@ class KnowledgeBaseRevision
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -181,7 +181,7 @@ class KnowledgeBaseRevision
     public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)
     {
         $this->page = $page;
-    
+
         return $this;
     }
 
@@ -204,7 +204,7 @@ class KnowledgeBaseRevision
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 

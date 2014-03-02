@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace Acts\CamdramBundle\Controller;
- 
+
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -55,8 +55,7 @@ class TechieAdvertController extends FOSRestController
             ->findOneByShowSlug($identifier);
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
-        }
-        else {
+        } else {
             return $this->createNotFoundException('No techie advert exists with that identifier');
         }
     }

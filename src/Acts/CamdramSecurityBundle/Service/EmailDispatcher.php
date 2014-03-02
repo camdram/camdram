@@ -11,7 +11,7 @@ use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Class for constructing and sending emails. Emails are typically sent as a 
+ * Class for constructing and sending emails. Emails are typically sent as a
  * result of an event occurring, such as a user changing their email address.
  */
 class EmailDispatcher
@@ -107,7 +107,7 @@ class EmailDispatcher
         ;
         $this->mailer->send($message);
     }
-    
+
     /**
      * Send an email informing someone that they've been granted access to a
      * resource (show, society, or venue).
@@ -122,8 +122,7 @@ class EmailDispatcher
             ->setFrom($this->from_address)
             ->setTo($email);
         /* Get the resource and pass it to the template. */
-        if ($ace->getType() == 'show')
-        {
+        if ($ace->getType() == 'show') {
             $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
             $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
                 ->setBody(
@@ -150,8 +149,7 @@ class EmailDispatcher
             ->setFrom($this->from_address)
             ->setTo($ace->getEmail());
         /* Get the resource and pass it to the template. */
-        if ($ace->getType() == 'show')
-        {
+        if ($ace->getType() == 'show') {
             $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
             $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
                 ->setBody(
@@ -202,4 +200,3 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 }
-

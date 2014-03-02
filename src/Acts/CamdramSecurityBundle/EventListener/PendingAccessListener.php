@@ -32,4 +32,3 @@ class PendingAccessListener
         $this->email_dispatcher->sendPendingAceEmail($pending_ace);
     }
 }
-

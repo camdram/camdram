@@ -20,7 +20,7 @@ class TermDateController extends FOSRestController
             ->setTemplate("ActsCamdramBundle:TermDate:index.html.twig")
             ->setTemplateVar('term')
         ;
-        
+
         return $view;
     }
 }

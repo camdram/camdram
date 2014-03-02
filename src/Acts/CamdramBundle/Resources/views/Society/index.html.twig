@@ -12,7 +12,7 @@
       {% if societies | length > 0 %}
         {% set value = 'no spaces' %}
         {% set i = 1  %}
-        {% set seen_college = false %} 
+        {% set seen_college = false %}
         {% for society in societies %}
           {% if (society.college is not empty) and not seen_college %}
             {% set seen_college = true %}
@@ -60,4 +60,3 @@
   </div>
 
 {% endblock %}
-

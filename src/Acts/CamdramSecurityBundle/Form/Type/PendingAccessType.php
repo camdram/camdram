@@ -37,4 +37,3 @@ class PendingAccessType extends AbstractType
         return 'acts_camdramsecuirtybundle_pendingaccesstype';
     }
 }
-

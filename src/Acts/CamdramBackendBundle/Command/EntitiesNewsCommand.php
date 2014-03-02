@@ -79,8 +79,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
             if (isset($item['source'])) {
                 $type = $item['type'] == 'video' ? 'video' : null;
                 $this->addLink($news, $item['link'], $item['name'], $item['description'], $item['picture'], $item['source'], $type);
-            }
-            else {
+            } else {
                 $this->addLink($news, $item['link'], $item['name'], $item['description'], $item['picture']);
             }
         }

@@ -66,8 +66,7 @@ class DiaryController extends FOSRestController
             ->setTemplateVar('diary');
         if ($this->getRequest()->get('fragment') || $this->getRequest()->isXmlHttpRequest()) {
             $view->setTemplate('ActsCamdramBundle:Diary:fragment.html.twig');
-        }
-        else {
+        } else {
             $view->setTemplate('ActsCamdramBundle:Diary:index.html.twig');
         }
         return $view;
@@ -84,8 +83,7 @@ class DiaryController extends FOSRestController
         $period = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')->getBySlugAndYear($period, $year);
         if ($period) {
             return $this->dateAction($period->getStartAt());
-        }
-        else {
+        } else {
             throw $this->createNotFoundException('Invalid time period specified');
         }
     }
@@ -94,16 +92,14 @@ class DiaryController extends FOSRestController
     {
         if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/',$week)) {
             return $this->rangeAction($week);
-        }
-        elseif (preg_match('/[0-9]{2}\-[0-9]{2}/',$week)) {
+        } elseif (preg_match('/[0-9]{2}\-[0-9]{2}/',$week)) {
             return $this->rangeAction($year.'-'.$week);
         }
 
         $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
         if ($week) {
             return $this->dateAction($week->getStartAt());
-        }
-        else {
+        } else {
             throw $this->createNotFoundException('Invalid week specified');
         }
     }
@@ -138,12 +134,10 @@ class DiaryController extends FOSRestController
 
         if ($this->getRequest()->query->has('end')) {
             $end = new \DateTime($this->getRequest()->query->get('end'));
-        }
-        elseif ($this->getRequest()->query->has('length')) {
+        } elseif ($this->getRequest()->query->has('length')) {
             $end = clone $start;
             $end->modify($this->getRequest()->query->get('length'));
-        }
-        else {
+        } else {
             $end = clone $start;
             $end->modify('+8 weeks');
         }

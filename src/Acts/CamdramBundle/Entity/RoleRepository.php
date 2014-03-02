@@ -64,7 +64,7 @@ class RoleRepository extends EntityRepository
     }
 
     /**
-     * Called before removing an entity. Ensure that there are no gaps in the 
+     * Called before removing an entity. Ensure that there are no gaps in the
      * ordering value given to each role.
      */
     public function removeRoleFromOrder($role)
@@ -80,4 +80,3 @@ class RoleRepository extends EntityRepository
         return $query->execute();
     }
 }
-

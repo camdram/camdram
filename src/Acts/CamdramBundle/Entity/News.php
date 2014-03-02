@@ -103,7 +103,7 @@ class News
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -119,14 +119,14 @@ class News
     public function setRemoteId($remoteId)
     {
         $this->remote_id = $remoteId;
-    
+
         return $this;
     }
 
     /**
      * Get remote_id
      *
-     * @return string 
+     * @return string
      */
     public function getRemoteId()
     {
@@ -142,14 +142,14 @@ class News
     public function setSource($source)
     {
         $this->source = $source;
-    
+
         return $this;
     }
 
     /**
      * Get source
      *
-     * @return string 
+     * @return string
      */
     public function getSource()
     {
@@ -165,14 +165,14 @@ class News
     public function setBody($body)
     {
         $this->body = $body;
-    
+
         return $this;
     }
 
     /**
      * Get body
      *
-     * @return string 
+     * @return string
      */
     public function getBody()
     {
@@ -188,14 +188,14 @@ class News
     public function setNumComments($numComments)
     {
         $this->num_comments = $numComments;
-    
+
         return $this;
     }
 
     /**
      * Get num_comments
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumComments()
     {
@@ -211,14 +211,14 @@ class News
     public function setNumLikes($numLikes)
     {
         $this->num_likes = $numLikes;
-    
+
         return $this;
     }
 
     /**
      * Get num_likes
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumLikes()
     {
@@ -234,7 +234,7 @@ class News
     public function setEntity(\Acts\CamdramBundle\Entity\Organisation $entity = null)
     {
         $this->entity = $entity;
-    
+
         return $this;
     }
 
@@ -257,14 +257,14 @@ class News
     public function setPublic($public)
     {
         $this->public = $public;
-    
+
         return $this;
     }
 
     /**
      * Get public
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPublic()
     {
@@ -278,7 +278,7 @@ class News
         $this->links = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_at = new \DateTime();
     }
-    
+
     /**
      * Add links
      *
@@ -288,7 +288,7 @@ class News
     public function addLink(\Acts\CamdramBundle\Entity\NewsLink $links)
     {
         $this->links[] = $links;
-    
+
         return $this;
     }
 
@@ -305,7 +305,7 @@ class News
     /**
      * Get links
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getLinks()
     {
@@ -321,14 +321,14 @@ class News
     public function setPostedAt($postedAt)
     {
         $this->posted_at = $postedAt;
-    
+
         return $this;
     }
 
     /**
      * Get posted_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getPostedAt()
     {
@@ -344,14 +344,14 @@ class News
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -367,7 +367,7 @@ class News
     public function addMention(\Acts\CamdramBundle\Entity\NewsMention $mentions)
     {
         $this->mentions[] = $mentions;
-    
+
         return $this;
     }
 
@@ -384,7 +384,7 @@ class News
     /**
      * Get mentions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMentions()
     {
@@ -400,14 +400,14 @@ class News
     public function setPicture($picture)
     {
         $this->picture = $picture;
-    
+
         return $this;
     }
 
     /**
      * Get picture
      *
-     * @return string 
+     * @return string
      */
     public function getPicture()
     {

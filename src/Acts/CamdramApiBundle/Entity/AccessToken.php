@@ -36,7 +36,7 @@ class AccessToken extends BaseAccessToken
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -52,14 +52,14 @@ class AccessToken extends BaseAccessToken
     public function setClient(ClientInterface $client)
     {
         $this->client = $client;
-    
+
         return $this;
     }
 
     /**
      * Get client
      *
-     * @return \Acts\CamdramApiBundle\Entity\ApiApp 
+     * @return \Acts\CamdramApiBundle\Entity\ApiApp
      */
     public function getClient()
     {
@@ -75,7 +75,7 @@ class AccessToken extends BaseAccessToken
     public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 

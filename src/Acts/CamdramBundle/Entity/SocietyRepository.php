@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class SocietyRepository extends EntityRepository
 {
-    private function string_to_url ($string)
+    private function string_to_url($string)
     {
         $ret = strtolower ($string);
         $ret = preg_replace ("/\?(.*)/", "", $ret);
@@ -45,7 +45,7 @@ class SocietyRepository extends EntityRepository
      * findOneByShortName
      *
      * Finds a society based on the 'URL-friendly' version of the short name.
-     * This is all a bit grim, and harks back to old Camdram. The modern way 
+     * This is all a bit grim, and harks back to old Camdram. The modern way
      * would be to have 'sluggable' versions of the short names in the databebase, but that's a job for the next milestone(?)
      */
     public function findOneByShortName($slug)

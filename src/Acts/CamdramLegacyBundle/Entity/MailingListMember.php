@@ -40,14 +40,14 @@ class MailingListMember
     public function setListId($listId)
     {
         $this->list_id = $listId;
-    
+
         return $this;
     }
 
     /**
      * Get list_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getListId()
     {
@@ -63,14 +63,14 @@ class MailingListMember
     public function setUserId($userId)
     {
         $this->user_id = $userId;
-    
+
         return $this;
     }
 
     /**
      * Get user_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getUserId()
     {

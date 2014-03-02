@@ -14,7 +14,7 @@ use Doctrine\ORM\Query\Expr;
  * repository methods below.
  */
 class TechieAdvertRepository extends EntityRepository
-{    
+{
     /**
      * findCurrentOrderedByDateName
      *
@@ -40,7 +40,8 @@ class TechieAdvertRepository extends EntityRepository
         return $query->getResult();
     }
 
-    private function getLatestQuery($limit) {
+    private function getLatestQuery($limit)
+    {
         return $this->createQueryBuilder('a')
             ->leftJoin('a.show', 's')
             ->where('a.expiry >= CURRENT_DATE()')

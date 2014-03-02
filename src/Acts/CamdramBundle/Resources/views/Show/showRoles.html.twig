@@ -8,10 +8,10 @@
         {{ not loop.first ? '</div></div>' }}
         <div class="row" {% if editable %}id="role_{{ role.id }}"{% endif %}>
         <div class="small-11 columns">
-        {{ role.role }} - 
+        {{ role.role }} -
         {% set current_role = role.role %}
     {%- else -%}
-        , 
+        ,
     {% endif %}
     <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a>
     {%- if editable -%}
@@ -25,4 +25,3 @@
     {% render url('new_show_role', {identifier: show.slug, type: type}) %}
 {% endif %}
 {% endspaceless %}
-

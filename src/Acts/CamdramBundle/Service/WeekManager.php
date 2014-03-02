@@ -89,8 +89,7 @@ class WeekManager
         $date = $this->previousSunday($date);
         if (($week_name = $this->weekRepository->findAt($date))) {
             return $this->getWeekFromWeekName($week_name);
-        }
-        else {
+        } else {
             return $this->getWeekFromDate($date);
         }
 

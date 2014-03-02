@@ -87,7 +87,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -103,14 +103,14 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setService($service)
     {
         $this->service = $service;
-    
+
         return $this;
     }
 
     /**
      * Get service
      *
-     * @return string 
+     * @return string
      */
     public function getService()
     {
@@ -126,14 +126,14 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setRemoteId($remoteId)
     {
         $this->remote_id = $remoteId;
-    
+
         return $this;
     }
 
     /**
      * Get remote_id
      *
-     * @return string 
+     * @return string
      */
     public function getRemoteId()
     {
@@ -149,14 +149,14 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -172,14 +172,14 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setToken($token)
     {
         $this->token = $token;
-    
+
         return $this;
     }
 
     /**
      * Get token
      *
-     * @return string 
+     * @return string
      */
     public function getToken()
     {
@@ -195,14 +195,14 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -228,7 +228,8 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     /**
      * @inheritdoc
      */
-    public function getRoles() {
+    public function getRoles()
+    {
         $roles = array('ROLE_USER');
         if ($this->getUser()) {
             $roles = array_merge($roles, $this->getUser()->getRoles());
@@ -253,14 +254,14 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -271,11 +272,9 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     {
         if ($this->getUser()) {
             return $this->getUser()->getName();
-        }
-        elseif ($this->getName()) {
+        } elseif ($this->getName()) {
             return $this->getName();
-        }
-        else {
+        } else {
             return $this->getUsername();
         }
     }
@@ -290,7 +289,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setUser(User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
@@ -318,14 +317,14 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setProfilePictureUrl($profilePictureUrl)
     {
         $this->profile_picture_url = $profilePictureUrl;
-    
+
         return $this;
     }
 
     /**
      * Get profile_picture_url
      *
-     * @return string 
+     * @return string
      */
     public function getProfilePictureUrl()
     {
@@ -341,21 +340,22 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
     {
         $this->person = $person;
-    
+
         return $this;
     }
 
     /**
      * Get person
      *
-     * @return \Acts\CamdramBundle\Entity\Person 
+     * @return \Acts\CamdramBundle\Entity\Person
      */
     public function getPerson()
     {
         return $this->person;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getId().':'.$this->getName();
     }
 

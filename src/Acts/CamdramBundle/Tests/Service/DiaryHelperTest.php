@@ -25,12 +25,14 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
      */
     private $performance;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->router = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
         $this->diaryHelper = new DiaryHelper($this->router);
     }
 
-    private function getPerformance() {
+    private function getPerformance()
+    {
         $s = new Show();
         $s->setName('Test Show');
         $s->setSlug('test-show');
@@ -43,8 +45,8 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         return $p;
     }
 
-    public function testCreateEventFromPerformance() {
-
+    public function testCreateEventFromPerformance()
+    {
         $performance = $this->getPerformance();
         $performance->setVenueName('Test Venue');
 
@@ -64,7 +66,8 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $event->getVenueLink());
     }
 
-    public function testCreateEventFromPerformance_VenueObject() {
+    public function testCreateEventFromPerformance_VenueObject()
+    {
         $performance = $this->getPerformance();
         $venue = new Venue();
         $venue->setName('Test Venue');
@@ -87,7 +90,8 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/venues/test-venue', $event->getVenueLink());
     }
 
-    public function testCreateEventFromPerformances() {
+    public function testCreateEventFromPerformances()
+    {
         $s = new Show();
         $s->setName('Test Show');
         $s->setSlug('test-show');
@@ -110,7 +114,8 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new \DateTime('2013-02-15'), $events[1]->getStartDate());
     }
 
-    public function testCreateEventFromShows() {
+    public function testCreateEventFromShows()
+    {
         $s1 = new Show();
         $s1->setName('Test Show 1');
         $s1->setSlug('test-show-1');

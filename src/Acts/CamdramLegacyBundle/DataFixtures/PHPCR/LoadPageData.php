@@ -32,7 +32,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
 
         return $this->container;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -40,9 +40,9 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
     {
         $this->container = $container;
     }
-    
+
     /**
-     * Load data from the old Camdram schema into the PHPCR 
+     * Load data from the old Camdram schema into the PHPCR
      *
      * Execute by calling php app/console doctrine:phpcr:fixtures:load
      */
@@ -66,8 +66,8 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
      * Add child nodes
      *
      * Recursively called. Take only the current version of a current page
-     * on Camdram. 
-     */    
+     * on Camdram.
+     */
     private function add_child_nodes($dm, $em, $parent_id, $parent)
     {
         $pages = $em->createQuery('SELECT p FROM ActsCamdramLegacyBundle:Page p WHERE p.parent_id = :pid AND p.ghost = 0')
@@ -83,10 +83,9 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
                 $cms_page->setContent($page->getHelp());
                 $dm->persist($cms_page);
                 $dm->flush();
-            }            
+            }
             // Recurse
             $this->add_child_nodes($dm, $em, $page->getId(), $cms_page);
         }
-    }    
+    }
 }
-

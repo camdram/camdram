@@ -76,7 +76,7 @@ class Audition
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -92,14 +92,14 @@ class Audition
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -115,14 +115,14 @@ class Audition
     public function setStartTime($startTime)
     {
         $this->start_time = $startTime;
-    
+
         return $this;
     }
 
     /**
      * Get start_time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartTime()
     {
@@ -138,14 +138,14 @@ class Audition
     public function setEndTime($endTime)
     {
         $this->end_time = $endTime;
-    
+
         return $this;
     }
 
     /**
      * Get end_time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEndTime()
     {
@@ -161,14 +161,14 @@ class Audition
     public function setLocation($location)
     {
         $this->location = $location;
-    
+
         return $this;
     }
 
     /**
      * Get location
      *
-     * @return string 
+     * @return string
      */
     public function getLocation()
     {
@@ -185,14 +185,14 @@ class Audition
     public function setDisplay($display)
     {
         $this->display = $display;
-    
+
         return $this;
     }
 
     /**
      * Get display
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDisplay()
     {
@@ -208,14 +208,14 @@ class Audition
     public function setNonScheduled($nonScheduled)
     {
         $this->nonScheduled = $nonScheduled;
-    
+
         return $this;
     }
 
     /**
      * Get nonSheduled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNonScheduled()
     {
@@ -231,14 +231,14 @@ class Audition
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 
     /**
      * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\Show 
+     * @return \Acts\CamdramBundle\Entity\Show
      */
     public function getShow()
     {

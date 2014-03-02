@@ -86,8 +86,7 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
                             || $camdram_user->getEmail() == $external_user->getEmail()) {
                         //We're confident the two accounts belong to the same person so link the two together and carry on
                        $this->userLinker->linkUsers($camdram_user, $external_user);
-                    }
-                    else {
+                    } else {
                         //We're not confident it's the same person, so redirect to a page where we ask the user what to do
                         $request->getSession()->set(self::NEW_TOKEN, $token);
                         $this->securityContext->setToken($last_token);

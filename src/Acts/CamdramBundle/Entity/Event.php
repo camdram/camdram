@@ -77,7 +77,7 @@ class Event
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -93,14 +93,14 @@ class Event
     public function setEndTime($endTime)
     {
         $this->end_time = $endTime;
-    
+
         return $this;
     }
 
     /**
      * Get end_time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEndTime()
     {
@@ -116,14 +116,14 @@ class Event
     public function setStartTime($startTime)
     {
         $this->start_time = $startTime;
-    
+
         return $this;
     }
 
     /**
      * Get start_time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartTime()
     {
@@ -139,14 +139,14 @@ class Event
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -162,14 +162,14 @@ class Event
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -185,14 +185,14 @@ class Event
     public function setLinkId($linkId)
     {
         $this->link_id = $linkId;
-    
+
         return $this;
     }
 
     /**
      * Get link_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getLinkId()
     {
@@ -208,14 +208,14 @@ class Event
     public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
     {
         $this->society = $society;
-    
+
         return $this;
     }
 
     /**
      * Get society
      *
-     * @return \Acts\CamdramBundle\Entity\Society 
+     * @return \Acts\CamdramBundle\Entity\Society
      */
     public function getSociety()
     {
@@ -231,14 +231,14 @@ class Event
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {

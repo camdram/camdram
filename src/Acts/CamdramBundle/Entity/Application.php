@@ -21,7 +21,7 @@ class Application
      */
     private $id;
 
-   
+
     /**
      * @var \Show
      *
@@ -74,14 +74,14 @@ class Application
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
- 
+
     /**
      * Set text
      *
@@ -91,14 +91,14 @@ class Application
     public function setText($text)
     {
         $this->text = $text;
-    
+
         return $this;
     }
 
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -114,14 +114,14 @@ class Application
     public function setDeadlineDate($deadlineDate)
     {
         $this->deadlineDate = $deadlineDate;
-    
+
         return $this;
     }
 
     /**
      * Get deadline_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeadlineDate()
     {
@@ -137,14 +137,14 @@ class Application
     public function setFurtherInfo($furtherInfo)
     {
         $this->further_info = $furtherInfo;
-    
+
         return $this;
     }
 
     /**
      * Get further_info
      *
-     * @return string 
+     * @return string
      */
     public function getFurtherInfo()
     {
@@ -160,14 +160,14 @@ class Application
     public function setDeadlineTime($deadlineTime)
     {
         $this->deadlineTime = $deadlineTime;
-    
+
         return $this;
     }
 
     /**
      * Get deadlineTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeadlineTime()
     {
@@ -183,14 +183,14 @@ class Application
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 
     /**
      * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\Show 
+     * @return \Acts\CamdramBundle\Entity\Show
      */
     public function getShow()
     {
@@ -206,7 +206,7 @@ class Application
     public function setSociety(Organisation $society = null)
     {
         $this->society = $society;
-    
+
         return $this;
     }
 

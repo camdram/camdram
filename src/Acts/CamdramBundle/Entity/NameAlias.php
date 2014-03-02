@@ -45,14 +45,14 @@ class NameAlias
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -63,7 +63,7 @@ class NameAlias
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -79,14 +79,14 @@ class NameAlias
     public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
     {
         $this->person = $person;
-    
+
         return $this;
     }
 
     /**
      * Get person
      *
-     * @return \Acts\CamdramBundle\Entity\Person 
+     * @return \Acts\CamdramBundle\Entity\Person
      */
     public function getPerson()
     {

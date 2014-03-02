@@ -28,8 +28,7 @@ class AccessControlEntryListener
      */
     public function postPersist(AccessControlEntry $ace, LifecycleEventArgs $event)
     {
-        switch ($ace->getType())
-        {
+        switch ($ace->getType()) {
             case 'show':
             case 'society':
                 $this->email_dispatcher->sendAceEmail($ace);
@@ -40,4 +39,3 @@ class AccessControlEntryListener
         }
     }
 }
-

@@ -11,12 +11,14 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
      */
     private $textService;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->textService = new TextService();
     }
 
 
-    public function testTruncate() {
+    public function testTruncate()
+    {
         $text = 'A quick brown fox';
 
         $this->assertEquals('A quick br&hellip;', $this->textService->truncate($text, 10));
@@ -25,13 +27,15 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('A quick brown fox', $this->textService->truncate($text, 20));
     }
 
-    public function testStripNewLines() {
+    public function testStripNewLines()
+    {
         $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\r brown fox"));
         $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\n brown fox"));
         $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\r\n brown fox"));
     }
 
-    public function testDetectLinks_Urls() {
+    public function testDetectLinks_Urls()
+    {
         $this->assertEquals(
             'The website <a href="http://www.camdram.net/" rel="ext" target="_blank">http://www.camdram.net/</a> is great',
             $this->textService->detectLinks('The website http://www.camdram.net/ is great')
@@ -54,14 +58,16 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testDetectLinks_Emails() {
+    public function testDetectLinks_Emails()
+    {
         $this->assertEquals(
             'The email <a href="mailto:websupport@camdram.net">websupport@camdram.net</a> can be used for support',
             $this->textService->detectLinks('The email websupport@camdram.net can be used for support')
         );
     }
 
-    public function testConvertMarkdown_Links() {
+    public function testConvertMarkdown_Links()
+    {
         $this->assertEquals(
             'The website <a href="http://www.camdram.net" rel="ext" target="_blank">www.camdram.net</a> is great',
             $this->textService->convertMarkdown('The website [L:www.camdram.net] is great')
@@ -80,7 +86,8 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testConvertMarkdown_Emails() {
+    public function testConvertMarkdown_Emails()
+    {
         $this->assertEquals(
             'The email <a href="mailto:websupport@camdram.net">websupport@camdram.net</a> can be used for support',
             $this->textService->convertMarkdown('The email [E:websupport@camdram.net] can be used for support')
@@ -99,7 +106,8 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testConvertMarkdown_StripTags() {
+    public function testConvertMarkdown_StripTags()
+    {
         $this->assertEquals('<b>Hello</b> <i>world</i>',
             $this->textService->convertMarkdown('<b>Hello</b> <i>world</i>'));
         $this->assertEquals('Hello world',

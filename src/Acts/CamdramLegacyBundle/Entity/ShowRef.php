@@ -42,7 +42,7 @@ class ShowRef
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getRefid()
     {
@@ -58,14 +58,14 @@ class ShowRef
     public function setRef($ref)
     {
         $this->ref = $ref;
-    
+
         return $this;
     }
 
     /**
      * Get ref
      *
-     * @return string 
+     * @return string
      */
     public function getRef()
     {
@@ -81,14 +81,14 @@ class ShowRef
     public function setShowId(\Acts\CamdramBundle\Entity\Show $show = null)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 
     /**
      * Get show_id
      *
-     * @return \Acts\CamdramBundle\Entity\Show 
+     * @return \Acts\CamdramBundle\Entity\Show
      */
     public function getShow()
     {
@@ -104,7 +104,7 @@ class ShowRef
     public function setShow(\Acts\CamdramBundle\Entity\Show $show)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 

@@ -35,7 +35,8 @@ class EntitySearchTransformer implements DataTransformerInterface
         $this->property = $property;
     }
 
-    public function transform($value) {
+    public function transform($value)
+    {
         if (is_object($value)) {
             return array(
                 'id' => $value->getId(),
@@ -45,7 +46,8 @@ class EntitySearchTransformer implements DataTransformerInterface
         return array('id' => null, 'name' => null);
     }
 
-    public function reverseTransform($value) {
+    public function reverseTransform($value)
+    {
         if (is_numeric($value)) {
             $repo = $this->em->getRepository($this->repository_name);
 

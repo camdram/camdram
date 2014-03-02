@@ -1,8 +1,8 @@
 <?php
 namespace Acts\CamdramBundle\Search;
 
-interface SearchableInterface {
-
+interface SearchableInterface
+{
     public function getEntityType();
 
     public function getId();

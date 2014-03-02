@@ -90,7 +90,7 @@ class Performance
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -106,14 +106,14 @@ class Performance
     public function setShowId($showId)
     {
         $this->show_id = $showId;
-    
+
         return $this;
     }
 
     /**
      * Get show_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getShowId()
     {
@@ -129,14 +129,14 @@ class Performance
     public function setStartDate($startDate)
     {
         $this->start_date = $startDate;
-    
+
         return $this;
     }
 
     /**
      * Get start_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartDate()
     {
@@ -152,14 +152,14 @@ class Performance
     public function setEndDate($endDate)
     {
         $this->end_date = $endDate;
-    
+
         return $this;
     }
 
     /**
      * Get end_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEndDate()
     {
@@ -175,14 +175,14 @@ class Performance
     public function setExcludeDate($excludeDate)
     {
         $this->exclude_date = $excludeDate;
-    
+
         return $this;
     }
 
     /**
      * Get exclude_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExcludeDate()
     {
@@ -198,14 +198,14 @@ class Performance
     public function setTime($time)
     {
         $this->time = $time;
-    
+
         return $this;
     }
 
     /**
      * Get time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getTime()
     {
@@ -221,21 +221,20 @@ class Performance
     public function setVenueName($venueName)
     {
         $this->venue_name = $venueName;
-    
+
         return $this;
     }
 
     /**
      * Get venue_name
      *
-     * @return string 
+     * @return string
      */
     public function getVenueName()
     {
         if ($this->venue_name) {
             return $this->venue_name;
-        }
-        elseif ($this->venue) {
+        } elseif ($this->venue) {
             return $this->venue->getName();
         }
     }
@@ -249,14 +248,14 @@ class Performance
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 
     /**
      * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\Show 
+     * @return \Acts\CamdramBundle\Entity\Show
      */
     public function getShow()
     {
@@ -282,22 +281,22 @@ class Performance
     public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
     {
         $this->venue = $venue;
-    
+
         return $this;
     }
 
     /**
      * Generate a more useful view of the performance dates, making it easier
-     * to render the diary page. 
+     * to render the diary page.
      *
-     * @return 
+     * @return
      */
     public function getDiaryEntries()
     {
         $entries = array();
         $entry = array();
 
-        if (($this->exclude_date > $this->start_date) && 
+        if (($this->exclude_date > $this->start_date) &&
             ($this->exclude_date < $this->end_date))
         {
             /* If there's a valid exclude date then they'll be two entries */
@@ -307,15 +306,13 @@ class Performance
             $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
 
             $entries[] = $entry;
-            
+
             $entry['startdate'] = $this->exclude_date->modify('+1 day');
             $entry['enddate'] = $this->end_date;
             $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
 
             $entries[] = $entry;
-        }
-        else
-        {
+        } else {
             /* Just one simple entry */
             $entry['startdate'] = $this->start_date;
             $entry['enddate'] = $this->end_date;

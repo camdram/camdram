@@ -22,7 +22,7 @@ class ExternalAppType extends AbstractType
             ->add('redirect_uris_string', 'textarea', array('label' => 'Redirect URIs', 'required' => false))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

@@ -129,8 +129,7 @@ class ShowController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:techie-advert-new.html.twig');
@@ -170,8 +169,7 @@ class ShowController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:techie-advert-edit.html.twig');
@@ -219,8 +217,7 @@ class ShowController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:application-new.html.twig');
@@ -260,8 +257,7 @@ class ShowController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('edit_show_application', array('identifier' => $show->getSlug()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
@@ -304,8 +300,7 @@ class ShowController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
@@ -345,14 +340,14 @@ class ShowController extends AbstractRestController
      * Create a new admin associated with this show.
      *
      * If the given email address isn't associated with an existing user, then
-     * they will be given a pending access token, and invited via email to 
+     * they will be given a pending access token, and invited via email to
      * create an account.
-     * 
-     * An explicit ACE will be created if the user doesn't already have access 
+     *
+     * An explicit ACE will be created if the user doesn't already have access
      * to the show by some other means, e.g. they are an admin for the show's
      * funding society, the venue the show is being performed at, or have
      * suitable site-wide privileges.
-     * 
+     *
      * @param $identifier
      */
     public function postAdminAction(Request $request, $identifier)
@@ -383,8 +378,7 @@ class ShowController extends AbstractRestController
                 if ($existing_user != null) {
                     $this->get('camdram.security.acl.provider')
                         ->grantAccess($show, $existing_user, $this->getUser());
-                }
-                else {
+                } else {
                     /* This is an unknown email address. Check if they've already
                      * got a pending access token for this resource, otherwise
                      * create the pending access token.
@@ -404,7 +398,7 @@ class ShowController extends AbstractRestController
     /**
      * Request to be an admin associated with this show.
      *
-     * 
+     *
      * @param $identifier
      */
     public function requestAdminAction($identifier)
@@ -425,7 +419,7 @@ class ShowController extends AbstractRestController
             return $this->render("ActsCamdramBundle:Show:access_requested.html.twig");
         }
     }
-    
+
     /**
      * Get a form for adding a single role to a show.
      *
@@ -523,4 +517,3 @@ class ShowController extends AbstractRestController
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 }
-

@@ -46,8 +46,7 @@ class CamdramUserProvider implements UserProviderInterface
 
         if (count($res) > 0) {
             return $res[0];
-        }
-        else {
+        } else {
             throw new IdentityNotFoundException(sprintf('An identity cannot be found for "%s" and credentials %i/%s', $service, $info['id'], $info['username']));
         }
     }
@@ -137,8 +136,7 @@ class CamdramUserProvider implements UserProviderInterface
         foreach ($members as $member) {
             if ($m2 = $r->findOneBy(array('list_id' => $member->getListId(), 'user_id' => $user1->getId()))) {
                 $this->em->remove($member);
-            }
-            else {
+            } else {
                 $member->setUserId($user1->getId());
             }
         }

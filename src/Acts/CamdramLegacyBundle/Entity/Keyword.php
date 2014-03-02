@@ -27,7 +27,7 @@ class Keyword
      * @ORM\Column(name="pageid", type="integer", nullable=false)
      */
     private $page_id;
-    
+
     /**
      * @var \Page
      *
@@ -50,7 +50,7 @@ class Keyword
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,14 +66,14 @@ class Keyword
     public function setPageId($pageId)
     {
         $this->page_id = $pageId;
-    
+
         return $this;
     }
 
     /**
      * Get page_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getPageId()
     {
@@ -89,14 +89,14 @@ class Keyword
     public function setKeyword($keyword)
     {
         $this->keyword = $keyword;
-    
+
         return $this;
     }
 
     /**
      * Get keyword
      *
-     * @return string 
+     * @return string
      */
     public function getKeyword()
     {
@@ -112,7 +112,7 @@ class Keyword
     public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)
     {
         $this->page = $page;
-    
+
         return $this;
     }
 

@@ -41,4 +41,3 @@ class EmailSendListener
         $this->dispatcher->sendEmailVerifyEmail($user, $token);
     }
 }
-

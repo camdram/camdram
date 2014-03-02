@@ -27,11 +27,11 @@
     <div class="large-12 columns">
 
         <h4>Viewing issue {{ issue.id }}</h4>
-        <p>State: {{ issue.state }}. 
+        <p>State: {{ issue.state }}.
         {% if issue.state == 'unassigned' -%}
             <a href="{{ url('get_issue',{identifier: issue.id, action : 'assign'}) }}">Assign this issue to me</a>
         {% elseif issue.state == 'assigned' -%}
-            Assigned to 
+            Assigned to
             {% if issue.owner.id == app.user.id -%}
                 me. <a href="{{ url('get_issue',{identifier: issue.id, action : 'rejectassign'}) }}">Reject assignment</a> or <a href="{{ url('get_issue',{identifier: issue.id, action : 'resolve'}) }}">close this issue</a>.
             {% else -%}
@@ -54,7 +54,7 @@
         <h4>Post reply to this issue</h4>
         {{ form_start(form) }}
         {{ form_errors(form) }}
-        
+
         {{ form_row(form.to, { 'attr' : {'multiple' : 'multiple'} }) }}
         {{ form_row(form.cc, { 'attr' : {'multiple' : 'multiple' } }) }}
         {{ form_row(form.bcc, { 'attr' : {'multiple' : 'multiple' } }) }}
@@ -86,4 +86,3 @@
 </div>
 
 {% endblock %}
-

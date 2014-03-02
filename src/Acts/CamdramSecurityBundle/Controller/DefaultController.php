@@ -42,14 +42,11 @@ class DefaultController extends Controller
         if ($session->get(SecurityContext::LAST_USERNAME)) {
             $last_email = $session->get(SecurityContext::LAST_USERNAME);
             $session->remove(SecurityContext::LAST_USERNAME);
-        }
-        elseif ($this->getUser() instanceof User) {
+        } elseif ($this->getUser() instanceof User) {
             $last_email = $this->getUser()->getEmail();
-        }
-        elseif ($this->getUser() instanceof ExternalUser && $this->getUser()->getUser()) {
+        } elseif ($this->getUser() instanceof ExternalUser && $this->getUser()->getUser()) {
             $last_email = $this->getUser()->getUser()->getEmail();
-        }
-        else {
+        } else {
             $last_email = '';
         }
 
@@ -67,8 +64,7 @@ class DefaultController extends Controller
                     'error'         => $error,
                 )
             );
-        }
-        else {
+        } else {
             return $this->render(
                 'ActsCamdramSecurityBundle:Default:login.html.twig',
                 array(
@@ -179,8 +175,7 @@ class DefaultController extends Controller
         $link_user = $link_token->getUser();
         if ($link_user instanceof ExternalUser) {
             $link_user = $this->get('camdram.security.external_user.provider')->refreshUser($link_user);
-        }
-        elseif ($link_user instanceof User) {
+        } elseif ($link_user instanceof User) {
             $link_user = $this->get('camdram.security.user.provider')->refreshUser($link_user);
         }
 
@@ -191,11 +186,9 @@ class DefaultController extends Controller
                 $token = $this->get('camdram.security.user_linker')->findCamdramToken($link_token, $this->get('security.context')->getToken());
                 $this->get('security.context')->setToken($token);
                 return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
-            }
-            elseif ($request->request->has('old')) {
+            } elseif ($request->request->has('old')) {
                 return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $this->get('security.context')->getToken());
-            }
-            else {
+            } else {
                 $request->getSession()->clear();
                 $this->get('security.context')->setToken($link_token);
                 return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $link_token);
@@ -241,8 +234,7 @@ class DefaultController extends Controller
                     return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password_complete.html.twig', array(
                         'email' => $data['email']
                     ));
-                }
-                else {
+                } else {
                     $form->get('email')->addError(new FormError('A user cannot be found with that email address'));
                 }
             }

@@ -32,4 +32,3 @@ acts_camdram_signinsheet:
     pattern: /shows/{slug}/signinsheet.{_format}
     defaults: { _controller: ActsCamdramBundle:Signinsheet:index, slug: ~, _format: html }
     requirements: { _format: (csv|html), _method: GET }
-

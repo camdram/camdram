@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace Acts\CamdramBundle\Controller;
- 
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Patch;
@@ -46,4 +46,3 @@ class RoleController extends FOSRestController
         return $response;
     }
 }
-

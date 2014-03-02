@@ -11,8 +11,8 @@ use Acts\CamdramSecurityBundle\Entity\User;
  *
  * PendingAccess acts as an Access Control Entry (ACE) in the case where the
  * user doesn't have an account on Camdram. In a typical case, a show is entered
- * on Camdram by a society or venue administrator. Pending access entries are 
- * created when a show-specific admin doesn't have an account on Camdram 
+ * on Camdram by a society or venue administrator. Pending access entries are
+ * created when a show-specific admin doesn't have an account on Camdram
  * (determined by the given email address). The person is prompted
  * @ORM\Table(name="acts_pendingaccess")
  * @ORM\Entity(repositoryClass="PendingAccessRepository")
@@ -70,7 +70,7 @@ class PendingAccess
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -86,14 +86,14 @@ class PendingAccess
     public function setRid($rid)
     {
         $this->rid = $rid;
-    
+
         return $this;
     }
 
     /**
      * Get rid
      *
-     * @return integer 
+     * @return integer
      */
     public function getRid()
     {
@@ -114,7 +114,7 @@ class PendingAccess
          */
         $email=ereg_replace("[^[:alnum:]@.+-]", "", $email);
         $email=ereg_replace("@cam.ac.uk","",$email);
-        $email=ereg_replace("@hermes.cam.ac.uk","",$email); 
+        $email=ereg_replace("@hermes.cam.ac.uk","",$email);
         $this->email = strtolower($email);
         return $this;
     }
@@ -122,7 +122,7 @@ class PendingAccess
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -143,14 +143,14 @@ class PendingAccess
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -166,7 +166,7 @@ class PendingAccess
     public function setIssuer(\Acts\CamdramSecurityBundle\Entity\User $issuer = null)
     {
         $this->issuer= $issuer;
-    
+
         return $this;
     }
 
@@ -183,7 +183,7 @@ class PendingAccess
     /**
      * Set creation_date
      *
-     * This should only be called by Doctrine during PrePersit, but must be 
+     * This should only be called by Doctrine during PrePersit, but must be
      * declared as a public function.
      *
      * @return PendingAccess
@@ -192,18 +192,17 @@ class PendingAccess
     public function setCreationDate()
     {
         $this->creation_date = new \DateTime();
-    
+
         return $this;
     }
 
     /**
      * Get creation_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreationDate()
     {
         return $this->creation_date;
     }
 }
-

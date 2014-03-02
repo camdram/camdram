@@ -14,8 +14,9 @@ use Doctrine\ORM\Query\Expr;
  * repository methods below.
  */
 class ExternalAppRepository extends EntityRepository
-{    
-    public function findByUser(User $user) {
+{
+    public function findByUser(User $user)
+    {
         return $this->createQueryBuilder('a')
             ->where('a.user = :user')
             ->orderBy('a.name')
@@ -23,7 +24,8 @@ class ExternalAppRepository extends EntityRepository
             ->getQuery()->getResult();
     }
 
-    public function getByUserAndId(User $user, $id) {
+    public function getByUserAndId(User $user, $id)
+    {
         return $this->createQueryBuilder('a')
             ->where('a.user = :user')
             ->andWhere('a.randomId = :id')

@@ -52,7 +52,7 @@ class VenueController extends OrganisationController
         }
 
         $venues = $this->getRepository()->findAllOrderedByName();
- 
+
         $view = $this->view($venues, 200)
             ->setTemplateVar('venues')
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
@@ -93,8 +93,7 @@ class VenueController extends OrganisationController
         $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
         if ($identifier) {
             $venues = array($repo->findOneBySlug($identifier));
-        }
-        else {
+        } else {
             $venues = $repo->findAllOrderedByName();
         }
         $map = $this->get('ivory_google_map.map');
@@ -108,8 +107,7 @@ class VenueController extends OrganisationController
         if ($one_venue) {
             $map->setMapOption('zoom', 16);
             $map->setCenter($venues[0]->getLatitude(), $venues[0]->getLongitude(), true);
-        }
-        else {
+        } else {
             $map->setMapOption('zoom', 14);
             $map->setCenter(52.20531, 0.12179, true);
         }
@@ -140,8 +138,7 @@ class VenueController extends OrganisationController
                 $marker->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
                 if ($one_venue) {
                     $marker->setIcon($this->getMarkerUrl(''));
-                }
-                else {
+                } else {
                     $marker->setIcon($this->getMarkerUrl(chr($letter)));
                 }
                 $marker->setInfoWindow($infoWindow);

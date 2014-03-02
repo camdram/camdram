@@ -39,4 +39,3 @@ class SupportType extends AbstractType
         return 'acts_camdrambundle_supporttype';
     }
 }
-

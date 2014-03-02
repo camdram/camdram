@@ -32,12 +32,10 @@ class ExternalUsersCommand extends ContainerAwareCommand
                 //Create identity for abc12 (crsid)
                 $user->getEmail($user->getEmail().'@cam.ac.uk');
                 $this->generateIdentity($user, 'raven', $matches[0], $output);
-            }
-            else if (preg_match('/^([a-z]+[0-9]+)@cam\.ac\.uk$/i', $user->getEmail(), $matches)) {
+            } elseif (preg_match('/^([a-z]+[0-9]+)@cam\.ac\.uk$/i', $user->getEmail(), $matches)) {
                 //Create identity for abc12@cam.ac.uk
                 $this->generateIdentity($user, 'raven', $matches[1], $output);
-            }
-            else if (preg_match('/^(.*)@(?:gmail|googlemail)\..*$/i', $user->getEmail(), $matches)) {
+            } elseif (preg_match('/^(.*)@(?:gmail|googlemail)\..*$/i', $user->getEmail(), $matches)) {
                 //Create identity for xxx@gmail.com / xxx@googlemail.com
                 $this->generateIdentity($user, 'google', $user->getEmail(), $output);
             }

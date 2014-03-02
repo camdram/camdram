@@ -43,7 +43,8 @@ class Week
      *
      * @param \DateTime $start
      */
-    public function __construct(\DateTime $start) {
+    public function __construct(\DateTime $start)
+    {
         $this->start = self::getWeekStart($start);
         $this->end = clone $this->start;
         $this->end->modify('+7 days');
@@ -70,7 +71,8 @@ class Week
      * @param \DateTime $date
      * @return bool
      */
-    public function contains(\DateTime $date) {
+    public function contains(\DateTime $date)
+    {
         return $this->start <= $date && $date < $this->end;
     }
 
@@ -81,7 +83,8 @@ class Week
      * @param \DateTime $end
      * @return bool
      */
-    public function intersects(\DateTime $start, \DateTime $end) {
+    public function intersects(\DateTime $start, \DateTime $end)
+    {
         return $this->start <= $end && $start < $this->end;
     }
 

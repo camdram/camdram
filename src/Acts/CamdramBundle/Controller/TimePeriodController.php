@@ -21,7 +21,7 @@ class TimePeriodController extends FOSRestController
         $view = $this->view($periods, 200)
             ->setTemplateVar('periods')
         ;
-        
+
         return $view;
     }
 }

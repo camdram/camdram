@@ -31,7 +31,7 @@ class Config
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -47,14 +47,14 @@ class Config
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 
     /**
      * Get value
      *
-     * @return string 
+     * @return string
      */
     public function getValue()
     {
@@ -70,7 +70,7 @@ class Config
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 }

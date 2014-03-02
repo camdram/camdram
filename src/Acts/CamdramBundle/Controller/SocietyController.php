@@ -46,7 +46,7 @@ class SocietyController extends OrganisationController
         }
 
         $societies = $this->getRepository()->findAllOrderedByCollegeName();
- 
+
         $view = $this->view($societies, 200)
             ->setTemplateVar('societies')
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')

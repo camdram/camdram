@@ -13,14 +13,14 @@ use Doctrine\ORM\Query\Expr;
  * repository methods below.
  */
 class ApplicationRepository extends EntityRepository
-{    
+{
     /**
      * findScheduledOrderedByDeadline
      *
      * Find all applications between two dates that should be shown on the
      * diary page.
      *
-     * @param DateTime $startDate start date 
+     * @param DateTime $startDate start date
      * @param DateTime $endDate end date
      *
      * @return array of applications
@@ -45,7 +45,7 @@ class ApplicationRepository extends EntityRepository
     private function getLatestQuery($limit)
     {
         $now = new \DateTime();
-    
+
         return $this->createQueryBuilder('a')
             ->leftJoin('a.show', 's')
             ->where('a.deadlineDate >= :now')

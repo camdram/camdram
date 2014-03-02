@@ -24,7 +24,8 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
      */
     private $constraint;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
         $this->validator = new MapDistanceValidator();
         $this->validator->initialize($this->context);
@@ -35,7 +36,8 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
         $this->constraint->message = 'myMessage';
     }
 
-    public function testValidate_Invalid() {
+    public function testValidate_Invalid()
+    {
         $value = new MapLocation(50.0, 0.0);
 
         $this->context->expects($this->once())
@@ -45,7 +47,8 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($value, $this->constraint);
     }
 
-    public function testValidate_Valid() {
+    public function testValidate_Valid()
+    {
         $value = new MapLocation(52.1005, 0.5005);
 
         $this->context->expects($this->never())
@@ -54,7 +57,8 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($value, $this->constraint);
     }
 
-    public function testValidate_NotLocation() {
+    public function testValidate_NotLocation()
+    {
         $value = null;
 
         $this->context->expects($this->never())

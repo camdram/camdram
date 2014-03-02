@@ -21,8 +21,7 @@ class SetupController extends Controller
         $user = $this->get('security.context')->getToken()->getUser();
         if (is_null($user->getPerson())) {
             $this->redirect($this->generateUrl('camdram_security_setup_link_person'));
-        }
-        else {
+        } else {
             return $this->redirect($this->generateUrl('camdram_security_login', array('service' => 'complete')));
         }
     }
@@ -45,8 +44,7 @@ class SetupController extends Controller
         if ($request->getMethod() == 'POST') {
             $person_ids = array_keys($this->getRequest()->get('link_people', array()));
             $selected_people = array();
-            foreach ($person_ids as $id)
-            {
+            foreach ($person_ids as $id) {
                 foreach ($people as $p) {
                     if ($p->getId() == $id) $selected_people[] = $p;
                 }
@@ -58,8 +56,7 @@ class SetupController extends Controller
                 $p->setName($user->getName());
                 $user->setPerson($p);
                 $em->persist($p);
-            }
-            else {
+            } else {
                 $person = $this->mergePeople($people);
                 $user->setPerson($person);
             }

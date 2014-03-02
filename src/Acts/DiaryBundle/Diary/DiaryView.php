@@ -74,8 +74,7 @@ class DiaryView
                 if ($week) $week->addEvent($event);
                 $week_start->modify('+7 days');
             } while ($week_start < $event->getEndDate());
-        }
-        elseif ($event instanceof SingleDayEventInterface) {
+        } elseif ($event instanceof SingleDayEventInterface) {
             $this->getWeekForDate($event->getDate())->addEvent($event);
 
             //If its end time is before its start time, we assume this means it continues until that time the next day
@@ -104,8 +103,7 @@ class DiaryView
     {
         if ($label->getType() == Label::TYPE_WEEK) {
             $this->getWeekForDate($label->getStartAt())->setLabel($label);
-        }
-        elseif ($label->getType() == Label::TYPE_PERIOD) {
+        } elseif ($label->getType() == Label::TYPE_PERIOD) {
             $found = false;
             foreach ($this->weeks as $week) {
                 if ($week->contains($label->getStartAt())) {

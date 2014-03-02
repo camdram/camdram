@@ -27,7 +27,8 @@ class NameUtils
      * @param $name2
      * @return bool
      */
-    public function isSamePerson($name1, $name2) {
+    public function isSamePerson($name1, $name2)
+    {
         return $this->getSimilarityScore($name1, $name2) > 70;
     }
 
@@ -64,11 +65,9 @@ class NameUtils
         $equivalence = $this->getRepository()->getEquivalence($remain1, $remain2);
         if ($equivalence ==  SimilarName::EQUIVALENT) {
             return 100;
-        }
-        elseif ($equivalence ==  SimilarName::NOT_EQUIVALENT) {
+        } elseif ($equivalence ==  SimilarName::NOT_EQUIVALENT) {
             return 0;
-        }
-        else {
+        } else {
 
             $frac_common_parts = count(array_intersect($parts1, $parts2)) / max(count($parts1), count($parts2));
             if ($frac_common_parts > 0.5) {

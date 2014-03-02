@@ -41,7 +41,7 @@ class EmailSig
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -57,14 +57,14 @@ class EmailSig
     public function setSig($sig)
     {
         $this->sig = $sig;
-    
+
         return $this;
     }
 
     /**
      * Get sig
      *
-     * @return string 
+     * @return string
      */
     public function getSig()
     {
@@ -80,7 +80,7 @@ class EmailSig
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 

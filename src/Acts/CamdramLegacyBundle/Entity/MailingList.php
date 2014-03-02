@@ -60,7 +60,7 @@ class MailingList
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,14 +76,14 @@ class MailingList
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -99,14 +99,14 @@ class MailingList
     public function setShortName($shortName)
     {
         $this->short_name = $shortName;
-    
+
         return $this;
     }
 
     /**
      * Get short_name
      *
-     * @return string 
+     * @return string
      */
     public function getShortName()
     {
@@ -122,14 +122,14 @@ class MailingList
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -145,14 +145,14 @@ class MailingList
     public function setPublic($public)
     {
         $this->public = $public;
-    
+
         return $this;
     }
 
     /**
      * Get public
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPublic()
     {
@@ -168,14 +168,14 @@ class MailingList
     public function setDefaultSubscribe($defaultSubscribe)
     {
         $this->default_subscribe = $defaultSubscribe;
-    
+
         return $this;
     }
 
     /**
      * Get default_subscribe
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDefaultSubscribe()
     {

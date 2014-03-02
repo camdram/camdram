@@ -9,4 +9,3 @@ acts_camdram_users:
     type:     rest
     prefix:   /
     resource: "Acts\CamdramBundle\Controller\UserController"
-

@@ -35,7 +35,7 @@ class AuthCode extends BaseAuthCode
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -51,14 +51,14 @@ class AuthCode extends BaseAuthCode
     public function setClient(ClientInterface $client)
     {
         $this->client = $client;
-    
+
         return $this;
     }
 
     /**
      * Get client
      *
-     * @return \Acts\CamdramApiBundle\Entity\ApiApp 
+     * @return \Acts\CamdramApiBundle\Entity\ApiApp
      */
     public function getClient()
     {
@@ -74,7 +74,7 @@ class AuthCode extends BaseAuthCode
     public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 

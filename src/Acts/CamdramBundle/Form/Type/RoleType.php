@@ -37,4 +37,3 @@ class RoleType extends AbstractType
         return 'acts_camdrambundle_roletype';
     }
 }
-

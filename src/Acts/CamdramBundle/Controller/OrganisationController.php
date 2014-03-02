@@ -118,8 +118,7 @@ abstract class OrganisationController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-new.html.twig');
@@ -157,8 +156,7 @@ abstract class OrganisationController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
             return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-edit.html.twig');

@@ -117,7 +117,7 @@ class TechieAdvert
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -133,14 +133,14 @@ class TechieAdvert
     public function setPositions($positions)
     {
         $this->positions = $positions;
-    
+
         return $this;
     }
 
     /**
      * Get positions
      *
-     * @return string 
+     * @return string
      */
     public function getPositions()
     {
@@ -161,14 +161,14 @@ class TechieAdvert
     public function setContact($contact)
     {
         $this->contact = $contact;
-    
+
         return $this;
     }
 
     /**
      * Get contact
      *
-     * @return string 
+     * @return string
      */
     public function getContact()
     {
@@ -191,7 +191,7 @@ class TechieAdvert
     /**
      * Get deadline
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeadline()
     {
@@ -207,14 +207,14 @@ class TechieAdvert
     public function setDeadlineTime($deadlineTime)
     {
         $this->deadline_time = $deadlineTime;
-    
+
         return $this;
     }
 
     /**
      * Get deadline_time
      *
-     * @return string 
+     * @return string
      */
     public function getDeadlineTime()
     {
@@ -230,14 +230,14 @@ class TechieAdvert
     public function setExpiry($expiry)
     {
         $this->expiry = $expiry;
-    
+
         return $this;
     }
 
     /**
      * Get expiry
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExpiry()
     {
@@ -253,14 +253,14 @@ class TechieAdvert
     public function setDisplay($display)
     {
         $this->display = $display;
-    
+
         return $this;
     }
 
     /**
      * Get display
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDisplay()
     {
@@ -276,14 +276,14 @@ class TechieAdvert
     public function setReminderSent($reminderSent)
     {
         $this->reminder_sent = $reminderSent;
-    
+
         return $this;
     }
 
     /**
      * Get reminder_sent
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getReminderSent()
     {
@@ -299,14 +299,14 @@ class TechieAdvert
     public function setTechExtra($techExtra)
     {
         $this->tech_extra = $techExtra;
-    
+
         return $this;
     }
 
     /**
      * Get tech_extra
      *
-     * @return string 
+     * @return string
      */
     public function getTechExtra()
     {
@@ -322,14 +322,14 @@ class TechieAdvert
     public function setUpdatedAt($lastUpdated)
     {
         $this->last_updated = $lastUpdated;
-    
+
         return $this;
     }
 
     /**
      * Get last_updated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -350,14 +350,14 @@ class TechieAdvert
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 
     /**
      * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\Show 
+     * @return \Acts\CamdramBundle\Entity\Show
      */
     public function getShow()
     {

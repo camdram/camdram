@@ -10,7 +10,7 @@ use Acts\CamdramLegacyBundle\Entity\ApiShow;
 /**
  * Class LegacyApiController
  *
- * Very basic controller 
+ * Very basic controller
  *
  */
 class LegacyApiController extends Controller
@@ -19,23 +19,20 @@ class LegacyApiController extends Controller
     {
         $showid = $request->query->get('showid');
         $type = $request->query->get('type');
-   
+
         If($type != 'json')
         {
             $type = 'xml';
         }
         $repo= $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
         $show = $repo->findOneBySlug($showid);
-   
-        if (!$show)
-        {
-            if(is_numeric($showid))
-            {
+
+        if (!$show) {
+            if(is_numeric($showid)) {
                $show = $repo->find($showid);
             }
         }
-        if (!$show)
-        {
+        if (!$show) {
             throw $this->createNotFoundException('That show does not exist.');
         }
 
@@ -49,4 +46,3 @@ class LegacyApiController extends Controller
         return $response;
     }
 }
-
