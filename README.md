@@ -103,6 +103,7 @@ This will pull in the latest code, update any changes to the dependencies and up
  * Visit http://try.github.io/ if you're not familiar with Git.
  * Code should ideally conform to the style guide here: http://www.php-fig.org/psr/psr-2/.  
    If this is far too daunting, a poorly styled but functional improvement is better than no improvement.
+   You can use http://cs.sensiolabs.org/ to (mostly) clean your code up after writing it.
 
 9) Commit some code
 ----------------------
