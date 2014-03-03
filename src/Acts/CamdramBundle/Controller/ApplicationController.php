@@ -21,7 +21,6 @@ class ApplicationController extends FOSRestController
      */
     public function cgetAction()
     {
-        $startDate =
         $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
             ->findScheduledOrderedByDeadline(new \DateTime(), new \DateTime("2034/1/1"));
 

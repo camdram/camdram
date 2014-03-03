@@ -134,7 +134,7 @@ class CamdramUserProvider implements UserProviderInterface
         $r = $this->em->getRepository('ActsCamdramBundle:MailingListMember');
         $members = $r->findBy(array('user_id' => $user2->getId()));
         foreach ($members as $member) {
-            if ($m2 = $r->findOneBy(array('list_id' => $member->getListId(), 'user_id' => $user1->getId()))) {
+            if ($r->findOneBy(array('list_id' => $member->getListId(), 'user_id' => $user1->getId()))) {
                 $this->em->remove($member);
             } else {
                 $member->setUserId($user1->getId());

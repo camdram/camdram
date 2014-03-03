@@ -15,8 +15,6 @@ use Behat\Gherkin\Node\TableNode;
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
 
-//if(function_exists('xdebug_disable')) { xdebug_disable(); }
-
 /**
  * Feature context.
  */
@@ -72,13 +70,6 @@ class UserContext extends AbstractContext
         $this->getMinkContext()->fillField('form_password', $password);
         $this->getMinkContext()->pressButton('login_button');
     }
-
-
-    private $external_login_data = array(
-        'google' => array('name' => 'Test Google User', 'username' => 'test.google.user',
-            'id' => 5678, 'email' => 'test@gmail.com', 'picture' => 'http://test.com/google-profile-picture.png'),
-        'raven' => array('name' => null, 'username' => 'abc123', 'id' => null, 'email' => 'abc123@cam.ac.uk', 'picture' => null),
-    );
 
     /**
      * @Given /^the external "([^"]*)" user:$/
