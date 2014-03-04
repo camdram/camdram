@@ -319,7 +319,7 @@ class ShowController extends AbstractRestController
      *
      * @param $identifier
      */
-    public function newAdminAction($identifier)
+    public function editAdminAction($identifier)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
@@ -331,9 +331,17 @@ class ShowController extends AbstractRestController
         $form = $this->createForm(new PendingAccessType(), $ace, array(
             'action' => $this->generateUrl('post_show_admin', array('identifier' => $identifier))));
 
+        $em = $this->getDoctrine()->getManager();
+        $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($show);
+        $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramSecurityBundle:PendingAccess:new.html.twig');
+            ->setData(array(
+                'show' => $show, 
+                'admins' => $admins,
+                'pending_admins' => $pending_admins,
+                'form' => $form->createView())
+            )
+            ->setTemplate('ActsCamdramSecurityBundle:PendingAccess:edit.html.twig');
     }
 
     /**
@@ -418,6 +426,22 @@ class ShowController extends AbstractRestController
             $em->flush();
             return $this->render("ActsCamdramBundle:Show:access_requested.html.twig");
         }
+    }
+
+    /**
+     * Revoke an admin's access to a show.
+     */
+    public function revokeAdminAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('uid');
+        $user= $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        if ($user != null) {
+            $this->get('camdram.security.acl.provider')->revokeAccess($show, $user, $this->getUser());
+        }
+        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**

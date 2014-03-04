@@ -79,4 +79,20 @@ class AclProvider
         $this->entityManager->persist($ace);
         $this->entityManager->flush();
     }
+
+    /**
+     * Revoke access to the entity.
+     */
+    public function revokeAccess(OwnableInterface $entity, User $user, User $revoker)
+    {
+        $ace = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findAce($user, $entity);
+        /* Don't re-revoke an ACE. */
+        if (($ace != null) && ($ace->getRevokedBy() != null)) {
+            $ace->setRevokedBy($revoker)
+                ->setRevokedAt(new \DateTime);
+            $this->entityManager->persist($ace);
+            $this->entityManager->flush();
+        }
+    }
 }
+
