@@ -23,12 +23,4 @@ class FeatureContext extends BehatContext
         $this->useContext('entity', new EntityContext());
     }
 
-    /**
-     * @return \Behat\MinkExtension\Context\MinkContext
-     */
-    private function getMinkContext()
-    {
-        return $this->getMainContext()->getSubcontext('mink');
-    }
-
 }

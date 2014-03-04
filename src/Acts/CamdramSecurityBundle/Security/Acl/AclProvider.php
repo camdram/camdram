@@ -62,7 +62,11 @@ class AclProvider
     public function getEntitiesByUser(User $user, $class)
     {
         $ids = $this->getEntityIdsByUser($user, $class);
-        return $this->entityManager->getRepository($class)->find($ids);
+        if (count($ids) == 0) return array();
+        
+        $qb = $this->entityManager->getRepository($class)->createQueryBuilder('e');
+        $qb->where($qb->expr()->in('e.id', $ids));
+        return $qb->getQuery()->getResult();
     }
 
     public function grantAccess(OwnableInterface $entity, User $user, User $granter)

@@ -22,12 +22,12 @@ class TechieAdvertController extends FOSRestController
 
     protected $type_plural = 'techies';
 
-    public function getController()
+    protected function getController()
     {
         return 'TechieAdvert';
     }
 
-    public function getRepository()
+    protected function getRepository()
     {
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
     }
