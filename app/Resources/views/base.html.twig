@@ -27,7 +27,6 @@
         {% endstylesheets %}
 
         {% block stylesheets %}{% endblock %}
-
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
         {% javascripts output='js/deps.js'
@@ -57,8 +56,10 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body>
-        {% block main %}{% endblock %}
-
+        <div id="wrapper">
+            {% if development_warning %}{% include '::dev-warning.html.twig' %}{% endif %}
+            {% block main %}{% endblock %}
+        </div>
 
         <footer>
             {% block footer %}{% endblock %}

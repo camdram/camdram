@@ -27,6 +27,8 @@ twig:
         resources:
             - 'HoyesImageManagerBundle:Form:fields.html.twig'
             - 'ActsCamdramBundle:Form:fields.html.twig'
+    globals:
+        development_warning: %development_warning%
 
 # Assetic Configuration
 assetic:

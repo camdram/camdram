@@ -1,7 +1,6 @@
 {% extends '::base.html.twig' %}
 {% if current_navigation_id is not defined %}{% set current_navigation_id = '' %}{% endif %}
 {% block main %}
-<div id="wrapper">
   <nav id="header-bar">
       <section>
       <ul class="left hide-for-small">
@@ -80,7 +79,6 @@
 {% block body %}
 {% endblock %}
   </section>
-</div>
 {% endblock %}
 
 {% block footer %}

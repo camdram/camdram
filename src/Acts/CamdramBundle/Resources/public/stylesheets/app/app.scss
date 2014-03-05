@@ -58,8 +58,8 @@ html, body {
     box-sizing:border-box;
 
     bottom:0;
-    top:0;
-    z-index:-1;
+    top:120px;
+    z-index:-5;
 
     @media only screen and (min-width: $row-width) {
       left:50%;
@@ -273,4 +273,15 @@ table {
 $panel-font-color-alt: #f00;
 .error_panel {
   @include panel(rgba(198, 15, 19, 0.1));
+}
+
+#dev-warning {
+  background:#ffdddd;
+  text-align:center;
+  padding:0.1em 1em;
+  font-size:0.9em;
+
+  h3 {
+    color:#a00;
+  }
 }
