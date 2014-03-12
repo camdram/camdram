@@ -57,7 +57,7 @@ Run the command below to generate a SQLite datastore which contains randomly-gen
 5) Run the web server
 ---------------------------
 
-Run `php app/console server:run` to start a web server. You should then be able to visit [http://localhost:8000/app_dev.php](http://localhost:8000/app_dev.php) in your web browser
+Run `php app/console server:run` to start a web server. You should then be able to visit [http://localhost:8000/app_dev.php](http://localhost:8000/app_dev.php) in your web browser to see your personal version of Camdram's homepage.
 
 The 'app_dev.php' in the URL launches Camdram in the 'development' environment, which is optimized for the frequent code changes that occur when doing development work. It also contains a useful toolbar at the foot of the page which contains, amongst other information, useful information about load times, memory usage and the number of SQL queries run. [Read more about Symfony's environments here](https://github.com/camdram/camdram/wiki/The-Symfony-environments), including information about how to use the 'production' environment.
 
