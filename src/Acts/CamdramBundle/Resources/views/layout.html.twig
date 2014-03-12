@@ -5,6 +5,7 @@
       <section>
       <ul class="left hide-for-small">
           {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
+              'about': {'text': 'About', 'path': path('acts_camdram_about')},
               'development': {'text': 'Development', 'path': path('acts_camdram_development')},
               'api': {'text': 'API', 'path': path('acts_camdram_api_homepage')},
               'contact-us': {'text': 'Contact Us', 'path': path('acts_camdram_contact_us')},
@@ -100,6 +101,7 @@
         </div>
         <div class="large-4 columns">
             <h5>About</h5>
+            <a href="{{ path('acts_camdram_about') }}">About Camdram</a><br/>
             <a href="{{ path('acts_camdram_development') }}">Development</a><br/>
             <a href="{{ path('acts_camdram_privacy') }}">Privacy policy</a><br/>
             <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a><br/>
