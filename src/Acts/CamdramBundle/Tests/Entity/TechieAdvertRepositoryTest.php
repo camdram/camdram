@@ -130,4 +130,42 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $this->assertEquals(0, count($res));
     }
 
+
+    public function testfindLatest()
+    {
+        $ad = new TechieAdvert();
+        $ad->setShow($this->show);
+        $ad->setExpiry(new \DateTime('2014-03-12'));
+        $ad->setDeadline(true);
+        $ad->setDeadlineTime(new \DateTime('00:00'));
+        $ad->setPositions("Technical Director\nLighting Designer");
+        $ad->setContact('Contact me');
+        $ad->setTechExtra('Get involved with this show');
+
+        $this->em->persist($ad);
+        $this->em->flush();
+
+        $res = $this->getRepository()->findLatest(1, new \DateTime('2014-03-04'));
+        $this->assertEquals(1, count($res));
+    }
+
+
+    public function testFindOneByShowSlug()
+    {
+        $ad = new TechieAdvert();
+        $ad->setShow($this->show);
+        $ad->setExpiry(new \DateTime('2014-03-12'));
+        $ad->setDeadline(true);
+        $ad->setDeadlineTime(new \DateTime('00:00'));
+        $ad->setPositions("Technical Director\nLighting Designer");
+        $ad->setContact('Contact me');
+        $ad->setTechExtra('Get involved with this show');
+
+        $this->em->persist($ad);
+        $this->em->flush();
+
+        $show = $this->getRepository()->findOneByShowSlug($this->show->getSlug(), new \DateTime('2014-03-01'));
+        $this->assertInstanceOf('\\Acts\\CamdramBundle\\Entity\\TechieAdvert', $show);
+    }
+
 }

@@ -52,7 +52,7 @@ class TechieAdvertController extends FOSRestController
     public function getAction($identifier)
     {
         $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findOneByShowSlug($identifier);
+            ->findOneByShowSlug($identifier, new \DateTime);
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {

@@ -90,7 +90,7 @@ class DefaultController extends Controller
 
         $response = $this->render('ActsCamdramBundle:Default:vacancies.html.twig', array(
             'auditions' => $auditions_repo->findUpcoming(3),
-            'techie_ads' => $techie_repo->findLatest(3),
+            'techie_ads' => $techie_repo->findLatest(3, new \DateTime),
             'app_ads' => $applications_repo->findLatest(3),
         ));
         $response->setSharedMaxAge(60);

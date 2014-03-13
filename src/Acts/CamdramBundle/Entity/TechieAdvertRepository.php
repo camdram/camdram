@@ -21,7 +21,6 @@ class TechieAdvertRepository extends EntityRepository
         $qb = $query_res->createQueryBuilder('a');
         $query = $qb->leftJoin('a.show', 's')
             ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
-            //->where('a.expiry >= :now')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.expiry, s.name, s.society')
@@ -31,44 +30,49 @@ class TechieAdvertRepository extends EntityRepository
         return $query->getResult();
     }
 
-    private function getLatestQuery($limit)
+    private function getLatestQuery($limit, \DateTime $now)
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('a.expiry >= CURRENT_DATE()')
+        $qb = $this->createQueryBuilder('a');
+        return $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.last_updated')
+            ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->setMaxResults($limit);
     }
 
-    public function findLatest($limit)
+    public function findLatest($limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit)->getQuery()->getResult();
+        return $this->getLatestQuery($limit, $now)->getQuery()->getResult();
     }
 
-    public function findLatestBySociety(Society $society, $limit)
+    public function findLatestBySociety(Society $society, $limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit)
+        return $this->getLatestQuery($limit, $now)
             ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
             ->getQuery()->getResult();
     }
 
-    public function findLatestByVenue(Venue $venue, $limit)
+    public function findLatestByVenue(Venue $venue, $limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit)
+        return $this->getLatestQuery($limit, $now)
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 
-    public function findOneByShowSlug($slug)
+    public function findOneByShowSlug($slug, \DateTime $now)
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('s.slug = :slug')
+        $qb = $this->createQueryBuilder('a');
+        return $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
+            ->andWhere('s.slug = :slug')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->setParameter('slug', $slug)
+            ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->getQuery()->getOneOrNullResult();
             ;
     }
