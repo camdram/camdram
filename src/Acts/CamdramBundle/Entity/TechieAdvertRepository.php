@@ -15,28 +15,19 @@ use Doctrine\ORM\Query\Expr;
  */
 class TechieAdvertRepository extends EntityRepository
 {
-    /**
-     * findCurrentOrderedByDateName
-     *
-     * Find all auditions between two dates that should be shown on the
-     * diary page, joined to the corresponding show.
-     *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
-     *
-     * @return array of auditions
-     */
-    public function findCurrentOrderedByDateName()
+    public function findNotExpiredOrderedByDateName(\DateTime $date)
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:TechieAdvert');
-        $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
-            ->where('a.expiry >= CURRENT_DATE()')
+        $qb = $query_res->createQueryBuilder('a');
+        $query = $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
+            //->where('a.expiry >= :now')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.expiry, s.name, s.society')
+            ->setParameter('expiry', $date, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('time', $date, \Doctrine\DBAL\Types\Type::TIME)
             ->getQuery();
-        /* AJF58 - need to sort this by minimum startdate and enddate of performances */
         return $query->getResult();
     }
 
