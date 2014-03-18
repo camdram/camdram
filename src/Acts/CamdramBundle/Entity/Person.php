@@ -491,7 +491,15 @@ class Person implements SearchableInterface
 
     public function getNumShows()
     {
-        return $this->roles->count();
+        $counter = 0;
+	$show_id = null;
+	foreach ($this->getRoles() as $role) {
+            if ($role->getShow() && (!$show_id || $role->getShow() != $show_id)) {
+	       $counter++;
+	       $show_id = $role->getShow();
+            }   
+        }
+        return $counter;
     }
     
     public function getIndexDate()
