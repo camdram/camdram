@@ -299,7 +299,7 @@ class Person implements SearchableInterface
             }
         }
         if (!$latest) return 0;
-        else return $latest->format('U');
+        else return $latest->format('Ymd');
     }
 
     public function isIndexable()
