@@ -159,8 +159,23 @@ Camdram.autocomplete.displayResults = function(query, items) {
 
             $('<span/>').text(result.name).appendTo(link);
 
+	    if (result.entity_type == 'person') {
+		var date = new Date(result.date);
+		var shows = result.shows;
+		var string = ''
+		if (date.getFullYear()){
+		    if (Date.now() - date < 525600*60*1000) {
+			string = 'Active';
+		    } else {
+			string = 'Was Active: ' + Camdram.autocomplete.short_months[date.getMonth()] + ' ' + date.getFullYear();
+		    }
+		}
+		string = '   (' + string + ', Shows: ' + shows + ')';
+		$('<em/>').text(string).appendTo(link);
+	    }
+
             if (result.entity_type == 'show') {
-                var date = new Date(result.date * 1000);
+                var date = new Date(result.date);
                 if (date.getFullYear()) { //is it a valid date?
                     $('<em/>').text(' (' + Camdram.autocomplete.short_months[date.getMonth()] + ' ' + date.getFullYear() + ')')
                         .appendTo(link);

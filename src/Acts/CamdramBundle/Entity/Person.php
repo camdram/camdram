@@ -488,4 +488,20 @@ class Person implements SearchableInterface
     {
         return $this->externalUsers;
     }
+
+    public function getNumShows()
+    {
+        return $this->roles->count();
+    }
+    
+    public function getIndexDate()
+    {
+        $latest = null;
+        foreach ($this->getRoles() as $role) {
+            if ($role->getShow() && (!$latest || $role->getShow()->getStartAt() > $latest)) {
+                $latest = $role->getShow()->getStartAt();
+            }
+        }
+        return $latest;
+    }
 }

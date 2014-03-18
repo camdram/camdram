@@ -1566,4 +1566,8 @@ class Show implements SearchableInterface, OwnableInterface
     {
         return 'show';
     }
+
+    public function getIndexDate() {
+        return $this->start_at;
+    }
 }

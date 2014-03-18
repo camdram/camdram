@@ -70,4 +70,8 @@ class Society extends Organisation
         return $this->entity_type;
     }
 
+    public function getIndexDate()
+    {
+        return '0';
+    }
 }
