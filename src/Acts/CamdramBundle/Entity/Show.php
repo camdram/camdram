@@ -984,7 +984,7 @@ class Show implements SearchableInterface, OwnableInterface
     public function getRank()
     {
         if ($this->getStartAt()) {
-            return $this->getStartAt()->format('U');
+            return $this->getStartAt()->format('Ymd');
         } else {
             return 0;
         }

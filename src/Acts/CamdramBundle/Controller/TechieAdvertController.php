@@ -40,7 +40,7 @@ class TechieAdvertController extends FOSRestController
     public function cgetAction()
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findCurrentOrderedByDateName();
+            ->findNotExpiredOrderedByDateName(new \DateTime);
 
         $view = $this->view($techieAdverts, 200)
             ->setTemplate("ActsCamdramBundle:TechieAdvert:index.html.twig")
@@ -52,7 +52,7 @@ class TechieAdvertController extends FOSRestController
     public function getAction($identifier)
     {
         $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findOneByShowSlug($identifier);
+            ->findOneByShowSlug($identifier, new \DateTime);
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {
