@@ -53,6 +53,12 @@ If app/data/orm.db and app/data/odm.db already exist, delete them or chown them 
 Run the command below to generate a SQLite datastore which contains randomly-generated sample data
 
     php app/console camdram:database:update
+    
+Should this (or any other php commands) produce 'out of memory' errors ("allowed memory size exhausted" or similar), you can allow more memory for this command only like this:
+
+    php -d memory_limit=512M app/console camdram:database:update
+
+This is most likely to happen with database updates and calls to `composer.phar`.  Naturally you need to consider how much memory (RAM) your system has available.
 
 5) Run the web server
 ---------------------------
