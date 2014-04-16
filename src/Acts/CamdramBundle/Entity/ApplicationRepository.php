@@ -29,8 +29,10 @@ class ApplicationRepository extends EntityRepository
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Application');
         $query = $query_res->createQueryBuilder('a')
+            ->leftJoin('a.show', 's')
             ->where('a.deadlineDate <= :enddate')
             ->andWhere('a.deadlineDate >= :startdate')
+            ->andWhere('(s.authorised_by is not null AND s.entered != false) OR s.id is null')
             ->setParameters(array(
                 'startdate' => $startDate,
                 'enddate' =>  $endDate
