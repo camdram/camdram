@@ -58,6 +58,22 @@ class AuditionRepository extends EntityRepository
             ->addOrderBy('a.start_time')
             ->setMaxResults($limit);
     }
+    
+    public function getUpcomingNonScheduledQuery($limit)
+    {
+        $now = new \DateTime();
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.show', 's')
+            ->where('a.date >= :now')
+            ->andWhere('a.nonScheduled = true')
+            ->andWhere('a.show IS NOT NULL')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->setParameters(array('now' => $now))
+            ->orderBy('a.date')
+            ->addOrderBy('a.start_time')
+            ->setMaxResults($limit);
+    }
 
     public function findUpcoming($limit)
     {
@@ -72,9 +88,23 @@ class AuditionRepository extends EntityRepository
             ->getQuery()->getResult();
     }
 
+    public function findUpcomingNonScheduledBySociety(Society $society, $limit)
+    {
+        return $this->getUpcomingNonScheduledQuery($limit)
+            ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
+            ->getQuery()->getResult();
+    }
+
     public function findUpcomingByVenue(Venue $venue, $limit)
     {
         return $this->getUpcomingQuery($limit)
+            ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+            ->getQuery()->getResult();
+    }
+
+    public function findUpcomingNonScheduledByVenue(Venue $venue, $limit)
+    {
+        return $this->getUpcomingNonScheduledQuery($limit)
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }

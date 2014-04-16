@@ -65,6 +65,7 @@ class SocietyController extends OrganisationController
         $data = array(
             'society' => $society,
             'auditions' => $auditions_repo->findUpcomingBySociety($society, 10),
+            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledBySociety($society, 10),
             'techie_ads' => $techie_repo->findLatestBySociety($society, 10, new \DateTime),
             'app_ads' => $applications_repo->findLatestBySociety($society, 10),
         );
