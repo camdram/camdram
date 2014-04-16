@@ -53,13 +53,17 @@
 <div class="vacancies-panel" class="row">
     <div class="large-12">
         <h5>Get involved with <em>{{ show.name }}</em>:</h5>
-        {% if show.auditions | length > 0 %}
+        {% if show.getScheduledAuditions() | length > 0 %}
         <p>Auditions are being held at the times below - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
             <ul>
-                {% for a in show.auditions %}
+                {% for a in show.getScheduledAuditions() %}
                 <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
                 {% endfor %}
             </ul>
+	{% elseif show.getNonScheduledAuditions() | length > 0 %}
+	    {% for a in show.getNonScheduledAuditions() %}
+	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
+	    {% endfor %}
         {% endif %}
         {% if show.activeTechieAdverts | length > 0 %}
             <p>We are looking for:
