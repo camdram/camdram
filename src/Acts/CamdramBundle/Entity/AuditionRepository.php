@@ -33,11 +33,10 @@ class AuditionRepository extends EntityRepository
             ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
             ->where('a.date >= :now')
             ->andWhere('a.display = 0')
-            ->andWhere('a.nonScheduled = 0')
             ->andWhere('s.authorised_by IS NOT NULL')
             ->andWhere('s.entered = true')
             ->setParameters(array('now' => $now))
-            ->orderBy('s.name, a.date, a.start_time')
+            ->orderBy('s.name, a.date, a.start_time, a.nonScheduled')
             ->getQuery();
 
         return $query->getResult();
