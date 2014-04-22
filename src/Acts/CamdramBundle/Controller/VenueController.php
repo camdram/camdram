@@ -71,6 +71,7 @@ class VenueController extends OrganisationController
         $data = array(
             'venue' => $venue,
             'auditions' => $auditions_repo->findUpcomingByVenue($venue, 10),
+            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledByVenue($venue, 10),
             'techie_ads' => $techie_repo->findLatestByVenue($venue, 10, new \DateTime),
             'app_ads' => $applications_repo->findLatestByVenue($venue, 10),
         );
