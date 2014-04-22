@@ -60,7 +60,8 @@
                 <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
                 {% endfor %}
             </ul>
-	{% elseif show.getNonScheduledAuditions() | length > 0 %}
+	{% endif %}
+	{% if show.getNonScheduledAuditions() | length > 0 %}
 	    {% for a in show.getNonScheduledAuditions() %}
 	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
 	    {% endfor %}
