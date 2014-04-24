@@ -24,7 +24,7 @@
             {identifier: entity.slug}) }}">{{ current }}</a></h4>
         <h5>{{ a.text }}</h5>
         {% if a.furtherinfo %}
-            <p>{{ a.furtherinfo|nl2br }}</p>
+            <p>{{ a.furtherinfo|nl2br|detect_links }}</p>
         {% endif %}
         <p><strong>Deadline:</strong> {{ a.deadlinedate|date('l jS F') }}
         {% if a.deadlinetime %}

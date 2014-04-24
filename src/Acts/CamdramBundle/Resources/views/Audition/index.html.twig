@@ -24,11 +24,17 @@
                 {% set currentName = a.show.name %}
                 <hr>
                 <div id="auditions-{{ a.show.id }}">
-                <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5>
+                <h4><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a>
+                {% if a.show.society %}
+                    - <a href="{{ path('get_society', {identifier: a.show.society.slug}) }}">{{ a.show.society.shortname ?: a.show.society.name }}</a>
+                {% elseif a.show.societyname is not empty %}
+                    - {{ a.show.societyname }}
+                {% endif %}
+                </h4>
                     <p>{{ a.show.audextra | detect_links }}</p>
                     <ul>
             {% endif %}
-            <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
+            <li>{{ a.date|date('D jS M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
         {% endif %}
 
     {% else %}
@@ -38,3 +44,4 @@
     {% endspaceless %}
 
 {% endblock %}
+
