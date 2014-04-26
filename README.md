@@ -5,9 +5,7 @@ The portal website for student theatre in Cambridge
 
 [![Build Status](https://travis-ci.org/camdram/camdram.png?branch=master)](https://travis-ci.org/camdram/camdram)
 
-Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and Github. A brief overview of the software stack can be found [here](https://github.com/camdram/camdram/wiki/Software-Stack). [Github's help](http://help.github.com) is comprehensive and can be used to find more information about using Git in general. 
-
-If you encounter any problems with the instructions below, please [create a Github issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net. 
+Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. If you encounter any problems with the below, please create a Github issue or send an e-mail to websupport@camdram.net
 
 1) Install programs
 --------------------
@@ -22,19 +20,27 @@ Use one of the following commands to install the necessary packages required to 
 
     $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
-2) Get a copy of the Camdram repository
+2) Create a checkout of the Camdram repository
 ----------------------------------------------
 
-Camdram's development model follows the standard idioms used by FOSS projects hosted on Github. If you are interested in just experimenting with the codebase, clone the project from the project's homepage. If you'd like to contribute to the project than you will want to [fork the repository](https://help.github.com/articles/fork-a-repo).
+Create an account on Github, then 'fork' this repository using the link above.
 
-After obtaining a copy of the code change into the newly created 'camdram' directory before proceeding:
+To pull a copy of the code into a folder named 'camdram' run
+
+    git clone https://github.com/YOUR-GITHUB-USERNAME/camdram.git`
+
+and in order to keep track of any changes made to the main codebase run
+
+    git remote add upstream https://github.com/camdram/camdram.git
+
+Change into the newly created 'camdram' directory before proceeding:
 
     cd camdram
 
 3) Install PHP dependencies
 -------------------------------
 
-Symfony (and therefore Camdram) uses [Composer](https://getcomposer.org/) to download the PHP libraries it uses. First, install composer locally inside the Camdram source code folder:
+Symfony (and therefore Camdram) uses Composer to download the PHP libraries it uses. First, install composer locally inside the Camdram source code folder:
 
     curl -sS https://getcomposer.org/installer | php
 
@@ -87,17 +93,19 @@ You can also [read information about Camdram's suite of tests](https://github.co
 
 At a later date, once your local repository has become out of sync with Gituhb (because other people have committed code), you can run the following commands to pull in other people's changes and update your checkout:
 
-    git pull
+    git fetch upstream
+    git merge upstream/master
     php composer.phar install
     php app/console camdram:database:update
 
-This will pull in the latest code, update any changes to the dependencies and update the database. If you have forked the project then be sure that you have followed all of the instructions in the help guide, particularly noting the need to [configure remotes](https://getcomposer.org/). The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
+This will pull in the latest code, merge it with your local code, update any changes to the dependencies and update the database. The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
 
 
 8) Write some code
 --------------------
 
- * The site uses the Symfony PHP framework - (read the documentation)[http://symfony.com/doc/2.3/index.html]
+ * The site uses the Symfony PHP framework - read the documentation at 
+   http://symfony.com/doc/2.3/index.html
  * Use the Github issue tracker to get an idea what we're currently working on.
    If you think you know how to do something, write the code, commit it, and 
    submit a pull request.
