@@ -49,7 +49,6 @@ class AuditionRepository extends EntityRepository
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->setParameters(array('now' => $now))
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
             ->setMaxResults($limit);
