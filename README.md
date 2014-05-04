@@ -109,7 +109,19 @@ This will pull in the latest code, update any changes to the dependencies and up
    If this is far too daunting, a poorly styled but functional improvement is better than no improvement.
    You can use http://cs.sensiolabs.org/ to (mostly) clean your code up after writing it.
 
-9) Commit some code
+9) Check your code 
+--------------------
+
+Depending on the type of change, make sure to check it works as a logged-in and/or non-logged in visitor.
+
+You can log in to your local instance of Camdram with one of three default accounts:
+ * user1@camdram.net
+ * user2@camdram.net
+ * admin@camdram.net (this is an admin user)
+
+The password for each is just 'password'.  
+
+10) Commit some code
 ----------------------
 
  * Run `git add file1.php file2.php` for each file you wish to include in the commit
