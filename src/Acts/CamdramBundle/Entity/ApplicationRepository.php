@@ -20,8 +20,10 @@ class ApplicationRepository extends EntityRepository
         $qb->leftJoin('a.show', 's')
             ->where($qb->expr()->orX('a.deadlineDate > :current_date',
                 $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')))
-            ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered != false')
+            ->andWhere($qb->expr()->orX(
+                'a.show IS NULL',
+                $qb->expr()->andX('s.authorised_by is not null', 's.entered != false')
+            ))
             ->orderBy('a.deadlineDate','DESC')
             ->addOrderBy('a.deadlineTime','DESC')
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
@@ -41,16 +43,16 @@ class ApplicationRepository extends EntityRepository
     public function findLatestBySociety(Society $society, $limit, \DateTime $now)
     {
         $qb = $this->getLatestQuery($limit, $now);
-        $qb->leftJoin('s.society', 'y')->andWhere(
-                    $qb->expr()->orX('y = :society', 'a.society = :society')
-            )->setParameter('society', $society)
-            ->getQuery()->getResult();
+        $qb->andWhere(
+                    $qb->expr()->orX('s.society = :society', 'a.society = :society')
+            )->setParameter('society', $society);
+        return $qb->getQuery()->getResult();
     }
 
     public function findLatestByVenue(Venue $venue, $limit, \DateTime $now)
     {
         $qb = $this->getLatestQuery($limit, $now);
-        $qb->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+        return $qb->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 }
