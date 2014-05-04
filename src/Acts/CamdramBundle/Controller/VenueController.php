@@ -67,13 +67,14 @@ class VenueController extends OrganisationController
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
         $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+        $now = new \DateTime;
 
         $data = array(
             'venue' => $venue,
-            'auditions' => $auditions_repo->findUpcomingByVenue($venue, 10),
-            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledByVenue($venue, 10),
-            'techie_ads' => $techie_repo->findLatestByVenue($venue, 10, new \DateTime),
-            'app_ads' => $applications_repo->findLatestByVenue($venue, 10),
+            'auditions' => $auditions_repo->findUpcomingByVenue($venue, 10, $now),
+            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledByVenue($venue, 10, $now),
+            'techie_ads' => $techie_repo->findLatestByVenue($venue, 10, $now),
+            'app_ads' => $applications_repo->findLatestByVenue($venue, 10, $now),
         );
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')

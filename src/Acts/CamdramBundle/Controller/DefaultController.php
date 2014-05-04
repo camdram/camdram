@@ -87,11 +87,12 @@ class DefaultController extends Controller
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
         $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+        $now = new \DateTime;
 
         $response = $this->render('ActsCamdramBundle:Default:vacancies.html.twig', array(
-            'auditions' => $auditions_repo->findUpcoming(3),
-            'techie_ads' => $techie_repo->findLatest(3, new \DateTime),
-            'app_ads' => $applications_repo->findLatest(3),
+            'auditions' => $auditions_repo->findUpcoming(3, $now),
+            'techie_ads' => $techie_repo->findLatest(3, $now),
+            'app_ads' => $applications_repo->findLatest(3, $now),
         ));
         $response->setSharedMaxAge(60);
         return $response;

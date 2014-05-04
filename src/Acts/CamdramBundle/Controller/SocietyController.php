@@ -61,13 +61,14 @@ class SocietyController extends OrganisationController
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
         $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+        $now = new \DateTime;
 
         $data = array(
             'society' => $society,
-            'auditions' => $auditions_repo->findUpcomingBySociety($society, 10),
-            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledBySociety($society, 10),
-            'techie_ads' => $techie_repo->findLatestBySociety($society, 10, new \DateTime),
-            'app_ads' => $applications_repo->findLatestBySociety($society, 10),
+            'auditions' => $auditions_repo->findUpcomingBySociety($society, 10, $now),
+            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledBySociety($society, 10, $now),
+            'techie_ads' => $techie_repo->findLatestBySociety($society, 10, $now),
+            'app_ads' => $applications_repo->findLatestBySociety($society, 10, $now),
         );
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')
