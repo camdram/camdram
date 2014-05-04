@@ -12,9 +12,6 @@ use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
-
 /**
  * Feature context.
  */

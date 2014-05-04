@@ -18,11 +18,6 @@ use Behat\Behat\Context\Step;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader as DataFixturesLoader;
 use PHPUnit_Framework_ExpectationFailedException as AssertException;
 
-require_once 'PHPUnit/Autoload.php';
-require_once 'PHPUnit/Framework/Assert/Functions.php';
-
-if(function_exists('xdebug_disable')) { xdebug_disable(); }
-
 /**
  * Feature context.
  */
