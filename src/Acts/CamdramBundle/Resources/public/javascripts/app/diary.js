@@ -59,8 +59,8 @@ Camdram.diary.prototype.get_last_date = function() {
 Camdram.diary.prototype.insert_content = function(html, cb) {
     var self = this;
 
-    var new_start_at = new Date(html.filter('.diary-week').first().attr('data-start') + ' 00:00');
-    var start_at = new Date(self.$diary.children().last().attr('data-start') + ' 00:00');
+    var new_start_at = new Date(html.filter('.diary-week').first().attr('data-start') + 'T00:00');
+    var start_at = new Date(self.$diary.children().last().attr('data-start') + 'T00:00');
 
     if (new_start_at >= start_at) {
         self.$diary.append(html);
@@ -245,5 +245,5 @@ $(function() {
         diary.goto_today();
     })
 
-
 })
+
