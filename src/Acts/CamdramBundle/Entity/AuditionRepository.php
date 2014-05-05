@@ -25,79 +25,93 @@ class AuditionRepository extends EntityRepository
      *
      * @return array of auditions
      */
-    public function findCurrentOrderedByNameDate()
+    public function findCurrentOrderedByNameDate(\DateTime $now)
     {
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
-        $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
-            ->where('a.date >= CURRENT_DATE()')
+        $qb = $query_res->createQueryBuilder('a');
+        $qb->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
+            ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
             ->andWhere('a.display = 0')
             ->andWhere('s.authorised_by IS NOT NULL')
             ->andWhere('s.entered = true')
             ->orderBy('s.name, a.date, a.start_time, a.nonScheduled')
+            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->getQuery();
 
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
-    private function getUpcomingQuery($limit)
+    private function getUpcomingQuery($limit, \DateTime $now)
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('a.date >= CURRENT_DATE()')
+        $qb = $this->createQueryBuilder('a');
+
+        $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
             ->andWhere('a.nonScheduled = false')
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = true')
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
+            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->setMaxResults($limit);
+
+        return $qb;
     }
     
-    public function getUpcomingNonScheduledQuery($limit)
+    public function getUpcomingNonScheduledQuery($limit, \DateTime $now)
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('a.date >= CURRENT_DATE()')
+        $qb = $this->createQueryBuilder('a');
+        $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
             ->andWhere('a.nonScheduled = true')
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = true')
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
+            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->setMaxResults($limit);
+        return $qb;
     }
 
-    public function findUpcoming($limit)
+    public function findUpcoming($limit, \DateTime $now)
     {
-        return $this->getUpcomingQuery($limit)->getQuery()->getResult();
+        return $this->getUpcomingQuery($limit, $now)->getQuery()->getResult();
     }
 
-
-    public function findUpcomingBySociety(Society $society, $limit)
+    public function findUpcomingNonScheduled($limit, \DateTime $now)
     {
-        return $this->getUpcomingQuery($limit)
+        return $this->getUpcomingNonScheduledQuery($limit, $now)->getQuery()->getResult();
+    }
+
+    public function findUpcomingBySociety(Society $society, $limit, \DateTime $now)
+    {
+        return $this->getUpcomingQuery($limit, $now)
             ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
             ->getQuery()->getResult();
     }
 
-    public function findUpcomingNonScheduledBySociety(Society $society, $limit)
+    public function findUpcomingNonScheduledBySociety(Society $society, $limit, \DateTime $now)
     {
-        return $this->getUpcomingNonScheduledQuery($limit)
+        return $this->getUpcomingNonScheduledQuery($limit, $now)
             ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
             ->getQuery()->getResult();
     }
 
-    public function findUpcomingByVenue(Venue $venue, $limit)
+    public function findUpcomingByVenue(Venue $venue, $limit, \DateTime $now)
     {
-        return $this->getUpcomingQuery($limit)
+        return $this->getUpcomingQuery($limit, $now)
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 
-    public function findUpcomingNonScheduledByVenue(Venue $venue, $limit)
+    public function findUpcomingNonScheduledByVenue(Venue $venue, $limit, \DateTime $now)
     {
-        return $this->getUpcomingNonScheduledQuery($limit)
+        return $this->getUpcomingNonScheduledQuery($limit, $now)
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
