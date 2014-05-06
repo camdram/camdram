@@ -118,7 +118,7 @@ class News
      */
     public function setRemoteId($remoteId)
     {
-        $this->remote_id = $remoteId;
+        $this->remote_id = (string) $remoteId;
 
         return $this;
     }
@@ -412,6 +412,14 @@ class News
     public function getPicture()
     {
         return $this->picture;
+    }
+
+    public function getLink()
+    {
+        switch ($this->getSource()) {
+            case 'facebook' : return 'http://www.facebook.com/'.$this->getRemoteId(); break;
+            case 'twitter' : return 'http://www.twitter.com/redirect/status/'.$this->getRemoteId(); break;
+        }
     }
 
 }
