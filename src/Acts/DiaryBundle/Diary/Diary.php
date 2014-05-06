@@ -87,4 +87,24 @@ class Diary
         $view->addLabels($this->labels);
         return $view;
     }
+
+    /**
+     * Returns the diary's start date
+     *
+     * @return \DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * Returns the diary's end date
+     *
+     * @return \DateTime
+     */
+    public function getEndDate()
+    {
+        return $this->end_date;
+    }
 }

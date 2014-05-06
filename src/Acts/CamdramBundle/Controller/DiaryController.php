@@ -37,19 +37,19 @@ class DiaryController extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function toolbarAction()
+    public function toolbarAction($start_date = null)
     {
-        $now = $this->get('acts.time_service')->getCurrentTime();
-        $current_year = $now->format('Y');
+        if (!$start_date) $start_date = $this->get('acts.time_service')->getCurrentTime();
+        $current_year = $start_date->format('Y');
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $start_date = $repo->getFirstShowDate();
-        $end_date = $repo->getLastShowDate();
-        $years = range($start_date->format('Y'), $end_date->format('Y'));
+        $first_date = $repo->getFirstShowDate();
+        $last_date = $repo->getLastShowDate();
+        $years = range($first_date->format('Y'), $last_date->format('Y'));
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $periods = $repo->findByYearBefore($current_year, $end_date);
-        $current_period = $repo->findAt($now);
+        $periods = $repo->findByYearBefore($current_year, $last_date);
+        $current_period = $repo->findAt($start_date);
 
 
         return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(

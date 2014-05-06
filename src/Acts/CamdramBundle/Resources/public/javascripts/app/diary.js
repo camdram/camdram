@@ -5,7 +5,6 @@ Camdram.diary_date_format = 'YYYY-MM-DD';
 Camdram.diary_server = {};
 Camdram.diary_server.queue = [];
 Camdram.diary_server.get_content = function(url, cb) {
-    console.log(url);
     Camdram.diary_server.queue.push({
         url: url,
         callback: cb
@@ -85,23 +84,30 @@ Camdram.diary.prototype.load_from_state = function(state) {
     var self = this;
     if (state.year && state.period) {
         self.is_loading = true;
-        Camdram.diary_server.get_content_by_period(state.year, state.period, state.end, function(data) {
-            self.replace_content(data);
-            self.is_loading = false;
+        self.$diary.empty();
+        var end = state.end ? moment(state.end+ ' 00:00') : null;
+        Camdram.diary_server.get_content_by_period(state.year, state.period, end, function(data) {
+            self.insert_content(data, function() {
+                self.is_loading = false;
+            });
         })
     }
     else if (state.start && state.end) {
         self.is_loading = true;
-        Camdram.diary_server.get_content_by_dates(state.start, state.end, function(data) {
-            self.replace_content(data);
-            self.is_loading = false;
+        self.$diary.empty();
+        Camdram.diary_server.get_content_by_dates(moment(state.start+ ' 00:00'), moment(state.end+ ' 00:00'), function(data) {
+            self.insert_content(data, function() {
+                self.is_loading = false;
+            });
         })
     }
     else {
         self.is_loading = true;
+        self.$diary.empty();
         Camdram.diary_server.get_content_for_today(function(data) {
-            self.replace_content(data);
-            self.is_loading = false;
+            self.insert_content(data, function() {
+                self.is_loading = false;
+            });
         })
     }
 }
@@ -114,7 +120,7 @@ Camdram.diary.prototype.goto_today = function() {
             self.is_loading = false;
         });
     })
-    this.change_state({}, true);
+    this.change_state({}, false);
 }
 Camdram.diary.prototype.goto_period = function(year, period) {
     var self = this;
@@ -124,7 +130,7 @@ Camdram.diary.prototype.goto_period = function(year, period) {
         self.insert_content(data);
         self.is_loading = false;
     })
-    this.change_state({year: year, period: period}, true);
+    this.change_state({year: year, period: period}, false);
 }
 Camdram.diary.prototype.load_previous_weeks = function(num_weeks) {
     var self = this;
@@ -140,7 +146,7 @@ Camdram.diary.prototype.load_previous_weeks = function(num_weeks) {
     this.change_state({
         start: start.format(Camdram.diary_date_format),
         end: this.get_last_date().format(Camdram.diary_date_format)
-    }, false);
+    }, true);
 }
 Camdram.diary.prototype.load_next_weeks = function(num_weeks) {
     var self = this;
@@ -154,7 +160,7 @@ Camdram.diary.prototype.load_next_weeks = function(num_weeks) {
     })
     var state = this.state;
     state.end = end.format(Camdram.diary_date_format);
-    this.change_state(state);
+    this.change_state(state, true);
 }
 
 Camdram.diary_selector = function(diary) {
@@ -220,6 +226,10 @@ $(function() {
             }
         }
     }
+    history.replaceState(
+        {start: diary.get_first_date().format(Camdram.diary_date_format)},
+        document.title, document.location
+    );
 
     $(window).bind('popstate', function(e) {
         var data = e.originalEvent.state;
@@ -228,7 +238,7 @@ $(function() {
 
     $(window).endlessScroll({
         callback: function() {
-            if (!$('#diary').is(':empty')) {
+            if (!$('#diary').is(':empty') && !$('.diary-week').is(':animated')) {
                 diary.load_next_weeks(6);
             }
         }

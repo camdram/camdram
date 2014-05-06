@@ -7,7 +7,7 @@
 
 <h3>Diary</h3>
 
-{{ render(controller('ActsCamdramBundle:Diary:toolbar')) }}
+{{ render(controller('ActsCamdramBundle:Diary:toolbar', {start_date: diary.startDate})) }}
 
 <div id="diary">
     {{ render_diary(diary) }}
