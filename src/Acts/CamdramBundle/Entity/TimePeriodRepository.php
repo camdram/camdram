@@ -36,6 +36,20 @@ class TimePeriodRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findStartsIn(\DateTime $start, \DateTime $end)
+    {
+
+        $qb = $this->createQueryBuilder('p');
+
+        $query = $qb
+            ->where($qb->expr()->andX('p.start_at < :end', 'p.start_at >= :start'))
+            ->setParameter('start', $start)->setParameter('end', $end)
+            ->addOrderBy('p.start_at', 'ASC')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     public function findIntersecting(\DateTime $start, \DateTime $end)
     {
 
@@ -57,7 +71,7 @@ class TimePeriodRepository extends EntityRepository
         $year = (int)$year;
         $start = new \DateTime($year.'-01-01');
         $end = new \DateTime(($year+1).'-01-01');
-        return $this->findIntersecting($start, $end);
+        return $this->findStartsIn($start, $end);
     }
 
     public function findByYearBefore($year, \DateTime $before)
@@ -68,7 +82,7 @@ class TimePeriodRepository extends EntityRepository
 
         if ($before < $end) $end = $before;
 
-        return $this->findIntersecting($start, $end);
+        return $this->findStartsIn($start, $end);
     }
 
     public function getBySlugAndYear($slug, $year)
