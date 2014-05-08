@@ -322,7 +322,7 @@ class ShowController extends AbstractRestController
     public function editAdminAction($identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $ace = new PendingAccess();
         $ace->setRid($show->getId());
