@@ -72,7 +72,7 @@ class NewsMention
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -88,14 +88,14 @@ class NewsMention
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -111,14 +111,14 @@ class NewsMention
     public function setRemoteId($remoteId)
     {
         $this->remote_id = $remoteId;
-    
+
         return $this;
     }
 
     /**
      * Get remote_id
      *
-     * @return string 
+     * @return string
      */
     public function getRemoteId()
     {
@@ -134,14 +134,14 @@ class NewsMention
     public function setService($service)
     {
         $this->service = $service;
-    
+
         return $this;
     }
 
     /**
      * Get service
      *
-     * @return string 
+     * @return string
      */
     public function getService()
     {
@@ -157,14 +157,14 @@ class NewsMention
     public function setOffset($offset)
     {
         $this->offset = $offset;
-    
+
         return $this;
     }
 
     /**
      * Get offset
      *
-     * @return integer 
+     * @return integer
      */
     public function getOffset()
     {
@@ -180,14 +180,14 @@ class NewsMention
     public function setLength($length)
     {
         $this->length = $length;
-    
+
         return $this;
     }
 
     /**
      * Get length
      *
-     * @return integer 
+     * @return integer
      */
     public function getLength()
     {
@@ -203,14 +203,14 @@ class NewsMention
     public function setNews(\Acts\CamdramBundle\Entity\News $news = null)
     {
         $this->news = $news;
-    
+
         return $this;
     }
 
     /**
      * Get news
      *
-     * @return \Acts\CamdramBundle\Entity\News 
+     * @return \Acts\CamdramBundle\Entity\News
      */
     public function getNews()
     {
@@ -226,7 +226,7 @@ class NewsMention
     public function setEntity(\Acts\CamdramBundle\Entity\Organisation $entity = null)
     {
         $this->entity = $entity;
-    
+
         return $this;
     }
 

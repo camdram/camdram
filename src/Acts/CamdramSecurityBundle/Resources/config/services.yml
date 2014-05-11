@@ -68,6 +68,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
 
+    camdram.security.listener.access_control_entry:
+        class: Acts\CamdramSecurityBundle\EventListener\AccessControlEntryListener
+        arguments: [@camdram.security.email_dispatcher]
+        tags:
+            - { name: doctrine.entity_listener }
+
     camdram.security.listener.pending_access:
         class: Acts\CamdramSecurityBundle\EventListener\PendingAccessListener
         arguments: [@camdram.security.email_dispatcher]
@@ -122,4 +128,3 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter
         tags:
             - { name: security.voter }
-

@@ -40,4 +40,3 @@ class Page extends ContentTrait implements RouteReferrersReadInterface, NodeInte
             'labelAttributes' => array(),
         );
     }}
-

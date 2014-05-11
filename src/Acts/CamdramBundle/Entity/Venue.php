@@ -58,14 +58,14 @@ class Venue extends Organisation
     public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
-    
+
         return $this;
     }
 
     /**
      * Get latitude
      *
-     * @return float 
+     * @return float
      */
     public function getLatitude()
     {
@@ -81,14 +81,14 @@ class Venue extends Organisation
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
-    
+
         return $this;
     }
 
     /**
      * Get longitude
      *
-     * @return float 
+     * @return float
      */
     public function getLongitude()
     {
@@ -102,7 +102,7 @@ class Venue extends Organisation
     {
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add shows
      *
@@ -112,7 +112,7 @@ class Venue extends Organisation
     public function addShow(\Acts\CamdramBundle\Entity\Show $shows)
     {
         $this->shows[] = $shows;
-    
+
         return $this;
     }
 
@@ -129,7 +129,7 @@ class Venue extends Organisation
     /**
      * Get shows
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getShows()
     {
@@ -145,14 +145,14 @@ class Venue extends Organisation
     public function setAddress($address)
     {
         $this->address = $address;
-    
+
         return $this;
     }
 
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {

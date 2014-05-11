@@ -13,4 +13,4 @@ class SingleDayEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1 February 2014', $event->getDate()->format('j F Y'));
     }
 
-} 
+}

@@ -48,4 +48,3 @@ class SigninsheetController extends Controller
         return $response;
     }
 }
-

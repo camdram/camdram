@@ -20,8 +20,7 @@ class ViewVoter implements VoterInterface
                 if ($object->getAuthorisedBy() !== null) {
                     return self::ACCESS_GRANTED;
                 }
-            }
-            else {
+            } else {
                 return self::ACCESS_GRANTED;
             }
         }

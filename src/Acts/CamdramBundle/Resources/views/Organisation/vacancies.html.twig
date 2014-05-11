@@ -7,6 +7,10 @@
             - <a href="{{ path('get_auditions') }}#auditions-{{ audition.show.id }}">more details</a>
         </li>
     {% endfor %}
+    {% for audition in nonscheduled_auditions %}
+	<li><a href="{{path('get_show', {identifier: audition.show.slug}) }}">{{audition.show.name }}</a> is holding auditions, contact {{audition.location}} - <a href="{{ path('get_auditions') }}#auditions-{{ audition.show.id }}">more details</a>
+        </li>
+    {% endfor %}
     {% for ad in techie_ads %}
         <li><a href="{{ path('get_show', {identifier: ad.show.slug}) }}">{{ ad.show.name }}</a> is looking for:
             {{ ad.getPositionsOneLine() }}

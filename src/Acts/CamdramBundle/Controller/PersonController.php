@@ -40,6 +40,12 @@ class PersonController extends AbstractRestController
         return $this->createForm(new PersonType(), $person);
     }
 
+    public function removeAction($identifier)
+    {
+	parent::removeAction($identifier);
+	return $this->routeRedirectView('acts_camdram_homepage');
+    }
+
     /**
      * * @Rest\Get("/people/{identifier}/link")
      */

@@ -127,3 +127,27 @@ services:
     acts.camdram.week_manager:
         class: Acts\CamdramBundle\Service\WeekManager
         arguments: [@doctrine.orm.entity_manager]
+
+    gedmo.listener.sluggable:
+        class: Gedmo\Sluggable\SluggableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+
+    acts.camdram.phpcr.initializer:
+        class: Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer
+        arguments: [ ["/cms/pages", "/cms/routes"], ]
+        tags:
+            - { name: doctrine_phpcr.initializer }
+
+    acts.camdram.menu_provider:
+        class: Symfony\Cmf\Bundle\MenuBundle\Provider\PhpcrMenuProvider
+        arguments:
+            - '@cmf_menu.factory'
+            - '@doctrine_phpcr'
+            - /cms/pages
+        tags:
+            - { name: knp_menu.provider }
+            - { name: cmf_request_aware }
+

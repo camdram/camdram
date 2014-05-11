@@ -28,7 +28,8 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
 
     private $from_address = 'from-address@camdram.net';
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->mailer = $this->getMockBuilder('\Swift_Mailer')
             ->disableOriginalConstructor()->disableOriginalClone()->getMock();
         $this->twig = $this->getMockBuilder('\Twig_Environment')
@@ -37,7 +38,8 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->emailDispatcher = new EmailDispatcher($this->mailer, $this->twig, $this->from_address);
     }
 
-    public function testSendShowCreatedEmail() {
+    public function testSendShowCreatedEmail()
+    {
         $show = new Show();
         $owners = array('owner1', 'owner2');
 

@@ -18,4 +18,4 @@ class MultiDayEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('7 February 2014', $event->getEndDate()->format('j F Y'));
     }
 
-} 
+}

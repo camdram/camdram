@@ -10,7 +10,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * ApiShow - used as wrapper to Show to make XML work nicely
- * 
+ *
  * @XmlRoot("show")
  */
 class ApiShow
@@ -25,7 +25,7 @@ class ApiShow
      */
     private $router;
 
-    public function  __construct($show, $router)
+    public function __construct($show, $router)
     {
         $this->show = $show;
         $this->router  = $router;
@@ -101,7 +101,7 @@ class ApiShow
     {
         return $this->show->getFacebookUrl();
     }
-   
+
     /**
      * @VirtualProperty
      * @XmlElement(cdata=false)
@@ -117,12 +117,11 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-   
+
     public function getPerformances()
     {
-        $callback = function($value)
-        {
-            return new ApiPerformance($value, $this->controller);         
+        $callback = function ($value) {
+            return new ApiPerformance($value, $this->controller);
         };
         return array_map($callback, $this->show->getAllPerformances());
     }
@@ -132,7 +131,7 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-   
+
     public function getCast()
     {
         return $this->wrapRoles('cast');
@@ -143,7 +142,7 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-   
+
     public function getOrchestra()
     {
         return $this->wrapRoles('band');
@@ -154,7 +153,7 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-   
+
     public function getProd()
     {
         return $this->wrapRoles('prod');
@@ -163,11 +162,10 @@ class ApiShow
 
     private function wrapRoles($type)
     {
-        $callback = function($value)
-        {
+        $callback = function ($value) {
             return new ApiRole($value, $this->show, $this->router);
         };
         return array_map($callback, $this->show->getRolesByType($type)->toArray(false));
     }
-    
+
 }

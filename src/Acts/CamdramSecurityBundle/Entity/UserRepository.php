@@ -42,7 +42,6 @@ class UserRepository extends EntityRepository
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
             ->andWhere('e.entity_id >= :level')
-            ->andWhere('e.granted_by IS NOT NULL')
             ->andWhere('e.revoked_by IS NULL')
             ->setParameter('level', $min_level)
             ->setParameter('type', 'security')
@@ -54,8 +53,7 @@ class UserRepository extends EntityRepository
     {
         if ($entity instanceof Show) {
             $type = 'show';
-        }
-        elseif ($entity instanceof Organisation) {
+        } elseif ($entity instanceof Organisation) {
             $type = 'society';
         }
         elseif ($entity instanceof EmailBuilder) {
@@ -68,7 +66,6 @@ class UserRepository extends EntityRepository
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
             ->andWhere('e.entity_id = :id')
-            ->andWhere('e.granted_by IS NOT NULL')
             ->andWhere('e.revoked_by IS NULL')
             ->setParameter('id', $entity->getId())
             ->setParameter('type', $type)

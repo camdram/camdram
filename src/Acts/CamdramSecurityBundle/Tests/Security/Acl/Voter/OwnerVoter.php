@@ -7,7 +7,7 @@ use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\OwnerVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class OwnerVoterTest extends \PHPUnit_Framework_TestCase
+class OwnerVoter extends \PHPUnit_Framework_TestCase
 {
 
     /**

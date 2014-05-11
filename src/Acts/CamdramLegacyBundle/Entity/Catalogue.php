@@ -39,7 +39,7 @@ class Catalogue
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,14 +55,14 @@ class Catalogue
     public function setStoreId($storeId)
     {
         $this->store_id = $storeId;
-    
+
         return $this;
     }
 
     /**
      * Get store_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getStoreId()
     {
@@ -78,14 +78,14 @@ class Catalogue
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {

@@ -189,7 +189,7 @@ class Page
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -199,7 +199,7 @@ class Page
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -209,7 +209,7 @@ class Page
     /**
      * Get parent_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getParentId()
     {
@@ -219,7 +219,7 @@ class Page
     /**
      * Get sort_code
      *
-     * @return integer 
+     * @return integer
      */
     public function getSortCode()
     {
@@ -229,7 +229,7 @@ class Page
     /**
      * Get full_title
      *
-     * @return string 
+     * @return string
      */
     public function getFullTitle()
     {
@@ -239,7 +239,7 @@ class Page
     /**
      * Get secure
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSecure()
     {
@@ -249,7 +249,7 @@ class Page
     /**
      * Get micro
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getMicro()
     {
@@ -259,7 +259,7 @@ class Page
     /**
      * Get help
      *
-     * @return string 
+     * @return string
      */
     public function getHelp()
     {
@@ -269,7 +269,7 @@ class Page
     /**
      * Get ghost
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getGhost()
     {
@@ -279,7 +279,7 @@ class Page
     /**
      * Get mode
      *
-     * @return string 
+     * @return string
      */
     public function getMode()
     {
@@ -289,7 +289,7 @@ class Page
     /**
      * Get allow_sub_page
      *
-     * @return integer 
+     * @return integer
      */
     public function getAllowSubPage()
     {
@@ -299,7 +299,7 @@ class Page
     /**
      * Get inter_title
      *
-     * @return string 
+     * @return string
      */
     public function getInterTitle()
     {
@@ -309,7 +309,7 @@ class Page
     /**
      * Get knowledge_base
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getKnowledgeBase()
     {
@@ -319,7 +319,7 @@ class Page
     /**
      * Get get_vars
      *
-     * @return string 
+     * @return string
      */
     public function getGetVars()
     {
@@ -329,7 +329,7 @@ class Page
     /**
      * Get post_vars
      *
-     * @return string 
+     * @return string
      */
     public function getPostVars()
     {
@@ -339,7 +339,7 @@ class Page
     /**
      * Get use_page
      *
-     * @return string 
+     * @return string
      */
     public function getUsePage()
     {
@@ -349,7 +349,7 @@ class Page
     /**
      * Get kb_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getKbId()
     {
@@ -359,7 +359,7 @@ class Page
     /**
      * Get rss_feeds
      *
-     * @return string 
+     * @return string
      */
     public function getRssFeeds()
     {
@@ -369,7 +369,7 @@ class Page
     /**
      * Get locked
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getLocked()
     {
@@ -379,7 +379,7 @@ class Page
     /**
      * Get virtual
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getVirtual()
     {
@@ -389,7 +389,7 @@ class Page
     /**
      * Get param_parser
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getParamParser()
     {
@@ -399,7 +399,7 @@ class Page
     /**
      * Get access_php
      *
-     * @return string 
+     * @return string
      */
     public function getAccessPhp()
     {
@@ -409,7 +409,7 @@ class Page
     /**
      * Get subpage_template
      *
-     * @return string 
+     * @return string
      */
     public function getSubpageTemplate()
     {
@@ -419,7 +419,7 @@ class Page
     /**
      * Get searchable
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSearchable()
     {
@@ -435,7 +435,7 @@ class Page
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
@@ -448,7 +448,7 @@ class Page
     public function setParentId($parentId)
     {
         $this->parent_id = $parentId;
-    
+
         return $this;
     }
 
@@ -461,7 +461,7 @@ class Page
     public function setSortCode($sortCode)
     {
         $this->sort_code = $sortCode;
-    
+
         return $this;
     }
 
@@ -474,7 +474,7 @@ class Page
     public function setFullTitle($fullTitle)
     {
         $this->full_title = $fullTitle;
-    
+
         return $this;
     }
 
@@ -487,7 +487,7 @@ class Page
     public function setSecure($secure)
     {
         $this->secure = $secure;
-    
+
         return $this;
     }
 
@@ -500,7 +500,7 @@ class Page
     public function setMicro($micro)
     {
         $this->micro = $micro;
-    
+
         return $this;
     }
 
@@ -513,7 +513,7 @@ class Page
     public function setHelp($help)
     {
         $this->help = $help;
-    
+
         return $this;
     }
 
@@ -526,7 +526,7 @@ class Page
     public function setGhost($ghost)
     {
         $this->ghost = $ghost;
-    
+
         return $this;
     }
 
@@ -539,7 +539,7 @@ class Page
     public function setMode($mode)
     {
         $this->mode = $mode;
-    
+
         return $this;
     }
 
@@ -552,7 +552,7 @@ class Page
     public function setAllowSubPage($allowSubPage)
     {
         $this->allow_sub_page = $allowSubPage;
-    
+
         return $this;
     }
 
@@ -565,7 +565,7 @@ class Page
     public function setInterTitle($interTitle)
     {
         $this->inter_title = $interTitle;
-    
+
         return $this;
     }
 
@@ -578,7 +578,7 @@ class Page
     public function setKnowledgeBase($knowledgeBase)
     {
         $this->knowledge_base = $knowledgeBase;
-    
+
         return $this;
     }
 
@@ -591,7 +591,7 @@ class Page
     public function setGetVars($getVars)
     {
         $this->get_vars = $getVars;
-    
+
         return $this;
     }
 
@@ -604,7 +604,7 @@ class Page
     public function setPostVars($postVars)
     {
         $this->post_vars = $postVars;
-    
+
         return $this;
     }
 
@@ -617,7 +617,7 @@ class Page
     public function setUsePage($usePage)
     {
         $this->use_page = $usePage;
-    
+
         return $this;
     }
 
@@ -630,7 +630,7 @@ class Page
     public function setKbId($kbId)
     {
         $this->kb_id = $kbId;
-    
+
         return $this;
     }
 
@@ -643,7 +643,7 @@ class Page
     public function setRssFeeds($rssFeeds)
     {
         $this->rss_feeds = $rssFeeds;
-    
+
         return $this;
     }
 
@@ -656,7 +656,7 @@ class Page
     public function setLocked($locked)
     {
         $this->locked = $locked;
-    
+
         return $this;
     }
 
@@ -669,7 +669,7 @@ class Page
     public function setVirtual($virtual)
     {
         $this->virtual = $virtual;
-    
+
         return $this;
     }
 
@@ -682,7 +682,7 @@ class Page
     public function setParamParser($paramParser)
     {
         $this->param_parser = $paramParser;
-    
+
         return $this;
     }
 
@@ -695,7 +695,7 @@ class Page
     public function setAccessPhp($accessPhp)
     {
         $this->access_php = $accessPhp;
-    
+
         return $this;
     }
 
@@ -708,7 +708,7 @@ class Page
     public function setSubpageTemplate($subpageTemplate)
     {
         $this->subpage_template = $subpageTemplate;
-    
+
         return $this;
     }
 
@@ -721,7 +721,7 @@ class Page
     public function setSearchable($searchable)
     {
         $this->searchable = $searchable;
-    
+
         return $this;
     }
 }

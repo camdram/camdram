@@ -80,7 +80,7 @@ class TimePeriod
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -96,14 +96,14 @@ class TimePeriod
     public function setShortName($shortName)
     {
         $this->short_name = $shortName;
-    
+
         return $this;
     }
 
     /**
      * Get short_name
      *
-     * @return string 
+     * @return string
      */
     public function getShortName()
     {
@@ -119,14 +119,14 @@ class TimePeriod
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -142,14 +142,14 @@ class TimePeriod
     public function setStartAt($startAt)
     {
         $this->start_at = $startAt;
-    
+
         return $this;
     }
 
     /**
      * Get start_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartAt()
     {
@@ -165,14 +165,14 @@ class TimePeriod
     public function setEndAt($endAt)
     {
         $this->end_at = $endAt;
-    
+
         return $this;
     }
 
     /**
      * Get end_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEndAt()
     {
@@ -222,14 +222,14 @@ class TimePeriod
     public function setFullName($fullName)
     {
         $this->full_name = $fullName;
-    
+
         return $this;
     }
 
     /**
      * Get full_name
      *
-     * @return string 
+     * @return string
      */
     public function getFullName()
     {
@@ -245,14 +245,14 @@ class TimePeriod
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -268,7 +268,7 @@ class TimePeriod
     public function addWeekName(\Acts\CamdramBundle\Entity\WeekName $weekNames)
     {
         $this->week_names[] = $weekNames;
-    
+
         return $this;
     }
 
@@ -285,7 +285,7 @@ class TimePeriod
     /**
      * Get week_names
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getWeekNames()
     {

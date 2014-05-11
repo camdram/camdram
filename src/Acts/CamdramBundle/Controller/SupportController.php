@@ -1,22 +1,22 @@
 <?php
- 
+
 namespace Acts\CamdramBundle\Controller;
- 
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Post;
 
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Criteria;
- 
+
 use Acts\CamdramBundle\Form\Type\SupportType;
 use Acts\CamdramBundle\Entity\Support;
 
 /**
- * Controller for accessing support tickets created by emails to 
+ * Controller for accessing support tickets created by emails to
  * websupport@camdram.net. Information about how emails result in entries in
- * the database can be found at 
- * https://github.com/camdram/camdram/wiki/Inbound-Email 
+ * the database can be found at
+ * https://github.com/camdram/camdram/wiki/Inbound-Email
  *
  * @RouteResource("Issue")
  */
@@ -75,7 +75,7 @@ class SupportController extends AbstractRestController
     public function cgetAction(Request $request)
     {
         $this->checkAuthorised();
-        
+
         $request = $this->getRequest();
         if ($request->query->has('action') && $request->query->has('id')) {
             $issue = $this->getEntity($request->query->get('id'));
@@ -91,8 +91,8 @@ class SupportController extends AbstractRestController
         $others = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')
                       ->getOtherUsersIssues($this->getUser());
 
-        $view = $this->view(array('my_issues' => $mine, 
-                                  'unassigned_issues' => $unassigned, 
+        $view = $this->view(array('my_issues' => $mine,
+                                  'unassigned_issues' => $unassigned,
                                   'other_peoples_issues' => $others),  200)
                   ->setTemplate("ActsCamdramBundle:Support:index.html.twig")
                   ->setTemplateVar('issues')
@@ -128,8 +128,7 @@ class SupportController extends AbstractRestController
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
                     $message->addTo($val->mailbox . "@" . $val->host, $val->personal);
-                }
-                else {
+                } else {
                     $message->addTo($val->mailbox . "@" . $val->host);
                 }
             }
@@ -137,8 +136,7 @@ class SupportController extends AbstractRestController
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
                     $message->addCc($val->mailbox . "@" . $val->host, $val->personal);
-                }
-                else {
+                } else {
                     $message->addCc($val->mailbox . "@" . $val->host);
                 }
             }
@@ -146,8 +144,7 @@ class SupportController extends AbstractRestController
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
                     $message->addBcc($val->mailbox . "@" . $val->host, $val->personal);
-                }
-                else {
+                } else {
                     $message->addBcc($val->mailbox . "@" . $val->host);
                 }
             }
@@ -179,14 +176,14 @@ class SupportController extends AbstractRestController
             'action' => $this->generateUrl('post_issue_reply', array('identifier' => $identifier))));
 
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
-        $view = $this->view(array('issue' => $issue, 
+        $view = $this->view(array('issue' => $issue,
                                   'form' => $form->createView()), 200)
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
         ;
 
         return $view;
     }
-    
+
     /**
      * Handle the data in the request object.
      */
@@ -195,8 +192,7 @@ class SupportController extends AbstractRestController
         $action = $this->getRequest()->query->get('action');
         if ($issue->getOwner() != null && $issue->getOwner()->getId() == $this->getUser()->getId()) {
             $user_is_owner =  true;
-        }
-        else {
+        } else {
             $user_is_owner = false;
         }
         // Assign or reassign an issue.
@@ -205,18 +201,17 @@ class SupportController extends AbstractRestController
             $issue->setState('assigned');
         }
         // Issue owners may reject issues that are assigned to them.
-        else if (($action == 'rejectassign') && 
-                ($issue->getState() == 'assigned') && 
+        else if (($action == 'rejectassign') &&
+                ($issue->getState() == 'assigned') &&
                 ($user_is_owner == true)) {
             $issue->setOwner(null);
             $issue->setState('unassigned');
         }
-        // Admins may delete unassigned issues. Owners may resolve them. 
-        else if ((($action == 'delete') && ($issue->getState() == 'unassigned')) || 
+        // Admins may delete unassigned issues. Owners may resolve them.
+        else if ((($action == 'delete') && ($issue->getState() == 'unassigned')) ||
                 (($action == 'resolve') && ($issue->getState() == 'assigned') && ($user_is_owner == true))) {
             $issue->setState('closed');
-        }
-        else if ($action == 'reopen') {
+        } elseif ($action == 'reopen') {
             $issue->setOwner(null);
             $issue->setState('unassigned');
         }
@@ -225,4 +220,3 @@ class SupportController extends AbstractRestController
         $em->flush();
     }
 }
-

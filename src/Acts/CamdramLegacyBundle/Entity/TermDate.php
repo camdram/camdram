@@ -81,7 +81,7 @@ class TermDate
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -97,14 +97,14 @@ class TermDate
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -120,14 +120,14 @@ class TermDate
     public function setFriendlyName($friendlyName)
     {
         $this->friendly_name = $friendlyName;
-    
+
         return $this;
     }
 
     /**
      * Get friendly_name
      *
-     * @return string 
+     * @return string
      */
     public function getFriendlyName()
     {
@@ -143,14 +143,14 @@ class TermDate
     public function setStartDate($startDate)
     {
         $this->start_date = $startDate;
-    
+
         return $this;
     }
 
     /**
      * Get start_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartDate()
     {
@@ -166,14 +166,14 @@ class TermDate
     public function setEndDate($endDate)
     {
         $this->end_date = $endDate;
-    
+
         return $this;
     }
 
     /**
      * Get end_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEndDate()
     {
@@ -189,14 +189,14 @@ class TermDate
     public function setFirstWeek($firstWeek)
     {
         $this->first_week = $firstWeek;
-    
+
         return $this;
     }
 
     /**
      * Get first_week
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getFirstWeek()
     {
@@ -212,14 +212,14 @@ class TermDate
     public function setLastWeek($lastWeek)
     {
         $this->last_week = $lastWeek;
-    
+
         return $this;
     }
 
     /**
      * Get last_week
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getLastWeek()
     {
@@ -235,14 +235,14 @@ class TermDate
     public function setDisplayWeek($displayWeek)
     {
         $this->display_week = $displayWeek;
-    
+
         return $this;
     }
 
     /**
      * Get display_week
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDisplayWeek()
     {
@@ -258,14 +258,14 @@ class TermDate
     public function setVacation($vacation)
     {
         $this->vacation = $vacation;
-    
+
         return $this;
     }
 
     /**
      * Get vacation
      *
-     * @return string 
+     * @return string
      */
     public function getVacation()
     {

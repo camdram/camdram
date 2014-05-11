@@ -1,11 +1,11 @@
 {% extends '::base.html.twig' %}
 {% if current_navigation_id is not defined %}{% set current_navigation_id = '' %}{% endif %}
 {% block main %}
-<div id="wrapper">
   <nav id="header-bar">
       <section>
       <ul class="left hide-for-small">
           {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
+              'about': {'text': 'About', 'path': path('acts_camdram_about')},
               'development': {'text': 'Development', 'path': path('acts_camdram_development')},
               'api': {'text': 'API', 'path': path('acts_camdram_api_homepage')},
               'contact-us': {'text': 'Contact Us', 'path': path('acts_camdram_contact_us')},
@@ -70,7 +70,7 @@
                     'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
                     'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
                   }} %}
-                  {% if has_role('ROLE_EDITOR') %}
+                  {% if app.user and has_role('ROLE_EDITOR') %}
                   {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with { items: {
                     'add_venue': {text: 'Add a venue', path: path('new_venue'), icon: 'plus-circle'},
                     'add_society': {text: 'Add a society', path: path('new_society'), icon: 'plus-circle'}
@@ -85,7 +85,6 @@
 {% block body %}
 {% endblock %}
   </section>
-</div>
 {% endblock %}
 
 {% block footer %}
@@ -107,6 +106,7 @@
         </div>
         <div class="large-4 columns">
             <h5>About</h5>
+            <a href="{{ path('acts_camdram_about') }}">About Camdram</a><br/>
             <a href="{{ path('acts_camdram_development') }}">Development</a><br/>
             <a href="{{ path('acts_camdram_privacy') }}">Privacy policy</a><br/>
             <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a><br/>
@@ -114,4 +114,3 @@
     </div>
 
 {% endblock %}
-

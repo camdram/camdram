@@ -58,7 +58,7 @@ class PerformanceRepository extends EntityRepository
             $end_at = $p->getEndDate();
             if ($start_at < $start) $start_at = $start;
             if ($end_at > $end) $end_at = $max_end;
-            
+
             $count += $end_at->diff($start_at)->d + 1;
             if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0
                 && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) $count--;

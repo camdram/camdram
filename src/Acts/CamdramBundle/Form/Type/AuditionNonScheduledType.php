@@ -20,7 +20,7 @@ class AuditionNonScheduledType extends AbstractType
             ->add('location', 'text', array('label' => 'Contact details'))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="acts_access")
  * @ORM\Entity(repositoryClass="AccessControlEntryRepository")
+ * @ORM\EntityListeners({"\Acts\CamdramSecurityBundle\EventListener\AccessControlEntryListener"})
  */
 class AccessControlEntry
 {
@@ -101,7 +102,7 @@ class AccessControlEntry
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -117,14 +118,14 @@ class AccessControlEntry
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -140,14 +141,14 @@ class AccessControlEntry
     public function setGrantedAt($grantedAt)
     {
         $this->granted_at = $grantedAt;
-    
+
         return $this;
     }
 
     /**
      * Get granted_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getGrantedAt()
     {
@@ -163,14 +164,14 @@ class AccessControlEntry
     public function setRevokedAt($revokedAt)
     {
         $this->revoked_at = $revokedAt;
-    
+
         return $this;
     }
 
     /**
      * Get revoked_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getRevokedAt()
     {
@@ -186,7 +187,7 @@ class AccessControlEntry
     public function setUser(User $user)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
@@ -209,7 +210,7 @@ class AccessControlEntry
     public function setGrantedBy(User $grantedBy = null)
     {
         $this->granted_by = $grantedBy;
-    
+
         return $this;
     }
 
@@ -232,14 +233,14 @@ class AccessControlEntry
     public function setRevokedBy(User $revoker = null)
     {
         $this->revoked_by = $revoker;
-    
+
         return $this;
     }
 
     /**
      * Get revoker
      *
-     * @return User 
+     * @return User
      */
     public function getRevokedBy()
     {
@@ -262,7 +263,7 @@ class AccessControlEntry
     /**
      * Get user_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getUserId()
     {
@@ -278,14 +279,14 @@ class AccessControlEntry
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return integer 
+     * @return integer
      */
     public function getType()
     {
@@ -301,14 +302,14 @@ class AccessControlEntry
     public function setEntityId($entityId)
     {
         $this->entity_id = $entityId;
-    
+
         return $this;
     }
 
     /**
      * Get entity_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getEntityId()
     {
@@ -324,14 +325,14 @@ class AccessControlEntry
     public function setContact($contact)
     {
         $this->contact = $contact;
-    
+
         return $this;
     }
 
     /**
      * Get contact
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getContact()
     {

@@ -5,8 +5,8 @@ namespace Acts\CamdramApiBundle\Annotation;
 /**
 * @Annotation
 */
-class Feed {
-
+class Feed
+{
     private $name;
 
     private $description;
@@ -60,4 +60,4 @@ class Feed {
         return $this->updatedAtField;
     }
 
-} 
+}

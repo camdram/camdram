@@ -64,7 +64,7 @@ class ContentTrait
     {
         $this->slug = $slug;
     }
-    
+
     public function getTitle()
     {
         return $this->title;
@@ -90,4 +90,3 @@ class ContentTrait
         return $this->routes;
     }
 }
-

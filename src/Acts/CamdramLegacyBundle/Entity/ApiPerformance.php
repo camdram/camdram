@@ -10,7 +10,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * ApiPerformance - used as wrapper to the output of Show->getAllPerformances() to to make XML work nicely
- * 
+ *
  * @XmlRoot("item")
  */
 class ApiPerformance
@@ -20,10 +20,10 @@ class ApiPerformance
      */
     private $performance;
 
-    public function  __construct($performance, $controller)
+    public function __construct($performance, $controller)
     {
-	$this->performance = $performance;
-	$this->controller  = $controller;
+    $this->performance = $performance;
+    $this->controller  = $controller;
     }
 
     /**
@@ -35,7 +35,7 @@ class ApiPerformance
     {
         return $this->performance['venue'];
     }
-    
+
 
     /**
      * @VirtualProperty

@@ -20,7 +20,7 @@ class ContactUsType extends AbstractType
             ->add('message', 'textarea')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

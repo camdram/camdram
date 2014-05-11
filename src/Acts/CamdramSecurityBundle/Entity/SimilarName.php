@@ -52,7 +52,7 @@ class SimilarName
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,14 +68,14 @@ class SimilarName
     public function setName1($name1)
     {
         $this->name1 = $name1;
-    
+
         return $this;
     }
 
     /**
      * Get name1
      *
-     * @return string 
+     * @return string
      */
     public function getName1()
     {
@@ -91,14 +91,14 @@ class SimilarName
     public function setName2($name2)
     {
         $this->name2 = $name2;
-    
+
         return $this;
     }
 
     /**
      * Get name2
      *
-     * @return string 
+     * @return string
      */
     public function getName2()
     {
@@ -114,14 +114,14 @@ class SimilarName
     public function setEquivalence($equivalence)
     {
         $this->equivalence = $equivalence;
-    
+
         return $this;
     }
 
     /**
      * Get equivalence
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEquivalence()
     {

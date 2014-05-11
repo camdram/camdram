@@ -28,7 +28,7 @@ class CamdramFormTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['label_attr']['class'] = 'right inline';
-        //var_dump($view);
+
         if (!$view->vars['valid']) {
             $view->vars['attr']['class'] = 'error';
             $view->vars['label_attr']['class'] .= ' error';

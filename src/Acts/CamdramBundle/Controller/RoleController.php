@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace Acts\CamdramBundle\Controller;
- 
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Patch;
@@ -30,7 +30,6 @@ class RoleController extends FOSRestController
         $repo = $em->getRepository('ActsCamdramBundle:Role');
         $role_ids = $request->request->get('role');
         $i = 0;
-        $j = 0;
         foreach ($role_ids as $id) {
             $role = $repo->findOneById($id);
             $can_reorder = $this->get('camdram.security.acl.helper')->isGranted('EDIT', $role->getShow());
@@ -46,4 +45,3 @@ class RoleController extends FOSRestController
         return $response;
     }
 }
-

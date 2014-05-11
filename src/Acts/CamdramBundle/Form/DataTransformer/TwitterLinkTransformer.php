@@ -34,7 +34,8 @@ class TwitterLinkTransformer implements DataTransformerInterface
      * @return mixed|null
      * @throws \Symfony\Component\Form\Exception\TransformationFailedException
      */
-    public function transform($value) {
+    public function transform($value)
+    {
         if (empty($value)) return NULL;
 
         try {
@@ -43,13 +44,11 @@ class TwitterLinkTransformer implements DataTransformerInterface
             $data = $this->api->doGetById($value);
             if (isset($data['error'])) {
                 throw new TransformationFailedException(sprintf('%s is an invalid Twitter id', $value));
-            }
-            else {
+            } else {
 
                 return $data['username'];
             }
-        }
-        catch (\Acts\SocialApiBundle\Exception\SocialApiException $e) {
+        } catch (\Acts\SocialApiBundle\Exception\SocialApiException $e) {
             //Just return the id, which is valid but less user-friendly
             return $value;
         }
@@ -62,7 +61,8 @@ class TwitterLinkTransformer implements DataTransformerInterface
      * @return mixed|null
      * @throws \Symfony\Component\Form\Exception\TransformationFailedException
      */
-    public function reverseTransform($value) {
+    public function reverseTransform($value)
+    {
         if (empty($value)) return NULL;
 
         if (preg_match('/^(?:https?\:\\/\\/)?www\.twitter\.com\\/([^\?]+)(?:\?.*)?$/i', $value, $matches)) {
@@ -75,12 +75,10 @@ class TwitterLinkTransformer implements DataTransformerInterface
             $data = $this->api->doGetByUsername($value);
             if (isset($data['error'])) {
                 throw new TransformationFailedException(sprintf('%s is an invalid Twitter id', $value));
-            }
-            else {
+            } else {
                 return $data['id'];
             }
-        }
-        catch (\Acts\SocialApiBundle\Exception\SocialApiException $e) {
+        } catch (\Acts\SocialApiBundle\Exception\SocialApiException $e) {
             throw new TransformationFailedException("We cannot accept Twitter accounts at this time - we can't communicate with Twitter");
         }
     }

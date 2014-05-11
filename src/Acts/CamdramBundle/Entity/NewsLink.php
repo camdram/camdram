@@ -72,7 +72,7 @@ class NewsLink
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -88,14 +88,14 @@ class NewsLink
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -111,14 +111,14 @@ class NewsLink
     public function setLink($link)
     {
         $this->link = $link;
-    
+
         return $this;
     }
 
     /**
      * Get link
      *
-     * @return string 
+     * @return string
      */
     public function getLink()
     {
@@ -134,14 +134,14 @@ class NewsLink
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -157,14 +157,14 @@ class NewsLink
     public function setPicture($picture)
     {
         $this->picture = $picture;
-    
+
         return $this;
     }
 
     /**
      * Get picture
      *
-     * @return string 
+     * @return string
      */
     public function getPicture()
     {
@@ -180,14 +180,14 @@ class NewsLink
     public function setNews(\Acts\CamdramBundle\Entity\News $news = null)
     {
         $this->news = $news;
-    
+
         return $this;
     }
 
     /**
      * Get news
      *
-     * @return \Acts\CamdramBundle\Entity\News 
+     * @return \Acts\CamdramBundle\Entity\News
      */
     public function getNews()
     {
@@ -203,14 +203,14 @@ class NewsLink
     public function setSource($source)
     {
         $this->source = $source;
-    
+
         return $this;
     }
 
     /**
      * Get source
      *
-     * @return string 
+     * @return string
      */
     public function getSource()
     {
@@ -226,14 +226,14 @@ class NewsLink
     public function setMediaType($mediaType)
     {
         $this->media_type = $mediaType;
-    
+
         return $this;
     }
 
     /**
      * Get media_type
      *
-     * @return string 
+     * @return string
      */
     public function getMediaType()
     {

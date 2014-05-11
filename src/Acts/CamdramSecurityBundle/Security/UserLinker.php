@@ -22,15 +22,12 @@ class UserLinker
     {
         if ($token1 instanceof UsernamePasswordToken) {
             return $token1;
-        }
-        elseif ($token2 instanceof UsernamePasswordToken) {
+        } elseif ($token2 instanceof UsernamePasswordToken) {
             return $token2;
-        }
-        elseif ($token1 instanceof ExternalLoginToken && $token2 instanceof ExternalLoginToken) {
+        } elseif ($token1 instanceof ExternalLoginToken && $token2 instanceof ExternalLoginToken) {
             if ($token1->getUser()->getUser()) {
                 return $token1;
-            }
-            elseif ($token2->getUser()->getUser()) {
+            } elseif ($token2->getUser()->getUser()) {
                 return $token2;
             }
         }
@@ -42,16 +39,14 @@ class UserLinker
         if ($token1 instanceof ExternalLoginToken && $token2 instanceof ExternalLoginToken) {
             if (!$token1->getUser()->getUser()) {
                 return $token1;
-            }
-            elseif (!$token2->getUser()->getUser()) {
+            } elseif (!$token2->getUser()->getUser()) {
                 return $token2;
             }
         }
 
         if ($token1 instanceof ExternalLoginToken) {
             return $token1;
-        }
-        elseif ($token2 instanceof ExternalLoginToken) {
+        } elseif ($token2 instanceof ExternalLoginToken) {
             return $token2;
         }
 
@@ -63,8 +58,7 @@ class UserLinker
         if ($user1 instanceof ExternalUser && $user2 instanceof ExternalUser) {
             if ($user1->getUser()) {
                 $user1 = $user1->getUser();
-            }
-            elseif ($user2->getUser()) {
+            } elseif ($user2->getUser()) {
                 $user2 = $user2->getUser();
             }
         }
@@ -72,8 +66,7 @@ class UserLinker
         if ($user1 instanceof ExternalUser && $user2 instanceof User) {
             $camdram_user = $user2;
             $external_user = $user1;
-        }
-        elseif ($user1 instanceof User && $user2 instanceof ExternalUser) {
+        } elseif ($user1 instanceof User && $user2 instanceof ExternalUser) {
             $camdram_user = $user1;
             $external_user = $user2;
         }
@@ -83,7 +76,6 @@ class UserLinker
             $camdram_user->addExternalUser($external_user);
             $this->entityManager->flush();
             return true;
-        }
-        else return false;
+        } else return false;
     }
 }

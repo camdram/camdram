@@ -71,8 +71,7 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
 
         if ($service == 'facebook') {
             $user->setProfilePictureUrl('https://graph.facebook.com/'.$userinfo['id'].'/picture?type=large');
-        }
-        elseif (isset($userinfo['picture'])) {
+        } elseif (isset($userinfo['picture'])) {
             $user->setProfilePictureUrl($userinfo['picture']);
         }
 

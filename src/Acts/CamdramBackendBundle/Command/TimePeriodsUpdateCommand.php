@@ -89,8 +89,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
             $em->persist($p);
             $em->flush();
             $output->writeln('<info>Created time period '.$long.'</info>');
-        }
-        else {
+        } else {
             $p = current($result);
             $output->writeln('Time period '.$name. ' already exists');
         }
@@ -129,8 +128,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
             $em->persist($w);
             $em->flush();
             $output->writeln('<info>Created week '.$name.'</info>');
-        }
-        else {
+        } else {
             $output->writeln('Week '.$name. ' already exists');
         }
     }

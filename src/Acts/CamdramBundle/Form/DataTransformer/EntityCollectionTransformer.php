@@ -31,18 +31,19 @@ class EntityCollectionTransformer implements DataTransformerInterface
         $this->repository_name = $repository_name;
     }
 
-    public function transform($value) {
+    public function transform($value)
+    {
         if ($value instanceof Collection) {
             $ids = array();
             foreach ($value as $item) {
                 $ids[] = array('id' => $item->getId(), 'name' => $item->getName());
             }
             return $ids;
-        }
-        else return $value;
+        } else return $value;
     }
 
-    public function reverseTransform($value) {
+    public function reverseTransform($value)
+    {
         if (is_array($value)) {
             $entities = new ArrayCollection;
             $repo = $this->em->getRepository($this->repository_name);

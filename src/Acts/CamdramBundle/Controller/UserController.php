@@ -69,8 +69,7 @@ class UserController extends AbstractRestController
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
             $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), array());
-        }
-        else {
+        } else {
             $repo = $this->getRepository();
             $qb = $repo->createQueryBuilder('e');
             $adapter = new DoctrineORMAdapter($qb);
@@ -102,8 +101,7 @@ class UserController extends AbstractRestController
             $data = $form->getData();
             $this->get('camdram.security.acl.provider')->grantAccess($data['entity'], $user, $this->getUser());
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($user));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('user')
                 ->setTemplate('ActsCamdramBundle:User:ace-new.html.twig');

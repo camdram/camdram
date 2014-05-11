@@ -21,7 +21,7 @@ class AuditionType extends AbstractType
             ->add('location')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

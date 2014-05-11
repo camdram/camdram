@@ -14,74 +14,66 @@ use Doctrine\ORM\Query\Expr;
  * repository methods below.
  */
 class TechieAdvertRepository extends EntityRepository
-{    
-    /**
-     * findCurrentOrderedByDateName
-     *
-     * Find all auditions between two dates that should be shown on the
-     * diary page, joined to the corresponding show.
-     *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
-     *
-     * @return array of auditions
-     */
-    public function findCurrentOrderedByDateName()
+{
+    public function findNotExpiredOrderedByDateName(\DateTime $date)
     {
         $now = new \DateTime();
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:TechieAdvert');
-        $query = $query_res->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->addSelect('s')
-            ->where('a.expiry >= :now')
-            ->setParameter('now', $now)
+        $qb = $query_res->createQueryBuilder('a');
+        $query = $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.expiry, s.name, s.society')
+            ->setParameter('expiry', $date, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('time', $date, \Doctrine\DBAL\Types\Type::TIME)
             ->getQuery();
-        /* AJF58 - need to sort this by minimum startdate and enddate of performances */
         return $query->getResult();
     }
 
-    private function getLatestQuery($limit) {
-        $now = new \DateTime();
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('a.expiry >= :now')
-            ->setParameter('now', $now)
+    private function getLatestQuery($limit, \DateTime $now)
+    {
+        $qb = $this->createQueryBuilder('a');
+        return $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.last_updated')
+            ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->setMaxResults($limit);
     }
 
-    public function findLatest($limit)
+    public function findLatest($limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit)->getQuery()->getResult();
+        return $this->getLatestQuery($limit, $now)->getQuery()->getResult();
     }
 
-    public function findLatestBySociety(Society $society, $limit)
+    public function findLatestBySociety(Society $society, $limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit)
+        return $this->getLatestQuery($limit, $now)
             ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
             ->getQuery()->getResult();
     }
 
-    public function findLatestByVenue(Venue $venue, $limit)
+    public function findLatestByVenue(Venue $venue, $limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit)
+        return $this->getLatestQuery($limit, $now)
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 
-    public function findOneByShowSlug($slug)
+    public function findOneByShowSlug($slug, \DateTime $now)
     {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('s.slug = :slug')
+        $qb = $this->createQueryBuilder('a');
+        return $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
+            ->andWhere('s.slug = :slug')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->setParameter('slug', $slug)
+            ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->getQuery()->getOneOrNullResult();
             ;
     }

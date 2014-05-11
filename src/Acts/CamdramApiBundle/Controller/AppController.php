@@ -80,8 +80,7 @@ class AppController extends FOSRestController
             $clientManager = $this->get('fos_oauth_server.client_manager.default');
             $clientManager->updateClient($app);
             return $this->redirect($this->generateUrl('get_apps'));
-        }
-        else {
+        } else {
             return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
                 'form' => $this->getForm()->createView()
             ));
@@ -97,8 +96,7 @@ class AppController extends FOSRestController
         if ($form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
-        }
-        else {
+        } else {
             return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
                     'form' => $this->getForm()->createView()
                 ));

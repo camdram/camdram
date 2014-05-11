@@ -30,6 +30,8 @@
 
         {% if show.society %}
             <p class="show-society"><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
+        {% elseif show.societyname is not empty %}
+            <p class="show-society">{{ show.societyname }}</a> presents...</p>
         {% endif %}
         <h2>{{ show.name }}{% if show.author %}<br/><small> By {{ show.author }}</small>{% endif %}</h2>
 
@@ -53,13 +55,18 @@
 <div class="vacancies-panel" class="row">
     <div class="large-12">
         <h5>Get involved with <em>{{ show.name }}</em>:</h5>
-        {% if show.auditions | length > 0 %}
+        {% if show.getScheduledAuditions() | length > 0 %}
         <p>Auditions are being held at the times below - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
             <ul>
-                {% for a in show.auditions %}
+                {% for a in show.getScheduledAuditions() %}
                 <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
                 {% endfor %}
             </ul>
+	{% endif %}
+	{% if show.getNonScheduledAuditions() | length > 0 %}
+	    {% for a in show.getNonScheduledAuditions() %}
+	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
+	    {% endfor %}
         {% endif %}
         {% if show.activeTechieAdvert is not null %}
             <p>We are looking for:
@@ -110,6 +117,13 @@
         <p>If you're involved in the show you may want to use our
         <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug }) }}">sign in sheet</a>.
         You can also download a version in <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug, '_format': 'csv' }) }}">CSV format</a>.</p>
+        {% if app.user %}
+            {% if not is_granted('EDIT', show) %}
+                <p>If you'd like to change the information about this show, you can <a href="{{ path('request_show_admin', { identifier: show.slug }) }}">request to be an admin</a>.</p>
+            {% endif %}
+        {% else %}
+            <p>Log in to be able to request to be an admin for this show.</p>
+        {% endif %}
     </div>
 </div>
 
@@ -129,4 +143,3 @@
 </script>
 {% endif %}
 {% endblock %}
-

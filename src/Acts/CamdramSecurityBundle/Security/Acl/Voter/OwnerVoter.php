@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -34,7 +35,7 @@ class OwnerVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if ($attributes == array('EDIT') || $attributes == array('VIEW')) {
+        if ($object instanceof OwnableInterface && ($attributes == array('EDIT') || $attributes == array('VIEW'))) {
             if ($this->aclProvider->isOwner($token, $object)) {
                 return self::ACCESS_GRANTED;
             }
@@ -52,6 +53,7 @@ class OwnerVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return strpos($class, 'Acts\\CamdramBundle\\Entity') !== false;
+        $reflection = new \ReflectionClass($class);
+        return $reflection->implements('\\Acts\\CamdramSecurityBundle\\Security\\OwnableInterface');
     }
 }

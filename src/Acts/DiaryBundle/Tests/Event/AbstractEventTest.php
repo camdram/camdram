@@ -22,4 +22,4 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.testvenue.com/', $event->getVenueLink());
     }
 
-} 
+}

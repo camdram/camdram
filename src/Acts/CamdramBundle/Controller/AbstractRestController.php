@@ -132,8 +132,7 @@ abstract class AbstractRestController extends FOSRestController
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:'.$this->getController().':new.html.twig');
@@ -171,8 +170,7 @@ abstract class AbstractRestController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
-        }
-        else {
+        } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
@@ -215,12 +213,10 @@ abstract class AbstractRestController extends FOSRestController
             //matched instead of whole words. Used by the global search bar.
             if ($request->query->has('autocomplete')) {
                 $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), $filters);
-            }
-            else {
+            } else {
                 $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'), $filters);
             }
-        }
-        else {
+        } else {
             $repo = $this->getRepository();
             $qb = $repo->selectAll()->getQuery();
             $adapter = new DoctrineORMAdapter($qb);

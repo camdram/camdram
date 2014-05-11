@@ -45,7 +45,7 @@
             {% endif %}
             <h4>Unassigned issues</h4>
             {% if unassigned_issues is not empty %}
-                {{ issues.table(unassigned_issues, { 'assign' : 'Assign', 
+                {{ issues.table(unassigned_issues, { 'assign' : 'Assign',
                     'delete' : 'Delete (Resolve)' }) }}
             {% else %}
                 <p>No unresolved issues are currently unassigned.</p>

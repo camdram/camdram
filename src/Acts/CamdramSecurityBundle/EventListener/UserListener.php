@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManager,
     Doctrine\ORM\Event\LifecycleEventArgs,
     Doctrine\ORM\Event\PreUpdateEventArgs;
 
-class UserListener 
+class UserListener
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -28,7 +28,7 @@ class UserListener
     }
 
     /**
-     * Delete any pending access tokens given to this user, and grant access to 
+     * Delete any pending access tokens given to this user, and grant access to
      * those resources in turn.
      */
     public function postPersist(User $user, LifecycleEventArgs $event)
@@ -58,4 +58,3 @@ class UserListener
         }
     }
 }
-

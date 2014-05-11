@@ -1,5 +1,5 @@
 {%- if (ace.type == 'show') or (ace.type == 'society') -%}
-    You have been granted {{ is_pending ? 'pending' }} access to edit '{{ entity.name }}' on Camdram. 
+    You have been granted {{ is_pending ? 'pending' }} access to edit '{{ entity.name }}' on Camdram.
     {%- if ace.type == 'show' -%}
         This will allow you to change the show description people see when visiting the site, and to add other information such as production team/cast lists and production team adverts.
     {%- elseif ace.type == 'society' -%}
@@ -22,4 +22,3 @@ To make use of this, you must create an account at at http://www.camdram.net.
 {% endif %}
 
 {% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
-

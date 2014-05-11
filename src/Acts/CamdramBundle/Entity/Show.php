@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramBundle\Search\SearchableInterface;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +20,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener" })
  * @Serializer\ExclusionPolicy("all")
  */
-class Show implements SearchableInterface
+class Show implements SearchableInterface, OwnableInterface
 {
     /**
      * @var integer
@@ -314,14 +315,14 @@ class Show implements SearchableInterface
     public function setDates($dates)
     {
         $this->dates = $dates;
-    
+
         return $this;
     }
 
     /**
      * Get dates
      *
-     * @return string 
+     * @return string
      */
     public function getDates()
     {
@@ -337,14 +338,14 @@ class Show implements SearchableInterface
     public function setAuthor($author)
     {
         $this->author = $author;
-    
+
         return $this;
     }
 
     /**
      * Get author
      *
-     * @return string 
+     * @return string
      */
     public function getAuthor()
     {
@@ -360,14 +361,14 @@ class Show implements SearchableInterface
     public function setPrices($prices)
     {
         $this->prices = $prices;
-    
+
         return $this;
     }
 
     /**
      * Get prices
      *
-     * @return string 
+     * @return string
      */
     public function getPrices()
     {
@@ -383,14 +384,14 @@ class Show implements SearchableInterface
     public function setPhotoUrl($photoUrl)
     {
         $this->photo_url = $photoUrl;
-    
+
         return $this;
     }
 
     /**
      * Get photo_url
      *
-     * @return string 
+     * @return string
      */
     public function getPhotoUrl()
     {
@@ -408,21 +409,20 @@ class Show implements SearchableInterface
     public function setVenueName($venueName)
     {
         $this->venue_name = $venueName;
-    
+
         return $this;
     }
 
     /**
      * Get venue_name
      *
-     * @return string 
+     * @return string
      */
     public function getVenueName()
     {
         if ($this->venue_name) {
             return $this->venue_name;
-        }
-        elseif ($this->venue) {
+        } elseif ($this->venue) {
             return $this->venue->getName();
         }
     }
@@ -436,14 +436,14 @@ class Show implements SearchableInterface
     public function setExcludeDate($excludeDate)
     {
         $this->exclude_date = $excludeDate;
-    
+
         return $this;
     }
 
     /**
      * Get exclude_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExcludeDate()
     {
@@ -459,14 +459,14 @@ class Show implements SearchableInterface
     public function setSocietyName($societyName)
     {
         $this->society_name = $societyName;
-    
+
         return $this;
     }
 
     /**
      * Get society_name
      *
-     * @return string 
+     * @return string
      */
     public function getSocietyName()
     {
@@ -482,14 +482,14 @@ class Show implements SearchableInterface
     public function setTechSend($techSend)
     {
         $this->tech_send = $techSend;
-    
+
         return $this;
     }
 
     /**
      * Get tech_send
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getTechSend()
     {
@@ -505,14 +505,14 @@ class Show implements SearchableInterface
     public function setActorSend($actorSend)
     {
         $this->actor_send = $actorSend;
-    
+
         return $this;
     }
 
     /**
      * Get actor_send
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActorSend()
     {
@@ -535,7 +535,7 @@ class Show implements SearchableInterface
     /**
      * Get audextra
      *
-     * @return string 
+     * @return string
      */
     public function getAudextra()
     {
@@ -551,14 +551,14 @@ class Show implements SearchableInterface
     public function setEntered($entered)
     {
         $this->entered = $entered;
-    
+
         return $this;
     }
 
     /**
      * Get entered
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEntered()
     {
@@ -574,14 +574,14 @@ class Show implements SearchableInterface
     public function setEntryExpiry($entryExpiry)
     {
         $this->entry_expiry = $entryExpiry;
-    
+
         return $this;
     }
 
     /**
      * Get entry_expiry
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEntryExpiry()
     {
@@ -597,14 +597,14 @@ class Show implements SearchableInterface
     public function setCategory($category)
     {
         $this->category = $category;
-    
+
         return $this;
     }
 
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -620,14 +620,14 @@ class Show implements SearchableInterface
     public function setBookingCode($bookingCode)
     {
         $this->booking_code = $bookingCode;
-    
+
         return $this;
     }
 
     /**
      * Get booking_code - for Doctrine compatibility only
      *
-     * @return string 
+     * @return string
      */
     public function getBookingCode()
     {
@@ -648,14 +648,14 @@ class Show implements SearchableInterface
     public function setPrimaryRef($primaryRef)
     {
         $this->primary_ref = $primaryRef;
-    
+
         return $this;
     }
 
     /**
      * Get primary_ref
      *
-     * @return integer 
+     * @return integer
      */
     public function getPrimaryRef()
     {
@@ -671,14 +671,14 @@ class Show implements SearchableInterface
     public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
-    
+
         return $this;
     }
 
     /**
      * Get timestamp
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getTimestamp()
     {
@@ -694,14 +694,14 @@ class Show implements SearchableInterface
     public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
     {
         $this->venue = $venue;
-    
+
         return $this;
     }
 
     /**
      * Get venue
      *
-     * @return \Acts\CamdramBundle\Entity\Venue 
+     * @return \Acts\CamdramBundle\Entity\Venue
      */
     public function getVenue()
     {
@@ -717,7 +717,7 @@ class Show implements SearchableInterface
     public function addRole(\Acts\CamdramBundle\Entity\Role $roles)
     {
         $this->roles[] = $roles;
-    
+
         return $this;
     }
 
@@ -734,7 +734,7 @@ class Show implements SearchableInterface
     /**
      * Get roles
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRoles()
     {
@@ -764,14 +764,14 @@ class Show implements SearchableInterface
     public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
     {
         $this->society = $society;
-    
+
         return $this;
     }
 
     /**
      * Get society
      *
-     * @return \Acts\CamdramBundle\Entity\Society 
+     * @return \Acts\CamdramBundle\Entity\Society
      */
     public function getSociety()
     {
@@ -787,7 +787,7 @@ class Show implements SearchableInterface
     public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performances)
     {
         $this->performances[] = $performances;
-    
+
         return $this;
     }
 
@@ -804,7 +804,7 @@ class Show implements SearchableInterface
     /**
      * Get performances
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPerformances()
     {
@@ -835,14 +835,14 @@ class Show implements SearchableInterface
     public function setStartAt($startAt)
     {
         $this->start_at = $startAt;
-    
+
         return $this;
     }
 
     /**
      * Get start_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartAt()
     {
@@ -858,14 +858,14 @@ class Show implements SearchableInterface
     public function setEndAt($endAt)
     {
         $this->end_at = $endAt;
-    
+
         return $this;
     }
 
     /**
      * Get end_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEndAt()
     {
@@ -879,8 +879,7 @@ class Show implements SearchableInterface
             if ($performance->getExcludeDate()) {
                 if ($performance->getStartDate() > $performance->getExcludeDate() || $performance->getEndDate() < $performance->getExcludeDate()) {
                     $performance->setExcludeDate(null);
-                }
-                else {
+                } else {
                     $p2 = clone $performance;
                     $start = clone $p2->getExcludeDate();
                     $start->add(new \DateInterval('P1D'));
@@ -910,8 +909,7 @@ class Show implements SearchableInterface
             else $cur_venue = $performance->getVenueName();
             if ($venue == null) {
                 $venue = $cur_venue;
-            }
-            else if ($venue != $cur_venue) {
+            } elseif ($venue != $cur_venue) {
                 $same = false;
                 break;
             }
@@ -956,8 +954,7 @@ class Show implements SearchableInterface
                     if (count($venue_counts) > 0) {
                         $venue_id = array_search(max($venue_counts), $venue_counts);
                         $this->setVenue($venues[$venue_id]);
-                    }
-                    else {
+                    } else {
                         $venue_name = array_search(max($name_counts), $name_counts);
                         $this->setVenueName($venue_name);
                     }
@@ -987,9 +984,8 @@ class Show implements SearchableInterface
     public function getRank()
     {
         if ($this->getStartAt()) {
-            return $this->getStartAt()->format('U');
-        }
-        else {
+            return $this->getStartAt()->format('Ymd');
+        } else {
             return 0;
         }
 
@@ -1012,7 +1008,7 @@ class Show implements SearchableInterface
     /**
      * Get freebase_id
      *
-     * @return string 
+     * @return string
      */
     public function getFreebaseId()
     {
@@ -1071,7 +1067,7 @@ class Show implements SearchableInterface
     public function addAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
     {
         $this->auditions[] = $auditions;
-    
+
         return $this;
     }
 
@@ -1091,8 +1087,7 @@ class Show implements SearchableInterface
             $audition->setShow($this);
             if (!$audition->getId()) {
                 $this->addAudition($audition);
-            }
-            else {
+            } else {
                 foreach ($this->auditions as $k => $a) {
                     if ($a->getId() == $audition->getId()) {
                         $this->auditions[$k] = $audition;
@@ -1106,7 +1101,7 @@ class Show implements SearchableInterface
     /**
      * Get auditions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAuditions()
     {
@@ -1243,7 +1238,7 @@ class Show implements SearchableInterface
     public function setAuthorisedBy(User $authorisedBy = null)
     {
         $this->authorised_by = $authorisedBy;
-    
+
         return $this;
     }
 
@@ -1266,7 +1261,7 @@ class Show implements SearchableInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -1282,14 +1277,14 @@ class Show implements SearchableInterface
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -1305,14 +1300,14 @@ class Show implements SearchableInterface
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -1353,14 +1348,14 @@ class Show implements SearchableInterface
     public function setFacebookId($facebookId)
     {
         $this->facebook_id = $facebookId;
-    
+
         return $this;
     }
 
     /**
      * Get facebook_id
      *
-     * @return string 
+     * @return string
      */
     public function getFacebookId()
     {
@@ -1376,14 +1371,14 @@ class Show implements SearchableInterface
     public function setTwitterId($twitterId)
     {
         $this->twitter_id = $twitterId;
-    
+
         return $this;
     }
 
     /**
      * Get twitter_id
      *
-     * @return string 
+     * @return string
      */
     public function getTwitterId()
     {
@@ -1399,14 +1394,14 @@ class Show implements SearchableInterface
     public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
     {
         $this->image = $image;
-    
+
         return $this;
     }
 
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image 
+     * @return \Hoyes\ImageManagerBundle\Entity\Image
      */
     public function getImage()
     {
@@ -1422,14 +1417,14 @@ class Show implements SearchableInterface
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -1445,7 +1440,7 @@ class Show implements SearchableInterface
     public function setFacebookUrl($facebookUrl)
     {
         $this->facebook_url = $facebookUrl;
-    
+
         return $this;
     }
 
@@ -1468,14 +1463,14 @@ class Show implements SearchableInterface
     public function setOtherUrl($otherUrl)
     {
         $this->other_url = $otherUrl;
-    
+
         return $this;
     }
 
     /**
      * Get other_url
      *
-     * @return string 
+     * @return string
      */
     public function getOtherUrl()
     {
@@ -1491,14 +1486,14 @@ class Show implements SearchableInterface
     public function setOnlineBookingUrl($onlineBookingUrl)
     {
         $this->online_booking_url = $onlineBookingUrl;
-    
+
         return $this;
     }
 
     /**
      * Get online_booking_url
      *
-     * @return string 
+     * @return string
      */
     public function getOnlineBookingUrl()
     {
@@ -1555,7 +1550,7 @@ class Show implements SearchableInterface
     Returns an array of performances, in ascending date order, with the following fields set:
         date     => Performance Date
         time     => Performance Time
-	datetime => Performance date and time
+    datetime => Performance date and time
         venue    => Venue (string)
 
     date, time and datetime are descended from php DateTime objects
@@ -1575,8 +1570,7 @@ class Show implements SearchableInterface
             $time = $performance->getTime();
             if ($performance->getVenue() != null) {
                 $venue = $performance->getVenue()->getName();
-            }
-            else {
+            } else {
                 $venue = $performance->getVenueName();
             }
             while($current_day <= $end_day) {
@@ -1607,8 +1601,8 @@ class Show implements SearchableInterface
                     }
                                 }
 
-    /** 
-     * compare two performance objects, returning -1 if $a is before $b, 1 if 
+    /**
+     * compare two performance objects, returning -1 if $a is before $b, 1 if
      * it's after, or 0 if they're at the same time.
      * Used by getAllPerformances()
      */
@@ -1627,4 +1621,8 @@ class Show implements SearchableInterface
         }
     }
 
+    public static function getAceType()
+    {
+        return 'show';
+    }
 }

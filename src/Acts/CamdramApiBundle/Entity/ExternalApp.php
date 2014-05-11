@@ -92,7 +92,7 @@ class ExternalApp extends BaseClient
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -110,14 +110,14 @@ class ExternalApp extends BaseClient
         $this->is_admin = true;
         $this->user = null;
         $this->organisation = null;
-    
+
         return $this;
     }
 
     /**
      * Get is_admin
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsAdmin()
     {
@@ -135,7 +135,7 @@ class ExternalApp extends BaseClient
         $this->user = $user;
         $this->organisation = null;
         $this->is_admin = false;
-    
+
         return $this;
     }
 
@@ -160,14 +160,14 @@ class ExternalApp extends BaseClient
         $this->organisation = $organisation;
         $this->user = null;
         $this->is_admin = false;
-    
+
         return $this;
     }
 
     /**
      * Get organisation
      *
-     * @return \Acts\CamdramBundle\Entity\Organisation 
+     * @return \Acts\CamdramBundle\Entity\Organisation
      */
     public function getOrganisation()
     {
@@ -183,14 +183,14 @@ class ExternalApp extends BaseClient
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -206,14 +206,14 @@ class ExternalApp extends BaseClient
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -245,7 +245,7 @@ class ExternalApp extends BaseClient
     /**
      * Get app_type
      *
-     * @return string 
+     * @return string
      */
     public function getAppType()
     {
@@ -261,14 +261,14 @@ class ExternalApp extends BaseClient
     public function setWebsite($website)
     {
         $this->website = $website;
-    
+
         return $this;
     }
 
     /**
      * Get website
      *
-     * @return string 
+     * @return string
      */
     public function getWebsite()
     {
@@ -294,14 +294,14 @@ class ExternalApp extends BaseClient
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -317,14 +317,14 @@ class ExternalApp extends BaseClient
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
-    
+
         return $this;
     }
 
     /**
      * Get updated_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -341,7 +341,7 @@ class ExternalApp extends BaseClient
     public function addUser(User $users)
     {
         $this->users[] = $users;
-    
+
         return $this;
     }
 
@@ -358,7 +358,7 @@ class ExternalApp extends BaseClient
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {

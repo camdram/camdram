@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace Acts\CamdramBundle\Controller;
- 
+
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -22,12 +22,12 @@ class TechieAdvertController extends FOSRestController
 
     protected $type_plural = 'techies';
 
-    public function getController()
+    protected function getController()
     {
         return 'TechieAdvert';
     }
 
-    public function getRepository()
+    protected function getRepository()
     {
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
     }
@@ -40,7 +40,7 @@ class TechieAdvertController extends FOSRestController
     public function cgetAction()
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findCurrentOrderedByDateName();
+            ->findNotExpiredOrderedByDateName(new \DateTime);
 
         $view = $this->view($techieAdverts, 200)
             ->setTemplate("ActsCamdramBundle:TechieAdvert:index.html.twig")
@@ -52,11 +52,10 @@ class TechieAdvertController extends FOSRestController
     public function getAction($identifier)
     {
         $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findOneByShowSlug($identifier);
+            ->findOneByShowSlug($identifier, new \DateTime);
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
-        }
-        else {
+        } else {
             return $this->createNotFoundException('No techie advert exists with that identifier');
         }
     }

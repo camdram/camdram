@@ -13,7 +13,7 @@ use Doctrine\ORM\Query\Expr;
  * repository methods below.
  */
 class ApplicationRepository extends EntityRepository
-{    
+{
     /**
      * findScheduledOrderedByDeadline
      *
@@ -45,39 +45,45 @@ class ApplicationRepository extends EntityRepository
         return $query->getResult();
     }
 
-    private function getLatestQuery($limit)
+    private function getLatestQuery($limit, \DateTime $now)
     {
-        $now = new \DateTime();
-    
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('a.deadlineDate >= :now')
-            ->andWhere('s.id IS NULL OR (s.authorised_by IS NOT NULL and s.entered != false)') // s.id is null means it's a society - no authorisation needed            
-            ->setParameters(array(
-                'now' => $now))
+        $qb = $this->createQueryBuilder('a');
+        $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.deadlineDate > :current_date',
+                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')))
+            ->andWhere($qb->expr()->orX(
+                'a.show IS NULL',
+                $qb->expr()->andX('s.authorised_by is not null', 's.entered != false')
+            ))
             ->orderBy('a.deadlineDate','DESC')
             ->addOrderBy('a.deadlineTime','DESC')
-            ->setMaxResults($limit);
+            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME);
+
+
+        if ($limit > 0) $qb->setMaxResults($limit);
+
+        return $qb;
     }
 
-    public function findLatest($limit)
+    public function findLatest($limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit)->getQuery()->getResult();
+        return $this->getLatestQuery($limit, $now)->getQuery()->getResult();
     }
 
-    public function findLatestBySociety(Society $society, $limit)
+    public function findLatestBySociety(Society $society, $limit, \DateTime $now)
     {
-        $qb = $this->getLatestQuery($limit);
-        $qb->leftJoin('s.society', 'y')->andWhere(
-                    $qb->expr()->orX('y = :society', 'a.society = :society')
-            )->setParameter('society', $society)
-            ->getQuery()->getResult();
+        $qb = $this->getLatestQuery($limit, $now);
+        $qb->andWhere(
+                    $qb->expr()->orX('s.society = :society', 'a.society = :society')
+            )->setParameter('society', $society);
+        return $qb->getQuery()->getResult();
     }
 
-    public function findLatestByVenue(Venue $venue, $limit)
+    public function findLatestByVenue(Venue $venue, $limit, \DateTime $now)
     {
-        $qb = $this->getLatestQuery($limit);
-        $qb->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+        $qb = $this->getLatestQuery($limit, $now);
+        return $qb->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 }

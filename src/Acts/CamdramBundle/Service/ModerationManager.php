@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  * Entities created on Camdram are moderated by users to ensure the contents
  * of Camdram is correct. The moderation manager determines who can moderate
  * a particular Entity and provides methods for informing the moderators.
- * 
+ *
  * Moderation in this context refers to granting or denying the publicising of
  * an Entity on Camdram. The content of that Entity is controlled elsewhere.
  */
@@ -55,22 +55,19 @@ class ModerationManager
         $show_repo = $this->entityManager->getRepository('ActsCamdramBundle:Show');
         if ($this->securityContext->isGranted('ROLE_ADMIN')) {
             return $show_repo->findUnauthorised();
-        }
-        elseif ($this->securityContext->isGranted('ROLE_USER')) {
+        } elseif ($this->securityContext->isGranted('ROLE_USER')) {
             $ids = $this->aclProvider->getOrganisationIdsByUser($this->securityContext->getToken()->getUser());
             $orgs = $this->entityManager->getRepository('ActsCamdramBundle:Organisation')->find($ids);
             $entities = array();
             foreach ($orgs as $org) {
                 if ($org instanceof Society) {
                     $entities = array_merge($entities, $show_repo->findUnauthorisedBySociety($org));
-                }
-                elseif ($org instanceof Venue) {
+                } elseif ($org instanceof Venue) {
                     $entities = array_merge($entities, $show_repo->findUnauthorisedByVenue($org));
                 }
             }
             return $entities;
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -84,14 +81,13 @@ class ModerationManager
         $users = array();
         $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
-        if ($entity instanceof Show)
-        {
+        if ($entity instanceof Show) {
             $users = $repo->findAdmins(AccessControlEntry::LEVEL_FULL_ADMIN);
             if ($entity->getSociety()) {
-                $users = array_merge($users, $repo->findOrganisationAdmins($entity->getSociety()));
+                $users = array_merge($users, $repo->getEntityOwners($entity->getSociety()));
             }
             if ($entity->getVenue()) {
-                $users = array_merge($users, $repo->findOrganisationAdmins($entity->getVenue()));
+                $users = array_merge($users, $repo->getEntityOwners($entity->getVenue()));
             }
         }
 
@@ -117,8 +113,7 @@ class ModerationManager
             if ($this->securityContext->isGranted('APPROVE', $entity)) {
                 //The current user is able to approve the show, so approve it straight away.
                 $this->approveEntity($entity);
-            }
-            else {
+            } else {
                 //Else Send an email
                 $this->emailEntityModerators($entity);
             }
@@ -154,4 +149,3 @@ class ModerationManager
         }
     }
 }
-

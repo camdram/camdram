@@ -25,16 +25,6 @@ class SecurityUtils
         $this->container = $container;
     }
 
-    /**
-     * @return array
-     */
-    public function getServices()
-    {
-        //$services = $this->serviceMap->getServices();
-
-        return array(); //array_keys($services);
-    }
-
     public function getAclEntries($role, $class_name)
     {
         /** @var $aclProvider AclListProvider */

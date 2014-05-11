@@ -33,8 +33,7 @@ class ContactUsController extends Controller
             $data = $form->getData();
             $this->get('acts.camdram.email_dispatcher')->sendContactUsEmail($data['email'], $data['subject'], $data['message']);
             return $this->redirect($this->generateUrl('acts_camdram_contact_us_sent'));
-        }
-        else {
+        } else {
             return $this->render('ActsCamdramBundle:ContactUs:index.html.twig', array(
                 'form' => $form->createView()
             ));

@@ -9,26 +9,29 @@
     {% endif %}
         <p>
             <strong>
+                <a href="{{ item.getLink() }}" target="_blank"><img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ item.source ~ '.png') }}" class="news-source"/></a>
+
                 {% if item.entity.entityType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
                     {% elseif item.entity.entityType == 'society' %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
                     {{ item.entity.name }}</a> posted:</strong>
             {{ item.body | detect_links }}
         </p>
-        <p><em>{{ item.getPostedAt() | date('jS F Y g:i a') }}</em></p>
+        <p><em>{{ item.getPostedAt() | date('jS F Y g:ia') }}</em></p>
         {% for link in item.links %}
             <div class="news-link">
                 <div class="row">
 
                 {% if link.picture %}
                 <div class="small-3 columns">
-                    <img src="{{ link.picture }}"/>
+                    <a href="{{ link.link }}" target="_blank"><img src="{{ link.picture }}"/></a>
                 </div>
                 <div class="small-9 columns">
                 {% else %}
                 <div class="small-12 columns">
                 {% endif %}
-                        <h6><a href="{{ link.link }}">{{ link.name }}</a></h6>
-                        {% if link.description %}<p>{{ link.description }}</p>
+                        <h6><a href="{{ link.link }}" target="_blank">{{ link.name ?: 'Find out more.' }}</a></h6>
+                        {% if link.description %}
+                            <p>{{ link.description | detect_links }}</p>
                             {% if link.source and link.mediaType == 'video' %}
                                 <div class="flex-video news_media">
                                     <embed type="application/x-shockwave-flash" src="{{ link.source }}" width="400" height="350" style="display: block;" bgcolor="#FFFFFF" quality="high" scale="scale" allowfullscreen="true" allowscriptaccess="never" salign="tl" wmode="opaque" flashvars="width=400&amp;height=350">
@@ -42,3 +45,4 @@
     </div>
     <hr />
 </div>
+

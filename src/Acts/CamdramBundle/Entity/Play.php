@@ -24,8 +24,7 @@ class Play
     {
         if ($array) {
             return $this->data['property'][$key]['values'];
-        }
-        else {
+        } else {
             return $this->data['property'][$key]['values'][0];
         }
     }

@@ -28,11 +28,9 @@ class PeopleMergeCommand extends ContainerAwareCommand
 
         if ($input->getOption('similar')) {
             $this->mergeSimilar($output);
-        }
-        else if ($input->getOption('mapped')) {
+        } elseif ($input->getOption('mapped')) {
             $this->mergeMapped($output);
-        }
-        else {
+        } else {
             $this->mergeMapped($output);
             $this->mergeSimilar($output);
         }
@@ -48,8 +46,7 @@ class PeopleMergeCommand extends ContainerAwareCommand
 
         $em->getConnection()->exec('SET foreign_key_checks = 0');
 
-        foreach ($people_res->findAll() as $person)
-        {
+        foreach ($people_res->findAll() as $person) {
             $surname = $utils->extractSurname($person->getName());
             $possibles = $people_res->createQueryBuilder('p')
                 ->where('p.name LIKE :name')
@@ -83,16 +80,14 @@ class PeopleMergeCommand extends ContainerAwareCommand
         if ($score > 90) {
             //We're very certain that these are the same person
             $this->linkPeople($p1, $p2, $output);
-        }
-        elseif ($score > 70) {
+        } elseif ($score > 70) {
 
 
 
             if ($dialog->askConfirmation($output, $this->buildQuestion($p1, $p2, $score))) {
                 $this->linkPeople($p1, $p2, $output);
                 $utils->registerEquivalence($p1->getName(), $p2->getName(), true);
-            }
-            else {
+            } else {
                 $utils->registerEquivalence($p1->getName(), $p2->getName(), false);
             }
         }
@@ -108,11 +103,9 @@ class PeopleMergeCommand extends ContainerAwareCommand
                 $show = $role->getShow();
                 if ($show && $show->getDates()) {
                     $question .= $role->getRole().' '.$show->getDates().', ';
-                }
-                elseif ($show && $show->getTimestamp()->format('U') > 0) {
+                } elseif ($show && $show->getTimestamp()->format('U') > 0) {
                     $question .= $role->getRole().' in '.$show->getTimestamp()->format('Y').', ';
-                }
-                else {
+                } else {
                     $question .= $role->getRole().', ';
                 }
 
@@ -129,8 +122,7 @@ class PeopleMergeCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $people_res = $em->getRepository('ActsCamdramBundle:Person');
-        foreach ($people_res->findAll() as $person)
-        {
+        foreach ($people_res->findAll() as $person) {
 
             if ($person->getMapTo()) {
                 $other = $people_res->findOneById($person->getMapTo());

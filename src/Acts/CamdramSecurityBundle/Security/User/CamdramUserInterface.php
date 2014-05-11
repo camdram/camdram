@@ -3,8 +3,8 @@ namespace Acts\CamdramSecurityBundle\Security\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface CamdramUserInterface extends UserInterface {
-
+interface CamdramUserInterface extends UserInterface
+{
     /**
      * @return string
      */

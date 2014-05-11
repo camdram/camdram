@@ -16,7 +16,7 @@ class AuditionController extends FOSRestController
 {
     public function cgetAction()
     {
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate();
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(new \DateTime);
 
         $view = $this->view($auditions, 200)
                   ->setTemplate("ActsCamdramBundle:Audition:index.html.twig")
@@ -29,7 +29,7 @@ class AuditionController extends FOSRestController
     {
         $diary = $this->get('acts.diary.factory')->createDiary();
 
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate();
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(new \DateTime);
 
         $events = $this->get('acts.camdram.diary_helper')->createEventsFromAuditions($auditions);
         $diary->addEvents($events);

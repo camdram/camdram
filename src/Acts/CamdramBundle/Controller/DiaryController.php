@@ -37,19 +37,19 @@ class DiaryController extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function toolbarAction()
+    public function toolbarAction($start_date = null)
     {
-        $now = $this->get('acts.time_service')->getCurrentTime();
-        $current_year = $now->format('Y');
+        if (!$start_date) $start_date = $this->get('acts.time_service')->getCurrentTime();
+        $current_year = $start_date->format('Y');
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $start_date = $repo->getFirstShowDate();
-        $end_date = $repo->getLastShowDate();
-        $years = range($start_date->format('Y'), $end_date->format('Y'));
+        $first_date = $repo->getFirstShowDate();
+        $last_date = $repo->getLastShowDate();
+        $years = range($first_date->format('Y'), $last_date->format('Y'));
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $periods = $repo->findByYearBefore($current_year, $end_date);
-        $current_period = $repo->findAt($now);
+        $periods = $repo->findByYearBefore($current_year, $last_date);
+        $current_period = $repo->findAt($start_date);
 
 
         return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(
@@ -66,8 +66,7 @@ class DiaryController extends FOSRestController
             ->setTemplateVar('diary');
         if ($this->getRequest()->get('fragment') || $this->getRequest()->isXmlHttpRequest()) {
             $view->setTemplate('ActsCamdramBundle:Diary:fragment.html.twig');
-        }
-        else {
+        } else {
             $view->setTemplate('ActsCamdramBundle:Diary:index.html.twig');
         }
         return $view;
@@ -84,8 +83,7 @@ class DiaryController extends FOSRestController
         $period = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')->getBySlugAndYear($period, $year);
         if ($period) {
             return $this->dateAction($period->getStartAt());
-        }
-        else {
+        } else {
             throw $this->createNotFoundException('Invalid time period specified');
         }
     }
@@ -94,16 +92,14 @@ class DiaryController extends FOSRestController
     {
         if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/',$week)) {
             return $this->rangeAction($week);
-        }
-        elseif (preg_match('/[0-9]{2}\-[0-9]{2}/',$week)) {
+        } elseif (preg_match('/[0-9]{2}\-[0-9]{2}/',$week)) {
             return $this->rangeAction($year.'-'.$week);
         }
 
         $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
         if ($week) {
             return $this->dateAction($week->getStartAt());
-        }
-        else {
+        } else {
             throw $this->createNotFoundException('Invalid week specified');
         }
     }
@@ -138,12 +134,10 @@ class DiaryController extends FOSRestController
 
         if ($this->getRequest()->query->has('end')) {
             $end = new \DateTime($this->getRequest()->query->get('end'));
-        }
-        elseif ($this->getRequest()->query->has('length')) {
+        } elseif ($this->getRequest()->query->has('length')) {
             $end = clone $start;
             $end->modify($this->getRequest()->query->get('length'));
-        }
-        else {
+        } else {
             $end = clone $start;
             $end->modify('+8 weeks');
         }

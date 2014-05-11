@@ -117,4 +117,3 @@ class DiaryHelper
         return $events;
     }
 }
-

@@ -17,7 +17,7 @@ class NewsRepository extends EntityRepository
             ->where('n.source = :name')
             ->andWhere('n.remote_id = :id')
             ->setParameter('name', $service_name)
-            ->setParameter('id', $id)
+            ->setParameter('id', (string)$id)
             ->getQuery();
         $result = $query->getResult();
         $count = (int) $result[0]['c'];

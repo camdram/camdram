@@ -35,7 +35,7 @@
         </li>
         <li>
             {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
-            {item: {id: 'new_admin', path: path('new_show_admin',{identifier:show.slug}), icon: 'plus-circle', text: 'Add a show admin'} }) }}
+            {item: {id: 'edit_admin', path: path('edit_show_admin',{identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}
         </li>
     </ul>
 

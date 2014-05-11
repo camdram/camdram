@@ -17,19 +17,12 @@ use Behat\Behat\Context\BehatContext,
  */
 class FeatureContext extends BehatContext
 {
-    public function __construct(array $params) {
+    public function __construct(array $params)
+    {
         $this->useContext('mink', new MinkContext());
         $this->useContext('users', new UserContext());
         $this->useContext('symfony', new SymfonyContext());
         $this->useContext('entity', new EntityContext());
-    }
-
-    /**
-     * @return \Behat\MinkExtension\Context\MinkContext
-     */
-    private function getMinkContext()
-    {
-        return $this->getMainContext()->getSubcontext('mink');
     }
 
 }

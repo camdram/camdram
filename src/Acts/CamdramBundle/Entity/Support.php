@@ -100,14 +100,14 @@ class Support
      */
     private $parent;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
-   
+
     /**
      * Get children
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChildren()
     {
@@ -117,7 +117,7 @@ class Support
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -127,7 +127,7 @@ class Support
     /**
      * Get support_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getSupportId()
     {
@@ -143,14 +143,14 @@ class Support
     public function setFrom($from)
     {
         $this->from = htmlspecialchars($from);
-    
+
         return $this;
     }
 
     /**
      * Get from
      *
-     * @return string 
+     * @return string
      */
     public function getFrom()
     {
@@ -167,14 +167,14 @@ class Support
     public function setTo($to)
     {
         $this->to = htmlspecialchars($to);
-    
+
         return $this;
     }
 
     /**
      * Get to
      *
-     * @return string 
+     * @return string
      */
     public function getTo()
     {
@@ -190,14 +190,14 @@ class Support
     public function setCc($cc)
     {
         $this->cc = htmlspecialchars($cc);
-    
+
         return $this;
     }
 
     /**
      * Get cc
      *
-     * @return string 
+     * @return string
      */
     public function getCc()
     {
@@ -213,14 +213,14 @@ class Support
     public function setSubject($subject)
     {
         $this->subject = htmlspecialchars($subject);
-    
+
         return $this;
     }
 
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -236,14 +236,14 @@ class Support
     public function setBody($body)
     {
         $this->body = str_replace(chr(13), "", $body);
-    
+
         return $this;
     }
 
     /**
      * Get body
      *
-     * @return string 
+     * @return string
      */
     public function getBody()
     {
@@ -259,7 +259,7 @@ class Support
     public function setOwner(User $owner = null)
     {
         $this->owner = $owner;
-    
+
         return $this;
     }
 
@@ -283,14 +283,14 @@ class Support
     public function setState($state)
     {
         $this->state = $state;
-    
+
         return $this;
     }
 
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -306,14 +306,14 @@ class Support
     public function setDateTime()
     {
         $this->date_time = new \DateTime('now');
-    
+
         return $this;
     }
 
     /**
      * Get date_time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDateTime()
     {
@@ -329,7 +329,7 @@ class Support
     public function addChildren(\Acts\CamdramBundle\Entity\Support $children)
     {
         $this->children[] = $children;
-    
+
         return $this;
     }
 
@@ -352,14 +352,14 @@ class Support
     public function setParent(\Acts\CamdramBundle\Entity\Support $parent = null)
     {
         $this->parent = $parent;
-    
+
         return $this;
     }
 
     /**
      * Get parent
      *
-     * @return \Acts\CamdramBundle\Entity\Support 
+     * @return \Acts\CamdramBundle\Entity\Support
      */
     public function getParent()
     {

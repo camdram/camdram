@@ -58,7 +58,7 @@ class WeekName
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -74,14 +74,14 @@ class WeekName
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -97,14 +97,14 @@ class WeekName
     public function setStartAt($startAt)
     {
         $this->start_at = $startAt;
-    
+
         return $this;
     }
 
     /**
      * Get start_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartAt()
     {
@@ -144,14 +144,14 @@ class WeekName
     public function setShortName($shortName)
     {
         $this->short_name = $shortName;
-    
+
         return $this;
     }
 
     /**
      * Get short_name
      *
-     * @return string 
+     * @return string
      */
     public function getShortName()
     {
@@ -167,14 +167,14 @@ class WeekName
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {

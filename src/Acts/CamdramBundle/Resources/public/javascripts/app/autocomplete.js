@@ -26,6 +26,13 @@ $(function() {
             Camdram.autocomplete.suggest(this);
         e.preventDefault();
         return false;
+    }).keydown(function(e) {
+        if(e.keyCode == 13)
+        {
+            e.preventDefault();
+            return false;
+        }
+        return true;
     }).on('paste', function() {
             Camdram.autocomplete.suggest(this);
     });

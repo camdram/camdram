@@ -75,7 +75,7 @@ class Role
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -91,14 +91,14 @@ class Role
     public function setShowId($showId)
     {
         $this->show_id = $showId;
-    
+
         return $this;
     }
 
     /**
      * Get show_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getShowId()
     {
@@ -114,14 +114,14 @@ class Role
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -137,14 +137,14 @@ class Role
     public function setRole($role)
     {
         $this->role = $role;
-    
+
         return $this;
     }
 
     /**
      * Get role
      *
-     * @return string 
+     * @return string
      */
     public function getRole()
     {
@@ -160,14 +160,14 @@ class Role
     public function setOrder($order)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrder()
     {
@@ -183,14 +183,14 @@ class Role
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
     {
         $this->show = $show;
-    
+
         return $this;
     }
 
     /**
      * Get show
      *
-     * @return \Acts\CamdramBundle\Entity\Show 
+     * @return \Acts\CamdramBundle\Entity\Show
      */
     public function getShow()
     {
@@ -206,18 +206,17 @@ class Role
     public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
     {
         $this->person = $person;
-    
+
         return $this;
     }
 
     /**
      * Get person
      *
-     * @return \Acts\CamdramBundle\Entity\Person 
+     * @return \Acts\CamdramBundle\Entity\Person
      */
     public function getPerson()
     {
         return $this->person;
     }
 }
-

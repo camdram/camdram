@@ -15,7 +15,7 @@ class GraduationYearType extends AbstractType
         for ($i=8; $i>=-50; $i--) {
                 $years[$cur_year+$i] = $cur_year+$i;
         }
-    
+
         $resolver->setDefaults(array(
             'choices' => $years,
             'empty_value' => 'n/a',

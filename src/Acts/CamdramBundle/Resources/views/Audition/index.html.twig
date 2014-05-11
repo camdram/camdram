@@ -17,20 +17,32 @@
     {% for a in auditions %}
         {% if a.show %}
             {% if currentName != a.show.name %}
-                </ul>
-                {% if currentName is not empty %}
+                {% if currentName is not empty %} 
+                    </ul>
                     </div>
                 {% endif %}
                 {% set currentName = a.show.name %}
                 <hr>
                 <div id="auditions-{{ a.show.id }}">
-                <h5><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a></h5>
-                    <p>{{ a.show.audextra }}</p>
+                <h4><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a>
+                {% if a.show.society %}
+                    - <a href="{{ path('get_society', {identifier: a.show.society.slug}) }}">{{ a.show.society.shortname ?: a.show.society.name }}</a>
+                {% elseif a.show.societyname is not empty %}
+                    - {{ a.show.societyname }}
+                {% endif %}
+                </h4>
+                    <p>{{ a.show.audextra | detect_links }}</p>
                     <ul>
             {% endif %}
-            <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
+            {% if a.nonscheduled %}
+	            </ul>
+                <p>Contact {{a.location}} before {{a.starttime|date('g:ia')}} {{a.date|date('D d M')}} for more details.</p>
+	            </div>
+		    {% set currentName = null %}
+	        {% else %}
+                <li>{{ a.date|date('D jS M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
+            {% endif %}
         {% endif %}
-
     {% else %}
         <p>There are currently no auditions listed - please check again later.</p>
     {% endfor %}

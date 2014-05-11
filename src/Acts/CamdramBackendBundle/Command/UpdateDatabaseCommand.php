@@ -35,8 +35,7 @@ class UpdateDatabaseCommand extends ContainerAwareCommand
             $input = new ArrayInput($arguments);
             $input->setInteractive(false);
             $command->run($input, $output);
-        }
-        else {
+        } else {
             $command = $this->getApplication()->find('doctrine:migrations:migrate');
             $arguments = array('command' => 'doctrine:migrations:migrate');
             $command->run(new ArrayInput($arguments), $output);

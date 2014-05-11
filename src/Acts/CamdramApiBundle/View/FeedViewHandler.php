@@ -22,7 +22,8 @@ class FeedViewHandler
 
     private $authorAddress;
 
-    public function __construct(FeedAnnotationReader $reader, \Twig_Environment $twig, EntityUrlGenerator $urlGen, $authorAddress) {
+    public function __construct(FeedAnnotationReader $reader, \Twig_Environment $twig, EntityUrlGenerator $urlGen, $authorAddress)
+    {
         $this->reader = $reader;
         $this->twig = $twig;
         $this->urlGen = $urlGen;
@@ -62,8 +63,7 @@ class FeedViewHandler
             $feed->setDescription($feedData->getDescription());
             $feed->setLink($this->urlGen->generateCollectionUrl($class));
             $feed->setFeedLink($this->urlGen->generateCollectionUrl($class, $request->getRequestFormat()), $request->getRequestFormat());
-        }
-        else {
+        } else {
             $feed->setTitle('Camdram feed');
             $feed->setDescription('Camdram feed');
         }

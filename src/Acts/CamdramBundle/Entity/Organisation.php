@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramBundle\Search\SearchableInterface;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -18,7 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\DiscriminatorMap({0 = "Society", 1 = "Venue"})
  * @Serializer\ExclusionPolicy("all")
  */
-abstract class Organisation implements SearchableInterface
+abstract class Organisation implements SearchableInterface, OwnableInterface
 {
     /**
      * @var integer
@@ -137,14 +138,14 @@ abstract class Organisation implements SearchableInterface
     public function setShortName($shortName)
     {
         $this->short_name = $shortName;
-    
+
         return $this;
     }
 
     /**
      * Get short_name
      *
-     * @return string 
+     * @return string
      */
     public function getShortName()
     {
@@ -160,14 +161,14 @@ abstract class Organisation implements SearchableInterface
     public function setCollege($college)
     {
         $this->college = $college;
-    
+
         return $this;
     }
 
     /**
      * Get college
      *
-     * @return string 
+     * @return string
      */
     public function getCollege()
     {
@@ -183,14 +184,14 @@ abstract class Organisation implements SearchableInterface
     public function setAffiliate($affiliate)
     {
         $this->affiliate = $affiliate;
-    
+
         return $this;
     }
 
     /**
      * Get affiliate
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAffiliate()
     {
@@ -206,14 +207,14 @@ abstract class Organisation implements SearchableInterface
     public function setLogoUrl($logoUrl)
     {
         $this->logo_url = $logoUrl;
-    
+
         return $this;
     }
 
     /**
      * Get logo_url
      *
-     * @return string 
+     * @return string
      */
     public function getLogoUrl()
     {
@@ -229,14 +230,14 @@ abstract class Organisation implements SearchableInterface
     public function setExpires($expires)
     {
         $this->expires = $expires;
-    
+
         return $this;
     }
 
     /**
      * Get expires
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExpires()
     {
@@ -246,7 +247,7 @@ abstract class Organisation implements SearchableInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -262,14 +263,14 @@ abstract class Organisation implements SearchableInterface
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -285,14 +286,14 @@ abstract class Organisation implements SearchableInterface
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -308,14 +309,14 @@ abstract class Organisation implements SearchableInterface
     public function setFacebookId($facebookId)
     {
         $this->facebook_id = $facebookId;
-    
+
         return $this;
     }
 
     /**
      * Get facebook_id
      *
-     * @return string 
+     * @return string
      */
     public function getFacebookId()
     {
@@ -331,14 +332,14 @@ abstract class Organisation implements SearchableInterface
     public function setTwitterId($twitterId)
     {
         $this->twitter_id = $twitterId;
-    
+
         return $this;
     }
 
     /**
      * Get twitter_id
      *
-     * @return string 
+     * @return string
      */
     public function getTwitterId()
     {
@@ -393,14 +394,14 @@ abstract class Organisation implements SearchableInterface
     public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
     {
         $this->image = $image;
-    
+
         return $this;
     }
 
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image 
+     * @return \Hoyes\ImageManagerBundle\Entity\Image
      */
     public function getImage()
     {
@@ -416,14 +417,14 @@ abstract class Organisation implements SearchableInterface
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -444,7 +445,7 @@ abstract class Organisation implements SearchableInterface
     public function addNew(\Acts\CamdramBundle\Entity\News $news)
     {
         $this->news[] = $news;
-    
+
         return $this;
     }
 
@@ -461,7 +462,7 @@ abstract class Organisation implements SearchableInterface
     /**
      * Get news
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getNews()
     {
@@ -525,10 +526,15 @@ abstract class Organisation implements SearchableInterface
     /**
      * Get applications
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getApplications()
     {
         return $this->applications;
+    }
+
+    public static function getAceType()
+    {
+        return 'society';
     }
 }

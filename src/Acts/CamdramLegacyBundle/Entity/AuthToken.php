@@ -64,7 +64,7 @@ class AuthToken
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -80,14 +80,14 @@ class AuthToken
     public function setToken($token)
     {
         $this->token = $token;
-    
+
         return $this;
     }
 
     /**
      * Get token
      *
-     * @return string 
+     * @return string
      */
     public function getToken()
     {
@@ -103,14 +103,14 @@ class AuthToken
     public function setSiteId($siteId)
     {
         $this->site_id = $siteId;
-    
+
         return $this;
     }
 
     /**
      * Get site_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getSiteId()
     {
@@ -126,14 +126,14 @@ class AuthToken
     public function setUserId($userId)
     {
         $this->user_id = $userId;
-    
+
         return $this;
     }
 
     /**
      * Get user_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getUserId()
     {
@@ -149,14 +149,14 @@ class AuthToken
     public function setIssued($issued)
     {
         $this->issued = $issued;
-    
+
         return $this;
     }
 
     /**
      * Get issued
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getIssued()
     {
@@ -172,7 +172,7 @@ class AuthToken
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 

@@ -121,7 +121,7 @@ class Person implements SearchableInterface
         $this->map_to = 0;
         $this->no_robots = 0;
     }
-    
+
     /**
      * Set map_to
      *
@@ -131,14 +131,14 @@ class Person implements SearchableInterface
     public function setMapTo($mapTo)
     {
         $this->map_to = $mapTo;
-    
+
         return $this;
     }
 
     /**
      * Get map_to
      *
-     * @return integer 
+     * @return integer
      */
     public function getMapTo()
     {
@@ -154,14 +154,14 @@ class Person implements SearchableInterface
     public function setNoRobots($noRobots)
     {
         $this->no_robots = $noRobots;
-    
+
         return $this;
     }
 
     /**
      * Get no_robots
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNoRobots()
     {
@@ -177,7 +177,7 @@ class Person implements SearchableInterface
     public function addRole(\Acts\CamdramBundle\Entity\Role $roles)
     {
         $this->roles[] = $roles;
-    
+
         return $this;
     }
 
@@ -194,7 +194,7 @@ class Person implements SearchableInterface
     /**
      * Get roles
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getRoles()
     {
@@ -202,7 +202,7 @@ class Person implements SearchableInterface
             ->orderBy(array('show_id' => 'DESC'));
         return $this->roles->matching($criteria);
     }
-    
+
     /**
      * Add users
      *
@@ -212,7 +212,7 @@ class Person implements SearchableInterface
     public function addUser(User $users)
     {
         $this->users[] = $users;
-    
+
         return $this;
     }
 
@@ -229,7 +229,7 @@ class Person implements SearchableInterface
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {
@@ -245,7 +245,7 @@ class Person implements SearchableInterface
     public function addAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
     {
         $this->aliases[] = $aliases;
-    
+
         return $this;
     }
 
@@ -262,7 +262,7 @@ class Person implements SearchableInterface
     /**
      * Get aliases
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAliases()
     {
@@ -299,7 +299,7 @@ class Person implements SearchableInterface
             }
         }
         if (!$latest) return 0;
-        else return $latest->format('U');
+        else return $latest->format('Ymd');
     }
 
     public function isIndexable()
@@ -311,7 +311,7 @@ class Person implements SearchableInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -327,14 +327,14 @@ class Person implements SearchableInterface
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -350,14 +350,14 @@ class Person implements SearchableInterface
     public function setFacebookId($facebookId)
     {
         $this->facebook_id = $facebookId;
-    
+
         return $this;
     }
 
     /**
      * Get facebook_id
      *
-     * @return string 
+     * @return string
      */
     public function getFacebookId()
     {
@@ -373,14 +373,14 @@ class Person implements SearchableInterface
     public function setTwitterId($twitterId)
     {
         $this->twitter_id = $twitterId;
-    
+
         return $this;
     }
 
     /**
      * Get twitter_id
      *
-     * @return string 
+     * @return string
      */
     public function getTwitterId()
     {
@@ -396,14 +396,14 @@ class Person implements SearchableInterface
     public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
     {
         $this->image = $image;
-    
+
         return $this;
     }
 
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image 
+     * @return \Hoyes\ImageManagerBundle\Entity\Image
      */
     public function getImage()
     {
@@ -419,14 +419,14 @@ class Person implements SearchableInterface
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -442,14 +442,14 @@ class Person implements SearchableInterface
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -465,7 +465,7 @@ class Person implements SearchableInterface
     public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
     {
         $this->externalUsers[] = $externalUsers;
-    
+
         return $this;
     }
 
@@ -482,7 +482,7 @@ class Person implements SearchableInterface
     /**
      * Get externalUsers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getExternalUsers()
     {

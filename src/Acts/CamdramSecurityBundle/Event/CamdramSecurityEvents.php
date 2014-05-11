@@ -5,4 +5,3 @@ class CamdramSecurityEvents
 {
     const REGISTRATION_COMPLETE  = 'camdram_security.registration_complete';
 }
-
