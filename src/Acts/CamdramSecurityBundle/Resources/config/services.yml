@@ -44,7 +44,7 @@ services:
 
     camdram.security.acl.provider:
         class: Acts\CamdramSecurityBundle\Security\Acl\AclProvider
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
 
     camdram.security.acl.helper:
         class: Acts\CamdramSecurityBundle\Security\Acl\Helper
@@ -67,22 +67,24 @@ services:
         arguments: [@camdram.security.email_dispatcher, @camdram.security.token_generator]
         tags:
             - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
+            - { name: kernel.event_listener, event: camdram_security.ace_created, method: onAceCreatedEvent }
+            - { name: kernel.event_listener, event: camdram_security.pending_access_created, method: onPendingAccessCreatedEvent }
 
-    camdram.security.listener.access_control_entry:
+    camdram.security.listener.ace:
         class: Acts\CamdramSecurityBundle\EventListener\AccessControlEntryListener
-        arguments: [@camdram.security.email_dispatcher]
+        arguments: [@monolog.logger.camdram]
         tags:
             - { name: doctrine.entity_listener }
 
     camdram.security.listener.pending_access:
         class: Acts\CamdramSecurityBundle\EventListener\PendingAccessListener
-        arguments: [@camdram.security.email_dispatcher]
+        arguments: [@monolog.logger.camdram]
         tags:
             - { name: doctrine.entity_listener }
 
     camdram.security.listener.user:
         class: Acts\CamdramSecurityBundle\EventListener\UserListener
-        arguments: [@doctrine.orm.entity_manager, @camdram.security.email_dispatcher, @camdram.security.token_generator]
+        arguments: [@camdram.security.email_dispatcher, @camdram.security.token_generator]
         tags:
             - { name: doctrine.entity_listener }
 
@@ -128,3 +130,4 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter
         tags:
             - { name: security.voter }
+
