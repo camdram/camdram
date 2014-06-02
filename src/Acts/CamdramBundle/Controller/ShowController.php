@@ -17,6 +17,9 @@ use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess,
     Acts\CamdramSecurityBundle\Entity\AccessControlEntry,
+    Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
+    Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent,
+    Acts\CamdramSecurityBundle\Event\PendingAccessEvent,
     Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -396,6 +399,8 @@ class ShowController extends AbstractRestController
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
+                        $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::PENDING_ACCESS_CREATED, 
+                            new PendingAccessEvent($pending_ace)); 
                     }
                 }
             }
@@ -424,6 +429,8 @@ class ShowController extends AbstractRestController
                 ->setType('request-show');
             $em->persist($ace);
             $em->flush();
+            $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::ACE_CREATED, 
+                new AccessControlEntryEvent($ace)); 
             return $this->render("ActsCamdramBundle:Show:access_requested.html.twig");
         }
     }

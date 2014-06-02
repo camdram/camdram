@@ -1,16 +1,20 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface,
+    Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Doctrine\ORM\EntityManager;
 
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository,
+    Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
+    Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent;
 
 class AclProvider
 {
@@ -23,10 +27,17 @@ class AclProvider
      * @var \Doctrine\ORM\EntityManager
      */
     private $entityManager;
+    
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $eventDispatcher = null;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager,
+        EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
         $this->repository = $entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
     }
 
@@ -82,6 +93,12 @@ class AclProvider
 
         $this->entityManager->persist($ace);
         $this->entityManager->flush();
+        
+        /* Send a Camdram-specific event that should trigger an email
+         * notification.
+         */
+        $this->eventDispatcher->dispatch(CamdramSecurityEvents::ACE_CREATED, 
+            new AccessControlEntryEvent($ace)); 
     }
 
     /**
@@ -96,6 +113,10 @@ class AclProvider
                 ->setRevokedAt(new \DateTime);
             $this->entityManager->persist($ace);
             $this->entityManager->flush();
+        }
+        if ($entity->getAceType() == 'show') {
+            /* Remove any requests to be a show admin, if they existed. */
+            $requests = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->removeAceRequest($user, $entity);
         }
     }
 }
