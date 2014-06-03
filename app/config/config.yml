@@ -131,17 +131,18 @@ fos_rest:
             rss: true
             xml: true
             json: true
+            jsonp: true
         templating_formats:
             html: true
         force_redirects:
             html: true
         view_response_listener: force
         failed_validation: HTTP_BAD_REQUEST
+        jsonp_handler: ~
     service:
         view_handler: acts.camdram_api.view_handler
     routing_loader:
-            include_format: false
-            default_format: html
+        default_format: html
     body_listener: true
     format_listener: true
     access_denied_listener: true
