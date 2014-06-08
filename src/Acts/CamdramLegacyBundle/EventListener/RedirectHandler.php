@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 
 class RedirectHandler {
@@ -25,8 +26,7 @@ class RedirectHandler {
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
-
-        if($exception->getStatusCode() == 404)
+        if($exception instanceof NotFoundHttpException && $exception->getStatusCode() == 404)
         {
             if ($response = $this->handleRedirect($event->getRequest())) {
                 $event->setResponse($response);
