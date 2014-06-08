@@ -190,7 +190,7 @@ acts_sphinx_real_time:
         default: ~
     indexes:
         show:
-            fields: [name, description]
+            fields: [name, short_name, description]
             attributes: {name: string, description: string, entity_type: string, slug: string, start_at: datetime, rank: int}
             persistence:
                 driver: orm
@@ -205,7 +205,7 @@ acts_sphinx_real_time:
                 enable_star: true
                 dict: keywords
         venue:
-            fields: [name, description]
+            fields: [name, short_name, description]
             attributes: {name: string, short_name: string, description: string, slug: string,  entity_type: string, rank: int}
             persistence:
                 driver: orm
@@ -231,7 +231,7 @@ acts_sphinx_real_time:
                 enable_star: true
                 dict: keywords
         person:
-            fields: [name, description]
+            fields: [name, short_name, description]
             attributes: {name: string, description: string, entity_type: string, slug: string, rank: int}
             persistence:
                 driver: orm

@@ -9,6 +9,8 @@ interface SearchableInterface
 
     public function getName();
 
+    public function getShortName();
+
     public function getDescription();
 
     public function getSlug();

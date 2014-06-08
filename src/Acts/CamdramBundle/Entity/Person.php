@@ -488,4 +488,9 @@ class Person implements SearchableInterface
     {
         return $this->externalUsers;
     }
+
+    public function getShortName()
+    {
+        return '';
+    }
 }
