@@ -18,9 +18,12 @@ class RedirectHandler {
 
     private $entityManager;
 
-    public function __construct(RouterInterface $router, EntityManager $entityManager) {
+    private $v1_hostname;
+
+    public function __construct(RouterInterface $router, EntityManager $entityManager, $v1_hostname) {
         $this->router = $router;
         $this->entityManager = $entityManager;
+        $this->v1_hostname = $v1_hostname;
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -28,7 +31,7 @@ class RedirectHandler {
         $exception = $event->getException();
         if($exception instanceof NotFoundHttpException && $exception->getStatusCode() == 404)
         {
-            if ($response = $this->handleRedirect($event->getRequest())) {
+            if (($response = $this->handleRedirect($event->getRequest()))) {
                 $event->setResponse($response);
             }
         }
@@ -49,6 +52,9 @@ class RedirectHandler {
         }
         elseif (substr_count($path, '/shows') > 0) {
             return $this->handleShows($path, $query);
+        }
+        elseif (substr_count($path, '/infobase') > 0) {
+            return $this->handleInfobase($path);
         }
     }
 
@@ -89,11 +95,19 @@ class RedirectHandler {
             '/positions/directors_producers'  => 'get_applications',
             '/privacy' => 'acts_camdram_privacy',
             '/signup' => 'acts_camdram_security_create_account',
+            '/administration/edit_show' => 'acts_camdram_show_admin',
+            '/administration/support' => 'get_issues',
+            '/administration/edit_society' => 'get_societies',
+            '/administration/edit_users' => 'get_users',
         );
 
         if (isset($map[$path])) {
             return new RedirectResponse($this->router->generate($map[$path]), 301);
         }
+    }
+
+    private function handleInfobase($path) {
+        return new RedirectResponse('http://'.$this->v1_hostname . $path, 302);
     }
 
     private function createShowResponseFromId($show_id) {

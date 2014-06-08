@@ -153,6 +153,9 @@ acts_camdram:
     techies_advert_max_days: 40
     data_dir: "%kernel.root_dir%/data"
 
+acts_camdram_legacy:
+    v1_hostname: %v1_hostname%
+
 acts_social_api:
       http_client:
           timeout: 30,

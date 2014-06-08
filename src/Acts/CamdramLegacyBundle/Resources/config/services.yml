@@ -15,6 +15,6 @@ services:
 
     acts.camdram.redirect_handler:
         class: Acts\CamdramLegacyBundle\EventListener\RedirectHandler
-        arguments:  [@router, @doctrine.orm.entity_manager]
+        arguments:  [@router, @doctrine.orm.entity_manager, %v1_hostname%]
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 200 }
