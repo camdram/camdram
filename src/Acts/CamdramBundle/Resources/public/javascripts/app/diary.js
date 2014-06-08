@@ -207,29 +207,34 @@ $(function() {
     var diary = new Camdram.diary();
     var selector = new Camdram.diary_selector(diary);
 
-    diary.on_state_change = function(data, replace) {
-        if (history.pushState) {
-            if (data.year && data.period) {
-                var url = Routing.generate('acts_camdram_diary_period',data);
-            }
-            else if (data.start) {
-                var url = Routing.generate('acts_camdram_diary_date', data);
-            }
-            else {
-                var url = Routing.generate('acts_camdram_diary', data);
-            }
-            if (replace === true) {
-                history.replaceState(data, document.title, url);
-            }
-            else {
-                history.pushState(data, document.title, url);
+    if (Modernizr.history) {
+        diary.on_state_change = function(data, replace) {
+            if (history.pushState) {
+                if (data.year && data.period) {
+                    var url = Routing.generate('acts_camdram_diary_period',data);
+                }
+                else if (data.start) {
+                    var url = Routing.generate('acts_camdram_diary_date', data);
+                }
+                else {
+                    var url = Routing.generate('acts_camdram_diary', data);
+                }
+                if (replace === true) {
+                    history.replaceState(data, document.title, url);
+                }
+                else {
+                    history.pushState(data, document.title, url);
+                }
+
             }
         }
+
+        history.replaceState(
+            {start: diary.get_first_date().format(Camdram.diary_date_format)},
+            document.title, document.location
+        );
     }
-    history.replaceState(
-        {start: diary.get_first_date().format(Camdram.diary_date_format)},
-        document.title, document.location
-    );
+
 
     $(window).bind('popstate', function(e) {
         var data = e.originalEvent.state;

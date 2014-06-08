@@ -51,7 +51,6 @@ $(function() {
 Camdram.autocomplete.chooseOption = function(e) {
     // If we do have a selected item then jump to it, otherwise just search
     var $active_item = $("#search_form .results ul li.active");
-    console.log($active_item);
     if($active_item.length == 0) {
         $('#search_form').submit();
     }
