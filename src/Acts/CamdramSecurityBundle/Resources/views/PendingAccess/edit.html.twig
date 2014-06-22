@@ -9,19 +9,46 @@
         the show after they create an account on Camdram.</p>
 <div class="row">
     <div class="large-6 column">
+        <h4>Admin Requests</h4>
+        {% if requested_admins is empty %}
+        <p>There are no requests to be an admin for this show.</p>
+        {% endif %}
+        {% for admin in requested_admins %}
+            {{ not loop.first ? '</div></div>' }}
+            <div class="row" id="admin_{{ admin.id }}">
+            <div class="small-10 columns">
+            {%- if admin.person is defined -%}
+                {%- if admin.person -%}
+                    <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
+                {%- else -%}
+                    {{ admin.name }}
+                {%- endif -%}
+            {%- endif -%}
+            </div>
+            <div class="small-1 columns"><span data-tooltip class="has-tip" title="Approve request."><a href="{{ path('approve_show_admin', {identifier: show.slug, 'uid': admin.id}) }}"><i class="fa fa-check-circle"></i></a></span></div>
+            <div class="small-1 columns"><span data-tooltip class="has-tip" title="Deny request."><a href="{{ path('revoke_show_admin', {identifier: show.slug, 'uid': admin.id}) }}"><i class="fa fa-times-circle"></i></a></span>
+            {{ loop.last ? '</div></div>' }}
+        {% endfor %}
+    </div>
+</div>
+<div class="row">
+    <div class="large-6 column">
         <h4>Existing Admins</h4>
+        {% if admins is empty %}
+        <p>There are no admins specifically for this show.</p>
+        {% endif %}
         {% for admin in admins %}
             {{ not loop.first ? '</div></div>' }}
             <div class="row" id="admin_{{ admin.id }}">
             <div class="small-11 columns">
-            {% if admin.person is defined %}
-                {% if admin.person %}
+            {%- if admin.person is defined -%}
+                {%- if admin.person -%}
                     <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
-                {% else %}
+                {%- else -%}
                     {{ admin.name }}
-                {% endif %}
-            {% endif %}
-            </div><div class-"small-1 columns"><span data-tooltip class="has-tip" title="Revoke this admin."><a href="{{ path('revoke_show_admin', {identifier: show.slug, 'uid': admin.id}) }}"><i class="fa fa-trash-o"></i></a></span>
+                {%- endif -%}
+            {%- endif -%}
+            </div><div class="small-1 columns"><span data-tooltip class="has-tip" title="Revoke this admin."><a href="{{ path('revoke_show_admin', {identifier: show.slug, 'uid': admin.id}) }}"><i class="fa fa-trash-o"></i></a></span>
             {{ loop.last ? '</div></div>' }}
         {% endfor %}
     </div>
@@ -29,6 +56,9 @@
 <div class="row">
     <div class="large-6 column">
         <h4>Pending Admins</h4>
+        {% if admins is empty %}
+        <p>There are no pending admins for this show.</p>
+        {% endif %}
         {% for pending in pending_admins %}
             {{ not loop.first ? '</div></div>' }}
             <div class="row" id="pending_{{ pending.id }}">

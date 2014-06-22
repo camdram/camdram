@@ -58,7 +58,20 @@
         {{- not loop.last ? ',' }}
     {% endfor %}
     </p>
-    {% if pending_admins is not empty %}
+    {% if requested_admins is not empty %}
+    <p>
+        The following people have requested to be admins:
+        {% for admin in requested_admins %}
+            {%- if admin.person -%}
+                <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
+            {%- else -%}
+                {{ admin.name }}
+            {%- endif -%}
+            {{- not loop.last ? ',' }}
+        {% endfor %}
+        </p>
+    {% endif %}
+{% if pending_admins is not empty %}
     <p>
         The following people will be admins, pending creating an account:
         {% for pending in pending_admins %}

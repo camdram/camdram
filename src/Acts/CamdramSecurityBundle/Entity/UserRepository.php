@@ -70,4 +70,20 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * Get the list of users that have requested admin access to a show.
+     */
+    public function getRequestedShowAdmins(Show $show)
+    {
+        $query = $this->createQueryBuilder('u')
+            ->innerJoin('u.aces', 'e')
+            ->where("e.type = 'request-show'")
+            ->andWhere('e.entity_id = :id')
+            ->andWhere('e.granted_by IS NULL')
+            ->andWhere('e.revoked_by IS NULL')
+            ->setParameter('id', $show->getId())
+            ->getQuery();
+        return $query->getResult();
+    }
 }
+

@@ -27,10 +27,6 @@ class AccessControlEntryListener
      */
     public function postPersist(AccessControlEntry $ace, LifecycleEventArgs $event)
     {
-        $this->logger->info(sprintf('%s has granted access for %s to edit %s %d.', 
-            $ace->getGrantedBy()->getName(),
-            $ace->getUser()->getName(),
-            $ace->getType(),
-            $ace->getEntityId()));
+        /* TODO some logging */
     }
 }
