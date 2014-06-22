@@ -131,14 +131,18 @@ fos_rest:
             rss: true
             xml: true
             json: true
+            jsonp: true
         templating_formats:
             html: true
         force_redirects:
             html: true
-        view_response_listener: 'force'
+        view_response_listener: force
         failed_validation: HTTP_BAD_REQUEST
+        jsonp_handler: ~
     service:
         view_handler: acts.camdram_api.view_handler
+    routing_loader:
+        default_format: html
     body_listener: true
     format_listener: true
     access_denied_listener: true
@@ -148,6 +152,9 @@ acts_camdram:
     techies_advert_default_days: 15
     techies_advert_max_days: 40
     data_dir: "%kernel.root_dir%/data"
+
+acts_camdram_legacy:
+    v1_hostname: %v1_hostname%
 
 acts_social_api:
       http_client:
@@ -186,7 +193,7 @@ acts_sphinx_real_time:
         default: ~
     indexes:
         show:
-            fields: [name, description]
+            fields: [name, short_name, description]
             attributes: {name: string, description: string, entity_type: string, slug: string, start_at: datetime, rank: int}
             persistence:
                 driver: orm
@@ -201,7 +208,7 @@ acts_sphinx_real_time:
                 enable_star: true
                 dict: keywords
         venue:
-            fields: [name, description]
+            fields: [name, short_name, description]
             attributes: {name: string, short_name: string, description: string, slug: string,  entity_type: string, rank: int}
             persistence:
                 driver: orm
@@ -227,7 +234,7 @@ acts_sphinx_real_time:
                 enable_star: true
                 dict: keywords
         person:
-            fields: [name, description]
+            fields: [name, short_name, description]
             attributes: {name: string, description: string, entity_type: string, slug: string, rank: int}
             persistence:
                 driver: orm

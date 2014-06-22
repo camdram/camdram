@@ -42,7 +42,7 @@ class  SphinxProvider implements ProviderInterface
         $client = $this->container->get('acts.sphinx_realtime.client.default');
 
         $query = SphinxQL::forge()->select('id', 'name', new Expression("EXIST('start_at', 0) as date"), 'slug', 'entity_type')
-            ->from($indexes)->match('@relaxed','')->match('(name,short_name)', $q.'*')->limit($limit);
+            ->from($indexes)->match(array('name','short_name'), $q.'*', true)->limit($limit);
 
         foreach ($orderBy as $field => $direction) {
 
@@ -66,9 +66,9 @@ class  SphinxProvider implements ProviderInterface
         if (trim($q) == '') return new Pagerfanta(new ArrayAdapter(array()));
 
         $client = $this->container->get('acts.sphinx_realtime.client.default');
-        $query = SphinxQL::forge()->select()->from($indexes)->match('@relaxed','')
+        $query = SphinxQL::forge()->select()->from($indexes)
             ->limit($limit)->offset($offset)
-            ->match('(name,short_name,description)', $q);
+            ->match(array('name','short_name','description'), $q);
 
 
         foreach ($orderBy as $field => $direction) {

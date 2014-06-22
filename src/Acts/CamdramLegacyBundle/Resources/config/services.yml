@@ -12,3 +12,9 @@ services:
         arguments: [@doctrine.orm.entity_manager]
         tags:
             - { name: kernel.event_listener, event: camdram.entity_created, method: onShowCreated }
+
+    acts.camdram.redirect_handler:
+        class: Acts\CamdramLegacyBundle\EventListener\RedirectHandler
+        arguments:  [@router, @doctrine.orm.entity_manager, %v1_hostname%]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 200 }

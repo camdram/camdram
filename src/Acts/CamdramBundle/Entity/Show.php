@@ -1528,19 +1528,6 @@ class Show implements SearchableInterface, OwnableInterface
         usort($ret, array($this, 'cmpPerformances'));
         return $ret;
     }
-        /*    switch ($this->getMultiVenue()) {
-                case 'single':
-                    foreach ($this->getPerformances() as $performance) {
-                        $performance->setVenue($this->getVenue());
-                        $performance->setVenueName($this->getVenueName());
-                    }
-                    break;
-                case 'multi':
-                    $venue = venueName($perf);
-                    if($venue === "" || !$venue){
-                        $venue = venueName(getShowRow($showid));
-                    }
-                                }
 
     /**
      * compare two performance objects, returning -1 if $a is before $b, 1 if
@@ -1565,5 +1552,10 @@ class Show implements SearchableInterface, OwnableInterface
     public static function getAceType()
     {
         return 'show';
+    }
+
+    public function getShortName()
+    {
+        return '';
     }
 }

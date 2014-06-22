@@ -7,6 +7,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -36,7 +37,7 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')->disableOriginalConstructor()->getMock();
         $this->em->expects($this->any())->method('getRepository')->with('ActsCamdramSecurityBundle:AccessControlEntry')
                 ->will($this->returnValue($this->repository));
-        $this->aclProvider = new AclProvider($this->em);
+        $this->aclProvider = new AclProvider($this->em, new EventDispatcher());
     }
 
     public function testIsOwner_UserIsOwner()

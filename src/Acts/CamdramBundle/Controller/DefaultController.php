@@ -114,9 +114,9 @@ class DefaultController extends Controller
         foreach (array(1, 2, 5) as $years) {
             $date = clone $now;
             $date->modify('-'.$years.' years');
-            $period = $time_repo->findAt($date);
-            if ($period) {
-                $shows = $show_repo->findMostInterestingByTimePeriod($period, 5);
+            $week = $this->get('acts.camdram.week_manager')->findAt($date);
+            if ($week) {
+                $shows = $show_repo->findMostInterestingByWeek($week, 5);
                 if (count($shows) > 0) $data[$years] = $shows;
             }
         }
