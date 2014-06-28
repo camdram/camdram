@@ -1,3 +1,4 @@
-{{ ace.user.name }} has requested access to edit the show {{ show.name }} on Camdram. Please log in at http://www.camdram.net/administration/resource_access?showid={{ show.id }} to either grant or deny this request at your earliest convenience.
+{{ ace.user.name }} has requested access to edit the show {{ show.name }} on Camdram. Please log in at https://www.camdram.net/administration/resource_access?showid={{ show.id }} to either grant or deny this request at your earliest convenience. Alternatively, try out the new-look Camdram at {{ url('edit_show_admin', {identifier : show.slug}) }}.
 
 {% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
+

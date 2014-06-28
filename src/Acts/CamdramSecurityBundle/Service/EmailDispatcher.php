@@ -124,7 +124,7 @@ class EmailDispatcher
         /* Get the resource and pass it to the template. */
         if ($ace->getType() == 'show') {
             $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
-            $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
+            $message->setSubject('Access to show '.$show->getName().' on Camdram granted')
                 ->setBody(
                     $this->twig->render(
                         'ActsCamdramBundle:Email:ace.txt.twig',
@@ -151,7 +151,7 @@ class EmailDispatcher
         /* Get the resource and pass it to the template. */
         if ($ace->getType() == 'show') {
             $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
-            $message->setSubject('Access to show '.$show->getName().'on Camdram granted')
+            $message->setSubject('Access to show '.$show->getName().' on Camdram granted')
                 ->setBody(
                     $this->twig->render(
                         'ActsCamdramBundle:Email:ace.txt.twig',
@@ -183,6 +183,7 @@ class EmailDispatcher
             $emails[$email] = $user->getName();
         }
 
+        $url = $this->get('router')->generate('edit_show_admin', array('identifier' => $show->getSlug()), true);
         $message = \Swift_Message::newInstance()
             ->setSubject('Show access request on Camdram: '.$show->getName())
             ->setFrom($this->from_address)
@@ -192,7 +193,8 @@ class EmailDispatcher
                     'ActsCamdramBundle:Email:show_access_requested.txt.twig',
                     array(
                         'ace' => $ace,
-                        'show' => $show
+                        'show' => $show,
+                        'link' => $url
                     )
                 )
             )
@@ -200,3 +202,4 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 }
+
