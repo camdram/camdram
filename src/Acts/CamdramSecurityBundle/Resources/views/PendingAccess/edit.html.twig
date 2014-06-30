@@ -3,15 +3,24 @@
 {% block body %}
 <div class="row">
     <div class="large-12 column">
-        <p>Admins are able to edit the details of a show, create adverts for production
-        team vacancies, and edit the people listed who are involved in the show. These
-        list show the current admins and the list of people who will be able to edit
-        the show after they create an account on Camdram.</p>
-<div class="row">
+        <p>
+        {% if entity.entityType == 'show' %}
+            {% set revoke_route = 'revoke_show_admin' %}
+            Admins are able to edit the details of a show, create adverts for production
+            team vacancies, and edit the people listed who are involved in the show. These
+            list show the current admins and the list of people who will be able to edit
+            the show after they create an account on Camdram.
+        {% elseif entity.entityType == 'society' %}
+            {% set revoke_route = 'revoke_society_admin' %}
+            Society admins are able to edit the information listed on Camdram, authorise shows involving the society, and to open applications for new shows.
+        {% endif %}
+        </p>
+    <div class="row">
     <div class="large-6 column">
         <h4>Admin Requests</h4>
+        {% if requested_admins is defined %}
         {% if requested_admins is empty %}
-        <p>There are no requests to be an admin for this show.</p>
+        <p>There are no requests to be an admin for this {{ entity.entityType }}.</p>
         {% endif %}
         {% for admin in requested_admins %}
             {{ not loop.first ? '</div></div>' }}
@@ -25,17 +34,18 @@
                 {%- endif -%}
             {%- endif -%}
             </div>
-            <div class="small-1 columns"><span data-tooltip class="has-tip" title="Approve request."><a href="{{ path('approve_show_admin', {identifier: show.slug, 'uid': admin.id}) }}"><i class="fa fa-check-circle"></i></a></span></div>
-            <div class="small-1 columns"><span data-tooltip class="has-tip" title="Deny request."><a href="{{ path('revoke_show_admin', {identifier: show.slug, 'uid': admin.id}) }}"><i class="fa fa-times-circle"></i></a></span>
+            <div class="small-1 columns"><span data-tooltip class="has-tip" title="Approve request."><a href="{{ path('approve_show_admin', {identifier: entity.slug, 'uid': admin.id}) }}"><i class="fa fa-check-circle"></i></a></span></div>
+            <div class="small-1 columns"><span data-tooltip class="has-tip" title="Deny request."><a href="{{ path((revoke_route), {identifier: entity.slug, 'uid': admin.id}) }}"><i class="fa fa-times-circle"></i></a></span>
             {{ loop.last ? '</div></div>' }}
         {% endfor %}
+        {% endif %}
     </div>
 </div>
 <div class="row">
     <div class="large-6 column">
         <h4>Existing Admins</h4>
         {% if admins is empty %}
-        <p>There are no admins specifically for this show.</p>
+        <p>There are no admins specifically for this {{ entity.entityType }}.</p>
         {% endif %}
         {% for admin in admins %}
             {{ not loop.first ? '</div></div>' }}
@@ -48,7 +58,7 @@
                     {{ admin.name }}
                 {%- endif -%}
             {%- endif -%}
-            </div><div class="small-1 columns"><span data-tooltip class="has-tip" title="Revoke this admin."><a href="{{ path('revoke_show_admin', {identifier: show.slug, 'uid': admin.id}) }}"><i class="fa fa-trash-o"></i></a></span>
+            </div><div class="small-1 columns"><span data-tooltip class="has-tip" title="Revoke this admin."><a href="{{ path((revoke_route), {identifier: entity.slug, 'uid': admin.id}) }}"><i class="fa fa-trash-o"></i></a></span>
             {{ loop.last ? '</div></div>' }}
         {% endfor %}
     </div>
@@ -57,7 +67,7 @@
     <div class="large-6 column">
         <h4>Pending Admins</h4>
         {% if admins is empty %}
-        <p>There are no pending admins for this show.</p>
+        <p>There are no pending admins for this {{ entity.entityType }}.</p>
         {% endif %}
         {% for pending in pending_admins %}
             {{ not loop.first ? '</div></div>' }}

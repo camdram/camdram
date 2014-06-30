@@ -149,20 +149,25 @@ class EmailDispatcher
             ->setFrom($this->from_address)
             ->setTo($ace->getEmail());
         /* Get the resource and pass it to the template. */
-        if ($ace->getType() == 'show') {
-            $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
-            $message->setSubject('Access to show '.$show->getName().' on Camdram granted')
-                ->setBody(
-                    $this->twig->render(
-                        'ActsCamdramBundle:Email:ace.txt.twig',
-                        array(
-                            'is_pending' => true,
-                            'ace' => $ace,
-                            'entity' => $show
-                        )
-                    )
-                );
+        switch ($ace->getType()) {
+            case 'show':
+                $entity = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
+                break;
+            case 'society':
+                $entity = $this->em->getRepository('ActsCamdramBundle:Society')->findOneById($ace->getRid());
+                break;
         }
+        $message->setSubject('Access to '.$ace->getType().' '.$entity->getName().' on Camdram granted')
+            ->setBody(
+                $this->twig->render(
+                    'ActsCamdramBundle:Email:ace.txt.twig',
+                    array(
+                        'is_pending' => true,
+                        'ace' => $ace,
+                        'entity' => $entity
+                    )
+                )
+            );
         $this->mailer->send($message);
     }
 

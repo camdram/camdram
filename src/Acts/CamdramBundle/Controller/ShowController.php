@@ -342,7 +342,7 @@ class ShowController extends AbstractRestController
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         return $this->view($form, 200)
             ->setData(array(
-                'show' => $show, 
+                'entity' => $show, 
                 'admins' => $admins,
                 'requested_admins' => $requested_admins,
                 'pending_admins' => $pending_admins,
