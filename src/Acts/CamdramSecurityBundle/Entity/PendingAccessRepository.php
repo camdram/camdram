@@ -37,10 +37,9 @@ class PendingAccessRepository extends EntityRepository
             ->where('p.rid = :rid')
             ->andWhere('p.type = :type')
             ->setParameter('rid', $resource->getId());
-        if ($resource instanceof Show) {
-            $qb->setParameter('type', 'show');
-        } elseif ($resource instanceof Organisation) {
-            $qb->setParameter('type', 'society');
+        if (($resource instanceof Show) ||
+            ($resource instanceof Organisation)) {
+            $qb->setParameter('type', $resource->getEntityType());
         } else {
             return array();
         }

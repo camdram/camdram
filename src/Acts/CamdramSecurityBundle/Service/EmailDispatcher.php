@@ -156,6 +156,9 @@ class EmailDispatcher
             case 'society':
                 $entity = $this->em->getRepository('ActsCamdramBundle:Society')->findOneById($ace->getRid());
                 break;
+            case 'venue':
+                $entity = $this->em->getRepository('ActsCamdramBundle:Venue')->findOneById($ace->getRid());
+                break;
         }
         $message->setSubject('Access to '.$ace->getType().' '.$entity->getName().' on Camdram granted')
             ->setBody(

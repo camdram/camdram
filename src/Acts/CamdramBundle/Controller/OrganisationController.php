@@ -191,13 +191,19 @@ abstract class OrganisationController extends AbstractRestController
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
+        if ($org->getEntityType() == 'society') {
+            $route = 'post_society_admin';
+        }
+        else {
+            $route = 'post_venue_admin';
+        }
 
         $ace = new PendingAccess();
         $ace->setRid($org->getId());
         $ace->setType($org->getEntityType());
         $ace->setIssuer($this->getUser());
         $form = $this->createForm(new PendingAccessType(), $ace, array(
-            'action' => $this->generateUrl('post_society_admin', array('identifier' => $identifier))));
+            'action' => $this->generateUrl($route, array('identifier' => $identifier))));
 
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($org);

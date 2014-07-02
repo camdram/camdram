@@ -13,6 +13,9 @@
         {% elseif entity.entityType == 'society' %}
             {% set revoke_route = 'revoke_society_admin' %}
             Society admins are able to edit the information listed on Camdram, authorise shows involving the society, and to open applications for new shows.
+         {% elseif entity.entityType == 'venue' %}
+            {% set revoke_route = 'revoke_venue_admin' %}
+            Venue admins are able to edit the information listed on Camdram, authorise shows involving the venue, and to open applications for new shows.
         {% endif %}
         </p>
     <div class="row">
