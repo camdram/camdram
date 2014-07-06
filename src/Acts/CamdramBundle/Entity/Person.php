@@ -292,14 +292,8 @@ class Person implements SearchableInterface
      */
     public function getRank()
     {
-        $latest = null;
-        foreach ($this->getRoles() as $role) {
-            if ($role->getShow() && (!$latest || $role->getShow()->getStartAt() > $latest)) {
-                $latest = $role->getShow()->getStartAt();
-            }
-        }
-        if (!$latest) return 0;
-        else return $latest->format('Ymd');
+        $rank = $this->getIndexDate();
+        return $rank ? $rank->format('Ymd') : null;
     }
 
     public function isIndexable()
@@ -492,5 +486,29 @@ class Person implements SearchableInterface
     public function getShortName()
     {
         return '';
+    }
+
+    public function getNumShows()
+    {
+        $counter = 0;
+        $show_id = null;
+        foreach ($this->getRoles() as $role) {
+            if ($role->getShow() && (!$show_id || $role->getShow() != $show_id)) {
+                $counter++;
+                $show_id = $role->getShow();
+            }   
+        }
+        return $counter;
+    }
+    
+    public function getIndexDate()
+    {
+        $latest = null;
+        foreach ($this->getRoles() as $role) {
+            if ($role->getShow() && (!$latest || $role->getShow()->getStartAt() > $latest) && $role->getShow()->getStartAt()) {
+                $latest = $role->getShow()->getStartAt();
+            }
+        }
+        return $latest;
     }
 }

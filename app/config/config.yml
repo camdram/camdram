@@ -194,7 +194,7 @@ acts_sphinx_real_time:
     indexes:
         show:
             fields: [name, short_name, description]
-            attributes: {name: string, description: string, entity_type: string, slug: string, start_at: datetime, rank: int}
+            attributes: {name: string, description: string, entity_type: string, slug: string, index_date: datetime, rank: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Show
@@ -209,7 +209,7 @@ acts_sphinx_real_time:
                 dict: keywords
         venue:
             fields: [name, short_name, description]
-            attributes: {name: string, short_name: string, description: string, slug: string,  entity_type: string, rank: int}
+            attributes: {name: string, short_name: string, description: string, slug: string,  entity_type: string, rank: int, index_date: datetime}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Venue
@@ -222,7 +222,7 @@ acts_sphinx_real_time:
                 dict: keywords
         society:
             fields: [name, short_name, description]
-            attributes: {name: string, short_name: string, description: string, slug: string, entity_type: string, rank: int}
+            attributes: {name: string, short_name: string, description: string, slug: string, entity_type: string, rank: int, index_date: datetime}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Society
@@ -235,7 +235,7 @@ acts_sphinx_real_time:
                 dict: keywords
         person:
             fields: [name, short_name, description]
-            attributes: {name: string, description: string, entity_type: string, slug: string, rank: int}
+            attributes: {name: string, description: string, entity_type: string, slug: string, rank: int, index_date: datetime, num_shows: int}
             persistence:
                 driver: orm
                 model: Acts\CamdramBundle\Entity\Person

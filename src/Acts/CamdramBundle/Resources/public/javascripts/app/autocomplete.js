@@ -158,11 +158,27 @@ Camdram.autocomplete.displayResults = function(query, items) {
 
             $('<span/>').text(result.name).appendTo(link);
 
+	    if (result.entity_type == 'person' && result.show_count > 0) {
+            var string = result.show_count = ' (' + result.show_count + ' show';
+            if (parseInt(result.show_count) != 1) string += 's';
+
+            var date = moment.unix(result.index_date);
+            if (date.isValid()) {
+                if (date.isBefore(moment().subtract(6, 'months'))) {
+                    string += ' until ' + date.format('MMM YYYY');
+                } else {
+                    string += ', still active';
+                }
+            }
+            string += ')';
+
+            $('<em/>').text(string).appendTo(link);
+	    }
+
             if (result.entity_type == 'show') {
-                var date = new Date(result.date * 1000);
-                if (date.getFullYear()) { //is it a valid date?
-                    $('<em/>').text(' (' + Camdram.autocomplete.short_months[date.getMonth()] + ' ' + date.getFullYear() + ')')
-                        .appendTo(link);
+                var date = moment.unix(result.index_date);
+                if (date.isValid()) {
+                    $('<em/>').text(' (' + date.format('MMM YYYY') + ')').appendTo(link);
                 }
             }
 

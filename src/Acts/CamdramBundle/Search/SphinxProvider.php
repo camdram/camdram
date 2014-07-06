@@ -41,7 +41,9 @@ class  SphinxProvider implements ProviderInterface
 
         $client = $this->container->get('acts.sphinx_realtime.client.default');
 
-        $query = SphinxQL::forge()->select('id', 'name', new Expression("EXIST('start_at', 0) as date"), 'slug', 'entity_type')
+
+        $query = SphinxQL::forge()->select('id', 'name', new Expression("EXIST('start_at', 0) as date"), 'slug',
+                    new Expression("EXIST('num_shows', 0) as show_count"), 'index_date', 'entity_type')
             ->from($indexes)->match(array('name','short_name'), $q.'*', true)->limit($limit);
 
         foreach ($orderBy as $field => $direction) {
