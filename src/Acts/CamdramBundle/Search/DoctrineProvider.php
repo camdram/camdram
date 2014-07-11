@@ -50,15 +50,22 @@ class DoctrineProvider implements ProviderInterface
     public function executeTextSearch($repository, $query, $offset, $limit, array $orderBy = array())
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
+        if ($repository == 'user') {
+            $namespace = 'ActsCamdramSecurityBundle:';
+        } else {
+            $namespace = 'ActsCamdramBundle:';
+        }
         /** @var $repo \Doctrine\ORM\EntityRepository */
-        $repo = $em->getRepository('ActsCamdramBundle:'.ucfirst($repository));
+        $repo = $em->getRepository($namespace.ucfirst($repository));
 
         $qb = $repo->createQueryBuilder('e')
             ->where('e.name LIKE :input')
-            ->orWhere('e.description LIKE :input')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->setParameter(':input', '%'.$query.'%');
+        if ($repository != 'user') {
+            $qb->orWhere('e.description LIKE :input');
+        }
 
         $adapter = new DoctrineORMAdapter($qb);
         return new Pagerfanta($adapter);
