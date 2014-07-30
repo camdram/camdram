@@ -55,7 +55,7 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
             ->with('get_show', array('identifier' => 'test-show'))
             ->will($this->returnValue('/shows/test-show'));
 
-        $event = $this->diaryHelper->createEventFromPerformance($performance);
+        list($event) = $this->diaryHelper->createEventsFromPerformance($performance);
 
         $this->assertEquals('Test Show', $event->getName());
         $this->assertEquals(new \DateTime('2013-02-10'), $event->getStartDate());
@@ -81,7 +81,7 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
                     array('get_venue', array('identifier' => 'test-venue'), false, '/venues/test-venue'),
                 )));
 
-        $event = $this->diaryHelper->createEventFromPerformance($performance);
+        list($event) = $this->diaryHelper->createEventsFromPerformance($performance);
         $this->assertEquals('Test Show', $event->getName());
         $this->assertEquals(new \DateTime('2013-02-10'), $event->getStartDate());
         $this->assertEquals(new \DateTime('2013-02-15'), $event->getEndDate());
