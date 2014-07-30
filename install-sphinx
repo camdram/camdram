@@ -9,5 +9,5 @@ sudo apt-get install sphinxsearch
 
 # run searchd:
 php app/console --env=test_sphinx acts:sphinx:config
-sudo ln -s /etc/sphinxsearch/sphinx.conf $CWD/app/config/sphinx.default.cfg
+sudo ln -sf $CWD/app/config/sphinx.default.cfg /etc/sphinxsearch/sphinx.conf
 sudo service sphinxsearch restart
