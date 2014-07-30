@@ -1,0 +1,18 @@
+#!/bin/sh
+SCRIPT=$(readlink -f "$0")
+CWD=$(dirname "$SCRIPT")
+
+# install sphinxsearch:
+sudo add-apt-repository ppa:builds/sphinxsearch-rel21 -y
+sudo apt-get update
+sudo apt-get install sphinxsearch
+
+# log files
+sudo mkdir /var/log/sphinx
+sudo touch /var/log/sphinx/searchd.log
+sudo touch /var/log/sphinx/query.log
+sudo chmod -R 777 /var/log/sphinx
+
+# run searchd:
+php app/console acts:sphinx:config
+searchd --config $CWD/app/config/sphinx.default.cfg
