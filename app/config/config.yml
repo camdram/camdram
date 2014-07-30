@@ -190,7 +190,10 @@ fos_oauth_server:
 
 acts_sphinx_real_time:
     clients:
-        default: ~
+        default:
+          log: /var/log/sphinxsearch/searchd.log
+          query_log: /var/log/sphinxsearch/query.log
+          pid_file: /var/log/sphinxsearch/searchd.pid
     indexes:
         show:
             fields: [name, short_name, description]
