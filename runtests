@@ -1,3 +1,5 @@
+#!/bin/bash
+PROFILE=${1:-"default"}
 phpunit -c app
-app/behat @ActsCamdramBundle
-app/behat @ActsCamdramSecurityBundle
+app/behat --profile $PROFILE @ActsCamdramBundle
+app/behat --profile $PROFILE @ActsCamdramSecurityBundle
