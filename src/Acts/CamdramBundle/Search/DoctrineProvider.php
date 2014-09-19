@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Search;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Show;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -19,21 +20,20 @@ use Pagerfanta\Pagerfanta;
  */
 class DoctrineProvider implements ProviderInterface
 {
-    private $container;
+    private $entityManager;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->container = $container;
+        $this->entityManager = $entityManager;
     }
 
 
     public function executeAutocomplete($indexes, $search_query, $limit, array $filters = array(), array $orderBy = array())
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var $repo \Doctrine\ORM\EntityRepository */
         $results = array();
         foreach ($indexes as $index) {
-            $repo = $em->getRepository('ActsCamdramBundle:'.ucfirst($index));
+            $repo = $this->entityManager->getRepository('ActsCamdramBundle:'.ucfirst($index));
 
             $query = $repo->createQueryBuilder('e')
                 ->where('e.name LIKE :input')
@@ -51,7 +51,6 @@ class DoctrineProvider implements ProviderInterface
 
     public function executeTextSearch($indexes, $q, $offset, $limit, array $orderBy = array())
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
         $entities = array();
         foreach ($indexes as $index) {
             if ($index == 'user') {
@@ -61,7 +60,7 @@ class DoctrineProvider implements ProviderInterface
             }
 
             /** @var $repo \Doctrine\ORM\EntityRepository */
-            $repo = $em->getRepository($namespace.ucfirst($index));
+            $repo = $this->entityManager->getRepository($namespace.ucfirst($index));
 
             $qb = $repo->createQueryBuilder('e')
                 ->where('e.name LIKE :input')

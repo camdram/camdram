@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Search;
 use Acts\SphinxRealTimeBundle\Paginator\FantaPaginatorAdapter;
 use Acts\SphinxRealTimeBundle\Paginator\RawPartialResults;
 use Acts\SphinxRealTimeBundle\Paginator\SphinxQLAdapter;
+use Acts\SphinxRealTimeBundle\Service\Client;
 use Foolz\SphinxQL\Expression;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
@@ -20,12 +21,12 @@ use Foolz\SphinxQL\SphinxQL;
  */
 class  SphinxProvider implements ProviderInterface
 {
-    /** @var \Symfony\Component\DependencyInjection\ContainerInterface */
+    /** @var \Acts\SphinxRealTimeBundle\Service\Client */
     private $container;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(Client $client)
     {
-        $this->container = $container;
+        $this->client = $client;
     }
 
     /**
@@ -39,9 +40,6 @@ class  SphinxProvider implements ProviderInterface
     {
         if (empty($q)) return array();
 
-        $client = $this->container->get('acts.sphinx_realtime.client.default');
-
-
         $query = SphinxQL::forge()->select('id', 'name', 'slug',
                     new Expression("EXIST('num_shows', 0) as show_count"), 'index_date', 'entity_type')
             ->from($indexes)->match(array('name','short_name'), $q.'*', true)->limit($limit);
@@ -51,7 +49,7 @@ class  SphinxProvider implements ProviderInterface
             $query->orderBy($field, $direction);
         }
 
-        $results = $client->query($query);
+        $results = $this->client->query($query);
 
         return $results;
     }
@@ -67,7 +65,6 @@ class  SphinxProvider implements ProviderInterface
     {
         if (trim($q) == '') return new Pagerfanta(new ArrayAdapter(array()));
 
-        $client = $this->container->get('acts.sphinx_realtime.client.default');
         $query = SphinxQL::forge()->select()->from($indexes)
             ->limit($limit)->offset($offset)
             ->match(array('name','short_name','description'), $q);
@@ -76,7 +73,7 @@ class  SphinxProvider implements ProviderInterface
         foreach ($orderBy as $field => $direction) {
             $query->orderBy($field, $direction);
         }
-        $paginator = new Pagerfanta(new FantaPaginatorAdapter(new SphinxQLAdapter($client, $query)));
+        $paginator = new Pagerfanta(new FantaPaginatorAdapter(new SphinxQLAdapter($this->client, $query)));
         return $paginator;
     }
 

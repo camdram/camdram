@@ -40,8 +40,8 @@ assetic:
     filters:
         cssrewrite:
             apply_to: '\.css$'
-        scssphp:
-            import_paths: ["%kernel.root_dir%/../vendor/zurb/foundation/scss"]
+        compass:
+            load_paths: ["%kernel.root_dir%/../vendor/zurb/foundation/scss"]
             apply_to: "\.scss$"
 
 monolog:

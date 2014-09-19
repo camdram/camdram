@@ -28,13 +28,14 @@
       <div class="large-9 columns search">
           <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
               <i class="fa fa-search"></i>
-              <input type="text" class="searchfield" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
+              <input type="text" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
               <div class="results">
                   <ul></ul>
                   <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
                   <div class="fulltext"><a href="#">...perform a search for &quot;<span class="query"></span>&quot;</a></div>
               </div>
               <i class="fa fa-spinner fa-spin"></i>
+              <input type="submit" value="Search"/>
           </form>
       </div>
     </div>
