@@ -61,7 +61,7 @@ class ShowController extends AbstractRestController
             $show = new Show();
             $show->addPerformance(new Performance());
         }
-        return $this->createForm(new ShowType(), $show);
+        return $this->createForm(new ShowType($this->get('security.context')), $show);
     }
 
     private function getTechieAdvertForm(Show $show, $obj = null)
