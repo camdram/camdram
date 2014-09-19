@@ -12,3 +12,4 @@ before_script:
 
 script:
     - ./runtests sphinx
+    - ./runtests
