@@ -620,17 +620,17 @@
         },
         {
             "name": "camdram/sphinx-realtime-bundle",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "target-dir": "Acts/SphinxRealTimeBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/sphinx-realtime-bundle.git",
-                "reference": "618c6324514631a79b14dd8478684367d40e2d70"
+                "reference": "69a604971cd3f3407e7fdd722523d9349b27619d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/618c6324514631a79b14dd8478684367d40e2d70",
-                "reference": "618c6324514631a79b14dd8478684367d40e2d70",
+                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/69a604971cd3f3407e7fdd722523d9349b27619d",
+                "reference": "69a604971cd3f3407e7fdd722523d9349b27619d",
                 "shasum": ""
             },
             "require": {
@@ -661,7 +661,7 @@
                 "search",
                 "sphinx"
             ],
-            "time": "2014-01-26 16:35:02"
+            "time": "2014-09-19 15:31:00"
         },
         {
             "name": "doctrine/annotations",
