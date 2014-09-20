@@ -218,6 +218,7 @@ acts_sphinx_real_time:
                 model: Acts\CamdramBundle\Entity\Venue
                 provider: ~
                 finder: ~
+                listener: ~
             config:
                 min_prefix_len: 1
                 prefix_fields: [name, short_name]
@@ -231,6 +232,7 @@ acts_sphinx_real_time:
                 model: Acts\CamdramBundle\Entity\Society
                 provider: ~
                 finder: ~
+                listener: ~
             config:
                 min_prefix_len: 1
                 prefix_fields: [name, short_name]

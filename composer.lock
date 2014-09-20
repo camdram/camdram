@@ -2216,12 +2216,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "fff460dfb1b2edeaaccc96a8327320555be1c023"
+                "reference": "6ea61235cd2a52671e646e894819d2b5e1fd0d10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/fff460dfb1b2edeaaccc96a8327320555be1c023",
-                "reference": "fff460dfb1b2edeaaccc96a8327320555be1c023",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/6ea61235cd2a52671e646e894819d2b5e1fd0d10",
+                "reference": "6ea61235cd2a52671e646e894819d2b5e1fd0d10",
                 "shasum": ""
             },
             "require": {
@@ -2289,7 +2289,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2014-09-12 15:07:29"
+            "time": "2014-09-20 01:02:35"
         },
         {
             "name": "guzzle/common",
@@ -4078,16 +4078,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "68675899c002fc95e24194dd84bbc9c813b79fae"
+                "reference": "cd12d60cdd3b03de69a68a49089d85e119491b4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/68675899c002fc95e24194dd84bbc9c813b79fae",
-                "reference": "68675899c002fc95e24194dd84bbc9c813b79fae",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/cd12d60cdd3b03de69a68a49089d85e119491b4d",
+                "reference": "cd12d60cdd3b03de69a68a49089d85e119491b4d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.4"
+                "php": ">=5.3.3"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9.1"
@@ -4095,7 +4095,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.2-dev"
+                    "dev-master": "5.3-dev"
                 }
             },
             "autoload": {
@@ -4122,7 +4122,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-09-19 05:52:55"
+            "time": "2014-09-20 11:30:50"
         },
         {
             "name": "symfony-cmf/block-bundle",
@@ -4911,12 +4911,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "29ccb308253cfb347abc7b7d200fbfd8aeb2a12a"
+                "reference": "99e6d66c256d7c6dd844f8f85cd8764fe2537251"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/29ccb308253cfb347abc7b7d200fbfd8aeb2a12a",
-                "reference": "29ccb308253cfb347abc7b7d200fbfd8aeb2a12a",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/99e6d66c256d7c6dd844f8f85cd8764fe2537251",
+                "reference": "99e6d66c256d7c6dd844f8f85cd8764fe2537251",
                 "shasum": ""
             },
             "require": {
@@ -5017,7 +5017,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-09-19 05:23:46"
+            "time": "2014-09-20 06:08:40"
         },
         {
             "name": "twig/extensions",
