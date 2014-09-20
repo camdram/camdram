@@ -11,4 +11,5 @@ before_script:
   - ./install-sphinx
 
 script:
-    - ./runtests sphinx && ./runtests
+    - ./runtests sphinx
+    - ./runtests

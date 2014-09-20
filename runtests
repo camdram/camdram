@@ -1,5 +1,6 @@
 #!/bin/bash
 PROFILE=${1:-"default"}
+set -e
 phpunit -c app
 app/behat --profile $PROFILE @ActsCamdramBundle
 app/behat --profile $PROFILE @ActsCamdramSecurityBundle
