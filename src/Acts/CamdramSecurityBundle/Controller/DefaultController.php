@@ -231,12 +231,12 @@ class DefaultController extends Controller
                 if ($user) {
                     $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
                     $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
-                    return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password_complete.html.twig', array(
-                        'email' => $data['email']
-                    ));
-                } else {
-                    $form->get('email')->addError(new FormError('A user cannot be found with that email address'));
                 }
+
+                //Always return the same response whether or not we find a user match
+                return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password_complete.html.twig', array(
+                    'email' => $data['email']
+                ));
             }
         }
         return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password.html.twig', array(
