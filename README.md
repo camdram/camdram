@@ -16,7 +16,7 @@ Use one of the following commands to install the necessary packages required to 
 
 ###Debian-based distributions, e.g. Ubuntu
 
-    $ sudo apt-get install git-core php5 php5-cli curl php5-curl php5-intl php5-sqlite php-apc php5-gd php5-json
+    $ sudo apt-get install git-core php5 php5-cli curl php5-curl php5-intl php5-sqlite php-apc php5-gd php5-json ruby ruby-compass
 
 ###RPM-based distributions, e.g. Fedora
 
