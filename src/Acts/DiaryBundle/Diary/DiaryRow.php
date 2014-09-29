@@ -102,8 +102,8 @@ class DiaryRow
             $item->setStartIndex($this->calculateIndex($event->getDate()));
             $this->addItem($item);
         } elseif ($event instanceof MultiDayEventInterface) {
-            if ($event->getStartDate() < $event->getExcludeDate()
-                    && $event->getExcludeDate() < $event->getEndDate()) {
+            if (($event->getStartDate() < $event->getExcludeDate()) &&
+                ($event->getExcludeDate() < $event->getEndDate())) {
                 $start_index = $this->calculateIndex($event->getStartDate());
                 $end_index = $this->calculateIndex($event->getExcludeDate());
                 $item->setStartIndex($start_index);
@@ -151,3 +151,4 @@ class DiaryRow
         return $this->start_date;
     }
 }
+

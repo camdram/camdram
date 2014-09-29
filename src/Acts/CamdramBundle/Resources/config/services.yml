@@ -81,11 +81,11 @@ services:
 
     acts.camdram.search_provider.doctrine:
         class: Acts\CamdramBundle\Search\DoctrineProvider
-        arguments: [@service_container]
+        arguments: [@doctrine.orm.entity_manager]
 
     acts.camdram.search_provider.sphinx:
         class: Acts\CamdramBundle\Search\SphinxProvider
-        arguments: [@service_container]
+        arguments: [@acts.sphinx_realtime.client.default]
 
     acts.camdram.email_dispatcher:
         class: Acts\CamdramBundle\Service\EmailDispatcher

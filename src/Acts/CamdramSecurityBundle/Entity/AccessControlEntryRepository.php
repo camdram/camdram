@@ -1,11 +1,13 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Entity;
 
-use Acts\CamdramBundle\Entity\Organisation;
-use Acts\CamdramSecurityBundle\Security\OwnableInterface;
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+
+use Acts\CamdramBundle\Entity\Organisation,
+    Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 
 class AccessControlEntryRepository extends EntityRepository
 {
@@ -40,6 +42,21 @@ class AccessControlEntryRepository extends EntityRepository
                 ->setParameter('type', $entity->getAceType())
         ;
 
+        return $query->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * Get an ACE request request made by a user for the show.
+     */
+    public function findAceRequest(User $user, Show $show)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $query = $qb->where('e.user = :user')
+            ->andWhere('e.entity_id = :entity_id')
+            ->andWhere("e.type = 'request-show'")
+            ->setParameter('user', $user)
+            ->setParameter('entity_id', $show->getId())
+        ;
         return $query->getQuery()->getOneOrNullResult();
     }
 

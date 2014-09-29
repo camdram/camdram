@@ -126,7 +126,7 @@ class ShowRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findMostInterestingByTimePeriod(TimePeriod $period, $limit)
+    public function findMostInterestingByWeek(Week $week, $limit)
     {
         //For now, we define 'most interesting' as 'lasts the longest period of time'
         $qb = $this->createQueryBuilder('s');
@@ -135,9 +135,9 @@ class ShowRepository extends EntityRepository
             ->andWhere('p.end_date > :start')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->setParameter('start', $period->getStartAt())
-            ->setParameter('end', $period->getEndAt())
-            ->orderBy('s.end_at - s.start_at', 'DESC')
+            ->setParameter('start', $week->getStartAt())
+            ->setParameter('end', $week->getEndAt())
+            ->orderBy('p.end_date - p.start_date', 'DESC')
             ->setMaxResults($limit);
         return $qb->getQuery()->getResult();
     }

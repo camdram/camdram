@@ -34,3 +34,4 @@ parameters:
     search_provider: doctrine
     external_login_test_mode: true
     development_warning: false
+    v1_hostname: www.camdram.net

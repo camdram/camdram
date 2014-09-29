@@ -15,7 +15,31 @@
                 {item: {id: 'edit_application', path: path('edit_venue_application',{identifier:org.slug}), icon: 'pencil', text: 'Show applications'} }) }}
             {% endif %}
         </li>
+        <li>
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+            {item: {id: 'edit_admin', path: path('edit_venue_admin',{identifier:org.slug}), icon: 'pencil', text: "Edit the venue's admins"} }) }}
+        </li>
     </ul>
-
+    <p>
+    The following people can edit this venue:
+    {% for admin in admins %}
+        {%- if admin.person -%}
+            <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
+        {%- else -%}
+            {{ admin.name }}
+        {%- endif -%}
+        {{- not loop.last ? ',' }}
+    {% endfor %}
+    </p>
+    {% if pending_admins is not empty %}
+    <p>
+        The following people will be admins, pending creating an account:
+        {% for pending in pending_admins %}
+            {{ pending.email }}
+            {{- not loop.last ? ',' }}
+        {% endfor %}
+    </p>
+    {% endif %}
 </div>
 {% endif %}
+

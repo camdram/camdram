@@ -983,12 +983,8 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getRank()
     {
-        if ($this->getStartAt()) {
-            return $this->getStartAt()->format('Ymd');
-        } else {
-            return 0;
-        }
-
+        $rank = $this->getIndexDate();
+        return $rank ? $rank->format('Ymd') : null;
     }
 
 
@@ -1587,19 +1583,6 @@ class Show implements SearchableInterface, OwnableInterface
         $this ->allPerformancesCache = $ret;
         return $ret;
     }
-        /*    switch ($this->getMultiVenue()) {
-                case 'single':
-                    foreach ($this->getPerformances() as $performance) {
-                        $performance->setVenue($this->getVenue());
-                        $performance->setVenueName($this->getVenueName());
-                    }
-                    break;
-                case 'multi':
-                    $venue = venueName($perf);
-                    if($venue === "" || !$venue){
-                        $venue = venueName(getShowRow($showid));
-                    }
-                                }
 
     /**
      * compare two performance objects, returning -1 if $a is before $b, 1 if
@@ -1624,5 +1607,14 @@ class Show implements SearchableInterface, OwnableInterface
     public static function getAceType()
     {
         return 'show';
+    }
+
+    public function getShortName()
+    {
+        return '';
+    }
+
+    public function getIndexDate() {
+        return $this->getStartAt();
     }
 }

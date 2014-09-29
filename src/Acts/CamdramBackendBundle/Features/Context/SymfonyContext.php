@@ -83,4 +83,18 @@ class SymfonyContext extends BehatContext implements KernelAwareInterface
     {
         $this->kernel->getContainer()->get('acts_camdram_backend.database_tools')->resetDatabase();
     }
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetSphinx()
+    {
+        if ($this->kernel->getContainer()->has('acts.sphinx_realtime.resetter')) {
+            $resetter = $this->kernel->getContainer()->get('acts.sphinx_realtime.resetter');
+            $indexManager = $this->kernel->getContainer()->get('acts.sphinx_realtime.index_manager');
+            foreach ($indexManager->getIndexes() as $index) {
+                $resetter->resetIndex($index->getId());
+            }
+        }
+    }
 }

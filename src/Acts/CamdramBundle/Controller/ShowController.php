@@ -17,6 +17,9 @@ use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess,
     Acts\CamdramSecurityBundle\Entity\AccessControlEntry,
+    Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
+    Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent,
+    Acts\CamdramSecurityBundle\Event\PendingAccessEvent,
     Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,7 +61,7 @@ class ShowController extends AbstractRestController
             $show = new Show();
             $show->addPerformance(new Performance());
         }
-        return $this->createForm(new ShowType(), $show);
+        return $this->createForm(new ShowType($this->get('security.context')), $show);
     }
 
     private function getTechieAdvertForm(Show $show, $obj = null)
@@ -78,6 +81,7 @@ class ShowController extends AbstractRestController
     {
         $em = $this->getDoctrine()->getManager();
         $admins = $this->get('camdram.security.acl.provider')->getOwners($show);
+        $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         if ($show->getSociety()) $admins[] = $show->getSociety();
         if ($show->getVenue()) $admins[] = $show->getVenue();
@@ -86,6 +90,7 @@ class ShowController extends AbstractRestController
             'ActsCamdramBundle:Show:admin-panel.html.twig',
             array('show' => $show,
                   'admins' => $admins,
+                  'requested_admins' => $requested_admins,
                   'pending_admins' => $pending_admins)
             );
     }
@@ -333,11 +338,13 @@ class ShowController extends AbstractRestController
 
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($show);
+        $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         return $this->view($form, 200)
             ->setData(array(
-                'show' => $show, 
+                'entity' => $show, 
                 'admins' => $admins,
+                'requested_admins' => $requested_admins,
                 'pending_admins' => $pending_admins,
                 'form' => $form->createView())
             )
@@ -396,6 +403,8 @@ class ShowController extends AbstractRestController
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
+                        $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::PENDING_ACCESS_CREATED, 
+                            new PendingAccessEvent($pending_ace)); 
                     }
                 }
             }
@@ -424,8 +433,28 @@ class ShowController extends AbstractRestController
                 ->setType('request-show');
             $em->persist($ace);
             $em->flush();
+            $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::ACE_CREATED, 
+                new AccessControlEntryEvent($ace)); 
             return $this->render("ActsCamdramBundle:Show:access_requested.html.twig");
         }
+    }
+
+    /**
+     * Approve a request to be an admin for this show.
+     *
+     * @param $identifier
+     */
+    public function approveAdminAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('uid');
+        $user= $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        if ($user != null) {
+            $this->get('camdram.security.acl.provider')->approveShowAccess($show, $user, $this->getUser());
+        }
+        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**

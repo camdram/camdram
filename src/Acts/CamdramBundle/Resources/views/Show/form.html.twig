@@ -44,6 +44,9 @@
     </div>
     <div class="large-9 columns">
         {{ form_widget(form.society) }}
+        {% if form.society.vars.disabled %}
+        <p>Please <a href="{{ path('acts_camdram_contact_us') }}">contact us</a> if you would like to change this show's society</p>
+        {% endif %}
     </div>
 </div>
 

@@ -38,12 +38,18 @@ class PendingAccessRepository extends EntityRepository
             ->where('p.rid = :rid')
             ->andWhere('p.type = :type')
             ->setParameter('rid', $resource->getId());
+<<<<<<< HEAD
         if ($resource instanceof Show) {
             $qb->setParameter('type', 'show');
         } elseif ($resource instanceof Organisation) {
             $qb->setParameter('type', 'society');
         } elseif ($resource instanceof EmailBuilder) {
             $qb->setParameter('type', 'emailBuilder');
+=======
+        if (($resource instanceof Show) ||
+            ($resource instanceof Organisation)) {
+            $qb->setParameter('type', $resource->getEntityType());
+>>>>>>> 01d821d51bb97c2732c7e43892143c1f19b421f3
         } else {
             return array();
         }

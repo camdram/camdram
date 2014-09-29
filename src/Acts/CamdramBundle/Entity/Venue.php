@@ -184,4 +184,8 @@ class Venue extends Organisation
         return $this->entity_type;
     }
 
+    public function getIndexDate()
+    {
+        return null;
+    }
 }

@@ -1,8 +1,11 @@
 <?php
 namespace Acts\CamdramSecurityBundle\EventListener;
 
-use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Event\UserEvent;
+use Acts\CamdramBundle\Entity\PendingAccess,
+    Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent,
+    Acts\CamdramSecurityBundle\Event\PendingAccessEvent,
+    Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Symfony\Component\Routing\RouterInterface;
@@ -40,4 +43,33 @@ class EmailSendListener
 
         $this->dispatcher->sendEmailVerifyEmail($user, $token);
     }
+
+    /**
+     * Inform the person that they have been granted access to a resource on the
+     * site.
+     */
+    public function onAceCreatedEvent(AccessControlEntryEvent $event)
+    {
+        $ace = $event->getAccessControlEntry();
+        switch ($ace->getType()) {
+            case 'show':
+            case 'society':
+                $this->dispatcher->sendAceEmail($ace);
+                break;
+            case 'request-show':
+                $this->dispatcher->sendShowAdminReqEmail($ace);
+                break;
+        }
+    }
+
+    /**
+     * Inform the person that they have been granted access to a resource on the
+     * site, pending creating an account.
+     */
+    public function onPendingAccessCreatedEvent(PendingAccessEvent $event)
+    {
+        $pending_ace = $event->getPendingAccess();
+        $this->dispatcher->sendPendingAceEmail($pending_ace);
+    }
 }
+

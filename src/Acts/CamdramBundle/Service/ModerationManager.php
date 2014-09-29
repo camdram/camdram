@@ -98,7 +98,6 @@ class ModerationManager
     {
         if ($entity instanceof Show && !$entity->isAuthorised()) {
             $entity->setAuthorisedBy($this->securityContext->getToken()->getUser());
-            $this->entityManager->flush();
 
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $owners = $repo->getEntityOwners($entity);

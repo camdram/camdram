@@ -68,7 +68,7 @@ class UserController extends AbstractRestController
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
-            $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), array());
+            $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'), $request->get('limit'), array());
         } else {
             $repo = $this->getRepository();
             $qb = $repo->createQueryBuilder('e');

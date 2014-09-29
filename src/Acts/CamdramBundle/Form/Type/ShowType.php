@@ -4,8 +4,11 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Acts\CamdramBundle\Form\DataTransformer\PerformanceExcludeTransformer;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Class ShowType
@@ -16,6 +19,13 @@ use Acts\CamdramBundle\Form\DataTransformer\PerformanceExcludeTransformer;
  */
 class ShowType extends AbstractType
 {
+    private $securityContext;
+
+    public function __construct(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
@@ -50,19 +60,28 @@ class ShowType extends AbstractType
                 'other_mapped' => true,
                 'required' => false,
             ))
-            ->add('society','entity_search', array(
-                'route' => 'get_societies',
-                'class' => 'Acts\\CamdramBundle\\Entity\\Society',
-                'data_class' => 'Acts\\CamdramBundle\\Entity\\Show',
-                'other_mapped' => true,
-                'required' => false,
-            ))
             ->add('booking_code', null, array(
                 'required' => false, 'label' => 'Web page to buy tickets'
             ))
             ->add('facebook_id', null, array('required' => false))
             ->add('twitter_id', null, array('required' => false))
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+                //society's 'read-only' field is dependent on whether a new show is being created
+                $show = $event->getData();
+                $form = $event->getForm();
+
+                $form->add('society','entity_search', array(
+                    'route' => 'get_societies',
+                    'class' => 'Acts\\CamdramBundle\\Entity\\Society',
+                    'data_class' => 'Acts\\CamdramBundle\\Entity\\Show',
+                    'other_mapped' => true,
+                    'required' => false,
+                    'disabled' => $show && null !== $show->getId() && !$this->securityContext->isGranted('ROLE_ADMIN')
+                ));
+
+            })
         ;
+
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
