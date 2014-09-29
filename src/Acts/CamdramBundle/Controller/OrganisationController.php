@@ -70,7 +70,7 @@ abstract class OrganisationController extends AbstractRestController
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
         $now = $this->get('acts.time_service')->getCurrentTime();
-        $performances = $performance_repo->getUpcomingBySociety($now, $this->getEntity($identifier));
+        $performances = $performance_repo->getBySociety($this->getEntity($identifier), $now);
 
         $diary = $this->get('acts.diary.factory')->createDiary();
 

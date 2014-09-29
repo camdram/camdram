@@ -61,7 +61,7 @@ class SocietyController extends OrganisationController
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
         $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
-        $now = new \DateTime;
+        $now = $this->get('acts.time_service')->getCurrentTime();
 
         $data = array(
             'society' => $society,
@@ -82,11 +82,23 @@ class SocietyController extends OrganisationController
      * @param $identifier
      * @return mixed
      */
-    public function getShowsAction($identifier)
+    public function getShowsAction(Request $request, $identifier)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
-        $now = $this->get('acts.time_service')->getCurrentTime();
-        $performances = $performance_repo->getUpcomingBySociety($now, $this->getEntity($identifier));
+               
+        if($request->query->get('from')){
+            $from = new \DateTime($request->query->get('from'));
+        }else{
+            $from = $this->get('acts.time_service')->getCurrentTime();
+        }
+        
+        if($request->query->get('to')){
+            $to = new \DateTime($request->query->get('to'));
+        }else{
+            $to = null;
+        }
+        
+        $performances = $performance_repo->getBySociety($this->getEntity($identifier),$from,$to);
 
         $diary = $this->get('acts.diary.factory')->createDiary();
 
