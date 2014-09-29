@@ -180,7 +180,7 @@ class VenueController extends OrganisationController
      * @param $identifier
      * @return mixed
      */
-public function getShowsAction(Request $request, $identifier)
+    public function getShowsAction(Request $request, $identifier)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
 
