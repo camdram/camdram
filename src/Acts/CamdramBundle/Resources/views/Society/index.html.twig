@@ -5,58 +5,51 @@
 
 {% block body %}
   <div class="row">
-      <div class="large-12 columns"><h3>Societies</h3></div>
-  </div>
-  <div class="row">
+      <div class="large-12 columns">
+          <h3>Societies</h3>
 
-      {% if societies | length > 0 %}
-        {% set value = 'no spaces' %}
-        {% set i = 1  %}
-        {% set seen_college = false %}
-        {% for society in societies %}
-          {% if (society.college is not empty) and not seen_college %}
+{% if societies | length > 0 %}
+<ul class="large-block-grid-2">
+    {% set seen_college = false %}
+    {% for society in societies %}
+        {% if (society.college is not empty) and not seen_college %}
             {% set seen_college = true %}
-              <hr>
-              </div>
-              <h3>College Societies</h3>
-          {% endif %}
+            <hr>
+            </ul><ul class="large-block-grid-2">
+            <h3>College Societies</h3>
+        {% endif %}
+        <li>
+            <h5>
+                <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
+                {% if society.shortname is not empty %}
+                <small>- {{ society.shortname }}</small>
+                {% endif %}
+            </h5>
+            {% if society.college is not empty %}
+                <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
+            {% endif %}
 
-          <div class="large-6 columns">
-          <h5><a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
-          {% if society.shortname is not empty %}
-            <small>- {{ society.shortname }}</small>
-          {% endif %}
-          </h5>
-          {% if society.college is not empty %}
-            <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
-          {% endif %}
+            {% if society.image %}
+                <div class="row">
+                    <div class="small-3 columns">
+                        <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ render_image(society.image, 88, 70) }}</a>
+                    </div>
+                    <div class="small-9 columns">
+                        <p>{{ society.description|truncate(200)|strip_new_lines|camdram_markdown }}</p>
+                        <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
+                    </div>
+                </div>
+            {% else %}
+                <p>{{ society.description|truncate(200)|strip_new_lines|camdram_markdown }}</p>
+                <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
 
-              {% if society.image %}<div class="row"><div class="small-3 columns">
-              <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ render_image(society.image, 88, 70) }}</a>
-          </div>
-              <div class="small-9 columns">
-                  <p>{{ society.description|truncate(200)|strip_new_lines|camdram_markdown }}
-                  </p>
-                  <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
-              </div>
-          {% else %}
-              <p>{{ society.description|truncate(200)|strip_new_lines|camdram_markdown }}</p>
-              <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
-          {% endif %}
-          </div>
+{% endif %}
 
-          {% if (i < societies | length) and (i is divisibleby(2)) %}
-            </div><!-- endrow -->
-            <div class="row">
-          {% endif %}
-          {% set i = i + 1 %}
-        {% endfor %}
-      {% else %}
-        <div class="large-12 columns">
-        <p>There are no societies.</p>
-      {% endif %}
-        </div>
-    </div>
   </div>
+</div>
 
 {% endblock %}
