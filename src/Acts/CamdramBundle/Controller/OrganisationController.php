@@ -66,24 +66,7 @@ abstract class OrganisationController extends AbstractRestController
      * @param $identifier
      * @return mixed
      */
-    public function getShowsAction($identifier)
-    {
-        $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
-        $now = $this->get('acts.time_service')->getCurrentTime();
-        $performances = $performance_repo->getUpcomingBySociety($now, $this->getEntity($identifier));
-
-        $diary = $this->get('acts.diary.factory')->createDiary();
-
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
-        $diary->addEvents($events);
-
-        $view = $this->view($diary, 200)
-            ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
-        ;
-
-        return $view;
-    }
+    public abstract function getShowsAction(Request $request, $identifier);
 
     private function getApplicationForm(Organisation $org, $obj = null)
     {
