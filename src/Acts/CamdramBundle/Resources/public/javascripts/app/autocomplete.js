@@ -112,6 +112,7 @@ Camdram.autocomplete.requestOptions = function() {
     }
 
     if (typeof Camdram.autocomplete.cache[typed] != 'undefined') {
+        console.log('cached', Camdram.autocomplete.cache[typed]);
         //We've done this request before, so load the results from the cache
         Camdram.autocomplete.displayResults(typed, Camdram.autocomplete.cache[typed])
     }
@@ -120,6 +121,7 @@ Camdram.autocomplete.requestOptions = function() {
         // Activate the field
         var url = Routing.generate('autocomplete_entity', {_format: 'json', q: typed, limit: 10, autocomplete: true});
         $.getJSON(url, function(data) {
+            console.log('ajax', data);
             Camdram.autocomplete.displayResults(typed, data);
             Camdram.autocomplete.cache[typed] = data;
             $("#search_form .fa-spinner").fadeOut(100);
@@ -159,7 +161,7 @@ Camdram.autocomplete.displayResults = function(query, items) {
             $('<span/>').text(result.name).appendTo(link);
 
 	    if (result.entity_type == 'person' && result.show_count > 0) {
-            var string = result.show_count = ' (' + result.show_count + ' show';
+            var string = ' (' + result.show_count + ' show';
             if (parseInt(result.show_count) != 1) string += 's';
 
             var date = moment.unix(result.index_date);
