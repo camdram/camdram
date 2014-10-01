@@ -175,39 +175,30 @@ class VenueController extends OrganisationController
     }
 
     /**
-     * Render a diary of the shows put on in this venue.
+     * Finds all performances in the selected venue (used by OrgansiationController).
      *
-     * @param $identifier
+     * @param $slug
+     * @param \DateTime $from
+     * @param \DateTime $to
      * @return mixed
      */
-    public function getShowsAction(Request $request, $identifier)
+    protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        return $performance_repo->getByVenue($this->getEntity($slug), $from, $to);
+    }
 
-        if($request->query->get('from')){
-            $from = new \DateTime($request->query->get('from'));
-        }else{
-            $from = $this->get('acts.time_service')->getCurrentTime();
-        }
-        
-        if($request->query->get('to')){
-            $to = new \DateTime($request->query->get('to'));
-        }else{
-            $to = null;
-        }
-
-        $performances = $performance_repo->getByVenue($this->getEntity($identifier), $from, $to);
-
-        $diary = $this->get('acts.diary.factory')->createDiary();
-
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
-        $diary->addEvents($events);
-
-        $view = $this->view($diary, 200)
-            ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
-        ;
-
-        return $view;
+    /**
+     * Finds all shows in the selected venue (used by OrgansiationController).
+     *
+     * @param $slug
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return mixed
+     */
+    protected function getShows($slug, \DateTime $from, \DateTime $to)
+    {
+        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        return $show_repo->getByVenue($this->getEntity($slug), $from, $to);
     }
 }

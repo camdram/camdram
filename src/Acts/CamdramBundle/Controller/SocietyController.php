@@ -77,39 +77,30 @@ class SocietyController extends OrganisationController
     }
 
     /**
-     * Render a diary of the shows put on by this society.
+     * Finds all performances by the selected society (used by OrgansiationController).
      *
-     * @param $identifier
+     * @param $slug
+     * @param \DateTime $from
+     * @param \DateTime $to
      * @return mixed
      */
-    public function getShowsAction(Request $request, $identifier)
+    protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
-               
-        if($request->query->get('from')){
-            $from = new \DateTime($request->query->get('from'));
-        }else{
-            $from = $this->get('acts.time_service')->getCurrentTime();
-        }
-        
-        if($request->query->get('to')){
-            $to = new \DateTime($request->query->get('to'));
-        }else{
-            $to = null;
-        }
-        
-        $performances = $performance_repo->getBySociety($this->getEntity($identifier),$from,$to);
+        return $performance_repo->getBySociety($this->getEntity($slug), $from, $to);
+    }
 
-        $diary = $this->get('acts.diary.factory')->createDiary();
-
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
-        $diary->addEvents($events);
-
-        $view = $this->view($diary, 200)
-            ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
-        ;
-
-        return $view;
+    /**
+     * Finds all shows by the selected society (used by OrgansiationController).
+     *
+     * @param $slug
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return mixed
+     */
+    protected function getShows($slug, \DateTime $from, \DateTime $to)
+    {
+        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        return $show_repo->getBySociety($this->getEntity($slug), $from, $to);
     }
 }

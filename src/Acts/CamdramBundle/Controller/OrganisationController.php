@@ -60,13 +60,73 @@ abstract class OrganisationController extends AbstractRestController
             ;
     }
 
+    protected abstract function getPerformances($slug, \DateTime $from, \DateTime $to);
+
+    protected abstract function getShows($slug, \DateTime $from, \DateTime $to);
+
     /**
      * Render a diary of the shows put on by this society.
      *
      * @param $identifier
      * @return mixed
      */
-    public abstract function getShowsAction(Request $request, $identifier);
+    public function getShowsAction(Request $request, $identifier)
+    {
+        if ($request->query->has('from')) {
+            $from = new \DateTime($request->query->get('from'));
+        }
+        else {
+            $from = $this->get('acts.time_service')->getCurrentTime();
+        }
+
+        if ($request->query->has('to')) {
+            $to = new \DateTime($request->query->get('to'));
+        }
+        else {
+            $to = clone $from;
+            $to->modify('+1 year');
+        }
+
+        $shows = $this->getShows($identifier, $from, $to);
+        return $this->view($shows, 200);
+    }
+
+    /**
+     * Render a diary of the shows put on by this society.
+     *
+     * @param $identifier
+     * @return mixed
+     */
+    public function getEventsAction(Request $request, $identifier)
+    {
+        $diary = $this->get('acts.diary.factory')->createDiary();
+
+        if ($request->query->has('from')) {
+            $from = new \DateTime($request->query->get('from'));
+        }
+        else {
+            $from = $this->get('acts.time_service')->getCurrentTime();
+        }
+
+        if ($request->query->has('to')) {
+            $to = new \DateTime($request->query->get('to'));
+        }
+        else {
+            $to = clone $from;
+            $to->modify('+1 year');
+        }
+
+        $performances = $this->getPerformances($identifier, $from, $to);
+        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
+        $diary->addEvents($events);
+
+        $view = $this->view($diary, 200)
+            ->setTemplateVar('diary')
+            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
+        ;
+
+        return $view;
+    }
 
     private function getApplicationForm(Organisation $org, $obj = null)
     {

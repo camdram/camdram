@@ -198,4 +198,56 @@ class ShowRepository extends EntityRepository
         return new \DateTime(current($query->getOneOrNullResult()));
     }
 
+    public function getBySociety(Society $society, \DateTime $from = null, \DateTime $to = null)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->join('s.performances', 'p')
+            ->leftjoin('s.venue', 'v')
+            ->addSelect('s')
+            ->addSelect('v')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andWhere('s.society = :society');
+
+        if($from){
+            $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
+        }
+
+        if($to){
+            $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
+        }
+
+        $query = $query->orderBy('p.start_date', 'ASC')
+            ->setParameter('society', $society)
+            ->groupBy('s.id')
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function getByVenue(Venue $venue, \DateTime $from = null, \DateTime $to = null)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->join('s.performances', 'p')
+            ->join('s.venue', 'v')
+            ->addSelect('s')
+            ->addSelect('v')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true');
+
+        if($from){
+            $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
+        }
+
+        if($to){
+            $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
+        }
+
+        $query = $query->andWhere('s.venue = :venue')
+            ->orderBy('p.start_date', 'ASC')
+            ->setParameter('venue', $venue)
+            ->groupBy('s.id')
+            ->getQuery();
+        return $query->getResult();
+    }
+
 }

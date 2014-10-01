@@ -79,14 +79,13 @@ class PerformanceRepository extends EntityRepository
             ->andWhere('s.society = :society');
             
         if($from){
-            $query = $query->andWhere('p.end_date > :from')->setParameter('from', $from);
+            $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
         }
         
         if($to){
             $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
         }
 
-            
         $query = $query->orderBy('p.start_date', 'ASC')
             ->setParameter('society', $society)
             ->getQuery();
@@ -104,7 +103,7 @@ class PerformanceRepository extends EntityRepository
             ->andWhere('s.entered = true');
             
         if($from){
-            $query = $query->andWhere('p.end_date > :from')->setParameter('from', $from);
+            $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
         }
         
         if($to){
