@@ -24,7 +24,7 @@ Use one of the following commands to install the necessary packages required to 
 
 ###OSX
     
-Make sure you have Macports installed and up to date [https://www.macports.org/]( https://www.macports.org/)
+Make sure you have Macports( https://www.macports.org/) installed and up to date.
 
     $ sudo port install git php56 php56-curl php56-intl php56-sqlite php56-openssl php56-mysql php56-mbstring
 
