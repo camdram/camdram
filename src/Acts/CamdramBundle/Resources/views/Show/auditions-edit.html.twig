@@ -15,6 +15,7 @@
         <div class="panel">
             <p>Use the form below modify or add auditions for your show.</p>
             <p>You can add one or more audition sessions and/or leave contact details for people to get in touch about auditioning.</p>
+        	<p>The CUADC Actors' Reps aim to send out the Actors' mailing list with all the current auditions on Camdram every Tuesday and Friday during full term. For more information they can be contacted on <a href=mailto:actor@cuadc.org> actor@cuadc.org </a> </p>
         </div>
 
         <form action="{{ path("put_show_auditions", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post">
