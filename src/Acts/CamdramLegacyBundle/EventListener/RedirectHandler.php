@@ -59,6 +59,9 @@ class RedirectHandler {
         elseif (substr_count($path, '/ical') > 0) {
             return $this->handleICal($path);
         }
+        elseif ($path == '/rss.php') {
+            return $this->handleRss($query);
+        }
     }
 
     private function handleMicro(ParameterBag $query) {
@@ -129,6 +132,15 @@ class RedirectHandler {
                     return new RedirectResponse($this->router->generate('get_venue_events', array('_format' => 'ics', 'identifier' => $org->getSlug()), 301));
                 }
             }
+        }
+    }
+
+    private function handleRss($query) {
+        switch ($query->get('type')) {
+            case 'shows':
+                return new RedirectResponse($this->router->generate('get_shows', array('_format' => 'rss')));
+            case 'techies':
+                return new RedirectResponse($this->router->generate('get_techies', array('_format' => 'rss')));
         }
     }
 
