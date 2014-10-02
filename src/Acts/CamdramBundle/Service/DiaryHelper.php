@@ -42,11 +42,14 @@ class DiaryHelper
     {
         $event = new MultiDayEvent();
         $event->setName($performance->getShow()->getName());
-        $event->setLink($this->router->generate('get_show', array('identifier' => $performance->getShow()->getSlug())));
+        $event->setLink($this->router->generate('get_show', array('identifier' => $performance->getShow()->getSlug()), true));
         $event->setStartTime($performance->getTime());
         $event->setVenue($performance->getVenueName());
+        $event->setUpdatedAt($performance->getShow()->getTimestamp());
+        $event->setUid($performance->getId().'@camdram.net');
+        $event->setDescription($performance->getShow()->getDescription());
         if ($performance->getVenue()) {
-            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $performance->getVenue()->getSlug())));
+            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $performance->getVenue()->getSlug()), true));
         }
 
         if ($performance->getStartDate() < $performance->getExcludeDate() && $performance->getExcludeDate() < $performance->getEndDate()) {
@@ -60,6 +63,7 @@ class DiaryHelper
             $event->setEndDate($end1);
             $event2->setStartDate($start2);
             $event2->setEndDate($performance->getEndDate());
+            $event2->setUid($performance->getId().'_2@camdram.net');
             return array($event, $event2);
         }
         else {

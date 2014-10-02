@@ -16,6 +16,7 @@ services:
         parent: fos_rest.view_handler.default
         calls:
             - ['registerHandler', [ 'rss', [@acts.camdram_api.feed_view_handler, 'createResponse'] ] ]
+            - ['registerHandler', [ 'ics', [@acts.camdram_api.ical_view_handler, 'createResponse'] ] ]
 
     acts.camdram_api.entity_url_generator:
         class: Acts\CamdramApiBundle\Service\EntityUrlGenerator
@@ -28,3 +29,6 @@ services:
             - @twig
             - @acts.camdram_api.entity_url_generator
             - %mailer_sender_address%
+
+    acts.camdram_api.ical_view_handler:
+        class: Acts\CamdramApiBundle\View\ICalViewHandler

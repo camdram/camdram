@@ -4,6 +4,11 @@ acts_camdram_admin_res:
     resource: "routing/admin.yml"
     prefix: /admin
 acts_camdram_diary:
+    pattern: diary.{_format}
+    defaults:
+        _controller: ActsCamdramBundle:Diary:index
+        _format: html
+acts_camdram_diary_res:
     resource: "routing/diary.yml"
     prefix: /diary
 acts_camdram_development:

@@ -52,4 +52,25 @@ interface EventInterface
      * @return null|string
      */
     public function getVenueLink();
+
+    /**
+     * The date/time at which the information about the event was last updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt();
+
+    /**
+     * A unique identifier for the event (as required by the iCal RFC)
+     *
+     * @return string
+     */
+    public function getUid();
+
+    /**
+     * A description of the event
+     *
+     * @return string
+     */
+    public function getDescription();
 }

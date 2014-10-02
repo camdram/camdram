@@ -41,6 +41,21 @@ abstract class AbstractEvent implements EventInterface
     private $venue_link;
 
     /**
+     * @var \DateTime
+     */
+    private $updated_at;
+
+    /**
+     * @var string|null
+     */
+    private $uid;
+
+    /**
+     * @var string|null
+     */
+    private $description;
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
@@ -147,4 +162,53 @@ abstract class AbstractEvent implements EventInterface
     {
         $this->end_time = $end_time;
     }
+
+    /**
+     * @param null|string $uid
+     */
+    public function setUid($uid)
+    {
+        $this->uid = $uid;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    /**
+     * @param \DateTime $updated_at
+     */
+    public function setUpdatedAt($updated_at)
+    {
+        $this->updated_at = $updated_at;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @param null|string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
 }

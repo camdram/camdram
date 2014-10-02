@@ -132,6 +132,7 @@ fos_rest:
             xml: true
             json: true
             jsonp: true
+            ics: true
         templating_formats:
             html: true
         force_redirects:

@@ -27,7 +27,7 @@
         "egeloen/google-map-bundle" : "2.0.*",
         "pagerfanta/pagerfanta": "1.0.*",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
-        "sabre/vobject": "2.0.*",
+        "sabre/vobject": "~3.3",
         "hoyes/symfony2-image-manager": "dev-master",
         "camdram/sphinx-realtime-bundle": "0.1.*",
         "incenteev/composer-parameter-handler": "~2.0",

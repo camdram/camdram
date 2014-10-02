@@ -89,6 +89,16 @@ class Diary
     }
 
     /**
+     * Return all events in the diary
+     *
+     * @return array
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
      * Returns the diary's start date
      *
      * @return \DateTime
