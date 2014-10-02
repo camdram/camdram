@@ -20,28 +20,6 @@ class ICalRenderer
 {
     public function render(Diary $diary)
     {
-
-        /*
-         *  BEGIN:VTIMEZONE
-                TZID:Europe/London
-                BEGIN:DAYLIGHT
-                    TZOFFSETFROM:+0000
-                    RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
-                    DTSTART:19810329T010000
-                    TZNAME:GMT+01:00
-                    TZOFFSETTO:+0100
-                END:DAYLIGHT
-                BEGIN:STANDARD
-                    TZOFFSETFROM:+0100
-                    RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
-                    DTSTART:19961027T020000
-                    TZNAME:GMT
-                    TZOFFSETTO:+0000
-                END:STANDARD
-            END:VTIMEZONE
-         */
-
-
         $vcalendar = new VCalendar();
         $vcalendar->remove('PRODID');
         $vcalendar->add('PRODID', '-//Camdram//NONSGML Show Diary//EN');
@@ -74,13 +52,12 @@ class ICalRenderer
                     'DTSTAMP' => $dtstamp,
                     'DTSTART' => $start_time,
                     'DURATION' => 'PT2H00M00S',
-                    'DESCRIPTION' => $event->getDescription(),
-                    'URL' => $event->getLink(),
+                    'DESCRIPTION' => $event->getDescription()
                 );
                 if ($rrule) {
                     $params['RRULE'] = $rrule;
                 }
-                $vevent = $vcalendar->add('VEVENT', $params);
+                $vcalendar->add('VEVENT', $params);
             }
         }
 

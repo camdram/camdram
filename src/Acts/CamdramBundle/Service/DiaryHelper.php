@@ -42,14 +42,14 @@ class DiaryHelper
     {
         $event = new MultiDayEvent();
         $event->setName($performance->getShow()->getName());
-        $event->setLink($this->router->generate('get_show', array('identifier' => $performance->getShow()->getSlug()), true));
+        $event->setLink($this->router->generate('get_show', array('identifier' => $performance->getShow()->getSlug())));
         $event->setStartTime($performance->getTime());
         $event->setVenue($performance->getVenueName());
         $event->setUpdatedAt($performance->getShow()->getTimestamp());
         $event->setUid($performance->getId().'@camdram.net');
         $event->setDescription($performance->getShow()->getDescription());
         if ($performance->getVenue()) {
-            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $performance->getVenue()->getSlug()), true));
+            $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $performance->getVenue()->getSlug())));
         }
 
         if ($performance->getStartDate() < $performance->getExcludeDate() && $performance->getExcludeDate() < $performance->getEndDate()) {

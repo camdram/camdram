@@ -133,6 +133,8 @@ fos_rest:
             json: true
             jsonp: true
             ics: true
+        mime_types:
+            ics: text/calendar
         templating_formats:
             html: true
         force_redirects:
