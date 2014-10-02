@@ -287,6 +287,16 @@ class User implements \Serializable, CamdramUserInterface
         return $email;
     }
 
+    public function getFullEmail()
+    {
+        /* Add missing suffix, if required. */
+        $email = $this->email;
+        if ($email && strchr($email,'@') === false) {
+            $email .= "@cam.ac.uk";
+        }
+        return $email;
+    }
+
     /**
      * Set registered
      *

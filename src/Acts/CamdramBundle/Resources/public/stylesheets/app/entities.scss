@@ -21,6 +21,10 @@ $include-html-classes: false;
 
 .approve-panel {
   @include panel(rgb(255,255,100), 1em, false);
+
+  button {
+    margin-top:-0.6em;
+  }
 }
 
 .news-link {

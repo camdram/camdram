@@ -129,6 +129,7 @@ class ShowController extends AbstractRestController
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
         $this->get('acts.camdram.moderation_manager')->approveEntity($show);
+        $this->get('doctrine.orm.entity_manager')->flush();
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
