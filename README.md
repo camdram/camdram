@@ -22,6 +22,14 @@ Use one of the following commands to install the necessary packages required to 
 
     $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
+###OSX
+    
+Make sure you have [Macports]( https://www.macports.org/) installed and up to date.
+
+    $ sudo port install git php55 php55-curl php55-intl php55-sqlite php55-openssl php55-mysql php55-mbstring
+
+Additionally, make sure to replace every invocation of "php" with "php55" below.
+
 2) Get a copy of the Camdram repository
 ----------------------------------------------
 
@@ -65,6 +73,8 @@ This is most likely to happen with database updates and calls to `composer.phar`
 Run `php app/console server:run` to start a web server. You should then be able to visit [http://localhost:8000/app_dev.php](http://localhost:8000/app_dev.php) in your web browser to see your personal version of Camdram's homepage.
 
 The 'app_dev.php' in the URL launches Camdram in the 'development' environment, which is optimized for the frequent code changes that occur when doing development work. It also contains a useful toolbar at the foot of the page which contains, amongst other information, useful information about load times, memory usage and the number of SQL queries run. [Read more about Symfony's environments here](https://github.com/camdram/camdram/wiki/The-Symfony-environments), including information about how to use the 'production' environment.
+
+If this produces a Date/Time related error, make sure that the function "date.timezone" is set in php.ini
 
 6) Read the Wiki
 ----------------
