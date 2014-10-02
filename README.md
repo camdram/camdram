@@ -26,9 +26,9 @@ Use one of the following commands to install the necessary packages required to 
     
 Make sure you have [Macports]( https://www.macports.org/) installed and up to date.
 
-    $ sudo port install git php56 php56-curl php56-intl php56-sqlite php56-openssl php56-mysql php56-mbstring
+    $ sudo port install git php55 php55-curl php55-intl php55-sqlite php55-openssl php55-mysql php55-mbstring
 
-Additionally, make sure to replace every invocation of "php" with "php56" below.
+Additionally, make sure to replace every invocation of "php" with "php55" below.
 
 2) Get a copy of the Camdram repository
 ----------------------------------------------
