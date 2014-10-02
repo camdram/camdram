@@ -11,6 +11,7 @@ use FOS\RestBundle\View\ViewHandler;
 use Acts\CamdramApiBundle\Service\EntityUrlGenerator;
 use Acts\CamdramApiBundle\AnnotationReader\FeedAnnotationReader;
 use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
+use Acts\CamdramBundle\Rest\PaginatedCollection;
 
 class FeedViewHandler
 {
@@ -57,6 +58,8 @@ class FeedViewHandler
 
         $data = $view->getData();
         $item = current($data);
+
+
         if ($item && $feedData = $this->reader->read($item)) {
             $class = get_class($item);
             $feed->setTitle($feedData->getName());

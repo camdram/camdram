@@ -12,6 +12,8 @@
         {% if p.venue %}
             at {% if disable_links is defined -%}
                 {{ p.venue.name }}
+            {%- elseif full_urls is defined -%}
+                <a href="{{ url('get_venue', {identifier:p.venue.slug}) }}">{{ p.venue.name }}</a>
             {%- else -%}
                 <a href="{{ path('get_venue', {identifier:p.venue.slug}) }}">{{ p.venue.name }}</a>
             {%- endif %}

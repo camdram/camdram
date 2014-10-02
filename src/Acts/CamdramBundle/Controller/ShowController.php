@@ -64,6 +64,20 @@ class ShowController extends AbstractRestController
         return $this->createForm(new ShowType($this->get('security.context')), $show);
     }
 
+    public function cgetAction(Request $request)
+    {
+        if ($request->getRequestFormat() == 'rss') {
+            $now = $this->get('acts.time_service')->getCurrentTime();
+            $next_week = clone $now;
+            $next_week->modify('+10 days');
+            $shows = $this->getRepository()->findInDateRange($now, $next_week);
+            return $this->view($shows);
+        }
+        else {
+            return parent::cgetAction($request);
+        }
+    }
+
     private function getTechieAdvertForm(Show $show, $obj = null)
     {
         if (!$obj) {

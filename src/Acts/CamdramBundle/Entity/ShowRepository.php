@@ -14,11 +14,13 @@ class ShowRepository extends EntityRepository
 
     public function selectAll()
     {
-        //Need to add a 'created_at' field...
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->orderBy('s.id', 'desc');
+            ->leftJoin('s.performances', 'p')
+            ->orderBy('p.end_date', 'desc')
+            ->addOrderBy('p.start_date', 'desc')
+            ->groupBy('s.id');
         return $qb;
     }
 
@@ -106,6 +108,9 @@ class ShowRepository extends EntityRepository
             ->join('s.performances', 'p')
             ->andWhere('p.start_date <= :end')
             ->andWhere('p.end_date >= :start')
+            ->orderBy('p.end_date')
+            ->addOrderBy('p.start_date')
+            ->groupBy('s.id')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         return $qb->getQuery()->getResult();

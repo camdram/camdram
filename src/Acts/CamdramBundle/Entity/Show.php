@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Criteria;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramApiBundle\Annotation as Api;
 
 /**
  * Show
@@ -19,6 +20,9 @@ use Acts\CamdramSecurityBundle\Entity\User;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener" })
  * @Serializer\ExclusionPolicy("all")
+ * @Api\Feed(name="Camdram - Shows", titleField="name",
+ *   description="Shows produced by students in Cambridge",
+ *   template="ActsCamdramBundle:Show:rss.html.twig")
  */
 class Show implements SearchableInterface, OwnableInterface
 {
@@ -1557,5 +1561,23 @@ class Show implements SearchableInterface, OwnableInterface
 
     public function getIndexDate() {
         return $this->getStartAt();
+    }
+
+    /**
+     * Required for RSS feed
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt() {
+        return $this->getTimestamp();
+    }
+
+    /**
+     * Required for RSS feed
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt() {
+        return $this->getTimestamp();
     }
 }
