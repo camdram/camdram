@@ -56,6 +56,9 @@ class RedirectHandler {
         elseif (substr_count($path, '/infobase') > 0) {
             return $this->handleInfobase($path);
         }
+        elseif (substr_count($path, '/ical') > 0) {
+            return $this->handleICal($path);
+        }
     }
 
     private function handleMicro(ParameterBag $query) {
@@ -110,6 +113,25 @@ class RedirectHandler {
         return new RedirectResponse('http://'.$this->v1_hostname . $path, 302);
     }
 
+    private function handleICal($path) {
+        preg_match('/\\/ical\\/?(.*)/i', $path, $matches);
+        $org_short_name = $matches[1];
+        if (!$matches[1]) {
+            return new RedirectResponse($this->router->generate('acts_camdram_diary', array('_format' => 'ics')));
+        }
+        else {
+            $org_repo = $this->entityManager->getRepository('ActsCamdramBundle:Organisation');
+            if (($org = $org_repo->findOneBy(array('short_name' => $org_short_name)))) {
+                if ($org instanceof Society) {
+                    return new RedirectResponse($this->router->generate('get_society_events', array('_format' => 'ics', 'identifier' => $org->getSlug()), 301));
+                }
+                elseif ($org instanceof Venue) {
+                    return new RedirectResponse($this->router->generate('get_venue_events', array('_format' => 'ics', 'identifier' => $org->getSlug()), 301));
+                }
+            }
+        }
+    }
+
     private function createShowResponseFromId($show_id) {
         $show_repo = $this->entityManager->getRepository('ActsCamdramBundle:Show');
         if (($show = $show_repo->findOneById($show_id))) {
@@ -144,4 +166,5 @@ class RedirectHandler {
             }
         }
     }
+
 }
