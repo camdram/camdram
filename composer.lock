@@ -8,17 +8,17 @@
     "packages": [
         {
             "name": "acts/external-login-bundle",
-            "version": "0.1.3",
+            "version": "0.1.4",
             "target-dir": "Acts/ExternalLoginBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/external-login-bundle.git",
-                "reference": "73a1c703f73daa79eb59b7bb75371f6607be331c"
+                "reference": "b09d3d558402372297d6a0cd57f5ccc3917612e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/external-login-bundle/zipball/73a1c703f73daa79eb59b7bb75371f6607be331c",
-                "reference": "73a1c703f73daa79eb59b7bb75371f6607be331c",
+                "url": "https://api.github.com/repos/camdram/external-login-bundle/zipball/b09d3d558402372297d6a0cd57f5ccc3917612e9",
+                "reference": "b09d3d558402372297d6a0cd57f5ccc3917612e9",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                 "social",
                 "twitter"
             ],
-            "time": "2014-02-23 23:59:09"
+            "time": "2014-10-02 21:53:56"
         },
         {
             "name": "acts/social-api-bundle",

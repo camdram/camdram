@@ -60,14 +60,14 @@ class User implements \Serializable, CamdramUserInterface
      *
      * @ORM\Column(name="registered", type="date", nullable=false)
      */
-    private $registered;
+    private $registered_at;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="login", type="date", nullable=false)
      */
-    private $login;
+    private $last_login_at;
 
     /**
      * @var boolean
@@ -303,9 +303,9 @@ class User implements \Serializable, CamdramUserInterface
      * @param \DateTime $registered
      * @return User
      */
-    public function setRegistered($registered)
+    public function setRegisteredAt($registered_at)
     {
-        $this->registered = $registered;
+        $this->registered_at = $registered_at;
 
         return $this;
     }
@@ -315,9 +315,9 @@ class User implements \Serializable, CamdramUserInterface
      *
      * @return \DateTime
      */
-    public function getRegistered()
+    public function getRegisteredAt()
     {
-        return $this->registered;
+        return $this->registered_at;
     }
 
     /**
@@ -326,9 +326,9 @@ class User implements \Serializable, CamdramUserInterface
      * @param \DateTime $login
      * @return User
      */
-    public function setLogin($login)
+    public function setLastLoginAt($last_login_at)
     {
-        $this->login = $login;
+        $this->last_login_at = $last_login_at;
 
         return $this;
     }
@@ -338,9 +338,9 @@ class User implements \Serializable, CamdramUserInterface
      *
      * @return \DateTime
      */
-    public function getLogin()
+    public function getLastLoginAt()
     {
-        return $this->login;
+        return $this->last_login_at;
     }
 
     /**
@@ -734,8 +734,8 @@ class User implements \Serializable, CamdramUserInterface
         $this->thread_messages = false;
         $this->reverse_time = true;
 
-        $this->registered = new \DateTime;
-        $this->login = new \DateTime;
+        $this->registered_at = new \DateTime;
+        $this->last_login_at = new \DateTime;
 
         $this->aces = new ArrayCollection();
         $this->external_users = new ArrayCollection();
@@ -744,14 +744,14 @@ class User implements \Serializable, CamdramUserInterface
     public function serialize()
     {
         return serialize(array(
-                $this->id, $this->name, $this->email, $this->password, $this->registered,
-                $this->login, $this->occupation, $this->graduation, $this->is_email_verified
+                $this->id, $this->name, $this->email, $this->password, $this->registered_at,
+                $this->last_login_at, $this->occupation, $this->graduation, $this->is_email_verified
         ));
     }
     public function unserialize($serialized)
     {
-        list($this->id, $this->name, $this->email, $this->password, $this->registered,
-            $this->login, $this->occupation, $this->graduation,
+        list($this->id, $this->name, $this->email, $this->password, $this->registered_at,
+            $this->last_login_at, $this->occupation, $this->graduation,
             $this->is_email_verified) = unserialize($serialized);
     }
 

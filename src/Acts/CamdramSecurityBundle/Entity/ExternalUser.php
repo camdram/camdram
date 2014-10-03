@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 */
 class ExternalUser implements CamdramUserInterface, \Serializable
 {
+    public function __construct()
+    {
+        $this->last_login_at = new \DateTime;
+    }
+
     /**
     * @var integer
     *
@@ -83,6 +88,13 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="externalUsers")
      */
     private $person;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
+     */
+    private $last_login_at;
 
     /**
      * Get id
@@ -370,5 +382,28 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     {
         list($this->id, $this->name, $this->email, $this->service,
             $this->remote_id, $this->username) = unserialize($serialized);
+    }
+
+    /**
+     * Set last_login_at
+     *
+     * @param \DateTime $lastLoginAt
+     * @return ExternalUser
+     */
+    public function setLastLoginAt($lastLoginAt)
+    {
+        $this->last_login_at = $lastLoginAt;
+
+        return $this;
+    }
+
+    /**
+     * Get last_login_at
+     *
+     * @return \DateTime 
+     */
+    public function getLastLoginAt()
+    {
+        return $this->last_login_at;
     }
 }

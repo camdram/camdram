@@ -34,4 +34,10 @@ interface CamdramUserInterface extends UserInterface
      * @return \Acts\CamdramBundle\Entity\Person
      */
     public function getPerson();
+
+    /**
+     * @param \DateTime|null $last_login_at
+     * @return CamdramUserInterface
+     */
+    public function setLastLoginAt($last_login_at);
 }

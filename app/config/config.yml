@@ -258,7 +258,7 @@ acts_sphinx_real_time:
                 dict: keywords
         user:
             fields: [name]
-            attributes: {name: string, email:string, registered: datetime, login: datetime}
+            attributes: {name: string, email:string, registered_at: datetime, last_login_at: datetime}
             persistence:
                 driver: orm
                 model: Acts\CamdramSecurityBundle\Entity\User

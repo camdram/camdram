@@ -92,6 +92,12 @@ services:
         class: Acts\CamdramSecurityBundle\Service\EmailDispatcher
         arguments: [@doctrine.orm.entity_manager, @swiftmailer.mailer, @twig, %mailer_sender_address%]
 
+    camdram.security.last_login_time_listener:
+        class: Acts\CamdramSecurityBundle\EventListener\LastLoginTimeListener
+        arguments: [@acts.time_service, @doctrine.orm.entity_manager]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
+
     ### Authorization voters
 
     camdram.security.voter.create:
