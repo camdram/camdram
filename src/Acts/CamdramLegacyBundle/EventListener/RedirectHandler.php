@@ -138,9 +138,9 @@ class RedirectHandler {
     private function handleRss($query) {
         switch ($query->get('type')) {
             case 'shows':
-                return new RedirectResponse($this->router->generate('get_shows', array('_format' => 'rss')));
+                return new RedirectResponse($this->router->generate('get_shows', array('_format' => 'rss')), 301);
             case 'techies':
-                return new RedirectResponse($this->router->generate('get_techies', array('_format' => 'rss')));
+                return new RedirectResponse($this->router->generate('get_techies', array('_format' => 'rss')), 301);
         }
     }
 
