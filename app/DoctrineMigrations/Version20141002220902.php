@@ -15,7 +15,7 @@ class Version20141002220902 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE acts_external_users ADD last_logina_at DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE acts_external_users ADD last_login_at DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema)
