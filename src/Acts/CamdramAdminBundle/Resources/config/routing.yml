@@ -1,0 +1,6 @@
+acts_camdram_issues:
+    type:     rest
+    resource: "Acts\CamdramAdminBundle\Controller\SupportController"
+acts_camdram_users:
+    type:     rest
+    resource: "Acts\CamdramAdminBundle\Controller\UserController"

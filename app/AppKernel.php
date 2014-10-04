@@ -33,7 +33,10 @@ class AppKernel extends Kernel
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
             new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
             new Acts\ExternalLoginBundle\ActsExternalLoginBundle(),
-            
+            new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
+            new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
+            new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
+
             // Bundles needed for the Content Management Framework (used by the Infobase).
             new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
             new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
@@ -48,8 +51,6 @@ class AppKernel extends Kernel
 
             // Dependencies of the CmfBlockBundle
             new Sonata\BlockBundle\SonataBlockBundle(),
-            new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
-            new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

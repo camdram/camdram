@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramAdminBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;

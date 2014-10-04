@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Entity;
+namespace Acts\CamdramAdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -10,7 +10,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
  * Support
  *
  * @ORM\Table(name="acts_support")
- * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SupportRepository")
+ * @ORM\Entity(repositoryClass="Acts\CamdramAdminBundle\Entity\SupportRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Support
@@ -323,10 +323,10 @@ class Support
     /**
      * Add children
      *
-     * @param \Acts\CamdramBundle\Entity\Support $children
+     * @param Support $children
      * @return Support
      */
-    public function addChildren(\Acts\CamdramBundle\Entity\Support $children)
+    public function addChildren(Support $children)
     {
         $this->children[] = $children;
 
@@ -338,7 +338,7 @@ class Support
      *
      * @param \Acts\CamdramBundle\Entity\Support $children
      */
-    public function removeChildren(\Acts\CamdramBundle\Entity\Support $children)
+    public function removeChildren(Support $children)
     {
         $this->children->removeElement($children);
     }
@@ -349,7 +349,7 @@ class Support
      * @param \Acts\CamdramBundle\Entity\Support $parent
      * @return Support
      */
-    public function setParent(\Acts\CamdramBundle\Entity\Support $parent = null)
+    public function setParent(Support $parent = null)
     {
         $this->parent = $parent;
 
@@ -359,7 +359,7 @@ class Support
     /**
      * Get parent
      *
-     * @return \Acts\CamdramBundle\Entity\Support
+     * @return Support
      */
     public function getParent()
     {
@@ -382,10 +382,10 @@ class Support
     /**
      * Add children
      *
-     * @param \Acts\CamdramBundle\Entity\Support $children
+     * @param Support $children
      * @return Support
      */
-    public function addChild(\Acts\CamdramBundle\Entity\Support $children)
+    public function addChild(Support $children)
     {
         $this->children[] = $children;
 
@@ -395,9 +395,9 @@ class Support
     /**
      * Remove children
      *
-     * @param \Acts\CamdramBundle\Entity\Support $children
+     * @param Support $children
      */
-    public function removeChild(\Acts\CamdramBundle\Entity\Support $children)
+    public function removeChild(Support $children)
     {
         $this->children->removeElement($children);
     }

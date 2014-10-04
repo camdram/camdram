@@ -1,8 +1,5 @@
 acts_camdram_entities_res:
     resource: "routing/entities.yml"
-acts_camdram_admin_res:
-    resource: "routing/admin.yml"
-    prefix: /admin
 acts_camdram_diary:
     pattern: diary.{_format}
     defaults:

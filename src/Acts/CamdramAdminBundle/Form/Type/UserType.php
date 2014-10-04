@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Form\Type;
+namespace Acts\CamdramAdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,6 +35,6 @@ class UserType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_usertype';
+        return 'acts_camdramadminbundle_usertype';
     }
 }
