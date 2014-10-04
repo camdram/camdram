@@ -2,6 +2,7 @@ acts_camdram_diary_date:
     pattern:  /{start}.{_format}
     defaults:
         _controller: ActsCamdramBundle:Diary:date
+        _format: html
     requirements:
         start: "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
 
