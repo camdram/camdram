@@ -19,7 +19,7 @@ class AccessControlEntryFixtures extends AbstractFixture implements OrderedFixtu
         $e = new AccessControlEntry;
         $e->setUser($this->getReference('adminuser'));
         $e->setGrantedBy($this->getReference('testuser1'));
-        $e->setEntityId('-1');
+        $e->setEntityId('-2');
         $e->setCreatedAt(new \DateTime('2001-01-01'));
         $e->setType('security');
         $manager->persist($e);

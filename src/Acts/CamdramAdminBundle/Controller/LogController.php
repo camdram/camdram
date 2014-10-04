@@ -15,14 +15,14 @@ class LogController extends Controller
 
     public function indexAction()
     {
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
+        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_SUPER_ADMIN');
 
         return $this->render('ActsCamdramAdminBundle:Log:index.html.twig');
     }
 
     public function getAction($file)
     {
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
+        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_SUPER_ADMIN');
 
         $log_dir = $this->get('kernel')->getRootDir().'/logs/';
         $env = $this->get('kernel')->getEnvironment();
