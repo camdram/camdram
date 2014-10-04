@@ -6,7 +6,7 @@ acts_camdram_users:
     type:     rest
     resource: "Acts\CamdramAdminBundle\Controller\UserController"
 
-acts_camdram_logs_index:
+acts_camdram_logs:
     path: /logs
     defaults:
         _controller: ActsCamdramAdminBundle:Log:index
