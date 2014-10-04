@@ -136,7 +136,7 @@ class Role
      */
     public function setRole($role)
     {
-        $this->role = $role;
+        $this->role = htmlentities($role);
 
         return $this;
     }
@@ -148,7 +148,7 @@ class Role
      */
     public function getRole()
     {
-        return $this->role;
+        return html_entity_decode($this->role);
     }
 
     /**
