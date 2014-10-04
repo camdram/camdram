@@ -47,4 +47,12 @@ abstract class AbstractContext extends BehatContext implements KernelAwareInterf
         return $this->kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
+    /**
+    * @return \DateTime
+    */
+    protected function getCurrentTime()
+    {
+        return $this->kernel->getContainer()->get('acts.time_service')->getCurrentTime();
+    }
+
 }

@@ -2,8 +2,10 @@
 
 namespace Acts\CamdramBackendBundle\Features\Context;
 
+use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Behat\Behat\Context\BehatContext;
@@ -90,5 +92,43 @@ class EntityContext extends AbstractContext
         $this->kernel->getContainer()->get('camdram.security.acl.provider')->grantAccess($show, $user, $this->getAuthoriseUser());
     }
 
+    /**
+    +     * @Given /^the show "([^"]*)" starting in (\-?[0-9]+) days? and lasting ([0-9]+) days? at ([0-9]+:[0-9]+)$/
+    +     */
+    public function createShowWithDates($show_name, $days, $length, $time)
+    {
+        $show = $this->createShow($show_name);
 
+        $start_date = $this->getCurrentTime();
+        $day_of_week = $start_date->format('N');
+        if ($day_of_week < 7) $start_date->modify('-'.$day_of_week.' days');
+        $start_date->modify('+'.$days.' day');
+        $end_date = clone $start_date;
+        $end_date->modify('+'.$length.' days');
+
+        $performance = new Performance();
+        $performance->setStartDate($start_date);
+        $performance->setEndDate($end_date);
+        $performance->setTime(new \DateTime($time));
+        $performance->setShow($show);
+        $show->addPerformance($performance);
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @Given /^the time period "([^"]*)" from "([^"]*)" to "([^"]*)"$/
+     */
+    public function createTimePeriod($name, $from, $to)
+    {
+         $period = new TimePeriod();
+         $period->setName($name);
+         $period->setFullName($name);
+         $period->setShortName($name);
+         $period->setStartAt(new \DateTime($from));
+         $period->setEndAt(new \DateTime($to));
+         $em = $this->getEntityManager();
+         $em->persist($period);
+         $em->flush();
+     }
 }

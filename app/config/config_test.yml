@@ -37,3 +37,10 @@ acts_sphinx_real_time:
 
 acts_external_login:
     test: true
+
+acts_time_mock:
+    time_override: 2000-07-03 15:30
+
+assetic:
+    debug: false
+    use_controller: false
