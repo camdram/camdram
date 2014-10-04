@@ -1,6 +1,7 @@
 acts_camdram_admin:
     resource: "@ActsCamdramAdminBundle/Resources/config/routing.yml"
     prefix:   /admin
+    schemes:  [https]
 
 acts_camdram_api:
     resource: "@ActsCamdramApiBundle/Resources/config/routing.yml"
