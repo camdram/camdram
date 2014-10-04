@@ -73,9 +73,13 @@
         {%- endif -%}
     </div>
 </div>
-    {% for child in issue.children[1:] %}
-        {{ show_issue.email(child) }}
-    {% endfor %}
+    {# Show all but the latest email #}
+    {% if issue.children|length > 1 %}
+        {% for child in issue.children|slice(1, issue.children|length - 1) %}
+            {{ show_issue.email(child) }}
+        {% endfor %}
+    {% endif %}
+    {# Show the original email sent to the support team #}
     {% if issue.children is not empty %}
         {{ show_issue.email(issue) }}
     {% endif %}
