@@ -25,6 +25,8 @@
                       <a href="{{ path('acts_camdram_logs_get', {file: 'action.log'}) }}">Camdram action log</a>
                   </p>
                   <div class="content" data-section-content>
+                      <p>This log file is generated directly by the Camdram code in response to
+                          user actions.</p>
                       <div class="logfile">
 
                       </div>
@@ -35,6 +37,9 @@
                       <a href="{{ path('acts_camdram_logs_get', {file: 'symfony.log'}) }}">Symfony log file</a>
                   </p>
                   <div class="content" data-section-content>
+                      <p>This is Symfony's log file - it will contain errors that Symfony was able to catch. In these
+                          cases a Camdram-themed error page is served to the user.
+                      </p>
                       <div class="logfile">
 
                       </div>
@@ -45,6 +50,8 @@
                       <a href="{{ path('acts_camdram_logs_get', {file: 'error.log'}) }}">Server error log</a>
                   </p>
                   <div class="content" data-section-content>
+                      <p>This is Apache's error log - if the error was not caught by Symfony then it falls
+                      back to Apache, and an unthemed error page is served to the user.</p>
                       <div class="logfile">
 
                       </div>
@@ -55,6 +62,7 @@
                       <a href="{{ path('acts_camdram_logs_get', {file: 'access.log'}) }}">Server access log</a>
                   </p>
                   <div class="content" data-section-content>
+                      <p>This is Apache's access log - it contains every single HTTP request made to the site.</p>
                       <div class="logfile">
 
                       </div>
