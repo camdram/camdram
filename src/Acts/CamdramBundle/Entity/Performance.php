@@ -68,7 +68,7 @@ class Performance
     /**
      * @var \Venue
      *
-     * @ORM\ManyToOne(targetEntity="Venue")
+     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="performances")
      * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      */
     private $venue;
@@ -232,10 +232,10 @@ class Performance
      */
     public function getVenueName()
     {
-        if ($this->venue_name) {
-            return $this->venue_name;
-        } elseif ($this->venue) {
+        if ($this->venue) {
             return $this->venue->getName();
+        } elseif ($this->venue_name) {
+            return $this->venue_name;
         }
     }
 

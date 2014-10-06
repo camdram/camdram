@@ -29,7 +29,7 @@ class PersonRepository extends EntityRepository
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('e')
-            ->select('COUNT(e.id)')
+            ->select('COUNT(DISTINCT e.id)')
             ->innerJoin('e.roles', 'r')
             ->innerJoin('r.show', 's')
             ->innerJoin('s.performances', 'p')
