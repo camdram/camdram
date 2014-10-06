@@ -29,7 +29,7 @@ class CamdramFormTypeExtension extends AbstractTypeExtension
     {
         $view->vars['label_attr']['class'] = 'right inline';
 
-        if (!$view->vars['valid']) {
+        if (count($view->vars['errors']) > 0) {
             $view->vars['attr']['class'] = 'error';
             $view->vars['label_attr']['class'] .= ' error';
         }

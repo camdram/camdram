@@ -1,11 +1,15 @@
+{{ form_errors(form) }}
+
 {{ form_row(form.name) }}
-        {{ form_row(form.author) }}
+{{ form_row(form.author) }}
+
 <div class="row">
     <div class="large-3 columns">
         {{ form_label(form.category) }}
     </div>
     <div class="large-9 columns">
         {{ form_widget(form.category) }}
+        {{ form_errors(form.category) }}
     </div>
 </div>
 
@@ -16,6 +20,7 @@
     </div>
     <div class="large-9 columns">
         {{ form_widget(form.multi_venue) }}
+        {{ form_errors(form.multi_venue) }}
 
         <div class="performances entity_collection" data-prototype="{% filter escape('html') %}{% include 'ActsCamdramBundle:Show:performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endfilter %}">
             {% for performance in form.performances %}
@@ -35,6 +40,7 @@
     </div>
     <div class="large-9 columns">
         {{ form_widget(form.venue) }}
+        {{ form_errors(form.venue) }}
     </div>
 </div>
 
@@ -44,6 +50,7 @@
     </div>
     <div class="large-9 columns">
         {{ form_widget(form.society) }}
+        {{ form_errors(form.society) }}
         {% if form.society.vars.disabled %}
         <p>Please <a href="{{ path('acts_camdram_contact_us') }}">contact us</a> if you would like to change this show's society</p>
         {% endif %}
@@ -59,12 +66,14 @@
     </div>
     <div class="large-5 columns">
         {{ form_widget(form.booking_code) }}
+        {{ form_errors(form.booking_code) }}
     </div>
     <div class="large-2 columns">
         {{ form_label(form.prices) }}
     </div>
     <div class="large-2 columns">
         {{ form_widget(form.prices) }}
+        {{ form_errors(form.prices) }}
     </div>
 </div>
 
@@ -74,12 +83,14 @@
     </div>
     <div class="large-3 columns">
         {{ form_widget(form.facebook_id) }}
+        {{ form_errors(form.facebook_id) }}
     </div>
     <div class="large-3 columns">
         {{ form_label(form.twitter_id) }}
     </div>
     <div class="large-3 columns">
         {{ form_widget(form.twitter_id) }}
+        {{ form_errors(form.twitter_id) }}
     </div>
 </div>
 

@@ -14,8 +14,9 @@ use Acts\CamdramBundle\Entity\MapLocation as MapLocationEntity;
  */
 class TechieAdvertExpiry extends Constraint
 {
-    public $too_early_message = "The expiry date must be before today's date";
+    public $too_early_message = "The expiry date must be after today's date";
     public $too_late_message = 'The expiry date cannot be more than %days% days in the future';
+    public $blank_time_message = 'Please enter an expiry time';
 
     public function getTargets()
     {

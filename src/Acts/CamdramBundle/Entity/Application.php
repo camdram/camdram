@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Application
@@ -46,6 +47,7 @@ class Application
      * @var string
      *
      * @ORM\Column(name="text", type="text", nullable=false)
+     * @Assert\NotBlank()
      */
     private $text;
 
@@ -53,6 +55,8 @@ class Application
      * @var \DateTime
      *
      * @ORM\Column(name="deadlinedate", type="date", nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Date()
      */
     private $deadlineDate;
 
@@ -60,13 +64,16 @@ class Application
      * @var string
      *
      * @ORM\Column(name="furtherinfo", type="text", nullable=false)
+     * @Assert\NotBlank()
      */
-    private $further_info;
+    private $furtherInfo;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Time()
      */
     private $deadlineTime;
 
@@ -136,7 +143,7 @@ class Application
      */
     public function setFurtherInfo($furtherInfo)
     {
-        $this->further_info = $furtherInfo;
+        $this->furtherInfo = $furtherInfo;
 
         return $this;
     }
@@ -148,7 +155,7 @@ class Application
      */
     public function getFurtherInfo()
     {
-        return $this->further_info;
+        return $this->furtherInfo;
     }
 
     /**

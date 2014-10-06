@@ -45,6 +45,7 @@ class TechieAdvert
      * @var string
      *
      * @ORM\Column(name="positions", type="text", nullable=false)
+     * @Assert\NotBlank()
      */
     private $positions;
 
@@ -52,6 +53,7 @@ class TechieAdvert
      * @var string
      *
      * @ORM\Column(name="contact", type="text", nullable=false)
+     * @Assert\NotBlank()
      */
     private $contact;
 
