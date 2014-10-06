@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Audition
@@ -25,6 +26,8 @@ class Audition
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date", nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Date()
      */
     private $date;
 
@@ -32,6 +35,8 @@ class Audition
      * @var \DateTime
      *
      * @ORM\Column(name="starttime", type="time", nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Time()
      */
     private $start_time;
 
@@ -39,6 +44,8 @@ class Audition
      * @var \DateTime
      *
      * @ORM\Column(name="endtime", type="time", nullable=true)
+     * @Assert\NotBlank()
+     * @Assert\Time()
      */
     private $end_time;
 
@@ -46,6 +53,7 @@ class Audition
      * @var string
      *
      * @ORM\Column(name="location", type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $location;
 
