@@ -93,8 +93,8 @@ class EntityContext extends AbstractContext
     }
 
     /**
-    +     * @Given /^the show "([^"]*)" starting in (\-?[0-9]+) days? and lasting ([0-9]+) days? at ([0-9]+:[0-9]+)$/
-    +     */
+     * @Given /^the show "([^"]*)" starting in (\-?[0-9]+) days? and lasting ([0-9]+) days? at ([0-9]+:[0-9]+)$/
+     */
     public function createShowWithDates($show_name, $days, $length, $time)
     {
         $show = $this->createShow($show_name);
