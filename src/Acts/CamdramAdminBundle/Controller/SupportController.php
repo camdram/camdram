@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Controller;
+namespace Acts\CamdramAdminBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -9,8 +9,8 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Criteria;
 
-use Acts\CamdramBundle\Form\Type\SupportType;
-use Acts\CamdramBundle\Entity\Support;
+use Acts\CamdramAdminBundle\Form\Type\SupportType;
+use Acts\CamdramAdminBundle\Entity\Support;
 
 /**
  * Controller for accessing support tickets created by emails to
@@ -20,7 +20,7 @@ use Acts\CamdramBundle\Entity\Support;
  *
  * @RouteResource("Issue")
  */
-class SupportController extends AbstractRestController
+class SupportController extends FOSRestController
 {
     protected $class = 'Acts\\CamdramBundle\\Entity\\Support';
 
@@ -48,7 +48,7 @@ class SupportController extends AbstractRestController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Support');
+        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramAdminBundle:Support');
     }
 
     protected function getForm($society = null)
@@ -82,19 +82,19 @@ class SupportController extends AbstractRestController
             $this->processRequestData($request, $issue);
         }
 
-        $mine = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')->findBy(
+        $mine = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
                     array('state' => 'assigned', 'support_id' => 0, 'owner' => $this->getUser()->getId())
                     );
-        $unassigned = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')->findBy(
+        $unassigned = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
                     array('state' => 'unassigned', 'support_id' => 0)
                     );
-        $others = $this->getDoctrine()->getRepository('ActsCamdramBundle:Support')
+        $others = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')
                       ->getOtherUsersIssues($this->getUser());
 
         $view = $this->view(array('my_issues' => $mine,
                                   'unassigned_issues' => $unassigned,
                                   'other_peoples_issues' => $others),  200)
-                  ->setTemplate("ActsCamdramBundle:Support:index.html.twig")
+                  ->setTemplate("ActsCamdramAdminBundle:Support:index.html.twig")
                   ->setTemplateVar('issues')
         ;
         return $view;
@@ -178,7 +178,7 @@ class SupportController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
         $view = $this->view(array('issue' => $issue,
                                   'form' => $form->createView()), 200)
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
+            ->setTemplate('ActsCamdramAdminBundle:Support:show.html.twig')
         ;
 
         return $view;

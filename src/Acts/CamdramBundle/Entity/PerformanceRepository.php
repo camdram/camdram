@@ -33,7 +33,7 @@ class PerformanceRepository extends EntityRepository
             ->addSelect('v')
             ->where('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->andWhere('p.start_date <= :end')
+            ->andWhere('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
@@ -44,8 +44,11 @@ class PerformanceRepository extends EntityRepository
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->where('p.start_date <= :end')
+        $qb->join('p.show', 's')
+            ->where('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
+            ->andWhere('s.entered = true')
+            ->andWhere('s.authorised_by is not null')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
 
@@ -54,17 +57,35 @@ class PerformanceRepository extends EntityRepository
         $max_end = clone $end;
         $max_end->modify('-1 day');
         foreach ($result as $p) {
-            $start_at = $p->getStartDate();
-            $end_at = $p->getEndDate();
-            if ($start_at < $start) $start_at = $start;
-            if ($end_at > $end) $end_at = $max_end;
+            if ($p->getShow()) {
+                $start_at = $p->getStartDate();
+                $end_at = $p->getEndDate();
+                if ($start_at < $start) $start_at = $start;
+                if ($end_at > $end) $end_at = $max_end;
 
-            $count += $end_at->diff($start_at)->d + 1;
-            if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0
-                && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) $count--;
+                $count += $end_at->diff($start_at)->d + 1;
+                if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0
+                    && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) $count--;
+            }
         }
 
         return $count;
+    }
+
+
+    public function getNumberOfVenueNamesInDateRange(\DateTime $start, \DateTime $end)
+    {
+        $qb = $this->createQueryBuilder('p')->select('COUNT(DISTINCT p.venue_name)')
+            ->innerJoin('p.show', 's')
+            ->where('s.authorised_by is not null')
+            ->andWhere('s.entered = true')
+            ->andwhere('p.venue IS NULL')
+            ->andWhere('p.start_date < :end')
+            ->andWhere('p.end_date >= :start')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
+        $result = $qb->getQuery()->getOneOrNullResult();
+        return current($result);
     }
 
     public function getBySociety(Society $society, \DateTime $from = null, \DateTime $to = null)

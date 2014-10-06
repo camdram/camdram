@@ -2,7 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: routing_auto.yml }
-    
+
 framework:
     esi: { enabled: true }
     secret:          "%secret%"
@@ -276,3 +276,4 @@ fos_js_routing:
 parameters:
     security.authentication.trust_resolver.class: Acts\ExternalLoginBundle\Security\Authentication\AuthenticationTrustResolver
     test.client.class: Acts\CamdramBackendBundle\Test\Client
+    router.request_context.host: www.camdram.net

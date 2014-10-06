@@ -1,29 +1,23 @@
 <?php
 
-namespace Acts\CamdramBundle\Controller;
+namespace Acts\CamdramAdminBundle\Controller;
 
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\FOSRestController;
 
 use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramBundle\Form\Type\UserType;
-use Acts\CamdramBundle\Form\Type\AddAclType;
+use Acts\CamdramBundle\Controller\AbstractRestController;
+use Acts\CamdramAdminBundle\Form\Type\UserType;
+use Acts\CamdramAdminBundle\Form\Type\AddAclType;
 
 /**
  * @RouteResource("User")
  */
-class UserController extends AbstractRestController
+class UserController extends FOSRestController
 {
-    protected $class = 'Acts\\CamdramSecurityBundle\\Entity\\User';
-
-    protected $type = 'user';
-
-    protected $type_plural = 'users';
-
-    protected $search_index = 'user';
-
     protected function getRouteParams($user)
     {
         return array('identifier' => $user->getId());
@@ -79,8 +73,64 @@ class UserController extends AbstractRestController
 
         return $this->view($data, 200)
             ->setTemplateVar('result')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+            ->setTemplate('ActsCamdramAdminBundle:User:index.html.twig')
         ;
+    }
+
+    public function getAction($identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
+        $view = $this->view($entity, 200)
+            ->setTemplate('ActsCamdramAdminBundle:User:show.html.twig')
+            ->setTemplateVar($this->type)
+        ;
+        return $view;
+    }
+
+    public function editAction($identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+
+        $form = $this->getForm($entity);
+        return $this->view($form, 200)
+            ->setTemplateVar('form')
+            ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
+    }
+
+    public function putAction(Request $request, $identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+
+        $form = $this->getForm($entity);
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->routeRedirectView('get_user', $this->getRouteParams($form->getData()));
+        } else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form')
+                ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
+        }
+    }
+
+    public function removeAction($identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($entity);
+        $em->flush();
+        return $this->routeRedirectView('get_user');
     }
 
     public function newAceAction(Request $request, $identifier)
@@ -89,7 +139,7 @@ class UserController extends AbstractRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramBundle:User:ace-new-form.html.twig');
+            ->setTemplate('ActsCamdramAdminBundle:User:ace-new-form.html.twig');
     }
 
     public function postAceAction(Request $request, $identifier)
@@ -104,7 +154,7 @@ class UserController extends AbstractRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('user')
-                ->setTemplate('ActsCamdramBundle:User:ace-new.html.twig');
+                ->setTemplate('ActsCamdramAdminBundle:User:ace-new.html.twig');
         }
     }
 

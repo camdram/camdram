@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Form\Type;
+namespace Acts\CamdramAdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

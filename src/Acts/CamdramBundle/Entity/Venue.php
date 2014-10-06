@@ -45,6 +45,11 @@ class Venue extends Organisation
     private $shows;
 
     /**
+     * @ORM\OneToMany(targetEntity="Performance", mappedBy="venue")
+     */
+    private $performances;
+
+    /**
      * @Serializer\Expose
      */
     protected $entity_type = 'venue';
@@ -187,5 +192,38 @@ class Venue extends Organisation
     public function getIndexDate()
     {
         return null;
+    }
+
+    /**
+     * Add performances
+     *
+     * @param \Acts\CamdramBundle\Entity\Performance $performances
+     * @return Venue
+     */
+    public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performances)
+    {
+        $this->performances[] = $performances;
+
+        return $this;
+    }
+
+    /**
+     * Remove performances
+     *
+     * @param \Acts\CamdramBundle\Entity\Performance $performances
+     */
+    public function removePerformance(\Acts\CamdramBundle\Entity\Performance $performances)
+    {
+        $this->performances->removeElement($performances);
+    }
+
+    /**
+     * Get performances
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPerformances()
+    {
+        return $this->performances;
     }
 }

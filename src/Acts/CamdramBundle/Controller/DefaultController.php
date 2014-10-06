@@ -65,7 +65,7 @@ class DefaultController extends Controller
         $s_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getNumberInDateRange($start, $end);
         $people_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Person')->getNumberInDateRange($start, $end);
         $v_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Venue')->getNumberInDateRange($start, $end)
-            + $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getNumberOfVenueNamesInDateRange($start, $end);
+            + $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance')->getNumberOfVenueNamesInDateRange($start, $end);
 
         $response = $this->render('ActsCamdramBundle:Default:statistics.html.twig', array(
             'show_num' => $s_num,

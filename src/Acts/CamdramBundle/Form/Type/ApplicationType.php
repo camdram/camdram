@@ -17,9 +17,9 @@ class ApplicationType extends AbstractType
         $builder
             ->add('text', 'text', array('label' => 'Brief Description',
                 'attr' => array('placeholder' => 'e.g. "Applications to Direct" (your show name will be included automatically)')))
-            ->add('further_info', 'textarea', array('label' => 'Further Information'))
-            ->add('deadline_date', 'date', array('widget' => 'single_text'))
-            ->add('deadline_time', 'time', array('widget' => 'single_text'))
+            ->add('furtherInfo', 'textarea', array('label' => 'Further Information'))
+            ->add('deadlineDate', 'date', array('widget' => 'single_text', 'error_bubbling' => false))
+            ->add('deadlineTime', 'time', array('widget' => 'single_text'))
         ;
     }
 

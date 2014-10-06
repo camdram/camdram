@@ -45,6 +45,7 @@ class TechieAdvert
      * @var string
      *
      * @ORM\Column(name="positions", type="text", nullable=false)
+     * @Assert\NotBlank()
      */
     private $positions;
 
@@ -52,6 +53,7 @@ class TechieAdvert
      * @var string
      *
      * @ORM\Column(name="contact", type="text", nullable=false)
+     * @Assert\NotBlank()
      */
     private $contact;
 
@@ -374,4 +376,27 @@ class TechieAdvert
         return $this->getShow()->getSlug();
     }
 
+
+    /**
+     * Set last_updated
+     *
+     * @param \DateTime $lastUpdated
+     * @return TechieAdvert
+     */
+    public function setLastUpdated($lastUpdated)
+    {
+        $this->last_updated = $lastUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get last_updated
+     *
+     * @return \DateTime 
+     */
+    public function getLastUpdated()
+    {
+        return $this->last_updated;
+    }
 }

@@ -44,8 +44,8 @@
             <td><a href="{{ path('remove_user', {identifier: user.id}) }}">Delete</a></td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td>{% if user.registered > date('0000-00-00') %}{{ user.registered | date('Y-m-d') }}{% endif %}</td>
-            <td>{% if user.login > date('0000-00-00') %}{{ user.login | date('Y-m-d') }}{% endif %}</td>
+            <td>{% if user.registeredAt > date('0000-00-00') %}{{ user.registeredAt | date('Y-m-d') }}{% endif %}</td>
+            <td>{% if user.lastLoginAt > date('0000-00-00') %}{{ user.lastLoginAt | date('Y-m-d') }}{% endif %}</td>
         </tr>
         {% endfor %}
         </tbody>

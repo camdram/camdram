@@ -20,17 +20,25 @@ class EmailDispatcher
         $this->from_address = $from_address;
     }
 
-    public function sendShowCreatedEmail(Show $show, array $owners, array $users)
+    public function sendShowCreatedEmail(Show $show, array $owners, array $moderators, array $admins)
     {
         $emails = array();
-        foreach ($users as $user) {
+        foreach ($moderators as $user) {
             $emails[$user->getFullEmail()] = $user->getName();
+        }
+
+        $bccs = array();
+        foreach ($admins as $user) {
+            if (!isset($emails[$user->getFullEmail()])) {
+                $bccs[$user->getFullEmail()] = $user->getName();
+            }
         }
 
         $message = \Swift_Message::newInstance()
             ->setSubject('New show needs authorization on Camdram: '.$show->getName())
-            ->setFrom($this->from_address)
+            ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($emails)
+            ->setBcc($bccs)
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:show_created.txt.twig',
@@ -53,7 +61,7 @@ class EmailDispatcher
 
         $message = \Swift_Message::newInstance()
             ->setSubject('Show authorised on Camdram: '.$show->getName())
-            ->setFrom($this->from_address)
+            ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($emails)
             ->setBody(
                 $this->twig->render(

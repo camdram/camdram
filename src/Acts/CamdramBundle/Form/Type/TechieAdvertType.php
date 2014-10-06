@@ -18,9 +18,10 @@ class TechieAdvertType extends AbstractType
             ->add('positions', 'textarea', array('label' => 'Vacant positions (one per line)'))
             ->add('contact', 'text', array('label' => 'Contact details'))
             ->add('deadline', 'checkbox', array('label' => 'Include a deadline for applications', 'required' => false))
-            ->add('expiry', 'date', array('label' => 'Deadline date', 'widget' => 'single_text'))
-            ->add('deadline_time', 'time', array('label' => 'Deadline time', 'widget' => 'single_text'))
-            ->add('tech_extra', 'textarea', array('label' => 'Further information that might be useful to people applying for this/these positions'))
+            ->add('expiry', 'date', array('label' => 'Deadline date', 'widget' => 'single_text', 'required' => false))
+            ->add('deadline_time', 'time', array('label' => 'Deadline time', 'widget' => 'single_text', 'required' => false))
+            ->add('tech_extra', 'textarea', array('required' => false,
+                'label' => 'Further information that might be useful to people applying for this/these positions'))
         ;
     }
 

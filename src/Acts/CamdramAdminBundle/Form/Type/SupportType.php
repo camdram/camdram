@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Form\Type;
+namespace Acts\CamdramAdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,12 +30,12 @@ class SupportType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acts\CamdramBundle\Entity\Support'
+            'data_class' => 'Acts\CamdramAdminBundle\Entity\Support'
         ));
     }
 
     public function getName()
     {
-        return 'acts_camdrambundle_supporttype';
+        return 'acts_camdramadminbundle_supporttype';
     }
 }

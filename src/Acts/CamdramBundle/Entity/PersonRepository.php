@@ -28,17 +28,13 @@ class PersonRepository extends EntityRepository
 
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
-        $qb = $this->createQueryBuilder('e')->select('COUNT(e.id)');
-        $qb->innerJoin('ActsCamdramBundle:Role', 'r', Expr\Join::WITH, 'r.person = e')
-            ->innerJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'r.show = s')
-            ->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
-            'p.show = s',
-            $qb->expr()->orX(
-                $qb->expr()->andX('p.end_date > :start', 'p.end_date < :end'),
-                $qb->expr()->andX('p.start_date > :start', 'p.start_date < :end'),
-                $qb->expr()->andX('p.start_date < :start', 'p.end_date > :end')
-            )
-        ))
+        $qb = $this->createQueryBuilder('e')
+            ->select('COUNT(DISTINCT e.id)')
+            ->innerJoin('e.roles', 'r')
+            ->innerJoin('r.show', 's')
+            ->innerJoin('s.performances', 'p')
+            ->andWhere('p.start_date < :end')
+            ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
 

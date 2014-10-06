@@ -73,8 +73,8 @@ class AuditionRepository extends EntityRepository
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
-            ->setMaxResults($limit);
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME);
+        if ($limit > 0) $qb->setMaxResults($limit);
         return $qb;
     }
 

@@ -41,7 +41,8 @@ class ShowAuditionsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acts\CamdramBundle\Entity\Show'
+            'data_class' => 'Acts\CamdramBundle\Entity\Show',
+            'cascade_validation' => true,
         ));
     }
 

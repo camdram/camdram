@@ -31,7 +31,7 @@
                     - {{ a.show.societyname }}
                 {% endif %}
                 </h4>
-                    <p>{{ a.show.audextra | detect_links }}</p>
+                    <p>{{ a.show.audextra | camdram_markdown }}</p>
                     <ul>
             {% endif %}
             {% if a.nonscheduled %}
