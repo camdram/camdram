@@ -70,13 +70,11 @@ class ShowRepository extends EntityRepository
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)')
+            ->innerJoin('s.performances', 'p')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true');
-
-        $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
-                'p.show = s',
-                $qb->expr()->andX('p.start_date <= :end', 'p.end_date >= :start')
-            ))
+            ->andWhere('s.entered = true')
+            ->andWhere('p.start_date < :end')
+            ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();
@@ -86,14 +84,12 @@ class ShowRepository extends EntityRepository
     public function getNumberOfVenueNamesInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.venue_name)')
+            ->innerJoin('s.performances', 'p')
             ->where('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->andwhere('s.venue IS NULL');
-
-        $qb->innerJoin('ActsCamdramBundle:Performance', 'p',Expr\Join::WITH, $qb->expr()->andX(
-            'p.show = s',
-            $qb->expr()->andX('p.start_date <= :end', 'p.end_date >= :start')
-        ))
+            ->andwhere('s.venue IS NULL')
+            ->andWhere('p.start_date < :end')
+            ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();
