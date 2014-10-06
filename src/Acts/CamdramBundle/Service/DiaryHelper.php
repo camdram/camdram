@@ -133,7 +133,9 @@ class DiaryHelper
 
         $events = array();
         foreach ($auditions as $audition) {
-            $events[] = $this->createEventFromAudition($audition);
+            if (!$audition->getNonScheduled()) {
+                $events[] = $this->createEventFromAudition($audition);
+            }
         }
         return $events;
     }

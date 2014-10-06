@@ -29,7 +29,7 @@ class AuditionController extends FOSRestController
     {
         $diary = $this->get('acts.diary.factory')->createDiary();
 
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(new \DateTime);
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findUpcoming(null, new \DateTime);
 
         $events = $this->get('acts.camdram.diary_helper')->createEventsFromAuditions($auditions);
         $diary->addEvents($events);
