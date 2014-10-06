@@ -20,10 +20,9 @@ class ApiPerformance
      */
     private $performance;
 
-    public function __construct($performance, $controller)
+    public function __construct($performance)
     {
     $this->performance = $performance;
-    $this->controller  = $controller;
     }
 
     /**
