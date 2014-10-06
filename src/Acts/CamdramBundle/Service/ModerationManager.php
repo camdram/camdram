@@ -82,7 +82,6 @@ class ModerationManager
         $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
         if ($entity instanceof Show) {
-            $users = $repo->findAdmins(AccessControlEntry::LEVEL_FULL_ADMIN);
             if ($entity->getSociety()) {
                 $users = array_merge($users, $repo->getEntityOwners($entity->getSociety()));
             }
@@ -92,6 +91,12 @@ class ModerationManager
         }
 
         return $users;
+    }
+
+    public function getModeratorAdmins()
+    {
+        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+        return $repo->findAdmins(AccessControlEntry::LEVEL_FULL_ADMIN);
     }
 
     public function approveEntity(Show $entity)
@@ -134,6 +139,7 @@ class ModerationManager
             $moderators = $this->getModeratorsForEntity($entity);
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $owners = $repo->getEntityOwners($entity);
+            $admins = $this->getModeratorAdmins();
             /* Construct a list of email addresses to add to the 'To' field of the
              * email.
              * TODO Improve upon Camdram's current approach of emailing all moderators
@@ -143,7 +149,7 @@ class ModerationManager
              * email, e.g. a Camdram admin may also be a Society's admin, but send
              * their email as if they are just the latter.
              */
-            $this->dispatcher->sendShowCreatedEmail($entity, $owners, $moderators);
+            $this->dispatcher->sendShowCreatedEmail($entity, $owners, $moderators, $admins);
             $this->logger->info('Authorisation e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
         }
     }
