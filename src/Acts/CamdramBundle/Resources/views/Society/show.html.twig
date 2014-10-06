@@ -11,9 +11,26 @@
 
 <div class="row">
     <div class="large-12 columns panel">
-         <h2>{{ society.name }} <small>- {{ society.shortname }}</small></h2>
-        {% if society.image %}<p>{{ render_image(society.image, 300, 200) }}</p>{% endif %}
-         <p>{{ society.description | camdram_markdown }}</p>
+        <div class="row">
+        {% if society.image %}
+            {# Display the society's logo beside the name #} 
+            <div class="large-4 columns">
+                {{ render_image(society.image, 300, 200) }}
+            </div>
+            <div class="large-8 columns">
+        {% else %}
+            {# Society name spans the entire width. #}
+            <div class="large-12 columns">
+        {% endif %}
+                <h2>{{ society.name }}<small>- {{ society.shortname }}</small></h2>
+            </div>
+        </div><!-- row -->
+        {# Place the society description beneath the title and image. #}
+        <div class="row">
+            <div class="large-12 columns">
+                <p>{{ society.description | camdram_markdown }}</p>
+            </div>
+        </div>
     </div><!-- twelve columns panel -->
 </div><!-- row -->
 <div class="row">
