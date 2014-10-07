@@ -3,8 +3,10 @@ namespace Acts\CamdramLegacyBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramLegacyBundle\Entity\ShowRef;
-use Acts\CamdramBundle\Event\EntityEvent;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
+
+use Gedmo\Sluggable\Util as Sluggable;
 
 /**
  * Class ShowRefCreator
@@ -15,29 +17,20 @@ use Doctrine\ORM\EntityManager;
  */
 class ShowRefCreator
 {
-    private $entityManager;
-
-    public function __construct(EntityManager $entityManager)
+    public function prePersist(Show $show, LifecycleEventArgs $event)
     {
-        $this->entityManager = $entityManager;
-    }
-
-    public function onShowCreated(EntityEvent $event)
-    {
-        $show = $event->getEntity();
-        if (!$show instanceof Show)  return;
-
         if (!$show->getPrimaryRef()) {
-            $year = $show->getStartAt()->format('y');
-            $refname = $year.'/'.str_replace('-','_',$show->getSlug());
+            $refname = Sluggable\Urlizer::urlize($show->getName(), '_');
+            if ($show->getStartAt()) {
+                $year = $show->getStartAt()->format('y');
+                $refname = $year.'/'.$refname;
+            }
 
             $ref = new ShowRef();
             $ref->setShow($show);
             $ref->setRef($refname);
-            $this->entityManager->persist($ref);
             $show->setPrimaryRef($ref);
-            $this->entityManager->flush();
-        }
+         }
     }
 
 }

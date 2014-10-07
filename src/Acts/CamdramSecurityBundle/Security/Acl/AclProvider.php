@@ -56,6 +56,15 @@ class AclProvider
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($entity);
     }
 
+    public function getOrganisationIdsByUser(User $user)
+    {
+        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUserAndType($user, 'society');
+        $ids = array_map(function (AccessControlEntry $ace) {
+            return $ace->getEntityId();
+        }, $aces);
+        return $ids;
+    }
+
     public function getEntityIdsByUser(User $user, $class)
     {
         $reflection = new \ReflectionClass($class);

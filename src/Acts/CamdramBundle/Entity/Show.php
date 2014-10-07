@@ -18,7 +18,7 @@ use Acts\CamdramApiBundle\Annotation as Api;
  *
  * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="show_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
- * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener" })
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener","Acts\CamdramLegacyBundle\EventListener\ShowRefCreator" })
  * @Serializer\ExclusionPolicy("all")
  * @Api\Feed(name="Camdram - Shows", titleField="name",
  *   description="Shows produced by students in Cambridge",
@@ -217,7 +217,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * @var integer
      *
-     * @ORM\OneToOne(targetEntity="Acts\CamdramLegacyBundle\Entity\ShowRef")
+     * @ORM\OneToOne(targetEntity="Acts\CamdramLegacyBundle\Entity\ShowRef", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
      */
     private $primary_ref;

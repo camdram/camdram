@@ -9,9 +9,8 @@ services:
 
     acts.camdram.listener.show_ref:
         class: Acts\CamdramLegacyBundle\EventListener\ShowRefCreator
-        arguments: [@doctrine.orm.entity_manager]
         tags:
-            - { name: kernel.event_listener, event: camdram.entity_created, method: onShowCreated }
+            - { name: doctrine.entity_listener }
 
     acts.camdram.redirect_handler:
         class: Acts\CamdramLegacyBundle\EventListener\RedirectHandler

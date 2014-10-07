@@ -98,6 +98,8 @@ class RedirectHandler {
             '/shows/archive' => 'acts_camdram_homepage',
             '/positions/actors'  => 'get_auditions',
             '/positions/production'  => 'get_techies',
+            '/techies' => 'get_techies',
+            '/diary/' => 'acts_camdram_diary',
             '/positions/directors_producers'  => 'get_applications',
             '/privacy' => 'acts_camdram_privacy',
             '/signup' => 'acts_camdram_security_create_account',

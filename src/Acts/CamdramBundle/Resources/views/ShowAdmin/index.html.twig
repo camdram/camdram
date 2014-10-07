@@ -8,9 +8,9 @@
 <div class="row">
     <div class="large-12 columns">
         <h3>Show Administration</h3>
-        {% if is_granted('ROLE_ADMIN') %}
+
         {{ render(controller('ActsCamdramBundle:ShowAdmin:cgetUnauthorised')) }}
-        {% endif %}
+
         <h5>My Shows</h5>
         <ul class="large-block-grid-2" id="venues_list">
         {% for show in shows %}
