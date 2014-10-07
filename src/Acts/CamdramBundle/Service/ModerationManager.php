@@ -89,7 +89,10 @@ class ModerationManager
                 $users = array_merge($users, $repo->getEntityOwners($entity->getVenue()));
             }
         }
-
+        if (count($users) == 0) {
+            //If there is no venue/society or both have zero admins, then the Camdram admins become the moderators
+            $users = $this->getModeratorAdmins();
+        }
         return $users;
     }
 
