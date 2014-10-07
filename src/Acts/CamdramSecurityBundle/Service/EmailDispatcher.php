@@ -191,7 +191,6 @@ class EmailDispatcher
             $emails[$email] = $user->getName();
         }
 
-        $url = $this->get('router')->generate('edit_show_admin', array('identifier' => $show->getSlug()), true);
         $message = \Swift_Message::newInstance()
             ->setSubject('Show access request on Camdram: '.$show->getName())
             ->setFrom($this->from_address)
@@ -201,8 +200,7 @@ class EmailDispatcher
                     'ActsCamdramBundle:Email:show_access_requested.txt.twig',
                     array(
                         'ace' => $ace,
-                        'show' => $show,
-                        'link' => $url
+                        'show' => $show
                     )
                 )
             )

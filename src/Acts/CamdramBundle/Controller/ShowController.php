@@ -440,7 +440,17 @@ class ShowController extends AbstractRestController
             // TODO add a no-action return code.
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
         } else {
+            // Check if there's already a matching request.
             $em = $this->getDoctrine()->getManager();
+            $ace_repo = $em->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+            $user = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+            $request = $ace_repo->findAceRequest($user, $show);
+            if ($request != NULL) {
+                // A pre-existing request exists. Don't create another one.
+                return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+            }
+
             $ace = new AccessControlEntry();
             $ace->setUser($this->getUser())
                 ->setEntityId($show->getId())
