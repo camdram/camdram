@@ -44,7 +44,6 @@ class Audition
      * @var \DateTime
      *
      * @ORM\Column(name="endtime", type="time", nullable=true)
-     * @Assert\NotBlank()
      * @Assert\Time()
      */
     private $end_time;
