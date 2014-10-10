@@ -121,7 +121,7 @@ class ApiShow
     public function getPerformances()
     {
         $callback = function ($value) {
-            return new ApiPerformance($value, $this->controller);
+            return new ApiPerformance($value, $this->router);
         };
         return array_map($callback, $this->show->getAllPerformances());
     }
