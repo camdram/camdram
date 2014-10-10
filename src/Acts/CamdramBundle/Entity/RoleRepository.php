@@ -20,7 +20,12 @@ class RoleRepository extends EntityRepository
             array('type' => $type, 'show' => $show),
             array('order' => 'DESC')
             );
-        return $role->getOrder();
+        $res = 0;
+        if ($role != NULL) {
+            // There are no roles of this type.
+            $res = $role->getOrder();
+        }
+        return $res;
     }
 
     public function getUpcomingByPerson(\DateTime $now, Person $person)
