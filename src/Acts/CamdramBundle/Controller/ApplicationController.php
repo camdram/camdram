@@ -21,8 +21,8 @@ class ApplicationController extends FOSRestController
      */
     public function cgetAction()
     {
-        $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
-            ->findLatest(-1, new \DateTime);
+        $applications = array_reverse($this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
+            ->findLatest(-1, new \DateTime));
 
         $view = $this->view($applications, 200)
             ->setTemplate("ActsCamdramBundle:Application:index.html.twig")
