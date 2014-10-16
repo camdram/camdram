@@ -67,5 +67,11 @@ class CreateVoterTest extends \PHPUnit_Framework_TestCase
                 $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'), array('CREATE')
             ));
     }
-
+    
+    public function testCreateEmailBuilder()
+    {
+        $this->assertEquals(CreateVoter::ACCESS_ABSTAIN, $this->voter->vote(
+                $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\EmailBuilder'), array('CREATE')
+            ));
+    }
 }

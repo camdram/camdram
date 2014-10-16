@@ -1,0 +1,27 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Email Builder - {{ form.vars.value.name }} - Edit{% endblock %}
+
+{% block body %}
+{{ render(controller('ActsCamdramBundle:Emailbuilder:adminPanel', {identifier: form.vars.value.slug})) }}
+<div class="row">
+    <h3>Edit Builder</h3>
+    <form action="{{ path("put_emailbuilder", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post" class="custom">
+        {{ form_widget(form) }}
+        <div class="text-right">
+            <input type="submit" value="Save" class="button"/>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <h3>Preview</h3>
+    <p>
+    Save to update
+    </p>
+    <iframe 
+        src="{{ path('get_emailbuilder_preview', { identifier: form.vars.value.slug }) }}" 
+    width = "100%"
+    height= "600px";
+    />
+</div>
+{% endblock %}

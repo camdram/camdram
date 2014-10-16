@@ -14,6 +14,37 @@ use Doctrine\ORM\Query\Expr;
  */
 class ApplicationRepository extends EntityRepository
 {
+    /**
+     * findScheduledOrderedByDeadline
+     *
+     * Find all applications between two dates that should be shown on the
+     * diary page.
+     *
+     * @param DateTime $startDate start date 
+     * @param DateTime $endDate end date
+     *
+     * @return array of applications
+     */
+    public function findScheduledOrderedByDeadline($startDate, $endDate)
+    {
+        $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Application');
+        $query = $query_res->createQueryBuilder('a') 
+            ->leftJoin('a.show', 's')
+            ->addSelect('s')
+            ->where('a.deadlineDate <= :enddate')
+            ->andWhere('a.deadlineDate >= :startdate')            
+            ->andWhere('s.id IS NULL OR (s.authorised_by IS NOT NULL and s.entered != false)') // s.id is null means it's a society - no authorisation needed
+            ->setParameters(array(
+                'startdate' => $startDate,
+                'enddate' =>  $endDate
+                ))
+            ->orderBy('a.deadlineDate')
+            ->addOrderBy('a.deadlineTime')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     private function getLatestQuery($limit, \DateTime $now)
     {
         $qb = $this->createQueryBuilder('a');

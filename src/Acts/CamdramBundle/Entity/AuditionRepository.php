@@ -20,9 +20,6 @@ class AuditionRepository extends EntityRepository
      * Find all auditions between two dates that should be shown on the
      * diary page, joined to the corresponding show.
      *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
-     *
      * @return array of auditions
      */
     public function findCurrentOrderedByNameDate(\DateTime $now)

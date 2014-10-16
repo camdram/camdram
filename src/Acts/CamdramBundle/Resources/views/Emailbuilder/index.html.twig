@@ -1,0 +1,22 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Email Builders{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-12 columns">
+            <h2>Email Builders</h2>
+            <ul class="large-block-grid-2" id="email_builders_list">
+            {% for emailBuilder in result.data %}
+                <li>
+                    <div class="panel">
+                        <h5><a href="{{ path('get_emailbuilder', {identifier: emailBuilder.slug}) }}">{{ emailBuilder.name }}</a></h5>
+                        {{emailBuilder.Title }}
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+

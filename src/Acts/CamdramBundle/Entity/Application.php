@@ -26,7 +26,7 @@ class Application
     /**
      * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="Show", inversedBy="applications")
+     * @ORM\OneToOne(targetEntity="Show", inversedBy="application")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
@@ -180,6 +180,20 @@ class Application
     {
         return $this->deadlineTime;
     }
+    
+    /**
+     * Get the Deadline Date and Time together as a single object
+     *
+     * @return \DateTime
+     */
+    public function getDeadlineDateTime()
+    {
+        $date = clone $this->getDeadlineDate();
+        $time = $this->getDeadlineTime();
+        $date->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		
+        return $date;
+    }
+     
 
     /**
      * Set show

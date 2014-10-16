@@ -5,10 +5,10 @@ use Acts\CamdramBundle\Entity\Show;
 use Doctrine\ORM\EntityRepository;
 
 use Acts\CamdramBundle\Entity\Organisation;
+use Acts\CamdramBundle\Entity\EmailBuilder;
 
 class UserRepository extends EntityRepository
 {
-
     public function findUsersWithSimilarName($name)
     {
         preg_match('/.* ([a-z\'\-]+)$/i', trim($name), $matches);
@@ -36,7 +36,6 @@ class UserRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
-
     public function findAdmins($min_level)
     {
         $query = $this->createQueryBuilder('u')
@@ -56,7 +55,11 @@ class UserRepository extends EntityRepository
             $type = 'show';
         } elseif ($entity instanceof Organisation) {
             $type = 'society';
-        } else {
+        }
+        elseif ($entity instanceof EmailBuilder) {
+            $type = 'emailBuilder';
+        }
+        else {
             return array();
         }
         $query = $this->createQueryBuilder('u')
@@ -69,6 +72,8 @@ class UserRepository extends EntityRepository
             ->getQuery();
         return $query->getResult();
     }
+<<<<<<< HEAD
+=======
 
     /**
      * Get the list of users that have requested admin access to a show.
@@ -85,5 +90,6 @@ class UserRepository extends EntityRepository
             ->getQuery();
         return $query->getResult();
     }
+>>>>>>> 01d821d51bb97c2732c7e43892143c1f19b421f3
 }
 

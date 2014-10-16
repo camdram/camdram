@@ -230,11 +230,11 @@ class Show implements SearchableInterface, OwnableInterface
     private $timestamp;
 
     /**
-     * @var array
+     * @var TechieAdvert
      *
-     * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
+     * @ORM\OneToOne(targetEntity="TechieAdvert", mappedBy="show")
      */
-    private $techie_adverts;
+    private $techie_advert;
 
     /**
      * @var array
@@ -246,9 +246,9 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Application", mappedBy="show")
+     * @ORM\OneToOne(targetEntity="Application", mappedBy="show")
      */
-    private $applications;
+    private $application;
 
     /**
      *
@@ -1021,49 +1021,41 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-     * Add techie_adverts
+     * Add techie_advert
      *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdvert
      * @return Show
      */
-    public function addTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    public function setTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdvert)
     {
-        $this->techie_adverts[] = $techieAdverts;
-
+        $this->techie_advert = $techieAdvert;
+    
         return $this;
     }
 
+
     /**
-     * Remove techie_adverts
+     * Get techie_advert if it is active
      *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     * @return \Acts\CamdramBundle\Entity\TechieAdvert
      */
-    public function removeTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    public function getActiveTechieAdvert()
     {
-        $this->techie_adverts->removeElement($techieAdverts);
+        $advert = $this->getTechieAdvert();
+        if(is_null($advert) || $advert->getExpiry() < new \DateTime()){
+            return null;
+        }
+        return $advert;
     }
 
     /**
-     * Get techie_adverts
+     * Get techie_advert
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Acts\CamdramBundle\Entity\TechieAdvert
      */
-    public function getActiveTechieAdverts()
+    public function getTechieAdvert()
     {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('expiry', new \DateTime()));
-
-        return $this->techie_adverts->matching($criteria);
-    }
-
-    /**
-     * Get techie_adverts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTechieAdverts()
-    {
-        return $this->techie_adverts;
+        return $this->techie_advert;
     }
 
     /**
@@ -1192,56 +1184,49 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-     * Add applications
+     * Set application
      *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @param \Acts\CamdramBundle\Entity\Application $application
      * @return Show
      */
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    public function setApplication(\Acts\CamdramBundle\Entity\Application $application)
     {
-        $this->applications[] = $applications;
-
+        $this->application = $application;
+    
         return $this;
     }
 
     /**
-     * Remove applications
+     * Get application
      *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @return \Acts\CamdramBundle\Entity\Application 
      */
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    public function getApplication()
     {
-        $this->applications->removeElement($applications);
+        return $this->application;
     }
 
     /**
-     * Get applications
+     * Get active application
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Acts\CamdramBundle\Entity\Application 
      */
-    public function getApplications()
+    public function getActiveApplication()
     {
-        return $this->applications;
-    }
-
-    /**
-     * Get active applications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getActiveApplications()
-    {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('deadlineDate', new \DateTime()));
-
-        return $this->applications->matching($criteria);
+        $application = $this->getApplication();
+        
+        if(is_null($application) || $application->getDeadlineDateTime() < new \DateTime()){
+            return null;
+        }
+        
+        return $application;
     }
 
     public function hasVacancies()
     {
-        return count($this->getActiveTechieAdverts()) > 0
+        return (!is_null($this->getActiveTechieAdvert()))
                 || count($this->getAuditions()) > 0
-                || count($this->getActiveApplications()) > 0;
+                || (! is_null($this->getActiveApplication()));
     }
 
     /**
@@ -1328,7 +1313,32 @@ class Show implements SearchableInterface, OwnableInterface
     {
         return $this->description;
     }
-
+    
+    /**
+     * Get a brief description, suitable for show emails etc.
+     *
+     * @return string;
+     */
+    public function getDescriptionBrief()
+    {
+        $description = trim($this->getDescription());
+        $newline = strpos($description, "\n");
+        if(! ($newline === false))
+        {
+            $description = substr($description, 0, $newline);
+        }
+        $wordOffsets = array();
+        
+        $wordCount = preg_match_all("/\b\w/", $description, $wordOffsets, PREG_OFFSET_CAPTURE);
+        
+        if($wordCount > 100)
+        {
+            $description = substr($description, 0, $wordOffsets[0][100][1]) . "...";
+        }
+              
+        return $description;
+    }
+        
     /**
      * Set facebook_id
      *
@@ -1489,8 +1499,53 @@ class Show implements SearchableInterface, OwnableInterface
     {
         return $this->online_booking_url;
     }
+    
+    public function getNameAndPerformanceRange()
+    {
+        $firstPerformance = $this->getFirstPerformance();
+        $lastPerformance = $this->getLastPerformance();
+        
+        if(is_null($firstPerformance))
+        {
+            return $this->getName() . " (dates tbc)";
+        }
+
+        if($firstPerformance['date'] == $lastPerformance['date'])
+        {
+            return $this->getName() . " " . $firstPerformance['date']->format("jS M Y");
+        }
+    
+        return $this->getName() . " " . $firstPerformance['date']->format("jS M Y") . " - " . $lastPerformance['date']->format("jS M Y");
+    }    
+    
+    public function getFirstPerformance()
+    {
+        $allPerformances = $this->getAllPerformances();
+        if(count($allPerformances) == 0){
+            return null;
+        }
+        return $allPerformances[0];
+    }
+    
+    public function getLastPerformance()
+    {
+        $allPerformances = $this->getAllPerformances();
+        if(count($allPerformances) == 0){
+            return null;
+        }
+        return end($allPerformances);
+    }
 
     /**
+        Non-serialised cache variable for getAllPerformances() as this could be expensive
+        
+        Note - because of how PHP copies arrays, we don't need to worry about the return of the function being changed - 
+        http://stackoverflow.com/questions/1532618/is-there-a-function-to-make-a-copy-of-a-php-array-to-another#1533214
+     */
+
+    private $allPerformancesCache;
+    
+    /** 
 
     Returns an array of performances, in ascending date order, with the following fields set:
         date     => Performance Date
@@ -1503,6 +1558,10 @@ class Show implements SearchableInterface, OwnableInterface
     */
     public function getAllPerformances()
     {
+        if($this->allPerformancesCache != null){
+            $ret = $this->allPerformancesCache;
+            return $ret;
+        }
         $ret = array();
         foreach ($this->getPerformances() as $performance) {
             $current_day = clone $performance->getStartDate(); //ate'] . " " . $perf['time']);
@@ -1516,16 +1575,16 @@ class Show implements SearchableInterface, OwnableInterface
             }
             while($current_day <= $end_day) {
                 if ($current_day != $exclude) {
-            $datetime = clone $current_day;
-
-            $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way
-                    array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue ));
+                    $datetime = clone $current_day;
+                    $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way 		    
+                    array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue, 'year' => $datetime->format('Y') ));
                 }
                 $current_day = clone $current_day;
                 $current_day->modify('+1 day');
             }
         }
         usort($ret, array($this, 'cmpPerformances'));
+        $this ->allPerformancesCache = $ret;
         return $ret;
     }
 

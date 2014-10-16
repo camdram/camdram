@@ -2,6 +2,7 @@
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\EmailBuilder;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
@@ -85,6 +86,17 @@ class EmailDispatcher
             ->setTo($this->from_address)
             ->setBody($message)
         ;
+        $this->mailer->send($message);
+    }
+    
+    public function sendBuilderEmail(EmailBuilder $emailBuilder, $bodyText, $bodyHtml)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject($emailBuilder->getSubject())
+            ->setFrom($emailBuilder->getFromAddress())
+            ->setTo($emailBuilder->getToAddress())
+            ->setBody($bodyText)
+            ->addPart($bodyHtml , 'text/html');
         $this->mailer->send($message);
     }
 }

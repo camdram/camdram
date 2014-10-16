@@ -34,7 +34,7 @@ class TechieAdvert
     /**
      * @var \Show
      *
-     * @ORM\ManyToOne(targetEntity="Show", inversedBy="techie_adverts")
+     * @ORM\OneToOne(targetEntity="Show", inversedBy="techie_advert")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -152,6 +152,13 @@ class TechieAdvert
     public function getPositionsOneLine()
     {
         return preg_replace('/\r?\n/',", ",$this->positions);
+    }
+    
+    public function getSortedPositionsArray()
+    {
+        $positions = array_map('trim', explode("\n", $this->positions));
+        natcasesort($positions);
+        return $positions;
     }
 
     /**

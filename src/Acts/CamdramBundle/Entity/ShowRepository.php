@@ -66,6 +66,21 @@ class ShowRepository extends EntityRepository
             ->setParameter('ids', $ids);
         return $qb->getQuery()->getResult();
     }
+    
+    public function findIdsOrOrganisationByDate($showids, $orgids)
+    {
+        if (count($showids) == 0 && count($orgids) == 0) return array();
+        
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.society','soc')
+            ->leftJoin('s.venue','ven')
+            ->where('s.id IN (:ids) or soc.id in (:orgids) or ven.id in (:orgids)')
+            ->andWhere('s.entered = true')
+            ->orderBy('s.start_at', 'desc')
+            ->setParameter('ids', $showids)
+            ->setParameter('orgids', $orgids);
+        return $qb->getQuery()->getResult();
+    }
 
     public function getNumberInDateRange(\DateTime $start, \DateTime $end)
     {
@@ -182,6 +197,38 @@ class ShowRepository extends EntityRepository
             ->setMaxResults(1)
             ->getQuery();
         return new \DateTime(current($query->getOneOrNullResult()));
+    }
+    
+    /**
+     *  Takes a list of shows and loads all associated performances in one database hit.
+     */
+    public function GetShowsWithAllPerformances($showIdsArray)    
+    {
+        $query = $this->createQueryBuilder('s')
+                    ->leftJoin('s.performances','p')
+                    ->addSelect('p')
+                    ->where('s.id in (:ids)')
+                    ->setParameter('ids',$showIdsArray)
+                    ->getQuery();
+        return $query->getResult();
+    }
+    
+    public function GetShowsWithAnyUpcomingAdvert()
+    {
+        $today = new \DateTime('today');
+        $query = $this->createQueryBuilder('s')
+                      ->leftJoin('s.techie_advert','t', 'WITH', 's = t.show and t.expiry > :today')
+                      ->leftJoin('s.auditions','aud', 'WITH', 's = aud.show and aud.date >=:today')
+                      ->leftJoin('s.applications','app', 'WITH', 's = app.show and app.deadlineDate >= :today')
+                      ->leftJoin('s.performances','p')
+                      ->addSelect('p')
+                      ->where('s.authorised_by is not null')
+                      ->andWhere('s.entered = true')
+                      ->andWhere('t.id is not null or app.id is not null or aud.id is not null')
+                      ->setParameter('today', $today)
+                      ->orderBy('s.start_at', 'ASC')
+                      ->getQuery();
+        return $query->getResult();                    
     }
 
     public function getBySociety(Society $society, \DateTime $from = null, \DateTime $to = null)

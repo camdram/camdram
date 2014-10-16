@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\EmailBuilder;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository,
     Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
@@ -89,6 +90,17 @@ class AclProvider
         return $qb->getQuery()->getResult();
     }
 
+<<<<<<< HEAD
+    public function getEmailBuilderIdsByUser(User $user)
+    {
+        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUser($user, 'emailBuilder');
+        $ids = array_map(function($ace) {
+            return $ace->getEntityId();
+        }, $aces);
+        return $ids;
+    }
+
+=======
     /**
      * Grant access to a resource.
      *
@@ -96,6 +108,7 @@ class AclProvider
      * database, and dispatches a Camdram-specific event that is used
      * to trigger sending of emails.
      */
+>>>>>>> 01d821d51bb97c2732c7e43892143c1f19b421f3
     public function grantAccess(OwnableInterface $entity, User $user, User $granter)
     {
         $ace = new AccessControlEntry;

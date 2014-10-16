@@ -1,0 +1,57 @@
+{{ emailbuilder.Title }}
+
+{{ emailbuilder.Introduction }}
+
+{% if nonShowApplications is defined %}
+Societies with open applications:
+
+{% for application in nonShowApplications %}
+***************
+{{ application.society.Name }}
+{{ application.text }}
+
+{{ application.furtherInfo }}
+
+Deadline: {{ application.deadlineDate | date("jS M") }} {{ application.deadlineTime | date("g:ia") }}
+{% endfor %}                                                    
+{% endif %}
+{% if shows %}
+{% for showData in shows %}
+***************
+{{ showData.show.Name }}
+{% if showData.show.society %}
+{{ showData.show.society.name }}
+{% endif %}
+{% include 'ActsCamdramBundle:Performance:show.txt.twig' with {'performances': showData.show.performances } %}
+{% if showData.auditions is defined %}
+Is holding auditions:                                                        
+{% for audition in showData.auditions %}
+{% if audition.nonScheduled == false %}
+{{ audition.date | date("jS M") }} {{ audition.startTime | date("g:ia") }} - {{ audition.endTime | date("g:ia") }} @ {{ audition.location }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if showData.applications is defined %}
+{{ showData.applications.text }}
+{% endif %}
+{% if showData.techieAdvert is defined %}
+Is seeking:
+{% for position in showData.techieAdvert.positionsArray %}
+ * {{ position }}
+{% endfor %}
+{% endif %}
+{{ showData.show.descriptionBrief | camdram_markdown }}
+{% if showData.auditions is defined %}
+{{ showData.show.audextra }}
+{% endif %}
+{% if showData.applications is defined %}
+{{ showData.applications.furtherInfo }}
+Deadline: {{ showData.applications.deadlineDate | date ("jS M") }} {{ showData.applications.deadlineTime | date ("g:ia") }}
+{% endif %}
+{% if showData.techieAdvert is defined %}
+{{ showData.techieAdvert.techExtra }}
+{% endif %}
+{% endfor %}
+{% endif %}
+-- 
+To be removed from the list, send an email to {{ emailbuilder.UnsubscribeAddress }} and you will be automatically removed

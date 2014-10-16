@@ -1,0 +1,20 @@
+{% if performances|length > 0  -%}
+{%- for p in performances -%}
+{{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}
+{%- if date(p.startdate) != date(p.enddate) -%}
+ - {{ p.enddate|date('D jS F Y') }},
+{%- if (p.excludedate > p.startdate) and (p.excludedate < p.enddate) -%}
+ (except {{ p.excludedate|date('jS') }}) 
+{%- endif -%}
+{%- endif -%}
+{%- if p.venue -%}
+ at {{ p.venue.name }}
+{%- elseif p.venuename is not empty -%}
+ at {{ p.venuename }}
+{%- else -%}
+ Venue to be confirmed
+{%- endif -%}
+{%- endfor -%}
+{%- else -%}
+Dates and venues to be confirmed.
+{%- endif -%}

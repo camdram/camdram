@@ -56,6 +56,11 @@
           'venues': {'text': 'Venues', 'path': path('get_venues')},
           'infobase': {'text': 'Infobase', 'path': path('acts_camdram_infobase_placeholder')},
           }, current_id: current_navigation_id} %}
+          {% if has_emailBuilder() %}
+          {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig'  with {items: {
+          'emailBuilders': {'text': 'Email Builders', 'path': path('get_emailbuilders')},
+          }, current_id: current_navigation_id} %}
+          {% endif %}
         </ul>
           <ul class="right">
             <li class="has-dropdown">

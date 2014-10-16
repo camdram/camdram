@@ -1,0 +1,49 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Email Builder{% endblock %}
+
+{% block body %}
+
+
+<div id="entity-header">
+    <h2>{{ emailbuilder.Name }}</h2>
+</div>
+<table>
+    <tr>
+        <th>To Email</th>
+        <td>{{ emailbuilder.ToAddress }}</td>
+    </tr>
+    <tr>
+        <th>From Email</th>
+        <td>{{ emailbuilder.FromAddress }}</td>
+    </tr>
+    <tr>
+        <th>Subject</th>
+        <td>{{ emailbuilder.Subject }}</td>
+    </tr>        
+    <tr>
+        <th>Introduction</th>
+        <td>{{ emailbuilder.Introduction }}</td>
+    </tr>    
+    <tr>
+        <th>Include</th>
+        <td>
+            <label>
+                <input name='IncludeTechies' id="IncludeTechies" type="checkbox"  disabled="disabled" enabled="false" {{ emailbuilder.IncludeTechieAdverts ? "checked='true'" : "" }} />
+                Include Techies Adverts
+            </label>
+            <br />
+            <label>
+                <input name='IncludeAuditions' id="IncludeAuditions" type="checkbox" disabled="disabled" enabled="false" {{ emailbuilder.IncludeAuditions ? "checked='true'" : "" }} />
+                Include Auditions
+            </label>
+            <br />            
+            <label>
+                <input name='IncludeApplications' id="IncludeApplications" type="checkbox" disabled="disabled" enabled="false" {{ emailbuilder.IncludeApplications ? "checked='true'" : "" }} />
+                Include Applications
+            </label>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}
