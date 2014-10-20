@@ -4,12 +4,15 @@
 {% set current_role = null %}
 <div id="{{ id }}">
 {%- for role in roles -%}
-    {%- if editable or  (role.role != current_role) %}
+    {%- if editable or  (role.role != current_role) or (role.role == null) %}
         {{ not loop.first ? '</div></div>' }}
         <div class="row" {% if editable %}id="role_{{ role.id }}"{% endif %}>
         <div class="small-11 columns">
-        {{ role.role }} -
-        {% set current_role = role.role %}
+        {# Pretify name-less roles held by people. #}
+        {% if role.role %}
+            {{ role.role }} -
+            {% set current_role = role.role %}
+        {% endif %}
     {%- else -%}
         ,
     {% endif %}

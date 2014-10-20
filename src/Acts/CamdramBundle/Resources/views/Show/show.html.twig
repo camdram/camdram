@@ -31,7 +31,7 @@
         {% if show.society %}
             <p class="show-society"><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
         {% elseif show.societyname is not empty %}
-            <p class="show-society">{{ show.societyname }}</a> presents...</p>
+            <p class="show-society">{{ show.societyname }} presents...</p>
         {% endif %}
         <h2>{{ show.name }}{% if show.author %}<br/><small> By {{ show.author }}</small>{% endif %}</h2>
 
