@@ -8,6 +8,11 @@
 
     {% include 'ActsCamdramBundle::paginator.html.twig' %}
     <hr/>
+    {% if result.data|length == 0 %}
+        <div class="panel">
+            <h5>No results found.</h5>
+        </div>
+    {% endif %}
     {% for entity in result.data %}
         <div class="panel">
             <h5> <div class="entity_type entity_{{ entity.entity_type }}">{{ entity.entity_type }}</div>
