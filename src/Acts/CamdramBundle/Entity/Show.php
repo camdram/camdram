@@ -745,6 +745,13 @@ class Show implements SearchableInterface, OwnableInterface
         return $this->roles;
     }
 
+    /**
+     * Get all roles of a given type (cast, production team or band)
+     * associated with this show. The results are returned sorted by the
+     * explicit ordering field followed by the primary key, i.e. the results
+     * are returned in the explicit ordering or in the order they were entered
+     * into the database.
+     */
     public function getRolesByType($type)
     {
         if (!is_string($type)) {
@@ -753,8 +760,7 @@ class Show implements SearchableInterface, OwnableInterface
 
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq("type", $type))
-            ->orderBy(array('order' => 'ASC'))
-
+            ->orderBy(array('order' => 'ASC', 'id' => 'ASC'))
         ;
         return $this->getRoles()->matching($criteria);
     }
