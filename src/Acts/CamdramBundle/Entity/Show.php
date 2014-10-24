@@ -58,6 +58,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var \Hoyes\ImageManagerBundle\Entity\Image
      *
      * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @Serializer\Expose()
      */
     private $image;
 
