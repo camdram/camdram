@@ -20,7 +20,11 @@ class EmailDispatcher
         $this->from_address = $from_address;
     }
 
-    public function sendShowCreatedEmail(Show $show, array $owners, array $moderators, array $admins)
+    /**
+     * Send an email to the relevant moderators when this show is created.
+     * @param $creator The creator of the show entry.
+     */
+    public function sendShowCreatedEmail(Show $show, $creator, array $owners, array $moderators, array $admins)
     {
         $emails = array();
         foreach ($moderators as $user) {
@@ -43,6 +47,7 @@ class EmailDispatcher
                 $this->twig->render(
                     'ActsCamdramBundle:Email:show_created.txt.twig',
                     array(
+                        'creator' => $creator,
                         'owners' => $owners,
                         'show' => $show,
                     )

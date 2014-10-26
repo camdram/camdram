@@ -152,7 +152,8 @@ class ModerationManager
              * email, e.g. a Camdram admin may also be a Society's admin, but send
              * their email as if they are just the latter.
              */
-            $this->dispatcher->sendShowCreatedEmail($entity, $owners, $moderators, $admins);
+            $creator = $this->securityContext->getToken()->getUser();
+            $this->dispatcher->sendShowCreatedEmail($entity, $creator, $owners, $moderators, $admins);
             $this->logger->info('Authorisation e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
         }
     }

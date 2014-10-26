@@ -43,6 +43,8 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
         $show = new Show();
         $owners = array('owner1', 'owner2');
 
+        $creator = new User();
+        $creator->setEmail('creator@camdram.net');
         $user1 = new User();
         $user1->setEmail('user1@camdram.net');
         $user2 = new User();
@@ -58,7 +60,7 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->mailer->expects($this->once())->method('send');
 
-        $this->emailDispatcher->sendShowCreatedEmail($show, $owners, $recipients, $admins);
+        $this->emailDispatcher->sendShowCreatedEmail($show, $creator, $owners, $recipients, $admins);
     }
 
 }
