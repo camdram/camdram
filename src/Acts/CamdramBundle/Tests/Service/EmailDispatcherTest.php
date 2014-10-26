@@ -55,7 +55,7 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
         $admins = array($user2);
 
         $this->twig->expects($this->once())->method('render')
-            ->with($this->anything(), array('owners' => $owners, 'show' => $show))
+            ->with($this->anything(), array('creator' => $creator, 'owners' => $owners, 'show' => $show))
             ->will($this->returnValue('The message'));
 
         $this->mailer->expects($this->once())->method('send');
