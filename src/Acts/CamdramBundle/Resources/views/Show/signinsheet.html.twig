@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% set title = 'Sign In sheet for ' ~ show.name ~ ' (' ~ events[0].date|date('j/n/Y') ~ ' - ' ~ events[events|length -1].date|date('j/n/Y') ~ ')' %}
 {% set blank_cells = '' %}
 {%- for i in 0..events|length + 1 -%}
@@ -5,10 +6,24 @@
 {%- endfor -%}
 <head>
 <title>{{ title }}</title>
+<style>
+table, th, td {
+    border: 0.1em solid black;
+    border-collapse: collapse;
+}
+tr {
+    border: 0.2em solid black;
+    border-collapse: collapse;
+}
+th, td {
+    min-width: 1.2cm;
+    padding: 5px;
+}
+</style>
 </head>
 <body>
 <h3>{{ title }}</h3>
-<table border=1>
+<table>
 <thead>
 <tr>
 <th></th><th colspan=2>Tech</th><th colspan=2>Dress</th>
@@ -16,7 +31,7 @@
     <th colspan=2>{{ event['date']|date(date_format) }} {{ event.time|date('G:i') }}</th>
 {%- endfor -%}
 </tr>
-<tr><td>&nbsp</td>{%- for i in 0..events|length + 1 -%}<td>In</td><td>Out</td>{%- endfor -%}</tr>
+<tr><td>&nbsp;</td>{%- for i in 0..events|length + 1 -%}<td>In</td><td>Out</td>{%- endfor -%}</tr>
 </thead>
 <tbody>
 <tr><td><b>Cast</b></td>{{ blank_cells|raw }}</tr>
@@ -24,18 +39,18 @@
     <tr><td>{{ role.person.name }}</td>{{ blank_cells|raw }}</tr>
 {%- endfor -%}
 {%- if show.getRolesByType('band')|length > 0 -%}
-<tr><td>&nbsp</td></tr><tr><td><b>Band</b></td>{{ blank_cells|raw }}</tr>
+<tr><td>&nbsp;</td></tr><tr><td><b>Band</b></td>{{ blank_cells|raw }}</tr>
 {%- for role in show.getRolesByType('band') -%}
     <tr><td>{{ role.person.name }}</td>{{ blank_cells|raw }}</tr>
 {%- endfor -%}
 {%- endif -%}
-<tr><td>&nbsp</td></tr><tr><td><b>Production Team</b></td>{{ blank_cells|raw }}</tr>
+<tr><td>&nbsp;</td></tr><tr><td><b>Production Team</b></td>{{ blank_cells|raw }}</tr>
 {%- for role in show.getRolesByType('prod') -%}
     <tr><td>{{ role.person.name }}</td>{{ blank_cells|raw }}</tr>
 {%- endfor -%}
 {# space for extra entries, e.g. Counterweight ops #}
 {%- for i in 0..2 -%}
-    <tr><td>&nbsp</td>{{ blank_cells|raw }}</tr>
+    <tr><td>&nbsp;</td>{{ blank_cells|raw }}</tr>
 {%- endfor -%}
 </tbody>
 </table>
