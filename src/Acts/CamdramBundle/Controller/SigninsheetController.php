@@ -27,6 +27,9 @@ class SigninsheetController extends Controller
             throw $this->createNotFoundException('That show does not exist.');
         }
         $events = $show->getAllPerformances();
+        if (!$events) {
+            throw $this->createNotFoundException('There are no performances associated with this show.');
+        }
         $last_perf = end($events);
         $last_perf = $last_perf['date'];
         $one_week_later = clone $events[0]['date'];
