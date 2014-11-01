@@ -1448,7 +1448,7 @@ class Show implements SearchableInterface, OwnableInterface
 
     public function getTwitterUrl()
     {
-        return 'https://twitter.com/account/redirect_by_id/'.$this->getTwitterId();
+        return 'https://twitter.com/intent/user?user_id='.$this->getTwitterId();
     }
 
     /**
