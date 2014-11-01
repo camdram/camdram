@@ -112,6 +112,12 @@ services:
         tags:
             - { name: doctrine.entity_listener }
 
+    acts.camdram.listener.role_search_index:
+        class: Acts\CamdramBundle\EventListener\RoleSearchIndexListener
+        arguments: [%search_provider%, @acts.sphinx_realtime.object_persister.person]
+        tags:
+            - { name: doctrine.entity_listener }
+
     acts.camdram.listener.techie_advert:
         class: Acts\CamdramBundle\EventListener\TechieAdvertListener
         arguments: [@acts.time_service]

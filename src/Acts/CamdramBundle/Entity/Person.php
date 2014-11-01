@@ -199,7 +199,7 @@ class Person implements SearchableInterface
     public function getRoles()
     {
         $criteria = Criteria::create()
-            ->orderBy(array('show_id' => 'DESC'));
+            ->orderBy(array('showId' => 'DESC'));
         return $this->roles->matching($criteria);
     }
 

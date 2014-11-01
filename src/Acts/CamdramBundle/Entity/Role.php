@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\Table(name="acts_shows_people_link")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\RoleRepository")
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\RoleSearchIndexListener"})
  * @ORM\HasLifecycleCallbacks()
  */
 class Role
@@ -28,7 +29,7 @@ class Role
      *
      * @ORM\Column(name="sid", type="integer", nullable=true)
      */
-    private $show_id;
+    private $showId;
 
     /**
      * @var string
@@ -90,7 +91,7 @@ class Role
      */
     public function setShowId($showId)
     {
-        $this->show_id = $showId;
+        $this->showId = $showId;
 
         return $this;
     }
@@ -102,7 +103,7 @@ class Role
      */
     public function getShowId()
     {
-        return $this->show_id;
+        return $this->showId;
     }
 
     /**
