@@ -114,7 +114,7 @@ services:
 
     acts.camdram.listener.role_search_index:
         class: Acts\CamdramBundle\EventListener\RoleSearchIndexListener
-        arguments: [%search_provider%, @acts.sphinx_realtime.object_persister.person]
+        arguments: [~]
         tags:
             - { name: doctrine.entity_listener }
 

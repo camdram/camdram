@@ -4,24 +4,19 @@ namespace Acts\CamdramBundle\EventListener;
 use Acts\CamdramBundle\Entity\Role;
 use Acts\SphinxRealTimeBundle\Persister\ObjectPersisterInterface;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class RoleSearchIndexListener
 {
-
-    private $searchProvider;
-
     private $personObjectPersister;
 
-    public function __construct($searchProvider, ObjectPersisterInterface $personObjectPersister)
+    public function __construct(ObjectPersisterInterface $personObjectPersister = null)
     {
-        $this->searchProvider = $searchProvider;
         $this->personObjectPersister = $personObjectPersister;
     }
 
     private function updateSearchIndex(Role $role)
     {
-        if ($this->searchProvider == 'sphinx') {
+        if ($this->personObjectPersister instanceof ObjectPersisterInterface) {
             $this->personObjectPersister->replaceOne($role->getPerson());
         }
     }

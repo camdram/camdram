@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -30,6 +31,10 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
         $container->setDefinition('acts.camdram.search_provider',
             new DefinitionDecorator('acts.camdram.search_provider.'.$config['search_provider'])
         );
+        if ($container->getParameter('search_provider') == 'sphinx') {
+            $container->getDefinition('acts.camdram.listener.role_search_index')
+                ->replaceArgument(0, new Reference('acts.sphinx_realtime.object_persister.person'));
+        }
 
         $container->getDefinition('acts.camdram.listener.techie_advert')->addArgument($config['techies_advert_default_days']);
         $container->getDefinition('acts.camdram.techie_advert_expiry_validator')->addArgument($config['techies_advert_max_days']);
