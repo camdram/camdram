@@ -31,7 +31,7 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
         $container->setDefinition('acts.camdram.search_provider',
             new DefinitionDecorator('acts.camdram.search_provider.'.$config['search_provider'])
         );
-        if ($container->getParameter('search_provider') == 'sphinx') {
+        if ($config['search_provider'] == 'sphinx') {
             $container->getDefinition('acts.camdram.listener.role_search_index')
                 ->replaceArgument(0, new Reference('acts.sphinx_realtime.object_persister.person'));
         }
