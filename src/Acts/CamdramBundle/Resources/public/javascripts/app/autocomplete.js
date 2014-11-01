@@ -177,7 +177,7 @@ Camdram.autocomplete.displayResults = function(query, items) {
             $('<em/>').text(string).appendTo(link);
 	    }
 
-            if (result.entity_type == 'show') {
+            if (result.entity_type == 'show' && result.index_date > 0) {
                 var date = moment.unix(result.index_date);
                 if (date.isValid()) {
                     $('<em/>').text(' (' + date.format('MMM YYYY') + ')').appendTo(link);
