@@ -85,7 +85,7 @@ services:
 
     acts.camdram.search_provider.sphinx:
         class: Acts\CamdramBundle\Search\SphinxProvider
-        arguments: [@acts.sphinx_realtime.client.default]
+        arguments: [@acts.sphinx_realtime.client.default, @acts.sphinx_realtime.index_manager]
 
     acts.camdram.email_dispatcher:
         class: Acts\CamdramBundle\Service\EmailDispatcher

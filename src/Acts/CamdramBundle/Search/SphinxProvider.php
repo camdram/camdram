@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramBundle\Search;
 
+use Acts\SphinxRealTimeBundle\Manager\IndexManager;
 use Acts\SphinxRealTimeBundle\Paginator\FantaPaginatorAdapter;
 use Acts\SphinxRealTimeBundle\Paginator\RawPartialResults;
 use Acts\SphinxRealTimeBundle\Paginator\SphinxQLAdapter;
@@ -21,12 +22,14 @@ use Foolz\SphinxQL\SphinxQL;
  */
 class  SphinxProvider implements ProviderInterface
 {
-    /** @var \Acts\SphinxRealTimeBundle\Service\Client */
-    private $container;
+    private $client;
 
-    public function __construct(Client $client)
+    private $manager;
+
+    public function __construct(Client $client, IndexManager $manager)
     {
         $this->client = $client;
+        $this->manager = $manager;
     }
 
     /**
@@ -75,6 +78,21 @@ class  SphinxProvider implements ProviderInterface
         }
         $paginator = new Pagerfanta(new FantaPaginatorAdapter(new SphinxQLAdapter($this->client, $query)));
         return $paginator;
+    }
+
+    public function executeUserSearch($q, $limit)
+    {
+        if (empty($q)) return array();
+
+        $query = SphinxQL::forge()->select('*')
+            ->from('user')->match(array('name'), $q.'*')->limit($limit);
+
+        $results = $this->client->query($query);
+        foreach ($results as &$result) {
+            $result['id'] = floor($result['id'] / count($this->manager->getIndexes()));
+        }
+
+        return $results;
     }
 
 }

@@ -78,6 +78,28 @@ class DoctrineProvider implements ProviderInterface
         return new Pagerfanta($adapter);
     }
 
+    public function executeUserSearch($q, $limit)
+    {
+        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+
+        $query = $repo->createQueryBuilder('u')
+            ->where('u.name LIKE :input')
+            ->setParameter('input', '%'.$q.'%')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        $results = array();
+        foreach ($query->getResult() as $result) {
+            $results[] = array(
+                'id' => $result->getId(),
+                'name' => $result->getName(),
+                'email' => $result->getEmail()
+            );
+        }
+
+        return $results;
+    }
+
     private function createResultFromEntity(SearchableInterface $entity) {
         $result = array(
             'id' => $entity->getId(),

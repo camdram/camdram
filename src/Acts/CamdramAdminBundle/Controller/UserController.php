@@ -62,7 +62,7 @@ class UserController extends FOSRestController
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
-            $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'), $request->get('limit'), array());
+            $data = $search_provider->executeUserSearch($request->get('q'), 10);
         } else {
             $repo = $this->getRepository();
             $qb = $repo->createQueryBuilder('e');
@@ -84,7 +84,7 @@ class UserController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
         $view = $this->view($entity, 200)
             ->setTemplate('ActsCamdramAdminBundle:User:show.html.twig')
-            ->setTemplateVar($this->type)
+            ->setTemplateVar('user')
         ;
         return $view;
     }

@@ -59,9 +59,12 @@
 {% block javascripts %}
 <script>
     $(function() {
-        $('#user_search_box').camdramAutocomplete({
-            route: 'get_users',
-            select: function(item) { document.location = Routing.generate('get_user', {identifier: item.id}) }
+        $('#user_search_box').typeahead({
+            name: 'users_search',
+            valueKey: 'name',
+            remote: {url: Routing.generate('get_users', {_format: 'json', q: 'QUERY'}), wildcard: 'QUERY'}
+        }).on('typeahead:selected', function (object, datum) {
+            document.location = Routing.generate('get_user', {identifier: datum.id})
         });
     })
 </script>

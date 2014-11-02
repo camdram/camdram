@@ -34,4 +34,10 @@ interface ProviderInterface
      */
     public function executeTextSearch($repository, $query, $offset, $limit, array $orderBy = array());
 
+    /**
+     * @param $q
+     * @param $limit
+     * @return array
+     */
+    public function executeUserSearch($q, $limit);
 }
