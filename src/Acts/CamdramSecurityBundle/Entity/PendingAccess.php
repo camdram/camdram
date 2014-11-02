@@ -119,7 +119,7 @@ class PendingAccess
      */
     public function getEmail()
     {
-        return $email;
+        return $this->email;
     }
 
     /**
