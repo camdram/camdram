@@ -56,7 +56,7 @@ class TechieAdvertController extends FOSRestController
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {
-            return $this->createNotFoundException('No techie advert exists with that identifier');
+            throw $this->createNotFoundException('No techie advert exists with that identifier');
         }
     }
 

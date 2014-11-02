@@ -1057,8 +1057,14 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getActiveTechieAdverts()
     {
+        $now = new \DateTime;
+        $today = new \DateTime($now->format('Y-m-d'));
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('expiry', new \DateTime()));
+            ->where(Criteria::expr()->gt('expiry', $today))
+            ->orWhere(Criteria::expr()->andX(
+                Criteria::expr()->gte('expiry', $today),
+                Criteria::expr()->gt('deadlineTime', $now)
+            ));
 
         return $this->techie_adverts->matching($criteria);
     }
@@ -1238,8 +1244,14 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getActiveApplications()
     {
+        $now = new \DateTime;
+        $today = new \DateTime($now->format('Y-m-d'));
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gte('deadlineDate', new \DateTime()));
+            ->where(Criteria::expr()->gt('deadlineDate', $today))
+            ->orWhere(Criteria::expr()->andX(
+                Criteria::expr()->gte('deadlineDate', $today),
+                Criteria::expr()->gt('deadlineTime', $now)
+            ));
 
         return $this->applications->matching($criteria);
     }

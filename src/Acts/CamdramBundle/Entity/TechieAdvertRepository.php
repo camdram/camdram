@@ -20,7 +20,7 @@ class TechieAdvertRepository extends EntityRepository
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:TechieAdvert');
         $qb = $query_res->createQueryBuilder('a');
         $query = $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.expiry, s.name, s.society')
@@ -34,7 +34,7 @@ class TechieAdvertRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a');
         return $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')
             ->orderBy('a.last_updated')
@@ -66,7 +66,7 @@ class TechieAdvertRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a');
         return $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadline_time >= :time')))
+            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
             ->andWhere('s.slug = :slug')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = 1')

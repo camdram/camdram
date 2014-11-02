@@ -34,9 +34,11 @@ class TechieAdvertExpiryValidator extends ConstraintValidator
             $max_expires = $this->timeService->getCurrentTime();
             $max_expires->modify('+'.$this->expiry_max_days.' days');
 
-            if ($value->getExpiry() < $this->timeService->getCurrentTime()) {
+            $expiry_date = new \DateTime($value->getExpiry()->format('Y-m-d').' '.$value->getDeadlineTime()->format('H:i:s'));
+
+            if ($expiry_date < $this->timeService->getCurrentTime()) {
                 $this->context->addViolation($constraint->too_early_message, array(), $value);
-            } elseif ($value->getExpiry()  > $max_expires) {
+            } elseif ($expiry_date  > $max_expires) {
                 $this->context->addViolation($constraint->too_late_message, array('%days%' => $this->expiry_max_days), $value);
             }
 

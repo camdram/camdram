@@ -69,7 +69,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      */
-    private $deadline_time;
+    private $deadlineTime;
 
     /**
      * @var \DateTime
@@ -208,7 +208,7 @@ class TechieAdvert
      */
     public function setDeadlineTime($deadlineTime)
     {
-        $this->deadline_time = $deadlineTime;
+        $this->deadlineTime = $deadlineTime;
 
         return $this;
     }
@@ -220,7 +220,7 @@ class TechieAdvert
      */
     public function getDeadlineTime()
     {
-        return $this->deadline_time;
+        return $this->deadlineTime;
     }
 
     /**
