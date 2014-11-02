@@ -13,8 +13,22 @@
         <h3>Edit Director/Producer advert</h3>
 
         <div class="panel">
+            <ul class="inline-list right">
+                <li>
+                    <form action="{{ path('expire_show_application', {identifier: show.slug}) }}?_method=PATCH" method="post">
+                        <input class="button small" type="submit" value="Expire Advert"/>
+                    </form>
+                </li>
+                <li>
+                    <form action="{{ path('delete_show_application', {identifier: show.slug}) }}?_method=DELETE" method="post">
+                        <input class="button small" type="submit" value="Delete Advert"/>
+                    </form>
+                </li>
+            </ul>
+
             <p>Use the form below to modify or extend your advert for core production team positions. The advert will be displayed
             until the deadline date.</p>
+
             <p>The CUADC Directors' and Producers' Reps aim to send out the Directing and Producing mailing list with all the current directing and producing adverts on Camdram every Thursday during full term. For more information they can be contacted on <a href=mailto:director@cuadc.org> director@cuadc.org </a> and <a href=mailto:producer@cuadc.org> producer@cuadc.org </a> </p>
         </div>
 

@@ -14,6 +14,18 @@
 
         <div class="panel">
             <p>Use the form below to modify or extend your advert for technical positions.</p>
+            <ul class="inline-list right">
+                <li>
+                    <form action="{{ path('expire_show_techie_advert', {identifier: show.slug}) }}?_method=PATCH" method="post">
+                        <input class="button small" type="submit" value="Expire Advert"/>
+                    </form>
+                </li>
+                <li>
+                    <form action="{{ path('delete_show_techie_advert', {identifier: show.slug}) }}?_method=DELETE" method="post">
+                        <input class="button small" type="submit" value="Delete Advert"/>
+                    </form>
+                </li>
+            </ul>
             <p>
                 <strong>
                     {% if form.vars.value.expiry < current_time() and form.vars.value.deadlineTime < current_time() %}

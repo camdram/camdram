@@ -11,6 +11,7 @@ use Acts\CamdramBundle\Form\Type\ShowAuditionsType;
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations\Patch;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Form\Type\RoleType;
@@ -196,6 +197,46 @@ class ShowController extends AbstractRestController
         }
     }
 
+    /**
+     * @Patch("/shows/{identifier}/techie-advert/expire")
+     * @param Request $request
+     * @param $identifier
+     * @return \FOS\RestBundle\View\View
+     */
+    public function expireTechieAdvertAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        /** @var TechieAdvert $techie_advert */
+        $techie_advert = $show->getTechieAdverts()->first();
+        $em = $this->getDoctrine()->getManager();
+
+        $now = $this->get('acts.time_service')->getCurrentTime();
+        $techie_advert->setDeadline(true);
+        $techie_advert->setExpiry($now)->setDeadlineTime($now);
+        $em->flush();
+
+        return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));
+    }
+
+    /**
+     * @param Request $request
+     * @param $identifier
+     * @return \FOS\RestBundle\View\View
+     */
+    public function deleteTechieAdvertAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $techie_advert = $show->getTechieAdverts()->first();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($techie_advert);
+        $em->flush();
+        return $this->routeRedirectView('new_show_techie_advert', array('identifier' => $show->getSlug()));
+    }
+
     private function getApplicationForm(Show $show, $obj = null)
     {
         if (!$obj) {
@@ -282,6 +323,45 @@ class ShowController extends AbstractRestController
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
         }
+    }
+
+    /**
+     * @Patch("/shows/{identifier}/application/expire")
+     * @param Request $request
+     * @param $identifier
+     * @return \FOS\RestBundle\View\View
+     */
+    public function expireApplicationAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        /** @var Application $application */
+        $application = $show->getApplications()->first();
+        $em = $this->getDoctrine()->getManager();
+
+        $now = $this->get('acts.time_service')->getCurrentTime();
+        $application->setDeadlineDate($now)->setDeadlineTime($now);
+        $em->flush();
+
+        return $this->routeRedirectView('edit_show_application', array('identifier' => $show->getSlug()));
+    }
+
+    /**
+     * @param Request $request
+     * @param $identifier
+     * @return \FOS\RestBundle\View\View
+     */
+    public function deleteApplicationAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        $application = $show->getApplications()->first();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($application);
+        $em->flush();
+        return $this->routeRedirectView('new_show_application', array('identifier' => $show->getSlug()));
     }
 
     private function getAuditionsForm(Show $show)
