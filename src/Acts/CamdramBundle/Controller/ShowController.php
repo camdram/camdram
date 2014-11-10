@@ -485,6 +485,15 @@ class ShowController extends AbstractRestController
                 $em = $this->getDoctrine()->getManager();
                 $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
                                     ->findOneByEmail($pending_ace->getEmail());
+                if ($existing_user == null) {
+                    /* Users with accounts created in v1 will have just their CRSid stored
+                     * in the database, so check for that too.
+                     */
+                    $crs_id = ereg_replace("@cam.ac.uk", "", $pending_ace->getEmail());
+                    $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
+                                        ->findOneByEmail($crs_id);
+                }
+
                 if ($existing_user != null) {
                     $this->get('camdram.security.acl.provider')
                         ->grantAccess($show, $existing_user, $this->getUser());
