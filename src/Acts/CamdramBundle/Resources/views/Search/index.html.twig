@@ -14,17 +14,20 @@
         </div>
     {% endif %}
     {% for entity in result.data %}
+        {% if entity.entity_type == 'show' %}
+            {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : entity.slug})) }}
+        {% else %}
         <div class="panel">
             <h5> <div class="entity_type entity_{{ entity.entity_type }}">{{ entity.entity_type }}</div>
-                <a href="{% if entity.entity_type == 'show' %}{{ path('get_show', {identifier: entity.slug}) }}
-    {%- elseif entity.entity_type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
+                <a href="{%- if entity.entity_type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
     {%- elseif entity.entity_type == 'society' %}{{ path('get_society', {identifier: entity.slug}) }}
     {%- elseif entity.entity_type == 'venue' %}{{ path('get_venue', {identifier: entity.slug}) }}
     {%- endif %}">{{ entity.name }}</a>
 
             </h5>
-            {{ entity.description | striptags | strip_new_lines | camdram_markdown }}
+            <p>{{ entity.description | striptags | strip_new_lines | camdram_markdown }}</p>
         </div>
+        {% endif %}
     {% endfor %}
     <hr/>
     {% include 'ActsCamdramBundle::paginator.html.twig' %}

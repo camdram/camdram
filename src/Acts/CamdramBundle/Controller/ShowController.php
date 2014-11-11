@@ -111,6 +111,19 @@ class ShowController extends AbstractRestController
     }
 
     /**
+     * Render the Search Result Panel. This view is used when a show is listed
+     * in the search results.
+     */
+    public function searchResultPanelAction($slug)
+    {
+        $show = $this->getRepository()->findOneBySlug($slug);
+        return $this->render(
+            'ActsCamdramBundle:Show:search-result-panel.html.twig',
+            array('show' => $show)
+            );
+    }
+
+    /**
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/techie-advert/new")
      */

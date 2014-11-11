@@ -1,0 +1,17 @@
+<div class="panel">
+    <h5><div class="entity_type entity_show">show</div><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a><h5>
+{% if show.image %}
+    <div class="row">
+    <div class="large-3 columns text-center">
+        {% if show.image %}<a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>{% endif %}
+    </div>
+    <div class="large-9 columns">
+        <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
+        <p>{{ show.description | camdram_markdown }}</p>
+    </div>
+    </div>
+{% else %}
+    <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
+    <p>{{ show.description | camdram_markdown }}</p>
+{% endif %}
+</div>
