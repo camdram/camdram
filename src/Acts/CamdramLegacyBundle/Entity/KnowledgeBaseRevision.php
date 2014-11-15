@@ -69,7 +69,6 @@ class KnowledgeBaseRevision
      */
     private $date;
 
-
     /**
      * Get id
      *
@@ -78,19 +77,6 @@ class KnowledgeBaseRevision
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set page_id
-     *
-     * @param integer $pageId
-     * @return KnowledgeBaseRevision
-     */
-    public function setPageId($pageId)
-    {
-        $this->page_id = $pageId;
-
-        return $this;
     }
 
     /**
@@ -104,19 +90,6 @@ class KnowledgeBaseRevision
     }
 
     /**
-     * Set text
-     *
-     * @param string $text
-     * @return KnowledgeBaseRevision
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-
-        return $this;
-    }
-
-    /**
      * Get text
      *
      * @return string
@@ -124,19 +97,6 @@ class KnowledgeBaseRevision
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * Set user_id
-     *
-     * @param integer $userId
-     * @return KnowledgeBaseRevision
-     */
-    public function setUserId($userId)
-    {
-        $this->user_id = $userId;
-
-        return $this;
     }
 
     /**
@@ -150,19 +110,6 @@ class KnowledgeBaseRevision
     }
 
     /**
-     * Set date
-     *
-     * @param \DateTime $date
-     * @return KnowledgeBaseRevision
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
      * Get date
      *
      * @return \DateTime
@@ -173,19 +120,6 @@ class KnowledgeBaseRevision
     }
 
     /**
-     * Set page
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\Page $page
-     * @return KnowledgeBaseRevision
-     */
-    public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)
-    {
-        $this->page = $page;
-
-        return $this;
-    }
-
-    /**
      * Get page
      *
      * @return \Acts\CamdramLegacyBundle\Entity\Page
@@ -193,19 +127,6 @@ class KnowledgeBaseRevision
     public function getPage()
     {
         return $this->page;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $user
-     * @return KnowledgeBaseRevision
-     */
-    public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     /**
