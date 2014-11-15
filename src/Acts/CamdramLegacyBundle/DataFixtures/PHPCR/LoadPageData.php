@@ -80,7 +80,19 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
                 $cms_page->setSlug(Sluggable\Urlizer::urlize($title, '-'));
                 $cms_page->setTitle($title);
                 $cms_page->setParent($parent);
-                $cms_page->setContent($page->getHelp());
+                $text = $page->getHelp();
+                if ($text == "") {
+                    /* The page's content comes from a knowledgebase page.
+                     * This has been reverse engineered from v1.
+                     */
+                    $kb_repo = $em->getRepository('ActsCamdramLegacyBundle:KnowledgeBaseRevision');
+                    $kb_page = $kb_repo->findOneBy(
+                        array('page_id' => $page->getId()),
+                        array('id' => 'DESC')
+                        );
+                    $text = $kb_page->getText();
+                }
+                $cms_page->setContent($text);
                 $dm->persist($cms_page);
                 $dm->flush();
             }
