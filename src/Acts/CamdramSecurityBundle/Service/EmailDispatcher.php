@@ -37,7 +37,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Welcome to Camdram')
             ->setFrom($this->from_address)
-            ->setTo($user->getEmail())
+            ->setTo($user->getFullEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:create_account.txt.twig',
@@ -56,7 +56,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Verify your email address')
             ->setFrom($this->from_address)
-            ->setTo($user->getEmail())
+            ->setTo($user->getFullEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:resend_email_verification.txt.twig',
@@ -75,7 +75,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Verify your new email address')
             ->setFrom($this->from_address)
-            ->setTo($user->getEmail())
+            ->setTo($user->getFullEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:change_email.txt.twig',
@@ -94,7 +94,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Password reset')
             ->setFrom($this->from_address)
-            ->setTo($user->getEmail())
+            ->setTo($user->getFullEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:password_reset.txt.twig',
@@ -114,13 +114,9 @@ class EmailDispatcher
      */
     public function sendAceEmail(AccessControlEntry $ace)
     {
-        $email = $ace->getUser()->getEmail();
-        if ($email && strchr($email,'@') === false) {
-            $email .= "@cam.ac.uk";
-        }
         $message = \Swift_Message::newInstance()
             ->setFrom($this->from_address)
-            ->setTo($email);
+            ->setTo($ace->getUser()->getFullEmail());
         /* Get the resource and pass it to the template. */
         if ($ace->getType() == 'show') {
             $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
@@ -147,7 +143,7 @@ class EmailDispatcher
     {
         $message = \Swift_Message::newInstance()
             ->setFrom($this->from_address)
-            ->setTo($ace->getEmail());
+            ->setTo($ace->getFullEmail());
         /* Get the resource and pass it to the template. */
         switch ($ace->getType()) {
             case 'show':
@@ -184,11 +180,7 @@ class EmailDispatcher
                     ->getEntityOwners($show);
         $emails = array();
         foreach ($owners as $user) {
-            $email = $user->getEmail();
-            if ($email && strchr($email,'@') === false) {
-                $email .= "@cam.ac.uk";
-            }
-            $emails[$email] = $user->getName();
+            $emails[$user->getFullEmail()] = $user->getName();
         }
 
         $message = \Swift_Message::newInstance()
