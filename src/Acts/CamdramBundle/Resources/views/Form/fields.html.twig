@@ -126,3 +126,30 @@
         </div>
     {% endfor %}
 {% endblock %}
+
+{% block futuredate_widget %}
+    <span class="futuredatespan">
+        {{ block('date_widget') }}
+        <span class="message pastMessage">
+            {% if pastMessage is defined %}
+            {{ pastMessage }}
+            {% else %}
+            Date is in the past
+            {% endif %}
+        </span>
+        <span class="message errorMessage">
+            {% if errorMessage is defined %}
+            {{ errorMessage }}
+            {% else %}
+            Invalid Date
+            {% endif %}
+        </span>
+        <span class="message noJsMessage">
+            {% if noJsMessage is defined %}
+            {{ noJsMessage }}
+            {% else %}
+            YYYY-MM-DD
+            {% endif %}        
+        </span>     
+    </span>
+{% endblock %}

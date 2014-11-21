@@ -5,17 +5,18 @@ namespace Acts\CamdramBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Acts\CamdramBundle\Form\Type\FutureDateType;
 
 class AuditionType extends AbstractType
 {
-        /**
+     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', 'date', array('widget' => 'single_text'))
+            ->add('date', new FutureDateType(), array('widget' => 'single_text'))
             ->add('start_time', 'time', array('widget' => 'single_text'))
             ->add('end_time', 'time', array('widget' => 'single_text'))
             ->add('location')
