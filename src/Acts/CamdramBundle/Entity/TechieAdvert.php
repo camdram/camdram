@@ -99,7 +99,7 @@ class TechieAdvert
      * @ORM\Column(name="techextra", type="text", nullable=false)
      * @Assert\Length(max=1140)
      */
-    private $tech_extra;
+    private $tech_extra = "";
 
     /**
      * @var \DateTime
@@ -300,7 +300,11 @@ class TechieAdvert
      */
     public function setTechExtra($techExtra)
     {
-        $this->tech_extra = $techExtra;
+      if (!($techExtra)) {
+            $this->tech_extra = "";
+	} else {
+            $this->tech_extra = $techExtra;
+	}
 
         return $this;
     }
