@@ -799,8 +799,12 @@ class Show implements SearchableInterface, OwnableInterface
     {
       $this->performances->add($performance);
       $performance->setShow($this);
-      if (!($performance->getVenue())) {
-	$performance->setVenue($this->getVenue());
+      if (!($performance->getVenueName())) {
+	if ($this->getVenue()) {
+	  $performance->setVenue($this->getVenue());
+	} else {
+	  $performance->setVenueName($this->getVenueName());
+	}
       }
 
         return $this;
