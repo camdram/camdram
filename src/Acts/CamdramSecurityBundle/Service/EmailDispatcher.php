@@ -143,7 +143,7 @@ class EmailDispatcher
     {
         $message = \Swift_Message::newInstance()
             ->setFrom($this->from_address)
-            ->setTo($ace->getFullEmail());
+            ->setTo($ace->getEmail());
         /* Get the resource and pass it to the template. */
         switch ($ace->getType()) {
             case 'show':
