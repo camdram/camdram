@@ -358,5 +358,28 @@ abstract class OrganisationController extends AbstractRestController
         return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
     }
 
+    /**
+     * Revoke a pending admin's access to an organisation.
+     */
+    public function revokePendingAdminAction(Request $request, $identifier)
+    {
+        $org = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('pending_admin');
+        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($id);
+        if ($pending_admin != null) {
+            $em->remove($pending_admin);
+            $em->flush();
+        }
+        if ($org->getEntityType() == 'society') {
+            $route = 'edit_society_admin';
+        }
+        else {
+            $route = 'edit_venue_admin';
+        }
+        return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
+    }
+
 }
 

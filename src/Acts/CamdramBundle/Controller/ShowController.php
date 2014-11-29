@@ -610,6 +610,23 @@ class ShowController extends AbstractRestController
     }
 
     /**
+     * Revoke a pending admin's access to a show.
+     */
+    public function revokePendingAdminAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->query->get('pending_admin');
+        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($id);
+        if ($pending_admin != null) {
+            $em->remove($pending_admin);
+            $em->flush();
+        }
+        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
+    }
+
+    /**
      * Get a form for adding a single role to a show.
      *
      * @param $identifier
