@@ -637,22 +637,17 @@ class ShowController extends AbstractRestController
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            /* Try and find the person. TODO slug will be unique, but not the best
-             * way for searching. E.g. john-smith, john-smith1 may both be slugs.
-             * A better approach may be to do a case-insensitive search by name and
-             * choose the most recent record. Such behaviour is more than what the
-             * existing codebase does.
-             */
+            /* Try and find the person. Add a new person if they don't exist. */
             $names = explode(",", $form->get('name')->getData());
             foreach ($names as $name) {
                 $role = clone $base_role;
                 $name = trim($name);
-                $slug = Sluggable\Urlizer::urlize($name, '-');
                 $person_repo = $em->getRepository('ActsCamdramBundle:Person');
-                $person = $person_repo->findOneBySlug($slug);
+                $person = $person_repo->findOneBy(array('name' => $name), array('id' => 'DESC'));
                 if ($person == null) {
                     $person = New Person();
                     $person->setName($name);
+                    $slug = Sluggable\Urlizer::urlize($name, '-');
                     $person->setSlug($slug);
                     $em->persist($person);
                 }
