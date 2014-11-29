@@ -47,7 +47,7 @@ class ReleaseInfoCommand extends ContainerAwareCommand
                 $data = $client->doCommit('camdram', 'camdram', $hash);
                 $commits[$hash] = array(
                     'message' => $message,
-                    'author' => $data['author']['name'],
+                    'author' => $data['author']['login'],
                     'url' => 'https://github.com/camdram/camdram/commit/'.$hash
                 );
             }

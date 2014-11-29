@@ -795,9 +795,17 @@ class Show implements SearchableInterface, OwnableInterface
      * @param \Acts\CamdramBundle\Entity\Performance $performances
      * @return Show
      */
-    public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performances)
+    public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performance)
     {
-        $this->performances[] = $performances;
+      $this->performances->add($performance);
+      $performance->setShow($this);
+      if (!($performance->getVenueName())) {
+	if ($this->getVenue()) {
+	  $performance->setVenue($this->getVenue());
+	} else {
+	  $performance->setVenueName($this->getVenueName());
+	}
+      }
 
         return $this;
     }

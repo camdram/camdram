@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * Role
@@ -219,5 +220,16 @@ class Role
     public function getPerson()
     {
         return $this->person;
+    }
+
+    /**
+     * Get name of person
+     *
+     * @VirtualProperty
+     * @return string
+     */
+    public function getPersonName()
+    {
+      return $this->person->getName();
     }
 }

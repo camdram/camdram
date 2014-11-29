@@ -65,7 +65,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         }
 
         $news = new News;
-        $news->setBody($item['text']);
+        $news->setBody(htmlspecialchars_decode($item['text']));
         $news->setEntity($entity);
         $news->setRemoteId($item['id']);
 
@@ -118,7 +118,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         $link = new NewsLink;
         $link->setLink($url)
             ->setName($name)
-            ->setDescription($description)
+            ->setDescription(htmlspecialchars_decode($description))
             ->setPicture($picture)
             ->setMediaType($media_type)
             ->setSource($source)

@@ -427,6 +427,15 @@ class ShowController extends AbstractRestController
         return $this->getAction($identifier);
     }
 
+    public function getPeopleAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+	$role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
+	$roles = $role_repo->findByShow($show);
+	return $this->view($roles);
+    }
+
+
     /**
      * Get a form for adding an admin to a show.
      *
