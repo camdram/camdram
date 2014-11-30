@@ -29,7 +29,7 @@
         <h4>Viewing issue {{ issue.id }}</h4>
         <p>State: {{ issue.state }}.
         {% if issue.state == 'unassigned' -%}
-            <a href="{{ url('get_issue',{identifier: issue.id, action : 'assign'}) }}">Assign this issue to me</a>
+            <a href="{{ url('get_issue',{identifier: issue.id, action : 'assign'}) }}">Assign this issue to me</a> or <a href="{{ url('get_issue',{identifier: issue.id, action : 'delete'}) }}">delete this issue</a>.
         {% elseif issue.state == 'assigned' -%}
             Assigned to
             {% if issue.owner.id == app.user.id -%}
