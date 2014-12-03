@@ -34,7 +34,7 @@
         <h4>Societies</h4>
         <ul>
         {% for org in organisations if org.entitytype == 'society' %}
-            <li>{{ org.name }}</li>
+            <li><a href="{{ path('get_society', {identifier: org.slug}) }}">{{ org.name }}</a></li>
             {% set seen_society = true %}
         {% endfor %}
         </ul>
@@ -45,7 +45,7 @@
         <h4>Venues</h4>
         <ul>
         {% for org in organisations if org.entitytype == 'venue' %}
-            <li>{{ org.name }}</li>
+            <li><a href="{{ path('get_venue', {identifier: org.slug}) }}">{{ org.name }}</a></li>
             {% set seen_venue = true %}
         {% endfor %}
         {% if not seen_venue %}
