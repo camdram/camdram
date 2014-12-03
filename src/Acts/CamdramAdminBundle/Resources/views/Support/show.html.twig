@@ -1,9 +1,9 @@
 {% macro email(issue) %}
 <div class="row">
     <div class="large-12 columns panel">
-    <div class="large-6 columns"><strong>From:</strong> {{ issue.from|raw }}</div>
-    <div class="large-6 columns"><strong>To:</strong> {{ issue.to|raw }}</div>
-    {%- if issue.cc -%}<div class="large-12 columns"><strong>CC:</strong> {{ issue.cc|raw }}</div>{%- endif -%}
+    <div class="large-6 columns"><strong>From:</strong> {{ issue.from }}</div>
+    <div class="large-6 columns"><strong>To:</strong> {{ issue.to }}</div>
+    {%- if issue.cc -%}<div class="large-12 columns"><strong>CC:</strong> {{ issue.cc }}</div>{%- endif -%}
     <div class="large-6 columns"><strong>Subject:</strong> {{ issue.subject }}.</div>
     <div class="large-6 columns"><strong>Received:</strong> {{ issue.datetime|date('d/m/Y, H:i:s') }}</div>
     <div class="large-12 columns"><br/><p>{{ issue.body|nl2br }}</p></div>
