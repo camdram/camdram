@@ -84,7 +84,13 @@ class UserController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
         $ids = $this->get('camdram.security.acl.provider')->getOrganisationIdsByUser($entity);
         $orgs = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
-        $view = $this->view(array('user' => $entity, 'organisations' => $orgs), 200)
+        $ids = $this->get('camdram.security.acl.provider')->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
+        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
+        $view = $this->view(array(
+            'user' => $entity,
+            'organisations' => $orgs,
+            'shows' => $shows
+            ), 200)
             ->setTemplate('ActsCamdramAdminBundle:User:show.html.twig')
             ->setTemplateVar('user')
         ;

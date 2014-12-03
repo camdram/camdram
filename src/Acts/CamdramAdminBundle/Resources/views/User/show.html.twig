@@ -52,6 +52,16 @@
             <p>This user is not an admin for any venues.</p>
         {% endif %}
         </ul>
+        <h4>Shows</h4>
+        {% if shows %}
+        <ul>
+            {% for show in shows %}
+                <li><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>This user is not an admin for any shows.</p>
+        {% endif %}
 
         <a href="{{ path('get_users') }}" class="button small">Back to user list</a>
     </div>
