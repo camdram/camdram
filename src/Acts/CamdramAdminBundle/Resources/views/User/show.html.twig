@@ -29,6 +29,29 @@
         {% endfor %}
         </ul>
         {% endif %}
+        <p>The lists below show the societies and venues that the user has administrative access to.</p>
+        {% set seen_society = false %}
+        <h4>Societies</h4>
+        <ul>
+        {% for org in organisations if org.entitytype == 'society' %}
+            <li>{{ org.name }}</li>
+            {% set seen_society = true %}
+        {% endfor %}
+        </ul>
+        {% if not seen_society %}
+            <p>This user is not an admin for any societies.</p>
+        {% endif %}
+        {% set seen_venue = false %}
+        <h4>Venues</h4>
+        <ul>
+        {% for org in organisations if org.entitytype == 'venue' %}
+            <li>{{ org.name }}</li>
+            {% set seen_venue = true %}
+        {% endfor %}
+        {% if not seen_venue %}
+            <p>This user is not an admin for any venues.</p>
+        {% endif %}
+        </ul>
 
         <a href="{{ path('get_users') }}" class="button small">Back to user list</a>
     </div>
