@@ -1,3 +1,4 @@
+{% autoescape false %}
 {%- if (ace.type == 'show') or (ace.type == 'society') -%}
     You have been granted {{ is_pending ? 'pending ' }}access to edit '{{ entity.name }}' on Camdram.
 {%- if ace.type == 'show' %}
@@ -22,4 +23,4 @@ To make use of this, you must create an account at at http://www.camdram.net.
 {% endif %}
 
 {% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
-
+{% endautoescape %}

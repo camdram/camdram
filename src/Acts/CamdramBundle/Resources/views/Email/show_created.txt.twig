@@ -1,3 +1,4 @@
+{% autoescape false %}
 A new show has been added to camdram.net by {{ creator.name }} ({{ creator.email }}) and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
 * Dates
 * Venue
@@ -25,3 +26,4 @@ by {{ show.author }}
 {% endspaceless %}{% endfor %}
 
 {{ show.description }}
+{% endautoescape %}

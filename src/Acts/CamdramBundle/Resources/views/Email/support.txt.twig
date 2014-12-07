@@ -1,3 +1,4 @@
+{% autoescape false %}
 {% if continued %}
 A new email has been sent concerning issue {{ issue }}
 
@@ -12,3 +13,4 @@ From: {{ from }}
 To: {{ to }}
 CC: {{ cc }}
 {{ body }}
+{% endautoescape %}

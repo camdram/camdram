@@ -1,4 +1,5 @@
+{% autoescape false %}
 {{ ace.user.name }} has requested access to edit the show {{ show.name }} on Camdram. Please log in at {{ url('edit_show_admin', {identifier : show.slug}) }} to either grant or deny this request at your earliest convenience.
 
 {% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
-
+{% endautoescape %}
