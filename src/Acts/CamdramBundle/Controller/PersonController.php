@@ -73,9 +73,9 @@ class PersonController extends AbstractRestController
     {
         $now = $this->get('acts.time_service')->getCurrentTime();
         $person = $this->getEntity($identifier);
-        $roles = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')->getPastByPerson($now, $person);
+        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getPastByPerson($now, $person);
 
-        $data = array('person' => $person, 'roles' => $roles);
+        $data = array('person' => $person, 'shows' => $shows);
         return $this->view($data, 200)
             ->setTemplateVar('data')
             ->setTemplate('ActsCamdramBundle:Person:past-shows.html.twig');
@@ -90,9 +90,9 @@ class PersonController extends AbstractRestController
     {
         $now = $this->get('acts.time_service')->getCurrentTime();
         $person = $this->getEntity($identifier);
-        $roles = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')->getUpcomingByPerson($now, $person);
+        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getUpcomingByPerson($now, $person);
 
-        $data = array('person' => $person, 'roles' => $roles);
+        $data = array('person' => $person, 'shows' => $shows);
         return $this->view($data, 200)
             ->setTemplateVar('data')
             ->setTemplate('ActsCamdramBundle:Person:upcoming-shows.html.twig');
@@ -107,9 +107,9 @@ class PersonController extends AbstractRestController
     {
         $now = $this->get('acts.time_service')->getCurrentTime();
         $person = $this->getEntity($identifier);
-        $roles = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')->getCurrentByPerson($now, $person);
+        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getCurrentByPerson($now, $person);
 
-        $data = array('person' => $person, 'roles' => $roles);
+        $data = array('person' => $person, 'shows' => $shows);
 
         return $this->view($data, 200)
             ->setTemplateVar('data')

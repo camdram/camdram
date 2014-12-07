@@ -28,55 +28,6 @@ class RoleRepository extends EntityRepository
         return $res;
     }
 
-    public function getUpcomingByPerson(\DateTime $now, Person $person)
-    {
-        $query = $this->createQueryBuilder('r')
-            ->join('r.show', 's')
-            ->leftJoin('s.performances', 'p')
-            ->where('p.start_date >= :now')
-            ->andwhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
-            ->andWhere('r.person = :person')
-            ->orderBy('s.start_at', 'ASC')
-            ->setParameter('person', $person)
-            ->setParameter('now', $now)
-            ->getQuery();
-        return $query->getResult();
-    }
-
-    public function getCurrentByPerson(\DateTime $now, Person $person)
-    {
-        $query = $this->createQueryBuilder('r')
-            ->join('r.show', 's')
-            ->leftJoin('s.performances', 'p')
-            ->where('p.end_date >= :now')
-            ->andWhere('p.start_date < :now')
-            ->andwhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
-            ->andWhere('r.person = :person')
-            ->orderBy('s.start_at', 'ASC')
-            ->setParameter('person', $person)
-            ->setParameter('now', $now)
-            ->getQuery();
-        return $query->getResult();
-    }
-
-    public function getPastByPerson(\DateTime $now, Person $person)
-    {
-        $query = $this->createQueryBuilder('r')
-            ->join('r.show', 's')
-            ->leftJoin('s.performances', 'p')
-            ->where('p.end_date < :now')
-            ->andwhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
-            ->andWhere('r.person = :person')
-            ->orderBy('s.start_at', 'DESC')
-            ->setParameter('person', $person)
-            ->setParameter('now', $now)
-            ->getQuery();
-        return $query->getResult();
-    }
-
     /**
      * Called before removing an entity. Ensure that there are no gaps in the
      * ordering value given to each role.

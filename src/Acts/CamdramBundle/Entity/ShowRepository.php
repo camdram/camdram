@@ -116,12 +116,14 @@ class ShowRepository extends EntityRepository
     public function getUpcomingByPerson(\DateTime $now, Person $person)
     {
         $query = $this->createQueryBuilder('s')
-            ->where('s.start_at >= :now')
-            ->andWhere('s.authorised_by is not null')
+            ->join('s.roles', 'r')
+            ->leftJoin('s.performances', 'p')
+            ->where('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->join('ActsCamdramBundle:Role', 'r')
             ->andWhere('r.person = :person')
-            ->orderBy('s.start_at', 'ASC')
+            ->orderBy('p.start_date', 'ASC')
+            ->groupBy('s.id')
+            ->having('MIN(p.start_date) >= :now')
             ->setParameter('person', $person)
             ->setParameter('now', $now)
             ->getQuery();
@@ -135,7 +137,7 @@ class ShowRepository extends EntityRepository
             ->andWhere('s.start_at < :now')
             ->andWhere('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->join('ActsCamdramBundle:Role', 'r')
+            ->join('s.roles', 'r')
             ->andWhere('r.person = :person')
             ->orderBy('s.start_at', 'ASC')
             ->setParameter('person', $person)
@@ -147,15 +149,18 @@ class ShowRepository extends EntityRepository
     public function getPastByPerson(\DateTime $now, Person $person)
     {
         $query = $this->createQueryBuilder('s')
-            ->where('s.end_at < :now')
-            ->andWhere('s.authorised_by is not null')
+            ->leftJoin('s.performances', 'p')
+            ->join('s.roles', 'r')
+            ->andwhere('s.authorised_by is not null')
             ->andWhere('s.entered = true')
-            ->join('ActsCamdramBundle:Role', 'r')
             ->andWhere('r.person = :person')
-            ->orderBy('s.start_at', 'DESC')
+            ->orderBy('p.start_date', 'DESC')
+            ->groupBy('s.id')
+            ->having('MAX(p.end_date) < :now')
             ->setParameter('person', $person)
             ->setParameter('now', $now)
             ->getQuery();
+
         return $query->getResult();
     }
 

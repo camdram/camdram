@@ -766,6 +766,15 @@ class Show implements SearchableInterface, OwnableInterface
         return $this->getRoles()->matching($criteria);
     }
 
+    public function getRolesByPerson(Person $person)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("person", $person))
+            ->orderBy(array('order' => 'ASC', 'id' => 'ASC'))
+        ;
+        return $this->getRoles()->matching($criteria);
+    }
+
     /**
      * Set society
      *
