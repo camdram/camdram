@@ -20,6 +20,9 @@
                 constrainInput: true
             });
         }
+        if (!Modernizr.inputtypes.time) {
+            $('input[type=time]', elementsToFix).timepicker();
+        }
 
         $('.dropdown-link', elementsToFix).each(function() {
             var $link = $(this);
@@ -45,6 +48,32 @@
             })
         })
     };
+
+    $.widget( "ui.timepicker", $.ui.spinner, {
+        options: {
+            step: 60 * 15 * 1000,
+            page: 4
+        },
+        _parse: function( value ) {
+            console.log('x', value);
+            if ( typeof value === "string" ) {
+                // already a timestamp
+                if ( Number( value ) == value && value >= 2400) {
+                    return Number( value );
+                }
+                return +moment(value, ["H:mm", "Hmm", "h:mm a"]).format('x');
+            }
+            return value;
+        },
+        _format: function( value ) {
+            return moment(value, 'x').format("H:mm");
+        },
+        _events: {
+            blur: function( event ) {
+                this.value(this.value());
+            }
+        }
+    });
 
     $.fn.scrollTo = function(options) {
         var options = $.extend({

@@ -20,7 +20,9 @@ class PerformanceType extends AbstractType
         $builder// 'format' => 'eee d MMM y',
             ->add('start_date', 'date', array('label' => 'Start', 'widget' => 'single_text'))
             ->add('end_date', 'date', array('label' => 'End', 'widget' => 'single_text'))
-            ->add('time', 'time', array('label' => 'Time', 'widget' => 'single_text'))
+            ->add('time', 'time', array('label' => 'Time', 'widget' => 'single_text', 'attr' => array(
+                'placeholder' => 'e.g. 19:45'
+            )))
             ->add('venue', 'entity_search', array(
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
