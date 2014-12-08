@@ -6,12 +6,14 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
 
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Controller\AbstractRestController;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @RouteResource("User")
@@ -164,6 +166,25 @@ class UserController extends FOSRestController
                 ->setTemplateVar('user')
                 ->setTemplate('ActsCamdramAdminBundle:User:ace-new.html.twig');
         }
+    }
+
+    /**
+     * @param $identifier
+     * @Get("/users/{identifier}/reset-password")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function resetPasswordAction($identifier)
+    {
+        $this->checkAuthenticated();
+        $user = $this->getEntity($identifier);
+
+        $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
+        $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
+        $url = $this->generateUrl('acts_camdram_security_reset_password',
+            array('email' => $user->getEmail(), 'token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $this->render('ActsCamdramAdminBundle:User:reset-password-complete.html.twig',
+              array('user' => $user, 'url' => $url));
     }
 
 }

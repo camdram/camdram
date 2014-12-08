@@ -4,16 +4,14 @@
 
 {% block body %}
 
-<div class="row" xmlns="http://www.w3.org/1999/html">
+{{ include("ActsCamdramAdminBundle:User:admin-panel.html.twig") }}
 
+<div class="row">
 
     <div class="twelve columns">
 
-        <h2>{{ user.name }}</h2>
-
-        <p><a href="{{ path('edit_user', {identifier: user.id}) }}">Edit</a></p>
-
-        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>ID:</strong> {{ user.id }}</p>
+        <p><strong>Email:</strong> {{ user.fullEmail }}</p>
         <p><strong>Registered:</strong> {% if user.registeredAt > date('0000-00-00') %}{{ user.registeredAt | date('Y-m-d') }}{% endif %}</td>
         <p><strong>Last login:</strong> {% if user.lastLoginAt > date('0000-00-00') %}{{ user.lastLoginAt | date('Y-m-d') }}{% endif %}</td>
 
@@ -62,8 +60,6 @@
         {% else %}
             <p>This user is not an admin for any shows.</p>
         {% endif %}
-
-        <a href="{{ path('get_users') }}" class="button small">Back to user list</a>
     </div>
 
 </div>

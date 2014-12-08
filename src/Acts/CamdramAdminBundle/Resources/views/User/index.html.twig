@@ -24,7 +24,7 @@
         <table>
             <thead>
             <tr>
-                <th colspan="4">Action</th>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Date joined</th>
@@ -34,16 +34,9 @@
         <tbody>
         {% for user in result.data %}
         <tr>
-            <td><a href="{{ path('get_user', {identifier: user.id}) }}">View</a></td>
-            <td><a href="{{ path('edit_user', {identifier: user.id}) }}">Edit</a></td>
-            {%- if has_role('ROLE_PREVIOUS_ADMIN') -%}
-                <td>Already impersonating</td>
-            {%- else -%}
-                <td><a href="{{ path('acts_camdram_homepage', {_switch_to_user: user.email}) }}">Impersonate</a></td>
-            {%- endif -%}
-            <td><a href="{{ path('remove_user', {identifier: user.id}) }}">Delete</a></td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
+            <td><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.id }}</a></td>
+            <td><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.name }}</a></td>
+            <td>{{ user.fullEmail }}</td>
             <td>{% if user.registeredAt > date('0000-00-00') %}{{ user.registeredAt | date('Y-m-d') }}{% endif %}</td>
             <td>{% if user.lastLoginAt > date('0000-00-00') %}{{ user.lastLoginAt | date('Y-m-d') }}{% endif %}</td>
         </tr>
