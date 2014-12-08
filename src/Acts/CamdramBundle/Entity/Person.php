@@ -14,6 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Person
  *
  * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="people_slugs",columns={"slug"})})
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="PersonRepository")
  */
 class Person implements SearchableInterface
@@ -32,6 +33,7 @@ class Person implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Gedmo\Versioned
      * @Assert\NotBlank()
      */
     private $name;
@@ -40,6 +42,7 @@ class Person implements SearchableInterface
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Gedmo\Versioned
      */
     private $description;
 
@@ -47,6 +50,7 @@ class Person implements SearchableInterface
      * @var \Hoyes\ImageManagerBundle\Entity\Image
      *
      * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @Gedmo\Versioned
      */
     private $image;
 
@@ -62,6 +66,7 @@ class Person implements SearchableInterface
      *
      * @ORM\Column(name="mapto", type="integer", nullable=false)
      * @Serializer\Exclude
+     * @Gedmo\Versioned
      */
     private $map_to;
 
@@ -70,6 +75,7 @@ class Person implements SearchableInterface
      *
      * @ORM\Column(name="norobots", type="boolean", nullable=false)
      * @Serializer\Exclude
+     * @Gedmo\Versioned
      */
     private $no_robots;
 

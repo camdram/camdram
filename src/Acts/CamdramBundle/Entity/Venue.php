@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,6 +21,7 @@ class Venue extends Organisation
      *
      * @ORM\Column(name="address", type="text", nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $address;
 
@@ -28,6 +30,7 @@ class Venue extends Organisation
      *
      * @ORM\Column(name="latitude", type="float", nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $latitude;
 
@@ -36,6 +39,7 @@ class Venue extends Organisation
      *
      * @ORM\Column(name="longitude", type="float", nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $longitude;
 

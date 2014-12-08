@@ -15,3 +15,8 @@ acts_camdram_logs_get:
     path: /logs/{file}
     defaults:
         _controller: ActsCamdramAdminBundle:Log:get
+
+acts_camdram_audit:
+    path: /audit
+    defaults:
+        _controller: ActsCamdramAdminBundle:Audit:index

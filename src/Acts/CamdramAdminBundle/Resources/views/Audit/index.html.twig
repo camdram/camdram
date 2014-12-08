@@ -1,0 +1,56 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Audit Log{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="large-12 columns">
+            <h3><a href="{{ path('acts_camdram_audit') }}">Audit Log</a></h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Class</th>
+                        <th>ID</th>
+                        <th>Version</th>
+                        <th>Action</th>
+                        <th>User</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{ result.loggedAt | date('Y-m-d H:i:s') }}</td>
+                        <td>
+                            <a href="{{ path('acts_camdram_audit', {class: result.objectClass}) }}">
+                                {{ result.objectClass }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path('acts_camdram_audit', {class: result.objectClass, id: result.objectId}) }}">
+                                {{ result.objectId }}
+                            </a>
+                        </td>
+                        <td>{{ result.version }}</td>
+                        <td>{{ result.action }}</td>
+                        <td>{{ result.username }}</td>
+                        <td>
+                            <small>
+                            {% for key, item in result.data %}
+                                <strong>{{ key }}:</strong>
+                                {% if item.timestamp is defined %}{{ item | date('r') }}
+                                {% elseif item is iterable %}{{ item | json_encode }}
+                                {% else %}{{ item }}
+                                {% endif %}<br />
+                            {% endfor %}
+                            </small>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

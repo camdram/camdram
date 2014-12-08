@@ -4,12 +4,14 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Audition
  *
  * @ORM\Table(name="acts_auditions")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\AuditionRepository")
+ * @Gedmo\Loggable
  */
 class Audition
 {
@@ -28,6 +30,7 @@ class Audition
      * @ORM\Column(name="date", type="date", nullable=false)
      * @Assert\NotBlank()
      * @Assert\Date()
+     * @Gedmo\Versioned
      */
     private $date;
 
@@ -37,6 +40,7 @@ class Audition
      * @ORM\Column(name="starttime", type="time", nullable=false)
      * @Assert\NotBlank()
      * @Assert\Time()
+     * @Gedmo\Versioned
      */
     private $start_time;
 
@@ -45,6 +49,7 @@ class Audition
      *
      * @ORM\Column(name="endtime", type="time", nullable=true)
      * @Assert\Time()
+     * @Gedmo\Versioned
      */
     private $end_time;
 
@@ -53,6 +58,7 @@ class Audition
      *
      * @ORM\Column(name="location", type="string", nullable=false)
      * @Assert\NotBlank()
+     * @Gedmo\Versioned
      */
     private $location;
 
@@ -63,6 +69,7 @@ class Audition
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
+     * @Gedmo\Versioned
      */
     private $show;
 
@@ -70,6 +77,7 @@ class Audition
      * @var boolean
      *
      * @ORM\Column(name="display", type="boolean", nullable=false)
+     * @Gedmo\Versioned
      */
     private $display = false;
 
@@ -77,6 +85,7 @@ class Audition
      * @var boolean
      *
      * @ORM\Column(name="nonscheduled", type="boolean", nullable=false)
+     * @Gedmo\Versioned
      */
     private $nonScheduled;
 

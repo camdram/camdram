@@ -20,6 +20,7 @@ use Acts\CamdramApiBundle\Annotation as Api;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener","Acts\CamdramLegacyBundle\EventListener\ShowRefCreator" })
  * @Serializer\ExclusionPolicy("all")
+ * @Gedmo\Loggable
  * @Api\Feed(name="Camdram - Shows", titleField="name",
  *   description="Shows produced by students in Cambridge",
  *   template="ActsCamdramBundle:Show:rss.html.twig")
@@ -42,6 +43,7 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Gedmo\Versioned
      * @Serializer\Expose()
      */
     private $name;
@@ -50,6 +52,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Gedmo\Versioned
      * @Serializer\Expose()
      */
     private $description;
@@ -58,6 +61,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var \Hoyes\ImageManagerBundle\Entity\Image
      *
      * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @Gedmo\Versioned
      * @Serializer\Expose()
      */
     private $image;
@@ -66,6 +70,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var int
      *
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
+     * @Gedmo\Versioned
      */
     private $facebook_id;
 
@@ -73,6 +78,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var int
      *
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
+     * @Gedmo\Versioned
      */
     private $twitter_id;
 
@@ -98,6 +104,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=true)
+     * @Gedmo\Versioned
      * @Serializer\Expose()
      */
     private $author;
@@ -106,6 +113,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="prices", type="string", length=255, nullable=true)
+     * @Gedmo\Versioned
      * @Serializer\Expose()
      */
     private $prices = '';
@@ -121,6 +129,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
+     * @Gedmo\Versioned
      * @Serializer\Expose()
      */
     private $venue_name = '';
@@ -136,6 +145,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="society", type="string", length=255, nullable=true)
+     * @Gedmo\Versioned
      * @Serializer\Expose()
      */
     private $society_name = '';
@@ -158,6 +168,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="audextra", type="text", nullable=true)
+     * @Gedmo\Versioned
      */
     private $audextra;
 
@@ -166,6 +177,7 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
      * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
+     * @Gedmo\Versioned
      */
     private $society;
 
@@ -174,6 +186,7 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
      * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
+     * @Gedmo\Versioned
      */
     private $venue;
 
@@ -182,6 +195,7 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @Gedmo\Versioned
      */
     private $authorised_by;
 
@@ -308,6 +322,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * @var string
      * @Assert\Url()
+     * @Gedmo\Versioned
      * @ORM\Column(name="onlinebookingurl", type="string", length=2083, nullable=true)
      */
     private $online_booking_url;

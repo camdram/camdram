@@ -17,6 +17,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({0 = "Society", 1 = "Venue"})
+ * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
  */
 abstract class Organisation implements SearchableInterface, OwnableInterface
@@ -38,6 +39,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $name;
 
@@ -46,6 +48,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $description;
 
@@ -53,6 +56,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @var \Hoyes\ImageManagerBundle\Entity\Image
      *
      * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @Gedmo\Versioned
      */
     private $image;
 
@@ -61,6 +65,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      *
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $facebook_id;
 
@@ -69,6 +74,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      *
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $twitter_id;
 
@@ -78,6 +84,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
      * @Assert\NotBlank(groups={"new"})
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $short_name;
 
@@ -86,6 +93,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      *
      * @ORM\Column(name="college", type="string", length=100, nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $college;
 
@@ -93,6 +101,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @var boolean
      *
      * @ORM\Column(name="affiliate", type="boolean", nullable=false)
+     * @Gedmo\Versioned
      */
     private $affiliate = 0;
 

@@ -83,6 +83,14 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
         entity_listener_resolver: acts_camdram_backend.doctrine.entity_listener_resolver
+        mappings:
+            gedmo_loggable:
+                type: annotation
+                prefix: Gedmo\Loggable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                alias: GedmoLoggable
+                is_bundle: false
+
 
 doctrine_phpcr:
     session:
@@ -269,6 +277,12 @@ acts_sphinx_real_time:
                 min_prefix_len: 1
                 enable_star: true
                 dict: keywords
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+            loggable: true
 
 fos_js_routing:
     routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'autocomplete_entity' ]

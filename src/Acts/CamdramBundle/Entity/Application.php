@@ -4,12 +4,14 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Application
  *
  * @ORM\Table(name="acts_applications")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ApplicationRepository")
+ * @Gedmo\Loggable
  */
 class Application
 {
@@ -30,6 +32,7 @@ class Application
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
+     * @Gedmo\Versioned
      */
     private $show;
 
@@ -40,6 +43,7 @@ class Application
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="socid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
+     * @Gedmo\Versioned
      */
     private $society;
 
@@ -48,6 +52,7 @@ class Application
      *
      * @ORM\Column(name="text", type="text", nullable=false)
      * @Assert\NotBlank()
+     * @Gedmo\Versioned
      */
     private $text;
 
@@ -57,6 +62,7 @@ class Application
      * @ORM\Column(name="deadlinedate", type="date", nullable=false)
      * @Assert\NotBlank()
      * @Assert\Date()
+     * @Gedmo\Versioned
      */
     private $deadlineDate;
 
@@ -65,6 +71,7 @@ class Application
      *
      * @ORM\Column(name="furtherinfo", type="text", nullable=false)
      * @Assert\NotBlank()
+     * @Gedmo\Versioned
      */
     private $furtherInfo;
 
@@ -74,6 +81,7 @@ class Application
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      * @Assert\NotBlank()
      * @Assert\Time()
+     * @Gedmo\Versioned
      */
     private $deadlineTime;
 

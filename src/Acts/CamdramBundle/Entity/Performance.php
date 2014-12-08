@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Performance
@@ -11,6 +12,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="acts_performances")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PerformanceRepository")
  * @Serializer\ExclusionPolicy("all")
+ * @Gedmo\Loggable
  */
 class Performance
 {
@@ -30,6 +32,7 @@ class Performance
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
+     * @Gedmo\Versioned
      */
     private $show;
 
@@ -38,6 +41,7 @@ class Performance
      *
      * @ORM\Column(name="startdate", type="date", nullable=false)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $start_date;
 
@@ -46,6 +50,7 @@ class Performance
      *
      * @ORM\Column(name="enddate", type="date", nullable=false)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $end_date;
 
@@ -54,6 +59,7 @@ class Performance
      *
      * @ORM\Column(name="excludedate", type="date", nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $exclude_date;
 
@@ -62,6 +68,7 @@ class Performance
      *
      * @ORM\Column(name="time", type="time", nullable=false)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $time;
 
@@ -70,6 +77,7 @@ class Performance
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="performances")
      * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
+     * @Gedmo\Versioned
      */
     private $venue;
 
@@ -78,6 +86,7 @@ class Performance
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $venue_name;
 

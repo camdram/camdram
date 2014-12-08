@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiry;
 use Acts\CamdramApiBundle\Annotation as Api;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * TechieAdvert
@@ -19,6 +20,7 @@ use Acts\CamdramApiBundle\Annotation as Api;
  *     description="Production Team Vacancies advertised for shows in Cambridge",
  *     template="ActsCamdramBundle:TechieAdvert:rss.html.twig")
  * @TechieAdvertExpiry()
+ * @Gedmo\Loggable
  */
 class TechieAdvert
 {
@@ -38,6 +40,7 @@ class TechieAdvert
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
+     * @Gedmo\Versioned
      */
     private $show;
 
@@ -46,6 +49,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="positions", type="text", nullable=false)
      * @Assert\NotBlank()
+     * @Gedmo\Versioned
      */
     private $positions;
 
@@ -54,6 +58,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="contact", type="text", nullable=false)
      * @Assert\NotBlank()
+     * @Gedmo\Versioned
      */
     private $contact;
 
@@ -61,6 +66,7 @@ class TechieAdvert
      * @var boolean
      *
      * @ORM\Column(name="deadline", type="boolean", nullable=false)
+     * @Gedmo\Versioned
      */
     private $deadline;
 
@@ -68,6 +74,7 @@ class TechieAdvert
      * @var string
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
+     * @Gedmo\Versioned
      */
     private $deadlineTime;
 
@@ -76,6 +83,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="expiry", type="date", nullable=false)
      * @Assert\Date()
+     * @Gedmo\Versioned
      */
     private $expiry;
 
@@ -83,6 +91,7 @@ class TechieAdvert
      * @var boolean
      *
      * @ORM\Column(name="display", type="boolean", nullable=false)
+     * @Gedmo\Versioned
      */
     private $display = false;
 
@@ -90,6 +99,7 @@ class TechieAdvert
      * @var boolean
      *
      * @ORM\Column(name="remindersent", type="boolean", nullable=false)
+     * @Gedmo\Versioned
      */
     private $reminder_sent = false;
 
@@ -98,6 +108,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="techextra", type="text", nullable=false)
      * @Assert\Length(max=1140)
+     * @Gedmo\Versioned
      */
     private $tech_extra = "";
 
@@ -105,6 +116,7 @@ class TechieAdvert
      * @var \DateTime
      *
      * @ORM\Column(name="lastupdated", type="datetime", nullable=false)
+     * @Gedmo\Versioned
      */
     private $last_updated;
 

@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\VirtualProperty;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Role
@@ -13,6 +14,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\RoleRepository")
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\RoleSearchIndexListener"})
  * @ORM\HasLifecycleCallbacks()
+ * @Gedmo\Loggable
  */
 class Role
 {
@@ -36,6 +38,7 @@ class Role
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=20, nullable=false)
+     * @Gedmo\Versioned
      */
     private $type;
 
@@ -43,6 +46,7 @@ class Role
      * @var string
      *
      * @ORM\Column(name="role", type="string", length=255, nullable=false)
+     * @Gedmo\Versioned
      */
     private $role;
 
@@ -50,6 +54,7 @@ class Role
      * @var integer
      *
      * @ORM\Column(name="`order`", type="integer", nullable=false)
+     * @Gedmo\Versioned
      */
     private $order;
 
@@ -60,6 +65,7 @@ class Role
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
+     * @Gedmo\Versioned
      */
     private $show;
 
@@ -70,6 +76,7 @@ class Role
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      * })
+     * @Gedmo\Versioned
      */
     private $person;
 
