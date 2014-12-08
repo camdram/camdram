@@ -307,6 +307,7 @@ class Show implements SearchableInterface, OwnableInterface
     private $other_url;
     /**
      * @var string
+     * @Assert\Url()
      * @ORM\Column(name="onlinebookingurl", type="string", length=2083, nullable=true)
      */
     private $online_booking_url;
@@ -635,11 +636,6 @@ class Show implements SearchableInterface, OwnableInterface
      * @return string
      */
     public function getBookingCode()
-    {
-        return $this->booking_code;
-    }
-
-    public function getBookingUrl()
     {
         return $this->booking_code;
     }

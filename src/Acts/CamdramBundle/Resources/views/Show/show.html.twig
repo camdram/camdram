@@ -13,7 +13,7 @@
 
     <div class="large-12 columns panel">
         <ul class="inline-list right">
-            {% if show.bookingUrl %}
+            {% if show.onlineBookingUrl %}
                 {# If performances are listed ensure that tickets are only
                    offered for shows in the future. #} 
                 {% set sell_tickets = true %}
@@ -26,7 +26,7 @@
                     {% endfor %}
                 {% endif %}
                 {% if sell_tickets == true %}
-                    <li><a href="{{ show.bookingUrl }}" target="_blank"><i class="fa fa-ticket"></i> Buy tickets
+                    <li><a href="{{ show.onlineBookingUrl }}" target="_blank"><i class="fa fa-ticket"></i> Buy tickets
                             {% if show.prices %}({{ show.prices }}){% endif %}</a>
                     </li>
                 {% endif %}

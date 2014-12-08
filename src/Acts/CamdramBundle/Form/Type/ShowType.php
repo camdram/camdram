@@ -60,8 +60,8 @@ class ShowType extends AbstractType
                 'other_mapped' => true,
                 'required' => false,
             ))
-            ->add('booking_code', null, array(
-                'required' => false, 'label' => 'Web page to buy tickets'
+            ->add('online_booking_url', 'url', array(
+                'required' => false, 'label' => 'URL for purchasing tickets'
             ))
             ->add('facebook_id', null, array('required' => false))
             ->add('twitter_id', null, array('required' => false))
