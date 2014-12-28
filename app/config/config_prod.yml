@@ -30,3 +30,5 @@ assetic:
         closure:
             apply_to: "\.js$"
             compression_level: ADVANCED_OPTIMIZATIONS
+    workers:
+        cache_busting: ~
