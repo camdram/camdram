@@ -1,0 +1,23 @@
+{# Page for adding multiple roles to a show at once. #}
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% set current_navigation_id = 'shows' %}
+{% block title %}Show: {{ show.name }}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+
+<div class="row">
+    <div class="large-12">
+        <p>This form allows you to add multiple roles at once. You can use 
+        this to copy and paste directly from your programme or a list taken
+        from a CSV file, for example. Groups of roles (cast, crew, and bands) need to be entered separately.</p>
+    </div>
+</div>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+{{ form_end(form) }}
+</div>
+{% endblock %}

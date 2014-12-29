@@ -14,8 +14,9 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Patch;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
-use Acts\CamdramBundle\Form\Type\RoleType;
-use Acts\CamdramBundle\Form\Type\ShowType;
+use Acts\CamdramBundle\Form\Type\RoleType,
+    Acts\CamdramBundle\Form\Type\RolesType,
+    Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess,
     Acts\CamdramSecurityBundle\Entity\AccessControlEntry,
     Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
@@ -23,6 +24,8 @@ use Acts\CamdramSecurityBundle\Entity\PendingAccess,
     Acts\CamdramSecurityBundle\Event\PendingAccessEvent,
     Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use Gedmo\Sluggable\Util as Sluggable;
@@ -87,6 +90,46 @@ class ShowController extends AbstractRestController
         }
         $form = $this->createForm(new TechieAdvertType(), $obj);
         return $form;
+    }
+
+    /**
+     * Utility function for adding a person to this show. A new person
+     * record is created if they don't already exist.
+     *
+     * @param Show $show This show.
+     * @param string $role_type The type of role ('cast', 'band', 'prod')
+     * @param string $role_name Director, Producer, Macbeth..
+     * @param string $person_name The person's name
+     */
+    private function addRoleToShow(Show $show, $role_type, $role_name, $person_name)
+    {
+        $role = new Role();
+        $role->setType($role_type);
+        $role->setRole($role_name);
+
+        $em = $this->getDoctrine()->getManager();
+        $person_repo = $em->getRepository('ActsCamdramBundle:Person');
+
+        /* Try and find the person. Add a new person if they don't exist. */
+        $person = $person_repo->findOneBy(array('name' => $person_name), array('id' => 'DESC'));
+        if ($person == null) {
+            $person = New Person();
+            $person->setName($person_name);
+            $slug = Sluggable\Urlizer::urlize($person_name, '-');
+            $person->setSlug($slug);
+            $em->persist($person);
+        }
+        $role->setPerson($person);
+        /* Append this role to the list of roles of this type. */
+        $order = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')
+            ->getMaxOrderByShowType($show, $role->getType());
+        $role->setOrder(++$order);
+        $role->setShow($show);
+        $em->persist($role);
+
+        $person->addRole($role);
+        $show->addRole($role);
+        $em->flush();
     }
 
     /**
@@ -430,9 +473,9 @@ class ShowController extends AbstractRestController
     public function getPeopleAction($identifier)
     {
         $show = $this->getEntity($identifier);
-	$role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
-	$roles = $role_repo->findByShow($show);
-	return $this->view($roles);
+    $role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
+    $roles = $role_repo->findByShow($show);
+    return $this->view($roles);
     }
 
 
@@ -713,6 +756,73 @@ class ShowController extends AbstractRestController
             if ($person->getRoles()->isEmpty()) {
                 $em->remove($person);
                 $em->flush();
+            }
+        }
+        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+    }
+    
+    /**
+     * Get a form for adding multiple roles to a show.
+     *
+     * @param $identifier
+     * @Rest\Get("/shows/{identifier}/many-roles")
+     */
+    public function getManyRolesAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
+
+        $form = $this->createForm(new RolesType(), array(
+             array('identifier' => $identifier)));
+        return $this->view($form, 200)
+            ->setData(array('show' => $show, 'form' => $form->createView()))
+            ->setTemplate('ActsCamdramBundle:Show:roles-new.html.twig');
+    }
+    
+    /**
+     * Process adding multiple roles to a show.
+     *
+     * This function doesn't do validation of the data, e.g. ensuring
+     * that the role and the person aren't reversed, as this is the
+     * responsibility of the form validation. This function should be robust
+     * against badly formatted input-however.
+     *
+     * @param $identifier
+     * @Rest\Post("/shows/{identifier}/many-roles")
+     */
+    public function postManyRolesAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
+
+        $form = $this->createForm(new RolesType(), array(
+             array('identifier' => $identifier)));
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $role_idx = ($data['ordering'] == 'role_first') ? 0 : 1;
+            $name_idx = 1 - $role_idx;
+            $lines = explode("\n", $data['list']);
+            foreach ($lines as $line)
+            {
+                $lsplt = explode($data['separator'], $line);
+                /* Ensure the split data contains only the role and the 
+                 * person's name.
+                 */
+                if (count($lsplt) != 2) {
+                    continue;
+                }
+                $role = trim($lsplt[$role_idx]);
+                $name = trim($lsplt[$name_idx]);
+                if (($name != "") && ($role != "")) {
+                    /* Add a role to the show. */
+                    $this->addRoleToShow(
+                        $this->getEntity($identifier), 
+                        $data['type'],
+                        $role,
+                        $name
+                        );
+                }
             }
         }
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
