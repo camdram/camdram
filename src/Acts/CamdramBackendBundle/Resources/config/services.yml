@@ -1,5 +1,6 @@
 parameters:
     acts_camdram_backend.database_tools.class: Acts\CamdramBackendBundle\Service\DatabaseTools
+    assetic.filter.scssphp.class: Acts\CamdramBackendBundle\Service\ScssphpFilter
 
 services:
     acts_camdram_backend.database_tools:
