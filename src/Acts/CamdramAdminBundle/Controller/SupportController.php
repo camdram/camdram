@@ -202,8 +202,7 @@ class SupportController extends FOSRestController
         }
         // Issue owners may reject issues that are assigned to them.
         else if (($action == 'rejectassign') &&
-                ($issue->getState() == 'assigned') &&
-                ($user_is_owner == true)) {
+                ($issue->getState() == 'assigned') {
             $issue->setOwner(null);
             $issue->setState('unassigned');
         }
