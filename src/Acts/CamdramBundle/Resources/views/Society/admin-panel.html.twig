@@ -4,7 +4,7 @@
     <ul class="inline-list">
         {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_society', path: path('edit_society',{identifier:org.slug}), icon: 'pencil', text: 'Edit this society'} }) }}
         {% if is_granted('DELETE', org) %}
-            {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'delete_society', path: path('remove_society',{identifier:org.slug}), icon: 'eraser', text: 'Delete this society'} }) }}
+            {{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'remove_society', path: path('remove_society',{identifier:org.slug}), text: 'Delete this society', name: org.name, type: 'society'} }) }}
         {% endif %}
         <li>
             {% if org.applications | length == 0 %}

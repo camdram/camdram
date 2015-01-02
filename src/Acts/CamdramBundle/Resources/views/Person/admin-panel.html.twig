@@ -2,7 +2,7 @@
     <ul class="inline-list">
         {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_person', path: path('edit_person',{identifier:person.slug}), icon: 'pencil', text: 'Edit profile'} }) }}
         {% if is_granted('DELETE', person) %}
-            {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'delete_person', path: path('remove_person',{identifier:person.slug}), icon: 'eraser', text: 'Delete profile'} }) }}
+            {{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'remove_person', path: path('remove_person',{identifier:person.slug}), text: 'Delete profile', name: person.name, type: 'person'} }) }}
         {% endif %}
     </ul>
 </div>
