@@ -5,7 +5,8 @@ $include-html-classes: false;
   @extend .panel;
 }
 
-.vacancies-panel {
+/* Use the new feature panel to highlight new features on the site itself. */
+.new-feature-panel, .vacancies-panel {
   @include panel(rgb(255,240,153), 1em 2em, false);
   border-radius:10px;
 }
@@ -41,3 +42,4 @@ $include-html-classes: false;
   font-style:italic;
   margin-bottom:0.7em;
 }
+
