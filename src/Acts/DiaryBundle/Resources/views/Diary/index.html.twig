@@ -9,7 +9,11 @@
 
     <ul class="diary-header">
     {% for date in week.headerDates %}
-        <li>{{ date | date('D j M') }}</li>
+    	{% if (date|date("d/m/Y")) == ("now"|date("d/m/Y")) %}
+    		<li style="color:#FE4A06">{{ date | date('D j M') }}</li>
+    	{% else %} 
+    		<li>{{ date | date('D j M') }}</li>
+    	{% endif %}
     {% endfor %}
     </ul>
     <div class="diary-content">
