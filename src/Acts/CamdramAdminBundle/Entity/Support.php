@@ -25,13 +25,6 @@ class Support
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="supportid", type="integer", nullable=false)
-     */
-    private $support_id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="`from`", type="string", nullable=false)
@@ -79,7 +72,7 @@ class Support
      *
      * @ORM\Column(name="state", type="string", length=20, nullable=false)
      */
-    private $state;
+    private $state = 'unassigned';
 
     /**
      * @var \DateTime
@@ -96,7 +89,7 @@ class Support
 
     /**
      * @ORM\ManyToOne(targetEntity="Support", inversedBy="children")
-     * @ORM\JoinColumn(name="supportid", referencedColumnName="id")
+     * @ORM\JoinColumn(name="supportid", referencedColumnName="id", nullable=true)
      */
     private $parent;
 
@@ -122,16 +115,6 @@ class Support
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get support_id
-     *
-     * @return integer
-     */
-    public function getSupportId()
-    {
-        return $this->support_id;
     }
 
     /**
@@ -367,19 +350,6 @@ class Support
     }
 
     /**
-     * Set support_id
-     *
-     * @param integer $supportId
-     * @return Support
-     */
-    public function setSupportId($supportId)
-    {
-        $this->support_id = $supportId;
-
-        return $this;
-    }
-
-    /**
      * Add children
      *
      * @param Support $children
@@ -400,5 +370,24 @@ class Support
     public function removeChild(Support $children)
     {
         $this->children->removeElement($children);
+    }
+
+    public function getOriginal()
+    {
+        if ($this->getParent()) {
+            return $this->getParent()->getOriginal();
+        } else {
+            return $this;
+        }
+    }
+
+    public function getOriginalFrom()
+    {
+        return $this->getOriginal()->getFrom();
+    }
+
+    public function getOriginalId()
+    {
+        return $this->getOriginal()->getId();
     }
 }

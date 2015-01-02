@@ -20,7 +20,7 @@ class SupportRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->where('s.owner <> :user')
-            ->andWhere("s.state = 'assigned' AND s.support_id = 0")
+            ->andWhere("s.state = 'assigned' AND s.parent IS NULL")
             ->orderBy('s.id', 'ASC')
             ->setParameter('user', $user)
             ->getQuery();

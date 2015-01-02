@@ -38,6 +38,7 @@
         "zurb/foundation": "4.*",
         "leafo/scssphp": "0.1.*",
         "zendframework/zend-feed": "~2.3",
+        "zendframework/zend-mail": "~2.3",
         "zendframework/zend-servicemanager": "~2.3",
 
         "jackalope/jackalope-doctrine-dbal": "1.0.*",

@@ -83,10 +83,10 @@ class SupportController extends FOSRestController
         }
 
         $mine = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
-                    array('state' => 'assigned', 'support_id' => 0, 'owner' => $this->getUser()->getId())
+                    array('state' => 'assigned', 'parent' => null, 'owner' => $this->getUser()->getId())
                     );
         $unassigned = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
-                    array('state' => 'unassigned', 'support_id' => 0)
+                    array('state' => 'unassigned', 'parent' => null)
                     );
         $others = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')
                       ->getOtherUsersIssues($this->getUser());
