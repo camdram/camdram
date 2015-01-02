@@ -1,0 +1,12 @@
+{% spaceless %}
+<li>
+    <a{% if item.id is defined and current_subnav_id is defined and item.id == current_subnav_id %} class="active"{% endif %}
+            href="{% if item.path is defined %}{{ item.path }}{% else %}#{% endif %}"
+            data-name="{{ item.name }}"
+            data-type="{{ item.type }}"
+            class="delete-link">
+        <i class="fa fa-eraser fa-fw"></i>
+        {{ item.text }}
+    </a>
+</li>
+{% endspaceless %}

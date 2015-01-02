@@ -4,7 +4,7 @@
     <ul class="inline-list">
         {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier:show.slug}), icon: 'pencil', text: 'Edit this show'} }) }}
         {% if is_granted('DELETE', show) %}
-            {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'delete_show', path: path('remove_show',{identifier:show.slug}), icon: 'eraser', text: 'Delete this show'} }) }}
+            {{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show',{identifier:show.slug}), text: 'Delete this show', name: show.name, type: 'show'} }) }}
         {% endif %}
         <li>
             {% if show.auditions | length == 0 %}

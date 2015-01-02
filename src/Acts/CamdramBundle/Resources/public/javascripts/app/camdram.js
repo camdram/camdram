@@ -13,6 +13,7 @@
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
         $('a.fancybox', elementsToFix).fancybox();
+        $('a.delete-link').deleteLink();
 
         if (!Modernizr.inputtypes.date) {
             $('input[type=date]', elementsToFix).datepicker({
@@ -46,7 +47,7 @@
                     hideEnabled = true;
                 },200);
             })
-        })
+        });
     };
 
     $.widget( "ui.timepicker", $.ui.spinner, {
@@ -251,6 +252,40 @@
             update_links();
             $self.children().each(options.initialiseRow);
         })
+    }
+
+    $.fn.deleteLink = function() {
+        $(this).each(function() {
+            var $self = $(this);
+            var name = $self.attr('data-name');
+            var type = $self.attr('data-type');
+            var href = $self.attr('href');
+            //Remove href to prevent accidental ctrl/middle clicking
+            $self.attr('href', '#');
+
+            $self.click(function(e) {
+                e.preventDefault();
+
+
+                var $dialog = $('<div/>').attr('title', 'Delete ' + type + '?')
+                    .html(
+                        $('<p/>').text('Are you sure you want to delete the ' + type + ' "' + name + '"?')
+                    )
+                    .dialog({
+                        resizable: false,
+                        modal: true,
+                        buttons: {
+                            'Yes': function() {
+                                document.location = href;
+                                $(this).dialog('close');
+                            },
+                            'No': function() {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+            })
+        });
     }
 
     $.fn.endlessScroll = function(options) {
