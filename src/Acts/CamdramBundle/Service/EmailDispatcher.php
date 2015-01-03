@@ -48,6 +48,8 @@ class EmailDispatcher
             /* HTML */
             ->setTo($toEmails)
             ->setBcc($bccEmails)
+            
+            /* HTML */
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:show_created.html.twig',
