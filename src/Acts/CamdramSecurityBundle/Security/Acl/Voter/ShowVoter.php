@@ -2,16 +2,18 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserToken;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramBundle\Entity\Show;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Grants access if
+ * Grants access to a show if the user is an admin of a society/venue of the show
  */
-class ShowVoter implements VoterInterface
+class ShowVoter extends  AbstractVoter
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -23,44 +25,25 @@ class ShowVoter implements VoterInterface
         $this->aclProvider = $aclProvider;
     }
 
-    public function supportsAttribute($attribute)
+    protected function getSupportedClasses()
     {
-        return $attribute == 'VIEW'
-            || $attribute == 'EDIT'
-            || $attribute == 'APPROVE';
+        return array('Acts\\CamdramBundle\\Entity\\Show');
     }
 
-    /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     * @param \Acts\CamdramBundle\Entity\Show $object
-     * @param array $attributes
-     * @return int
-     */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    protected function getSupportedAttributes()
     {
-        if ($object instanceof Show &&
-            ($attributes == array('EDIT') || $attributes == array('APPROVE')
-            || $attributes == array('VIEW'))) {
-            if ($object->getVenue()) {
-                if ($this->aclProvider->isOwner($token, $object->getVenue())) return self::ACCESS_GRANTED;
-            }
-            if ($object->getSociety()) {
-                if ($this->aclProvider->isOwner($token, $object->getSociety())) return self::ACCESS_GRANTED;
-            }
+        return array('VIEW', 'EDIT', 'APPROVE', 'DELETE');
+    }
+
+    protected function isGranted($attribute, $object, $user = null)
+    {
+        if ($object->getVenue()) {
+            if ($this->aclProvider->isOwner($user, $object->getVenue())) return true;
         }
-        return self::ACCESS_ABSTAIN;
+        if ($object->getSociety()) {
+            if ($this->aclProvider->isOwner($user, $object->getSociety())) return true;
+        }
+        return false;
     }
 
-    /**
-     * You can override this method when writing a voter for a specific domain
-     * class.
-     *
-     * @param string $class The class name
-     *
-     * @return Boolean
-     */
-    public function supportsClass($class)
-    {
-        return strpos($class, 'Acts\\CamdramBundle\\Entity\\Show') !== false;
-    }
 }

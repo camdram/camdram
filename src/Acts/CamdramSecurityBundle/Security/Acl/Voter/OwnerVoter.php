@@ -3,14 +3,16 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Grants access if
  */
-class OwnerVoter implements VoterInterface
+class OwnerVoter extends AbstractVoter
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -22,38 +24,22 @@ class OwnerVoter implements VoterInterface
         $this->aclProvider = $aclProvider;
     }
 
-    public function supportsAttribute($attribute)
+    protected function getSupportedClasses()
     {
-        return $attribute == 'EDIT';
+        return array('\\Acts\\CamdramSecurityBundle\\Security\\OwnableInterface');
     }
 
-    /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     * @param \Acts\CamdramBundle\Entity\Show $object
-     * @param array $attributes
-     * @return int
-     */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    protected function getSupportedAttributes()
     {
-        if ($object instanceof OwnableInterface && ($attributes == array('EDIT') || $attributes == array('VIEW'))) {
-            if ($this->aclProvider->isOwner($token, $object)) {
-                return self::ACCESS_GRANTED;
-            }
+        return array('VIEW', 'EDIT', 'DELETE');
+    }
+
+    protected function isGranted($attribute, $object, $user = null)
+    {
+        if ($this->aclProvider->isOwner($user, $object)) {
+            return true;
         }
-        return self::ACCESS_ABSTAIN;
+        return false;
     }
 
-    /**
-     * You can override this method when writing a voter for a specific domain
-     * class.
-     *
-     * @param string $class The class name
-     *
-     * @return Boolean
-     */
-    public function supportsClass($class)
-    {
-        $reflection = new \ReflectionClass($class);
-        return $reflection->implements('\\Acts\\CamdramSecurityBundle\\Security\\OwnableInterface');
-    }
 }

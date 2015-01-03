@@ -26,12 +26,18 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
      */
     private $token;
 
+    /**
+     * @var \Acts\CamdramSecurityBundle\Entity\User
+     */
+    private $user;
+
     public function setUp()
     {
         $this->aclProvider = $this->getMockBuilder('\Acts\\CamdramSecurityBundle\\Security\\Acl\\AclProvider')
             ->disableOriginalConstructor()->getMock();
         $this->voter = new ShowVoter($this->aclProvider);
-        $this->token = new UsernamePasswordToken('testuser', 'password', 'public');
+        $this->user = new User();
+        $this->token = new UsernamePasswordToken($this->user, 'password', 'public', $this->user->getRoles());
     }
 
     public function testSocietyOwner()
@@ -42,7 +48,7 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
         $show->setSociety($society);
 
         $this->aclProvider->expects($this->any())->method('isOwner')
-            ->with($this->token, $society)->will($this->returnValue(true));
+            ->with($this->user, $society)->will($this->returnValue(true));
 
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token, $show, array('EDIT')
@@ -60,12 +66,12 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
         $show->setSociety($society);
 
         $this->aclProvider->expects($this->atLeastOnce())->method('isOwner')
-            ->with($this->token, $society)->will($this->returnValue(false));
+            ->with($this->user, $society)->will($this->returnValue(false));
 
-        $this->assertEquals(ShowVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token, $show, array('EDIT')
             ));
-        $this->assertEquals(ShowVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token, $show, array('APPROVE')
             ));
     }
@@ -78,7 +84,7 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
         $show->setVenue($venue);
 
         $this->aclProvider->expects($this->atLeastOnce())->method('isOwner')
-            ->with($this->token, $venue)->will($this->returnValue(true));
+            ->with($this->user, $venue)->will($this->returnValue(true));
 
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token, $show, array('EDIT')
@@ -96,12 +102,12 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
         $show->setVenue($venue);
 
         $this->aclProvider->expects($this->atLeastOnce())->method('isOwner')
-            ->with($this->token, $venue)->will($this->returnValue(false));
+            ->with($this->user, $venue)->will($this->returnValue(false));
 
-        $this->assertEquals(ShowVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token, $show, array('EDIT')
             ));
-        $this->assertEquals(ShowVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token, $show, array('APPROVE')
             ));
     }

@@ -42,8 +42,8 @@ class UserRepository extends EntityRepository
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
-            ->andWhere('e.entity_id >= :level')
-            ->andWhere('e.revoked_by IS NULL')
+            ->andWhere('e.entityId >= :level')
+            ->andWhere('e.revokedBy IS NULL')
             ->setParameter('level', $min_level)
             ->setParameter('type', 'security')
             ->getQuery();
@@ -62,8 +62,8 @@ class UserRepository extends EntityRepository
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
-            ->andWhere('e.entity_id = :id')
-            ->andWhere('e.revoked_by IS NULL')
+            ->andWhere('e.entityId = :id')
+            ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $entity->getId())
             ->setParameter('type', $type)
             ->getQuery();
@@ -78,9 +78,9 @@ class UserRepository extends EntityRepository
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')
             ->where("e.type = 'request-show'")
-            ->andWhere('e.entity_id = :id')
-            ->andWhere('e.granted_by IS NULL')
-            ->andWhere('e.revoked_by IS NULL')
+            ->andWhere('e.entityId = :id')
+            ->andWhere('e.grantedBy IS NULL')
+            ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $show->getId())
             ->getQuery();
         return $query->getResult();

@@ -28,7 +28,7 @@ class ViewVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testViewNewShow()
     {
-        $this->assertEquals(ViewVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(ViewVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token, new Show(), array('VIEW')
         ));
     }

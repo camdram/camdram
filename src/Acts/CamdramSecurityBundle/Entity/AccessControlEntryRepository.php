@@ -15,11 +15,11 @@ class AccessControlEntryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $query =$qb->select('COUNT(e.id) AS c')
-                ->where('e.user_id = :uid')
-                ->andWhere('e.entity_id = :entity_id')
-                ->andWhere('e.revoked_by IS NULL')
+                ->where('e.userId = :uid')
+                ->andWhere('e.entityId = :entityId')
+                ->andWhere('e.revokedBy IS NULL')
                 ->andWhere('e.type = :type')
-                ->setParameter('entity_id', $entity->getId())
+                ->setParameter('entityId', $entity->getId())
                 ->setParameter('type', $entity->getAceType())
                 ->setParameter('uid', $user->getId())
         ;
@@ -35,10 +35,10 @@ class AccessControlEntryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->where('e.user = :user')
-                ->andWhere('e.entity_id = :entity_id')
+                ->andWhere('e.entityId = :entityId')
                 ->andWhere('e.type = :type')
                 ->setParameter('user', $user)
-                ->setParameter('entity_id', $entity->getId())
+                ->setParameter('entityId', $entity->getId())
                 ->setParameter('type', $entity->getAceType())
         ;
 
@@ -52,10 +52,10 @@ class AccessControlEntryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->where('e.user = :user')
-            ->andWhere('e.entity_id = :entity_id')
+            ->andWhere('e.entityId = :entityId')
             ->andWhere("e.type = 'request-show'")
             ->setParameter('user', $user)
-            ->setParameter('entity_id', $show->getId())
+            ->setParameter('entityId', $show->getId())
         ;
         return $query->getQuery()->getOneOrNullResult();
     }
@@ -64,7 +64,7 @@ class AccessControlEntryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->where('e.user = :user')
-            ->andWhere('e.revoked_by IS NULL')
+            ->andWhere('e.revokedBy IS NULL')
             ->andWhere('e.type = :type')
             ->setParameter('type', $type)
             ->setParameter('user', $user)

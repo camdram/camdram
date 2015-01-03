@@ -15,6 +15,7 @@ use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository,
     Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
     Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AclProvider
 {
@@ -41,12 +42,11 @@ class AclProvider
         $this->repository = $entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
     }
 
-    public function isOwner(TokenInterface $token, OwnableInterface $entity)
+    public function isOwner($user, OwnableInterface $entity)
     {
-        if ($token->getUser() instanceof ExternalUser) $user = $token->getUser()->getUser();
-        elseif ($token->getUser() instanceof User) $user = $token->getUser();
+        if ($user instanceof ExternalUser) $user = $user->getUser();
 
-        if (!isset($user) || !$user instanceof User) return false;
+        if (is_null($user) || !$user instanceof User) return false;
 
         return $this->repository->aceExists($user, $entity);
     }

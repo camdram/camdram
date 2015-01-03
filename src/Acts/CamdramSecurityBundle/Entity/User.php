@@ -942,8 +942,8 @@ class User implements \Serializable, CamdramUserInterface
     {
         $criteria = Criteria::create();
         $criteria->where(Criteria::expr()->eq('type', 'security'))
-            ->andWhere(Criteria::expr()->isNull('revoked_by'))
-            ->andWhere(Criteria::expr()->neq('granted_by', null));
+            ->andWhere(Criteria::expr()->isNull('revokedBy'))
+            ->andWhere(Criteria::expr()->neq('grantedBy', null));
         return $this->getAces()->matching($criteria);
     }
 

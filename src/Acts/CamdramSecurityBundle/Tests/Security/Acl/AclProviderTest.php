@@ -46,11 +46,10 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
         $user->setEmail('testuser@camdram.net');
         $show = new Show;
         $show->setName('Test Show');
-        $token = new UsernamePasswordToken($user, '', 'public');
 
         $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(true));
 
-        $this->assertTrue($this->aclProvider->isOwner($token, $show));
+        $this->assertTrue($this->aclProvider->isOwner($user, $show));
     }
 
     public function testIsOwner_UserNotOwner()
@@ -59,11 +58,10 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
         $user->setEmail('testuser@camdram.net');
         $show = new Show;
         $show->setName('Test Show');
-        $token = new UsernamePasswordToken($user, '', 'public');
 
         $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(false));
 
-        $this->assertFalse($this->aclProvider->isOwner($token, $show));
+        $this->assertFalse($this->aclProvider->isOwner($user, $show));
     }
 
     public function testIsOwner_ExternalUserIsOwner()
@@ -74,18 +72,16 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
         $external_user->setUser($user)->setUsername('testuser');
         $show = new Show;
         $show->setName('Test Show');
-        $token = new UsernamePasswordToken($external_user, '', 'public');
 
         $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(false));
 
-        $this->assertFalse($this->aclProvider->isOwner($token, $show));
+        $this->assertFalse($this->aclProvider->isOwner($user, $show));
     }
 
     public function testIsOwner_NotLoggedIn()
     {
-        $token = new AnonymousToken('test', 'anon');
         $show = new Show;
-        $this->assertFalse($this->aclProvider->isOwner($token, $show));
+        $this->assertFalse($this->aclProvider->isOwner(null, $show));
     }
 
     public function testInvalidClassName()

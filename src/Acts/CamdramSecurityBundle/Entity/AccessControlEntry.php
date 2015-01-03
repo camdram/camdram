@@ -31,7 +31,7 @@ class AccessControlEntry
      *
      * @ORM\Column(name="rid", type="integer")
      */
-    private $entity_id;
+    private $entityId;
 
     /**
      * @var integer
@@ -55,7 +55,7 @@ class AccessControlEntry
      *
      * @ORM\Column(name="uid", type="integer", nullable=true)
      */
-    private $user_id;
+    private $userId;
 
     /**
      * @var User
@@ -65,14 +65,14 @@ class AccessControlEntry
      *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
      * })
      */
-    private $granted_by;
+    private $grantedBy;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="creationdate", type="date", nullable=false)
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @var User
@@ -82,14 +82,14 @@ class AccessControlEntry
      *   @ORM\JoinColumn(name="revokeid", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      * })
      */
-    private $revoked_by;
+    private $revokedBy;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="revokedate", type="date", nullable=true)
      */
-    private $revoked_at;
+    private $revokedAt;
 
     /**
      * @var boolean
@@ -117,7 +117,7 @@ class AccessControlEntry
      */
     public function setCreatedAt($createdAt)
     {
-        $this->created_at = $createdAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -129,7 +129,7 @@ class AccessControlEntry
      */
     public function getCreatedAt()
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**
@@ -140,7 +140,7 @@ class AccessControlEntry
      */
     public function setGrantedAt($grantedAt)
     {
-        $this->granted_at = $grantedAt;
+        $this->grantedAt = $grantedAt;
 
         return $this;
     }
@@ -152,7 +152,7 @@ class AccessControlEntry
      */
     public function getGrantedAt()
     {
-        return $this->granted_at;
+        return $this->grantedAt;
     }
 
     /**
@@ -163,7 +163,7 @@ class AccessControlEntry
      */
     public function setRevokedAt($revokedAt)
     {
-        $this->revoked_at = $revokedAt;
+        $this->revokedAt = $revokedAt;
 
         return $this;
     }
@@ -175,7 +175,7 @@ class AccessControlEntry
      */
     public function getRevokedAt()
     {
-        return $this->revoked_at;
+        return $this->revokedAt;
     }
 
     /**
@@ -209,7 +209,7 @@ class AccessControlEntry
      */
     public function setGrantedBy(User $grantedBy = null)
     {
-        $this->granted_by = $grantedBy;
+        $this->grantedBy = $grantedBy;
 
         return $this;
     }
@@ -221,7 +221,7 @@ class AccessControlEntry
      */
     public function getGrantedBy()
     {
-        return $this->granted_by;
+        return $this->grantedBy;
     }
 
     /**
@@ -232,7 +232,7 @@ class AccessControlEntry
      */
     public function setRevokedBy(User $revoker = null)
     {
-        $this->revoked_by = $revoker;
+        $this->revokedBy = $revoker;
 
         return $this;
     }
@@ -244,7 +244,7 @@ class AccessControlEntry
      */
     public function getRevokedBy()
     {
-        return $this->revoked_by;
+        return $this->revokedBy;
     }
 
     /**
@@ -255,7 +255,7 @@ class AccessControlEntry
      */
     public function setUserId($userId)
     {
-        $this->user_id = $userId;
+        $this->userId = $userId;
 
         return $this;
     }
@@ -267,7 +267,7 @@ class AccessControlEntry
      */
     public function getUserId()
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
     /**
@@ -301,7 +301,7 @@ class AccessControlEntry
      */
     public function setEntityId($entityId)
     {
-        $this->entity_id = $entityId;
+        $this->entityId = $entityId;
 
         return $this;
     }
@@ -313,7 +313,7 @@ class AccessControlEntry
      */
     public function getEntityId()
     {
-        return $this->entity_id;
+        return $this->entityId;
     }
 
     /**

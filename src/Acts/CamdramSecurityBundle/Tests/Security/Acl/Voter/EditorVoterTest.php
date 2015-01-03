@@ -2,6 +2,8 @@
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Venue;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -19,9 +21,23 @@ class EditorVoterTest extends \PHPUnit_Framework_TestCase
         $this->voter = new EditorVoter();
     }
 
+    private function getEditorUser()
+    {
+        $user = new User();
+
+        $ace = new AccessControlEntry();
+        $ace->setType('security');
+        $ace->setEntityId(AccessControlEntry::LEVEL_CONTENT_ADMIN);
+        $ace->setGrantedBy(new User());
+        $user->addAce($ace);
+
+        return $user;
+    }
+
     public function testEditorCreate()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', array('ROLE_EDITOR'));
+        $user = $this->getEditorUser();
+        $token = new UsernamePasswordToken($user, 'password', 'public', $user->getRoles());
 
         $this->assertEquals(EditorVoter::ACCESS_GRANTED, $this->voter->vote(
                 $token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'), array('CREATE')
@@ -30,7 +46,8 @@ class EditorVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testEditorEdit()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', array('ROLE_EDITOR'));
+        $user = $this->getEditorUser();
+        $token = new UsernamePasswordToken($user, 'password', 'public', $user->getRoles());
 
         $this->assertEquals(EditorVoter::ACCESS_GRANTED, $this->voter->vote(
                 $token, new Venue(), array('EDIT')
@@ -39,9 +56,9 @@ class EditorVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testNotEditor()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', array());
+        $token = new UsernamePasswordToken(new User(), 'password', 'public', array());
 
-        $this->assertEquals(EditorVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(EditorVoter::ACCESS_DENIED, $this->voter->vote(
                 $token, new Venue(), array('EDIT')
             ));
     }

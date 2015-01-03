@@ -3,41 +3,32 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class ViewVoter implements VoterInterface
+class ViewVoter extends AbstractVoter
 {
-
-    public function supportsAttribute($attribute)
+    protected function getSupportedClasses()
     {
-        return $attribute == 'VIEW';
+        return array(
+            'Acts\\CamdramBundle\\Entity\\Show',
+            'Acts\\CamdramBundle\\Entity\\Venue',
+            'Acts\\CamdramBundle\\Entity\\Society',
+            'Acts\\CamdramBundle\\Entity\\Person'
+        );
     }
 
-    public function vote(TokenInterface $token, $object, array $attributes)
+    protected function getSupportedAttributes()
     {
-        if ($attributes == array('VIEW')) {
-            if ($object instanceof Show) {
-                if ($object->getAuthorisedBy() !== null) {
-                    return self::ACCESS_GRANTED;
-                }
-            } else {
-                return self::ACCESS_GRANTED;
-            }
+        return array('VIEW');
+    }
+
+    protected function isGranted($attribute, $object, $user = null)
+    {
+        if ($object instanceof Show) {
+            return $object->getAuthorisedBy() !== null;
         }
-
-        return self::ACCESS_ABSTAIN;
+        return true;
     }
 
-    /**
-     * You can override this method when writing a voter for a specific domain
-     * class.
-     *
-     * @param string $class The class name
-     *
-     * @return Boolean
-     */
-    public function supportsClass($class)
-    {
-        return strpos($class, 'Acts\\CamdramBundle\\Entity\\Show') !== false;
-    }
 }
