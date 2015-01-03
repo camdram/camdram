@@ -21,19 +21,22 @@
 </script>
 
 
-A new show has been added to camdram.net by {{ creator.name }} ({{ creator.email }}) and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
-* Dates
-* Venue
-* Start Time
+A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {{ creator.name }} ({{ creator.email }}) and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+<ul>
+	<li>Dates</li>
+	<li>Venue</li>
+	<li>Start Time</li>
+</ul>
 
 before authorizing.
 
-A summary of the show is given below. You can edit, authorize or delete the show as
-appropriate by visiting:  {{ url('get_show', {identifier: show.slug}) }}
+
+<p>A summary of the show is given below. You can edit, authorize or delete the show as
+appropriate by visiting:  <a href = '{{ url('get_show', {identifier: show.slug}) }}'>{{ url('get_show', {identifier: show.slug}) }}</a> </p>
 
 {% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
 
-***** Show details follow... *****
+<h3>Show details follow</h3	>
 
 {% if show.society %}{{ show.society.name }}{% else %}{{ show.societyName }}{% endif %} presents
 {{ show.name }}
