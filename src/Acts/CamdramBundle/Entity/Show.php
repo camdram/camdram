@@ -12,6 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramApiBundle\Annotation as Api;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Show
@@ -20,7 +21,46 @@ use Acts\CamdramApiBundle\Annotation as Api;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener","Acts\CamdramLegacyBundle\EventListener\ShowRefCreator" })
  * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("show")
  * @Gedmo\Loggable
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route("get_show", parameters={"identifier" = "expr(object.getSlug())"}),
+ * )
+ * @Hateoas\Relation(
+ *      "venue",
+ *      href = @Hateoas\Route(
+ *          "get_venue",
+ *          parameters={"identifier" = "expr(object.getVenue().getSlug())"},
+ *          absolute= true
+ *      ),
+ *      embedded="expr(object.getVenue())"
+ * )
+ * @Hateoas\Relation(
+ *      "society",
+ *      href = @Hateoas\Route(
+ *          "get_society",
+ *          parameters={"identifier" = "expr(object.getSociety().getSlug())"},
+ *          absolute= true
+ *      ),
+ *      embedded="expr(object.getSociety())"
+ * )
+ * @Hateoas\Relation(
+ *      "roles",
+ *      href = @Hateoas\Route(
+ *          "get_show_roles",
+ *          parameters={"identifier" = "expr(object.getSlug())"},
+ *          absolute= true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "performances",
+ *      embedded="expr(object.getPerformances())"
+ * )
+ * @Hateoas\Relation(
+ *      "image",
+ *      embedded="expr(object.getImage())"
+ * )
  * @Api\Feed(name="Camdram - Shows", titleField="name",
  *   description="Shows produced by students in Cambridge",
  *   template="ActsCamdramBundle:Show:rss.html.twig")
@@ -28,6 +68,8 @@ use Acts\CamdramApiBundle\Annotation as Api;
 class Show implements SearchableInterface, OwnableInterface
 {
     /**
+     * The show's ID
+     *
      * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
@@ -35,25 +77,33 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Serializer\XmlAttribute
      * @Serializer\Expose()
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /**
+     * The show's name
+     *
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
      * @Serializer\Expose()
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $name;
 
     /**
+     * A description of the show
+     *
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Gedmo\Versioned
      * @Serializer\Expose()
+     * @Serializer\Type("string")
      */
     private $description;
 
@@ -62,7 +112,6 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
      * @Gedmo\Versioned
-     * @Serializer\Expose()
      */
     private $image;
 
@@ -83,6 +132,8 @@ class Show implements SearchableInterface, OwnableInterface
     private $twitter_id;
 
     /**
+     * The 'slug' of the show (used to generate the URL)
+     *
      * @Gedmo\Slug(handlers={
      *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\DateSlugHandler", options={
      *          @Gedmo\SlugHandlerOption(name="dateField", value="start_at"),
@@ -90,6 +141,8 @@ class Show implements SearchableInterface, OwnableInterface
      * }, fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $slug;
 
@@ -101,20 +154,28 @@ class Show implements SearchableInterface, OwnableInterface
     private $dates = '';
 
     /**
+     * The show's author (free text string, which may be blank or contain one or more author names)
+     *
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=true)
      * @Gedmo\Versioned
      * @Serializer\Expose()
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $author;
 
     /**
+     * A string representing the ticket price options
+     *
      * @var string
      *
      * @ORM\Column(name="prices", type="string", length=255, nullable=true)
      * @Gedmo\Versioned
      * @Serializer\Expose()
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $prices = '';
 
@@ -126,11 +187,15 @@ class Show implements SearchableInterface, OwnableInterface
     private $photo_url = '';
 
     /**
+     * The show's main venue, if it is not linked to a venue resource
+     *
      * @var string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      * @Gedmo\Versioned
      * @Serializer\Expose()
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $venue_name = '';
 
@@ -142,11 +207,15 @@ class Show implements SearchableInterface, OwnableInterface
     private $exclude_date;
 
     /**
+     * The show's society, if it is not linked to a venue resource
+     *
      * @var string
      *
      * @ORM\Column(name="society", type="string", length=255, nullable=true)
      * @Gedmo\Versioned
      * @Serializer\Expose()
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $society_name = '';
 
@@ -214,10 +283,14 @@ class Show implements SearchableInterface, OwnableInterface
     private $entry_expiry;
 
     /**
+     * The show's genre (takes one of several predefined values)
+     *
      * @var string
      *
      * @ORM\Column(name="category", type="string", length=255, nullable=false)
      * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $category;
 
@@ -276,7 +349,6 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_date" = "ASC"})
-     * @Serializer\Expose
      */
     private $performances;
 
@@ -318,12 +390,17 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="otherurl", type="string", length=2083, nullable=true)
      */
     private $other_url;
+
     /**
+     * A URL from which tickets for the show can be bought
+     *
      * @var string
      * @Assert\Url()
      * @Gedmo\Versioned
      * @Serializer\Expose
      * @ORM\Column(name="onlinebookingurl", type="string", length=2083, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $online_booking_url;
 

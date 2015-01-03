@@ -13,6 +13,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PerformanceRepository")
  * @Serializer\ExclusionPolicy("all")
  * @Gedmo\Loggable
+ * @Serializer\XmlRoot("performance")
+ *
  */
 class Performance
 {
@@ -42,6 +44,7 @@ class Performance
      * @ORM\Column(name="startdate", type="date", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $start_date;
 
@@ -51,6 +54,7 @@ class Performance
      * @ORM\Column(name="enddate", type="date", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $end_date;
 
@@ -69,6 +73,7 @@ class Performance
      * @ORM\Column(name="time", type="time", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $time;
 
@@ -87,6 +92,7 @@ class Performance
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $venue_name;
 

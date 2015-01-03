@@ -27,6 +27,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Gedmo\Sluggable\Util as Sluggable;
 
@@ -68,6 +69,28 @@ class ShowController extends AbstractRestController
         return $this->createForm(new ShowType($this->get('security.context')), $show);
     }
 
+    /**
+     * Retrieve details about a specific show. 'Identifier' should normally be the show's slug
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Fetch details of a show",
+     *  output= "Acts\CamdramBundle\Entity\Show"
+     * )
+     */
+    public function getAction($identifier)
+    {
+        return parent::getAction($identifier);
+    }
+
+    /**
+     * Search for a show
+     *
+     * @ApiDoc(
+     *  description="Search for a show",
+     *  output= "array<Acts\CamdramBundle\Entity\Show>"
+     * )
+     */
     public function cgetAction(Request $request)
     {
         if ($request->getRequestFormat() == 'rss') {
@@ -80,6 +103,31 @@ class ShowController extends AbstractRestController
         else {
             return parent::cgetAction($request);
         }
+    }
+
+    /**
+     * Create a new show
+     *
+     * @ApiDoc(
+     *  description="Create a new show",
+     *  input= "Acts\CamdramBundle\Form\Type\ShowType"
+     * )
+     */
+    public function postAction(Request $request)
+    {
+        return parent::postAction($request);
+    }
+
+    /**
+     * Delete a show
+     *
+     * @ApiDoc(
+     *  description="Delete a show",
+     * )
+     */
+    public function deleteAction($identifier)
+    {
+        parent::removeAction($identifier);
     }
 
     private function getTechieAdvertForm(Show $show, $obj = null)

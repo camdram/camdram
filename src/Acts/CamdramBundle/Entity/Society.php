@@ -4,12 +4,30 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Society
  *
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SocietyRepository")
  * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("society")
+ * @Hateoas\Relation(
+ *      "events",
+ *      href = @Hateoas\Route(
+ *          "get_venue_events",
+ *          parameters={"identifier" = "expr(object.getSlug())"},
+ *          absolute=true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "shows",
+ *      href = @Hateoas\Route(
+ *          "get_venue_shows",
+ *          parameters={"identifier" = "expr(object.getSlug())"},
+ *          absolute=true
+ *      )
+ * )
  */
 class Society extends Organisation
 {
@@ -20,7 +38,6 @@ class Society extends Organisation
     private $shows;
 
     /**
-     * @Serializer\Expose
      */
     protected $entity_type = 'society';
 

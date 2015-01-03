@@ -40,6 +40,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @Assert\NotBlank()
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $name;
 
@@ -66,6 +67,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $facebook_id;
 
@@ -75,6 +77,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $twitter_id;
 
@@ -85,6 +88,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @Assert\NotBlank(groups={"new"})
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $short_name;
 
@@ -94,6 +98,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="college", type="string", length=100, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $college;
 
@@ -116,6 +121,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $slug;
 

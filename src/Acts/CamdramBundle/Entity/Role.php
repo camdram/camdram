@@ -3,9 +3,10 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\VirtualProperty;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Role
@@ -15,6 +16,25 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\RoleSearchIndexListener"})
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable
+ * @Serializer\XmlRoot("role")
+ * @Serializer\ExclusionPolicy("all")
+ * @Hateoas\Relation(
+ *      "person",
+ *      href = @Hateoas\Route(
+ *          "get_person",
+ *          parameters={"identifier" = "expr(object.getPerson().getSlug())"},
+ *          absolute=true
+ *      ),
+ *      embedded="expr(object.getPerson())"
+ * )
+ * @Hateoas\Relation(
+ *      "show",
+ *      href = @Hateoas\Route(
+ *          "get_show",
+ *          parameters={"identifier" = "expr(object.getShow().getSlug())"},
+ *          absolute=true
+ *      )
+ * )
  */
 class Role
 {
@@ -39,6 +59,8 @@ class Role
      *
      * @ORM\Column(name="type", type="string", length=20, nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $type;
 
@@ -47,6 +69,8 @@ class Role
      *
      * @ORM\Column(name="role", type="string", length=255, nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $role;
 
@@ -55,13 +79,14 @@ class Role
      *
      * @ORM\Column(name="`order`", type="integer", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlAttribute()
      */
     private $order;
 
     /**
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
-     * @Exclude
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -72,7 +97,6 @@ class Role
     /**
      *
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="roles")
-     * @Exclude
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -229,14 +253,4 @@ class Role
         return $this->person;
     }
 
-    /**
-     * Get name of person
-     *
-     * @VirtualProperty
-     * @return string
-     */
-    public function getPersonName()
-    {
-      return $this->person->getName();
-    }
 }
