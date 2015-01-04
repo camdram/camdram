@@ -9,9 +9,9 @@
   "action": {
     "@type": "ViewAction",
     "url": "{{ url('get_show', {identifier: show.slug}) }}",
-    "name": "Authorize on camdram.net"
+    "name": "Authorise on camdram.net"
   },
-  "description": "Authorize show on camdram.net"
+  "description": "Authorise show on camdram.net"
   "publisher": {
     "@type": "Organization",
     "name": "Camdram",
@@ -22,7 +22,7 @@
 </script>
 
 <!-- Email text -->
-<p>A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {{ creator.name }} ({{ creator.email }}) and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+<p>A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {{ creator.name }} ({{ creator.email }}) and must be manually authorised before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
 <ul>
 	<li>Dates</li>
 	<li>Venue</li>
@@ -31,7 +31,7 @@
 
 before authorizing.</p>
 
-<p>A summary of the show is given below. You can edit, authorize or delete the show as appropriate by visiting:  <a href = '{{ url('get_show', {identifier: show.slug}) }}'>{{ url('get_show', {identifier: show.slug}) }}</a></p>
+<p>A summary of the show is given below. You can edit, authorise or delete the show as appropriate by visiting:  <a href = '{{ url('get_show', {identifier: show.slug}) }}'>{{ url('get_show', {identifier: show.slug}) }}</a></p>
 
 {% include 'ActsCamdramBundle:Email:signature.html.twig' %}
 
