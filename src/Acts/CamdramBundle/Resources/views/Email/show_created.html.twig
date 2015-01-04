@@ -1,6 +1,7 @@
 <html>
 <body>
 
+<!-- Gmail one click action code -->
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -14,43 +15,43 @@
   "publisher": {
     "@type": "Organization",
     "name": "Camdram",
-    "url": "http://www.camdram.net/",
+	"url": "http://www.camdram.net/",
   }
 
 }
 </script>
 
-
-A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {{ creator.name }} ({{ creator.email }}) and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+<!-- Email text -->
+<p>A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {{ creator.name }} ({{ creator.email }}) and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
 <ul>
 	<li>Dates</li>
 	<li>Venue</li>
 	<li>Start Time</li>
 </ul>
 
-before authorizing.
+before authorizing.</p>
 
+<p>A summary of the show is given below. You can edit, authorize or delete the show as appropriate by visiting:  <a href = '{{ url('get_show', {identifier: show.slug}) }}'>{{ url('get_show', {identifier: show.slug}) }}</a></p>
 
-<p>A summary of the show is given below. You can edit, authorize or delete the show as
-appropriate by visiting:  <a href = '{{ url('get_show', {identifier: show.slug}) }}'>{{ url('get_show', {identifier: show.slug}) }}</a> </p>
-
-{% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
+{% include 'ActsCamdramBundle:Email:signature.html.twig' %}
 
 <h3>Show details follow</h3	>
 
-{% if show.society %}{{ show.society.name }}{% else %}{{ show.societyName }}{% endif %} presents
-{{ show.name }}
-{% if show.author %}
-by {{ show.author }}
-{% endif %}
+<p>
+{% if show.society %}{{ show.society.name }}{% else %}{{ show.societyName }}{% endif %} presents<br>
+<b>{{ show.name }}</b><br>
+{% if show.author %} by {{ show.author }}<br> {% endif %}
 {% for p in show.performances %}{% spaceless %}
     {{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}{% if date(p.startdate) != date(p.enddate) %} - {{ p.enddate|date('D jS F Y') }},{% endif %}
     {%- if p.venue %} @ {{ p.venue.name|e }}
     {%- elseif p.venuename is not empty %} @ {{ p.venuename }}
     {%- else %} @ Venue to be confirmed{% endif %}
+    <br>
 {% endspaceless %}{% endfor %}
+</p>
 
-{{ show.description }}
-
+<p>
+	{{ show.description }}
+</p>
 </body>
 </html>
