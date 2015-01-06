@@ -1,9 +1,9 @@
 <?php
 namespace Acts\CamdramBackendBundle\Test;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-abstract class RepositoryTestCase extends WebTestCase
+abstract class RepositoryTestCase extends KernelTestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager

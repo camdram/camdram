@@ -4,7 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use Hateoas\Configuration\Annotation as Hateoas;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Society
@@ -12,34 +12,15 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SocietyRepository")
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("society")
- * @Hateoas\Relation(
- *      "events",
- *      href = @Hateoas\Route(
- *          "get_venue_events",
- *          parameters={"identifier" = "expr(object.getSlug())"},
- *          absolute=true
- *      )
- * )
- * @Hateoas\Relation(
- *      "shows",
- *      href = @Hateoas\Route(
- *          "get_venue_shows",
- *          parameters={"identifier" = "expr(object.getSlug())"},
- *          absolute=true
- *      )
- * )
  */
 class Society extends Organisation
 {
 
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="society")
+     * @Api\Link(route="get_society_shows", params={"identifier": "object.getSlug()"})
      */
     private $shows;
-
-    /**
-     */
-    protected $entity_type = 'society';
 
     /**
      * Constructor
@@ -80,11 +61,6 @@ class Society extends Organisation
     public function getShows()
     {
         return $this->shows;
-    }
-
-    public function getEntityType()
-    {
-        return $this->entity_type;
     }
 
     public function getIndexDate()

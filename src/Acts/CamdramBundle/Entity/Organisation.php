@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Organisation
@@ -138,7 +139,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     private $news;
 
     /**
-     * @var \Society
+     * @var Application[]
      *
      * @ORM\OneToMany(targetEntity="Application", mappedBy="society")
      */

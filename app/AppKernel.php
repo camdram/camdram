@@ -37,8 +37,6 @@ class AppKernel extends Kernel
             new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
             new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
-            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-            new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
 
             // Bundles needed for the Content Management Framework (used by the Infobase).
             new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),

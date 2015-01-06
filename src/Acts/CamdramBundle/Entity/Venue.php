@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Hateoas\Configuration\Annotation as Hateoas;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,22 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="VenueRepository")
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("venue")
- * @Hateoas\Relation(
- *      "events",
- *      href = @Hateoas\Route(
- *          "get_venue_events",
- *          parameters={"identifier" = "expr(object.getSlug())"},
- *          absolute= true
- *      )
- * )
- * @Hateoas\Relation(
- *      "shows",
- *      href = @Hateoas\Route(
- *          "get_venue_shows",
- *          parameters={"identifier" = "expr(object.getSlug())"},
- *          absolute= true
- *      )
- * )
  */
 class Venue extends Organisation
 {
@@ -63,6 +47,7 @@ class Venue extends Organisation
 
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="venue")
+     * @Api\Link(route="get_venue_shows", params={"identifier": "object.getSlug()"})
      */
     private $shows;
 
@@ -70,12 +55,6 @@ class Venue extends Organisation
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="venue")
      */
     private $performances;
-
-    /**
-     * @Serializer\Expose
-     * @Serializer\XmlElement(cdata=false)
-     */
-    protected $entity_type = 'venue';
 
     /**
      * Set latitude
@@ -205,11 +184,6 @@ class Venue extends Organisation
     public function getLocation()
     {
         return new MapLocation($this->latitude, $this->longitude);
-    }
-
-    public function getEntityType()
-    {
-        return $this->entity_type;
     }
 
     public function getIndexDate()

@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiry;
-use Acts\CamdramApiBundle\Annotation as Api;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**

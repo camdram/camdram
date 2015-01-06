@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Criteria;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramApiBundle\Annotation as Api;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
@@ -23,44 +23,6 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("show")
  * @Gedmo\Loggable
- * @Hateoas\Relation(
- *      "self",
- *      href = @Hateoas\Route("get_show", parameters={"identifier" = "expr(object.getSlug())"}),
- * )
- * @Hateoas\Relation(
- *      "venue",
- *      href = @Hateoas\Route(
- *          "get_venue",
- *          parameters={"identifier" = "expr(object.getVenue().getSlug())"},
- *          absolute= true
- *      ),
- *      embedded="expr(object.getVenue())"
- * )
- * @Hateoas\Relation(
- *      "society",
- *      href = @Hateoas\Route(
- *          "get_society",
- *          parameters={"identifier" = "expr(object.getSociety().getSlug())"},
- *          absolute= true
- *      ),
- *      embedded="expr(object.getSociety())"
- * )
- * @Hateoas\Relation(
- *      "roles",
- *      href = @Hateoas\Route(
- *          "get_show_roles",
- *          parameters={"identifier" = "expr(object.getSlug())"},
- *          absolute= true
- *      )
- * )
- * @Hateoas\Relation(
- *      "performances",
- *      embedded="expr(object.getPerformances())"
- * )
- * @Hateoas\Relation(
- *      "image",
- *      embedded="expr(object.getImage())"
- * )
  * @Api\Feed(name="Camdram - Shows", titleField="name",
  *   description="Shows produced by students in Cambridge",
  *   template="ActsCamdramBundle:Show:rss.html.twig")
@@ -247,6 +209,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
      * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_society", params={"identifier": "object.getSociety().getSlug()"})
      */
     private $society;
 
@@ -256,6 +219,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
      * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
      */
     private $venue;
 
@@ -320,6 +284,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var array
      *
      * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
+     * @Api\Link(route="get_techie", name="techie_advert", params={"identifier": "object.getSlug()"})
      */
     private $techie_adverts;
 
@@ -341,6 +306,7 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
+     * @Api\Link(route="get_show_roles", params={"identifier": "object.getSlug()"})
      */
     private $roles;
 
@@ -372,11 +338,6 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="freebase_id", type="string", nullable=true)
      */
     private $freebase_id;
-
-    /**
-     * @Serializer\Expose
-     */
-    protected $entity_type = 'show';
 
     private $multi_venue;
 
@@ -935,11 +896,6 @@ class Show implements SearchableInterface, OwnableInterface
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
         $this->entry_expiry = new \DateTime;
         $this->timestamp = new \DateTime;
-    }
-
-    public function getEntityType()
-    {
-        return $this->entity_type;
     }
 
     /**

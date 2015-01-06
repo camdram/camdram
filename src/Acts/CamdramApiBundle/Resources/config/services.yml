@@ -8,9 +8,9 @@ services:
         tags:
             - { name: form.type, alias: app_type }
 
-    acts.camdram_api.feed_annotation_reader:
-        class: Acts\CamdramApiBundle\AnnotationReader\FeedAnnotationReader
-        arguments: [@annotation_reader]
+    acts.camdram_api.annotation_reader:
+        class: Acts\CamdramApiBundle\Configuration\AnnotationReader
+        arguments: [@annotation_reader, @doctrine.orm.entity_manager]
 
     acts.camdram_api.view_handler:
         parent: fos_rest.view_handler.default
@@ -25,10 +25,22 @@ services:
     acts.camdram_api.feed_view_handler:
         class: Acts\CamdramApiBundle\View\FeedViewHandler
         arguments:
-            - @acts.camdram_api.feed_annotation_reader
+            - @acts.camdram_api.annotation_reader
             - @twig
             - @acts.camdram_api.entity_url_generator
             - %mailer_sender_address%
 
     acts.camdram_api.ical_view_handler:
         class: Acts\CamdramApiBundle\View\ICalViewHandler
+
+    acts.camdram_api.json_subscriber:
+        class: Acts\CamdramApiBundle\Serializer\JsonEventSubscriber
+        arguments: [@acts.camdram_api.annotation_reader, @router]
+        tags:
+            - {name: jms_serializer.event_subscriber}
+
+    acts.camdram_api.xml_subscriber:
+        class: Acts\CamdramApiBundle\Serializer\XmlEventSubscriber
+        arguments: [@acts.camdram_api.annotation_reader, @router]
+        tags:
+            - {name: jms_serializer.event_subscriber}

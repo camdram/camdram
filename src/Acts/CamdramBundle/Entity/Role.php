@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\VirtualProperty;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
-use Hateoas\Configuration\Annotation as Hateoas;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Role
@@ -18,23 +18,6 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @Gedmo\Loggable
  * @Serializer\XmlRoot("role")
  * @Serializer\ExclusionPolicy("all")
- * @Hateoas\Relation(
- *      "person",
- *      href = @Hateoas\Route(
- *          "get_person",
- *          parameters={"identifier" = "expr(object.getPerson().getSlug())"},
- *          absolute=true
- *      ),
- *      embedded="expr(object.getPerson())"
- * )
- * @Hateoas\Relation(
- *      "show",
- *      href = @Hateoas\Route(
- *          "get_show",
- *          parameters={"identifier" = "expr(object.getShow().getSlug())"},
- *          absolute=true
- *      )
- * )
  */
 class Role
 {
@@ -91,6 +74,7 @@ class Role
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(route="get_show")
      */
     private $show;
 
@@ -101,6 +85,7 @@ class Role
      *   @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(route="get_person", embed=true)
      */
     private $person;
 

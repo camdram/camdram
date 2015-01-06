@@ -1,5 +1,5 @@
 <?php
-namespace Acts\CamdramApiBundle\Annotation;
+namespace Acts\CamdramApiBundle\Configuration\Annotation;
 
 
 /**

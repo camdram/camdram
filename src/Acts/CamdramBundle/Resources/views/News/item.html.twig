@@ -11,8 +11,8 @@
             <strong>
                 <a href="{{ item.getLink() }}" target="_blank"><img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ item.source ~ '.png') }}" class="news-source"/></a>
 
-                {% if item.entity.entityType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
-                    {% elseif item.entity.entityType == 'society' %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
+                {% if item.entity.address is defined %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
+                    {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
                     {{ item.entity.name }}</a> posted:</strong>
             {{ item.body | detect_links }}
         </p>
