@@ -40,6 +40,7 @@
         "zendframework/zend-feed": "~2.3",
         "zendframework/zend-mail": "~2.3",
         "zendframework/zend-servicemanager": "~2.3",
+        "excelwebzone/recaptcha-bundle" : "2.3.*",
 
         "jackalope/jackalope-doctrine-dbal": "1.0.*",
         "doctrine/phpcr-bundle": "1.0.*",
