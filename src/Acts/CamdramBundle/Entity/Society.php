@@ -67,4 +67,10 @@ class Society extends Organisation
     {
         return null;
     }
+
+    public function getOrganisationType()
+    {
+        return 'society';
+    }
+
 }

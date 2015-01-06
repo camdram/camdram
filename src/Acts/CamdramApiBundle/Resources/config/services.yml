@@ -44,3 +44,7 @@ services:
         arguments: [@acts.camdram_api.annotation_reader, @router]
         tags:
             - {name: jms_serializer.event_subscriber}
+
+    acts.camdram_api.oauth2_storage.default:
+        class: Acts\CamdramApiBundle\Service\OAuthStorage
+        parent: fos_oauth_server.storage.default

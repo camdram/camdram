@@ -84,7 +84,7 @@ class XmlEventSubscriber  implements EventSubscriberInterface
                 $visitor->setCurrentNode($entryNode);
                 $visitor->getCurrentNode()->setAttribute('rel', $link->getShortEntity());
 
-                foreach (array('id', 'name', 'slug', 'blah') as $property) {
+                foreach (array('id', 'name', 'slug') as $property) {
                     if ($accessor->isReadable($child, $property)) {
                         $childNode = $visitor->getDocument()->createElement($property);
                         $valueNode = $visitor->getDocument()->createTextNode($accessor->getValue($child, $property));

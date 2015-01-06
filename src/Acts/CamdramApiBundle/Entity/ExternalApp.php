@@ -56,13 +56,13 @@ class ExternalApp extends BaseClient
      * @var boolean
      * @ORM\Column(type="boolean")
      */
-    protected $is_admin;
+    protected $is_admin = false;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=1024)
      */
-    protected $website;
+    protected $website = '';
 
     /**
      * @var \DateTime
@@ -331,37 +331,4 @@ class ExternalApp extends BaseClient
         return $this->updated_at;
     }
 
-
-    /**
-     * Add users
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $users
-     * @return ExternalApp
-     */
-    public function addUser(User $users)
-    {
-        $this->users[] = $users;
-
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $users
-     */
-    public function removeUser(User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
 }

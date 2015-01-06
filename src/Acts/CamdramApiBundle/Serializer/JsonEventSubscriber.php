@@ -67,6 +67,8 @@ class JsonEventSubscriber  implements EventSubscriberInterface
 
         foreach ($links as $link) {
             $child = $accessor->getValue($event->getObject(), $link->getProperty());
+            if ($child === null) continue;
+
             $compiledParams = array();
             foreach ($link->getParams() as $key => $expr) {
                 $compiledParams[$key] = $language->evaluate($expr, array('object' => $object));
@@ -76,7 +78,7 @@ class JsonEventSubscriber  implements EventSubscriberInterface
             if ($link->getEmbed()) {
 
                 $childData = array();
-                foreach (array('id', 'name', 'slug', 'blah') as $property) {
+                foreach (array('id', 'name', 'slug') as $property) {
                     if ($accessor->isReadable($child, $property)) {
                         $childData[$property] = $accessor->getValue($child, $property);
                     }

@@ -223,4 +223,9 @@ class Venue extends Organisation
     {
         return $this->performances;
     }
+
+    public function getOrganisationType()
+    {
+        return 'venue';
+    }
 }

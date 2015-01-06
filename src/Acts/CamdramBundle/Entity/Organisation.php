@@ -553,4 +553,6 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     {
         return 'society';
     }
+
+    abstract public function getOrganisationType();
 }

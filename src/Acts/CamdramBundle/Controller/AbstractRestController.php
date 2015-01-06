@@ -64,7 +64,7 @@ abstract class AbstractRestController extends FOSRestController
      */
     protected function getRouteParams($entity)
     {
-        return array('identifier' => $entity->getSlug());
+        return array('identifier' => $entity->getSlug(), '_format' => $this->getRequest()->getRequestFormat());
     }
 
     /**
@@ -131,6 +131,7 @@ abstract class AbstractRestController extends FOSRestController
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
+          //  var_dump($this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()))->getHeaders());die();
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         } else {
             return $this->view($form, 400)

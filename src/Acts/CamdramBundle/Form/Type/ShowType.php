@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Acts\CamdramBundle\Form\DataTransformer\PerformanceExcludeTransformer;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -95,6 +94,6 @@ class ShowType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_showtype';
+        return 'show';
     }
 }

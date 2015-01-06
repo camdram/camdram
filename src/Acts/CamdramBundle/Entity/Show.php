@@ -252,6 +252,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="category", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      * @Serializer\Expose
      * @Serializer\Type("string")
      * @Serializer\XmlElement(cdata=false)
