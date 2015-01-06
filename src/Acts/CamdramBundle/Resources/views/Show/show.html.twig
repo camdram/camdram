@@ -85,7 +85,8 @@
             <p>We are looking for:
             {% for advert in show.activeTechieAdverts %}
                 {% for p in advert.positions|split("\n") %}
-                    {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}{{ p }}
+                    {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}
+                    {{- p }}
                 {%- endfor %}
                 - <a href="{{ path('get_techie', {identifier: advert.slug}) }}">more details</a></p>
             {% endfor %}
