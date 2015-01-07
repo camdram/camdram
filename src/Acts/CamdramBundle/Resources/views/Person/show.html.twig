@@ -3,9 +3,9 @@
 {% block title %}Person: {{ person.name }}{% endblock %}
 
 {% block option_links %}
-{% if not app.user or app.user.person != person %}
+{### % if not app.user or app.user.person != person %}
 {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'This is me', path: path('link_person', {identifier: person.slug}), icon: 'chain'}} %}
-{% endif %}
+{% endif % #}
 {% if is_granted('EDIT', person) %}
 {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'Edit "'~person.name~'"', path: path('edit_person', {identifier: person.slug}), icon: 'pencil'}} %}
 {% endif %}
