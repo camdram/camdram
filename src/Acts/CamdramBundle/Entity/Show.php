@@ -980,24 +980,37 @@ class Show implements SearchableInterface, OwnableInterface
                 foreach ($this->getPerformances() as $performance) {
                     if ($performance->getVenue()) {
                         $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) $venue_counts[$key] = 1;
-                        else $venue_counts[$key]++;
+                        if (!isset($venue_counts[$key]))
+                        { 
+                            $venue_counts[$key] = 1;
+                        }
+                        else 
+                        {
+                            $venue_counts[$key]++;
+                        }
                         $venues[$key] = $performance->getVenue();
                     }
                     if ($performance->getVenueName()) {
                         $key = $performance->getVenueName();
-                        if (!isset($name_counts[$key])) $name_counts[$key] = 1;
-                        else $name_counts[$key]++;
-                    }
-                    //Favour a venue object over a venue name
-                    if (count($venue_counts) > 0) {
-                        $venue_id = array_search(max($venue_counts), $venue_counts);
-                        $this->setVenue($venues[$venue_id]);
-                    } else {
-                        $venue_name = array_search(max($name_counts), $name_counts);
-                        $this->setVenueName($venue_name);
+                        if (!isset($name_counts[$key]))
+                        {
+                            $name_counts[$key] = 1;
+                        }
+                        else 
+                        {
+                            $name_counts[$key]++;
+                        }
                     }
                 }
+                //Favour a venue object over a venue name
+                if (count($venue_counts) > 0) {
+                    $venue_id = array_search(max($venue_counts), $venue_counts);
+                    $this->setVenue($venues[$venue_id]);
+                } else {
+                    $venue_name = array_search(max($name_counts), $name_counts);
+                    $this->setVenueName($venue_name);
+                }
+                
                 break;
         }
     }
