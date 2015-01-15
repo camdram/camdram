@@ -16,7 +16,7 @@
                     {{ item.entity.name }}</a> posted:</strong>
             {{ item.body | detect_links }}
         </p>
-        <p><em>{{ item.getPostedAt() | date('jS F Y g:ia') }}</em></p>
+        <p><a href="{{ item.getLink() }}" target="_blank"><em>{{ item.getPostedAt() | date('jS F Y g:ia') }}</em></a></p>
         {% for link in item.links %}
             <div class="news-link">
                 <div class="row">
