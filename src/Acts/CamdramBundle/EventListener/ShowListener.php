@@ -23,17 +23,6 @@ class ShowListener
         $this->updateVenues($show);
         //ensure the start_at and end_at fields are equal to the start and end of the first and last performances
         $this->updateTimes($show);
-
-        $uow  = $om->getUnitOfWork();
-        $meta = $om->getClassMetadata(get_class($show));
-        $uow->recomputeSingleEntityChangeSet($meta, $show);
-
-        //ensure all the associated performances are also saved
-        $performanceMeta = $om->getClassMetadata('ActsCamdramBundle:Performance');
-        foreach ($show->getPerformances() as $performance) {
-            $performance->setShow($show);
-            $uow->recomputeSingleEntityChangeSet($performanceMeta, $performance);
-        }
     }
 
     public function prePersist(Show $show, LifecycleEventArgs $event)
@@ -49,6 +38,18 @@ class ShowListener
     public function preUpdate(Show $show, PreUpdateEventArgs $event)
     {
         $this->updateFields($show, $event->getObjectManager());
+
+        $em = $event->getObjectManager();
+        $uow  = $em->getUnitOfWork();
+        $meta = $em->getClassMetadata(get_class($show));
+        $uow->recomputeSingleEntityChangeSet($meta, $show);
+
+        //ensure all the associated performances are also saved
+        $performanceMeta = $em->getClassMetadata('ActsCamdramBundle:Performance');
+        foreach ($show->getPerformances() as $performance) {
+            $performance->setShow($show);
+            $uow->recomputeSingleEntityChangeSet($performanceMeta, $performance);
+        }
     }
 
     private function updateVenues(Show $show)
