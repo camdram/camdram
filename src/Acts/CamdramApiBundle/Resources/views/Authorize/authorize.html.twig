@@ -1,9 +1,10 @@
-{% extends 'ActsCamdramApiBundle::authorize_layout.html.twig' %}
+{% extends 'ActsCamdramApiBundle::layout.html.twig' %}
 
 {% block title %}Authorise{% endblock %}
 
 {% block body %}
-    <div class="text-center">
+<div class="row">
+    <div class="large-12 columns text-center">
         <h3>Log in with Camdram</h3>
         <p>The app <strong>{{ client.name }}</strong> (<a href="{{ client.website }}" target="_blank">{{ client.website }}</a>)
             would like to access your details on Camdram.</p>
@@ -21,4 +22,5 @@
             {{ form_rest(form) }}
         </form>
     </div>
+</div>
 {% endblock %}

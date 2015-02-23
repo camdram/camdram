@@ -4,23 +4,52 @@ namespace Acts\CamdramSecurityBundle\Controller;
 
 use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
 use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 
-class AccountController extends Controller
+/**
+ * Class AccountController
+ * @package Acts\CamdramSecurityBundle\Controller
+ * @RouteResource("Account")
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+ */
+class AccountController extends FOSRestController
 {
-    public function settingsAction()
+    public function getAction()
     {
-        return $this->render('ActsCamdramSecurityBundle:Account:settings.html.twig', array(
+        return $this->view($this->getUser())
+            ->setTemplate('ActsCamdramSecurityBundle:Account:settings.html.twig')
+            ;
+    }
+
+    public function linkedAccountsAction()
+    {
+        return $this->render('ActsCamdramSecurityBundle:Account:linked_accounts.html.twig', array(
             'services' => $this->get('external_login.service_provider')->getServices()
         ));
     }
 
-    public function changeEmailAction()
+    public function getShowsAction()
+    {
+        $shows = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Show');
+        return $this->view($shows);
+    }
+
+    public function getOrganisationsAction()
+    {
+        $orgs = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Organisation');
+        return $this->view($orgs);
+    }
+
+    public function changeEmailAction(Request $request)
     {
         $form = $form = $this->createForm(new ChangeEmailType(), $this->getUser());
 
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->submit($this->getRequest());
+        if ($request->getMethod() == 'POST') {
+            $form->submit($request);
             if ($form->isValid()) {
                 $user = $form->getData();
                 $user->setIsEmailVerified(false);
@@ -37,11 +66,11 @@ class AccountController extends Controller
         ));
     }
 
-    public function changePasswordAction()
+    public function changePasswordAction(Request $request)
     {
         $form = $form = $this->createForm(new ChangePasswordType(), array());
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $form->submit($this->getRequest());
+        if ($request->getMethod() == 'POST') {
+            $form->submit($request);
             if ($form->isValid()) {
                 $user = $this->getUser();
                 $data = $form->getData();
