@@ -100,7 +100,7 @@ class AccountController extends FOSRestController
         $token = $this->get('camdram.security.token_generator')->generateEmailConfirmationToken($user);
         $this->get('camdram.security.email_dispatcher')->resendEmailVerifyEmail($user, $token);
 
-        return $this->redirect($this->generateUrl('acts_camdram_security_settings'));
+        return $this->redirect($this->generateUrl('get_account'));
     }
 
     public function unlinkAccountAction($service)
@@ -115,7 +115,7 @@ class AccountController extends FOSRestController
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('acts_camdram_security_settings'));
+        return $this->redirect($this->generateUrl('get_account'));
     }
 
 }
