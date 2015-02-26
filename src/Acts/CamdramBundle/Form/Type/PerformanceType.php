@@ -26,8 +26,6 @@ class PerformanceType extends AbstractType
             ->add('venue', 'entity_search', array(
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
-                'data_class' => 'Acts\\CamdramBundle\\Entity\\Performance',
-                'other_mapped' => true,
                 'required' => false,
             ))
         ;

@@ -19,6 +19,8 @@ use Acts\CamdramBundle\Entity\Person;
  * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\EntityListeners({"Acts\CamdramSecurityBundle\EventListener\UserListener" })
  * @UniqueEntity(fields="email", message="An account already exists with that email address")
+ * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("user")
  */
 class User implements \Serializable, CamdramUserInterface
 {
@@ -28,6 +30,8 @@ class User implements \Serializable, CamdramUserInterface
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
+     * @Serializer\XmlAttribute
      */
     private $id;
 
@@ -36,6 +40,7 @@ class User implements \Serializable, CamdramUserInterface
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Serializer\Expose
      */
     private $name;
 
@@ -101,6 +106,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="occupation", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $occupation;
 
@@ -108,6 +114,7 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="graduation", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $graduation;
 
@@ -123,7 +130,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="dbemail", type="boolean", nullable=true)
-     * @Serializer\Exclude()
      */
     private $db_email;
 
@@ -131,7 +137,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="dbphone", type="boolean", nullable=true)
-     * @Serializer\Exclude()
      */
     private $db_phone;
 
@@ -139,7 +144,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="forumnotify", type="boolean", nullable=true)
-     * @Serializer\Exclude()
      */
     private $forum_notify;
 
@@ -147,7 +151,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="threadmessages", type="boolean", nullable=true)
-     * @Serializer\Exclude()
      */
     private $thread_messages;
 
@@ -155,7 +158,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var boolean
      *
      * @ORM\Column(name="reversetime", type="boolean", nullable=false)
-     * @Serializer\Exclude()
      */
     private $reverse_time;
 
@@ -163,7 +165,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var string
      *
      * @ORM\Column(name="resetcode", type="string", length=32, nullable=true)
-     * @Serializer\Exclude()
      */
     private $reset_code;
 
@@ -171,8 +172,6 @@ class User implements \Serializable, CamdramUserInterface
      * @var Person
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="users")
-     * @Serializer\Exclude()
-     *
      */
     private $person;
 

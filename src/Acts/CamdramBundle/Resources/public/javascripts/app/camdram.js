@@ -193,11 +193,12 @@
            valueKey: 'name',
            prefetch: {url: Routing.generate(options.route, {_format: 'json'}), filter: filter},
            remote: {url: Routing.generate(options.route, {q: 'QUERY'}), wildcard: 'QUERY', filter: filter}
-       }).on('typeahead:selected', function (object, datum) {
+       }).on('typeahead:autocompleted', function (object, datum) {
             $self.parent().siblings('input[type=hidden]').val(datum.id);
        });
 
        $(this).change(function() {
+           console.log($self.parent().siblings('input[type=hidden]').val())
            $self.parent().siblings('input[type=hidden]').val('');
        }).attr('placeholder', options.placeholder);
 

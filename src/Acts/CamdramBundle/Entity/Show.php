@@ -961,59 +961,6 @@ class Show implements SearchableInterface, OwnableInterface
         $this->multi_venue = $value;
     }
 
-    public function updateVenues()
-    {
-        //If it's a multi-venue show, set the main venue (and vice-versa)
-        switch ($this->getMultiVenue()) {
-            case 'single':
-                foreach ($this->getPerformances() as $performance) {
-                    $performance->setVenue($this->getVenue());
-                    $performance->setVenueName($this->getVenueName());
-                }
-                break;
-            case 'multi':
-                //Try to work out the 'main' venue
-                //First count venue objects and venue names
-                $venues = array();
-                $venue_counts = array();
-                $name_counts = array();
-                foreach ($this->getPerformances() as $performance) {
-                    if ($performance->getVenue()) {
-                        $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) $venue_counts[$key] = 1;
-                        else $venue_counts[$key]++;
-                        $venues[$key] = $performance->getVenue();
-                    }
-                    if ($performance->getVenueName()) {
-                        $key = $performance->getVenueName();
-                        if (!isset($name_counts[$key])) $name_counts[$key] = 1;
-                        else $name_counts[$key]++;
-                    }
-                    //Favour a venue object over a venue name
-                    if (count($venue_counts) > 0) {
-                        $venue_id = array_search(max($venue_counts), $venue_counts);
-                        $this->setVenue($venues[$venue_id]);
-                    } else {
-                        $venue_name = array_search(max($name_counts), $name_counts);
-                        $this->setVenueName($venue_name);
-                    }
-                }
-                break;
-        }
-    }
-
-    public function updateTimes()
-    {
-        $min = null;
-        $max = null;
-        foreach ($this->getPerformances() as $performance) {
-            if (is_null($min) || $performance->getStartDate() < $min) $min = $performance->getStartDate();
-            if (is_null($max) || $performance->getEndDate() > $max) $max = $performance->getEndDate();
-        }
-        $this->setStartAt($min);
-        $this->setEndAt($max);
-    }
-
     /**
      * A ranking used by the autocomplete index
      * For shows, return the Unix timestamp of the show's start date

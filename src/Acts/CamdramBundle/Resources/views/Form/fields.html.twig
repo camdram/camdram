@@ -50,7 +50,9 @@
         {% set hidden = attribute(form.children, hidden_id) %}
         {{ form_widget(text) }}
         {{ form_widget(hidden) }}
+
         <script>$(function(){ $('#{{ text.vars.id }}').entitySearch({ route: '{{ route }}' }); })</script>
+
     {% endspaceless %}
 {% endblock %}
 

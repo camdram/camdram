@@ -25,6 +25,9 @@ acts_camdram_security_reset_password:
     pattern:   /reset-password/{email}/{token}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:resetPassword }
 
+acts_camdram_security_account:
+    type:     rest
+    resource: Acts\CamdramSecurityBundle\Controller\AccountController
 
 acts_camdram_security_settings_res:
     prefix: /settings

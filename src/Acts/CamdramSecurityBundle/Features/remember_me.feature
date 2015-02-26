@@ -15,12 +15,12 @@ Feature: Logging in with 'remember me' option
 
   Scenario: Account settings page causes re-authentication
     And I delete the session cookie
-    And I go to "/auth/settings"
+    And I go to "/auth/account"
     Then I should see "you must log in again"
 
   Scenario: Remember me cookie remains after re-authentication
     And I delete the session cookie
-    And I go to "/auth/settings"
+    And I go to "/auth/account"
     And I fill in "Password" with "password1"
     And I press "Log in"
     And I delete the session cookie

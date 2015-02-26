@@ -56,8 +56,6 @@ class ShowType extends AbstractType
             ->add('venue', 'entity_search', array(
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
-                'data_class' => 'Acts\\CamdramBundle\\Entity\\Show',
-                'other_mapped' => true,
                 'required' => false,
             ))
             ->add('online_booking_url', 'url', array(
@@ -73,8 +71,6 @@ class ShowType extends AbstractType
                 $form->add('society','entity_search', array(
                     'route' => 'get_societies',
                     'class' => 'Acts\\CamdramBundle\\Entity\\Society',
-                    'data_class' => 'Acts\\CamdramBundle\\Entity\\Show',
-                    'other_mapped' => true,
                     'required' => false,
                     'disabled' => $show && null !== $show->getId() && !$this->securityContext->isGranted('ROLE_ADMIN')
                 ));

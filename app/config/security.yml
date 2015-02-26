@@ -48,7 +48,6 @@ security:
 
     access_control:
 #        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
-        - { path ^/auth/settings.*, roles: IS_AUTHENTICATED_FULLY }
 
     encoders:
         Acts\CamdramSecurityBundle\Entity\User:
