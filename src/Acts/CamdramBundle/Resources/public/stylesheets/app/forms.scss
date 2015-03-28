@@ -71,6 +71,10 @@ textarea {
   }
 }
 
+#recaptcha_widget_div {
+  margin-bottom: 1em;
+}
+
 @media only screen and (max-width:768px) {
   label.right {
     float:none !important;
