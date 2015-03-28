@@ -43,8 +43,6 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
         $show = new Show();
         $owners = array('owner1', 'owner2');
 
-        $creator = new User();
-        $creator->setEmail('creator@camdram.net');
         $user1 = new User();
         $user1->setEmail('user1@camdram.net');
         $user2 = new User();
@@ -55,12 +53,12 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
         $admins = array($user2);
 
         $this->twig->expects($this->once())->method('render')
-            ->with($this->anything(), array('creator' => $creator, 'owners' => $owners, 'show' => $show))
+            ->with($this->anything(), array('owners' => $owners, 'show' => $show))
             ->will($this->returnValue('The message'));
 
         $this->mailer->expects($this->once())->method('send');
 
-        $this->emailDispatcher->sendShowCreatedEmail($show, $creator, $owners, $recipients, $admins);
+        $this->emailDispatcher->sendShowCreatedEmail($show, $owners, $recipients, $admins);
     }
 
 }

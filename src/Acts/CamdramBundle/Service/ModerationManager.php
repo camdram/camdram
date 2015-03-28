@@ -141,7 +141,12 @@ class ModerationManager
         if ($entity instanceof Show) {
             $moderators = $this->getModeratorsForEntity($entity);
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
-            $owners = $repo->getEntityOwners($entity);
+            if ($this->securityContext->getToken()) {
+                $owners = array($this->securityContext->getToken()->getUser());
+            }
+            else {
+                $owners = $repo->getEntityOwners($entity);
+            }
             $admins = $this->getModeratorAdmins();
             /* Construct a list of email addresses to add to the 'To' field of the
              * email.
@@ -152,8 +157,7 @@ class ModerationManager
              * email, e.g. a Camdram admin may also be a Society's admin, but send
              * their email as if they are just the latter.
              */
-            $creator = $this->securityContext->getToken()->getUser();
-            $this->dispatcher->sendShowCreatedEmail($entity, $creator, $owners, $moderators, $admins);
+            $this->dispatcher->sendShowCreatedEmail($entity, $owners, $moderators, $admins);
             $this->logger->info('Authorisation e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
         }
     }

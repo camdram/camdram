@@ -141,6 +141,8 @@ class RedirectHandler {
         switch ($query->get('type')) {
             case 'shows':
                 return new RedirectResponse($this->router->generate('get_shows', array('_format' => 'rss')), 301);
+            case 'events':      // V2 doesn't have 'events', hence redirecting to shows
+                return new RedirectResponse($this->router->generate('get_shows', array('_format' => 'rss')), 301);
             case 'techies':
                 return new RedirectResponse($this->router->generate('get_techies', array('_format' => 'rss')), 301);
         }

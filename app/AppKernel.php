@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new \EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
             new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),

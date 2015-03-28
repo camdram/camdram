@@ -49,7 +49,7 @@ class PersonController extends AbstractRestController
     /**
      * * @Rest\Get("/people/{identifier}/link")
      */
-    public function linkAction($identifier)
+    /*public function linkAction($identifier)
     {
         $person = $this->getEntity($identifier);
         if (!$this->getUser()) {
@@ -62,7 +62,7 @@ class PersonController extends AbstractRestController
         }
 
         return $this->redirect($this->generateUrl('get_person', array('identifier' => $identifier)));
-    }
+    }*/
 
     /**
      * @param $identifier

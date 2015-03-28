@@ -285,6 +285,11 @@ stof_doctrine_extensions:
 fos_js_routing:
     routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'autocomplete_entity' ]
 
+ewz_recaptcha:
+    public_key: %recaptcha_site_key%
+    private_key: %recaptcha_secret_key%
+    locale_key: %kernel.default_locale%
+
 parameters:
     security.authentication.trust_resolver.class: Acts\ExternalLoginBundle\Security\Authentication\AuthenticationTrustResolver
     test.client.class: Acts\CamdramBackendBundle\Test\Client

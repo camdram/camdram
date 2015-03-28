@@ -35,3 +35,6 @@ fos_js_routing:
 
 acts_external_login:
     test: %external_login_test_mode%
+
+ewz_recaptcha:
+    enabled: false

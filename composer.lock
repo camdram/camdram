@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1985ebdc08fa22b77b62b353b85b8aca",
+    "hash": "c1ccc861bbc86d9117417ea2743c8ae3",
     "packages": [
         {
             "name": "acts/external-login-bundle",
@@ -620,17 +620,17 @@
         },
         {
             "name": "camdram/sphinx-realtime-bundle",
-            "version": "0.1.2",
+            "version": "0.1.3",
             "target-dir": "Acts/SphinxRealTimeBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/sphinx-realtime-bundle.git",
-                "reference": "65df443f0936d3f1b106586e25735683a74f07cb"
+                "reference": "002262f049d8bb6e64c10a66c3f4956c6caca48c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/65df443f0936d3f1b106586e25735683a74f07cb",
-                "reference": "65df443f0936d3f1b106586e25735683a74f07cb",
+                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/002262f049d8bb6e64c10a66c3f4956c6caca48c",
+                "reference": "002262f049d8bb6e64c10a66c3f4956c6caca48c",
                 "shasum": ""
             },
             "require": {
@@ -661,7 +661,7 @@
                 "search",
                 "sphinx"
             ],
-            "time": "2014-09-20 12:29:30"
+            "time": "2015-02-21 21:35:04"
         },
         {
             "name": "doctrine/annotations",
@@ -1005,12 +1005,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "81591fd41aee9ab3109041e530e104ff8c3cff11"
+                "reference": "6a20c28e88f9cef15fae491481a527550585ed7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/81591fd41aee9ab3109041e530e104ff8c3cff11",
-                "reference": "81591fd41aee9ab3109041e530e104ff8c3cff11",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/6a20c28e88f9cef15fae491481a527550585ed7a",
+                "reference": "6a20c28e88f9cef15fae491481a527550585ed7a",
                 "shasum": ""
             },
             "require": {
@@ -1060,7 +1060,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-01-01 16:49:23"
+            "time": "2015-01-03 22:41:47"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1839,6 +1839,48 @@
                 "google map"
             ],
             "time": "2013-06-07 20:19:56"
+        },
+        {
+            "name": "excelwebzone/recaptcha-bundle",
+            "version": "2.3.x-dev",
+            "target-dir": "EWZ/Bundle/RecaptchaBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
+                "reference": "0b7738e799093538c721d7bc9e5ea17a9a55d4fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/0b7738e799093538c721d7bc9e5ea17a9a55d4fb",
+                "reference": "0b7738e799093538c721d7bc9e5ea17a9a55d4fb",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "2.*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "EWZ\\Bundle\\RecaptchaBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael H. Arieli",
+                    "email": "excelwebzone@gmail.com",
+                    "homepage": "http://excelwebzone.com/"
+                }
+            ],
+            "description": "This bundle provides easy reCAPTCHA form field integration",
+            "homepage": "https://github.com/excelwebzone/EWZRecaptchaBundle",
+            "keywords": [
+                "recaptcha"
+            ],
+            "time": "2014-07-04 22:35:09"
         },
         {
             "name": "fabpot/goutte",
@@ -2877,12 +2919,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "bc0dd6ca3a1451aa00fa61c9defbeab10e8d4a9e"
+                "reference": "e619ca451a6644e3768a36d86de5df4afde938ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/bc0dd6ca3a1451aa00fa61c9defbeab10e8d4a9e",
-                "reference": "bc0dd6ca3a1451aa00fa61c9defbeab10e8d4a9e",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/e619ca451a6644e3768a36d86de5df4afde938ac",
+                "reference": "e619ca451a6644e3768a36d86de5df4afde938ac",
                 "shasum": ""
             },
             "require": {
@@ -2938,7 +2980,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2014-12-26 16:17:46"
+            "time": "2015-01-06 11:33:26"
         },
         {
             "name": "jms/serializer-bundle",
@@ -3127,12 +3169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "bdd814c775a554522838c583af9e381f3a5cc95a"
+                "reference": "d70f04639ff85cc7a1ad0d0267090ae27cb4fa8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/bdd814c775a554522838c583af9e381f3a5cc95a",
-                "reference": "bdd814c775a554522838c583af9e381f3a5cc95a",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/d70f04639ff85cc7a1ad0d0267090ae27cb4fa8c",
+                "reference": "d70f04639ff85cc7a1ad0d0267090ae27cb4fa8c",
                 "shasum": ""
             },
             "require": {
@@ -3193,7 +3235,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-12-17 00:27:33"
+            "time": "2015-01-02 21:24:57"
         },
         {
             "name": "kriswallsmith/buzz",
@@ -3493,12 +3535,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpcr/phpcr.git",
-                "reference": "fea1529685d7bc4290e2ad0683830263f502971e"
+                "reference": "7666fa9db1e4be7368f2e9c20a18576a11df74e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpcr/phpcr/zipball/fea1529685d7bc4290e2ad0683830263f502971e",
-                "reference": "fea1529685d7bc4290e2ad0683830263f502971e",
+                "url": "https://api.github.com/repos/phpcr/phpcr/zipball/7666fa9db1e4be7368f2e9c20a18576a11df74e4",
+                "reference": "7666fa9db1e4be7368f2e9c20a18576a11df74e4",
                 "shasum": ""
             },
             "require": {
@@ -3540,7 +3582,7 @@
                 "contentrepository",
                 "phpcr"
             ],
-            "time": "2014-12-08 09:40:30"
+            "time": "2015-01-05 19:14:45"
         },
         {
             "name": "phpcr/phpcr-utils",
@@ -3703,12 +3745,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-vobject.git",
-                "reference": "2ee999b5ed9e1d8045daea41690675ff48977cc8"
+                "reference": "317eac6cfff088ee41524741ea17aac7c6c21a04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-vobject/zipball/2ee999b5ed9e1d8045daea41690675ff48977cc8",
-                "reference": "2ee999b5ed9e1d8045daea41690675ff48977cc8",
+                "url": "https://api.github.com/repos/fruux/sabre-vobject/zipball/317eac6cfff088ee41524741ea17aac7c6c21a04",
+                "reference": "317eac6cfff088ee41524741ea17aac7c6c21a04",
                 "shasum": ""
             },
             "require": {
@@ -3761,7 +3803,7 @@
                 "jCard",
                 "vCard"
             ],
-            "time": "2014-12-24 16:58:25"
+            "time": "2015-01-06 01:47:09"
         },
         {
             "name": "sensio/buzz-bundle",
@@ -4698,12 +4740,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/AsseticBundle.git",
-                "reference": "ae29934ccb666fe21d685037a6b2246f4013730a"
+                "reference": "ab3d73839939a77592f4c56fb1f6ce6b6d0eef1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/ae29934ccb666fe21d685037a6b2246f4013730a",
-                "reference": "ae29934ccb666fe21d685037a6b2246f4013730a",
+                "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/ab3d73839939a77592f4c56fb1f6ce6b6d0eef1e",
+                "reference": "ab3d73839939a77592f4c56fb1f6ce6b6d0eef1e",
                 "shasum": ""
             },
             "require": {
@@ -4754,7 +4796,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-12-30 09:43:47"
+            "time": "2015-01-02 21:26:11"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -4762,12 +4804,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/MonologBundle.git",
-                "reference": "e8f71c91a3784f3fa1a75fb1f7f4d4826c5f2773"
+                "reference": "9320b6863404c70ebe111e9040dab96f251de7ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/e8f71c91a3784f3fa1a75fb1f7f4d4826c5f2773",
-                "reference": "e8f71c91a3784f3fa1a75fb1f7f4d4826c5f2773",
+                "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/9320b6863404c70ebe111e9040dab96f251de7ac",
+                "reference": "9320b6863404c70ebe111e9040dab96f251de7ac",
                 "shasum": ""
             },
             "require": {
@@ -4813,7 +4855,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2014-12-28 16:37:56"
+            "time": "2015-01-04 20:21:17"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -4878,12 +4920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "ecbb003869b77c682b0059419781cca10a990f5c"
+                "reference": "eabc9b89010c8287e969f55ddea1c48ff4021625"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/ecbb003869b77c682b0059419781cca10a990f5c",
-                "reference": "ecbb003869b77c682b0059419781cca10a990f5c",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/eabc9b89010c8287e969f55ddea1c48ff4021625",
+                "reference": "eabc9b89010c8287e969f55ddea1c48ff4021625",
                 "shasum": ""
             },
             "require": {
@@ -4986,7 +5028,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-01-02 07:53:54"
+            "time": "2015-01-06 17:50:02"
         },
         {
             "name": "twig/extensions",

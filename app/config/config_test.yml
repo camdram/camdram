@@ -44,3 +44,6 @@ acts_time_mock:
 assetic:
     debug: false
     use_controller: false
+
+ewz_recaptcha:
+    enabled: false

@@ -5,6 +5,7 @@ namespace Acts\CamdramSecurityBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True;
 
 class RegistrationType extends AbstractType
 {
@@ -21,6 +22,17 @@ class RegistrationType extends AbstractType
             ))
             ->add('occupation', 'occupation')
             ->add('graduation', 'graduation_year', array('required' => false))
+            ->add('captcha', 'ewz_recaptcha', array(
+                'attr' => array(
+                    'options' => array(
+                        'theme' => 'clean'
+                    )
+                ),
+                'mapped'      => false,
+                'constraints' => array(
+                    new True()
+                )
+            ))
         ;
     }
 

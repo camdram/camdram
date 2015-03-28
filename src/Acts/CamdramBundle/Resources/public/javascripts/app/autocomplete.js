@@ -132,12 +132,21 @@ Camdram.autocomplete.requestOptions = function() {
 Camdram.autocomplete.displayResults = function(query, items) {
     // Store the results
     $("#search_form .results ul li:not(.fulltext)").remove();
+
+    var first_item = true;
+
     // Draw out the elements
     if (items.length > 0) {
         $("#search_form .noresults").hide();
         for (var i = 0; i < items.length; i++) {
             var result = items[i];
             var item = $("<li/>");
+
+            // Autoselect the first item
+            if (first_item) {
+                first_item = false;
+                item.addClass('active');
+            }
 
             // Add in the text
             var link = $("<a/>")

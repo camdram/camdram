@@ -47,17 +47,32 @@
             <p class="show-society">{{ show.societyname }} presents...</p>
         {% endif %}
         <h2>{{ show.name }}{% if show.author %}<br/><small> By {{ show.author }}</small>{% endif %}</h2>
-
+		
+		{# Display show image #}
         {% if show.image %}
             <div class="row">
             <div class="large-3 columns text-center">
-                {% if show.image %}<a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>{% endif %}
+                <a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>
             </div>
             <div class="large-9 columns">
                 <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
                 <p>{{ show.description | camdram_markdown }}</p>
             </div>
             </div>
+        {# Show prompt to upload image #}
+        {% elseif is_granted('EDIT', show) %}
+        	<div class="row">
+            <div class="large-3 columns text-center">
+            	<ul class="inline-list">
+                	{{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier: show.slug}), icon: 'pencil', text: 'Upload show image'} }) }}
+            	</ul>
+            </div>
+            <div class="large-9 columns">
+                <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
+                <p>{{ show.description | camdram_markdown }}</p>
+            </div>
+            </div>
+        {# Don't show image or prompt #}
         {% else %}
             <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
             <p>{{ show.description | camdram_markdown }}</p>
