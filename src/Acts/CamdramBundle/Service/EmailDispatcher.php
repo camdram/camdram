@@ -20,28 +20,32 @@ class EmailDispatcher
         $this->from_address = $from_address;
     }
 
+    private function emailArrayFromUsers(array $users)
+    {
+        $emails = array();
+        foreach ($users as $user) {
+            $emails[$user->getFullEmail()] = $user->getName();
+        }
+        return $emails;
+    }
+
     /**
      * Send an email to the relevant moderators when this show is created.
      */
     public function sendShowCreatedEmail(Show $show, array $owners, array $moderators, array $admins)
     {
-        $emails = array();
-        foreach ($moderators as $user) {
-            $emails[$user->getFullEmail()] = $user->getName();
-        }
-
-        $bccs = array();
-        foreach ($admins as $user) {
-            if (!isset($emails[$user->getFullEmail()])) {
-                $bccs[$user->getFullEmail()] = $user->getName();
-            }
+        $toEmails = $this->emailArrayFromUsers($moderators);
+        $bccEmails = $this->emailArrayFromUsers($admins);
+        foreach ($bccEmails as $email => $name)
+        {
+            if (isset($emails[$email])) unset($bccEmails[$email]);
         }
 
         $message = \Swift_Message::newInstance()
             ->setSubject('New show needs authorization on Camdram: '.$show->getName())
             ->setFrom(array($this->from_address => 'camdram.net'))
-            ->setTo($emails)
-            ->setBcc($bccs)
+            ->setTo($toEmails)
+            ->setBcc($bccEmails)
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:show_created.txt.twig',
@@ -87,6 +91,48 @@ class EmailDispatcher
             ->setReplyTo($from)
             ->setTo($this->from_address)
             ->setBody($message)
+        ;
+        $this->mailer->send($message);
+    }
+
+    public function sendShowSocietyChangedEmail(Show $show, array $owners, array $moderators)
+    {
+        $toEmails = $this->emailArrayFromUsers($moderators);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Society changed to '. $show->getSociety()->getName() .': '.$show->getName())
+            ->setFrom(array($this->from_address => 'camdram.net'))
+            ->setTo($toEmails)
+            ->setBody(
+                $this->twig->render(
+                    'ActsCamdramBundle:Email:show_society_changed.txt.twig',
+                    array(
+                        'owners' => $owners,
+                        'show' => $show,
+                    )
+                )
+            )
+        ;
+        $this->mailer->send($message);
+    }
+
+    public function sendShowVenueChangedEmail(Show $show, array $owners, array $moderators)
+    {
+        $toEmails = $this->emailArrayFromUsers($moderators);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Venue changed to '. $show->getVenue()->getName() .': '.$show->getName())
+            ->setFrom(array($this->from_address => 'camdram.net'))
+            ->setTo($toEmails)
+            ->setBody(
+                $this->twig->render(
+                    'ActsCamdramBundle:Email:show_venue_changed.txt.twig',
+                    array(
+                        'owners' => $owners,
+                        'show' => $show,
+                    )
+                )
+            )
         ;
         $this->mailer->send($message);
     }

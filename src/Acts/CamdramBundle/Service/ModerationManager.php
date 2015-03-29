@@ -161,4 +161,42 @@ class ModerationManager
             $this->logger->info('Authorisation e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
         }
     }
+
+    public function notifySocietyChanged($entity)
+    {
+        if ($entity instanceof Show) {
+            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+            $moderators = $repo->getEntityOwners($entity->getSociety());
+            if (count($moderators) > 0) {
+                if ($this->securityContext->getToken()) {
+                    $owners = array($this->securityContext->getToken()->getUser());
+                }
+                else {
+                    $owners = $repo->getEntityOwners($entity);
+                }
+
+                $this->dispatcher->sendShowSocietyChangedEmail($entity, $owners, $moderators);
+                $this->logger->info('Society changed e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
+            }
+        }
+    }
+
+    public function notifyVenueChanged($entity)
+    {
+        if ($entity instanceof Show) {
+            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+            $moderators = $repo->getEntityOwners($entity->getVenue());
+            if (count($moderators) > 0) {
+                if ($this->securityContext->getToken()) {
+                    $owners = array($this->securityContext->getToken()->getUser());
+                }
+                else {
+                    $owners = $repo->getEntityOwners($entity);
+                }
+
+                $this->dispatcher->sendShowVenueChangedEmail($entity, $owners, $moderators);
+                $this->logger->info('Venue changed e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
+            }
+        }
+    }
 }
