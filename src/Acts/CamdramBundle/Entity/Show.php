@@ -1574,4 +1574,17 @@ class Show implements SearchableInterface, OwnableInterface
     public function getUpdatedAt() {
         return $this->getTimestamp();
     }
+
+    public function hasFuturePerformances()
+    {
+        $future = false;
+        $now = new \DateTime;
+        foreach ($this->getPerformances() as $performance){
+            if ($performance->getEndDate() >= $now) {
+                $future = true;
+                break;
+            }
+        }
+        return $future;
+    }
 }
