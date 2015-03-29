@@ -42,6 +42,11 @@ class EmailParser
         }
     }
 
+    public function getRawBody()
+    {
+        return $this->rawEmail->getContent();
+    }
+
     public function getRawTo()
     {
         return $this->rawEmail->to;

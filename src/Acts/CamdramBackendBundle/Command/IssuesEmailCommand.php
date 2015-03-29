@@ -2,6 +2,7 @@
 namespace Acts\CamdramBackendBundle\Command;
 
 use Acts\CamdramAdminBundle\Entity\Support;
+use Acts\CamdramBackendBundle\Entity\EmailBounce;
 use Acts\CamdramBackendBundle\Service\EmailParser;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -47,9 +48,9 @@ class IssuesEmailCommand extends ContainerAwareCommand
             $this->processReply($issue, $matches[1], false, $output);
         }
         elseif (preg_match('/^support-bounces@/', $issue->getTo())) {
-            $this->processBounce($issue, $output);
+            $this->processBounce($parser->getRawFrom(), $parser->getRawTo(), $parser->getSubject(), $parser->getRawBody(), $output);
         }
-        else {
+        else {  //support@ or websupport@
             $this->processNew($issue, $output);
         }
     }
@@ -74,6 +75,14 @@ class IssuesEmailCommand extends ContainerAwareCommand
         $repo = $em->getRepository('ActsCamdramAdminBundle:Support');
         if (($orig = $repo->findOneById($issue_id)) !== null) {
             $issue->setParent($orig);
+            //Reopen issue if it's been closed
+            if ($issue->getOriginal()->getOwner()) {
+                $issue->getOriginal()->setState(Support::STATE_ASSIGNED);
+            }
+            else {
+                $issue->getOriginal()->setState(Support::STATE_UNASSIGNED);
+            }
+
             $em->persist($issue);
             $em->flush();
 
@@ -88,7 +97,6 @@ class IssuesEmailCommand extends ContainerAwareCommand
         $from_email = "support-".$issue->getOriginalId()."@camdram.net";
         $sender = From::fromString('From:'.$issue->getFrom())->getAddressList()->current();
 
-
         $mailer = $this->getContainer()->get('mailer');
 
         foreach ($this->getRecipients($issue) as $email => $name) {
@@ -96,12 +104,12 @@ class IssuesEmailCommand extends ContainerAwareCommand
 
             $message = \Swift_Message::newInstance();
             $message->setSubject($issue->getSubject())
+                ->setTo($email, $name)
                 ->setSender($sender->getEmail(), $sender->getName())
                 ->setFrom($from_email, 'Cammdram Support')
                 ->setReplyTo($from_email, 'Camdram Support')
                 ->setReturnPath("support-bounces@camdram.net")
                 ->setBody($issue->getBody())
-                ->setTo($email, $name)
             ;
             $mailer->send($message);
         }
@@ -115,7 +123,7 @@ class IssuesEmailCommand extends ContainerAwareCommand
 
         $recipients = array();
         if ($issue->getOriginal()->getOwner()) {
-            //The issue has an owner, so only include this admin
+            //The issue has an owner, so just include the issue owner
             $owner = $issue->getOriginal()->getOwner();
             if ($issueFrom->getEmail() != $owner->getFullEmail()) {
                 $recipients[$owner->getFullEmail()] = $owner->getName();
@@ -147,8 +155,15 @@ class IssuesEmailCommand extends ContainerAwareCommand
         return $recipients;
     }
 
-    protected function processBounce(Support $issue, OutputInterface $output)
+    protected function processBounce($from, $to, $subject, $body, OutputInterface $output)
     {
-
+        $bounce = new EmailBounce();
+        $bounce->setFromHeader($from);
+        $bounce->setToHeader($to);
+        $bounce->setSubject($subject);
+        $bounce->setBody($body);
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $em->persist($bounce);
+        $em->flush();
     }
 }
