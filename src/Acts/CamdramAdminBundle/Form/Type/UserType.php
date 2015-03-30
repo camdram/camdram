@@ -20,7 +20,8 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
-            ->add('person', 'entity_search', array('required' => false, 'route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
+            ->add('person', 'entity_search', array('other_allowed' => false, 'prefetch' => false,
+                'required' => false, 'route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
             ->add('occupation', 'occupation')
             ->add('graduation', 'graduation_year', array('required' => false))
         ;

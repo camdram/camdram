@@ -173,7 +173,8 @@
 
     $.fn.entitySearch = function(options) {
        var options = $.extend({
-           placeholder: 'start typing to search'
+           placeholder: 'start typing to search',
+           prefetch : true
        }, options);
         var $self = $(this);
 
@@ -191,8 +192,8 @@
         $self.typeahead({
            name: options.route,
            valueKey: 'name',
-           prefetch: {url: Routing.generate(options.route, {_format: 'json'}), filter: filter},
-           remote: {url: Routing.generate(options.route, {q: 'QUERY'}), wildcard: 'QUERY', filter: filter}
+           prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
+           remote: {url: Routing.generate(options.route, {q: 'QUERY', _format: 'json', autocomplete: true}), wildcard: 'QUERY', filter: filter}
        }).on('typeahead:autocompleted', function (object, datum) {
             $self.parent().siblings('input[type=hidden]').val(datum.id);
        });

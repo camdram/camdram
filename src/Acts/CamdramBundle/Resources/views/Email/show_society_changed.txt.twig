@@ -1,0 +1,19 @@
+{% autoescape false %}
+The society of the show "{{ show.name }}" has been changed to {{ show.society.name }} by {% for owner in owners %}{{ owner.name }} ({{ owner.email }}){% endfor %}.
+
+The show has already been authorised, but you may wish to verify that the following details are correct:
+* Dates
+* Venue
+* Start Time
+
+If this show is not being funded by {{ show.society.name }}, please contact the show owners or websupport@camdram.net
+
+A summary of the show is given below. You can view or edit the show by visiting:
+{{ url('get_show', {identifier: show.slug}) }}
+
+{% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
+
+***** Show details follow... *****
+
+{{ include('ActsCamdramBundle:Email:show_details.txt.twig') }}
+{% endautoescape %}

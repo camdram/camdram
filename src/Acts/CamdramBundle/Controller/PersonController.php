@@ -30,6 +30,8 @@ class PersonController extends AbstractRestController
 
     protected $type_plural = 'people';
 
+    protected $search_index = 'person';
+
     protected function getRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Person');

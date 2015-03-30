@@ -31,6 +31,8 @@ class VenueController extends OrganisationController
 
     protected $type_plural = 'venues';
 
+    protected $search_index = 'venue';
+
     protected function getRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');

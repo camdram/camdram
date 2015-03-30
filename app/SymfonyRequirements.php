@@ -77,7 +77,7 @@ class Requirement
     }
 
     /**
-     * Returns the help text for resolving the problem
+     * Returns the help text for resolving the problem.
      *
      * @return string The help text
      */
@@ -119,10 +119,10 @@ class PhpIniRequirement extends Requirement
      *
      * @param string        $cfgName           The configuration name used for ini_get()
      * @param bool|callback $evaluation        Either a boolean indicating whether the configuration should evaluate to true or false,
-                                               or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
+     *                                         or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
      * @param bool          $approveCfgAbsence If true the Requirement will be fulfilled even if the configuration option does not exist, i.e. ini_get() returns false.
-                                               This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
-                                               Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
+     *                                         This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
+     *                                         Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
      * @param string|null   $testMessage       The message for testing the requirement (when null and $evaluation is a boolean a default message is derived)
      * @param string|null   $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
@@ -221,10 +221,10 @@ class RequirementCollection implements IteratorAggregate
      *
      * @param string        $cfgName           The configuration name used for ini_get()
      * @param bool|callback $evaluation        Either a boolean indicating whether the configuration should evaluate to true or false,
-                                               or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
+     *                                         or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
      * @param bool          $approveCfgAbsence If true the Requirement will be fulfilled even if the configuration option does not exist, i.e. ini_get() returns false.
-                                               This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
-                                               Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
+     *                                         This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
+     *                                         Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
      * @param string        $testMessage       The message for testing the requirement (when null and $evaluation is a boolean a default message is derived)
      * @param string        $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
@@ -239,10 +239,10 @@ class RequirementCollection implements IteratorAggregate
      *
      * @param string        $cfgName           The configuration name used for ini_get()
      * @param bool|callback $evaluation        Either a boolean indicating whether the configuration should evaluate to true or false,
-                                               or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
+     *                                         or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
      * @param bool          $approveCfgAbsence If true the Requirement will be fulfilled even if the configuration option does not exist, i.e. ini_get() returns false.
-                                               This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
-                                               Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
+     *                                         This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
+     *                                         Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
      * @param string        $testMessage       The message for testing the requirement (when null and $evaluation is a boolean a default message is derived)
      * @param string        $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
@@ -403,7 +403,7 @@ class SymfonyRequirements extends RequirementCollection
         );
 
         $this->addRequirement(
-            is_dir($this->getComposerVendorDir()),
+            is_dir(__DIR__.'/../vendor/composer'),
             'Vendor libraries must be installed',
             'Vendor libraries are missing. Install composer following instructions from <a href="http://getcomposer.org/">http://getcomposer.org/</a>. '.
                 'Then run "<strong>php composer.phar install</strong>" to install them.'
@@ -543,7 +543,7 @@ class SymfonyRequirements extends RequirementCollection
         /* optional recommendations follow */
 
         $this->addRecommendation(
-            file_get_contents(__FILE__) === file_get_contents($this->getComposerVendorDir().'/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/skeleton/app/SymfonyRequirements.php'),
+            file_get_contents(__FILE__) === file_get_contents(__DIR__.'/../vendor/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/skeleton/app/SymfonyRequirements.php'),
             'Requirements file should be up-to-date',
             'Your requirements file is outdated. Run composer install and re-check your configuration.'
         );
@@ -590,8 +590,8 @@ class SymfonyRequirements extends RequirementCollection
 
         $this->addRecommendation(
             class_exists('DomDocument'),
-            'PHP-XML module should be installed',
-            'Install and enable the <strong>PHP-XML</strong> module.'
+            'PHP-DOM and PHP-XML modules should be installed',
+            'Install and enable the <strong>PHP-DOM</strong> and the <strong>PHP-XML</strong> modules.'
         );
 
         $this->addRecommendation(
@@ -735,22 +735,5 @@ class SymfonyRequirements extends RequirementCollection
             default:
                 return (int) $size;
         }
-    }
-
-    /**
-     * In some special setups, the vendor/ directory isn't located in the project's
-     * root directory. To make this command work for every case, read Composer's
-     * vendor/ directory location directly from composer.json file.
-     *
-     * @return string
-     */
-    private function getComposerVendorDir()
-    {
-        $composerJson = json_decode(file_get_contents(__DIR__.'/../composer.json'));
-        if (isset($composerJson->config)) {
-            return $composerJson->config->{'vendor-dir'};
-        }
-
-        return __DIR__.'/../vendor/composer';
     }
 }

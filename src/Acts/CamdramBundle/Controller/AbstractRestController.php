@@ -201,6 +201,14 @@ abstract class AbstractRestController extends FOSRestController
     public function cgetAction(Request $request)
     {
         $this->checkAuthenticated();
+
+        if (!$request->get('page')) {
+            $request->query->set('page', 1);
+        }
+        if (!$request->get('limit')) {
+            $request->query->set('limit', 10);
+        }
+
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
@@ -214,7 +222,7 @@ abstract class AbstractRestController extends FOSRestController
             if ($request->query->has('autocomplete')) {
                 $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), $filters);
             } else {
-                $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'), $filters);
+                $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'), 0, 10);
             }
         } else {
             $repo = $this->getRepository();

@@ -15,6 +15,10 @@ use Acts\CamdramSecurityBundle\Entity\User;
  */
 class Support
 {
+    const STATE_CLOSED = 'closed';
+    const STATE_ASSIGNED = 'assigned';
+    const STATE_UNASSIGNED = 'unassigned';
+
     /**
      * @var integer
      *
@@ -92,6 +96,7 @@ class Support
      * @ORM\JoinColumn(name="supportid", referencedColumnName="id", nullable=true)
      */
     private $parent;
+
 
     public function __construct()
     {
