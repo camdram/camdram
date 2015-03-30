@@ -2,6 +2,8 @@
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -49,6 +51,34 @@ class ShowListener
         foreach ($show->getPerformances() as $performance) {
             $performance->setShow($show);
             $uow->recomputeSingleEntityChangeSet($performanceMeta, $performance);
+        }
+
+        $this->sendChangeEmails($show, $event);
+    }
+
+    private function sendChangeEmails(Show $show, PreUpdateEventArgs $event)
+    {
+        $authorisationEmailSent = false;
+
+        if ($event->hasChangedField('society') && $show->getSociety() instanceof Society)
+        {
+            if ($show->isAuthorised()) {
+                $this->moderationManager->notifySocietyChanged($show);
+            }
+            else {
+                $this->moderationManager->autoApproveOrEmailModerators($show);
+                $authorisationEmailSent = true;
+            }
+        }
+
+        if ($event->hasChangedField('venue') && $show->getVenue() instanceof Venue)
+        {
+            if ($show->isAuthorised()) {
+                $this->moderationManager->notifyVenueChanged($show);
+            }
+            elseif (!$authorisationEmailSent) {
+                $this->moderationManager->autoApproveOrEmailModerators($show);
+            }
         }
     }
 

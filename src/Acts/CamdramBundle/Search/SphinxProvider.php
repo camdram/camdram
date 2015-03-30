@@ -43,7 +43,7 @@ class  SphinxProvider implements ProviderInterface
     {
         if (empty($q)) return array();
 
-        $query = SphinxQL::forge()->select('id', 'name', 'slug',
+        $query = SphinxQL::create($this->client->getConnection())->select('id', 'name', 'slug',
                     new Expression("EXIST('num_shows', 0) as show_count"), 'index_date', 'entity_type')
             ->from($indexes)->match(array('name','short_name'), $q.'*', true)->limit($limit);
 
@@ -68,7 +68,7 @@ class  SphinxProvider implements ProviderInterface
     {
         if (trim($q) == '') return new Pagerfanta(new ArrayAdapter(array()));
 
-        $query = SphinxQL::forge()->select()->from($indexes)
+        $query = SphinxQL::create($this->client->getConnection())->select()->from($indexes)
             ->limit($limit)->offset($offset)
             ->match(array('name','short_name','description'), $q);
 

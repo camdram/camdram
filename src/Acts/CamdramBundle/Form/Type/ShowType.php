@@ -68,11 +68,17 @@ class ShowType extends AbstractType
                 $show = $event->getData();
                 $form = $event->getForm();
 
+                $disabled = $show
+                    && $show->getId() !== null
+                    && $show->getSociety() !== null
+                    && !$this->securityContext->isGranted('ROLE_ADMIN')
+                    ;
+
                 $form->add('society','entity_search', array(
                     'route' => 'get_societies',
                     'class' => 'Acts\\CamdramBundle\\Entity\\Society',
                     'required' => false,
-                    'disabled' => $show && null !== $show->getId() && !$this->securityContext->isGranted('ROLE_ADMIN')
+                    'disabled' => $disabled
                 ));
 
             })

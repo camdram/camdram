@@ -51,7 +51,14 @@
         {{ form_widget(text) }}
         {{ form_widget(hidden) }}
 
-        <script>$(function(){ $('#{{ text.vars.id }}').entitySearch({ route: '{{ route }}' }); })</script>
+        <script>
+            $(function(){
+                $('#{{ text.vars.id }}').entitySearch({
+                    route: '{{ route }}',
+                    prefetch: {% if prefetch %}true{% else %}false{% endif %}
+                });
+            })
+        </script>
 
     {% endspaceless %}
 {% endblock %}

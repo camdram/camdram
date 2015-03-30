@@ -138,8 +138,6 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
                 $role->setShow($show);
                 $manager->persist($role);
             }
-            $show->updateVenues();
-            $show->updateTimes();
 
             if(mt_rand(0,1) == 1){
                 $this->addAuditions($manager, $show);

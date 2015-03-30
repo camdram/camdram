@@ -225,7 +225,6 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      *
      * @ORM\Column(name="bookingcode", type="string", length=255, nullable=true)
-     * @Serializer\Expose
      */
     private $booking_code;
 
@@ -323,6 +322,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @var string
      * @Assert\Url()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      * @ORM\Column(name="onlinebookingurl", type="string", length=2083, nullable=true)
      */
     private $online_booking_url;
@@ -1573,5 +1573,18 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getUpdatedAt() {
         return $this->getTimestamp();
+    }
+
+    public function hasFuturePerformances()
+    {
+        $future = false;
+        $now = new \DateTime;
+        foreach ($this->getPerformances() as $performance){
+            if ($performance->getEndDate() >= $now) {
+                $future = true;
+                break;
+            }
+        }
+        return $future;
     }
 }

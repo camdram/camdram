@@ -28,6 +28,7 @@ class SocietyController extends OrganisationController
 
     protected $type_plural = 'societies';
 
+    protected $search_index = 'society';
 
     protected function getRepository()
     {

@@ -13,24 +13,16 @@
 
     <div class="large-12 columns panel">
         <ul class="inline-list right">
-            {% if show.onlineBookingUrl %}
-                {# If performances are listed ensure that tickets are only
-                   offered for shows in the future. #} 
-                {% set sell_tickets = true %}
-                {% if show.performances|length > 0 %}
-                    {% set sell_tickets = false %}
-                    {% for p in show.performances %}
-                        {% if date(p.enddate) >= date() %}
-                            {% set sell_tickets = true %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if sell_tickets == true %}
+            {% if show.hasFuturePerformances() %}
+                {% if show.onlineBookingUrl %}
                     <li><a href="{{ show.onlineBookingUrl }}" target="_blank"><i class="fa fa-ticket"></i> Buy tickets
-                            {% if show.prices %}({{ show.prices }}){% endif %}</a>
+                        {% if show.prices %}({{ show.prices }}){% endif %}</a>
                     </li>
+                {% elseif show.prices %}
+                    <li>Tickets: {{ show.prices }}</li>
                 {% endif %}
             {% endif %}
+
             {% if show.facebookId %}<li>
                 <a href="{{ show.getFacebookUrl() }}" target="_blank">
                     <img src="{{ asset('/bundles/actscamdramsecurity/images/facebook.png') }}" alt=""/></a>
