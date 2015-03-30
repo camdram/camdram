@@ -45,8 +45,22 @@ class PersonController extends AbstractRestController
 
     public function removeAction($identifier)
     {
-	parent::removeAction($identifier);
-	return $this->routeRedirectView('acts_camdram_homepage');
+        parent::removeAction($identifier);
+        return $this->routeRedirectView('acts_camdram_homepage');
+    }
+
+    public function getAction($identifier)
+    {
+        $person = $this->getEntity($identifier);
+
+        //If person is mapped to a different person, redirect to the canonical person
+        if ($person->getMappedTo()) {
+            return $this->redirectToRoute(
+                'get_person', array('identifier' => $person->getMappedTo()->getSlug()), 301
+            );
+        }
+
+        return parent::getAction($identifier);
     }
 
     /**

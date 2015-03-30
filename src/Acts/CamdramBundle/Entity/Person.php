@@ -305,7 +305,7 @@ class Person implements SearchableInterface
 
     public function isIndexable()
     {
-        return count($this->getRoles()) > 0;
+        return !$this->isMapped() && count($this->getRoles());
     }
 
 
@@ -517,5 +517,10 @@ class Person implements SearchableInterface
             }
         }
         return $latest;
+    }
+
+    public function isMapped()
+    {
+        return $this->getMappedTo() instanceof Person;
     }
 }
