@@ -41,7 +41,8 @@ class EntitySearchType extends AbstractType
         $repo = $this->em->getRepository($options['class']);
 
         $builder->add($text_name, 'text', array(
-                'attr' => array('class' => 'autocomplete_input')
+                'attr' => array('class' => 'autocomplete_input'),
+                'mapped' => $options['other_allowed']
             ))
             ->add($hidden_name, 'hidden', array(
                 'data_class' => $options['class']
@@ -81,7 +82,7 @@ class EntitySearchType extends AbstractType
         $view->vars['route'] = $options['route'];
         $view->vars['text_id'] = $form->getConfig()->getAttribute('text_field');
         $view->vars['hidden_id'] = $form->getName();
-
+        $view->vars['prefetch'] = $options['prefetch'];
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options)
@@ -102,6 +103,8 @@ class EntitySearchType extends AbstractType
             'route' => 'get_people',
             'class' => null,
             'inherit_data' => true,
+            'other_allowed' => true,
+            'prefetch' => true
         ));
     }
 
