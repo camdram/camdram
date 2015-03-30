@@ -111,7 +111,7 @@ class ShowController extends AbstractRestController
         $person_repo = $em->getRepository('ActsCamdramBundle:Person');
 
         /* Try and find the person. Add a new person if they don't exist. */
-        $person = $person_repo->findOneBy(array('name' => $person_name), array('id' => 'DESC'));
+        $person = $person_repo->findCanonicalPerson($person_name);
         if ($person == null) {
             $person = New Person();
             $person->setName($person_name);
@@ -712,12 +712,10 @@ class ShowController extends AbstractRestController
                 $role = clone $base_role;
                 $name = trim($name);
                 $person_repo = $em->getRepository('ActsCamdramBundle:Person');
-                $person = $person_repo->findOneBy(array('name' => $name), array('id' => 'DESC'));
+                $person = $person_repo->findCanonicalPerson($name);
                 if ($person == null) {
                     $person = New Person();
                     $person->setName($name);
-                    $slug = Sluggable\Urlizer::urlize($name, '-');
-                    $person->setSlug($slug);
                     $em->persist($person);
                 }
                 $role->setPerson($person);

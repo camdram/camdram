@@ -64,11 +64,12 @@ class Person implements SearchableInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="mapto", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\JoinColumn(name="mapto", nullable=true)
      * @Serializer\Exclude
      * @Gedmo\Versioned
      */
-    private $map_to;
+    private $mapped_to;
 
     /**
      * @var boolean
@@ -131,12 +132,12 @@ class Person implements SearchableInterface
     /**
      * Set map_to
      *
-     * @param integer $mapTo
+     * @param integer $mapedTo
      * @return Person
      */
-    public function setMapTo($mapTo)
+    public function setMappedTo($mapTo)
     {
-        $this->map_to = $mapTo;
+        $this->mapped_to = $mapTo;
 
         return $this;
     }
@@ -146,9 +147,9 @@ class Person implements SearchableInterface
      *
      * @return integer
      */
-    public function getMapTo()
+    public function getMappedTo()
     {
-        return $this->map_to;
+        return $this->mapped_to;
     }
 
     /**

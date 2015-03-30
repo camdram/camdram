@@ -42,4 +42,20 @@ class PersonRepository extends EntityRepository
         return current($result);
     }
 
+    public function findCanonicalPerson($name){
+        $person = $this->createQueryBuilder('p')
+            ->leftJoin('p.mapped_to', 'm')
+            ->where('p.name = :name')
+            ->setParameter('name', $name)
+            ->orderBy('p.id')
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+        if ($person && $person->getMappedTo() instanceof Person) {
+            return $person->getMappedTo();
+        }
+        else {
+            return $person;
+        }
+    }
+
 }
