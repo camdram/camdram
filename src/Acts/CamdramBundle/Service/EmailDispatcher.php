@@ -46,14 +46,26 @@ class EmailDispatcher
             ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($toEmails)
             ->setBcc($bccEmails)
+            /* HTML */
             ->setBody(
+                $this->twig->render(
+                    'ActsCamdramBundle:Email:show_created.html.twig',
+                    array(
+                        'owners' => $owners,
+                        'show' => $show,
+                    )
+                ), 'text/html'
+            )
+            
+            /* Plain Text */
+            ->addPart(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:show_created.txt.twig',
                     array(
                         'owners' => $owners,
                         'show' => $show,
                     )
-                )
+                ), 'text/plain'
             )
         ;
         $this->mailer->send($message);
