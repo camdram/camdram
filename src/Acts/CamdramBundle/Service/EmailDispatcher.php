@@ -44,11 +44,8 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('New show needs authorization on Camdram: '.$show->getName())
             ->setFrom(array($this->from_address => 'camdram.net'))
-            
-            /* HTML */
             ->setTo($toEmails)
             ->setBcc($bccEmails)
-            
             /* HTML */
             ->setBody(
                 $this->twig->render(
