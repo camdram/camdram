@@ -52,7 +52,6 @@ class EmailDispatcher
                 $this->twig->render(
                     'ActsCamdramBundle:Email:show_created.html.twig',
                     array(
-                        'creator' => $creator,
                         'owners' => $owners,
                         'show' => $show,
                     )

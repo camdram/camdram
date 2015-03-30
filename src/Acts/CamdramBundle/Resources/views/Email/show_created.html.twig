@@ -22,7 +22,7 @@
 </script>
 
 <!-- Email text -->
-<p>A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {{ creator.name }} ({{ creator.email }}) and must be manually authorised before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+<p>A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {% if owners | length > 0 %}by {% endif %}{% for owner in owners %}{{ owner.name }} (<a href="mailto:{{ owner.email }}">{{ owner.email }}</a>){% if not loop.last %}, {% endif %}{% endfor %} and must be manually authorised before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
 <ul>
 	<li>Dates</li>
 	<li>Venue</li>
