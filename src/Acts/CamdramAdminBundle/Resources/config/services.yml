@@ -1,4 +1,5 @@
 services:
-#    acts_camdram_admin.example:
-#        class: Acts\CamdramAdminBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+
+    acts_camdram_admin.people_merger:
+        class: Acts\CamdramAdminBundle\Service\PeopleMerger
+        arguments: [@doctrine.orm.entity_manager, @form.factory]

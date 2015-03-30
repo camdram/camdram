@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 use FOS\RestBundle\Controller\FOSRestController;
@@ -116,5 +117,46 @@ class PersonController extends AbstractRestController
         return $this->view($data, 200)
             ->setTemplateVar('data')
             ->setTemplate('ActsCamdramBundle:Person:current-shows.html.twig');
+    }
+
+    public function getMergeAction($identifier)
+    {
+        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
+        $person = $this->getEntity($identifier);
+
+        return $this->render('ActsCamdramBundle:Person:merge.html.twig', array(
+            'person' => $person,
+            'form' => $this->get('acts_camdram_admin.people_merger')->createForm()->createView()
+        ));
+    }
+
+    /**
+     * @param $identifier
+     * @param $request Request
+     * @return $this
+     * @Rest\Link("/people/{identifier}/merge")
+     */
+    public function mergeAction($identifier, Request $request)
+    {
+        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
+        $person = $this->getEntity($identifier);
+        $merger = $this->get('acts_camdram_admin.people_merger');
+
+        $form = $merger->createForm();
+        $form->submit($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            if (($otherPerson = $merger->getPersonFromFormData($data))) {
+                $newPerson = $merger->mergePeople($person, $otherPerson, $data['keep_person'] == 'this');
+                return $this->redirectToRoute('get_person', array('identifier' => $newPerson->getSlug()));
+            } else {
+                $form->addError(new FormError('Person not found'));
+            }
+        }
+
+        return $this->render('ActsCamdramBundle:Person:merge.html.twig', array(
+            'person' => $person,
+            'form' => $form->createView()
+        ));
     }
 }

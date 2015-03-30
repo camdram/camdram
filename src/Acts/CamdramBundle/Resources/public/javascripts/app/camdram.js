@@ -189,14 +189,17 @@
             return items;
         }
 
+        var onValueSelect = function(event, datum) {
+            $self.parent().siblings('input[type=hidden]').val(datum.id);
+            $self.trigger('entitysearch:changed', [datum]);
+        };
+
         $self.typeahead({
            name: options.route,
            valueKey: 'name',
            prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
            remote: {url: Routing.generate(options.route, {q: 'QUERY', _format: 'json', autocomplete: true}), wildcard: 'QUERY', filter: filter}
-       }).on('typeahead:autocompleted', function (object, datum) {
-            $self.parent().siblings('input[type=hidden]').val(datum.id);
-       });
+       }).on('typeahead:autocompleted', onValueSelect).on('typeahead:selected', onValueSelect);
 
        $(this).change(function() {
            console.log($self.parent().siblings('input[type=hidden]').val())
