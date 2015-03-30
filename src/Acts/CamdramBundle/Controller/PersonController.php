@@ -161,8 +161,12 @@ class PersonController extends AbstractRestController
         if ($form->isValid()) {
             $data = $form->getData();
             if (($otherPerson = $merger->getPersonFromFormData($data))) {
-                $newPerson = $merger->mergePeople($person, $otherPerson, $data['keep_person'] == 'this');
-                return $this->redirectToRoute('get_person', array('identifier' => $newPerson->getSlug()));
+                if ($otherPerson == $person) {
+                    $form->addError(new FormError('You cannot map a person to itself'));
+                } else {
+                    $newPerson = $merger->mergePeople($person, $otherPerson, $data['keep_person'] == 'this');
+                    return $this->redirectToRoute('get_person', array('identifier' => $newPerson->getSlug()));
+                }
             } else {
                 $form->addError(new FormError('Person not found'));
             }
