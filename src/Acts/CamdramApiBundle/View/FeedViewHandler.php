@@ -80,9 +80,11 @@ class FeedViewHandler
 
             $entry->setTitle($accessor->getValue($document, $feedData->getTitleField()));
             $entry->setLink($this->urlGen->generateUrl($document));
-            $entry->setDateCreated($accessor->getValue($document, $feedData->getCreatedAtField()));
-            $entry->setDateModified($accessor->getValue($document, $feedData->getUpdatedAtField()));
             $entry->setDescription($this->twig->render($feedData->getTemplate(), array('entity' => $document)));
+
+            if ($accessor->isReadable($document, $feedData->getUpdatedAtField())) {
+                $entry->setDateModified($accessor->getValue($document, $feedData->getUpdatedAtField()));
+            }
 
             $feed->addEntry($entry);
 
