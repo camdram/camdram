@@ -32,6 +32,7 @@ class CamdramExtension extends \Twig_Extension
     {
         return array(
             'camdram_markdown' => new \Twig_Filter_Method($this, 'camdramMarkdown', array('is_safe' => array('html'))),
+            'strip_camdram_markdown' => new \Twig_Filter_Method($this, 'stripCamdramMarkdown'),
             'detect_links' => new \Twig_Filter_Method($this, 'detectLinks', array('pre_escape' => 'html', 'is_safe' => array('html'))),
             'strip_new_lines' => new \Twig_Filter_Method($this, 'stripNewLines'),
             'truncate' => new \Twig_Filter_Method($this, 'truncate', array('pre_escape' => 'html', 'is_safe' => array('html'))),
@@ -49,6 +50,11 @@ class CamdramExtension extends \Twig_Extension
     public function camdramMarkdown($text)
     {
         return $this->textService->convertMarkdown($text);
+    }
+
+    public function stripCamdramMarkdown($text)
+    {
+        return $this->textService->stripMarkdown($text);
     }
 
     public function detectLinks($text)

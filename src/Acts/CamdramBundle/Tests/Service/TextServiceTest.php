@@ -114,4 +114,34 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
             $this->textService->convertMarkdown('<script>Hello</script> <html>world</html>'));
     }
 
+    public function testStripMarkDown_Tags()
+    {
+        $this->assertEquals('Hello world', $this->textService->stripMarkdown('<b>Hello</b> <i>world</i>'));
+        $this->assertEquals('Hello  world', $this->textService->stripMarkdown('Hello <br /> world'));
+    }
+
+    public function testStripMarkdown_Links()
+    {
+        $this->assertEquals(
+            'The website www.camdram.net is great',
+            $this->textService->stripMarkdown('The website [L:www.camdram.net] is great')
+        );
+        $this->assertEquals(
+            'The website Camdram is great',
+            $this->textService->stripMarkdown('The website [L:www.camdram.net;Camdram] is great')
+        );
+    }
+
+    public function testStripMarkdown_Emails()
+    {
+        $this->assertEquals(
+            'websupport@camdram.net can be used for support',
+            $this->textService->stripMarkdown('[E:websupport@camdram.net] can be used for support')
+        );
+        $this->assertEquals(
+            'The support email can be used for support',
+            $this->textService->stripMarkdown('The [E:websupport@camdram.net;support email] can be used for support')
+        );
+    }
+
 }
