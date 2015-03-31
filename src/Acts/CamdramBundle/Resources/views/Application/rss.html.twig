@@ -1,1 +1,14 @@
 <p>{{ entity.show.name }}</p>
+<p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'disable_links': true, 'performances' : entity.show.performances} %}</p>
+
+<h3>{{ entity.text }}</h3>
+
+{% if entity.furtherinfo %}
+	<p>{{ entity.furtherinfo|nl2br|detect_links }}</p>
+{% endif %}
+
+<p><strong>Deadline:</strong> {{ entity.deadlinedate|date('l jS F') }}
+{% if entity.deadlinetime %}
+	{{ entity.deadlinetime|date('g:ia') }}
+{% endif %}
+</p>
