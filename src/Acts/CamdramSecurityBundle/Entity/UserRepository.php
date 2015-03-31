@@ -25,6 +25,22 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findOneByEmail($email)
+    {
+        if (preg_match('/^(.*)@cam.ac.uk$/i', $email, $matches)) {
+            $crsid = $matches[1];
+            return $this->createQueryBuilder('u')
+                ->where('u.email = :email')
+                ->orWhere('u.email = :crsid')
+                ->setParameter('email', $email)
+                ->setParameter('crsid', $crsid)
+                ->getQuery()->getOneOrNullResult();
+        }
+        else {
+            return parent::findOneByEmail($email);
+        }
+    }
+
     public function findByEmailAndPassword($email, $password)
     {
         $query = $this->createQueryBuilder('u')

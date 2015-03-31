@@ -4,6 +4,7 @@ namespace Acts\CamdramAdminBundle\Controller;
 
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -185,6 +186,53 @@ class UserController extends FOSRestController
 
         return $this->render('ActsCamdramAdminBundle:User:reset-password-complete.html.twig',
               array('user' => $user, 'url' => $url));
+    }
+
+    public function getMergeAction($identifier)
+    {
+        $this->checkAuthenticated();
+        $user = $this->getEntity($identifier);
+
+        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+            'user' => $user,
+            'form' => $this->get('acts_camdram_admin.user_merger')->createForm()->createView()
+        ));
+    }
+
+    /**
+     * @param $identifier
+     * @param $request Request
+     * @return $this
+     */
+    public function mergeAction($identifier, Request $request)
+    {
+        $this->checkAuthenticated();
+        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
+        $user = $this->getEntity($identifier);
+        $merger = $this->get('acts_camdram_admin.user_merger');
+
+        $form = $merger->createForm();
+        $form->submit($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $otherUser = $this->get('doctrine.orm.entity_manager')->getRepository('ActsCamdramSecurityBundle:User')
+                ->findOneByEmail($data['email']);
+            if ($otherUser) {
+                if ($otherUser == $user) {
+                    $form->addError(new FormError('You cannot merge a user with itself'));
+                } else {
+                    $newUser = $merger->mergeUsers($user, $otherUser, $data['keep_user'] == 'this');
+                    return $this->redirectToRoute('get_user', array('identifier' => $newUser->getId()));
+                }
+            } else {
+                $form->addError(new FormError('User not found'));
+            }
+        }
+
+        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+            'user' => $user,
+            'form' => $form->createView()
+        ));
     }
 
 }

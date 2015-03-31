@@ -138,4 +138,82 @@ class KnowledgeBaseRevision
     {
         return $this->user;
     }
+
+    /**
+     * Set page_id
+     *
+     * @param integer $pageId
+     * @return KnowledgeBaseRevision
+     */
+    public function setPageId($pageId)
+    {
+        $this->page_id = $pageId;
+
+        return $this;
+    }
+
+    /**
+     * Set text
+     *
+     * @param string $text
+     * @return KnowledgeBaseRevision
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Set user_id
+     *
+     * @param integer $userId
+     * @return KnowledgeBaseRevision
+     */
+    public function setUserId($userId)
+    {
+        $this->user_id = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return KnowledgeBaseRevision
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Set page
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\Page $page
+     * @return KnowledgeBaseRevision
+     */
+    public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)
+    {
+        $this->page = $page;
+
+        return $this;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     * @return KnowledgeBaseRevision
+     */
+    public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

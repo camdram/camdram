@@ -3,3 +3,7 @@ services:
     acts_camdram_admin.people_merger:
         class: Acts\CamdramAdminBundle\Service\PeopleMerger
         arguments: [@doctrine.orm.entity_manager, @form.factory]
+
+    acts_camdram_admin.user_merger:
+        class: Acts\CamdramAdminBundle\Service\UserMerger
+        arguments: [@doctrine.orm.entity_manager, @form.factory]

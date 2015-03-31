@@ -25,5 +25,9 @@
                 icon: 'male', text: 'Impersonate this user'} })
             }}
         {% endif %}
+        {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {
+            item: {id: 'user_merge', path: path('get_user_merge',{identifier:user.id}), icon: 'compress',
+                text: 'Merge user'} })
+        }}
     </ul>
 </div>

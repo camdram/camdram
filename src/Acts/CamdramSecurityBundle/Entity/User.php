@@ -183,7 +183,7 @@ class User implements \Serializable, CamdramUserInterface
     private $upgraded_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user", cascade={"remove"})
      * @Serializer\Exclude()
      */
     private $external_users;
@@ -208,6 +208,54 @@ class User implements \Serializable, CamdramUserInterface
      * @Serializer\Exclude()
      */
     private $aces;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision", mappedBy="user")
+     * @Serializer\Exclude()
+     */
+    private $knowledge_base_revisions;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
+     * @Serializer\Exclude()
+     */
+    private $ace_grants;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\Email", mappedBy="user")
+     * @Serializer\Exclude()
+     */
+    private $email_builders;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\EmailAlias", mappedBy="user")
+     * @Serializer\Exclude()
+     */
+    private $email_aliases;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\EmailSig", mappedBy="user")
+     * @Serializer\Exclude()
+     */
+    private $email_sigs;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Acts\CamdramAdminBundle\Entity\Support", mappedBy="owner")
+     * @Serializer\Exclude()
+     */
+    private $owned_issues;
 
     /**
      * @ORM\ManyToMany(targetEntity="Acts\CamdramApiBundle\Entity\ExternalApp", mappedBy="users")
@@ -978,5 +1026,203 @@ class User implements \Serializable, CamdramUserInterface
     public function getApps()
     {
         return $this->apps;
+    }
+
+    /**
+     * Add knowledge_base_revisions
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions
+     * @return User
+     */
+    public function addKnowledgeBaseRevision(\Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions)
+    {
+        $this->knowledge_base_revisions[] = $knowledgeBaseRevisions;
+
+        return $this;
+    }
+
+    /**
+     * Remove knowledge_base_revisions
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions
+     */
+    public function removeKnowledgeBaseRevision(\Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions)
+    {
+        $this->knowledge_base_revisions->removeElement($knowledgeBaseRevisions);
+    }
+
+    /**
+     * Get knowledge_base_revisions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getKnowledgeBaseRevisions()
+    {
+        return $this->knowledge_base_revisions;
+    }
+
+    /**
+     * Add ace_grants
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants
+     * @return User
+     */
+    public function addAceGrant(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants)
+    {
+        $this->ace_grants[] = $aceGrants;
+
+        return $this;
+    }
+
+    /**
+     * Remove ace_grants
+     *
+     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants
+     */
+    public function removeAceGrant(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants)
+    {
+        $this->ace_grants->removeElement($aceGrants);
+    }
+
+    /**
+     * Get ace_grants
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAceGrants()
+    {
+        return $this->ace_grants;
+    }
+
+    /**
+     * Add email_builders
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\Email $emailBuilders
+     * @return User
+     */
+    public function addEmailBuilder(\Acts\CamdramLegacyBundle\Entity\Email $emailBuilders)
+    {
+        $this->email_builders[] = $emailBuilders;
+
+        return $this;
+    }
+
+    /**
+     * Remove email_builders
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\Email $emailBuilders
+     */
+    public function removeEmailBuilder(\Acts\CamdramLegacyBundle\Entity\Email $emailBuilders)
+    {
+        $this->email_builders->removeElement($emailBuilders);
+    }
+
+    /**
+     * Get email_builders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEmailBuilders()
+    {
+        return $this->email_builders;
+    }
+
+    /**
+     * Add owned_issues
+     *
+     * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
+     * @return User
+     */
+    public function addOwnedIssue(\Acts\CamdramAdminBundle\Entity\Support $ownedIssues)
+    {
+        $this->owned_issues[] = $ownedIssues;
+
+        return $this;
+    }
+
+    /**
+     * Remove owned_issues
+     *
+     * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
+     */
+    public function removeOwnedIssue(\Acts\CamdramAdminBundle\Entity\Support $ownedIssues)
+    {
+        $this->owned_issues->removeElement($ownedIssues);
+    }
+
+    /**
+     * Get owned_issues
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOwnedIssues()
+    {
+        return $this->owned_issues;
+    }
+
+    /**
+     * Add email_aliases
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases
+     * @return User
+     */
+    public function addEmailAlias(\Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases)
+    {
+        $this->email_aliases[] = $emailAliases;
+
+        return $this;
+    }
+
+    /**
+     * Remove email_aliases
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases
+     */
+    public function removeEmailAlias(\Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases)
+    {
+        $this->email_aliases->removeElement($emailAliases);
+    }
+
+    /**
+     * Get email_aliases
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEmailAliases()
+    {
+        return $this->email_aliases;
+    }
+
+    /**
+     * Add email_sigs
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs
+     * @return User
+     */
+    public function addEmailSig(\Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs)
+    {
+        $this->email_sigs[] = $emailSigs;
+
+        return $this;
+    }
+
+    /**
+     * Remove email_sigs
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs
+     */
+    public function removeEmailSig(\Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs)
+    {
+        $this->email_sigs->removeElement($emailSigs);
+    }
+
+    /**
+     * Get email_sigs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEmailSigs()
+    {
+        return $this->email_sigs;
     }
 }
