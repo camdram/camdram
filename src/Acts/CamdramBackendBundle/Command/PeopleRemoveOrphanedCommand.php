@@ -10,12 +10,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Doctrine\ORM\Query\Expr;
 
-class PeopleRemoveRedundantCommand extends ContainerAwareCommand
+class PeopleRemoveOrphanedCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('camdram:people:remove-redundant')
+            ->setName('camdram:people:remove-orphaned')
             ->setDescription('Remove people no no associated user or role')
         ;
     }
