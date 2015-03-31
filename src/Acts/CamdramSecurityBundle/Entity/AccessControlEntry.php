@@ -60,7 +60,7 @@ class AccessControlEntry
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="ace_grants")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
      * })

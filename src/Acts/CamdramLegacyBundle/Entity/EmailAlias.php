@@ -31,7 +31,7 @@ class EmailAlias
     /**
      * @var \Acts\CamdramSecurityBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="email_aliases")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="uid", referencedColumnName="id")
      * })

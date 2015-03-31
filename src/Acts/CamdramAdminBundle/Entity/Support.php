@@ -66,7 +66,7 @@ class Support
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="owned_issues")
      * @ORM\JoinColumn(name="ownerid", referencedColumnName="id", nullable=true)
      */
     private $owner;

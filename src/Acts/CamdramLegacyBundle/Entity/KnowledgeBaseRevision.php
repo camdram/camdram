@@ -55,7 +55,7 @@ class KnowledgeBaseRevision
     /**
      * @var \Acts\CamdramSecurityBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="knowledge_base_revisions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
