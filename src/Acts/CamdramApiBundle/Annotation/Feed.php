@@ -15,8 +15,6 @@ class Feed
 
     private $titleField = 'title';
 
-    private $createdAtField = 'created_at';
-
     private $updatedAtField = 'updated_at';
 
     public function __construct(array $options)
@@ -26,8 +24,7 @@ class Feed
         $this->template = $options['template'];
 
         if (isset($options['titleField'])) $this->titleField = $options['titleField'];
-        if (isset($options['createdAtField'])) $options['createdAtField'];
-        if (isset($options['updatedAtField'])) $options['updatedAtField'];
+        if (isset($options['updatedAtField'])) $this->updatedAtField = $options['updatedAtField'];
     }
 
     public function getName()
@@ -48,11 +45,6 @@ class Feed
     public function getTitleField()
     {
         return $this->titleField;
-    }
-
-    public function getCreatedAtField()
-    {
-        return $this->createdAtField;
     }
 
     public function getUpdatedAtField()

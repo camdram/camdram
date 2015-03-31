@@ -28,6 +28,18 @@ class TextService
         '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'     => '<a href="mailto:$1">$2</a>',
     );
 
+    /**
+     * @var array the regexes mapping markdown links to just the link text
+     */
+    protected $markdown_strip_regexs = array(
+        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+)\]/'               => '$1',
+        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+);([^\]]+)\]/'      => '$2',
+        '/\[E:([a-zA-Z0-9\.@\_\-]+)\]/'                      => '$1',
+        '/\[E:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'             => '$2',
+        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+)\]/'              => '$1',
+        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'     => '$2',
+    );
+
     protected $allowed_tags = '<b><i><u><strong><em><p><ul><li><ol><br><green><red><pre><hr>';
 
     /**
@@ -70,6 +82,13 @@ class TextService
     public function stripNewLines($text)
     {
         return preg_replace("/[\r\n]+/", '', $text);
+    }
+
+    public function stripMarkdown($text)
+    {
+        $text = strip_tags($text);
+        $text = preg_replace(array_keys($this->markdown_strip_regexs), array_values($this->markdown_strip_regexs), $text);
+        return $text;
     }
 
     /**
