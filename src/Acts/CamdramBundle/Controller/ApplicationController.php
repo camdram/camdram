@@ -30,6 +30,17 @@ class ApplicationController extends FOSRestController
         ;
         return $view;
     }
+    
+    public function getAction($identifier)
+    {
+        $applications = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
+            ->findOneByShowSlug($identifier, new \DateTime);
+        if ($applications) {
+            return $this->redirect($this->generateUrl('get_applications').'#'.$applications->getShow()->getSlug());
+        } else {
+            throw $this->createNotFoundException('No appplication advert exists with that identifier');
+        }
+    }
 
     /**
      * weeksApplicationsAction
