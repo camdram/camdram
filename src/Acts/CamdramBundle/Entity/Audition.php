@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Acts\CamdramApiBundle\Annotation as Api;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -11,6 +12,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="acts_auditions")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\AuditionRepository")
+ * @Api\Feed(name="Camdram.net - Auditions", titleField="feed_title",
+ *     description="Auditions advertised for shows in Cambridge",
+ *     template="ActsCamdramBundle:Audition:rss.html.twig")
  * @Gedmo\Loggable
  */
 class Audition
@@ -259,5 +263,10 @@ class Audition
     public function getShow()
     {
         return $this->show;
+    }
+    
+    public function getFeedTitle()
+    {
+        return $this->getShow()->getName();
     }
 }
