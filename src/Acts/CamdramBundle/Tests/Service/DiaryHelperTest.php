@@ -48,7 +48,7 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
     public function testCreateEventFromPerformance()
     {
         $performance = $this->getPerformance();
-        $performance->setVenueName('Test Venue');
+        $performance->setOtherVenue('Test Venue');
 
         $this->router->expects($this->once())
             ->method('generate')
