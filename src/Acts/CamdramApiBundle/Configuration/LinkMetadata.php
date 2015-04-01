@@ -89,11 +89,6 @@ class LinkMetadata {
         return $this->entity;
     }
 
-    public function getShortEntity()
-    {
-        return strtolower((new \ReflectionClass($this->entity))->getShortName());
-    }
-
     /**
      * @param string $entity
      */

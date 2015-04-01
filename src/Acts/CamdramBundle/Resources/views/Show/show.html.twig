@@ -88,20 +88,18 @@
 	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
 	    {% endfor %}
         {% endif %}
-        {% if show.activeTechieAdverts | length > 0 %}
+        {% if show.activeTechieAdvert %}
             <p>We are looking for:
-            {% for advert in show.activeTechieAdverts %}
-                {% for p in advert.positions|split("\n") %}
+                {% for p in show.activeTechieAdvert.positions|split("\n") %}
                     {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}
                     {{- p }}
-                {%- endfor %}
-                - <a href="{{ path('get_techie', {identifier: advert.slug}) }}">more details</a></p>
+                - <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
             {% endfor %}
         {% endif %}
-        {% for advert in show.activeApplications %}
-            <p>{{ advert.text() }} -
-            <a href="{{ path('get_applications') }}#application-{{ advert.id }}">more details</a></p>
-        {% endfor %}
+        {% if show.activeApplication %}
+            <p>{{ show.activeApplication.text() }} -
+            <a href="{{ path('get_applications') }}#application-{{ show.activeApplication.id }}">more details</a></p>
+        {% endif %}
     </div>
 </div>
 {% endif %}

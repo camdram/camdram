@@ -100,7 +100,7 @@
 $(function() {
 
     var update_date_fields = function() {
-        var val = $('#acts_camdrambundle_showtype_multi_venue input:checked').val();
+        var val = $('#show_multi_venue input:checked').val();
         switch (val) {
             case 'single':
                 $('.performances .venue-row').hide();
@@ -122,7 +122,7 @@ $(function() {
         })
     })
 
-    $('#acts_camdrambundle_showtype_multi_venue input').change(update_date_fields)
+    $('#show_multi_venue input').change(update_date_fields)
     $('.main-venue-row select').change(function() {
         $('.performances .venue-row select').val($(this).val());
     })

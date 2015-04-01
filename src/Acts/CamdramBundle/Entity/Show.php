@@ -12,7 +12,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Show
@@ -26,6 +25,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @Api\Feed(name="Camdram - Shows", titleField="name",
  *   description="Shows produced by students in Cambridge",
  *   template="ActsCamdramBundle:Show:rss.html.twig")
+ * @Api\Link(route="get_show", params={"identifier": "object.getSlug()"})
  */
 class Show implements SearchableInterface, OwnableInterface
 {
@@ -159,7 +159,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @Serializer\Type("string")
      * @Serializer\XmlElement(cdata=false)
      */
-    private $venue_name = '';
+    private $other_venue = '';
 
     /**
      * @var \DateTime
@@ -179,7 +179,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @Serializer\Type("string")
      * @Serializer\XmlElement(cdata=false)
      */
-    private $society_name = '';
+    private $other_society = '';
 
     /**
      * @var boolean
@@ -285,7 +285,6 @@ class Show implements SearchableInterface, OwnableInterface
      * @var array
      *
      * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
-     * @Api\Link(route="get_techie", name="techie_advert", params={"identifier": "object.getSlug()"})
      */
     private $techie_adverts;
 
@@ -316,6 +315,8 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_date" = "ASC"})
+     * @Serializer\Expose()
+     * @Serializer\XmlList(inline = true, entry = "performance")
      */
     private $performances;
 
@@ -363,8 +364,16 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="onlinebookingurl", type="string", length=2083, nullable=true)
      * @Serializer\Expose
      * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $online_booking_url;
+
+    private $entity_type = 'show';
+
+    public function getEntityType()
+    {
+        return $this->entity_type;
+    }
 
     /**
      * Set dates
@@ -449,7 +458,7 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-     * Get photo_url
+     * Get photoUrl
      *
      * @return string
      */
@@ -461,16 +470,26 @@ class Show implements SearchableInterface, OwnableInterface
 
 
     /**
-     * Set venue_name
+     * Set other_venue
      *
      * @param string $venueName
      * @return Show
      */
-    public function setVenueName($venueName)
+    public function setOtherVenue($venueName)
     {
-        $this->venue_name = $venueName;
+        $this->other_venue = $venueName;
 
         return $this;
+    }
+
+    public function getOtherVenue()
+    {
+        if (!$this->venue) {
+            return $this->other_venue;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -480,8 +499,8 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getVenueName()
     {
-        if ($this->venue_name) {
-            return $this->venue_name;
+        if ($this->other_venue) {
+            return $this->other_venue;
         } elseif ($this->venue) {
             return $this->venue->getName();
         }
@@ -510,27 +529,32 @@ class Show implements SearchableInterface, OwnableInterface
         return $this->exclude_date;
     }
 
+    public function getOtherSociety()
+    {
+        return $this->other_society;
+    }
+
     /**
-     * Set society_name
+     * Set other_society
      *
      * @param string $societyName
      * @return Show
      */
-    public function setSocietyName($societyName)
+    public function setOtherSociety($societyName)
     {
-        $this->society_name = $societyName;
+        $this->other_society = $societyName;
 
         return $this;
     }
 
-    /**
-     * Get society_name
-     *
-     * @return string
-     */
     public function getSocietyName()
     {
-        return $this->society_name;
+        if ($this->other_society) {
+            return $this->other_society;
+        }
+        elseif ($this->society) {
+            return $this->society->getName();
+        }
     }
 
     /**
@@ -856,15 +880,15 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performance)
     {
-      $this->performances->add($performance);
-      $performance->setShow($this);
-      if (!($performance->getVenueName())) {
-	if ($this->getVenue()) {
-	  $performance->setVenue($this->getVenue());
-	} else {
-	  $performance->setVenueName($this->getVenueName());
-	}
-      }
+        $this->performances->add($performance);
+        $performance->setShow($this);
+        if (!($performance->getOtherVenue())) {
+            if ($this->getVenue()) {
+              $performance->setVenue($this->getVenue());
+            } else {
+                $performance->setOtherVenue($this->getOtherVenue());
+            }
+        }
 
         return $this;
     }
@@ -993,6 +1017,47 @@ class Show implements SearchableInterface, OwnableInterface
     public function setMultiVenue($value)
     {
         $this->multi_venue = $value;
+        $this->updateVenues();
+    }
+
+    public function updateVenues()
+    {
+        switch ($this->getMultiVenue()) {
+            case 'single':
+                foreach ($this->getPerformances() as $performance) {
+                    $performance->setVenue($this->getVenue());
+                    $performance->setOtherVenue($this->getOtherVenue());
+                }
+                break;
+            case 'multi':
+                //Try to work out the 'main' venue
+                //First count venue objects and venue names
+                $venues = array();
+                $venue_counts = array();
+                $name_counts = array();
+                foreach ($this->getPerformances() as $performance) {
+                    if ($performance->getVenue()) {
+                        $key = $performance->getVenue()->getId();
+                        if (!isset($venue_counts[$key])) $venue_counts[$key] = 1;
+                        else $venue_counts[$key]++;
+                        $venues[$key] = $performance->getVenue();
+                    }
+                    if ($performance->getOtherVenue()) {
+                        $key = $performance->getOtherVenue();
+                        if (!isset($name_counts[$key])) $name_counts[$key] = 1;
+                        else $name_counts[$key]++;
+                    }
+                    //Favour a venue object over a venue name
+                    if (count($venue_counts) > 0) {
+                        $venue_id = array_search(max($venue_counts), $venue_counts);
+                        $this->setVenue($venues[$venue_id]);
+                    } else {
+                        $venue_name = array_search(max($name_counts), $name_counts);
+                        $this->setOtherVenue($venue_name);
+                    }
+                }
+                break;
+        }
     }
 
     /**
@@ -1062,9 +1127,11 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get techie_adverts
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return TechieAdvert
+     * @Api\Link(route="get_techie", name="techie_advert", params={"identifier": "object.getSlug()"},
+     *      targetType="techie_advert")
      */
-    public function getActiveTechieAdverts()
+    public function getActiveTechieAdvert()
     {
         $now = new \DateTime;
         $today = new \DateTime($now->format('Y-m-d'));
@@ -1075,7 +1142,7 @@ class Show implements SearchableInterface, OwnableInterface
                 Criteria::expr()->gt('deadlineTime', $now)
             ));
 
-        return $this->techie_adverts->matching($criteria);
+        return $this->techie_adverts->matching($criteria)->first();
     }
 
     /**
@@ -1249,9 +1316,11 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get active applications
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Application
+     * @Api\Link(route="get_application", name="application", params={"identifier": "object.getSlug()"},
+     *      targetType="application")
      */
-    public function getActiveApplications()
+    public function getActiveApplication()
     {
         $now = new \DateTime;
         $today = new \DateTime($now->format('Y-m-d'));
@@ -1262,14 +1331,14 @@ class Show implements SearchableInterface, OwnableInterface
                 Criteria::expr()->gt('deadlineTime', $now)
             ));
 
-        return $this->applications->matching($criteria);
+        return $this->applications->matching($criteria)->first();
     }
 
     public function hasVacancies()
     {
-        return count($this->getActiveTechieAdverts()) > 0
+        return $this->getActiveTechieAdvert()
                 || count($this->getAuditions()) > 0
-                || count($this->getActiveApplications()) > 0;
+                || $this->getActiveApplication();
     }
 
     /**
@@ -1540,7 +1609,7 @@ class Show implements SearchableInterface, OwnableInterface
             if ($performance->getVenue() != null) {
                 $venue = $performance->getVenue()->getName();
             } else {
-                $venue = $performance->getVenueName();
+                $venue = $performance->getOtherVenue();
             }
             while($current_day <= $end_day) {
                 if ($current_day != $exclude) {

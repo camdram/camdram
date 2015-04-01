@@ -10,6 +10,7 @@ namespace Acts\CamdramApiBundle\Serializer;
 
 
 use Acts\CamdramApiBundle\Configuration\AnnotationReader;
+use Acts\CamdramApiBundle\Configuration\LinkMetadata;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
@@ -56,51 +57,66 @@ class XmlEventSubscriber  implements EventSubscriberInterface
 
     public function onPostSerialize(ObjectEvent $event)
     {
-        $links = $this->reader->read($event->getObject())->getLinks();
+        $metadata = $this->reader->read($event->getObject());
 
         /** @var XmlSerializationVisitor $visitor */
         $visitor = $event->getVisitor();
         $object = $event->getObject();
         $accessor = PropertyAccess::createPropertyAccessor();
-        $language = new ExpressionLanguage();
 
-        foreach ($links as $link) {
-            $child = $accessor->getValue($event->getObject(), $link->getProperty());
-            $compiledParams = array();
-            foreach ($link->getParams() as $key => $expr) {
-                $compiledParams[$key] = $language->evaluate($expr, array('object' => $object));
-            }
+        if ($metadata->getLinks()) {
+            foreach ($metadata->getLinks() as $link) {
+                $child = $accessor->getValue($event->getObject(), $link->getProperty());
+                if (!is_object($child)) continue;
 
-            $linkNode = $visitor->getDocument()->createElement('link');
-            $visitor->getCurrentNode()->appendChild($linkNode);
+                $visitor->getCurrentNode()->appendChild($this->createLinkNode($link, $visitor, $object));
 
-            $linkNode->setAttribute('rel', $link->getShortEntity());
-            $linkNode->setAttribute('href', $this->router->generate($link->getRoute(), $compiledParams, true));
+                if ($link->getEmbed()) {
+                    $entryNode = $visitor->getDocument()->createElement($link->getName());
 
-            if ($link->getEmbed()) {
-                $entryNode = $visitor->getDocument()->createElement($link->getName());
+                    $visitor->getCurrentNode()->appendChild($entryNode);
+                    $visitor->setCurrentNode($entryNode);
+                    $visitor->getCurrentNode()->setAttribute('rel', $link->getEntity());
 
-                $visitor->getCurrentNode()->appendChild($entryNode);
-                $visitor->setCurrentNode($entryNode);
-                $visitor->getCurrentNode()->setAttribute('rel', $link->getShortEntity());
+                    foreach (array('id', 'name', 'slug') as $property) {
+                        if ($accessor->isReadable($child, $property)) {
+                            $childNode = $visitor->getDocument()->createElement($property);
+                            $valueNode = $visitor->getDocument()->createTextNode($accessor->getValue($child, $property));
 
-                foreach (array('id', 'name', 'slug') as $property) {
-                    if ($accessor->isReadable($child, $property)) {
-                        $childNode = $visitor->getDocument()->createElement($property);
-                        $valueNode = $visitor->getDocument()->createTextNode($accessor->getValue($child, $property));
+                            $visitor->getCurrentNode()->appendChild($childNode);
+                            $visitor->setCurrentNode($childNode);
+                            $visitor->getCurrentNode()->appendChild($valueNode);
 
-                        $visitor->getCurrentNode()->appendChild($childNode);
-                        $visitor->setCurrentNode($childNode);
-                        $visitor->getCurrentNode()->appendChild($valueNode);
-
-                        $visitor->revertCurrentNode();
+                            $visitor->revertCurrentNode();
+                        }
                     }
+
+                    $visitor->revertCurrentNode();
+
                 }
-
-                $visitor->revertCurrentNode();
-
             }
         }
+
+        if ($metadata->getSelfLink()) {
+            $visitor->getCurrentNode()->appendChild($this->createLinkNode($metadata->getSelfLink(), $visitor, $object));
+        }
+    }
+
+    private function createLinkNode(LinkMetadata $link, XmlSerializationVisitor $visitor, $object)
+    {
+        $language = new ExpressionLanguage();
+        $compiledParams = array();
+        foreach ($link->getParams() as $key => $expr) {
+            $compiledParams[$key] = $language->evaluate($expr, array('object' => $object));
+        }
+
+        $linkNode = $visitor->getDocument()->createElement('link');
+
+        $linkNode->setAttribute('id', $link->getName());
+        $linkNode->setAttribute('rel', $link->getEntity());
+        $linkNode->setAttribute('href', $this->router->generate($link->getRoute(), $compiledParams, true));
+
+        return $linkNode;
     }
 
 } 

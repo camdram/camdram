@@ -10,6 +10,7 @@ namespace Acts\CamdramApiBundle\Serializer;
 
 
 use Acts\CamdramApiBundle\Configuration\AnnotationReader;
+use Acts\CamdramApiBundle\Configuration\LinkMetadata;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
@@ -56,41 +57,51 @@ class JsonEventSubscriber  implements EventSubscriberInterface
 
     public function onPostSerialize(ObjectEvent $event)
     {
-        $links = $this->reader->read($event->getObject())->getLinks();
+        $metadata = $this->reader->read($event->getObject());
 
         /** @var JsonSerializationVisitor $visitor */
         $visitor = $event->getVisitor();
         $object = $event->getObject();
         $linkJson = array();
         $accessor = PropertyAccess::createPropertyAccessor();
-        $language = new ExpressionLanguage();
 
-        foreach ($links as $link) {
-            $child = $accessor->getValue($event->getObject(), $link->getProperty());
-            if ($child === null) continue;
+        if ($metadata->getSelfLink()) {
+            $linkJson['self'] = $this->createLinkUrl($metadata->getSelfLink(), $object);
+        }
+        if ($metadata->getLinks()) {
+            foreach ($metadata->getLinks() as $link) {
+                $child = $accessor->getValue($event->getObject(), $link->getProperty());
+                if ($child === null) continue;
 
-            $compiledParams = array();
-            foreach ($link->getParams() as $key => $expr) {
-                $compiledParams[$key] = $language->evaluate($expr, array('object' => $object));
-            }
-            $linkJson[$link->getName()] = $this->router->generate($link->getRoute(), $compiledParams, true);
+                $linkJson[$link->getName()] = $this->createLinkUrl($link, $object);
 
-            if ($link->getEmbed()) {
-
-                $childData = array();
-                foreach (array('id', 'name', 'slug') as $property) {
-                    if ($accessor->isReadable($child, $property)) {
-                        $childData[$property] = $accessor->getValue($child, $property);
+                if ($link->getEmbed()) {
+                    $childData = array();
+                    foreach (array('id', 'name', 'slug') as $property) {
+                        if ($accessor->isReadable($child, $property)) {
+                            $childData[$property] = $accessor->getValue($child, $property);
+                        }
                     }
+                    $childData['_type'] = $link->getEntity();
+                    $visitor->addData($link->getName(), $childData);
                 }
-                $visitor->addData($link->getName(), $childData);
             }
         }
 
-        $visitor->addData('_links', $linkJson);
+        if (count($linkJson) > 0) $visitor->addData('_links', $linkJson);
 
         $class = new \ReflectionClass($object);
         $visitor->addData('_type', strtolower($class->getShortName()));
+    }
+
+    private function createLinkUrl(LinkMetadata $link, $object)
+    {
+        $language = new ExpressionLanguage();
+        $compiledParams = array();
+        foreach ($link->getParams() as $key => $expr) {
+            $compiledParams[$key] = $language->evaluate($expr, array('object' => $object));
+        }
+        return $this->router->generate($link->getRoute(), $compiledParams, true);
     }
 
 } 

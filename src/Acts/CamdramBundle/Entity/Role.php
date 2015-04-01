@@ -27,6 +27,8 @@ class Role
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
+     * @Serializer\XmlAttribute
      */
     private $id;
 
@@ -74,7 +76,7 @@ class Role
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
-     * @Api\Link(route="get_show")
+     * @Api\Link(route="get_show", embed=true, params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 
@@ -85,7 +87,7 @@ class Role
      *   @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
-     * @Api\Link(route="get_person", embed=true)
+     * @Api\Link(route="get_person", embed=true, params={"identifier": "object.getPerson().getSlug()"})
      */
     private $person;
 

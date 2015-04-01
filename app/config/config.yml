@@ -161,6 +161,11 @@ fos_rest:
         xml: true
     disable_csrf_role: ROLE_API_WRITE
 
+jms_serializer:
+    visitors:
+        json:
+            options: JSON_PRETTY_PRINT
+
 acts_camdram:
     search_provider: %search_provider%
     techies_advert_default_days: 15

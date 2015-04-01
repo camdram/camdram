@@ -9,6 +9,11 @@ class ApiData {
     private $feed;
 
     /**
+     * @var LinkMetadata
+     */
+    private $selfLink;
+
+    /**
      * @var \Acts\CamdramApiBundle\Configuration\LinkMetadata[]
      */
     private $links;
@@ -27,6 +32,22 @@ class ApiData {
     public function setFeed($feed)
     {
         $this->feed = $feed;
+    }
+
+    /**
+     * @return LinkMetadata
+     */
+    public function getSelfLink()
+    {
+        return $this->selfLink;
+    }
+
+    /**
+     * @param Annotation\Link $selfLink
+     */
+    public function setSelfLink(LinkMetadata $selfLink)
+    {
+        $this->selfLink = $selfLink;
     }
 
     /**

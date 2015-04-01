@@ -38,12 +38,18 @@ class Link {
      */
     private $params;
 
+    /**
+     * @var string
+     */
+    private $targetType;
+
     public function __construct(array $values)
     {
         $this->name = isset($values['name']) ? $values['name'] : null;
         $this->embed = isset($values['embed']) ? $values['embed'] : false;
         $this->route = $values['route'];
         $this->params = isset($values['params']) ? $values['params'] : array();
+        $this->targetType = isset($values['targetType']) ? $values['targetType'] : '';
     }
 
     /**
@@ -76,6 +82,14 @@ class Link {
     public function getParams()
     {
         return $this->params;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetType()
+    {
+        return $this->targetType;
     }
 
 } 

@@ -94,7 +94,7 @@ class Performance
      * @Gedmo\Versioned
      * @Serializer\XmlElement(cdata=false)
      */
-    private $venue_name;
+    private $other_venue;
 
 
     public function __construct()
@@ -123,16 +123,6 @@ class Performance
         $this->show_id = $showId;
 
         return $this;
-    }
-
-    /**
-     * Get show_id
-     *
-     * @return integer
-     */
-    public function getShowId()
-    {
-        return $this->show_id;
     }
 
     /**
@@ -228,16 +218,26 @@ class Performance
     }
 
     /**
-     * Set venue_name
+     * Set other_venue
      *
      * @param string $venueName
      * @return Performance
      */
-    public function setVenueName($venueName)
+    public function setOtherVenue($venueName)
     {
-        $this->venue_name = $venueName;
+        $this->other_venue = $venueName;
 
         return $this;
+    }
+
+    /**
+     * Get other_venue
+     *
+     * @return string
+     */
+    public function getOtherVenue()
+    {
+        return $this->other_venue;
     }
 
     /**
@@ -249,8 +249,8 @@ class Performance
     {
         if ($this->venue) {
             return $this->venue->getName();
-        } elseif ($this->venue_name) {
-            return $this->venue_name;
+        } elseif ($this->other_venue) {
+            return $this->other_venue;
         }
     }
 

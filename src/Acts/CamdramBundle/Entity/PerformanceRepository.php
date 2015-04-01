@@ -75,7 +75,7 @@ class PerformanceRepository extends EntityRepository
 
     public function getNumberOfVenueNamesInDateRange(\DateTime $start, \DateTime $end)
     {
-        $qb = $this->createQueryBuilder('p')->select('COUNT(DISTINCT p.venue_name)')
+        $qb = $this->createQueryBuilder('p')->select('COUNT(DISTINCT p.other_venue)')
             ->innerJoin('p.show', 's')
             ->where('s.authorised_by is not null')
             ->andWhere('s.entered = true')

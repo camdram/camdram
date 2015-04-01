@@ -9,7 +9,7 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
 
 use Acts\CamdramApiBundle\Service\EntityUrlGenerator;
-use Acts\CamdramApiBundle\AnnotationReader\FeedAnnotationReader;
+use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
 use Acts\CamdramBundle\Rest\PaginatedCollection;
 
@@ -23,7 +23,7 @@ class FeedViewHandler
 
     private $authorAddress;
 
-    public function __construct(FeedAnnotationReader $reader, \Twig_Environment $twig, EntityUrlGenerator $urlGen, $authorAddress)
+    public function __construct(AnnotationReader $reader, \Twig_Environment $twig, EntityUrlGenerator $urlGen, $authorAddress)
     {
         $this->reader = $reader;
         $this->twig = $twig;
@@ -59,8 +59,9 @@ class FeedViewHandler
         $data = $view->getData();
         $item = current($data);
 
+        $annotationData = $this->reader->read($item);
 
-        if ($item && $feedData = $this->reader->read($item)) {
+        if ($item && $feedData = $annotationData->getFeed()) {
             $class = get_class($item);
             $feed->setTitle($feedData->getName());
             $feed->setDescription($feedData->getDescription());

@@ -19,7 +19,7 @@
             <div>
         {% endif %}
         <hr>
-        <div id="application-{{ a.id }}">
+        <div id="{% if a.show %}{{ a.show.slug }}{% elseif a.society %}{{ a.society.slug }}{% endif %}">
         <h4><a href="{{ path((a.show ? 'get_show' : 'get_society'),
             {identifier: entity.slug}) }}">{{ current }}</a></h4>
         <h5>{{ a.text }}</h5>

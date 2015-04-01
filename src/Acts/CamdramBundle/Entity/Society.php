@@ -22,6 +22,13 @@ class Society extends Organisation
      */
     private $shows;
 
+    private $entity_type = 'society';
+
+    public function getEntityType()
+    {
+        return $this->entity_type;
+    }
+
     /**
      * Constructor
      */

@@ -56,6 +56,13 @@ class Venue extends Organisation
      */
     private $performances;
 
+    private $entity_type = 'venue';
+
+    public function getEntityType()
+    {
+        return $this->entity_type;
+    }
+
     /**
      * Set latitude
      *
