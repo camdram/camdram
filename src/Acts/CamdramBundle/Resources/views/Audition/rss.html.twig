@@ -1,1 +1,18 @@
-<p>{{ entity.show.name }}</p>
+{{ entity.show.name }}
+{% if entity.show.society %}
+	- <a href="{{ path('get_society', {identifier: entity.show.society.slug}) }}">{{ entity.show.society.shortname ?: entity.show.society.name }}</a>
+{% elseif entity.show.societyname is not empty %}
+    - {{ entity.show.societyname }}
+{% endif %}
+
+<p>{{ entity.show.audextra | camdram_markdown }}</p>
+
+<ul>
+{% if entity.nonscheduled %}
+	</ul>
+	<p>Contact {{entity.location}} before {{entity.starttime|date('g:ia')}} {{entity.date|date('D d M')}} for more details.</p>
+	{% set currentName = null %}
+{% else %}
+    <li>{{ entity.date|date('D jS M') }}, {{ entity.starttime|date('g:ia') }}-{{ entity.endtime|date('g:ia') }}, {{ entity.location }}</li>
+    </ul>
+{% endif %}
