@@ -115,4 +115,19 @@ class AuditionRepository extends EntityRepository
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
+    
+    public function findOneByShowSlug($slug, \DateTime $now)
+    {
+        $qb = $this->createQueryBuilder('a');
+        return $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
+            ->andWhere('s.slug = :slug')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = 1')
+            ->setParameter('slug', $slug)
+            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->getQuery()->getOneOrNullResult();
+            ;
+    }
 }
