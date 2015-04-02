@@ -48,3 +48,10 @@ services:
     acts.camdram_api.oauth2_storage.default:
         class: Acts\CamdramApiBundle\Service\OAuthStorage
         parent: fos_oauth_server.storage.default
+
+    oauth_event_listener:
+        class: Acts\CamdramApiBundle\EventListener\OAuthEventListener
+        arguments: [@doctrine.orm.entity_manager, @request_stack]
+        tags:
+            - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
+            - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }

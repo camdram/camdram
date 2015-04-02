@@ -8,8 +8,30 @@
         <h3>Log in with Camdram</h3>
         <p>The app <strong>{{ client.name }}</strong> (<a href="{{ client.website }}" target="_blank">{{ client.website }}</a>)
             would like to access your details on Camdram.</p>
-        <p>Click 'Allow' if you trust this app and would like to allow {{ client.name }} to read and write data
-            to/from Camdram on your behalf. Otherwise, click 'Deny' and you will taken back to where you came from.</p>
+        <p>Click 'Allow' if you trust this app and would like to allow {{ client.name }} to read data
+            from Camdram on your behalf. Otherwise, click 'Deny' and you will taken back to where you came from.</p>
+        {% if form.vars.value.scope %}
+            <div class="panel text-left">
+                <h5>Additional permissions:</h5>
+                <p>{{ client.name }} would also like to</p>
+                <ul>
+                {% for scope in form.vars.value.scope | split(' ') %}
+                    <li>
+                        {% if scope == 'api_write_user' %}
+                            Act on your behalf to create new data or edit existing data on Camdram
+                        {% elseif scope == 'api_write_org' %}
+                            Act on the behalf of societies or venues you are an admin for to create
+                            new data or edit existing data on Camdram
+                        {% elseif scope == 'api_email' %}
+                            Read and store your e-mail address
+                        {% else %}
+                            Use the privilege &quot;{{ scope }}&quot;
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <form action="{{ path('fos_oauth_server_authorize') }}" method="POST" class="fos_oauth_server_authorize" {{ form_enctype(form) }}>
             <input type="submit" name="accepted" value="Allow" class="button" />
             <input type="submit" name="rejected" value="Deny" class="button alert" />

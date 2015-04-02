@@ -206,7 +206,7 @@ fos_oauth_server:
     service:
         storage: acts.camdram_api.oauth2_storage.default
         options:
-            supported_scopes: api_write
+            supported_scopes: api_email api_write_user api_write_org
 
 acts_sphinx_real_time:
     clients:

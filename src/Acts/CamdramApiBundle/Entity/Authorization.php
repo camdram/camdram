@@ -1,7 +1,7 @@
 <?php
 namespace Acts\CamdramApiBundle\Entity;
 
-use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
+use FOS\OAuthServerBundle\Entity\AuthCode as BaseAuthCode;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -9,10 +9,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * API Access Tokens
  *
- * @ORM\Table(name="acts_api_access_tokens")
+ * @ORM\Table(name="acts_api_authorizations")
  * @ORM\Entity(repositoryClass="AuthorizationRepository")
  */
-class AccessToken extends BaseAccessToken
+class Authorization
 {
     /**
      * @ORM\Id
@@ -31,6 +31,11 @@ class AccessToken extends BaseAccessToken
      * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
      */
     protected $user;
+
+    /**
+     * @ORM\Column(type="simple_array")
+     */
+    protected $scopes;
 
     /**
      * Get id
@@ -86,5 +91,72 @@ class AccessToken extends BaseAccessToken
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set scopes
+     *
+     * @param array $scopes
+     * @return Authorization
+     */
+    public function setScopes($scopes)
+    {
+        $this->scopes = $scopes;
+
+        return $this;
+    }
+
+    /**
+     * Get scopes
+     *
+     * @return array 
+     */
+    public function getScopes()
+    {
+        return $this->scopes;
+    }
+
+    /**
+     * @param $scope
+     * @return bool
+     */
+    public function hasScope($scope)
+    {
+        return in_array($scope, $this->scopes);
+    }
+
+    /**
+     * @param array $scopes
+     * @return bool
+     */
+    public function hasScopes(array $scopes)
+    {
+        foreach ($scopes as $scope) {
+            if (!in_array($scope, $this->scopes)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param $scope
+     */
+    public function addScope($scope)
+    {
+        if (!in_array($scope, $this->scopes)) {
+            $this->scopes[] = $scope;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array $scopes
+     * @return $this
+     */
+    public function addScopes(array $scopes)
+    {
+        foreach ($scopes as $scope) $this->addScope($scope);
+
+        return $this;
     }
 }
