@@ -258,10 +258,10 @@ class User implements \Serializable, CamdramUserInterface
     private $owned_issues;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Acts\CamdramApiBundle\Entity\ExternalApp", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="Acts\CamdramApiBundle\Entity\Authorization", mappedBy="user")
      * @Serializer\Exclude()
      */
-    private $apps;
+    private $authorizations;
 
     /**
      * Get id
@@ -994,40 +994,6 @@ class User implements \Serializable, CamdramUserInterface
         return $this->getAces()->matching($criteria);
     }
 
-
-    /**
-     * Add apps
-     *
-     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
-     * @return User
-     */
-    public function addApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
-    {
-        $this->apps[] = $apps;
-
-        return $this;
-    }
-
-    /**
-     * Remove apps
-     *
-     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
-     */
-    public function removeApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
-    {
-        $this->apps->removeElement($apps);
-    }
-
-    /**
-     * Get apps
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getApps()
-    {
-        return $this->apps;
-    }
-
     /**
      * Add knowledge_base_revisions
      *
@@ -1224,5 +1190,38 @@ class User implements \Serializable, CamdramUserInterface
     public function getEmailSigs()
     {
         return $this->email_sigs;
+    }
+
+    /**
+     * Add authorizations
+     *
+     * @param \Acts\CamdramApiBundle\Entity\Authorization $authorizations
+     * @return User
+     */
+    public function addAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations)
+    {
+        $this->authorizations[] = $authorizations;
+
+        return $this;
+    }
+
+    /**
+     * Remove authorizations
+     *
+     * @param \Acts\CamdramApiBundle\Entity\Authorization $authorizations
+     */
+    public function removeAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations)
+    {
+        $this->authorizations->removeElement($authorizations);
+    }
+
+    /**
+     * Get authorizations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAuthorizations()
+    {
+        return $this->authorizations;
     }
 }

@@ -28,7 +28,7 @@ class Authorization
     protected $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User", inversedBy="authorizations")
      */
     protected $user;
 

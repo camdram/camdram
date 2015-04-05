@@ -25,7 +25,6 @@ use Behat\Behat\Context\BehatContext,
 class FeatureContext extends BehatContext
 {
 
-
     public function __construct(array $params)
     {
         $this->useContext('mink', new MinkContext());

@@ -1,6 +1,8 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
+use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -35,7 +37,13 @@ class OwnerVoter extends BaseVoter
     protected function isGranted($attribute, $object, TokenInterface $token)
     {
         if ($this->isApiRequest($token) && $attribute != 'VIEW') {
-            if (!$this->hasRole($token, 'ROLE_API_WRITE_USER')) return false;
+            if ($object instanceof Society || $object instanceof Venue) {
+                if (!$this->hasRole($token, 'ROLE_API_WRITE_ORG')) return false;
+            }
+            else {
+                if (!$this->hasRole($token, 'ROLE_API_WRITE_USER')) return false;
+            }
+
         }
 
         return $this->aclProvider->isOwner($token->getUser(), $object);

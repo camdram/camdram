@@ -11,6 +11,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Behat\Behat\Event\ScenarioEvent;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
+use Buzz\Browser;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +79,7 @@ class RestContext extends AbstractContext
             ->setName('Test App')
             ->setAppType('website')
             ->setDescription('Lorem ipsum');
+        $app->setRedirectUrisString('');
 
         $manager->updateClient($app);
         $this->app = $app;
