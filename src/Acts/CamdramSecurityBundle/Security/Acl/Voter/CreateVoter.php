@@ -33,7 +33,7 @@ class CreateVoter extends BaseClassIdentityVoter
     protected function isGranted($attribute, $object, TokenInterface $token)
     {
         if ($this->isApiRequest($token)) {
-            return $this->hasRole($token, 'ROLE_API_WRITE_USER')
+            return $this->hasRole($token, 'ROLE_API_WRITE')
                 || $this->hasRole($token, 'ROLE_API_WRITE_ORG');
         }
         else {

@@ -198,7 +198,7 @@ class OAuthTest extends WebTestCase
     public function testCreateShowWriteScope()
     {
         $this->login('user1@camdram.net', 'password');
-        $token = $this->performOAuthUserLogin('api_write_user');
+        $token = $this->performOAuthUserLogin('api_write');
 
         $data = array(
             'show' => array(
@@ -228,7 +228,7 @@ class OAuthTest extends WebTestCase
     {
         $this->login('user1@camdram.net', 'password');
         $this->createSocietyWithOwner();
-        $token = $this->performOAuthUserLogin('api_write_user');
+        $token = $this->performOAuthUserLogin('api_write');
 
         $this->client->request('PUT', '/societies/test-society.json?access_token='.$token);
         $data = json_decode($this->client->getResponse()->getContent(), true);

@@ -17,7 +17,7 @@
                 <ul>
                 {% for scope in form.vars.value.scope | split(' ') %}
                     <li>
-                        {% if scope == 'api_write_user' %}
+                        {% if scope == 'api_write' %}
                             Act on your behalf to create new data or edit existing data on Camdram
                         {% elseif scope == 'api_write_org' %}
                             Act on the behalf of societies or venues you are an admin for to create

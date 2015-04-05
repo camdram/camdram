@@ -41,7 +41,7 @@ class OwnerVoter extends BaseVoter
                 if (!$this->hasRole($token, 'ROLE_API_WRITE_ORG')) return false;
             }
             else {
-                if (!$this->hasRole($token, 'ROLE_API_WRITE_USER')) return false;
+                if (!$this->hasRole($token, 'ROLE_API_WRITE')) return false;
             }
 
         }
