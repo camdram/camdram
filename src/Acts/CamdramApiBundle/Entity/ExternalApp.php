@@ -76,12 +76,6 @@ class ExternalApp extends BaseClient
      */
     protected $updated_at;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\User", inversedBy="apps")
-     * @ORM\JoinTable(name="acts_api_authorisations")
-     */
-    private $users;
-
     public function __construct()
     {
         parent::__construct();

@@ -33,6 +33,6 @@ class PersonType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_persontype';
+        return 'person';
     }
 }

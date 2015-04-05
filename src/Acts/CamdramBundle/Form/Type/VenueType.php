@@ -39,6 +39,6 @@ class VenueType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_venuetype';
+        return 'venue';
     }
 }

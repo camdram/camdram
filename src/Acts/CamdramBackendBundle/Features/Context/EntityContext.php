@@ -3,6 +3,7 @@
 namespace Acts\CamdramBackendBundle\Features\Context;
 
 use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\TimePeriod;
@@ -61,6 +62,9 @@ class EntityContext extends AbstractContext
         return $show;
     }
 
+    /**
+     * @Given /^the society "([^"]*)"$/
+     */
     public function createSociety($soc_name)
     {
         $society = new Society;
@@ -71,6 +75,9 @@ class EntityContext extends AbstractContext
         return $society;
     }
 
+    /**
+     * @Given /^the venue "([^"]*)"$/
+     */
     public function createVenue($venue_name)
     {
         $venue = new Venue;
@@ -79,6 +86,19 @@ class EntityContext extends AbstractContext
         $em->persist($venue);
         $em->flush();
         return $venue;
+    }
+
+    /**
+     * @Given /^the person "([^"]*)"$/
+     */
+    public function createPerson($person_name)
+    {
+        $person = new Person();
+        $person->setName($person_name);
+        $em = $this->getEntityManager();
+        $em->persist($person);
+        $em->flush();
+        return $person;
     }
 
     /**
@@ -91,6 +111,30 @@ class EntityContext extends AbstractContext
         $show = $em->getRepository('ActsCamdramBundle:Show')->findOneByName($show_name);
         $this->kernel->getContainer()->get('camdram.security.acl.provider')->grantAccess($show, $user, $this->getAuthoriseUser());
     }
+
+    /**
+     * @Given /^"([^"]*)" is the owner of the (?:society|venue) "([^"]*)"$/
+     */
+    public function organisationOwner($email, $org_name)
+    {
+        $em = $this->getEntityManager();
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
+        $org = $em->getRepository('ActsCamdramBundle:Organisation')->findOneByName($org_name);
+        $this->kernel->getContainer()->get('camdram.security.acl.provider')->grantAccess($org, $user, $this->getAuthoriseUser());
+    }
+
+    /**
+     * @Given /^"([^"]*)" is linked to the person "([^"]*)"$/
+     */
+    public function isLinkedToThePerson($email, $person_name)
+    {
+        $em = $this->getEntityManager();
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
+        $person = $em->getRepository('ActsCamdramBundle:Person')->findOneByName($person_name);
+        $user->setPerson($person);
+        $em->flush();
+    }
+
 
     /**
      * @Given /^the show "([^"]*)" starting in (\-?[0-9]+) days? and lasting ([0-9]+) days? at ([0-9]+:[0-9]+)$/

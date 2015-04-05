@@ -85,8 +85,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
-     * @Assert\NotBlank(groups={"new"})
+     * @ORM\Column(name="shortname", type="string", length=100, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
      * @Serializer\XmlElement(cdata=false)
