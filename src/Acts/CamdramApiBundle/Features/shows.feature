@@ -38,6 +38,18 @@ Feature: REST API for shows
     Then the response key "name" should equal "New name"
     And the response key "slug" should equal "new-name"
 
+  Scenario: Patch an existing show
+    Given the show "Test Show" with society "Test Society" and venue "Test Venue"
+    And "authoriser@camdram.net" is the owner of the show "Test Show"
+    And I have an OAuth access token
+    When I send a PATCH request to "/shows/test-show.json" with the "show" data
+      | name          | New name                |
+    Then the response code should be 201
+    And when I go to the location
+    Then the response key "name" should equal "New name"
+    And the response key "slug" should equal "new-name"
+    And the response key "category" should equal "drama"
+
   Scenario: Delete a show
     Given the show "Test Show" with society "Test Society" and venue "Test Venue"
     And "authoriser@camdram.net" is the owner of the show "Test Show"

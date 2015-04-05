@@ -179,6 +179,28 @@ abstract class AbstractRestController extends FOSRestController
     }
 
     /**
+     * Action where PATCH request is submitted from edit entity form
+     */
+    public function patchAction(Request $request, $identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+
+        $form = $this->getForm($entity);
+
+        $form->submit($request, false);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
+        } else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form');
+        }
+    }
+
+    /**
      * Action where PUT request is submitted from edit entity form
      */
     public function removeAction($identifier)
