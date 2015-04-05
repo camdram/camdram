@@ -91,14 +91,12 @@ class RestContext extends AbstractContext
         $params = array(
             'grant_type' => 'client_credentials',
             'client_id' => $this->app->getPublicId(),
-            'client_secret' => $this->app->getSecret()
+            'client_secret' => $this->app->getSecret(),
         );
         $this->getClient()->request('GET', '/oauth/v2/token', $params);
         $data = json_decode($this->getClient()->getResponse()->getContent());
         $this->access_token = $data->access_token;
     }
-
-
 
     /**
      * @When /^I send a ([A-Z]+) request to "([^"]*)"$/

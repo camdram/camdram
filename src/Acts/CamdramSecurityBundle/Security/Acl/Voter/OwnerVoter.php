@@ -3,8 +3,6 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Grants access if
  */
-class OwnerVoter extends AbstractVoter
+class OwnerVoter extends BaseVoter
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -34,12 +32,13 @@ class OwnerVoter extends AbstractVoter
         return array('VIEW', 'EDIT', 'DELETE');
     }
 
-    protected function isGranted($attribute, $object, $user = null)
+    protected function isGranted($attribute, $object, TokenInterface $token)
     {
-        if ($this->aclProvider->isOwner($user, $object)) {
-            return true;
+        if ($this->isApiRequest($token) && $attribute != 'VIEW') {
+            if (!$this->hasRole($token, 'ROLE_API_WRITE_USER')) return false;
         }
-        return false;
+
+        return $this->aclProvider->isOwner($token->getUser(), $object);
     }
 
 }

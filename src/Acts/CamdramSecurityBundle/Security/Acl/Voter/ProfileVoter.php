@@ -7,36 +7,33 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Person;
 
-class ProfileVoter implements VoterInterface
+class ProfileVoter extends BaseVoter
 {
-
-    public function supportsAttribute($attribute)
+    /**
+     * Return an array of supported classes. This will be called by supportsClass
+     *
+     * @return array an array of supported classes, i.e. array('Acme\DemoBundle\Model\Product')
+     */
+    protected function getSupportedClasses()
     {
-        return $attribute == 'EDIT';
-    }
-
-    public function vote(TokenInterface $token, $object, array $attributes)
-    {
-        if ($object instanceof Person && $attributes == array('EDIT')) {
-            $user = $token->getUser();
-            if ($user instanceof User && $user->getPerson() == $object) {
-                return self::ACCESS_GRANTED;
-            }
-        }
-
-        return self::ACCESS_ABSTAIN;
+        return array('Acts\\CamdramBundle\\Entity\\Person');
     }
 
     /**
-     * You can override this method when writing a voter for a specific domain
-     * class.
+     * Return an array of supported attributes. This will be called by supportsAttribute
      *
-     * @param string $class The class name
-     *
-     * @return Boolean
+     * @return array an array of supported attributes, i.e. array('CREATE', 'READ')
      */
-    public function supportsClass($class)
+    protected function getSupportedAttributes()
     {
-        return strpos($class, 'Acts\\CamdramBundle\\Entity\\Person') !== false;
+        return array('EDIT');
     }
+
+
+    public function isGranted($attribute, $object, TokenInterface $token)
+    {
+        $user = $token->getUser();
+        return $user instanceof User && $user->getPerson() == $object;
+    }
+
 }

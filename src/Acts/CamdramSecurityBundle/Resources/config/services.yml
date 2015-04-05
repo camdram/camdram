@@ -137,3 +137,8 @@ services:
         tags:
             - { name: security.voter }
 
+
+    camdram.security.voter.api:
+        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ApiVoter
+        tags:
+            - { name: security.voter }

@@ -166,7 +166,7 @@ abstract class AbstractRestController extends FOSRestController
 
         $form = $this->getForm($entity);
 
-        $form->bind($request);
+        $form->submit($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();

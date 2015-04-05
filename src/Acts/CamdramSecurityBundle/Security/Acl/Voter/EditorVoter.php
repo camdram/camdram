@@ -31,15 +31,10 @@ class EditorVoter extends BaseClassIdentityVoter
         return array('EDIT', 'CREATE', 'APPROVE', 'DELETE');
     }
 
-    protected function isGranted($attribute, $object, $user = null)
+    protected function isGranted($attribute, $object, TokenInterface $token)
     {
-        if ($user instanceof UserInterface) {
-            foreach ($user->getRoles() as $role) {
-                if ($role == 'ROLE_EDITOR') return true;
-            }
-        }
-
-        return false;
+        return $this->isInteractiveRequest($token)
+            && $this->hasRole($token, 'ROLE_EDITOR');
     }
 
 }

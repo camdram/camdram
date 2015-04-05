@@ -2,34 +2,17 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Grants access if
  */
-class AdminVoter implements VoterInterface
+class AdminVoter extends BaseVoter
 {
     public function supportsAttribute($attribute)
     {
         return true;
-    }
-
-    /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     * @param \Acts\CamdramBundle\Entity\Show $object
-     * @param array $attributes
-     * @return int
-     */
-    public function vote(TokenInterface $token, $object, array $attributes)
-    {
-        if (is_object($object) && $this->supportsClass(get_class($object))) {
-            foreach ($token->getRoles() as $role) {
-                if ($role->getRole() == 'ROLE_ADMIN'
-                    || $role->getRole() == 'ROLE_SUPER_ADMIN') return self::ACCESS_GRANTED;
-            }
-        }
-
-        return self::ACCESS_ABSTAIN;
     }
 
     /**
@@ -44,4 +27,25 @@ class AdminVoter implements VoterInterface
     {
         return strpos($class, 'Acts\\') !== false;
     }
+
+    /**
+     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
+     * @param \Acts\CamdramBundle\Entity\Show $object
+     * @param array $attributes
+     * @return int
+     */
+    public function isGranted($attribute, $object, TokenInterface $token)
+    {
+        if (is_object($object) && $this->isInteractiveRequest($token)) {
+            return $this->hasRole($token, 'ROLE_ADMIN')
+                || $this->hasRole($token, 'ROLE_SUPER_ADMIN');
+        }
+
+        return false;
+    }
+
+    //Not used
+    protected function getSupportedClasses() {}
+
+    protected function getSupportedAttributes() {}
 }

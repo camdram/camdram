@@ -3,10 +3,8 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class ViewVoter extends AbstractVoter
+class ViewVoter extends BaseVoter
 {
     protected function getSupportedClasses()
     {
@@ -23,7 +21,7 @@ class ViewVoter extends AbstractVoter
         return array('VIEW');
     }
 
-    protected function isGranted($attribute, $object, $user = null)
+    protected function isGranted($attribute, $object, TokenInterface $token)
     {
         if ($object instanceof Show) {
             return $object->getAuthorisedBy() !== null;

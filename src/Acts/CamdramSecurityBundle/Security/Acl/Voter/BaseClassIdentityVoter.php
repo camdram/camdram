@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-abstract class BaseClassIdentityVoter extends AbstractVoter {
+abstract class BaseClassIdentityVoter extends BaseVoter {
     public function supportsClass($class)
     {
         return $class == 'Acts\\CamdramSecurityBundle\\Security\\Acl\\ClassIdentity' || parent::supportsClass($class);
