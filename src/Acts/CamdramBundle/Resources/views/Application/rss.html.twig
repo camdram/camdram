@@ -1,5 +1,7 @@
-<p>{{ entity.show.name }}</p>
-<p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'disable_links': true, 'performances' : entity.show.performances} %}</p>
+<p>{{ entity.show ? entity.show.name : entity.society.name }}</p>
+{% if entity.show %}
+    <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'disable_links': true, 'performances' : entity.show.performances} %}</p>
+{% endif %}
 
 <h3>{{ entity.text }}</h3>
 

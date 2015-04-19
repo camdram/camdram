@@ -19,7 +19,7 @@
             <div>
         {% endif %}
         <hr>
-        <div id="{{ a.show.slug }}">
+        <div id="{{ a.show ? a.show.slug : a.society.slug }}">
         <h4><a href="{{ path((a.show ? 'get_show' : 'get_society'),
             {identifier: entity.slug}) }}">{{ current }}</a></h4>
         <h5>{{ a.text }}</h5>

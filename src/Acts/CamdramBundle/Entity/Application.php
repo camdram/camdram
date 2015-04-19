@@ -241,11 +241,21 @@ class Application
     
     public function getFeedTitle()
     {
-        return $this->getShow()->getName();
+        if ($this->getShow()) {
+            return $this->getShow()->getName();
+        }
+        else {
+            return $this->getSociety()->getName();
+        }
     }
     
     public function getSlug()
     {
-        return $this->getShow()->getSlug();
+        if ($this->getShow()) {
+            return $this->getShow()->getSlug();
+        }
+        else {
+            return $this->getSociety()->getSlug();
+        }
     }
 }
