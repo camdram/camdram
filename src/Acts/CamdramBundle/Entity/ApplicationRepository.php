@@ -69,6 +69,5 @@ class ApplicationRepository extends EntityRepository
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
             ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
             ->getQuery()->getOneOrNullResult();
-            ;
     }
 }

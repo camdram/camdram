@@ -1,4 +1,5 @@
-{{ entity.show.name }}
+<p>{{ entity.show.name }}</p>
+
 {% if entity.show.society %}
 	- <a href="{{ path('get_society', {identifier: entity.show.society.slug}) }}">{{ entity.show.society.shortname ?: entity.show.society.name }}</a>
 {% elseif entity.show.societyname is not empty %}
