@@ -269,4 +269,9 @@ class Audition
     {
         return $this->getShow()->getName();
     }
+    
+    public function getSlug()
+    {
+        return $this->getShow()->getSlug();
+    }
 }
