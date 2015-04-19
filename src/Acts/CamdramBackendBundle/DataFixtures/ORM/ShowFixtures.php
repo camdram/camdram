@@ -330,6 +330,7 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
             $audition->setDisplay(mt_rand(0,3)>0);
 
             $audition->setShow($show);
+            $show->setAudextra("Audition extra text");
             $audition->setNonScheduled(false);
 
             $manager->persist($audition);
