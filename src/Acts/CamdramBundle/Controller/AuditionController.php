@@ -39,4 +39,15 @@ class AuditionController extends FOSRestController
             ->setTemplate('ActsCamdramBundle:Audition:diary.html.twig');
         return $view;
     }
+    
+    public function getAction($identifier)
+    {
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')
+            ->findOneByShowSlug($identifier, new \DateTime);
+        if ($auditions) {
+            return $this->redirect($this->generateUrl('get_auditions').'#'.$auditions->getShow()->getSlug());
+        } else {
+            throw $this->createNotFoundException('No audition advert exists with that identifier');
+        }
+    }
 }

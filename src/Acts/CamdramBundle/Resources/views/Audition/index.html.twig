@@ -23,7 +23,7 @@
                 {% endif %}
                 {% set currentName = a.show.name %}
                 <hr>
-                <div id="auditions-{{ a.show.id }}">
+                <div id="{{ a.show.slug }}">
                 <h4><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a>
                 {% if a.show.society %}
                     - <a href="{{ path('get_society', {identifier: a.show.society.slug}) }}">{{ a.show.society.shortname ?: a.show.society.name }}</a>

@@ -145,6 +145,10 @@ class RedirectHandler {
                 return new RedirectResponse($this->router->generate('get_shows', array('_format' => 'rss')), 301);
             case 'techies':
                 return new RedirectResponse($this->router->generate('get_techies', array('_format' => 'rss')), 301);
+            case 'auditions':
+                return new RedirectResponse($this->router->generate('get_auditions', array('_format' => 'rss')), 301);
+            case 'applications':
+                return new RedirectResponse($this->router->generate('get_applications', array('_format' => 'rss')), 301);
         }
     }
 
