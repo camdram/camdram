@@ -1,16 +1,17 @@
 language: php
 sudo: required
-
 php:
-  - 5.4
-  - 5.5
-
-before_script: 
-  - cp app/config/parameters.test.yml app/config/parameters.yml
-  - composer selfupdate
-  - composer install --no-interaction --prefer-source
-  - ./install-sphinx
-
+- 5.4
+- 5.5
+before_script:
+- cp app/config/parameters.test.yml app/config/parameters.yml
+- composer config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
+- composer selfupdate
+- composer install --no-interaction
+- "./install-sphinx"
 script:
-    - ./runtests sphinx
-    - ./runtests
+- "./runtests sphinx"
+- "./runtests"
+env:
+  global:
+    secure: VEvSdOl9GqKl1whPUk253hOYEiPCiN64AiG6/qec8jTsCC0qANaXKKVH5Gy+Zqoiqbd5nLykbIUW2l9bSn160f8wHO6cD7nrCOwsCPfO8HCm+IZ5T5Vt5Qvz3Rs6IRm2UgZcFEdk+2zCGjuZnew56wWs8anRCdUDEFeASXSlte0=
