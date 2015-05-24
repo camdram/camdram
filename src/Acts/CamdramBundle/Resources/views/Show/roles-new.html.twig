@@ -6,18 +6,27 @@
 
 {% block body %}
 
-<div class="row">
+{% set current_subnav_id = 'show_add_many_roles' %}
+{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show.slug})) }}
 
 <div class="row">
-    <div class="large-12">
-        <p>This form allows you to add multiple roles at once. You can use 
-        this to copy and paste directly from your programme or a list taken
-        from a CSV file, for example. Groups of roles (cast, crew, and bands) need to be entered separately.</p>
+    <div class="large-12 columns">
+
+        <h3>Add Multiple Roles</h3>
+
+        <div class="panel">
+            <p>This form allows you to add multiple roles at once. You can use
+                this to copy and paste directly from your programme or a list taken
+                from a CSV file, for example. Groups of roles (cast, crew, and bands) need to be entered separately.</p>
+        </div>
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_end(form) }}
+
     </div>
 </div>
-{{ form_start(form) }}
-{{ form_errors(form) }}
 
-{{ form_end(form) }}
-</div>
+
 {% endblock %}

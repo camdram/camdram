@@ -105,13 +105,7 @@
     </div>
 </div>
 {% endif %}
-{% if is_granted('EDIT', show) %}
-<div class="vacancies-panel" class="row">
-    <div class="large-12">
-        <strong>New</strong> You can now add multiple roles at once. <a href="{{ path('get_show_many_roles', {identifier: show.slug}) }}">Click here to try</a>.
-    </div>
-</div>
-{% endif %}
+
 <div class="row">
     {% set display_band = (show.getRolesByType('band')|length > 0) or is_granted('EDIT', show) %}
     {% if display_band == true %}
@@ -142,18 +136,19 @@
     </div>
 </div>
 {% endif %}
+
 <div class="row">
-    <div class="large-12 columns">
-        <p>If you're involved in the show you may want to use our
-        <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug }) }}">sign in sheet</a>.
-        You can also download a version in <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug, '_format': 'csv' }) }}">CSV format</a>.</p>
-        {% if app.user %}
-            {% if not is_granted('EDIT', show) %}
-                <p>If you'd like to change the information about this show, you can <a href="{{ path('request_show_admin', { identifier: show.slug }) }}">request to be an admin</a>.</p>
+    <div class="column large-12">
+        <ul class="inline-list">
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                {item: {id: 'show_sign_in_sheet', path: path('acts_camdram_signinsheet',{slug:show.slug}), icon: 'print', text: 'Print sign in sheet'} }) }}
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                {item: {id: 'show_sign_in_sheet_csv', path: path('acts_camdram_signinsheet',{slug: show.slug, _format: 'csv'}), icon: 'table', text: 'Download sign in sheet (CSV)'} }) }}
+            {% if app.user and not is_granted('EDIT', show) %}
+                {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                    {item: {id: 'show_request_admin', path: path('request_show_admin',{identifier: show.slug}), icon: 'unlock-alt', text: 'Request to be an admin'} }) }}
             {% endif %}
-        {% else %}
-            <p>Log in to be able to request to be an admin for this show.</p>
-        {% endif %}
+        </ul>
     </div>
 </div>
 

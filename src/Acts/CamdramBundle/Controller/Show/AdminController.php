@@ -129,6 +129,8 @@ class AdminController extends FOSRestController
      */
     public function requestAdminAction($identifier)
     {
+        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_USER');
+
         $show = $this->getEntity($identifier);
         if ($this->get('camdram.security.acl.helper')->isGranted('EDIT', $show)) {
             // TODO add a no-action return code.
