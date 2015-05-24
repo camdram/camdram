@@ -317,6 +317,9 @@
     $(function() {
         $(document).foundation();
         fixHtml($(document));
+
+        //Focus first form field inside content
+        $('#content input:first').focus();
     });
 
 })(jQuery, window);
