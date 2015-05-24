@@ -319,7 +319,10 @@
         fixHtml($(document));
 
         //Focus first form field inside content
-        $('#content input:first').focus();
+        window.setTimeout(function() {
+            $('#content input[type=text], #content textarea, #content select').first().focus();
+        }, 0);
+
     });
 
 })(jQuery, window);
