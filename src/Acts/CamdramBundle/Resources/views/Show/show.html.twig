@@ -76,7 +76,7 @@
     <div class="large-12">
         <h5>Get involved with <em>{{ show.name }}</em>:</h5>
         {% if show.getScheduledAuditions() | length > 0 %}
-        <p>Auditions are being held at the times below - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
+        <p>Auditions are being held at the times below - <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
             <ul>
                 {% for a in show.getScheduledAuditions() %}
                 <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
@@ -85,7 +85,7 @@
 	{% endif %}
 	{% if show.getNonScheduledAuditions() | length > 0 %}
 	    {% for a in show.getNonScheduledAuditions() %}
-	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
+	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
 	    {% endfor %}
         {% endif %}
         {% if show.activeTechieAdverts | length > 0 %}
@@ -100,7 +100,7 @@
         {% endif %}
         {% for advert in show.activeApplications %}
             <p>{{ advert.text() }} -
-            <a href="{{ path('get_applications') }}#application-{{ advert.id }}">more details</a></p>
+            <a href="{{ path('get_application', {identifier: advert.show.slug}) }}">more details</a></p>
         {% endfor %}
     </div>
 </div>
