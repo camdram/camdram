@@ -117,7 +117,7 @@ class PerformanceRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->join('p.show', 's')
-            ->join('s.venue', 'v')
+            ->join('p.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised_by is not null')
