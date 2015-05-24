@@ -1,0 +1,12 @@
+{% for section, sections in resources  %}
+    {% if section != '_others' %}
+        <h3>{{ section }}</h3>
+    {% endif %}
+<div class="api-section section-container accordion" data-section="accordion" data-options="deep_linking: true; multi_expand: true">
+    {% for resource, methods in sections %}
+        {% for data in methods %}
+            {% include 'ActsCamdramApiBundle:Doc:method.html.twig' %}
+        {% endfor %}
+    {% endfor %}
+    </div>
+{% endfor %}

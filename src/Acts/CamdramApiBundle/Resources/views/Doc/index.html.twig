@@ -1,0 +1,19 @@
+{% extends 'ActsCamdramApiBundle::layout.html.twig' %}
+{% set current_api_nav_id = 'documentation' %}
+
+{% block title %}API Reference{% endblock %}
+
+{% block stylesheets %}
+    {% stylesheets output='css/api.css'
+        '@ActsCamdramApiBundle/Resources/public/api.scss' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block api_body %}
+
+    <h3>API Reference</h3>
+
+    {{ render(controller('ActsCamdramApiBundle:Doc:doc')) }}
+
+{% endblock %}
