@@ -19,7 +19,7 @@
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~3.0.12",
         "sensio/framework-extra-bundle": "~3.0",
-        "friendsofsymfony/rest-bundle": "1.4.*",
+        "friendsofsymfony/rest-bundle": "1.5.*",
         "jms/serializer-bundle": "0.13.*",
         "friendsofsymfony/oauth-server-bundle": "1.4.*",
         "acts/social-api-bundle": "0.1.*",

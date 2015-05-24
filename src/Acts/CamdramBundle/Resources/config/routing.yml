@@ -1,5 +1,6 @@
 acts_camdram_entities_res:
     resource: "routing/entities.yml"
+    type: rest
 acts_camdram_diary:
     pattern: diary.{_format}
     defaults:
