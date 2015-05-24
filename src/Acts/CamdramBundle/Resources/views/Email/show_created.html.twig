@@ -38,7 +38,7 @@ before authorizing.</p>
 <h3>Show details follow</h3	>
 
 <p>
-{% if show.society %}{{ show.society.name }}{% else %}{{ show.societyName }}{% endif %} presents<br>
+{% if show.society %}{{ show.society.name }} presents <br>{% endif %} 
 <b>{{ show.name }}</b><br>
 {% if show.author %} by {{ show.author }}<br> {% endif %}
 {% for p in show.performances %}
