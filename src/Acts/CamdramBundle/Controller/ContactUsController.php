@@ -18,7 +18,7 @@ class ContactUsController extends Controller
 
     public function indexAction()
     {
-        $form = $this->createForm(new ContactUsType());
+        $form = $this->createForm(new ContactUsType($this->get('security.token_storage')));
 
         return $this->render('ActsCamdramBundle:ContactUs:index.html.twig', array(
             'form' => $form->createView()
@@ -27,8 +27,8 @@ class ContactUsController extends Controller
 
     public function sendAction(Request $request)
     {
-        $form = $this->createForm(new ContactUsType());
-        $form->submit($request);
+        $form = $this->createForm(new ContactUsType($this->get('security.token_storage')));
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
             $this->get('acts.camdram.email_dispatcher')->sendContactUsEmail($data['email'], $data['subject'], $data['message']);
