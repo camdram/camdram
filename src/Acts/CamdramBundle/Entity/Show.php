@@ -1587,4 +1587,17 @@ class Show implements SearchableInterface, OwnableInterface
         }
         return $future;
     }
+
+    public function isArchived()
+    {
+        $archived = true;
+        $now = new \DateTime;
+        foreach ($this->getPerformances() as $performance){
+            if ($performance->getStartDate()->modify('+1 year') >= $now) {
+                $archived = false;
+                break;
+            }
+        }
+        return $archived;
+    }
 }

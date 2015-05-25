@@ -57,4 +57,9 @@ class SecurityUtils
         $token = $this->container->get('security.context')->getToken();
         return $this->container->get('camdram.security.acl.provider')->isOwner($token, $object);
     }
+
+    public function hasOwners(OwnableInterface $object)
+    {
+        return $this->container->get('camdram.security.acl.provider')->hasOwners($object);
+    }
 }

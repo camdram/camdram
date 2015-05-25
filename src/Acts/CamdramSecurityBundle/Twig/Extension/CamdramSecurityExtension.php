@@ -1,6 +1,7 @@
 <?php
 namespace Acts\CamdramSecurityBundle\Twig\Extension;
 
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Acts\CamdramSecurityBundle\Security\SecurityUtils;
 
 class CamdramSecurityExtension extends \Twig_Extension
@@ -29,6 +30,7 @@ class CamdramSecurityExtension extends \Twig_Extension
             'is_granted' => new \Twig_Function_Method($this, 'isGranted'),
             'is_owner' => new \Twig_Function_Method($this, 'isOwner'),
             'has_role' => new \Twig_Function_Method($this, 'hasRole'),
+            'has_owners' => new \Twig_Function_Method($this, 'hasOwners')
         );
     }
 
@@ -58,6 +60,11 @@ class CamdramSecurityExtension extends \Twig_Extension
     public function hasRole($role)
     {
         return $this->utils->hasRole($role);
+    }
+
+    public function hasOwners(OwnableInterface $object)
+    {
+        return $this->utils->hasOwners($object);
     }
 
     /**
