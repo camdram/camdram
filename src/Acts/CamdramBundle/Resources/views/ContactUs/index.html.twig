@@ -37,10 +37,7 @@
             form below, and one of the Camdram administrators will get back to you.</p>
 
         <form action="{{ path('acts_camdram_contact_us_send') }}" method="post">
-            {{ form_widget(form) }}
-            <div class="text-right">
-                <input type="submit" class="button" value="Send"/>
-            </div>
+            {{ include('ActsCamdramBundle:ContactUs:form.html.twig') }}
         </form>
     </div>
 </div>

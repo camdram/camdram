@@ -42,6 +42,10 @@ class ContactEntityService
             $emails[$user->getFullEmail()] = $user->getName();
         }
 
+        if (count($emails) == 0) {
+            $emails = array('websupport@camdram.net');
+        }
+
         return $emails;
     }
 
@@ -56,10 +60,6 @@ class ContactEntityService
             if (count($recipients) == 0 && $entity->getVenue()) {
                 $recipients = $this->aclProvider->getOwners($entity->getVenue());
             }
-        }
-
-        if (count($recipients) == 0) {
-            $recipients = $this->aclProvider->getAdmins();
         }
 
         return $recipients;
