@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Form\Type\ContactUsType;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Patch;
 use Acts\CamdramBundle\Entity\Show;
@@ -22,6 +23,7 @@ use Gedmo\Sluggable\Util as Sluggable;
  */
 class ShowController extends AbstractRestController
 {
+    use ContactTrait;
 
     protected $class = 'Acts\\CamdramBundle\\Entity\\Show';
 
@@ -110,9 +112,11 @@ class ShowController extends AbstractRestController
     public function getPeopleAction($identifier)
     {
         $show = $this->getEntity($identifier);
-    $role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
-    $roles = $role_repo->findByShow($show);
-    return $this->view($roles);
+        $role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
+        $roles = $role_repo->findByShow($show);
+        return $this->view($roles);
     }
+
+
 
 }

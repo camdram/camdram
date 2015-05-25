@@ -37,6 +37,7 @@
         <div class="row">
             <div class="large-12 columns">
                 <p>{{ society.description | camdram_markdown }}</p>
+                <p><a href="{{ path('get_society_contact', {identifier: society.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ society.name }}</a></p>
             </div>
         </div>
     </div><!-- twelve columns panel -->

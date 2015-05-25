@@ -150,3 +150,6 @@ services:
             - { name: knp_menu.provider }
             - { name: cmf_request_aware }
 
+    acts.camdram.contact_entity_service:
+        class: Acts\CamdramBundle\Service\ContactEntityService
+        arguments: [@mailer, @camdram.security.acl.provider]

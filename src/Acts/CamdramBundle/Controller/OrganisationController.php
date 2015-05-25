@@ -31,6 +31,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 abstract class OrganisationController extends AbstractRestController
 {
+    use ContactTrait;
+
 
     /**
      * Render the Admin Panel

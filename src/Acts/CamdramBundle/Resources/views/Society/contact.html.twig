@@ -1,0 +1,41 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Society: {{ entity.name }} - Contact{% endblock %}
+
+{% block body %}
+
+    {% set current_subnav_id = 'society_contact' %}
+
+    <div class="row">
+        <h2><a href="{{ path('get_society', {identifier: entity.slug}) }}">{{ entity.name }}</a></h2>
+
+        <h3>Contact Society</h3>
+
+        <div class="panel">
+            <p>
+                You can use this form to get in touch with the people who administrate this society on Camdram
+                (usually members of the society's committee).
+            </p>
+            <p>
+                If you are an administrator for this society and require technical support, please visit our
+                <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a> page instead, where you can get in
+                touch with one of the Camdram admins.
+            </p>
+        </div>
+
+        <form action="{{ path("post_society_contact", {identifier: entity.slug}) }}" method="post">
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.subject) }}
+            {{ form_row(form.message) }}
+
+            {{ form_rest(form) }}
+
+            <div class="text-right">
+                <input type="submit" value="Send" class="button"/>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

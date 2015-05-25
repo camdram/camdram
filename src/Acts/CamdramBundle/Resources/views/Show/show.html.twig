@@ -47,8 +47,7 @@
                 <a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>
             </div>
             <div class="large-9 columns">
-                <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
-                <p>{{ show.description | camdram_markdown }}</p>
+                {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
             </div>
             </div>
         {# Show prompt to upload image #}
@@ -60,15 +59,16 @@
             	</ul>
             </div>
             <div class="large-9 columns">
-                <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
-                <p>{{ show.description | camdram_markdown }}</p>
+                {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
             </div>
             </div>
         {# Don't show image or prompt #}
         {% else %}
-            <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
-            <p>{{ show.description | camdram_markdown }}</p>
+            {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
         {% endif %}
+
+
+        {# show_contact : {path: path('get_show_contact',{identifier: show.slug}), icon: 'envelope-o', text: 'Contact show'}, #}
     </div>
 </div>
 {% if show.hasVacancies() %}
@@ -140,10 +140,13 @@
 <div class="row">
     <div class="column large-12">
         <ul class="inline-list">
-            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
-                {item: {id: 'show_sign_in_sheet', path: path('acts_camdram_signinsheet',{slug:show.slug}), icon: 'print', text: 'Print sign in sheet'} }) }}
-            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
-                {item: {id: 'show_sign_in_sheet_csv', path: path('acts_camdram_signinsheet',{slug: show.slug, _format: 'csv'}), icon: 'table', text: 'Download sign in sheet (CSV)'} }) }}
+            {{ include('@ActsCamdram/Navigation/nav-items.html.twig', {
+                items: {
+                    show_sign_in_sheet : {path: path('acts_camdram_signinsheet',{slug:show.slug}), icon: 'print', text: 'Print sign in sheet'},
+                    show_sign_in_sheet_csv : {path: path('acts_camdram_signinsheet',{slug: show.slug, _format: 'csv'}), icon: 'table', text: 'Download sign in sheet (CSV)'}
+                }
+            }) }}
+
             {% if app.user and not is_granted('EDIT', show) %}
                 {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
                     {item: {id: 'show_request_admin', path: path('request_show_admin',{identifier: show.slug}), icon: 'unlock-alt', text: 'Request to be an admin'} }) }}
