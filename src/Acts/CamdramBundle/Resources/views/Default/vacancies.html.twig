@@ -20,7 +20,7 @@
             <a href="{{ path('get_society', {identifier: ad.society.slug}) }}">{{ ad.society.name }}</a> has announced:
         {% endif %}
         {{ ad.text() }} -
-        <a href="{{ path('get_applications') }}#application-{{ ad.id }}">more details</a>
+        <a href="{{ path('get_applications') }}#application-{{ ad.slug }}">more details</a>
     </li>
 {% endfor %}
 </ul>
