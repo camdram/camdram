@@ -3,7 +3,7 @@
 {% for audition in auditions %}
     <li><a href="{{ path('get_show', {identifier: audition.show.slug}) }}">{{ audition.show.name }}</a> is holding auditions:
         in {{ audition.location }} from {{ audition.starttime | date('H:i') }} to {{ audition.endtime | date('H:i') }} on {{ audition.date | date('D jS M') }}
-        - <a href="{{ path('get_auditions') }}#auditions-{{ audition.show.id }}">more details</a>
+        - <a href="{{ path('get_show', {identifier: audition.show.slug}) }}">more details</a>
     </li>
 {% endfor %}
 {% for ad in techie_ads %}
@@ -20,7 +20,7 @@
             <a href="{{ path('get_society', {identifier: ad.society.slug}) }}">{{ ad.society.name }}</a> has announced:
         {% endif %}
         {{ ad.text() }} -
-        <a href="{{ path('get_applications') }}#application-{{ ad.slug }}">more details</a>
+        <a href="{{ path('get_society', {identifier: ad.society.slug}) }}">more details</a>
     </li>
 {% endfor %}
 </ul>
