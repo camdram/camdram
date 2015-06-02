@@ -16,11 +16,14 @@
     <li>
         {% if ad.show %}
             <a href="{{ path('get_show', {identifier: ad.show.slug}) }}">{{ ad.show.name }}</a> has announced:
+            {{ ad.text() }} -
+            <a href="{{ path('get_application', {identifier: ad.show.slug}) }}">more details</a>
         {% elseif ad.society %}
             <a href="{{ path('get_society', {identifier: ad.society.slug}) }}">{{ ad.society.name }}</a> has announced:
+            {{ ad.text() }} -
+            <a href="{{ path('get_application', {identifier: ad.society.slug}) }}">more details</a>
         {% endif %}
-        {{ ad.text() }} -
-        <a href="{{ path('get_application', {identifier: ad.show.slug}) }}">more details</a>
+
     </li>
 {% endfor %}
 </ul>
