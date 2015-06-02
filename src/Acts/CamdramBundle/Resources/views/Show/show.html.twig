@@ -10,6 +10,7 @@
 {% endif %}
 
 {# Facebook open graph markup #}
+{% block opengraph %}
 <meta property="og:url" content="{{ url('get_show', {identifier: show.slug}) }}" />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_GB"	/>
@@ -21,6 +22,7 @@
 {% else %}
 	{# Maybe put a stock camdram image here? #}
 {% endif %}
+{% endblock %}
 
 <div class="row">
 
