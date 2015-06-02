@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_GB"	/>
 <meta property="og:title" content="{{ show.name }}" />
 <meta property="og:site_name" content="Camdram" />
-<meta property="og:description" content="Camdram page for {{show.name}}." />
+<meta property="og:description" content="{{ show.description}}" />
 {% if show.image %}
 	<meta property="og:image"		content="{{ image_url(show.image, 1024, 768) }}" />
 {% else %}
