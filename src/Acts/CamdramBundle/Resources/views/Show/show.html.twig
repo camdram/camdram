@@ -9,6 +9,18 @@
 {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
 {% endif %}
 
+{# Facebook open graph markup #}
+{% block opengraph %}
+<meta property="og:url" content="{{ url('get_show', {identifier: show.slug}) }}" />
+<meta property="og:title" content="{{ show.name }}" />
+<meta property="og:description" content="{{ show.description}}" />
+{% if show.image %}
+	<meta property="og:image"		content="{{ image_url(show.image, 1024, 768) }}" />
+{% else %}
+	{# Maybe put a stock camdram image here? #}
+{% endif %}
+{% endblock %}
+
 <div class="row">
 
     <div class="large-12 columns panel">
