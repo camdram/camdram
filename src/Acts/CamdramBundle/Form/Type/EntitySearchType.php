@@ -45,7 +45,8 @@ class EntitySearchType extends AbstractType
                 'mapped' => $options['other_allowed']
             ))
             ->add($hidden_name, 'hidden', array(
-                'data_class' => $options['class']
+                'data_class' => $options['class'],
+                'empty_data' => null,
             ))
             ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($repo, $hidden_name, $text_name) {
                 $data = $event->getData();
