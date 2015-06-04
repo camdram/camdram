@@ -12,10 +12,7 @@
 {# Facebook open graph markup #}
 {% block opengraph %}
 <meta property="og:url" content="{{ url('get_show', {identifier: show.slug}) }}" />
-<meta property="og:type" content="website" />
-<meta property="og:locale" content="en_GB"	/>
 <meta property="og:title" content="{{ show.name }}" />
-<meta property="og:site_name" content="Camdram" />
 <meta property="og:description" content="{{ show.description}}" />
 {% if show.image %}
 	<meta property="og:image"		content="{{ image_url(show.image, 1024, 768) }}" />
