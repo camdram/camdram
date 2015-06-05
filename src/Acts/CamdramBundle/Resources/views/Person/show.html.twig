@@ -2,6 +2,14 @@
 
 {% block title %}Person: {{ person.name }}{% endblock %}
 
+{# Facebook open graph markup #}
+{% block opengraph %}
+    <meta property="og:url" content="{{ url('get_person', {identifier: person.slug}) }}" />
+    <meta property="og:title" content="{{ person.name }}" />
+    <meta property="og:description" content="{{ person.description }}" />
+	{# Maybe put a stock camdram image here? #}
+{% endblock %}
+
 {% block option_links %}
 {### % if not app.user or app.user.person != person %}
 {% include 'ActsCamdramBundle:Navigation:nav-item.html.twig' with { item: {text: 'This is me', path: path('link_person', {identifier: person.slug}), icon: 'chain'}} %}
