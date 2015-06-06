@@ -9,7 +9,7 @@
     <meta property="og:title" content="{{ show.name }}" />
     <meta property="og:description" content="{{ show.description | strip_camdram_markdown | strip_new_lines | truncate(500) }}" />
     {% if show.image %}
-        <meta property="og:image" content="{{ image_url(show.image, 1024, 768) }}" />
+        <meta property="og:image" content="https://www.camdram.net{{ image_url(show.image, 1024, 768) }}" />
     {% else %}
         {# Maybe put a stock camdram image here? #}
     {% endif %}
