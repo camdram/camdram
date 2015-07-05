@@ -38,10 +38,9 @@ class AppKernel extends Kernel
             new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
 
-            // Bundles needed for the Content Management Framework (used by the Infobase).
+            /*// Bundles needed for the Content Management Framework (used by the Infobase).
             new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
             new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
-            new Symfony\Cmf\Bundle\RoutingAutoBundle\CmfRoutingAutoBundle(),
             new Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
             new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
             new Symfony\Cmf\Bundle\ContentBundle\CmfContentBundle(),
@@ -51,7 +50,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             // Dependencies of the CmfBlockBundle
-            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),*/
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

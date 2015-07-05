@@ -1,7 +1,6 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: routing_auto.yml }
 
 framework:
     esi: { enabled: true }
@@ -90,34 +89,34 @@ doctrine:
                 is_bundle: false
 
 
-doctrine_phpcr:
-    session:
-        backend: {type: doctrinedbal, connection: odm}
-        workspace: default
+#doctrine_phpcr:
+#    session:
+#        backend: {type: doctrinedbal, connection: odm}
+#        workspace: default
     # enable the ODM layer
-    odm:
-        auto_mapping: true
-        auto_generate_proxy_classes: %kernel.debug%
+#    odm:
+#        auto_mapping: true
+#        auto_generate_proxy_classes: %kernel.debug%
 
-sonata_block:
-    default_contexts: [cms]
+#sonata_block:
+#    default_contexts: [cms]
 
 # Enable the DynamicRouter from the RoutingBundle
-cmf_routing:
-    chain:
-        routers_by_id:
-            cmf_routing.dynamic_router: 20
-            router.default: 100
-    dynamic:
-        enabled: true
-        persistence:
-            phpcr:
-                route_basepath: /cms/routes/page
-        controllers_by_class:
-            Acts\CamdramBundle\Document\Page: Acts\CamdramBundle\Controller\DefaultPageController::pageAction
+#cmf_routing:
+#    chain:
+#        routers_by_id:
+#            cmf_routing.dynamic_router: 20
+#            router.default: 100
+#    dynamic:
+#        enabled: true
+#        persistence:
+#            phpcr:
+#                route_basepath: /cms/routes/page
+#        controllers_by_class:
+#            Acts\CamdramBundle\Document\Page: Acts\CamdramBundle\Controller\DefaultPageController::pageAction
 
-knp_menu:
-    twig: true
+#knp_menu:
+#    twig: true
 
 # Swiftmailer Configuration
 swiftmailer:
