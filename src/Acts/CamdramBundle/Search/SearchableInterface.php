@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Search;
 
 interface SearchableInterface
@@ -16,5 +17,4 @@ interface SearchableInterface
     public function getSlug();
 
     public function getRank();
-
 }

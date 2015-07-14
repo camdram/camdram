@@ -3,11 +3,9 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr as Expr;
 
 /**
  * RoleRepository
- *
  */
 class RoleRepository extends EntityRepository
 {
@@ -21,10 +19,11 @@ class RoleRepository extends EntityRepository
             array('order' => 'DESC')
             );
         $res = 0;
-        if ($role != NULL) {
+        if ($role != null) {
             // There are no roles of this type.
             $res = $role->getOrder();
         }
+
         return $res;
     }
 

@@ -1,10 +1,9 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class ViewVoter extends AbstractVoter
 {
@@ -28,7 +27,7 @@ class ViewVoter extends AbstractVoter
         if ($object instanceof Show) {
             return $object->getAuthorisedBy() !== null;
         }
+
         return true;
     }
-
 }

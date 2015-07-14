@@ -1,6 +1,6 @@
 <?php
-namespace Acts\CamdramAdminBundle\Service;
 
+namespace Acts\CamdramAdminBundle\Service;
 
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormFactory;
 
 class UserMerger
 {
-
     private $entityManager;
 
     private $formFactory;
@@ -28,8 +27,8 @@ class UserMerger
                 'label' => 'Keep which user?',
                 'expanded' => true,
                 'choices' => array(
-                    'this' => "This user",
-                    'other' => "The other user"
+                    'this' => 'This user',
+                    'other' => 'The other user'
                 ),
                 'data' => 'this'
             ))
@@ -40,6 +39,7 @@ class UserMerger
      * @param Person $person1
      * @param Person $person2
      * @param $keepFirst
+     *
      * @return Person
      */
     public function mergeUsers(User $user1, User $user2, $keepFirst)
@@ -80,7 +80,7 @@ class UserMerger
 
         $this->entityManager->remove($user2);
         $this->entityManager->flush();
+
         return $user1;
     }
-
 }

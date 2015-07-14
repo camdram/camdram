@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class RoleType
  *
  * The form that's presented when a support issue reply is created.
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class RoleType extends AbstractType
 {

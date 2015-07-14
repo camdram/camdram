@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Controller\Show;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TechieAdvertController extends FOSRestController
 {
-
     protected function getEntity($identifier)
     {
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
@@ -23,6 +23,7 @@ class TechieAdvertController extends FOSRestController
             $obj->setShow($show);
         }
         $form = $this->createForm(new TechieAdvertType(), $obj);
+
         return $form;
     }
 
@@ -36,6 +37,7 @@ class TechieAdvertController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $form = $this->getTechieAdvertForm($show);
+
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:Show:techie-advert-new.html.twig');
@@ -47,6 +49,7 @@ class TechieAdvertController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
         $this->get('acts.camdram.moderation_manager')->approveEntity($show);
         $this->get('doctrine.orm.entity_manager')->flush();
+
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
@@ -65,6 +68,7 @@ class TechieAdvertController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
         } else {
             return $this->view($form, 400)
@@ -84,6 +88,7 @@ class TechieAdvertController extends FOSRestController
 
         $techie_advert = $show->getTechieAdverts()->first();
         $form = $this->getTechieAdvertForm($show, $techie_advert);
+
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:Show:techie-advert-edit.html.twig');
@@ -105,6 +110,7 @@ class TechieAdvertController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+
             return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));
         } else {
             return $this->view($form, 400)
@@ -115,8 +121,10 @@ class TechieAdvertController extends FOSRestController
 
     /**
      * @Rest\Patch("/shows/{identifier}/techie-advert/expire")
+     *
      * @param Request $request
      * @param $identifier
+     *
      * @return \FOS\RestBundle\View\View
      */
     public function expireTechieAdvertAction(Request $request, $identifier)
@@ -139,6 +147,7 @@ class TechieAdvertController extends FOSRestController
     /**
      * @param Request $request
      * @param $identifier
+     *
      * @return \FOS\RestBundle\View\View
      */
     public function deleteTechieAdvertAction(Request $request, $identifier)
@@ -150,7 +159,7 @@ class TechieAdvertController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($techie_advert);
         $em->flush();
+
         return $this->routeRedirectView('new_show_techie_advert', array('identifier' => $show->getSlug()));
     }
-
 }

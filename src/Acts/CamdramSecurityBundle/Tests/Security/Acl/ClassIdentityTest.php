@@ -1,13 +1,15 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl;
 
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 
-class ClassIdentityTestClass {}
+class ClassIdentityTestClass
+{
+}
 
 class ClassIdentityTest extends \PHPUnit_Framework_TestCase
 {
-
     private $class_name;
 
     public function setUp()
@@ -26,5 +28,4 @@ class ClassIdentityTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\InvalidArgumentException');
         new ClassIdentity('\AnInvalidClassName');
     }
-
 }

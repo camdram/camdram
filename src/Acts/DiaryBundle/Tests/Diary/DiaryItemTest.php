@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Tests\Diary;
 
 use Acts\DiaryBundle\Diary\DiaryItem;
@@ -6,7 +7,6 @@ use Acts\DiaryBundle\Event\SingleDayEvent;
 
 class DiaryItemTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testDiaryItem()
     {
         $event = new SingleDayEvent();
@@ -34,5 +34,4 @@ class DiaryItemTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(4, $item->getEndIndex());
     }
-
 }

@@ -1,8 +1,8 @@
 <?php
+
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr as Expr;
 
 class VenueRepository extends EntityRepository
 {
@@ -11,6 +11,7 @@ class VenueRepository extends EntityRepository
         $query = $this->createQueryBuilder('v')
             ->orderBy('v.name')
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -26,7 +27,7 @@ class VenueRepository extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();
+
         return current($result);
     }
-
 }

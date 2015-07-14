@@ -1,12 +1,11 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
 
 class ReleaseInfoCommand extends ContainerAwareCommand
 {
@@ -43,7 +42,7 @@ class ReleaseInfoCommand extends ContainerAwareCommand
 
         foreach ($lines as $line) {
             if (!empty($line)) {
-                list($hash, $message) = explode(" ", $line, 2);
+                list($hash, $message) = explode(' ', $line, 2);
                 $data = $client->doCommit('camdram', 'camdram', $hash);
                 $commits[$hash] = array(
                     'message' => $message,
@@ -74,6 +73,7 @@ class ReleaseInfoCommand extends ContainerAwareCommand
                 unset($commits[$hash]);
             }
         }
+
         return array('issues' => $issues, 'commits' => $commits);
     }
 }

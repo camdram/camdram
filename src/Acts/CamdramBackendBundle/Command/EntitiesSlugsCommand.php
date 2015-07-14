@@ -1,23 +1,17 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Gedmo\Sluggable\Util as Sluggable;
-
-use Doctrine\ORM\Query\Expr;
 
 /**
  * Class EntitiesSlugsCommand
  *
  * Generates slugs for any entity with a blank slug
- *
- * @package Acts\CamdramBackendBundle\Command
  */
-
 class EntitiesSlugsCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -39,19 +33,25 @@ class EntitiesSlugsCommand extends ContainerAwareCommand
         $em->getConfiguration()->setSQLLogger(null);
 
         $qb = $em->getRepository('ActsCamdramBundle:Show')->createQueryBuilder('s');
-        if (!$search_all) $qb->where('s.slug is null');
+        if (!$search_all) {
+            $qb->where('s.slug is null');
+        }
         $shows = $qb->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
         $this->createSlugs($shows, $output);
         $em->clear();
 
         $qb = $em->getRepository('ActsCamdramBundle:Organisation')->createQueryBuilder('o');
-        if (!$search_all) $qb->where('o.slug is null');
+        if (!$search_all) {
+            $qb->where('o.slug is null');
+        }
         $orgs = $qb->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
         $this->createSlugs($orgs, $output);
         $em->clear();
 
         $qb = $em->getRepository('ActsCamdramBundle:Person')->createQueryBuilder('p');
-        if (!$search_all) $qb->where('p.slug is null');
+        if (!$search_all) {
+            $qb->where('p.slug is null');
+        }
         $people = $qb->getQuery()->useQueryCache(false)->useResultCache(false)->iterate();
         $this->createSlugs($people, $output);
         $em->clear();
@@ -75,7 +75,7 @@ class EntitiesSlugsCommand extends ContainerAwareCommand
                 $em->flush();
                 $em->clear();
             }
-            $output->writeln("Generated slug for ".$e->getName());
+            $output->writeln('Generated slug for '.$e->getName());
         }
         $em->flush();
         $em->clear();

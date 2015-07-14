@@ -12,13 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class WeekNameRepository extends EntityRepository
 {
-
     public function findAt(\DateTime $date)
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->where('p.start_at = :now')
             ->setParameter('now', $date)
             ->getQuery();
+
         return $query->getOneOrNullResult();
     }
 
@@ -30,10 +30,11 @@ class WeekNameRepository extends EntityRepository
             ->orderBy('p.start_at', 'ASC')
             ->setMaxResults($limit)
             ->getQuery();
+
         return $query->getResult();
     }
 
-    public function findBetween(\DateTime $start_date, \DateTime $end_date, $limit=null)
+    public function findBetween(\DateTime $start_date, \DateTime $end_date, $limit = null)
     {
         $qb = $this->createQueryBuilder('p');
         $qb->where('p.start_at >= :start_date')
@@ -41,7 +42,9 @@ class WeekNameRepository extends EntityRepository
             ->setParameter('start_date', $start_date)
             ->setParameter('end_date', $end_date)
             ->orderBy('p.start_at', 'ASC');
-        if ($limit > 0) $qb->setMaxResults($limit);
+        if ($limit > 0) {
+            $qb->setMaxResults($limit);
+        }
 
         return $qb->getQuery()->getResult();
     }
@@ -61,9 +64,9 @@ class WeekNameRepository extends EntityRepository
 
     public function getByYearPeriodAndSlug($year, $period, $slug)
     {
-        $year = (int)$year;
+        $year = (int) $year;
         $start = new \DateTime($year.'-01-01');
-        $end = new \DateTime(($year+1).'-01-01');
+        $end = new \DateTime(($year + 1).'-01-01');
 
         $query = $this->createQueryBuilder('w')
             ->join('w.time_period', 'p')
@@ -77,7 +80,7 @@ class WeekNameRepository extends EntityRepository
             ->setParameter('end_date', $end)
             ->setMaxResults(1)
             ->getQuery();
+
         return $query->getOneOrNullResult();
     }
-
 }

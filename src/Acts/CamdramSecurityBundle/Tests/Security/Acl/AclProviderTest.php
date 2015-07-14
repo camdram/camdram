@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -8,13 +9,9 @@ use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AclProviderTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -42,9 +39,9 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testIsOwner_UserIsOwner()
     {
-        $user = new User;
+        $user = new User();
         $user->setEmail('testuser@camdram.net');
-        $show = new Show;
+        $show = new Show();
         $show->setName('Test Show');
 
         $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(true));
@@ -54,9 +51,9 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testIsOwner_UserNotOwner()
     {
-        $user = new User;
+        $user = new User();
         $user->setEmail('testuser@camdram.net');
-        $show = new Show;
+        $show = new Show();
         $show->setName('Test Show');
 
         $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(false));
@@ -66,11 +63,11 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testIsOwner_ExternalUserIsOwner()
     {
-        $user = new User;
+        $user = new User();
         $user->setEmail('testuser@camdram.net');
-        $external_user = new ExternalUser;
+        $external_user = new ExternalUser();
         $external_user->setUser($user)->setUsername('testuser');
-        $show = new Show;
+        $show = new Show();
         $show->setName('Test Show');
 
         $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(false));
@@ -80,7 +77,7 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testIsOwner_NotLoggedIn()
     {
-        $show = new Show;
+        $show = new Show();
         $this->assertFalse($this->aclProvider->isOwner(null, $show));
     }
 
@@ -92,7 +89,7 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEntityIdsByUser_InvalidClass()
     {
-        $user = new User;
+        $user = new User();
         $user->setEmail('testuser@camdram.net');
 
         $this->setExpectedException('\ReflectionException');
@@ -101,7 +98,7 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEntityIdsByUser_NonOwnableClass()
     {
-        $user = new User;
+        $user = new User();
         $user->setEmail('testuser@camdram.net');
 
         $this->setExpectedException('\InvalidArgumentException');
@@ -110,7 +107,7 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEntityIdsByUser_ValidClass()
     {
-        $user = new User;
+        $user = new User();
         $user->setEmail('testuser@camdram.net');
 
         $ace1 = new AccessControlEntry();
@@ -127,5 +124,4 @@ class AclProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(32, $retAces[0]);
         $this->assertEquals(44, $retAces[1]);
     }
-
 }

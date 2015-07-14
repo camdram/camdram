@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class CreatePasswordType extends AbstractType
 {
     /**
-     * @var boolean
+     * @var bool
      *
      * Raven accounts don't give us a name, so need to decide whether to include it in the form or not
      */

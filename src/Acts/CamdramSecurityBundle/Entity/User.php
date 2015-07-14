@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
-
 use Acts\CamdramBundle\Entity\Person;
 
 /**
@@ -25,7 +24,7 @@ use Acts\CamdramBundle\Entity\Person;
 class User implements \Serializable, CamdramUserInterface
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -75,21 +74,21 @@ class User implements \Serializable, CamdramUserInterface
     private $last_login_at;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="contact", type="boolean", nullable=false)
      */
     private $contact;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="alumni", type="boolean", nullable=false)
      */
     private $alumni;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="publishemail", type="boolean", nullable=false)
      */
@@ -127,35 +126,35 @@ class User implements \Serializable, CamdramUserInterface
     private $tel;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="dbemail", type="boolean", nullable=true)
      */
     private $db_email;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="dbphone", type="boolean", nullable=true)
      */
     private $db_phone;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="forumnotify", type="boolean", nullable=true)
      */
     private $forum_notify;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="threadmessages", type="boolean", nullable=true)
      */
     private $thread_messages;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="reversetime", type="boolean", nullable=false)
      */
@@ -176,7 +175,7 @@ class User implements \Serializable, CamdramUserInterface
     private $person;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="upgraded_at", type="datetime", nullable=true)
      */
@@ -266,7 +265,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -277,6 +276,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set name
      *
      * @param string $name
+     *
      * @return User
      */
     public function setName($name)
@@ -305,6 +305,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set email
      *
      * @param string $email
+     *
      * @return User
      */
     public function setEmail($email)
@@ -316,6 +317,7 @@ class User implements \Serializable, CamdramUserInterface
         /*$email=preg_replace("/@cam.ac.uk$/i","",$email);
         $email=preg_replace("/@hermes.cam.ac.uk$/i","",$email);*/
         $this->email = strtolower($email);
+
         return $this;
     }
 
@@ -338,9 +340,10 @@ class User implements \Serializable, CamdramUserInterface
     {
         /* Add missing suffix, if required. */
         $email = $this->email;
-        if ($email && strchr($email,'@') === false) {
-            $email .= "@cam.ac.uk";
+        if ($email && strchr($email, '@') === false) {
+            $email .= '@cam.ac.uk';
         }
+
         return $email;
     }
 
@@ -348,6 +351,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set registered
      *
      * @param \DateTime $registered
+     *
      * @return User
      */
     public function setRegisteredAt($registered_at)
@@ -371,6 +375,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set login
      *
      * @param \DateTime $login
+     *
      * @return User
      */
     public function setLastLoginAt($last_login_at)
@@ -393,7 +398,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set contact
      *
-     * @param boolean $contact
+     * @param bool $contact
+     *
      * @return User
      */
     public function setContact($contact)
@@ -406,7 +412,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get contact
      *
-     * @return boolean
+     * @return bool
      */
     public function getContact()
     {
@@ -416,7 +422,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set alumni
      *
-     * @param boolean $alumni
+     * @param bool $alumni
+     *
      * @return User
      */
     public function setAlumni($alumni)
@@ -429,7 +436,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get alumni
      *
-     * @return boolean
+     * @return bool
      */
     public function getAlumni()
     {
@@ -439,7 +446,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set publish_email
      *
-     * @param boolean $publishEmail
+     * @param bool $publishEmail
+     *
      * @return User
      */
     public function setPublishEmail($publishEmail)
@@ -452,7 +460,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get publish_email
      *
-     * @return boolean
+     * @return bool
      */
     public function getPublishEmail()
     {
@@ -462,7 +470,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set forum_notify
      *
-     * @param boolean $forumNotify
+     * @param bool $forumNotify
+     *
      * @return User
      */
     public function setForumNotify($forumNotify)
@@ -475,7 +484,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get forum_notify
      *
-     * @return boolean
+     * @return bool
      */
     public function getForumNotify()
     {
@@ -486,6 +495,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set hear_about
      *
      * @param string $hearAbout
+     *
      * @return User
      */
     public function setHearAbout($hearAbout)
@@ -509,6 +519,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set occupation
      *
      * @param string $occupation
+     *
      * @return User
      */
     public function setOccupation($occupation)
@@ -532,6 +543,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set graduation
      *
      * @param string $graduation
+     *
      * @return User
      */
     public function setGraduation($graduation)
@@ -555,6 +567,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set tel
      *
      * @param string $tel
+     *
      * @return User
      */
     public function setTel($tel)
@@ -577,7 +590,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set db_email
      *
-     * @param boolean $dbEmail
+     * @param bool $dbEmail
+     *
      * @return User
      */
     public function setDbEmail($dbEmail)
@@ -590,7 +604,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get db_email
      *
-     * @return boolean
+     * @return bool
      */
     public function getDbEmail()
     {
@@ -600,7 +614,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set db_phone
      *
-     * @param boolean $dbPhone
+     * @param bool $dbPhone
+     *
      * @return User
      */
     public function setDbPhone($dbPhone)
@@ -613,7 +628,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get db_phone
      *
-     * @return boolean
+     * @return bool
      */
     public function getDbPhone()
     {
@@ -623,7 +638,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set thread_messages
      *
-     * @param boolean $threadMessages
+     * @param bool $threadMessages
+     *
      * @return User
      */
     public function setThreadMessages($threadMessages)
@@ -636,7 +652,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get thread_messages
      *
-     * @return boolean
+     * @return bool
      */
     public function getThreadMessages()
     {
@@ -646,7 +662,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set reverse_time
      *
-     * @param boolean $reverseTime
+     * @param bool $reverseTime
+     *
      * @return User
      */
     public function setReverseTime($reverseTime)
@@ -659,7 +676,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get reverse_time
      *
-     * @return boolean
+     * @return bool
      */
     public function getReverseTime()
     {
@@ -670,6 +687,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set reset_code
      *
      * @param string $resetCode
+     *
      * @return User
      */
     public function setResetCode($resetCode)
@@ -693,6 +711,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set password
      *
      * @param string $password
+     *
      * @return User
      */
     public function setPassword($password)
@@ -733,18 +752,19 @@ class User implements \Serializable, CamdramUserInterface
                 case -3: $roles[] = 'ROLE_EDITOR'; break;
             }
         }
+
         return $roles;
     }
 
     public function eraseCredentials()
     {
-
     }
 
     /**
      * Set person
      *
      * @param \Acts\CamdramBundle\Entity\Person $person
+     *
      * @return User
      */
     public function setPerson(Person $person = null)
@@ -753,6 +773,7 @@ class User implements \Serializable, CamdramUserInterface
         foreach ($this->getExternalUsers() as $external_user) {
             $external_user->setPerson($person);
         }
+
         return $this;
     }
 
@@ -781,8 +802,8 @@ class User implements \Serializable, CamdramUserInterface
         $this->thread_messages = false;
         $this->reverse_time = true;
 
-        $this->registered_at = new \DateTime;
-        $this->last_login_at = new \DateTime;
+        $this->registered_at = new \DateTime();
+        $this->last_login_at = new \DateTime();
 
         $this->aces = new ArrayCollection();
         $this->external_users = new ArrayCollection();
@@ -805,7 +826,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set upgraded
      *
-     * @param boolean $upgraded
+     * @param bool $upgraded
+     *
      * @return User
      */
     public function setUpgraded($upgraded)
@@ -818,7 +840,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get upgraded
      *
-     * @return boolean
+     * @return bool
      */
     public function getUpgraded()
     {
@@ -829,6 +851,7 @@ class User implements \Serializable, CamdramUserInterface
      * Set upgraded_at
      *
      * @param \DateTime $upgradedAt
+     *
      * @return User
      */
     public function setUpgradedAt($upgradedAt)
@@ -857,6 +880,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add external_users
      *
      * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
+     *
      * @return User
      */
     public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser)
@@ -893,7 +917,7 @@ class User implements \Serializable, CamdramUserInterface
     public function getExternalUserByService($service)
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("service", $service));
+            ->where(Criteria::expr()->eq('service', $service));
         $res = $this->external_users->matching($criteria);
         if (count($res) > 0) {
             return $res->first();
@@ -908,7 +932,8 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Set is_email_verified
      *
-     * @param boolean $isEmailVerified
+     * @param bool $isEmailVerified
+     *
      * @return User
      */
     public function setIsEmailVerified($isEmailVerified)
@@ -921,18 +946,18 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get is_email_verified
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsEmailVerified()
     {
         return $this->is_email_verified;
     }
 
-
     /**
      * Set profile_picture_url
      *
      * @param string $profilePictureUrl
+     *
      * @return User
      */
     public function setProfilePictureUrl($profilePictureUrl)
@@ -956,6 +981,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add aces
      *
      * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
+     *
      * @return User
      */
     public function addAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
@@ -991,14 +1017,15 @@ class User implements \Serializable, CamdramUserInterface
         $criteria->where(Criteria::expr()->eq('type', 'security'))
             ->andWhere(Criteria::expr()->isNull('revokedBy'))
             ->andWhere(Criteria::expr()->neq('grantedBy', null));
+
         return $this->getAces()->matching($criteria);
     }
-
 
     /**
      * Add apps
      *
      * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
+     *
      * @return User
      */
     public function addApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
@@ -1032,6 +1059,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add knowledge_base_revisions
      *
      * @param \Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions
+     *
      * @return User
      */
     public function addKnowledgeBaseRevision(\Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions)
@@ -1054,7 +1082,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get knowledge_base_revisions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getKnowledgeBaseRevisions()
     {
@@ -1065,6 +1093,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add ace_grants
      *
      * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants
+     *
      * @return User
      */
     public function addAceGrant(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants)
@@ -1087,7 +1116,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get ace_grants
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAceGrants()
     {
@@ -1098,6 +1127,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add email_builders
      *
      * @param \Acts\CamdramLegacyBundle\Entity\Email $emailBuilders
+     *
      * @return User
      */
     public function addEmailBuilder(\Acts\CamdramLegacyBundle\Entity\Email $emailBuilders)
@@ -1120,7 +1150,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get email_builders
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getEmailBuilders()
     {
@@ -1131,6 +1161,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add owned_issues
      *
      * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
+     *
      * @return User
      */
     public function addOwnedIssue(\Acts\CamdramAdminBundle\Entity\Support $ownedIssues)
@@ -1153,7 +1184,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get owned_issues
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOwnedIssues()
     {
@@ -1164,6 +1195,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add email_aliases
      *
      * @param \Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases
+     *
      * @return User
      */
     public function addEmailAlias(\Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases)
@@ -1186,7 +1218,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get email_aliases
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getEmailAliases()
     {
@@ -1197,6 +1229,7 @@ class User implements \Serializable, CamdramUserInterface
      * Add email_sigs
      *
      * @param \Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs
+     *
      * @return User
      */
     public function addEmailSig(\Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs)
@@ -1219,7 +1252,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get email_sigs
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getEmailSigs()
     {

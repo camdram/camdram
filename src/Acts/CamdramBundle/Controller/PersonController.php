@@ -2,25 +2,19 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Form\Type\PersonType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-
 
 /**
  * Class PersonController
  *
  * Controller for REST actions for people. Inherits from AbstractRestController.
  *
- * @package Acts\CamdramBundle\Controller
  * @RouteResource("Person")
  */
 class PersonController extends AbstractRestController
@@ -46,6 +40,7 @@ class PersonController extends AbstractRestController
     public function removeAction($identifier)
     {
         parent::removeAction($identifier);
+
         return $this->routeRedirectView('acts_camdram_homepage');
     }
 
@@ -83,6 +78,7 @@ class PersonController extends AbstractRestController
 
     /**
      * @param $identifier
+     *
      * @return $this
      * @Rest\Get("/people/{identifier}/past-roles")
      */
@@ -93,6 +89,7 @@ class PersonController extends AbstractRestController
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getPastByPerson($now, $person);
 
         $data = array('person' => $person, 'shows' => $shows);
+
         return $this->view($data, 200)
             ->setTemplateVar('data')
             ->setTemplate('ActsCamdramBundle:Person:past-shows.html.twig');
@@ -100,6 +97,7 @@ class PersonController extends AbstractRestController
 
     /**
      * @param $identifier
+     *
      * @return $this
      * @Rest\Get("/people/{identifier}/upcoming-roles")
      */
@@ -110,6 +108,7 @@ class PersonController extends AbstractRestController
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getUpcomingByPerson($now, $person);
 
         $data = array('person' => $person, 'shows' => $shows);
+
         return $this->view($data, 200)
             ->setTemplateVar('data')
             ->setTemplate('ActsCamdramBundle:Person:upcoming-shows.html.twig');
@@ -117,6 +116,7 @@ class PersonController extends AbstractRestController
 
     /**
      * @param $identifier
+     *
      * @return $this
      * @Rest\Get("/people/{identifier}/current-roles")
      */
@@ -147,6 +147,7 @@ class PersonController extends AbstractRestController
     /**
      * @param $identifier
      * @param $request Request
+     *
      * @return $this
      * @Rest\Link("/people/{identifier}/merge")
      */
@@ -165,6 +166,7 @@ class PersonController extends AbstractRestController
                     $form->addError(new FormError('You cannot map a person to itself'));
                 } else {
                     $newPerson = $merger->mergePeople($person, $otherPerson, $data['keep_person'] == 'this');
+
                     return $this->redirectToRoute('get_person', array('identifier' => $newPerson->getSlug()));
                 }
             } else {

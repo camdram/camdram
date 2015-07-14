@@ -1,16 +1,13 @@
 <?php
+
 namespace Acts\CamdramLegacyBundle\DataFixtures\PHPCR;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use PHPCR\Util\NodeHelper;
-
 use Gedmo\Sluggable\Util as Sluggable;
-
 use Acts\CamdramLegacyBundle\Entity\Page as Page;
 use Acts\CamdramBundle\Document\Page as CmsPage;
 
@@ -81,7 +78,7 @@ class LoadPageData implements FixtureInterface, ContainerAwareInterface
                 $cms_page->setTitle($title);
                 $cms_page->setParent($parent);
                 $text = $page->getHelp();
-                if ($text == "") {
+                if ($text == '') {
                     /* The page's content comes from a knowledgebase page.
                      * This has been reverse engineered from v1.
                      */

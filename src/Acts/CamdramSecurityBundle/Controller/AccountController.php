@@ -7,12 +7,11 @@ use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class AccountController
- * @package Acts\CamdramSecurityBundle\Controller
+ *
  * @RouteResource("Account")
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
@@ -35,12 +34,14 @@ class AccountController extends FOSRestController
     public function getShowsAction()
     {
         $shows = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Show');
+
         return $this->view($shows);
     }
 
     public function getOrganisationsAction()
     {
         $orgs = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Organisation');
+
         return $this->view($orgs);
     }
 
@@ -54,8 +55,10 @@ class AccountController extends FOSRestController
                 $user = $form->getData();
                 $user->setIsEmailVerified(false);
                 $this->getDoctrine()->getManager()->flush();
+
                 return $this->render('ActsCamdramSecurityBundle:Account:change_email_complete.html.twig');
             }
+
             return $this->render('ActsCamdramSecurityBundle:Account:change_email.html.twig', array(
                 'form' => $form->createView()
             ));
@@ -84,6 +87,7 @@ class AccountController extends FOSRestController
 
                 return $this->render('ActsCamdramSecurityBundle:Account:change_password_complete.html.twig');
             }
+
             return $this->render('ActsCamdramSecurityBundle:Account:change_password.html.twig', array(
                 'form' => $form->createView()
             ));
@@ -117,5 +121,4 @@ class AccountController extends FOSRestController
 
         return $this->redirect($this->generateUrl('get_account'));
     }
-
 }

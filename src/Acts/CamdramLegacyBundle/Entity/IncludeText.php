@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class IncludeText
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -35,11 +35,10 @@ class IncludeText
      */
     private $text;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -50,6 +49,7 @@ class IncludeText
      * Set name
      *
      * @param string $name
+     *
      * @return IncludeText
      */
     public function setName($name)
@@ -73,6 +73,7 @@ class IncludeText
      * Set text
      *
      * @param string $text
+     *
      * @return IncludeText
      */
     public function setText($text)

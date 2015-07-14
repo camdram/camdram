@@ -8,18 +8,12 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\User;
-use Behat\Behat\Context\BehatContext;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\Behat\Context\Step;
 
 /**
  * Feature context.
  */
 class EntityContext extends AbstractContext
 {
-
     private $authorise_user;
 
     public function getAuthoriseUser()
@@ -32,6 +26,7 @@ class EntityContext extends AbstractContext
             $em->flush();
             $this->authorise_user = $user;
         }
+
         return $this->authorise_user;
     }
 
@@ -51,33 +46,36 @@ class EntityContext extends AbstractContext
 
     public function createShow($show_name)
     {
-        $show = new Show;
+        $show = new Show();
         $show->setName($show_name)
             ->setCategory('drama')
             ->setAuthorisedBy($this->getAuthoriseUser());
         $em = $this->getEntityManager();
         $em->persist($show);
         $em->flush();
+
         return $show;
     }
 
     public function createSociety($soc_name)
     {
-        $society = new Society;
+        $society = new Society();
         $society->setName($soc_name)->setShortName($soc_name);
         $em = $this->getEntityManager();
         $em->persist($society);
         $em->flush();
+
         return $society;
     }
 
     public function createVenue($venue_name)
     {
-        $venue = new Venue;
+        $venue = new Venue();
         $venue->setName($venue_name)->setShortName($venue_name);
         $em = $this->getEntityManager();
         $em->persist($venue);
         $em->flush();
+
         return $venue;
     }
 
@@ -101,7 +99,9 @@ class EntityContext extends AbstractContext
 
         $start_date = $this->getCurrentTime();
         $day_of_week = $start_date->format('N');
-        if ($day_of_week < 7) $start_date->modify('-'.$day_of_week.' days');
+        if ($day_of_week < 7) {
+            $start_date->modify('-'.$day_of_week.' days');
+        }
         $start_date->modify('+'.$days.' day');
         $end_date = clone $start_date;
         $end_date->modify('+'.$length.' days');
@@ -121,14 +121,14 @@ class EntityContext extends AbstractContext
      */
     public function createTimePeriod($name, $from, $to)
     {
-         $period = new TimePeriod();
-         $period->setName($name);
-         $period->setFullName($name);
-         $period->setShortName($name);
-         $period->setStartAt(new \DateTime($from));
-         $period->setEndAt(new \DateTime($to));
-         $em = $this->getEntityManager();
-         $em->persist($period);
-         $em->flush();
-     }
+        $period = new TimePeriod();
+        $period->setName($name);
+        $period->setFullName($name);
+        $period->setShortName($name);
+        $period->setStartAt(new \DateTime($from));
+        $period->setEndAt(new \DateTime($to));
+        $em = $this->getEntityManager();
+        $em->persist($period);
+        $em->flush();
+    }
 }

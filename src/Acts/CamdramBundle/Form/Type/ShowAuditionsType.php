@@ -5,20 +5,16 @@ namespace Acts\CamdramBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Acts\CamdramBundle\Form\DataTransformer\PerformanceExcludeTransformer;
 
 /**
  * Class ShowType
  *
  * The form that's presented when a user adds/edits a show
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class ShowAuditionsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('aud_extra', 'textarea', array('required' => false, 'label' => 'Information to display on auditions page'))
             ->add('scheduled_auditions', 'collection', array(

@@ -1,6 +1,6 @@
 <?php
-namespace Acts\CamdramBundle\Tests\Form\Type;
 
+namespace Acts\CamdramBundle\Tests\Form\Type;
 
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\EntitySearchType;
@@ -8,7 +8,6 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class EntitySearchTypeTest extends TypeTestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -39,6 +38,7 @@ class EntitySearchTypeTest extends TypeTestCase
     private function createForm()
     {
         $type = new EntitySearchType($this->em);
+
         return  $this->factory->createNamed('test', $type, null, array('inherit_data' => false));
     }
 
@@ -96,7 +96,6 @@ class EntitySearchTypeTest extends TypeTestCase
 
     public function testSubmitNameOnlyNoSociety()
     {
-
         $this->repo->expects($this->once())
             ->method('findOneByName')
             ->with('Unknown Society')
@@ -125,5 +124,4 @@ class EntitySearchTypeTest extends TypeTestCase
         $this->assertEquals(null, $data['test']);
         $this->assertEquals(null, $data['test_name']);
     }
-
 }

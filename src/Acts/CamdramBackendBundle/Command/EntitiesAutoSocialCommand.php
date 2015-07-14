@@ -1,24 +1,17 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 /**
  * Class EntitiesAutoSocialCommand
  *
  * This console command attempt to link venues and societies in the database to Facebook pages and Twitter
  * accounts using their respective search APIs. It isn't very accurate so should be used with caution!
- *
- * @package Acts\CamdramBackendBundle\Command
  */
-
 class EntitiesAutoSocialCommand extends ContainerAwareCommand
 {
     /**
@@ -44,7 +37,7 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $entities An array of entities which it should attempt to link to social media accounts
+     * @param array           $entities An array of entities which it should attempt to link to social media accounts
      * @param OutputInterface $output
      */
     private function linkEntities(array $entities, OutputInterface $output)
@@ -71,7 +64,6 @@ class EntitiesAutoSocialCommand extends ContainerAwareCommand
                         }
                     }
                 }
-
             }
         }
     }

@@ -5,20 +5,14 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Label;
 use FOS\RestBundle\Controller\FOSRestController;
-use Acts\DiaryBundle\Event\MultiDayEvent;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class DiaryController
  *
  * Controller for the diary page. The diary
- *
- * @package Acts\CamdramBundle\Controller
  */
-
 class DiaryController extends FOSRestController
 {
-
     /**
      * Renders the main diary template
      *
@@ -26,9 +20,9 @@ class DiaryController extends FOSRestController
      */
     public function indexAction()
     {
-
         $now = $this->get('acts.time_service')->getCurrentTime();
         $week_start = $this->get('acts.camdram.week_manager')->previousSunday($now);
+
         return $this->dateAction($week_start);
     }
 
@@ -39,7 +33,9 @@ class DiaryController extends FOSRestController
      */
     public function toolbarAction($start_date = null)
     {
-        if (!$start_date) $start_date = $this->get('acts.time_service')->getCurrentTime();
+        if (!$start_date) {
+            $start_date = $this->get('acts.time_service')->getCurrentTime();
+        }
         $current_year = $start_date->format('Y');
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
@@ -50,7 +46,6 @@ class DiaryController extends FOSRestController
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
         $periods = $repo->findByYearBefore($current_year, $last_date);
         $current_period = $repo->findAt($start_date);
-
 
         return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(
             'years' => $years,
@@ -69,12 +64,14 @@ class DiaryController extends FOSRestController
         } else {
             $view->setTemplate('ActsCamdramBundle:Diary:index.html.twig');
         }
+
         return $view;
     }
 
     public function yearAction($year)
     {
         $start_date = new \DateTime($year.'-01-01');
+
         return $this->dateAction($start_date);
     }
 
@@ -90,9 +87,9 @@ class DiaryController extends FOSRestController
 
     public function weekAction($year, $period, $week)
     {
-        if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/',$week)) {
+        if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/', $week)) {
             return $this->rangeAction($week);
-        } elseif (preg_match('/[0-9]{2}\-[0-9]{2}/',$week)) {
+        } elseif (preg_match('/[0-9]{2}\-[0-9]{2}/', $week)) {
             return $this->rangeAction($year.'-'.$week);
         }
 
@@ -108,6 +105,7 @@ class DiaryController extends FOSRestController
      * Renders a single week.
      *
      * @param $date \DateTime Start date of the week to be rendered
+     *
      * @return \Acts\DiaryBundle\Diary\Diary
      */
     public function singleWeekAction($date)
@@ -130,7 +128,9 @@ class DiaryController extends FOSRestController
 
     public function dateAction($start)
     {
-        if (is_string($start)) $start = new \DateTime($start);
+        if (is_string($start)) {
+            $start = new \DateTime($start);
+        }
 
         if ($this->getRequest()->query->has('end')) {
             $end = new \DateTime($this->getRequest()->query->get('end'));
@@ -163,5 +163,4 @@ class DiaryController extends FOSRestController
 
         return $this->renderDiary($diary);
     }
-
 }

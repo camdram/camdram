@@ -1,16 +1,14 @@
 <?php
+
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
-use Acts\CamdramBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Routing\RouterInterface;
-
 use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -48,6 +46,7 @@ class ModerationManager
 
     /**
      * Determine which Entities the user is permitted to moderate.
+     *
      * @return array An array of entities.
      */
     public function getEntitiesToModerate()
@@ -66,6 +65,7 @@ class ModerationManager
                     $entities = array_merge($entities, $show_repo->findUnauthorisedByVenue($org));
                 }
             }
+
             return $entities;
         } else {
             return array();
@@ -74,6 +74,7 @@ class ModerationManager
 
     /**
      * Determine which Users are permitted to moderate the given Entity.
+     *
      * @return Users[] an array of Camdram Users.
      */
     public function getModeratorsForEntity($entity)
@@ -93,12 +94,14 @@ class ModerationManager
             //If there is no venue/society or both have zero admins, then the Camdram admins become the moderators
             $users = $this->getModeratorAdmins();
         }
+
         return $users;
     }
 
     public function getModeratorAdmins()
     {
         $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+
         return $repo->findAdmins(AccessControlEntry::LEVEL_FULL_ADMIN);
     }
 
@@ -143,8 +146,7 @@ class ModerationManager
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             if ($this->securityContext->getToken()) {
                 $owners = array($this->securityContext->getToken()->getUser());
-            }
-            else {
+            } else {
                 $owners = $repo->getEntityOwners($entity);
             }
             $admins = $this->getModeratorAdmins();
@@ -170,8 +172,7 @@ class ModerationManager
             if (count($moderators) > 0) {
                 if ($this->securityContext->getToken()) {
                     $owners = array($this->securityContext->getToken()->getUser());
-                }
-                else {
+                } else {
                     $owners = $repo->getEntityOwners($entity);
                 }
 
@@ -189,8 +190,7 @@ class ModerationManager
             if (count($moderators) > 0) {
                 if ($this->securityContext->getToken()) {
                     $owners = array($this->securityContext->getToken()->getUser());
-                }
-                else {
+                } else {
                     $owners = $repo->getEntityOwners($entity);
                 }
 

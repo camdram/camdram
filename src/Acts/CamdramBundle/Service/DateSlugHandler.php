@@ -1,18 +1,16 @@
 <?php
+
 namespace Acts\CamdramBundle\Service;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\ObjectManager;
 use Gedmo\Sluggable\Handler\SlugHandlerInterface;
 use Gedmo\Sluggable\Mapping\Event\SluggableAdapter;
 use Gedmo\Sluggable\SluggableListener;
 use Gedmo\Exception\InvalidMappingException;
-use Gedmo\Tool\Wrapper\AbstractWrapper;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class DateSlugHandler implements SlugHandlerInterface
 {
-
     /**
      * @var SluggableListener
      */

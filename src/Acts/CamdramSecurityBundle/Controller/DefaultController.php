@@ -8,23 +8,17 @@ use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Form\Type\CreatePasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ForgottenPasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ResetPasswordType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\Security\Core\SecurityContext;
-
-use Acts\CamdramSecurityBundle\Form\Type\LoginType,
-    Acts\CamdramSecurityBundle\Form\Type\RegistrationType,
-    Acts\CamdramSecurityBundle\Entity\UserIdentity,
-    Acts\CamdramSecurityBundle\Entity\User,
-    Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
-use Symfony\Component\Form\FormError;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContext;
+use Acts\CamdramSecurityBundle\Form\Type\RegistrationType;
+use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 
 class DefaultController extends Controller
 {
-
     public function toolbarAction()
     {
         return $this->render('ActsCamdramSecurityBundle:Default:toolbar.html.twig', array(
@@ -74,7 +68,6 @@ class DefaultController extends Controller
                 )
             );
         }
-
     }
 
     public function createAccountAction(Request $request)
@@ -82,7 +75,7 @@ class DefaultController extends Controller
         if ($this->getUser()) {
             return $this->redirect($this->generateUrl('acts_camdram_homepage'));
         }
-        $user = new User;
+        $user = new User();
 
         $form = $this->createForm(new RegistrationType(), $user);
 
@@ -104,10 +97,11 @@ class DefaultController extends Controller
                 $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::REGISTRATION_COMPLETE, new UserEvent($user));
                 $this->get('security.context')->setToken($token);
                 $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
+
                 return $this->redirect($this->generateUrl('acts_camdram_security_create_account_complete'));
             }
-
         }
+
         return $this->render('ActsCamdramSecurityBundle:Default:create_account.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -123,7 +117,7 @@ class DefaultController extends Controller
         if (!$this->getUser() instanceof ExternalUser) {
             return $this->redirect($this->generateUrl('acts_camdram_homepage'));
         }
-        $user = new User;
+        $user = new User();
         $external_user = $this->getUser();
         $user->setName($external_user->getName());
         $user->setEmail($external_user->getEmail());
@@ -132,7 +126,7 @@ class DefaultController extends Controller
 
         //Raven accounts don't give us a name but the others do,
         //so need to decide whether to include a 'name' field in the form or not
-        $type = new CreatePasswordType(!(bool)$user->getName());
+        $type = new CreatePasswordType(!(bool) $user->getName());
         $form = $this->createForm($type, $user);
 
         if ($request->getMethod() == 'POST') {
@@ -156,10 +150,11 @@ class DefaultController extends Controller
                 $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::REGISTRATION_COMPLETE, new UserEvent($user));
                 $this->get('security.context')->setToken($token);
                 $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
+
                 return $this->redirect($this->generateUrl('acts_camdram_security_create_account_complete'));
             }
-
         }
+
         return $this->render('ActsCamdramSecurityBundle:Default:create_password.html.twig', array(
                 'form' => $form->createView(),
             ));
@@ -185,12 +180,14 @@ class DefaultController extends Controller
                 $request->getSession()->remove(AuthenticationSuccessHandler::LAST_AUTHENTICATION_TOKEN);
                 $token = $this->get('camdram.security.user_linker')->findCamdramToken($link_token, $this->get('security.context')->getToken());
                 $this->get('security.context')->setToken($token);
+
                 return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
             } elseif ($request->request->has('old')) {
                 return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $this->get('security.context')->getToken());
             } else {
                 $request->getSession()->clear();
                 $this->get('security.context')->setToken($link_token);
+
                 return $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $link_token);
             }
         }
@@ -209,12 +206,14 @@ class DefaultController extends Controller
             if ($token == $expected_token) {
                 $user->setIsEmailVerified(true);
                 $this->getDoctrine()->getManager()->flush();
+
                 return $this->render('ActsCamdramSecurityBundle:Default:confirm_email.html.twig', array(
                     'confirm_user' => $user,
                     'services'      => $this->get('external_login.service_provider')->getServices(),
                 ));
             }
         }
+
         return $this->render('ActsCamdramSecurityBundle:Default:confirm_email_error.html.twig', array());
     }
 
@@ -239,6 +238,7 @@ class DefaultController extends Controller
                 ));
             }
         }
+
         return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -250,7 +250,6 @@ class DefaultController extends Controller
         if ($user) {
             $expected_token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
             if ($token == $expected_token) {
-
                 $form = $this->createForm(new ResetPasswordType(), array());
                 if ($this->getRequest()->getMethod() == 'POST') {
                     $form->submit($this->getRequest());
@@ -261,6 +260,7 @@ class DefaultController extends Controller
                         $password = $encoder->encodePassword($data['password'], $user->getSalt());
                         $user->setPassword($password);
                         $this->getDoctrine()->getManager()->flush();
+
                         return $this->render('ActsCamdramSecurityBundle:Default:reset_password_complete.html.twig', array(
                             'email'     => $email,
                             'services'  => $this->get('external_login.service_provider')->getServices(),
@@ -275,7 +275,7 @@ class DefaultController extends Controller
                 ));
             }
         }
+
         return $this->render('ActsCamdramSecurityBundle:Default:reset_password_error.html.twig', array());
     }
-
 }

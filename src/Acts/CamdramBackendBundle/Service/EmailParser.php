@@ -1,7 +1,6 @@
 <?php
-namespace Acts\CamdramBackendBundle\Service;
 
-use Zend\Mail\Storage\Part;
+namespace Acts\CamdramBackendBundle\Service;
 
 class EmailParser
 {
@@ -25,6 +24,7 @@ class EmailParser
                 }
             }
         }
+
         return false;
     }
 
@@ -34,8 +34,10 @@ class EmailParser
             $text = $this->getPartByType('text/plain');
             if (!$text) {
                 $text = $this->getPartByType('text/html');
+
                 return strip_tags($text);
             }
+
             return $text;
         } else {
             return $this->rawEmail->getContent();
@@ -77,8 +79,7 @@ class EmailParser
     {
         if ($this->rawEmail->getHeaders()->has('cc')) {
             return $this->rawEmail->cc;
-        }
-        else {
+        } else {
             return '';
         }
     }
@@ -90,8 +91,7 @@ class EmailParser
     {
         if ($this->rawEmail->getHeaders()->has('cc')) {
             return $this->rawEmail->getHeaders()->get('cc');
-        }
-        else {
+        } else {
             return null;
         }
     }

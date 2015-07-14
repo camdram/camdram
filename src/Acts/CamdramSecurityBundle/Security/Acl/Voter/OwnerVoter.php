@@ -1,13 +1,9 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Acts\CamdramSecurityBundle\Security\OwnableInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Grants access if
@@ -39,7 +35,7 @@ class OwnerVoter extends AbstractVoter
         if ($this->aclProvider->isOwner($user, $object)) {
             return true;
         }
+
         return false;
     }
-
 }

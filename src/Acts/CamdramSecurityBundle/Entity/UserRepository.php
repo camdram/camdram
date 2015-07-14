@@ -1,14 +1,13 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Acts\CamdramBundle\Entity\Show;
 use Doctrine\ORM\EntityRepository;
-
 use Acts\CamdramBundle\Entity\Organisation;
 
 class UserRepository extends EntityRepository
 {
-
     public function findUsersWithSimilarName($name)
     {
         preg_match('/.* ([a-z\'\-]+)$/i', trim($name), $matches);
@@ -22,6 +21,7 @@ class UserRepository extends EntityRepository
             ->orderBy('u.login', 'DESC')
             ->setParameter('name', '%'.$surname)
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -29,14 +29,14 @@ class UserRepository extends EntityRepository
     {
         if (preg_match('/^(.*)@cam.ac.uk$/i', $email, $matches)) {
             $crsid = $matches[1];
+
             return $this->createQueryBuilder('u')
                 ->where('u.email = :email')
                 ->orWhere('u.email = :crsid')
                 ->setParameter('email', $email)
                 ->setParameter('crsid', $crsid)
                 ->getQuery()->getOneOrNullResult();
-        }
-        else {
+        } else {
             return parent::findOneByEmail($email);
         }
     }
@@ -49,9 +49,9 @@ class UserRepository extends EntityRepository
             ->setParameter('email', $email)
             ->setParameter('password', md5($password))
             ->getQuery();
+
         return $query->getOneOrNullResult();
     }
-
 
     public function findAdmins($min_level)
     {
@@ -63,6 +63,7 @@ class UserRepository extends EntityRepository
             ->setParameter('level', $min_level)
             ->setParameter('type', 'security')
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -83,6 +84,7 @@ class UserRepository extends EntityRepository
             ->setParameter('id', $entity->getId())
             ->setParameter('type', $type)
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -99,7 +101,7 @@ class UserRepository extends EntityRepository
             ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $show->getId())
             ->getQuery();
+
         return $query->getResult();
     }
 }
-

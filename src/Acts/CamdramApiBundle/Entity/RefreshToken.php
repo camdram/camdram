@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramApiBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
@@ -32,11 +33,10 @@ class RefreshToken extends BaseRefreshToken
      */
     protected $user;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -47,6 +47,7 @@ class RefreshToken extends BaseRefreshToken
      * Set client
      *
      * @param \Acts\CamdramApiBundle\Entity\ApiApp $client
+     *
      * @return RefreshToken
      */
     public function setClient(ClientInterface $client)
@@ -70,6 +71,7 @@ class RefreshToken extends BaseRefreshToken
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return RefreshToken
      */
     public function setUser(UserInterface $user = null)

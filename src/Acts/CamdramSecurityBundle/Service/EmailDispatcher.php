@@ -1,14 +1,12 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntry,
-    Acts\CamdramSecurityBundle\Entity\User,
-    Acts\CamdramSecurityBundle\Entity\PendingAccess;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramSecurityBundle\Event\UserEvent;
-use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class for constructing and sending emails. Emails are typically sent as a
@@ -200,4 +198,3 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 }
-

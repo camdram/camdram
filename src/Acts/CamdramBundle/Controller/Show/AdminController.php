@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Controller\Show;
 
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
@@ -12,12 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends FOSRestController
 {
-
     protected function getEntity($identifier)
     {
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
     }
-
 
     /**
      * Get a form for adding an admin to a show.
@@ -40,6 +39,7 @@ class AdminController extends FOSRestController
         $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($show);
         $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
+
         return $this->view($form, 200)
             ->setData(array(
                     'entity' => $show,
@@ -76,16 +76,16 @@ class AdminController extends FOSRestController
         if ($form->isValid()) {
             /* Check if the ACE doesn't need to be created for various reasons. */
             /* Is this person already an admin? */
-            $already_admin = False;
+            $already_admin = false;
             $admins = $this->get('acts.camdram.moderation_manager')
                 ->getModeratorsForEntity($show);
             foreach ($admins as $admin) {
                 if ($admin->getEmail() == $pending_ace->getEmail()) {
-                    $already_admin = True;
+                    $already_admin = true;
                     break;
                 }
             }
-            if ($already_admin == False) {
+            if ($already_admin == false) {
                 /* If this person is already a Camdram user then grant access immediately. */
                 $em = $this->getDoctrine()->getManager();
                 $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
@@ -94,7 +94,7 @@ class AdminController extends FOSRestController
                     /* Users with accounts created in v1 will have just their CRSid stored
                      * in the database, so check for that too.
                      */
-                    $crs_id = ereg_replace("@cam.ac.uk", "", $pending_ace->getEmail());
+                    $crs_id = ereg_replace('@cam.ac.uk', '', $pending_ace->getEmail());
                     $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
                         ->findOneByEmail($crs_id);
                 }
@@ -108,7 +108,7 @@ class AdminController extends FOSRestController
                      * create the pending access token.
                      */
                     $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
-                    if ($pending_repo->isDuplicate($pending_ace) == False) {
+                    if ($pending_repo->isDuplicate($pending_ace) == false) {
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
@@ -118,6 +118,7 @@ class AdminController extends FOSRestController
                 }
             }
         }
+
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
@@ -142,7 +143,7 @@ class AdminController extends FOSRestController
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
             $request = $ace_repo->findAceRequest($user, $show);
-            if ($request != NULL) {
+            if ($request != null) {
                 // A pre-existing request exists. Don't create another one.
                 return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
             }
@@ -150,13 +151,14 @@ class AdminController extends FOSRestController
             $ace = new AccessControlEntry();
             $ace->setUser($this->getUser())
                 ->setEntityId($show->getId())
-                ->setCreatedAt(new \DateTime)
+                ->setCreatedAt(new \DateTime())
                 ->setType('request-show');
             $em->persist($ace);
             $em->flush();
             $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::ACE_CREATED,
                 new AccessControlEntryEvent($ace));
-            return $this->render("ActsCamdramBundle:Show:access_requested.html.twig");
+
+            return $this->render('ActsCamdramBundle:Show:access_requested.html.twig');
         }
     }
 
@@ -171,10 +173,11 @@ class AdminController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('uid');
-        $user= $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
         if ($user != null) {
             $this->get('camdram.security.acl.provider')->approveShowAccess($show, $user, $this->getUser());
         }
+
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
@@ -187,10 +190,11 @@ class AdminController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('uid');
-        $user= $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
         if ($user != null) {
             $this->get('camdram.security.acl.provider')->revokeAccess($show, $user, $this->getUser());
         }
+
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
@@ -208,7 +212,7 @@ class AdminController extends FOSRestController
             $em->remove($pending_admin);
             $em->flush();
         }
+
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Twig\Extension;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
@@ -42,12 +43,12 @@ class CamdramSecurityExtension extends \Twig_Extension
         return $this->utils->getServices();
     }
 
-    public function getAclEntries($role, $class = NULL)
+    public function getAclEntries($role, $class = null)
     {
         return $this->utils->getAclEntries($role, $class);
     }
 
-    public function isGranted($attributes, $object=null, $fully_authenticated = false)
+    public function isGranted($attributes, $object = null, $fully_authenticated = false)
     {
         return $this->utils->isGranted($attributes, $object, $fully_authenticated);
     }

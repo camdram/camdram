@@ -13,7 +13,6 @@ class ForgottenPasswordType extends AbstractType
     {
         $builder
             ->add('email', 'email', array('constraints' => new Email(array('checkMX' => true))));
-        ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

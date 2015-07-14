@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Forum
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -36,17 +36,16 @@ class Forum
     private $description;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="orderid", type="integer", nullable=false)
      */
     private $order_id;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -57,6 +56,7 @@ class Forum
      * Set name
      *
      * @param string $name
+     *
      * @return Forum
      */
     public function setName($name)
@@ -80,6 +80,7 @@ class Forum
      * Set description
      *
      * @param string $description
+     *
      * @return Forum
      */
     public function setDescription($description)
@@ -102,7 +103,8 @@ class Forum
     /**
      * Set order_id
      *
-     * @param integer $orderId
+     * @param int $orderId
+     *
      * @return Forum
      */
     public function setOrderId($orderId)
@@ -115,7 +117,7 @@ class Forum
     /**
      * Get order_id
      *
-     * @return integer
+     * @return int
      */
     public function getOrderId()
     {

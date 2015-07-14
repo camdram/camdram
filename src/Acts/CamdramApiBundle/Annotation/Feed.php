@@ -1,10 +1,10 @@
 <?php
+
 namespace Acts\CamdramApiBundle\Annotation;
 
-
 /**
-* @Annotation
-*/
+ * @Annotation
+ */
 class Feed
 {
     private $name;
@@ -23,8 +23,12 @@ class Feed
         $this->description = $options['description'];
         $this->template = $options['template'];
 
-        if (isset($options['titleField'])) $this->titleField = $options['titleField'];
-        if (isset($options['updatedAtField'])) $this->updatedAtField = $options['updatedAtField'];
+        if (isset($options['titleField'])) {
+            $this->titleField = $options['titleField'];
+        }
+        if (isset($options['updatedAtField'])) {
+            $this->updatedAtField = $options['updatedAtField'];
+        }
     }
 
     public function getName()
@@ -51,5 +55,4 @@ class Feed
     {
         return $this->updatedAtField;
     }
-
 }

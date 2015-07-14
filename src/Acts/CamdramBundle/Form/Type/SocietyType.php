@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class SocietyType
  *
  * The form that's presented when a user adds/edits a society
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class SocietyType extends AbstractType
 {

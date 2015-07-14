@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Review
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class Review
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="showid", type="integer", nullable=false)
      */
@@ -69,12 +69,10 @@ class Review
      */
     private $created;
 
-
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -84,7 +82,8 @@ class Review
     /**
      * Set show_id
      *
-     * @param integer $showId
+     * @param int $showId
+     *
      * @return Review
      */
     public function setShowId($showId)
@@ -97,7 +96,7 @@ class Review
     /**
      * Get show_id
      *
-     * @return integer
+     * @return int
      */
     public function getShowId()
     {
@@ -108,6 +107,7 @@ class Review
      * Set review
      *
      * @param string $review
+     *
      * @return Review
      */
     public function setReview($review)
@@ -131,6 +131,7 @@ class Review
      * Set from
      *
      * @param string $from
+     *
      * @return Review
      */
     public function setFrom($from)
@@ -154,6 +155,7 @@ class Review
      * Set created
      *
      * @param \DateTime $created
+     *
      * @return Review
      */
     public function setCreated($created)
@@ -177,6 +179,7 @@ class Review
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $show
+     *
      * @return Review
      */
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
@@ -200,6 +203,7 @@ class Review
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return Review
      */
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)

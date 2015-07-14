@@ -4,35 +4,22 @@ namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Organisation;
-use Acts\CamdramBundle\Form\Type\ApplicationType;
 use Acts\CamdramBundle\Form\Type\OrganisationApplicationType;
 use Symfony\Component\HttpFoundation\Request;
-use JMS\SecurityExtraBundle\Annotation\Secure;
-
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-
 use Acts\CamdramBundle\Entity\Society;
-use Acts\CamdramBundle\Form\Type\SocietyType;
-use Acts\CamdramSecurityBundle\Entity\PendingAccess,
-    Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
-    Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent,
-    Acts\CamdramSecurityBundle\Event\PendingAccessEvent,
-    Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
-
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Acts\CamdramSecurityBundle\Entity\PendingAccess;
+use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
+use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
+use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 
 /**
  * Class OrganisationController
  *
  * Abstract controller for REST actions for organisations. Inherits from AbstractRestController.
- *
  */
 abstract class OrganisationController extends AbstractRestController
 {
     use ContactTrait;
-
 
     /**
      * Render the Admin Panel
@@ -62,34 +49,34 @@ abstract class OrganisationController extends AbstractRestController
             ;
     }
 
-    protected abstract function getPerformances($slug, \DateTime $from, \DateTime $to);
+    abstract protected function getPerformances($slug, \DateTime $from, \DateTime $to);
 
-    protected abstract function getShows($slug, \DateTime $from, \DateTime $to);
+    abstract protected function getShows($slug, \DateTime $from, \DateTime $to);
 
     /**
      * Render a diary of the shows put on by this society.
      *
      * @param $identifier
+     *
      * @return mixed
      */
     public function getShowsAction(Request $request, $identifier)
     {
         if ($request->query->has('from')) {
             $from = new \DateTime($request->query->get('from'));
-        }
-        else {
+        } else {
             $from = $this->get('acts.time_service')->getCurrentTime();
         }
 
         if ($request->query->has('to')) {
             $to = new \DateTime($request->query->get('to'));
-        }
-        else {
+        } else {
             $to = clone $from;
             $to->modify('+1 year');
         }
 
         $shows = $this->getShows($identifier, $from, $to);
+
         return $this->view($shows, 200);
     }
 
@@ -97,6 +84,7 @@ abstract class OrganisationController extends AbstractRestController
      * Render a diary of the shows put on by this society.
      *
      * @param $identifier
+     *
      * @return mixed
      */
     public function getEventsAction(Request $request, $identifier)
@@ -105,15 +93,13 @@ abstract class OrganisationController extends AbstractRestController
 
         if ($request->query->has('from')) {
             $from = new \DateTime($request->query->get('from'));
-        }
-        else {
+        } else {
             $from = $this->get('acts.time_service')->getCurrentTime();
         }
 
         if ($request->query->has('to')) {
             $to = new \DateTime($request->query->get('to'));
-        }
-        else {
+        } else {
             $to = clone $from;
             $to->modify('+1 year');
         }
@@ -137,6 +123,7 @@ abstract class OrganisationController extends AbstractRestController
             $obj->setSociety($org);
         }
         $form = $this->createForm(new OrganisationApplicationType(), $obj);
+
         return $form;
     }
 
@@ -149,6 +136,7 @@ abstract class OrganisationController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
         $form = $this->getApplicationForm($org);
+
         return $this->view($form, 200)
             ->setData(array('org' => $org, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-new.html.twig');
@@ -168,6 +156,7 @@ abstract class OrganisationController extends AbstractRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+
             return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
         } else {
             return $this->view($form, 400)
@@ -186,6 +175,7 @@ abstract class OrganisationController extends AbstractRestController
 
         $application = $org->getApplications()->first();
         $form = $this->getApplicationForm($org, $application);
+
         return $this->view($form, 200)
             ->setData(array('org' => $org, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-edit.html.twig');
@@ -206,6 +196,7 @@ abstract class OrganisationController extends AbstractRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+
             return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
         } else {
             return $this->view($form, 400)
@@ -224,6 +215,7 @@ abstract class OrganisationController extends AbstractRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($application);
         $em->flush();
+
         return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
     }
 
@@ -238,8 +230,7 @@ abstract class OrganisationController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
         if ($org->getEntityType() == 'society') {
             $route = 'post_society_admin';
-        }
-        else {
+        } else {
             $route = 'post_venue_admin';
         }
 
@@ -253,9 +244,10 @@ abstract class OrganisationController extends AbstractRestController
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($org);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($org);
+
         return $this->view($form, 200)
             ->setData(array(
-                'entity' => $org, 
+                'entity' => $org,
                 'admins' => $admins,
                 'pending_admins' => $pending_admins,
                 'form' => $form->createView())
@@ -287,16 +279,16 @@ abstract class OrganisationController extends AbstractRestController
         if ($form->isValid()) {
             /* Check if the ACE doesn't need to be created for various reasons. */
             /* Is this person already an admin? */
-            $already_admin = False;
+            $already_admin = false;
             $admins = $this->get('acts.camdram.moderation_manager')
                         ->getModeratorsForEntity($org);
             foreach ($admins as $admin) {
                 if ($admin->getEmail() == $pending_ace->getEmail()) {
-                    $already_admin = True;
+                    $already_admin = true;
                     break;
                 }
             }
-            if ($already_admin == False) {
+            if ($already_admin == false) {
                 /* If this person is already a Camdram user then grant access immediately. */
                 $em = $this->getDoctrine()->getManager();
                 $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
@@ -305,7 +297,7 @@ abstract class OrganisationController extends AbstractRestController
                     /* Users with accounts created in v1 will have just their CRSid stored
                      * in the database, so check for that too.
                      */
-                    $crs_id = ereg_replace("@cam.ac.uk", "", $pending_ace->getEmail());
+                    $crs_id = ereg_replace('@cam.ac.uk', '', $pending_ace->getEmail());
                     $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
                                         ->findOneByEmail($crs_id);
                 }
@@ -319,22 +311,22 @@ abstract class OrganisationController extends AbstractRestController
                      * create the pending access token.
                      */
                     $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
-                    if ($pending_repo->isDuplicate($pending_ace) == False) {
+                    if ($pending_repo->isDuplicate($pending_ace) == false) {
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
-                        $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::PENDING_ACCESS_CREATED, 
-                            new PendingAccessEvent($pending_ace)); 
+                        $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::PENDING_ACCESS_CREATED,
+                            new PendingAccessEvent($pending_ace));
                     }
                 }
             }
         }
         if ($org->getEntityType() == 'society') {
             $route = 'get_society';
-        }
-        else {
+        } else {
             $route = 'get_venue';
         }
+
         return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
     }
 
@@ -347,16 +339,16 @@ abstract class OrganisationController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('uid');
-        $user= $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
         if ($user != null) {
             $this->get('camdram.security.acl.provider')->revokeAccess($org, $user, $this->getUser());
         }
         if ($org->getEntityType() == 'society') {
             $route = 'edit_society_admin';
-        }
-        else {
+        } else {
             $route = 'edit_venue_admin';
         }
+
         return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
     }
 
@@ -376,12 +368,10 @@ abstract class OrganisationController extends AbstractRestController
         }
         if ($org->getEntityType() == 'society') {
             $route = 'edit_society_admin';
-        }
-        else {
+        } else {
             $route = 'edit_venue_admin';
         }
+
         return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
     }
-
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -10,7 +11,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ShowVoterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -111,5 +111,4 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
                 $this->token, $show, array('APPROVE')
             ));
     }
-
 }

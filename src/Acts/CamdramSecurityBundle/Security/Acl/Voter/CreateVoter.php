@@ -1,13 +1,7 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
-use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\User\User;
 
 /**
@@ -34,5 +28,4 @@ class CreateVoter extends BaseClassIdentityVoter
     {
         return true;
     }
-
 }

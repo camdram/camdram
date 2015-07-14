@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\User;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -24,7 +25,9 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
      * Actually loads by remote id...but has to comply with the Symfony interface
      *
      * @param string $username
+     *
      * @return \Symfony\Component\Security\Core\User\UserInterface
+     *
      * @throws
      */
     public function loadUserByUsername($id)
@@ -41,6 +44,7 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
         if (!$user) {
             throw new UsernameNotFoundException();
         }
+
         return $user;
     }
 
@@ -51,6 +55,7 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
         }
 
         $user = $this->loadUserByServiceAndUsername($user->getService(), $user->getUsername());
+
         return $user;
     }
 
@@ -67,7 +72,9 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
         $user->setRemoteId($userinfo['id']);
         $user->setUsername($userinfo['username']);
         $user->setName($userinfo['name']);
-        if (is_string($access_token)) $user->setToken($access_token);
+        if (is_string($access_token)) {
+            $user->setToken($access_token);
+        }
 
         if ($service == 'facebook') {
             $user->setProfilePictureUrl('https://graph.facebook.com/'.$userinfo['id'].'/picture?type=large');
@@ -77,8 +84,7 @@ class ExternalLoginUserProvider implements ExternalUserProviderInterface
 
         $this->em->persist($user);
         $this->em->flush();
+
         return $user;
     }
-
-
 }

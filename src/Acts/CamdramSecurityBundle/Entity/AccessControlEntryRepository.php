@@ -1,20 +1,17 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr;
-
-use Acts\CamdramBundle\Entity\Organisation,
-    Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 
 class AccessControlEntryRepository extends EntityRepository
 {
     public function aceExists(User $user, OwnableInterface $entity)
     {
         $qb = $this->createQueryBuilder('e');
-        $query =$qb->select('COUNT(e.id) AS c')
+        $query = $qb->select('COUNT(e.id) AS c')
                 ->where('e.userId = :uid')
                 ->andWhere('e.entityId = :entityId')
                 ->andWhere('e.revokedBy IS NULL')
@@ -25,13 +22,14 @@ class AccessControlEntryRepository extends EntityRepository
         ;
 
         $res = $query->getQuery()->getOneOrNullResult();
+
         return $res['c'] > 0;
     }
 
     public function countAces(OwnableInterface $entity)
     {
         $qb = $this->createQueryBuilder('e');
-        $query =$qb->select('COUNT(e.id) AS c')
+        $query = $qb->select('COUNT(e.id) AS c')
             ->andWhere('e.entityId = :entityId')
             ->andWhere('e.revokedBy IS NULL')
             ->andWhere('e.type = :type')
@@ -40,6 +38,7 @@ class AccessControlEntryRepository extends EntityRepository
         ;
 
         $res = $query->getQuery()->getOneOrNullResult();
+
         return $res['c'];
     }
 
@@ -72,6 +71,7 @@ class AccessControlEntryRepository extends EntityRepository
             ->setParameter('user', $user)
             ->setParameter('entityId', $show->getId())
         ;
+
         return $query->getQuery()->getOneOrNullResult();
     }
 
@@ -84,7 +84,7 @@ class AccessControlEntryRepository extends EntityRepository
             ->setParameter('type', $type)
             ->setParameter('user', $user)
         ;
+
         return $query->getQuery()->getResult();
     }
 }
-

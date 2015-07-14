@@ -10,7 +10,8 @@ class PersonRepositoryTest extends RepositoryTestCase
     /**
      * @return \Acts\CamdramBundle\Entity\PersonRepository
      */
-    private function getRepository() {
+    private function getRepository()
+    {
         return $this->em->getRepository('ActsCamdramBundle:Person');
     }
 
@@ -47,6 +48,4 @@ class PersonRepositoryTest extends RepositoryTestCase
         $person = $this->getRepository()->findCanonicalPerson('Freddie Smith');
         $this->assertEquals('Fred Smith', $person->getName());
     }
-
-
 }

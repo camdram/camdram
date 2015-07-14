@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Search\SearchableInterface;
@@ -6,14 +7,11 @@ use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class DoctrineEventLogger implements EventSubscriber
 {
-
     private $logger;
 
     public function getSubscribedEvents()
@@ -22,7 +20,6 @@ class DoctrineEventLogger implements EventSubscriber
           'postUpdate', 'postPersist', 'postRemove'
         );
     }
-
 
     public function __construct(LoggerInterface $logger)
     {
@@ -64,7 +61,7 @@ class DoctrineEventLogger implements EventSubscriber
     {
         $object = $event->getObject();
         $reflection = new \ReflectionClass($object);
-        $message = sprintf('%s updated',$reflection->getShortName());
+        $message = sprintf('%s updated', $reflection->getShortName());
         $this->logger->info($message, $this->getContext($object));
     }
 
@@ -72,7 +69,7 @@ class DoctrineEventLogger implements EventSubscriber
     {
         $object = $event->getObject();
         $reflection = new \ReflectionClass($object);
-        $message = sprintf('%s created',$reflection->getShortName());
+        $message = sprintf('%s created', $reflection->getShortName());
         $this->logger->info($message, $this->getContext($object));
     }
 
@@ -80,8 +77,7 @@ class DoctrineEventLogger implements EventSubscriber
     {
         $object = $event->getObject();
         $reflection = new \ReflectionClass($object);
-        $message = sprintf('%s deleted',$reflection->getShortName());
+        $message = sprintf('%s deleted', $reflection->getShortName());
         $this->logger->notice($message, $this->getContext($object));
     }
-
 }

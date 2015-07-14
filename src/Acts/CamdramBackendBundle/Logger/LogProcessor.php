@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Logger;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -6,7 +7,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class LogProcessor
 {
-
     private $container;
 
     /**
@@ -19,7 +19,6 @@ class LogProcessor
     {
         $this->container = $container;
     }
-
 
     private function getUser()
     {
@@ -41,5 +40,4 @@ class LogProcessor
 
         return $record;
     }
-
 }

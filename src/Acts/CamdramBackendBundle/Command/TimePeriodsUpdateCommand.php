@@ -1,15 +1,12 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Sabre\VObject\Reader;
 use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Entity\TimePeriodRepository;
 
@@ -27,7 +24,9 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
     {
         for ($year = 1990; $year <= 2030; $year++) {
             list($lent_start, $lent_end) = $this->addTerm('Lent', new \DateTime($year.'-01-17'), 0, 9, $output);
-            if (isset($michaelmas_end)) $this->addVacation('Christmas', $michaelmas_end, $lent_start, $output);
+            if (isset($michaelmas_end)) {
+                $this->addVacation('Christmas', $michaelmas_end, $lent_start, $output);
+            }
 
             list($easter_start, $easter_end) = $this->addTerm('Easter', new \DateTime($year.'-04-25'), 0, 8, $output);
             $this->addVacation('Easter', $lent_end, $easter_start, $output);
@@ -41,7 +40,10 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
     {
         $date = clone $date;
         $day = $date->format('N');
-        if ($day < 7) $date->modify('-'.$day.' days');
+        if ($day < 7) {
+            $date->modify('-'.$day.' days');
+        }
+
         return $date;
     }
 
@@ -57,6 +59,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
             $date->modify('+1 week');
         }
         $this->createPeriod($name, $name.' Term', $name.' Term '.$date->format('Y'), $start_date, $date, $output);
+
         return array($start_date, $date);
     }
 
@@ -82,7 +85,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
         $result = $query->getResult();
 
         if (count($result) == 0) {
-            $p = new TimePeriod;
+            $p = new TimePeriod();
             $p->setShortName($short)->setName($name)->setFullName($long)
                 ->setStartAt($start)->setEndAt($end);
 
@@ -120,8 +123,7 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
         $result = $query->getResult();
         $count = $result[0]['c'];
         if ($count == 0) {
-
-            $w= new WeekName();
+            $w = new WeekName();
             $w->setShortName($short_name)->setName($name)
                 ->setStartAt($start);
 
@@ -132,5 +134,4 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
             $output->writeln('Week '.$name. ' already exists');
         }
     }
-
 }

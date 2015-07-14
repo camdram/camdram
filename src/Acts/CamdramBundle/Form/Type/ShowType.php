@@ -7,15 +7,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Acts\CamdramBundle\Form\DataTransformer\PerformanceExcludeTransformer;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Class ShowType
  *
  * The form that's presented when a user adds/edits a show
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class ShowType extends AbstractType
 {
@@ -28,7 +25,6 @@ class ShowType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('name')
             ->add('author', null, array('required' => false))
@@ -63,7 +59,7 @@ class ShowType extends AbstractType
             ))
             ->add('facebook_id', null, array('required' => false))
             ->add('twitter_id', null, array('required' => false))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 //society's 'read-only' field is dependent on whether a new show is being created
                 $show = $event->getData();
                 $form = $event->getForm();
@@ -74,7 +70,7 @@ class ShowType extends AbstractType
                     && !$this->securityContext->isGranted('ROLE_ADMIN')
                     ;
 
-                $form->add('society','entity_search', array(
+                $form->add('society', 'entity_search', array(
                     'route' => 'get_societies',
                     'class' => 'Acts\\CamdramBundle\\Entity\\Society',
                     'required' => false,
@@ -83,7 +79,6 @@ class ShowType extends AbstractType
 
             })
         ;
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

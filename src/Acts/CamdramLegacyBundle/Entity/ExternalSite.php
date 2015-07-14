@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ExternalSite
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -35,11 +35,10 @@ class ExternalSite
      */
     private $name;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -50,6 +49,7 @@ class ExternalSite
      * Set url
      *
      * @param string $url
+     *
      * @return ExternalSite
      */
     public function setUrl($url)
@@ -73,6 +73,7 @@ class ExternalSite
      * Set name
      *
      * @param string $name
+     *
      * @return ExternalSite
      */
     public function setName($name)

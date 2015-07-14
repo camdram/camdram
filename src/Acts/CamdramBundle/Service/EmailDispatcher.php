@@ -1,11 +1,8 @@
 <?php
+
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Event\UserEvent;
-use Acts\CamdramSecurityBundle\Service\EmailConfirmationTokenGenerator;
-use Symfony\Component\Routing\RouterInterface;
 
 class EmailDispatcher
 {
@@ -26,6 +23,7 @@ class EmailDispatcher
         foreach ($users as $user) {
             $emails[$user->getFullEmail()] = $user->getName();
         }
+
         return $emails;
     }
 
@@ -36,9 +34,10 @@ class EmailDispatcher
     {
         $toEmails = $this->emailArrayFromUsers($moderators);
         $bccEmails = $this->emailArrayFromUsers($admins);
-        foreach ($bccEmails as $email => $name)
-        {
-            if (isset($emails[$email])) unset($bccEmails[$email]);
+        foreach ($bccEmails as $email => $name) {
+            if (isset($emails[$email])) {
+                unset($bccEmails[$email]);
+            }
         }
 
         $message = \Swift_Message::newInstance()
@@ -56,8 +55,8 @@ class EmailDispatcher
                     )
                 ), 'text/html'
             )
-            
-            /* Plain Text */
+
+/* Plain Text */
             ->addPart(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:show_created.txt.twig',
@@ -96,7 +95,6 @@ class EmailDispatcher
 
     public function sendContactUsEmail($from, $subject, $message)
     {
-
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($from)

@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class NewsRepository extends EntityRepository
 {
-
     public function itemExists($service_name, $id)
     {
         $query = $this->createQueryBuilder('n')
@@ -17,10 +16,11 @@ class NewsRepository extends EntityRepository
             ->where('n.source = :name')
             ->andWhere('n.remote_id = :id')
             ->setParameter('name', $service_name)
-            ->setParameter('id', (string)$id)
+            ->setParameter('id', (string) $id)
             ->getQuery();
         $result = $query->getResult();
         $count = (int) $result[0]['c'];
+
         return $count > 0;
     }
 
@@ -31,6 +31,7 @@ class NewsRepository extends EntityRepository
             ->where('n.public = true')
             ->setMaxResults($count)
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -43,7 +44,7 @@ class NewsRepository extends EntityRepository
             ->setParameter('org', $org)
             ->setMaxResults($count)
             ->getQuery();
+
         return $query->getResult();
     }
-
 }

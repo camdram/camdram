@@ -1,9 +1,9 @@
 <?php
+
 namespace Acts\DiaryBundle\Tests\Event;
 
 class AbstractEventTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testAbstractEvent()
     {
         $event = $this->getMockForAbstractClass('\\Acts\\DiaryBundle\\Event\\AbstractEvent');
@@ -21,5 +21,4 @@ class AbstractEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.testevent.com/', $event->getLink());
         $this->assertEquals('http://www.testvenue.com/', $event->getVenueLink());
     }
-
 }

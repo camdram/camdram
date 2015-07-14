@@ -1,6 +1,6 @@
 <?php
-namespace Acts\CamdramAdminBundle\Service;
 
+namespace Acts\CamdramAdminBundle\Service;
 
 use Acts\CamdramBundle\Entity\Person;
 use Doctrine\ORM\EntityManager;
@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormFactory;
 
 class PeopleMerger
 {
-
     private $entityManager;
 
     private $formFactory;
@@ -37,7 +36,7 @@ class PeopleMerger
                 'label' => 'Keep which name?',
                 'expanded' => true,
                 'choices' => array(
-                    'this' => "This name",
+                    'this' => 'This name',
                     'other' => "The other person's name"
                 ),
                 'data' => 'this'
@@ -55,6 +54,7 @@ class PeopleMerger
             if (preg_match('/\\/people\\/([a-z\-_]+)/i', $slug, $matches)) {
                 $slug = $matches[1];
             }
+
             return $repo->findOneBySlug($slug);
         }
     }
@@ -63,6 +63,7 @@ class PeopleMerger
      * @param Person $person1
      * @param Person $person2
      * @param $keepFirst
+     *
      * @return Person
      */
     public function mergePeople(Person $person1, Person $person2, $keepFirst)
@@ -83,5 +84,4 @@ class PeopleMerger
 
         return $person1;
     }
-
 }

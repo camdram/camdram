@@ -1,12 +1,10 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security;
 
-use Symfony\Component\DependencyInjection\ContainerInterface,
-    Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
-use Acts\CamdramSecurityBundle\Security\Service\ServiceInterface,
-    Acts\CamdramSecurityBundle\Security\Acl\Dbal\AclListProvider;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Acts\CamdramSecurityBundle\Security\Acl\Dbal\AclListProvider;
 
 class SecurityUtils
 {
@@ -35,7 +33,7 @@ class SecurityUtils
         return array();
     }
 
-    public function isGranted($attributes, $object=null, $fully_authenticated = true)
+    public function isGranted($attributes, $object = null, $fully_authenticated = true)
     {
         return $this->container->get('camdram.security.acl.helper')->isGranted($attributes, $object, $fully_authenticated);
     }
@@ -55,6 +53,7 @@ class SecurityUtils
     public function isOwner($object)
     {
         $token = $this->container->get('security.context')->getToken();
+
         return $this->container->get('camdram.security.acl.provider')->isOwner($token, $object);
     }
 

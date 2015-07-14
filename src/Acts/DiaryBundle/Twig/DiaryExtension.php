@@ -1,16 +1,14 @@
 <?php
+
 namespace Acts\DiaryBundle\Twig;
 
 use Acts\DiaryBundle\Diary\Diary;
-use Acts\DiaryBundle\Diary\Renderer\HtmlRenderer;
 
 /**
  * Class DiaryExtension
  *
  * A Twig extension which provides custom functionality that can be used in Twig templates. The extension is registered
  * in services.yml
- *
- * @package Acts\CamdramBundle\Twig
  */
 class DiaryExtension extends \Twig_Extension
 {

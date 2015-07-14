@@ -1,15 +1,14 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Person;
 
 class ProfileVoter implements VoterInterface
 {
-
     public function supportsAttribute($attribute)
     {
         return $attribute == 'EDIT';

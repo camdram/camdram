@@ -1,8 +1,8 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Service;
 
 use Acts\CamdramSecurityBundle\Entity\User;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class TokenGenerator
 {
@@ -29,6 +29,7 @@ class TokenGenerator
         for ($i = 1; $i < 100; $i++) {
             $digest = hash('sha256', $string, true);
         }
+
         return bin2hex($digest);
     }
 }

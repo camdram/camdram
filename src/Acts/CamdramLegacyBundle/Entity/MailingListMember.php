@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class MailingListMember
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="listid", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class MailingListMember
     private $list_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="uid", type="integer", nullable=false)
      * @ORM\Id
@@ -30,11 +30,11 @@ class MailingListMember
      */
     private $user_id;
 
-
     /**
      * Set list_id
      *
-     * @param integer $listId
+     * @param int $listId
+     *
      * @return MailingListMember
      */
     public function setListId($listId)
@@ -47,7 +47,7 @@ class MailingListMember
     /**
      * Get list_id
      *
-     * @return integer
+     * @return int
      */
     public function getListId()
     {
@@ -57,7 +57,8 @@ class MailingListMember
     /**
      * Set user_id
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return MailingListMember
      */
     public function setUserId($userId)
@@ -70,7 +71,7 @@ class MailingListMember
     /**
      * Get user_id
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {

@@ -1,14 +1,11 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Acts\CamdramBundle\Entity\Person;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Doctrine\ORM\Query\Expr;
 
 class PeopleRemoveOrphanedCommand extends ContainerAwareCommand
 {
@@ -51,8 +48,7 @@ class PeopleRemoveOrphanedCommand extends ContainerAwareCommand
         if (count($person->getUsers()) == 0 && count($person->getExternalUsers()) == 0) {
             $em->remove($person);
             $output->writeln('Deleted '.$person->getName());
-        }
-        else {
+        } else {
             $person->setMappedTo(null);
         }
     }

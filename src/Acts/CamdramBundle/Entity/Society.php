@@ -13,7 +13,6 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class Society extends Organisation
 {
-
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="society")
      */
@@ -36,6 +35,7 @@ class Society extends Organisation
      * Add shows
      *
      * @param \Acts\CamdramBundle\Entity\Show $shows
+     *
      * @return Society
      */
     public function addShow(\Acts\CamdramBundle\Entity\Show $shows)

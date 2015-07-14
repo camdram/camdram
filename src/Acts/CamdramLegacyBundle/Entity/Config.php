@@ -27,7 +27,6 @@ class Config
      */
     private $value;
 
-
     /**
      * Get name
      *
@@ -42,6 +41,7 @@ class Config
      * Set value
      *
      * @param string $value
+     *
      * @return Config
      */
     public function setValue($value)
@@ -65,6 +65,7 @@ class Config
      * Set name
      *
      * @param string $name
+     *
      * @return Config
      */
     public function setName($name)

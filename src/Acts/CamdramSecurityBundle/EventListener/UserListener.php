@@ -1,15 +1,14 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\EventListener;
 
-
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntry,
-    Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
-
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Event\LifecycleEventArgs,
-    Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class UserListener
 {
@@ -39,9 +38,9 @@ class UserListener
             $ace = new AccessControlEntry();
             $ace->setUser($user)
                 ->setEntityId($pending->getRid())
-                ->setCreatedAt(new \DateTime)
+                ->setCreatedAt(new \DateTime())
                 ->setGrantedBy($pending->getIssuer())
-                ->setGrantedAt(new \DateTime)
+                ->setGrantedAt(new \DateTime())
                 ->setType($pending->getType());
 
             $this->entityManager->persist($ace);

@@ -5,10 +5,7 @@ namespace Acts\CamdramAdminBundle\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Post;
-
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Collections\Criteria;
-
 use Acts\CamdramAdminBundle\Form\Type\SupportType;
 use Acts\CamdramAdminBundle\Entity\Support;
 
@@ -53,7 +50,7 @@ class SupportController extends FOSRestController
 
     protected function getForm($society = null)
     {
-        return Null;
+        return null;
     }
 
     /**
@@ -70,7 +67,6 @@ class SupportController extends FOSRestController
      *
      * Issues are grouped into those that are assigned to the logged in user,
      * unassigned issues, and issues assigned to other users.
-     *
      */
     public function cgetAction(Request $request)
     {
@@ -94,9 +90,10 @@ class SupportController extends FOSRestController
         $view = $this->view(array('my_issues' => $mine,
                                   'unassigned_issues' => $unassigned,
                                   'other_peoples_issues' => $others),  200)
-                  ->setTemplate("ActsCamdramAdminBundle:Support:index.html.twig")
+                  ->setTemplate('ActsCamdramAdminBundle:Support:index.html.twig')
                   ->setTemplateVar('issues')
         ;
+
         return $view;
     }
 
@@ -127,36 +124,36 @@ class SupportController extends FOSRestController
             $emails = imap_rfc822_parse_adrlist($reply->getTo(), '');
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
-                    $message->addTo($val->mailbox . "@" . $val->host, $val->personal);
+                    $message->addTo($val->mailbox . '@' . $val->host, $val->personal);
                 } else {
-                    $message->addTo($val->mailbox . "@" . $val->host);
+                    $message->addTo($val->mailbox . '@' . $val->host);
                 }
             }
             $emails = imap_rfc822_parse_adrlist($reply->getCc(), '');
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
-                    $message->addCc($val->mailbox . "@" . $val->host, $val->personal);
+                    $message->addCc($val->mailbox . '@' . $val->host, $val->personal);
                 } else {
-                    $message->addCc($val->mailbox . "@" . $val->host);
+                    $message->addCc($val->mailbox . '@' . $val->host);
                 }
             }
             $emails = imap_rfc822_parse_adrlist($form->get('bcc')->getData(), '');
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
-                    $message->addBcc($val->mailbox . "@" . $val->host, $val->personal);
+                    $message->addBcc($val->mailbox . '@' . $val->host, $val->personal);
                 } else {
-                    $message->addBcc($val->mailbox . "@" . $val->host);
+                    $message->addBcc($val->mailbox . '@' . $val->host);
                 }
             }
             $this->get('mailer')->send($message);
         }
+
         return $this->redirect($this->generateUrl('get_issue',
                     array('identifier' => $identifier)));
     }
 
     /**
      * Action for pages that represent a single issue.
-     *
      */
     public function getAction($identifier)
     {
@@ -201,13 +198,13 @@ class SupportController extends FOSRestController
             $issue->setState('assigned');
         }
         // Reject an issue assignment
-        else if (($action == 'rejectassign') &&
+        elseif (($action == 'rejectassign') &&
                 ($issue->getState() == 'assigned')) {
             $issue->setOwner(null);
             $issue->setState('unassigned');
         }
         // Admins may delete unassigned issues. Owners may resolve them.
-        else if ((($action == 'delete') && ($issue->getState() == 'unassigned')) ||
+        elseif ((($action == 'delete') && ($issue->getState() == 'unassigned')) ||
                 (($action == 'resolve') && ($issue->getState() == 'assigned') && ($user_is_owner == true))) {
             $issue->setState('closed');
         } elseif ($action == 'reopen') {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Controller\Show;
 
 use Acts\CamdramBundle\Entity\Person;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends FOSRestController
 {
-
     protected function getEntity($identifier)
     {
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
@@ -41,6 +41,7 @@ class RoleController extends FOSRestController
      * Create a new role associated with this show.
      *
      * Creates a new person if they're not already part of Camdram.
+     *
      * @param $identifier
      */
     public function postRoleAction(Request $request, $identifier)
@@ -55,14 +56,14 @@ class RoleController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
 
             /* Try and find the person. Add a new person if they don't exist. */
-            $names = explode(",", $form->get('name')->getData());
+            $names = explode(',', $form->get('name')->getData());
             foreach ($names as $name) {
                 $role = clone $base_role;
                 $name = trim($name);
                 $person_repo = $em->getRepository('ActsCamdramBundle:Person');
                 $person = $person_repo->findCanonicalPerson($name);
                 if ($person == null) {
-                    $person = New Person();
+                    $person = new Person();
                     $person->setName($name);
                     $em->persist($person);
                 }
@@ -78,6 +79,7 @@ class RoleController extends FOSRestController
                 $em->flush();
             }
         }
+
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
@@ -104,6 +106,7 @@ class RoleController extends FOSRestController
                 $em->flush();
             }
         }
+
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
@@ -120,6 +123,7 @@ class RoleController extends FOSRestController
 
         $form = $this->createForm(new RolesType(), array(
             array('identifier' => $identifier)));
+
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:Show:roles-new.html.twig');
@@ -149,8 +153,7 @@ class RoleController extends FOSRestController
             $role_idx = ($data['ordering'] == 'role_first') ? 0 : 1;
             $name_idx = 1 - $role_idx;
             $lines = explode("\n", $data['list']);
-            foreach ($lines as $line)
-            {
+            foreach ($lines as $line) {
                 $lsplt = explode($data['separator'], $line);
                 /* Ensure the split data contains only the role and the
                  * person's name.
@@ -160,7 +163,7 @@ class RoleController extends FOSRestController
                 }
                 $role = trim($lsplt[$role_idx]);
                 $name = trim($lsplt[$name_idx]);
-                if (($name != "") && ($role != "")) {
+                if (($name != '') && ($role != '')) {
                     /* Add a role to the show. */
                     $this->addRoleToShow(
                         $this->getEntity($identifier),
@@ -171,17 +174,17 @@ class RoleController extends FOSRestController
                 }
             }
         }
+
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
-
 
     /**
      * Utility function for adding a person to this show. A new person
      * record is created if they don't already exist.
      *
-     * @param Show $show This show.
-     * @param string $role_type The type of role ('cast', 'band', 'prod')
-     * @param string $role_name Director, Producer, Macbeth..
+     * @param Show   $show        This show.
+     * @param string $role_type   The type of role ('cast', 'band', 'prod')
+     * @param string $role_name   Director, Producer, Macbeth..
      * @param string $person_name The person's name
      */
     private function addRoleToShow(Show $show, $role_type, $role_name, $person_name)
@@ -212,5 +215,4 @@ class RoleController extends FOSRestController
         $show->addRole($role);
         $em->flush();
     }
-
 }

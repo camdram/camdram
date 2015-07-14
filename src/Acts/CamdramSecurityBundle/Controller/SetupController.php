@@ -2,20 +2,12 @@
 
 namespace Acts\CamdramSecurityBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Symfony\Component\HttpFoundation\RedirectResponse,
-    Symfony\Component\HttpFoundation\Request;
-
-use Acts\CamdramSecurityBundle\Form\Type\LoginType,
-    Acts\CamdramSecurityBundle\Form\Type\UserType,
-    Acts\CamdramSecurityBundle\Entity\UserIdentity,
-    Acts\CamdramSecurityBundle\Security\Authentication\Token\CamdramUserTokenService,
-    Acts\CamdramSecurityBundle\Entity\User,
-    Acts\CamdramBundle\Entity\Person;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Acts\CamdramBundle\Entity\Person;
 
 class SetupController extends Controller
 {
-
     public function defaultAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
@@ -46,13 +38,15 @@ class SetupController extends Controller
             $selected_people = array();
             foreach ($person_ids as $id) {
                 foreach ($people as $p) {
-                    if ($p->getId() == $id) $selected_people[] = $p;
+                    if ($p->getId() == $id) {
+                        $selected_people[] = $p;
+                    }
                 }
             }
             $em = $this->getDoctrine()->getManager();
 
             if (count($selected_people) == 0) {
-                $p = new Person;
+                $p = new Person();
                 $p->setName($user->getName());
                 $user->setPerson($p);
                 $em->persist($p);
@@ -61,13 +55,13 @@ class SetupController extends Controller
                 $user->setPerson($person);
             }
             $em->flush();
+
             return $this->redirect($this->generateUrl('camdram_security_setup'));
         }
 
         return $this->render('ActsCamdramSecurityBundle:Setup:link_person.html.twig', array(
             'people' => $people
         ));
-
     }
 
     private function mergePeople(array $people)
@@ -75,7 +69,9 @@ class SetupController extends Controller
         $user = $this->get('security.context')->getToken()->getUser();
 
         //Shortcut if only one person
-        if (count($people) == 1) return $people[0];
+        if (count($people) == 1) {
+            return $people[0];
+        }
 
         //Decide which person to keep
         //First, pick one with same name, as this is most likely the preferred name
@@ -96,7 +92,7 @@ class SetupController extends Controller
             }
         }
         $keep = $people[$selected_id];
-        $people = array_splice($people,$selected_id,1);
+        $people = array_splice($people, $selected_id, 1);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -114,7 +110,5 @@ class SetupController extends Controller
 
     public function rolesAction()
     {
-
     }
-
 }

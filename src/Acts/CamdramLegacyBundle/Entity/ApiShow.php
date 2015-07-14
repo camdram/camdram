@@ -35,7 +35,6 @@ class ApiShow
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getTitle()
     {
         return $this->show->getName();
@@ -45,7 +44,6 @@ class ApiShow
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getAuthor()
     {
         return $this->show->getAuthor();
@@ -55,7 +53,6 @@ class ApiShow
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getVenue()
     {
         return $this->show->getVenueName();
@@ -65,7 +62,6 @@ class ApiShow
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getId()
     {
         return $this->show->getId();
@@ -75,7 +71,6 @@ class ApiShow
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getOnlinebookingurl()
     {
         return $this->show->getOnlineBookingUrl();
@@ -85,18 +80,15 @@ class ApiShow
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getCamdramshowurl()
     {
         return $this->router->generate('get_show', array('identifier' =>  $this->show->getSlug()), true);
     }
 
-
     /**
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getFacebookurl()
     {
         return $this->show->getFacebookUrl();
@@ -106,7 +98,6 @@ class ApiShow
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getOtherurl()
     {
         return $this->show->getOtherUrl();
@@ -117,12 +108,12 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-
     public function getPerformances()
     {
         $callback = function ($value) {
             return new ApiPerformance($value, $this->router);
         };
+
         return array_map($callback, $this->show->getAllPerformances());
     }
 
@@ -131,7 +122,6 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-
     public function getCast()
     {
         return $this->wrapRoles('cast');
@@ -142,7 +132,6 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-
     public function getOrchestra()
     {
         return $this->wrapRoles('band');
@@ -153,19 +142,17 @@ class ApiShow
      * @XmlElement(cdata=false)
      * @XmlList(entry="item")
      */
-
     public function getProd()
     {
         return $this->wrapRoles('prod');
     }
-
 
     private function wrapRoles($type)
     {
         $callback = function ($value) {
             return new ApiRole($value, $this->show, $this->router);
         };
+
         return array_map($callback, $this->show->getRolesByType($type)->toArray(false));
     }
-
 }

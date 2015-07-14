@@ -17,10 +17,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * This bundle is deliberately de-coupled from CamdramBundle, such that it could be made into a useful external bundle.
  * There's a helper class inside CamdramBundle which deals with turning shows and performances into events.
- *
- * @package Acts\DiaryBundle
  */
 class ActsDiaryBundle extends Bundle
 {
-
 }

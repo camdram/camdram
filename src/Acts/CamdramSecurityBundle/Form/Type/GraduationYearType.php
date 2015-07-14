@@ -1,19 +1,18 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class GraduationYearType extends AbstractType
 {
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $years = array();
         $cur_year = date('Y');
-        for ($i=8; $i>=-50; $i--) {
-                $years[$cur_year+$i] = $cur_year+$i;
+        for ($i = 8; $i >= -50; $i--) {
+            $years[$cur_year + $i] = $cur_year + $i;
         }
 
         $resolver->setDefaults(array(

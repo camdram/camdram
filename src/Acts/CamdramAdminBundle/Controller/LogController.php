@@ -4,15 +4,12 @@ namespace Acts\CamdramAdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller for viewing Camdram's log files
- *
  */
 class LogController extends Controller
 {
-
     public function indexAction()
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_SUPER_ADMIN');
@@ -49,7 +46,7 @@ class LogController extends Controller
         }
 
         $text = nl2br(`tail $file -n500`);
+
         return new Response($text);
     }
-
 }

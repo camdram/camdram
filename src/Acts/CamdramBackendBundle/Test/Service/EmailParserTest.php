@@ -3,9 +3,8 @@
 namespace Acts\CamdramBackendBundle\Test\Service;
 
 use Acts\CamdramBackendBundle\Service\EmailParser;
-use Gedmo\Mapping\ExtensionODMTest;
 
-class DiaryHelperTest extends \PHPUnit_Framework_TestCase
+class EmailParserTest extends \PHPUnit_Framework_TestCase
 {
     private $msg = "Blah blah blah\n\nRegards, John";
 
@@ -60,7 +59,6 @@ Content-Transfer-Encoding: 7bit
 EOT;
         $parser = new EmailParser($txt);
         $this->assertContains($this->msg, $parser->getTextPart());
-
     }
 
     public function testbase64Email()
@@ -87,5 +85,4 @@ EOT;
         $parser = new EmailParser($txt);
         $this->assertContains($this->msg, $parser->getTextPart());
     }
-
 }

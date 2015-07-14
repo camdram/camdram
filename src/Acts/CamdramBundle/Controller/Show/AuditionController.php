@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Controller\Show;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -9,12 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AuditionController extends FOSRestController
 {
-
     protected function getEntity($identifier)
     {
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
     }
-
 
     private function getAuditionsForm(Show $show)
     {
@@ -31,6 +30,7 @@ class AuditionController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $form = $this->getAuditionsForm($show);
+
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
@@ -51,6 +51,7 @@ class AuditionController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
         } else {
             return $this->view($form, 400)
@@ -58,5 +59,4 @@ class AuditionController extends FOSRestController
                 ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
         }
     }
-
 }

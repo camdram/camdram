@@ -7,24 +7,18 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use FOS\RestBundle\Controller\FOSRestController;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Gedmo\Sluggable\Util as Sluggable;
 
 /**
  * Class AbstractRestController
  *
  * This controller is used as a base for show, venue, society and people pages, containing common functionality for
  * viewing, searching, creating, editing and deleting editities.
- *
- * @package Acts\CamdramBundle\Controller
  */
-
 abstract class AbstractRestController extends FOSRestController
 {
-
     /** @var string The fully qualified class name for the entity represented by the class */
     protected $class;
 
@@ -48,18 +42,16 @@ abstract class AbstractRestController extends FOSRestController
     /**
      * Called on each page load. Default is to do nothing, but allows child classes to do stricter access checking
      * (e.g. for user administration pages)
-     *
-     * @return null
      */
     protected function checkAuthenticated()
     {
-
     }
 
     /**
      * Returns the route parameters used to identity a particular entity. Used when generating URLs for redirects
      *
      * @param $entity the entity to use
+     *
      * @return array the parameters to pass to the router
      */
     protected function getRouteParams($entity)
@@ -72,7 +64,9 @@ abstract class AbstractRestController extends FOSRestController
      * parameter).
      *
      * @param $identifier the identifier given (normally as part of the URL)
+     *
      * @return mixed The entity object corresponding to the identifier
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function getEntity($identifier)
@@ -97,6 +91,7 @@ abstract class AbstractRestController extends FOSRestController
      * including validation rules.
      *
      * @param null $entity
+     *
      * @return Symfony\Component\Form\AbstractType
      */
     abstract protected function getForm($entity = null);
@@ -110,11 +105,11 @@ abstract class AbstractRestController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', new ClassIdentity($this->class));
 
         $form = $this->getForm();
+
         return $this->view($form, 200)
             ->setTemplateVar('form')
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':new.html.twig');
     }
-
 
     /**
      * Action where POST request is submitted from new entity form
@@ -131,6 +126,7 @@ abstract class AbstractRestController extends FOSRestController
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
+
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         } else {
             return $this->view($form, 400)
@@ -149,6 +145,7 @@ abstract class AbstractRestController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
+
         return $this->view($form, 200)
             ->setTemplateVar('form')
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
@@ -169,6 +166,7 @@ abstract class AbstractRestController extends FOSRestController
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         } else {
             return $this->view($form, 400)
@@ -189,6 +187,7 @@ abstract class AbstractRestController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
+
         return $this->routeRedirectView('get_'.$this->type_plural);
     }
 
@@ -251,6 +250,7 @@ abstract class AbstractRestController extends FOSRestController
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
             ->setTemplateVar($this->type)
         ;
+
         return $view;
     }
 
@@ -258,6 +258,7 @@ abstract class AbstractRestController extends FOSRestController
      * Action called by Camdram v1 which triggers creating fields only used by v1, e.g. the slug
      *
      * @param $id
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function upgradeAction($id)
@@ -278,5 +279,4 @@ abstract class AbstractRestController extends FOSRestController
 
         return $this->view(array('success' => true), 200);
     }
-
 }

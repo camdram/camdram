@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class TimePeriodRepository extends EntityRepository
 {
-
     public function findAt(\DateTime $date)
     {
         $qb = $this->createQueryBuilder('p');
@@ -20,10 +19,11 @@ class TimePeriodRepository extends EntityRepository
             ->setParameter('now', $date)
             ->orderBy('p.start_at', 'ASC')
             ->getQuery();
+
         return $query->getOneOrNullResult();
     }
 
-    public function findBetween($start_date, $end_date, $limit=null)
+    public function findBetween($start_date, $end_date, $limit = null)
     {
         $qb = $this->createQueryBuilder('p');
         $qb->where('p.start_at >= :start_date')
@@ -31,14 +31,15 @@ class TimePeriodRepository extends EntityRepository
             ->setParameter('start_date', $start_date)
             ->setParameter('end_date', $end_date)
             ->orderBy('p.start_at', 'ASC');
-        if ($limit > 0) $qb->setMaxResults($limit);
+        if ($limit > 0) {
+            $qb->setMaxResults($limit);
+        }
 
         return $qb->getQuery()->getResult();
     }
 
     public function findStartsIn(\DateTime $start, \DateTime $end)
     {
-
         $qb = $this->createQueryBuilder('p');
 
         $query = $qb
@@ -52,7 +53,6 @@ class TimePeriodRepository extends EntityRepository
 
     public function findIntersecting(\DateTime $start, \DateTime $end)
     {
-
         $qb = $this->createQueryBuilder('p');
 
         $query = $qb
@@ -68,28 +68,31 @@ class TimePeriodRepository extends EntityRepository
 
     public function findByYear($year)
     {
-        $year = (int)$year;
+        $year = (int) $year;
         $start = new \DateTime($year.'-01-01');
-        $end = new \DateTime(($year+1).'-01-01');
+        $end = new \DateTime(($year + 1).'-01-01');
+
         return $this->findStartsIn($start, $end);
     }
 
     public function findByYearBefore($year, \DateTime $before)
     {
-        $year = (int)$year;
+        $year = (int) $year;
         $start = new \DateTime($year.'-01-01');
-        $end = new \DateTime(($year+1).'-01-01');
+        $end = new \DateTime(($year + 1).'-01-01');
 
-        if ($before < $end) $end = $before;
+        if ($before < $end) {
+            $end = $before;
+        }
 
         return $this->findStartsIn($start, $end);
     }
 
     public function getBySlugAndYear($slug, $year)
     {
-        $year = (int)$year;
+        $year = (int) $year;
         $start = new \DateTime($year.'-01-01');
-        $end = new \DateTime(($year+1).'-01-01');
+        $end = new \DateTime(($year + 1).'-01-01');
 
         $query = $this->createQueryBuilder('p')
             ->where('p.slug = :slug')
@@ -101,7 +104,7 @@ class TimePeriodRepository extends EntityRepository
             ->orderBy('p.start_at', 'DESC')
             ->setMaxResults(1)
             ->getQuery();
+
         return $query->getOneOrNullResult();
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Event;
 
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -17,5 +18,4 @@ class UserEvent extends Event
     {
         return $this->user;
     }
-
 }

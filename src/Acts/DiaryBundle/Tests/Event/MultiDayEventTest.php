@@ -1,11 +1,11 @@
 <?php
+
 namespace Acts\DiaryBundle\Tests\Event;
 
 use Acts\DiaryBundle\Event\MultiDayEvent;
 
 class MultiDayEventTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testMultiDayEvent()
     {
         $event = new MultiDayEvent();
@@ -17,5 +17,4 @@ class MultiDayEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('5 February 2014', $event->getExcludeDate()->format('j F Y'));
         $this->assertEquals('7 February 2014', $event->getEndDate()->format('j F Y'));
     }
-
 }

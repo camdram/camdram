@@ -56,5 +56,4 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
             $container->prependExtensionConfig('acts_sphinx_real_time', array('enabled' => false));
         }
     }
-
 }

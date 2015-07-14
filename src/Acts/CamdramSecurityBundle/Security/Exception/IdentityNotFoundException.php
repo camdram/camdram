@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Exception;
 
 use Symfony\Component\Security\Core\Exception\AuthenticationException;

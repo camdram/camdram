@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Tests\Diary;
 
 use Acts\DiaryBundle\Diary\DiaryItem;
@@ -8,7 +9,6 @@ use Acts\DiaryBundle\Event\SingleDayEvent;
 
 class DiaryRowTest extends \PHPUnit_Framework_TestCase
 {
-
     private $row;
 
     public function setUp()
@@ -173,5 +173,4 @@ class DiaryRowTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->row->canAccept($event2));
     }
-
 }

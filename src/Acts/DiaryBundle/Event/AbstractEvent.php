@@ -1,12 +1,11 @@
 <?php
+
 namespace Acts\DiaryBundle\Event;
 
 /**
  * Class AbstractEvent
  *
  * A standard implementation of an event
- *
- * @package Acts\DiaryBundle\Event
  */
 abstract class AbstractEvent implements EventInterface
 {
@@ -210,5 +209,4 @@ abstract class AbstractEvent implements EventInterface
     {
         return $this->description;
     }
-
 }

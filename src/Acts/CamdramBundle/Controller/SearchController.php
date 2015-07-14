@@ -2,17 +2,16 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Class ShowController
  *
  * Controller for REST actions for shows. Inherits from AbstractRestController.
+ *
  * @RouteResource("Entity")
  */
 class SearchController extends FOSRestController
@@ -58,5 +57,4 @@ class SearchController extends FOSRestController
 
         return $view;
     }
-
 }

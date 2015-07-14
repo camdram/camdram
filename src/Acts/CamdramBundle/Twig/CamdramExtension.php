@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Twig;
 
 use Acts\CamdramBundle\Service\TextService;
@@ -8,8 +9,6 @@ use Acts\CamdramBundle\Service\TextService;
  *
  * A Twig extension which provides custom functionality that can be used in Twig templates. The extension is registered
  * in services.yml
- *
- * @package Acts\CamdramBundle\Twig
  */
 class CamdramExtension extends \Twig_Extension
 {
@@ -75,20 +74,23 @@ class CamdramExtension extends \Twig_Extension
     public function requiresArticle($string)
     {
         $string = strtolower($string);
+
         return (substr($string, -7) == 'theatre'
             || substr($string, -7) == 'society')
-            && substr($string,0, 3) != 'the';
+            && substr($string, 0, 3) != 'the';
     }
 
     public function pluralize($word, $number)
     {
-        if ($number == 1) return $word;
-        else return $this->textService->pluralize($word);
+        if ($number == 1) {
+            return $word;
+        } else {
+            return $this->textService->pluralize($word);
+        }
     }
 
     public function getName()
     {
         return 'camdram_extension';
     }
-
 }

@@ -1,21 +1,16 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface,
-    Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
-use Acts\CamdramBundle\Entity\Organisation;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\EntityManager;
-
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository,
-    Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents,
-    Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
+use Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent;
 
 class AclProvider
 {
@@ -28,8 +23,8 @@ class AclProvider
      * @var \Doctrine\ORM\EntityManager
      */
     private $entityManager;
-    
-    /**
+
+/**
      * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
      */
     private $eventDispatcher = null;
@@ -44,9 +39,13 @@ class AclProvider
 
     public function isOwner($user, OwnableInterface $entity)
     {
-        if ($user instanceof ExternalUser) $user = $user->getUser();
+        if ($user instanceof ExternalUser) {
+            $user = $user->getUser();
+        }
 
-        if (is_null($user) || !$user instanceof User) return false;
+        if (is_null($user) || !$user instanceof User) {
+            return false;
+        }
 
         return $this->repository->aceExists($user, $entity);
     }
@@ -72,6 +71,7 @@ class AclProvider
         $ids = array_map(function (AccessControlEntry $ace) {
             return $ace->getEntityId();
         }, $aces);
+
         return $ids;
     }
 
@@ -86,16 +86,20 @@ class AclProvider
         $ids = array_map(function (AccessControlEntry $ace) {
             return $ace->getEntityId();
         }, $aces);
+
         return $ids;
     }
 
     public function getEntitiesByUser(User $user, $class)
     {
         $ids = $this->getEntityIdsByUser($user, $class);
-        if (count($ids) == 0) return array();
-        
+        if (count($ids) == 0) {
+            return array();
+        }
+
         $qb = $this->entityManager->getRepository($class)->createQueryBuilder('e');
         $qb->where($qb->expr()->in('e.id', $ids));
+
         return $qb->getQuery()->getResult();
     }
 
@@ -108,23 +112,23 @@ class AclProvider
      */
     public function grantAccess(OwnableInterface $entity, User $user, User $granter)
     {
-        $ace = new AccessControlEntry;
+        $ace = new AccessControlEntry();
         $ace->setUser($user);
 
         $ace->setEntityId($entity->getId())
-            ->setCreatedAt(new \DateTime)
+            ->setCreatedAt(new \DateTime())
             ->setGrantedBy($granter)
-            ->setGrantedAt(new \DateTime)
+            ->setGrantedAt(new \DateTime())
             ->setType($entity->getAceType());
 
         $this->entityManager->persist($ace);
         $this->entityManager->flush();
-        
-        /* Send a Camdram-specific event that should trigger an email
+
+/* Send a Camdram-specific event that should trigger an email
          * notification.
          */
-        $this->eventDispatcher->dispatch(CamdramSecurityEvents::ACE_CREATED, 
-            new AccessControlEntryEvent($ace)); 
+        $this->eventDispatcher->dispatch(CamdramSecurityEvents::ACE_CREATED,
+            new AccessControlEntryEvent($ace));
     }
 
     /**
@@ -137,7 +141,7 @@ class AclProvider
         /* Don't re-revoke an ACE. */
         if (($ace != null) && ($ace->getRevokedBy() == null)) {
             $ace->setRevokedBy($revoker)
-                ->setRevokedAt(new \DateTime);
+                ->setRevokedAt(new \DateTime());
             $this->entityManager->persist($ace);
             $this->entityManager->flush();
         }
@@ -160,7 +164,7 @@ class AclProvider
      */
     public function approveShowAccess(Show $show, User $user, User $granter)
     {
-        $persist = False;
+        $persist = false;
         $ace_repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
         $existing_ace = $ace_repo->findAce($user, $show);
         /* Don't add a new ACE if the user is already able to access
@@ -170,29 +174,28 @@ class AclProvider
             $ace = $ace_repo->findAceRequest($user, $show);
             if ($ace != null) {
                 $ace->setGrantedBy($granter)
-                    ->setGrantedAt(new \DateTime)
+                    ->setGrantedAt(new \DateTime())
                     ->setType('show');
-                $persist = True;
-           }
-        } else if ($existing_ace->getRevokedBy() != null) {
+                $persist = true;
+            }
+        } elseif ($existing_ace->getRevokedBy() != null) {
             /* Assume that we're undoing the previous revokation. */
             $existing_ace->setRevokedBy(null)
                 ->setRevokedAt(null)
                 ->setGrantedBy($granter)
-                ->setGrantedAt(new \DateTime);
-            $persist = True;
+                ->setGrantedAt(new \DateTime());
+            $persist = true;
         }
-        
-        if ($persist == True) {
-                $this->entityManager->persist($ace);
-                $this->entityManager->flush();
-                
-                /* Send a Camdram-specific event that should trigger an email
+
+        if ($persist == true) {
+            $this->entityManager->persist($ace);
+            $this->entityManager->flush();
+
+/* Send a Camdram-specific event that should trigger an email
                  * notification.
                  */
-                $this->eventDispatcher->dispatch(CamdramSecurityEvents::ACE_CREATED, 
-                    new AccessControlEntryEvent($ace)); 
-         }
+                $this->eventDispatcher->dispatch(CamdramSecurityEvents::ACE_CREATED,
+                    new AccessControlEntryEvent($ace));
+        }
     }
 }
-

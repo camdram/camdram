@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Keyword
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class Keyword
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="pageid", type="integer", nullable=false)
      */
@@ -45,12 +45,10 @@ class Keyword
      */
     private $keyword;
 
-
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -60,7 +58,8 @@ class Keyword
     /**
      * Set page_id
      *
-     * @param integer $pageId
+     * @param int $pageId
+     *
      * @return Keyword
      */
     public function setPageId($pageId)
@@ -73,7 +72,7 @@ class Keyword
     /**
      * Get page_id
      *
-     * @return integer
+     * @return int
      */
     public function getPageId()
     {
@@ -84,6 +83,7 @@ class Keyword
      * Set keyword
      *
      * @param string $keyword
+     *
      * @return Keyword
      */
     public function setKeyword($keyword)
@@ -107,6 +107,7 @@ class Keyword
      * Set page
      *
      * @param \Acts\CamdramLegacyBundle\Entity\Page $page
+     *
      * @return Keyword
      */
     public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)

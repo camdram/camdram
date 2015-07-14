@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -6,7 +7,6 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
@@ -60,23 +60,19 @@ class ShowListener
     {
         $authorisationEmailSent = false;
 
-        if ($event->hasChangedField('society') && $show->getSociety() instanceof Society)
-        {
+        if ($event->hasChangedField('society') && $show->getSociety() instanceof Society) {
             if ($show->isAuthorised()) {
                 $this->moderationManager->notifySocietyChanged($show);
-            }
-            else {
+            } else {
                 $this->moderationManager->autoApproveOrEmailModerators($show);
                 $authorisationEmailSent = true;
             }
         }
 
-        if ($event->hasChangedField('venue') && $show->getVenue() instanceof Venue)
-        {
+        if ($event->hasChangedField('venue') && $show->getVenue() instanceof Venue) {
             if ($show->isAuthorised()) {
                 $this->moderationManager->notifyVenueChanged($show);
-            }
-            elseif (!$authorisationEmailSent) {
+            } elseif (!$authorisationEmailSent) {
                 $this->moderationManager->autoApproveOrEmailModerators($show);
             }
         }
@@ -100,14 +96,20 @@ class ShowListener
                 foreach ($show->getPerformances() as $performance) {
                     if ($performance->getVenue()) {
                         $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) $venue_counts[$key] = 1;
-                        else $venue_counts[$key]++;
+                        if (!isset($venue_counts[$key])) {
+                            $venue_counts[$key] = 1;
+                        } else {
+                            $venue_counts[$key]++;
+                        }
                         $venues[$key] = $performance->getVenue();
                     }
                     if ($performance->getVenueName()) {
                         $key = $performance->getVenueName();
-                        if (!isset($name_counts[$key])) $name_counts[$key] = 1;
-                        else $name_counts[$key]++;
+                        if (!isset($name_counts[$key])) {
+                            $name_counts[$key] = 1;
+                        } else {
+                            $name_counts[$key]++;
+                        }
                     }
                     //Favour a venue object over a venue name
                     if (count($venue_counts) > 0) {
@@ -122,14 +124,17 @@ class ShowListener
         }
     }
 
-
     public function updateTimes(Show $show)
     {
         $min = null;
         $max = null;
         foreach ($show->getPerformances() as $performance) {
-            if (is_null($min) || $performance->getStartDate() < $min) $min = $performance->getStartDate();
-            if (is_null($max) || $performance->getEndDate() > $max) $max = $performance->getEndDate();
+            if (is_null($min) || $performance->getStartDate() < $min) {
+                $min = $performance->getStartDate();
+            }
+            if (is_null($max) || $performance->getEndDate() > $max) {
+                $max = $performance->getEndDate();
+            }
         }
         $show->setStartAt($min);
         $show->setEndAt($max);

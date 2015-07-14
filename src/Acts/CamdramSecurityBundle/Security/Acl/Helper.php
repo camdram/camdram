@@ -1,17 +1,9 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
-use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Exception\AclAlreadyExistsException;
-
-use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 
 class Helper
 {
@@ -28,16 +20,18 @@ class Helper
         $this->aclProvider = $aclProvider;
     }
 
-    public function isGranted($attributes, $object=null, $fully_authenticated = true)
+    public function isGranted($attributes, $object = null, $fully_authenticated = true)
     {
         if ($fully_authenticated) {
-            if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) return false;
+            if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+                return false;
+            }
         }
 
         return $this->securityContext->isGranted($attributes, $object);
     }
 
-    public function ensureGranted($attributes, $object=null, $fully_authenticated = true)
+    public function ensureGranted($attributes, $object = null, $fully_authenticated = true)
     {
         if (false === $this->isGranted($attributes, $object, $fully_authenticated)) {
             throw new AccessDeniedException();

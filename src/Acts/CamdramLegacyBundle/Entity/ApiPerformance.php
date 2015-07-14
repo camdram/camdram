@@ -22,41 +22,35 @@ class ApiPerformance
 
     public function __construct($performance, $router)
     {
-    $this->performance = $performance;
-    $this->router  = $router;
+        $this->performance = $performance;
+        $this->router  = $router;
     }
 
     /**
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getVenue()
     {
         return $this->performance['venue'];
     }
-
 
     /**
      * @VirtualProperty
      * @XmlElement(cdata=false)
      * @Type("DateTime<'r'>")
      */
-
     public function getDate()
     {
         return $this->performance['datetime'];
     }
 
-
     /**
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getDateIso8601()
     {
         return $this->performance['datetime'];
     }
-
 }

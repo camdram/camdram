@@ -2,14 +2,9 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\TechieAdvert;
-
-use Doctrine\Common\Collections\Criteria;
-use Symfony\Component\BrowserKit\Request;
-
 
 /**
  * @RouteResource("Techie")
@@ -40,24 +35,24 @@ class TechieAdvertController extends FOSRestController
     public function cgetAction()
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findNotExpiredOrderedByDateName(new \DateTime);
+            ->findNotExpiredOrderedByDateName(new \DateTime());
 
         $view = $this->view($techieAdverts, 200)
-            ->setTemplate("ActsCamdramBundle:TechieAdvert:index.html.twig")
+            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.html.twig')
             ->setTemplateVar('techieadverts')
         ;
+
         return $view;
     }
 
     public function getAction($identifier)
     {
         $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findOneByShowSlug($identifier, new \DateTime);
+            ->findOneByShowSlug($identifier, new \DateTime());
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {
             throw $this->createNotFoundException('No techie advert exists with that identifier');
         }
     }
-
 }

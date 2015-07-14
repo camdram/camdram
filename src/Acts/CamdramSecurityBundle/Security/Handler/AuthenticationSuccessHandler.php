@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Handler;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider;
@@ -16,7 +17,6 @@ use Acts\CamdramSecurityBundle\Security\UserLinker;
 
 class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
-
     const LAST_AUTHENTICATION_TOKEN = '_security.last_authentication_token';
     const NEW_TOKEN = '_security.query_link_user';
 
@@ -58,14 +58,14 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
      * is called by authentication listeners inheriting from
      * AbstractAuthenticationListener.
      *
-     * @param Request $request
+     * @param Request        $request
      * @param TokenInterface $token
      *
      * @return Response never null
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
-         if ($request->getSession()->has(self::LAST_AUTHENTICATION_TOKEN)) {
+        if ($request->getSession()->has(self::LAST_AUTHENTICATION_TOKEN)) {
             $last_token =  $request->getSession()->get(self::LAST_AUTHENTICATION_TOKEN);
 
             $camdram_token = $this->userLinker->findCamdramToken($token, $last_token);
@@ -75,7 +75,9 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
                 $camdram_user = $camdram_token->getUser();
                 $external_user = $external_token->getUser();
 
-                if ($camdram_user instanceof ExternalUser) $camdram_user = $camdram_user->getUser();
+                if ($camdram_user instanceof ExternalUser) {
+                    $camdram_user = $camdram_user->getUser();
+                }
                 $camdram_user = $this->camdramUserProvider->refreshUser($camdram_user);
                 $external_user = $this->externalUserProvider->refreshUser($external_user);
 
@@ -90,6 +92,7 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
                         //We're not confident it's the same person, so redirect to a page where we ask the user what to do
                         $request->getSession()->set(self::NEW_TOKEN, $token);
                         $this->securityContext->setToken($last_token);
+
                         return $this->httpUtils->createRedirectResponse($request, 'acts_camdram_security_link_user');
                     }
                 }
@@ -102,10 +105,9 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
                     $this->securityContext->setToken($camdram_token);
                 }
             }
-
         }
-        $request->getSession()->set(AuthenticationSuccessHandler::LAST_AUTHENTICATION_TOKEN, $this->securityContext->getToken());
+        $request->getSession()->set(self::LAST_AUTHENTICATION_TOKEN, $this->securityContext->getToken());
+
         return $this->httpUtils->createRedirectResponse($request, $this->determineTargetUrl($request));
     }
-
 }

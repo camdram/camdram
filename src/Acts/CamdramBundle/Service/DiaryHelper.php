@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Audition;
@@ -15,10 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
  * NOT here. This class contains methods to create diary events from common objects in the Camdram domain, the idea
  * being that DiaryBundle is kept de-coupled and non camdram-specific. It is used by the Diary page as well as the
  * other diaries throughout the site.
- *
- * @package Acts\CamdramBundle\Service
  */
-
 class DiaryHelper
 {
     /**
@@ -34,8 +32,9 @@ class DiaryHelper
     /**
      * Generate an event from a 'performance' of a show (which actually represents a range of performances)
      *
-     * @param Show $show
+     * @param Show        $show
      * @param Performance $performance
+     *
      * @return MultiDayEvent
      */
     public function createEventsFromPerformance(Performance $performance)
@@ -64,11 +63,12 @@ class DiaryHelper
             $event2->setStartDate($start2);
             $event2->setEndDate($performance->getEndDate());
             $event2->setUid($performance->getId().'_2@camdram.net');
+
             return array($event, $event2);
-        }
-        else {
+        } else {
             $event->setStartDate($performance->getStartDate());
             $event->setEndDate($performance->getEndDate());
+
             return array($event);
         }
     }
@@ -77,18 +77,20 @@ class DiaryHelper
      * Generate an array of events corresponding to the various performance ranges of the given show
      *
      * @param array $shows
+     *
      * @return array
      */
     public function createEventsFromShows(array $shows)
     {
         $events = array();
-        foreach($shows as $show) {
+        foreach ($shows as $show) {
             foreach ($show->getPerformances() as $perf) {
                 foreach ($this->createEventsFromPerformance($perf) as $event) {
                     $events[] = $event;
                 }
             }
         }
+
         return $events;
     }
 
@@ -96,6 +98,7 @@ class DiaryHelper
      * Generate an array of events from an array of performances
      *
      * @param array|Traversible $performances
+     *
      * @return array
      */
     public function createEventsFromPerformances($performances)
@@ -105,11 +108,12 @@ class DiaryHelper
         }
 
         $events = array();
-        foreach($performances as $performance) {
+        foreach ($performances as $performance) {
             foreach ($this->createEventsFromPerformance($performance) as $event) {
                 $events[] = $event;
             }
         }
+
         return $events;
     }
 
@@ -122,6 +126,7 @@ class DiaryHelper
         $event->setStartTime($audition->getStartTime());
         $event->setEndTime($audition->getEndTime());
         $event->setVenue($audition->getLocation());
+
         return $event;
     }
 
@@ -137,6 +142,7 @@ class DiaryHelper
                 $events[] = $this->createEventFromAudition($audition);
             }
         }
+
         return $events;
     }
 }

@@ -1,13 +1,12 @@
 <?php
-namespace Acts\CamdramBundle\Service;
 
+namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 
 class ContactEntityService
 {
-
     private $mailer;
 
     private $aclProvider;
@@ -37,8 +36,7 @@ class ContactEntityService
         $users = $this->findRecipientUsers($entity);
         $emails = array();
 
-        foreach ($users as $user)
-        {
+        foreach ($users as $user) {
             $emails[$user->getFullEmail()] = $user->getName();
         }
 

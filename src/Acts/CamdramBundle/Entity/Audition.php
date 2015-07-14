@@ -20,7 +20,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Audition
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -78,7 +78,7 @@ class Audition
     private $show;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="display", type="boolean", nullable=false)
      * @Gedmo\Versioned
@@ -86,7 +86,7 @@ class Audition
     private $display = false;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="nonscheduled", type="boolean", nullable=false)
      * @Gedmo\Versioned
@@ -96,7 +96,7 @@ class Audition
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -107,6 +107,7 @@ class Audition
      * Set date
      *
      * @param \DateTime $date
+     *
      * @return Audition
      */
     public function setDate($date)
@@ -130,6 +131,7 @@ class Audition
      * Set start_time
      *
      * @param \DateTime $startTime
+     *
      * @return Audition
      */
     public function setStartTime($startTime)
@@ -153,6 +155,7 @@ class Audition
      * Set end_time
      *
      * @param \DateTime $endTime
+     *
      * @return Audition
      */
     public function setEndTime($endTime)
@@ -176,6 +179,7 @@ class Audition
      * Set location
      *
      * @param string $location
+     *
      * @return Audition
      */
     public function setLocation($location)
@@ -195,11 +199,11 @@ class Audition
         return $this->location;
     }
 
-
     /**
      * Set display
      *
-     * @param boolean $display
+     * @param bool $display
+     *
      * @return Audition
      */
     public function setDisplay($display)
@@ -212,7 +216,7 @@ class Audition
     /**
      * Get display
      *
-     * @return boolean
+     * @return bool
      */
     public function getDisplay()
     {
@@ -222,7 +226,8 @@ class Audition
     /**
      * Set non_scheduled
      *
-     * @param boolean $nonScheduled
+     * @param bool $nonScheduled
+     *
      * @return Audition
      */
     public function setNonScheduled($nonScheduled)
@@ -235,7 +240,7 @@ class Audition
     /**
      * Get nonSheduled
      *
-     * @return boolean
+     * @return bool
      */
     public function getNonScheduled()
     {
@@ -246,6 +251,7 @@ class Audition
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $show
+     *
      * @return Audition
      */
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
@@ -264,12 +270,12 @@ class Audition
     {
         return $this->show;
     }
-    
+
     public function getFeedTitle()
     {
         return $this->getShow()->getName();
     }
-    
+
     public function getSlug()
     {
         return $this->getShow()->getSlug();

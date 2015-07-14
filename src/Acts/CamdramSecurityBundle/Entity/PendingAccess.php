@@ -4,8 +4,6 @@ namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Acts\CamdramSecurityBundle\Entity\User;
-
 /**
  * PendingAccess
  *
@@ -14,6 +12,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
  * on Camdram by a society or venue administrator. Pending access entries are
  * created when a show-specific admin doesn't have an account on Camdram
  * (determined by the given email address). The person is prompted
+ *
  * @ORM\Table(name="acts_pendingaccess")
  * @ORM\Entity(repositoryClass="PendingAccessRepository")
  * @ORM\EntityListeners({"\Acts\CamdramSecurityBundle\EventListener\PendingAccessListener"})
@@ -22,7 +21,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 class PendingAccess
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -31,7 +30,7 @@ class PendingAccess
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="rid", type="integer", nullable=false)
      */
@@ -52,7 +51,7 @@ class PendingAccess
     private $type;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="issuerid", referencedColumnName="id", nullable=false)
@@ -66,11 +65,10 @@ class PendingAccess
      */
     private $creation_date;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -80,7 +78,8 @@ class PendingAccess
     /**
      * Set rid
      *
-     * @param integer $rid
+     * @param int $rid
+     *
      * @return PendingAccess
      */
     public function setRid($rid)
@@ -93,7 +92,7 @@ class PendingAccess
     /**
      * Get rid
      *
-     * @return integer
+     * @return int
      */
     public function getRid()
     {
@@ -104,11 +103,13 @@ class PendingAccess
      * Set email
      *
      * @param string $email
+     *
      * @return PendingAccess
      */
     public function setEmail($email)
     {
         $this->email = strtolower($email);
+
         return $this;
     }
 
@@ -126,6 +127,7 @@ class PendingAccess
      * Set type
      *
      * @param string $type
+     *
      * @return PendingAccess
      */
     public function setType($type)
@@ -149,11 +151,12 @@ class PendingAccess
      * Set issuer_id
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $owner
+     *
      * @return PendingAccess
      */
     public function setIssuer(\Acts\CamdramSecurityBundle\Entity\User $issuer = null)
     {
-        $this->issuer= $issuer;
+        $this->issuer = $issuer;
 
         return $this;
     }

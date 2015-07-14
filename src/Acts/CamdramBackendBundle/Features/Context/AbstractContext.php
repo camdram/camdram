@@ -5,8 +5,6 @@ namespace Acts\CamdramBackendBundle\Features\Context;
 use Behat\Behat\Context\BehatContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\Behat\Context\Step;
 
 /**
  * Feature context.
@@ -48,11 +46,10 @@ abstract class AbstractContext extends BehatContext implements KernelAwareInterf
     }
 
     /**
-    * @return \DateTime
-    */
+     * @return \DateTime
+     */
     protected function getCurrentTime()
     {
         return $this->kernel->getContainer()->get('acts.time_service')->getCurrentTime();
     }
-
 }

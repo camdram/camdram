@@ -1,14 +1,12 @@
 <?php
+
 namespace Acts\CamdramBundle\Controller;
-
-
 
 use Acts\CamdramBundle\Form\Type\ContactUsType;
 use Symfony\Component\HttpFoundation\Request;
 
 trait ContactTrait
 {
-
     abstract protected function redirectToRoute($route, array $parameters = array(), $status = 302);
 
     abstract public function get($service);
@@ -40,9 +38,9 @@ trait ContactTrait
             $data = $form->getData();
             $this->get('acts.camdram.contact_entity_service')->emailEntity($entity, $data['name'],
                 $data['email'], $data['subject'], $data['message']);
+
             return $this->redirectToRoute('get_'.strtolower($this->getController()).'_sent', ['identifier' => $identifier]);
-        }
-        else {
+        } else {
             return $this->render('@ActsCamdram/' . $this->getController() . '/contact.html.twig', [
                 'entity' => $entity,
                 'form' => $form->createView()
@@ -59,5 +57,4 @@ trait ContactTrait
             'entity' => $entity
         ]);
     }
-
 }

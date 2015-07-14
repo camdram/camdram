@@ -4,14 +4,11 @@ namespace Acts\CamdramBundle\Tests\Service;
 
 use Acts\CamdramBackendBundle\Test\RepositoryTestCase;
 use Acts\CamdramBundle\Entity\Application;
-use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 class ApplicationRepositoryTest extends RepositoryTestCase
 {
-
     private $user;
 
     private $show;
@@ -36,7 +33,8 @@ class ApplicationRepositoryTest extends RepositoryTestCase
     /**
      * @return \Acts\CamdramBundle\Entity\TechieAdvertRepository
      */
-    private function getRepository() {
+    private function getRepository()
+    {
         return $this->em->getRepository('ActsCamdramBundle:Application');
     }
 
@@ -103,5 +101,4 @@ class ApplicationRepositoryTest extends RepositoryTestCase
         $res = $this->getRepository()->findLatest(3, new \DateTime('2014-03-17 13:00'));
         $this->assertEquals(0, count($res));
     }
-
 }

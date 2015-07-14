@@ -1,14 +1,10 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 class VenuesLocationCommand extends ContainerAwareCommand
 {
@@ -25,7 +21,6 @@ class VenuesLocationCommand extends ContainerAwareCommand
         $social = $this->getContainer()->get('acts.social_api.provider');
         $api = $social->get('google_simple');
 
-
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $repo = $em->getRepository('ActsCamdramBundle:Venue');
         $venues = $repo->findByLatitude(null);
@@ -40,5 +35,4 @@ class VenuesLocationCommand extends ContainerAwareCommand
             }
         }
     }
-
 }

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ForumMessage
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,21 +22,21 @@ class ForumMessage
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="replyid", type="integer", nullable=false)
      */
     private $reply_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="forumid", type="integer", nullable=false)
      */
     private $forum_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="uid", type="integer", nullable=false)
      */
@@ -64,14 +64,14 @@ class ForumMessage
     private $message;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="resourceid", type="integer", nullable=false)
      */
     private $resource_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="ancestorid", type="integer", nullable=false)
      */
@@ -84,11 +84,10 @@ class ForumMessage
      */
     private $last_post;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -98,7 +97,8 @@ class ForumMessage
     /**
      * Set reply_id
      *
-     * @param integer $replyId
+     * @param int $replyId
+     *
      * @return ForumMessage
      */
     public function setReplyId($replyId)
@@ -111,7 +111,7 @@ class ForumMessage
     /**
      * Get reply_id
      *
-     * @return integer
+     * @return int
      */
     public function getReplyId()
     {
@@ -121,7 +121,8 @@ class ForumMessage
     /**
      * Set forum_id
      *
-     * @param integer $forumId
+     * @param int $forumId
+     *
      * @return ForumMessage
      */
     public function setForumId($forumId)
@@ -134,7 +135,7 @@ class ForumMessage
     /**
      * Get forum_id
      *
-     * @return integer
+     * @return int
      */
     public function getForumId()
     {
@@ -144,7 +145,8 @@ class ForumMessage
     /**
      * Set user_id
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return ForumMessage
      */
     public function setUserId($userId)
@@ -157,7 +159,7 @@ class ForumMessage
     /**
      * Get user_id
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -168,6 +170,7 @@ class ForumMessage
      * Set date_time
      *
      * @param \DateTime $dateTime
+     *
      * @return ForumMessage
      */
     public function setDateTime($dateTime)
@@ -191,6 +194,7 @@ class ForumMessage
      * Set subject
      *
      * @param string $subject
+     *
      * @return ForumMessage
      */
     public function setSubject($subject)
@@ -214,6 +218,7 @@ class ForumMessage
      * Set message
      *
      * @param string $message
+     *
      * @return ForumMessage
      */
     public function setMessage($message)
@@ -236,7 +241,8 @@ class ForumMessage
     /**
      * Set resource_id
      *
-     * @param integer $resourceId
+     * @param int $resourceId
+     *
      * @return ForumMessage
      */
     public function setResourceId($resourceId)
@@ -249,7 +255,7 @@ class ForumMessage
     /**
      * Get resource_id
      *
-     * @return integer
+     * @return int
      */
     public function getResourceId()
     {
@@ -259,7 +265,8 @@ class ForumMessage
     /**
      * Set ancestor_id
      *
-     * @param integer $ancestorId
+     * @param int $ancestorId
+     *
      * @return ForumMessage
      */
     public function setAncestorId($ancestorId)
@@ -272,7 +279,7 @@ class ForumMessage
     /**
      * Get ancestor_id
      *
-     * @return integer
+     * @return int
      */
     public function getAncestorId()
     {
@@ -283,6 +290,7 @@ class ForumMessage
      * Set last_post
      *
      * @param \DateTime $lastPost
+     *
      * @return ForumMessage
      */
     public function setLastPost($lastPost)

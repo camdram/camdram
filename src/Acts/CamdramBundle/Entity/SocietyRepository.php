@@ -24,5 +24,4 @@ class SocietyRepository extends EntityRepository
             ->createQuery('SELECT s FROM ActsCamdramBundle:Society s ORDER BY s.college, s.name')
             ->getResult();
     }
-
 }

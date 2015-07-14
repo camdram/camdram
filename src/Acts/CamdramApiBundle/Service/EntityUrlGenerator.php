@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramApiBundle\Service;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -36,6 +37,7 @@ class EntityUrlGenerator
         if ($this->router->getRouteCollection()->get($route) === null) {
             throw new \InvalidArgumentException('That entity does not have a corresponding collection route');
         }
+
         return $route;
     }
 
@@ -45,6 +47,7 @@ class EntityUrlGenerator
         if ($this->router->getRouteCollection()->get($route) === null) {
             throw new \InvalidArgumentException('That entity does not have a corresponding route');
         }
+
         return $route;
     }
 
@@ -56,6 +59,7 @@ class EntityUrlGenerator
         } catch (NoSuchPropertyException $e) {
             $id = $accessor->getValue($entity, 'id');
         }
+
         return $id;
     }
 
@@ -71,5 +75,4 @@ class EntityUrlGenerator
     {
         return $this->router->generate($this->getCollectionRoute($class), array('_format' => $format), true);
     }
-
 }

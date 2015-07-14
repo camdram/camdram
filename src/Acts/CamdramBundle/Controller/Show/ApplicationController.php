@@ -1,6 +1,6 @@
 <?php
-namespace Acts\CamdramBundle\Controller\Show;
 
+namespace Acts\CamdramBundle\Controller\Show;
 
 use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Show;
@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationController extends FOSRestController
 {
-
     protected function getEntity($identifier)
     {
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
@@ -24,6 +23,7 @@ class ApplicationController extends FOSRestController
             $obj->setShow($show);
         }
         $form = $this->createForm(new ApplicationType(), $obj);
+
         return $form;
     }
 
@@ -37,6 +37,7 @@ class ApplicationController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $form = $this->getApplicationForm($show);
+
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:Show:application-new.html.twig');
@@ -57,6 +58,7 @@ class ApplicationController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
         } else {
             return $this->view($form, 400)
@@ -76,6 +78,7 @@ class ApplicationController extends FOSRestController
 
         $application = $show->getApplications()->first();
         $form = $this->getApplicationForm($show, $application);
+
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
             ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
@@ -97,6 +100,7 @@ class ApplicationController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
+
             return $this->routeRedirectView('edit_show_application', array('identifier' => $show->getSlug()));
         } else {
             return $this->view($form, 400)
@@ -107,8 +111,10 @@ class ApplicationController extends FOSRestController
 
     /**
      * @Rest\Patch("/shows/{identifier}/application/expire")
+     *
      * @param Request $request
      * @param $identifier
+     *
      * @return \FOS\RestBundle\View\View
      */
     public function expireApplicationAction(Request $request, $identifier)
@@ -130,6 +136,7 @@ class ApplicationController extends FOSRestController
     /**
      * @param Request $request
      * @param $identifier
+     *
      * @return \FOS\RestBundle\View\View
      */
     public function deleteApplicationAction(Request $request, $identifier)
@@ -141,7 +148,7 @@ class ApplicationController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($application);
         $em->flush();
+
         return $this->routeRedirectView('new_show_application', array('identifier' => $show->getSlug()));
     }
-
 }

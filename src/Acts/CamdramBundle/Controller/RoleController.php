@@ -3,13 +3,8 @@
 namespace Acts\CamdramBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Controller\Annotations\Patch;
-use FOS\RestBundle\Util\Codes;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Acts\CamdramBundle\Entity\Role;
 
 /**
@@ -22,6 +17,7 @@ class RoleController extends FOSRestController
      * Reorder the display ordering for the array of Roles identified by their ID.
      *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function patchRolesReorderAction(Request $request)

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,8 +17,9 @@ class AdminVoter implements VoterInterface
 
     /**
      * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     * @param \Acts\CamdramBundle\Entity\Show $object
-     * @param array $attributes
+     * @param \Acts\CamdramBundle\Entity\Show                                      $object
+     * @param array                                                                $attributes
+     *
      * @return int
      */
     public function vote(TokenInterface $token, $object, array $attributes)
@@ -25,7 +27,9 @@ class AdminVoter implements VoterInterface
         if (is_object($object) && $this->supportsClass(get_class($object))) {
             foreach ($token->getRoles() as $role) {
                 if ($role->getRole() == 'ROLE_ADMIN'
-                    || $role->getRole() == 'ROLE_SUPER_ADMIN') return self::ACCESS_GRANTED;
+                    || $role->getRole() == 'ROLE_SUPER_ADMIN') {
+                    return self::ACCESS_GRANTED;
+                }
             }
         }
 

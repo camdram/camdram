@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Week;
@@ -21,8 +22,11 @@ class WeekManager
         //Rewind start date to previous Sunday at midnight
         $date = clone $date;
         $day = $date->format('N');
-        if ($day < 7) $date->modify('-'.$day.' days');
-        $date->setTime(0,0,0);
+        if ($day < 7) {
+            $date->modify('-'.$day.' days');
+        }
+        $date->setTime(0, 0, 0);
+
         return $date;
     }
 
@@ -31,8 +35,11 @@ class WeekManager
         //Move start date to next Sunday at midnight
         $date = clone $date;
         $day = $date->format('N');
-        if ($day < 7) $date->modify('+'.(7-$day).' days');
-        $date->setTime(0,0,0);
+        if ($day < 7) {
+            $date->modify('+'.(7 - $day).' days');
+        }
+        $date->setTime(0, 0, 0);
+
         return $date;
     }
 
@@ -45,6 +52,7 @@ class WeekManager
         $week->setEndAt($end_at);
         $week->setShortName($week_name->getShortName());
         $week->setName($week_name->getName());
+
         return $week;
     }
 
@@ -60,6 +68,7 @@ class WeekManager
         $date->modify('+1 week');
         $week->setEndAt($date);
         $week->setShortName('');
+
         return $week;
     }
 
@@ -81,6 +90,7 @@ class WeekManager
             $date->modify('+1 week');
         }
         ksort($weeks);
+
         return $weeks;
     }
 
@@ -92,7 +102,5 @@ class WeekManager
         } else {
             return $this->getWeekFromDate($date);
         }
-
     }
-
 }

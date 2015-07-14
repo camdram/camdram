@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class VenueType
  *
  * The form that's presented when a user adds/edits a venue
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class VenueType extends AbstractType
 {

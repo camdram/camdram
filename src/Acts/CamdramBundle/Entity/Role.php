@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Role
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -28,7 +28,7 @@ class Role
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="sid", type="integer", nullable=true)
      */
@@ -51,7 +51,7 @@ class Role
     private $role;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="`order`", type="integer", nullable=false)
      * @Gedmo\Versioned
@@ -59,7 +59,6 @@ class Role
     private $order;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
      * @Exclude
      * @ORM\JoinColumns({
@@ -70,7 +69,6 @@ class Role
     private $show;
 
     /**
-     *
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="roles")
      * @Exclude
      * @ORM\JoinColumns({
@@ -80,11 +78,10 @@ class Role
      */
     private $person;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -94,7 +91,8 @@ class Role
     /**
      * Set show_id
      *
-     * @param integer $showId
+     * @param int $showId
+     *
      * @return Role
      */
     public function setShowId($showId)
@@ -107,7 +105,7 @@ class Role
     /**
      * Get show_id
      *
-     * @return integer
+     * @return int
      */
     public function getShowId()
     {
@@ -118,6 +116,7 @@ class Role
      * Set type
      *
      * @param string $type
+     *
      * @return Role
      */
     public function setType($type)
@@ -141,6 +140,7 @@ class Role
      * Set role
      *
      * @param string $role
+     *
      * @return Role
      */
     public function setRole($role)
@@ -163,7 +163,8 @@ class Role
     /**
      * Set order
      *
-     * @param integer $order
+     * @param int $order
+     *
      * @return Role
      */
     public function setOrder($order)
@@ -176,7 +177,7 @@ class Role
     /**
      * Get order
      *
-     * @return integer
+     * @return int
      */
     public function getOrder()
     {
@@ -187,6 +188,7 @@ class Role
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $show
+     *
      * @return Role
      */
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
@@ -210,6 +212,7 @@ class Role
      * Set person
      *
      * @param \Acts\CamdramBundle\Entity\Person $person
+     *
      * @return Role
      */
     public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
@@ -233,10 +236,11 @@ class Role
      * Get name of person
      *
      * @VirtualProperty
+     *
      * @return string
      */
     public function getPersonName()
     {
-      return $this->person->getName();
+        return $this->person->getName();
     }
 }

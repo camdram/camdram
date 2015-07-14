@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class PerformanceType
  *
  * The sub-form representing a performance - used by ShowType, once for each range of performances
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class PerformanceType extends AbstractType
 {

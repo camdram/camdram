@@ -1,12 +1,10 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 
@@ -28,7 +26,7 @@ class ExternalUsersCommand extends ContainerAwareCommand
         $users = $em->getRepository('ActsCamdramSecurityBundle:User')->findAll();
 
         foreach ($users as $user) {
-            if (preg_match('/^[a-z]+[0-9]+$/i',$user->getEmail(), $matches)) {
+            if (preg_match('/^[a-z]+[0-9]+$/i', $user->getEmail(), $matches)) {
                 //Create identity for abc12 (crsid)
                 $user->getEmail($user->getEmail().'@cam.ac.uk');
                 $this->generateIdentity($user, 'raven', $matches[0], $output);
@@ -50,7 +48,7 @@ class ExternalUsersCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         if (is_null($user->getExternalUserByService($service))) {
-            $e = new ExternalUser;
+            $e = new ExternalUser();
             $e->setService($service)
                 ->setUser($user)
                 ->setName($user->getName())

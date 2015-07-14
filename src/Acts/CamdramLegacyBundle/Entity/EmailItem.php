@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class EmailItem
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class EmailItem
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="emailid", type="integer", nullable=false)
      */
@@ -50,7 +50,7 @@ class EmailItem
     private $order_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="creatorid", type="integer", nullable=false)
      */
@@ -64,17 +64,16 @@ class EmailItem
     private $created;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="protect", type="boolean", nullable=false)
      */
     private $protect;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -84,7 +83,8 @@ class EmailItem
     /**
      * Set emailid
      *
-     * @param integer $emailid
+     * @param int $emailid
+     *
      * @return EmailItem
      */
     public function setEmailid($emailid)
@@ -97,7 +97,7 @@ class EmailItem
     /**
      * Get emailid
      *
-     * @return integer
+     * @return int
      */
     public function getEmailid()
     {
@@ -108,6 +108,7 @@ class EmailItem
      * Set title
      *
      * @param string $title
+     *
      * @return EmailItem
      */
     public function setTitle($title)
@@ -131,6 +132,7 @@ class EmailItem
      * Set text
      *
      * @param string $text
+     *
      * @return EmailItem
      */
     public function setText($text)
@@ -154,6 +156,7 @@ class EmailItem
      * Set order_id
      *
      * @param float $orderId
+     *
      * @return EmailItem
      */
     public function setOrderId($orderId)
@@ -176,7 +179,8 @@ class EmailItem
     /**
      * Set creator_id
      *
-     * @param integer $creatorId
+     * @param int $creatorId
+     *
      * @return EmailItem
      */
     public function setCreatorId($creatorId)
@@ -189,7 +193,7 @@ class EmailItem
     /**
      * Get creator_id
      *
-     * @return integer
+     * @return int
      */
     public function getCreatorId()
     {
@@ -200,6 +204,7 @@ class EmailItem
      * Set created
      *
      * @param \DateTime $created
+     *
      * @return EmailItem
      */
     public function setCreated($created)
@@ -222,7 +227,8 @@ class EmailItem
     /**
      * Set protect
      *
-     * @param boolean $protect
+     * @param bool $protect
+     *
      * @return EmailItem
      */
     public function setProtect($protect)
@@ -235,7 +241,7 @@ class EmailItem
     /**
      * Get protect
      *
-     * @return boolean
+     * @return bool
      */
     public function getProtect()
     {
