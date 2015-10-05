@@ -167,7 +167,7 @@ class SupportController extends FOSRestController
         $reply = new Support();
         $reply->setTo(htmlspecialchars_decode($issue->getFrom()));
         $reply->setSubject('Re: ' . $issue->getSubject());
-        $reply->setBody("\n\n\n--\nSent by " . $this->getUser()->getName() . " on behalf of camdram.net websupport\nFor further correspondence relating to this email, contact support-" . $issue->getId() . "@camdram.net\nFor new enquries, contact websupport@camdram.net."
+        $reply->setBody("\n\n\n--\nSent by " . $this->getUser()->getName() . " on behalf of Camdram's support team.\nFor further correspondence relating to this email, contact support-" . $issue->getId() . "@camdram.net.\nFor new enquiries, contact websupport@camdram.net."
             );
         $form = $this->createForm(new SupportType(), $reply, array(
             'action' => $this->generateUrl('post_issue_reply', array('identifier' => $identifier))));
