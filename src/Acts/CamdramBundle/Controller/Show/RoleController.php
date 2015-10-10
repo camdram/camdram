@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Controller\Show;
 
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Role;
+use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\RolesType;
 use Acts\CamdramBundle\Form\Type\RoleType;
 use FOS\RestBundle\Controller\Annotations as Rest;
