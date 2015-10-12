@@ -16,22 +16,22 @@ class TimePeriodsUpdateCommand extends ContainerAwareCommand
     {
         $this
             ->setName('camdram:time-periods:update')
-            ->setDescription('Automatically create time periods from the Computing Service\'s ical file')
+            ->setDescription('Automatically create time periods')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         for ($year = 1990; $year <= 2030; $year++) {
-            list($lent_start, $lent_end) = $this->addTerm('Lent', new \DateTime($year.'-01-17'), 0, 9, $output);
+            list($lent_start, $lent_end) = $this->addTerm('Lent', new \DateTime($year.'-01-16'), 0, 9, $output);
             if (isset($michaelmas_end)) {
                 $this->addVacation('Christmas', $michaelmas_end, $lent_start, $output);
             }
 
-            list($easter_start, $easter_end) = $this->addTerm('Easter', new \DateTime($year.'-04-25'), 0, 8, $output);
+            list($easter_start, $easter_end) = $this->addTerm('Easter', new \DateTime($year.'-04-24'), 0, 8, $output);
             $this->addVacation('Easter', $lent_end, $easter_start, $output);
 
-            list($michaelmas_start, $michaelmas_end) = $this->addTerm('Michaelmas', new \DateTime($year.'-10-07'), 0, 8, $output);
+            list($michaelmas_start, $michaelmas_end) = $this->addTerm('Michaelmas', new \DateTime($year.'-10-06'), 0, 8, $output);
             $this->addVacation('Summer', $easter_end, $michaelmas_start, $output);
         }
     }
