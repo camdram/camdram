@@ -10,6 +10,8 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
 
 class ContactUsType extends AbstractType
 {
@@ -38,22 +40,33 @@ class ContactUsType extends AbstractType
                         && $this->storage->getToken()->getUser() instanceof CamdramUserInterface) {
                 $user = $this->storage->getToken()->getUser();
 
-                $form->add('name', 'hidden', array('data' => $user->getName(), 'read_only' => true))
-                    ->add('email', 'hidden', array('data' => $user->getFullEmail(), 'read_only' => true));
+                $form->add('name', 'hidden', ['data' => $user->getName(), 'read_only' => true])
+                    ->add('email', 'hidden', ['data' => $user->getFullEmail(), 'read_only' => true]);
             } else {
-                $form->add('name', 'text', array('label' => 'Your name'))
-                    ->add('email', 'email', array('label' => 'Your email address'))
-                    ->add('captcha', 'ewz_recaptcha', array(
-                        'attr' => array(
-                            'options' => array(
+                $form->add('name', 'text', [
+                          'label' => 'Your name',
+                          'constraints' => [
+                                new NotBlank(),
+                           ],
+                        ])
+                    ->add('email', 'email', [
+                          'label' => 'Your email address',
+                          'constraints' => [
+                                new NotBlank(),
+                                new Email(['checkMX' => true])
+                            ],
+                        ])
+                    ->add('captcha', 'ewz_recaptcha', [
+                        'attr' => [
+                            'options' => [
                                 'theme' => 'clean'
-                            )
-                        ),
+                            ]
+                        ],
                         'mapped'      => false,
-                        'constraints' => array(
+                        'constraints' => [
                             new True()
-                        )
-                    ));
+                        ]
+                    ]);
             }
 
         });
@@ -64,8 +77,7 @@ class ContactUsType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-        ));
+        $resolver->setDefaults([]);
     }
 
     /**
