@@ -192,8 +192,8 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
-     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="authorised_shows")
+     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true)
      * @Gedmo\Versioned
      */
     private $authorised_by;

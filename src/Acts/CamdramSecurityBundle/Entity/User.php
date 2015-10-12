@@ -263,6 +263,12 @@ class User implements \Serializable, CamdramUserInterface
     private $apps;
 
     /**
+     * @ORM\OneToMany(targetEntity="Acts\CamdramBundle\Entity\Show", mappedBy="authorised_by")
+     * @Serializer\Exclude()
+     */
+    private $authorised_shows;
+    
+    /**
      * Get id
      *
      * @return int
@@ -1257,5 +1263,39 @@ class User implements \Serializable, CamdramUserInterface
     public function getEmailSigs()
     {
         return $this->email_sigs;
+    }
+
+    /**
+     * Add authorisedShow
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
+     *
+     * @return User
+     */
+    public function addAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    {
+        $this->authorised_shows[] = $authorisedShow;
+
+        return $this;
+    }
+
+    /**
+     * Remove authorisedShow
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
+     */
+    public function removeAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    {
+        $this->authorised_shows->removeElement($authorisedShow);
+    }
+
+    /**
+     * Get authorisedShows
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAuthorisedShows()
+    {
+        return $this->authorised_shows;
     }
 }

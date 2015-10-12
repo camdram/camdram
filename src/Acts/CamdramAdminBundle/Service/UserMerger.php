@@ -50,6 +50,10 @@ class UserMerger
             $user1 = $tempUser;
         }
 
+        foreach ($user2->getAuthorisedShows() as $show)
+        {
+            $show->setAuthorisedBy($user1);
+        }
         foreach ($user2->getAces() as $ace) {
             $ace->setUser($user1);
         }
@@ -79,6 +83,7 @@ class UserMerger
         }
 
         $this->entityManager->remove($user2);
+        
         $this->entityManager->flush();
 
         return $user1;
