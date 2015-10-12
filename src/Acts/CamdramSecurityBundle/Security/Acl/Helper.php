@@ -2,33 +2,33 @@
 
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Helper
 {
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
-    private $securityContext;
+    private $authorizationChecker;
 
     private $aclProvider;
 
-    public function __construct(SecurityContextInterface $securityContext, AclProvider $aclProvider)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, AclProvider $aclProvider)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
         $this->aclProvider = $aclProvider;
     }
 
     public function isGranted($attributes, $object = null, $fully_authenticated = true)
     {
         if ($fully_authenticated) {
-            if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
                 return false;
             }
         }
 
-        return $this->securityContext->isGranted($attributes, $object);
+        return $this->authorizationChecker->isGranted($attributes, $object);
     }
 
     public function ensureGranted($attributes, $object = null, $fully_authenticated = true)

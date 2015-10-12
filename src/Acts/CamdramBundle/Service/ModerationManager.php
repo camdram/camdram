@@ -10,7 +10,8 @@ use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Acts\CamdramBundle\Entity\Show;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Manage the moderation of Entities
@@ -30,17 +31,21 @@ class ModerationManager
 
     private $aclProvider;
 
-    private $securityContext;
+    private $authorizationChecker;
+    
+    private $tokenStorage;
 
     private $logger;
 
     public function __construct(EntityManager $entityManager, EmailDispatcher $dispatcher,
-                                AclProvider $aclProvider, SecurityContextInterface $context, LoggerInterface $logger)
+                                AclProvider $aclProvider, AuthorizationCheckerInterface $authorizationChecker,
+                                TokenStorageInterface $tokenStorage, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
         $this->aclProvider = $aclProvider;
-        $this->securityContext = $context;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage = $tokenStorage;
         $this->logger = $logger;
     }
 
@@ -52,10 +57,10 @@ class ModerationManager
     public function getEntitiesToModerate()
     {
         $show_repo = $this->entityManager->getRepository('ActsCamdramBundle:Show');
-        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $show_repo->findUnauthorised();
-        } elseif ($this->securityContext->isGranted('ROLE_USER')) {
-            $ids = $this->aclProvider->getOrganisationIdsByUser($this->securityContext->getToken()->getUser());
+        } elseif ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            $ids = $this->aclProvider->getOrganisationIdsByUser($this->authorizationChecker->getToken()->getUser());
             $orgs = $this->entityManager->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
             $entities = array();
             foreach ($orgs as $org) {
@@ -108,7 +113,7 @@ class ModerationManager
     public function approveEntity(Show $entity)
     {
         if ($entity instanceof Show && !$entity->isAuthorised()) {
-            $entity->setAuthorisedBy($this->securityContext->getToken()->getUser());
+            $entity->setAuthorisedBy($this->tokenStorage->getToken()->getUser());
 
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $owners = $repo->getEntityOwners($entity);
@@ -120,7 +125,7 @@ class ModerationManager
     public function autoApproveOrEmailModerators(Show $entity)
     {
         if (!$entity->isAuthorised()) {
-            if ($this->securityContext->isGranted('APPROVE', $entity)) {
+            if ($this->authorizationChecker->isGranted('APPROVE', $entity)) {
                 //The current user is able to approve the show, so approve it straight away.
                 $this->approveEntity($entity);
             } else {
@@ -144,8 +149,8 @@ class ModerationManager
         if ($entity instanceof Show) {
             $moderators = $this->getModeratorsForEntity($entity);
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
-            if ($this->securityContext->getToken()) {
-                $owners = array($this->securityContext->getToken()->getUser());
+            if ($this->tokenStorage->getToken()) {
+                $owners = array($this->tokenStorage->getToken()->getUser());
             } else {
                 $owners = $repo->getEntityOwners($entity);
             }
@@ -170,8 +175,8 @@ class ModerationManager
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $moderators = $repo->getEntityOwners($entity->getSociety());
             if (count($moderators) > 0) {
-                if ($this->securityContext->getToken()) {
-                    $owners = array($this->securityContext->getToken()->getUser());
+                if ($this->tokenStorage->getToken()) {
+                    $owners = array($this->tokenStorage->getToken()->getUser());
                 } else {
                     $owners = $repo->getEntityOwners($entity);
                 }
@@ -188,8 +193,8 @@ class ModerationManager
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $moderators = $repo->getEntityOwners($entity->getVenue());
             if (count($moderators) > 0) {
-                if ($this->securityContext->getToken()) {
-                    $owners = array($this->securityContext->getToken()->getUser());
+                if ($this->tokenStorage->getToken()) {
+                    $owners = array($this->tokenStorage->getToken()->getUser());
                 } else {
                     $owners = $repo->getEntityOwners($entity);
                 }

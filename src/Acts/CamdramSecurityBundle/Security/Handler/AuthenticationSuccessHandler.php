@@ -6,7 +6,7 @@ use Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider;
 use Acts\CamdramSecurityBundle\Security\User\ExternalLoginUserProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Acts\CamdramSecurityBundle\Security\NameUtils;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -21,9 +21,9 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     const NEW_TOKEN = '_security.query_link_user';
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContext
+     * @var TokenStorageInterface
      */
-    private $securityContext;
+    private $tokenStorage;
 
     /**
      * @var \Acts\CamdramSecurityBundle\Security\NameUtils
@@ -41,10 +41,10 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     /** @var \Acts\CamdramSecurityBundle\Security\User\ExternalLoginUserProvider */
     private $externalUserProvider;
 
-    public function __construct(SecurityContext $context, NameUtils $nameUtils, CamdramUserProvider $camdramUserProvider,
+    public function __construct(TokenStorageInterface $tokenStorage, NameUtils $nameUtils, CamdramUserProvider $camdramUserProvider,
                                 ExternalLoginUserProvider $externalUserProvider, UserLinker $userLinker, HttpUtils $httpUtils, $providerKey)
     {
-        $this->securityContext = $context;
+        $this->tokenStorage = $tokenStorage;
         $this->nameUtils = $nameUtils;
         $this->camdramUserProvider = $camdramUserProvider;
         $this->externalUserProvider = $externalUserProvider;
@@ -91,7 +91,7 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
                     } else {
                         //We're not confident it's the same person, so redirect to a page where we ask the user what to do
                         $request->getSession()->set(self::NEW_TOKEN, $token);
-                        $this->securityContext->setToken($last_token);
+                        $this->tokenStorage->setToken($last_token);
 
                         return $this->httpUtils->createRedirectResponse($request, 'acts_camdram_security_link_user');
                     }
@@ -102,11 +102,11 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
                 if ($external_user->getUser() && $camdram_user
                         && $external_user->getUser()->getId() == $camdram_user->getId()
                         && $camdram_token instanceof UsernamePasswordToken) {
-                    $this->securityContext->setToken($camdram_token);
+                    $this->tokenStorage->setToken($camdram_token);
                 }
             }
         }
-        $request->getSession()->set(self::LAST_AUTHENTICATION_TOKEN, $this->securityContext->getToken());
+        $request->getSession()->set(self::LAST_AUTHENTICATION_TOKEN, $this->tokenStorage->getToken());
 
         return $this->httpUtils->createRedirectResponse($request, $this->determineTargetUrl($request));
     }

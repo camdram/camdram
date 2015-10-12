@@ -97,7 +97,8 @@ services:
             - @doctrine.orm.entity_manager
             - @acts.camdram.email_dispatcher
             - @camdram.security.acl.provider
-            - @security.context
+            - @security.authorization_checker
+            - @security.token_storage
             - @monolog.logger.camdram
 
     acts.camdram.listener.doctrine_event_logger:

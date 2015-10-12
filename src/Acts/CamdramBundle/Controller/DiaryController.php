@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Label;
 use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class DiaryController
@@ -18,12 +19,12 @@ class DiaryController extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $now = $this->get('acts.time_service')->getCurrentTime();
         $week_start = $this->get('acts.camdram.week_manager')->previousSunday($now);
 
-        return $this->dateAction($week_start);
+        return $this->dateAction($request, $week_start);
     }
 
     /**
@@ -55,11 +56,11 @@ class DiaryController extends FOSRestController
         ));
     }
 
-    private function renderDiary(Diary $diary)
+    private function renderDiary(Request $request, Diary $diary)
     {
         $view = $this->view($diary)
             ->setTemplateVar('diary');
-        if ($this->getRequest()->get('fragment') || $this->getRequest()->isXmlHttpRequest()) {
+        if ($request->get('fragment') || $request->isXmlHttpRequest()) {
             $view->setTemplate('ActsCamdramBundle:Diary:fragment.html.twig');
         } else {
             $view->setTemplate('ActsCamdramBundle:Diary:index.html.twig');
@@ -68,24 +69,24 @@ class DiaryController extends FOSRestController
         return $view;
     }
 
-    public function yearAction($year)
+    public function yearAction(Request $request, $year)
     {
         $start_date = new \DateTime($year.'-01-01');
 
-        return $this->dateAction($start_date);
+        return $this->dateAction($request, $start_date);
     }
 
-    public function periodAction($year, $period)
+    public function periodAction(Request $request, $year, $period)
     {
         $period = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')->getBySlugAndYear($period, $year);
         if ($period) {
-            return $this->dateAction($period->getStartAt());
+            return $this->dateAction($request, $period->getStartAt());
         } else {
             throw $this->createNotFoundException('Invalid time period specified');
         }
     }
 
-    public function weekAction($year, $period, $week)
+    public function weekAction(Request $request, $year, $period, $week)
     {
         if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/', $week)) {
             return $this->rangeAction($week);
@@ -95,7 +96,7 @@ class DiaryController extends FOSRestController
 
         $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
         if ($week) {
-            return $this->dateAction($week->getStartAt());
+            return $this->dateAction($request, $week->getStartAt());
         } else {
             throw $this->createNotFoundException('Invalid week specified');
         }
@@ -104,11 +105,12 @@ class DiaryController extends FOSRestController
     /**
      * Renders a single week.
      *
+     * @param Request $request
      * @param $date \DateTime Start date of the week to be rendered
      *
      * @return \Acts\DiaryBundle\Diary\Diary
      */
-    public function singleWeekAction($date)
+    public function singleWeekAction(Request $request, $date)
     {
         $week_manager = $this->get('acts.camdram.week_manager');
         $start_date = $week_manager->previousSunday(new \DateTime($date));
@@ -123,20 +125,20 @@ class DiaryController extends FOSRestController
         $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
         $diary->addEvents($events);
 
-        return $this->renderDiary($diary);
+        return $this->renderDiary($request, $diary);
     }
 
-    public function dateAction($start)
+    public function dateAction(Request $request, $start)
     {
         if (is_string($start)) {
             $start = new \DateTime($start);
         }
 
-        if ($this->getRequest()->query->has('end')) {
-            $end = new \DateTime($this->getRequest()->query->get('end'));
-        } elseif ($this->getRequest()->query->has('length')) {
+        if ($request->query->has('end')) {
+            $end = new \DateTime($request->query->get('end'));
+        } elseif ($request->query->has('length')) {
             $end = clone $start;
-            $end->modify($this->getRequest()->query->get('length'));
+            $end->modify($request->query->get('length'));
         } else {
             $end = clone $start;
             $end->modify('+8 weeks');
@@ -161,6 +163,6 @@ class DiaryController extends FOSRestController
         $week_manager = $this->get('acts.camdram.week_manager');
         $diary->setDateRange($week_manager->previousSunday($start), $week_manager->nextSunday($end));
 
-        return $this->renderDiary($diary);
+        return $this->renderDiary($request, $diary);
     }
 }

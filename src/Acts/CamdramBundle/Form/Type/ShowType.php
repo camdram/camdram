@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class ShowType
@@ -16,11 +16,11 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ShowType extends AbstractType
 {
-    private $securityContext;
+    private $authorizationChecker;
 
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -67,7 +67,7 @@ class ShowType extends AbstractType
                 $disabled = $show
                     && $show->getId() !== null
                     && $show->getSociety() !== null
-                    && !$this->securityContext->isGranted('ROLE_ADMIN')
+                    && !$this->authorizationChecker->isGranted('ROLE_ADMIN')
                     ;
 
                 $form->add('society', 'entity_search', array(

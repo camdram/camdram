@@ -10,7 +10,7 @@ use Acts\CamdramSecurityBundle\Form\Type\ForgottenPasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ResetPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Security;
 use Acts\CamdramSecurityBundle\Form\Type\RegistrationType;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
@@ -30,12 +30,12 @@ class DefaultController extends Controller
     {
         $session = $this->getRequest()->getSession();
 
-        $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-        $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        $error = $session->get(Security::AUTHENTICATION_ERROR);
+        $session->remove(Security::AUTHENTICATION_ERROR);
 
-        if ($session->get(SecurityContext::LAST_USERNAME)) {
-            $last_email = $session->get(SecurityContext::LAST_USERNAME);
-            $session->remove(SecurityContext::LAST_USERNAME);
+        if ($session->get(Security::LAST_USERNAME)) {
+            $last_email = $session->get(Security::LAST_USERNAME);
+            $session->remove(Security::LAST_USERNAME);
         } elseif ($this->getUser() instanceof User) {
             $last_email = $this->getUser()->getEmail();
         } elseif ($this->getUser() instanceof ExternalUser && $this->getUser()->getUser()) {
