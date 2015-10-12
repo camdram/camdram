@@ -26,12 +26,12 @@ class CamdramSecurityExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'camdram_security_services' => new \Twig_Function_Method($this, 'getServices'),
-            'acl_entries' => new \Twig_Function_Method($this, 'getAclEntries'),
-            'is_granted' => new \Twig_Function_Method($this, 'isGranted'),
-            'is_owner' => new \Twig_Function_Method($this, 'isOwner'),
-            'has_role' => new \Twig_Function_Method($this, 'hasRole'),
-            'has_owners' => new \Twig_Function_Method($this, 'hasOwners')
+             new \Twig_SimpleFunction('camdram_security_services', [$this, 'getServices']),
+             new \Twig_SimpleFunction('acl_entries', [$this, 'getAclEntries']),
+             new \Twig_SimpleFunction('is_granted', [$this, 'isGranted']),
+             new \Twig_SimpleFunction('is_owner', [$this, 'isOwner']),
+             new \Twig_SimpleFunction('has_role', [$this, 'hasRole']),
+             new \Twig_SimpleFunction('has_owners', [$this, 'hasOwners'])
         );
     }
 

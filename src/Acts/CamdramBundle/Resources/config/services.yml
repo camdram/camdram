@@ -134,12 +134,6 @@ services:
         class: Acts\CamdramBundle\Service\WeekManager
         arguments: [@doctrine.orm.entity_manager]
 
-    acts.camdram.phpcr.initializer:
-        class: Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer
-        arguments: [ ["/cms/pages", "/cms/routes"], ]
-        tags:
-            - { name: doctrine_phpcr.initializer }
-
     acts.camdram.contact_entity_service:
         class: Acts\CamdramBundle\Service\ContactEntityService
         arguments: [@mailer, @camdram.security.acl.provider]

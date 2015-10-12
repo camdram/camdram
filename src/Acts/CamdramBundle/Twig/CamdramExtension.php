@@ -30,19 +30,19 @@ class CamdramExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'camdram_markdown' => new \Twig_Filter_Method($this, 'camdramMarkdown', array('is_safe' => array('html'))),
-            'strip_camdram_markdown' => new \Twig_Filter_Method($this, 'stripCamdramMarkdown'),
-            'detect_links' => new \Twig_Filter_Method($this, 'detectLinks', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            'strip_new_lines' => new \Twig_Filter_Method($this, 'stripNewLines'),
-            'truncate' => new \Twig_Filter_Method($this, 'truncate', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            'plural' => new \Twig_Filter_Method($this, 'pluralize'),
+            new \Twig_SimpleFilter('camdram_markdown', [$this, 'camdramMarkdown'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('strip_camdram_markdown', [$this, 'stripCamdramMarkdown']),
+            new \Twig_SimpleFilter('detect_links', [$this, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig_SimpleFilter('strip_new_lines', [$this, 'stripNewLines']),
+            new \Twig_SimpleFilter('truncate', [$this, 'truncate'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig_SimpleFilter('plural', [$this, 'pluralize']),
         );
     }
 
     public function getFunctions()
     {
         return array(
-            'requires_article' => new \Twig_Function_Method($this, 'requiresArticle')
+            new \Twig_SimpleFunction('requires_article', [$this, 'requiresArticle'])
         );
     }
 
