@@ -60,7 +60,7 @@ class ModerationManager
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $show_repo->findUnauthorised();
         } elseif ($this->authorizationChecker->isGranted('ROLE_USER')) {
-            $ids = $this->aclProvider->getOrganisationIdsByUser($this->authorizationChecker->getToken()->getUser());
+            $ids = $this->aclProvider->getOrganisationIdsByUser($this->tokenStorage->getToken()->getUser());
             $orgs = $this->entityManager->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
             $entities = array();
             foreach ($orgs as $org) {
