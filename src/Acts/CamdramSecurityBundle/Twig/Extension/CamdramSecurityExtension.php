@@ -1,6 +1,8 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Twig\Extension;
 
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Acts\CamdramSecurityBundle\Security\SecurityUtils;
 
 class CamdramSecurityExtension extends \Twig_Extension
@@ -24,11 +26,12 @@ class CamdramSecurityExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'camdram_security_services' => new \Twig_Function_Method($this, 'getServices'),
-            'acl_entries' => new \Twig_Function_Method($this, 'getAclEntries'),
-            'is_granted' => new \Twig_Function_Method($this, 'isGranted'),
-            'is_owner' => new \Twig_Function_Method($this, 'isOwner'),
-            'has_role' => new \Twig_Function_Method($this, 'hasRole'),
+             new \Twig_SimpleFunction('camdram_security_services', [$this, 'getServices']),
+             new \Twig_SimpleFunction('acl_entries', [$this, 'getAclEntries']),
+             new \Twig_SimpleFunction('is_granted', [$this, 'isGranted']),
+             new \Twig_SimpleFunction('is_owner', [$this, 'isOwner']),
+             new \Twig_SimpleFunction('has_role', [$this, 'hasRole']),
+             new \Twig_SimpleFunction('has_owners', [$this, 'hasOwners'])
         );
     }
 
@@ -40,12 +43,12 @@ class CamdramSecurityExtension extends \Twig_Extension
         return $this->utils->getServices();
     }
 
-    public function getAclEntries($role, $class = NULL)
+    public function getAclEntries($role, $class = null)
     {
         return $this->utils->getAclEntries($role, $class);
     }
 
-    public function isGranted($attributes, $object=null, $fully_authenticated = false)
+    public function isGranted($attributes, $object = null, $fully_authenticated = false)
     {
         return $this->utils->isGranted($attributes, $object, $fully_authenticated);
     }
@@ -58,6 +61,11 @@ class CamdramSecurityExtension extends \Twig_Extension
     public function hasRole($role)
     {
         return $this->utils->hasRole($role);
+    }
+
+    public function hasOwners(OwnableInterface $object)
+    {
+        return $this->utils->hasOwners($object);
     }
 
     /**

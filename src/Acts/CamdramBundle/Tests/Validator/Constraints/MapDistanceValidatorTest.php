@@ -8,7 +8,6 @@ use Acts\CamdramBundle\Validator\Constraints\MapDistanceValidator;
 
 class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -66,5 +65,4 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->validator->validate($value, $this->constraint);
     }
-
 }

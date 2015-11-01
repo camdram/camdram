@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Test;
 
 use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;

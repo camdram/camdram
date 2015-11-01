@@ -11,7 +11,6 @@ use Knp\Menu\NodeInterface;
  */
 class Page extends ContentTrait implements RouteReferrersReadInterface, NodeInterface
 {
-
     /**
      * @PHPCR\Children()
      */
@@ -39,4 +38,5 @@ class Page extends ContentTrait implements RouteReferrersReadInterface, NodeInte
             'linkAttributes' => array(),
             'labelAttributes' => array(),
         );
-    }}
+    }
+}

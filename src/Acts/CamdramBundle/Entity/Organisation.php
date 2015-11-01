@@ -24,7 +24,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 abstract class Organisation implements SearchableInterface, OwnableInterface
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -103,7 +103,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     private $college;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="affiliate", type="boolean", nullable=false)
      * @Gedmo\Versioned
@@ -148,6 +148,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set short_name
      *
      * @param string $shortName
+     *
      * @return Society
      */
     public function setShortName($shortName)
@@ -171,6 +172,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set college
      *
      * @param string $college
+     *
      * @return Society
      */
     public function setCollege($college)
@@ -193,7 +195,8 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Set affiliate
      *
-     * @param boolean $affiliate
+     * @param bool $affiliate
+     *
      * @return Society
      */
     public function setAffiliate($affiliate)
@@ -206,7 +209,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Get affiliate
      *
-     * @return boolean
+     * @return bool
      */
     public function getAffiliate()
     {
@@ -217,6 +220,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set logo_url
      *
      * @param string $logoUrl
+     *
      * @return Society
      */
     public function setLogoUrl($logoUrl)
@@ -240,6 +244,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set expires
      *
      * @param \DateTime $expires
+     *
      * @return Society
      */
     public function setExpires($expires)
@@ -262,7 +267,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -273,6 +278,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set name
      *
      * @param string $name
+     *
      * @return Organisation
      */
     public function setName($name)
@@ -296,6 +302,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set description
      *
      * @param string $description
+     *
      * @return Organisation
      */
     public function setDescription($description)
@@ -319,6 +326,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set facebook_id
      *
      * @param string $facebookId
+     *
      * @return Organisation
      */
     public function setFacebookId($facebookId)
@@ -342,6 +350,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set twitter_id
      *
      * @param string $twitterId
+     *
      * @return Organisation
      */
     public function setTwitterId($twitterId)
@@ -404,6 +413,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set image
      *
      * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     *
      * @return Organisation
      */
     public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
@@ -427,6 +437,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set slug
      *
      * @param string $slug
+     *
      * @return Organisation
      */
     public function setSlug($slug)
@@ -455,6 +466,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Add news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
+     *
      * @return Organisation
      */
     public function addNew(\Acts\CamdramBundle\Entity\News $news)
@@ -496,6 +508,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Add news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
+     *
      * @return Organisation
      */
     public function addNews(\Acts\CamdramBundle\Entity\News $news)
@@ -519,6 +532,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Add applications
      *
      * @param \Acts\CamdramBundle\Entity\Application $applications
+     *
      * @return Organisation
      */
     public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)

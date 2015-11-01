@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramLegacyBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,7 +12,6 @@ use Acts\CamdramLegacyBundle\Entity\ApiShow;
  * Class LegacyApiController
  *
  * Very basic controller
- *
  */
 class LegacyApiController extends Controller
 {
@@ -20,16 +20,15 @@ class LegacyApiController extends Controller
         $showid = $request->query->get('showid');
         $type = $request->query->get('type');
 
-        If($type != 'json')
-        {
+        if ($type != 'json') {
             $type = 'xml';
         }
-        $repo= $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
+        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
         $show = $repo->findOneBySlug($showid);
 
         if (!$show) {
-            if(is_numeric($showid)) {
-               $show = $repo->find($showid);
+            if (is_numeric($showid)) {
+                $show = $repo->find($showid);
             }
         }
         if (!$show) {
@@ -41,7 +40,7 @@ class LegacyApiController extends Controller
         $serializer = $this->get('jms_serializer');
         $response = new Response($serializer->serialize($apiShow, $type));
 
-        $response->headers->set('content-type',$request->getMimeType($type));
+        $response->headers->set('content-type', $request->getMimeType($type));
 
         return $response;
     }

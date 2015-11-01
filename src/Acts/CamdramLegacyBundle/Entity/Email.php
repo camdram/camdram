@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Email
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="emailid", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class Email
     private $email_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="userid", type="integer", nullable=true)
      */
@@ -46,7 +46,7 @@ class Email
     private $title;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="public_add", type="boolean", nullable=false)
      */
@@ -60,7 +60,7 @@ class Email
     private $summary;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="from", type="integer", nullable=false)
      */
@@ -74,17 +74,16 @@ class Email
     private $list_id;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="deleteonsend", type="boolean", nullable=false)
      */
     private $delete_on_send;
 
-
     /**
      * Get email_id
      *
-     * @return integer
+     * @return int
      */
     public function getEmailId()
     {
@@ -94,7 +93,8 @@ class Email
     /**
      * Set user_id
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return Email
      */
     public function setUserId($userId)
@@ -107,7 +107,7 @@ class Email
     /**
      * Get user_id
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -118,6 +118,7 @@ class Email
      * Set title
      *
      * @param string $title
+     *
      * @return Email
      */
     public function setTitle($title)
@@ -140,7 +141,8 @@ class Email
     /**
      * Set public_add
      *
-     * @param boolean $publicAdd
+     * @param bool $publicAdd
+     *
      * @return Email
      */
     public function setPublicAdd($publicAdd)
@@ -153,7 +155,7 @@ class Email
     /**
      * Get public_add
      *
-     * @return boolean
+     * @return bool
      */
     public function getPublicAdd()
     {
@@ -164,6 +166,7 @@ class Email
      * Set summary
      *
      * @param string $summary
+     *
      * @return Email
      */
     public function setSummary($summary)
@@ -186,7 +189,8 @@ class Email
     /**
      * Set from
      *
-     * @param integer $from
+     * @param int $from
+     *
      * @return Email
      */
     public function setFrom($from)
@@ -199,7 +203,7 @@ class Email
     /**
      * Get from
      *
-     * @return integer
+     * @return int
      */
     public function getFrom()
     {
@@ -210,6 +214,7 @@ class Email
      * Set list_id
      *
      * @param string $listId
+     *
      * @return Email
      */
     public function setListId($listId)
@@ -232,7 +237,8 @@ class Email
     /**
      * Set delete_on_send
      *
-     * @param boolean $deleteOnSend
+     * @param bool $deleteOnSend
+     *
      * @return Email
      */
     public function setDeleteOnSend($deleteOnSend)
@@ -245,7 +251,7 @@ class Email
     /**
      * Get delete_on_send
      *
-     * @return boolean
+     * @return bool
      */
     public function getDeleteOnSend()
     {
@@ -256,6 +262,7 @@ class Email
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return Email
      */
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)

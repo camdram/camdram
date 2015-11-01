@@ -14,11 +14,11 @@ class EmailBounce
 {
     public function __construct()
     {
-        $this->receivedAt = new \DateTime;
+        $this->receivedAt = new \DateTime();
     }
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -61,21 +61,21 @@ class EmailBounce
      */
     private $receivedAt;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-    
-    /**
+
+/**
      * Set fromHeader
      *
      * @param string $fromHeader
+     *
      * @return EmailBounce
      */
     public function setFromHeader($fromHeader)
@@ -88,7 +88,7 @@ class EmailBounce
     /**
      * Get fromHeader
      *
-     * @return string 
+     * @return string
      */
     public function getFromHeader()
     {
@@ -99,6 +99,7 @@ class EmailBounce
      * Set toHeader
      *
      * @param string $toHeader
+     *
      * @return EmailBounce
      */
     public function setToHeader($toHeader)
@@ -111,7 +112,7 @@ class EmailBounce
     /**
      * Get toHeader
      *
-     * @return string 
+     * @return string
      */
     public function getToHeader()
     {
@@ -122,6 +123,7 @@ class EmailBounce
      * Set subject
      *
      * @param string $subject
+     *
      * @return EmailBounce
      */
     public function setSubject($subject)
@@ -134,7 +136,7 @@ class EmailBounce
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -145,6 +147,7 @@ class EmailBounce
      * Set body
      *
      * @param string $body
+     *
      * @return EmailBounce
      */
     public function setBody($body)
@@ -157,7 +160,7 @@ class EmailBounce
     /**
      * Get body
      *
-     * @return string 
+     * @return string
      */
     public function getBody()
     {
@@ -168,6 +171,7 @@ class EmailBounce
      * Set receivedAt
      *
      * @param \DateTime $receivedAt
+     *
      * @return EmailBounce
      */
     public function setReceivedAt($receivedAt)
@@ -180,7 +184,7 @@ class EmailBounce
     /**
      * Get receivedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getReceivedAt()
     {

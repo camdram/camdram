@@ -9,14 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * The page table is deprecated in Camdram 2.0, as page information is stored
  * using the PHPCR. This class only defines 'getters' as a consequence.
-
+ 
  * @ORM\Table(name="acts_pages")
  * @ORM\Entity(repositoryClass="Acts\CamdramLegacyBundle\Entity\PageRepository")
  */
 class Page
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -32,14 +32,14 @@ class Page
     private $title;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="parentid", type="integer", nullable=false)
      */
     private $parent_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="sortcode", type="integer", nullable=false)
      */
@@ -53,14 +53,14 @@ class Page
     private $full_title;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="secure", type="boolean", nullable=false)
      */
     private $secure;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="micro", type="boolean", nullable=false)
      */
@@ -74,7 +74,7 @@ class Page
     private $help;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="ghost", type="boolean", nullable=false)
      */
@@ -88,7 +88,7 @@ class Page
     private $mode;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="allowsubpage", type="boolean", nullable=false)
      */
@@ -102,7 +102,7 @@ class Page
     private $inter_title;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="knowledgebase", type="boolean", nullable=false)
      */
@@ -130,7 +130,7 @@ class Page
     private $use_page;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="kbid", type="integer", nullable=false)
      */
@@ -144,21 +144,21 @@ class Page
     private $rss_feeds;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="locked", type="boolean", nullable=false)
      */
     private $locked;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="virtual", type="boolean", nullable=false)
      */
     private $virtual;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="param_parser", type="boolean", nullable=false)
      */
@@ -179,17 +179,16 @@ class Page
     private $subpage_template;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="searchable", type="boolean", nullable=false)
      */
     private $searchable;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -209,7 +208,7 @@ class Page
     /**
      * Get parent_id
      *
-     * @return integer
+     * @return int
      */
     public function getParentId()
     {
@@ -219,7 +218,7 @@ class Page
     /**
      * Get sort_code
      *
-     * @return integer
+     * @return int
      */
     public function getSortCode()
     {
@@ -239,7 +238,7 @@ class Page
     /**
      * Get secure
      *
-     * @return boolean
+     * @return bool
      */
     public function getSecure()
     {
@@ -249,7 +248,7 @@ class Page
     /**
      * Get micro
      *
-     * @return boolean
+     * @return bool
      */
     public function getMicro()
     {
@@ -269,7 +268,7 @@ class Page
     /**
      * Get ghost
      *
-     * @return boolean
+     * @return bool
      */
     public function getGhost()
     {
@@ -289,7 +288,7 @@ class Page
     /**
      * Get allow_sub_page
      *
-     * @return integer
+     * @return int
      */
     public function getAllowSubPage()
     {
@@ -309,7 +308,7 @@ class Page
     /**
      * Get knowledge_base
      *
-     * @return boolean
+     * @return bool
      */
     public function getKnowledgeBase()
     {
@@ -349,7 +348,7 @@ class Page
     /**
      * Get kb_id
      *
-     * @return integer
+     * @return int
      */
     public function getKbId()
     {
@@ -369,7 +368,7 @@ class Page
     /**
      * Get locked
      *
-     * @return boolean
+     * @return bool
      */
     public function getLocked()
     {
@@ -379,7 +378,7 @@ class Page
     /**
      * Get virtual
      *
-     * @return boolean
+     * @return bool
      */
     public function getVirtual()
     {
@@ -389,7 +388,7 @@ class Page
     /**
      * Get param_parser
      *
-     * @return boolean
+     * @return bool
      */
     public function getParamParser()
     {
@@ -419,7 +418,7 @@ class Page
     /**
      * Get searchable
      *
-     * @return boolean
+     * @return bool
      */
     public function getSearchable()
     {
@@ -430,6 +429,7 @@ class Page
      * Set title
      *
      * @param string $title
+     *
      * @return Page
      */
     public function setTitle($title)
@@ -442,7 +442,8 @@ class Page
     /**
      * Set parent_id
      *
-     * @param integer $parentId
+     * @param int $parentId
+     *
      * @return Page
      */
     public function setParentId($parentId)
@@ -455,7 +456,8 @@ class Page
     /**
      * Set sort_code
      *
-     * @param integer $sortCode
+     * @param int $sortCode
+     *
      * @return Page
      */
     public function setSortCode($sortCode)
@@ -469,6 +471,7 @@ class Page
      * Set full_title
      *
      * @param string $fullTitle
+     *
      * @return Page
      */
     public function setFullTitle($fullTitle)
@@ -481,7 +484,8 @@ class Page
     /**
      * Set secure
      *
-     * @param boolean $secure
+     * @param bool $secure
+     *
      * @return Page
      */
     public function setSecure($secure)
@@ -494,7 +498,8 @@ class Page
     /**
      * Set micro
      *
-     * @param boolean $micro
+     * @param bool $micro
+     *
      * @return Page
      */
     public function setMicro($micro)
@@ -508,6 +513,7 @@ class Page
      * Set help
      *
      * @param string $help
+     *
      * @return Page
      */
     public function setHelp($help)
@@ -520,7 +526,8 @@ class Page
     /**
      * Set ghost
      *
-     * @param boolean $ghost
+     * @param bool $ghost
+     *
      * @return Page
      */
     public function setGhost($ghost)
@@ -534,6 +541,7 @@ class Page
      * Set mode
      *
      * @param string $mode
+     *
      * @return Page
      */
     public function setMode($mode)
@@ -546,7 +554,8 @@ class Page
     /**
      * Set allow_sub_page
      *
-     * @param boolean $allowSubPage
+     * @param bool $allowSubPage
+     *
      * @return Page
      */
     public function setAllowSubPage($allowSubPage)
@@ -560,6 +569,7 @@ class Page
      * Set inter_title
      *
      * @param string $interTitle
+     *
      * @return Page
      */
     public function setInterTitle($interTitle)
@@ -572,7 +582,8 @@ class Page
     /**
      * Set knowledge_base
      *
-     * @param boolean $knowledgeBase
+     * @param bool $knowledgeBase
+     *
      * @return Page
      */
     public function setKnowledgeBase($knowledgeBase)
@@ -586,6 +597,7 @@ class Page
      * Set get_vars
      *
      * @param string $getVars
+     *
      * @return Page
      */
     public function setGetVars($getVars)
@@ -599,6 +611,7 @@ class Page
      * Set post_vars
      *
      * @param string $postVars
+     *
      * @return Page
      */
     public function setPostVars($postVars)
@@ -612,6 +625,7 @@ class Page
      * Set use_page
      *
      * @param string $usePage
+     *
      * @return Page
      */
     public function setUsePage($usePage)
@@ -624,7 +638,8 @@ class Page
     /**
      * Set kb_id
      *
-     * @param integer $kbId
+     * @param int $kbId
+     *
      * @return Page
      */
     public function setKbId($kbId)
@@ -638,6 +653,7 @@ class Page
      * Set rss_feeds
      *
      * @param string $rssFeeds
+     *
      * @return Page
      */
     public function setRssFeeds($rssFeeds)
@@ -650,7 +666,8 @@ class Page
     /**
      * Set locked
      *
-     * @param boolean $locked
+     * @param bool $locked
+     *
      * @return Page
      */
     public function setLocked($locked)
@@ -663,7 +680,8 @@ class Page
     /**
      * Set virtual
      *
-     * @param boolean $virtual
+     * @param bool $virtual
+     *
      * @return Page
      */
     public function setVirtual($virtual)
@@ -676,7 +694,8 @@ class Page
     /**
      * Set param_parser
      *
-     * @param boolean $paramParser
+     * @param bool $paramParser
+     *
      * @return Page
      */
     public function setParamParser($paramParser)
@@ -690,6 +709,7 @@ class Page
      * Set access_php
      *
      * @param string $accessPhp
+     *
      * @return Page
      */
     public function setAccessPhp($accessPhp)
@@ -703,6 +723,7 @@ class Page
      * Set subpage_template
      *
      * @param string $subpageTemplate
+     *
      * @return Page
      */
     public function setSubpageTemplate($subpageTemplate)
@@ -715,7 +736,8 @@ class Page
     /**
      * Set searchable
      *
-     * @param boolean $searchable
+     * @param bool $searchable
+     *
      * @return Page
      */
     public function setSearchable($searchable)

@@ -1,0 +1,21 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Venue: {{ entity.name }} - Contact{% endblock %}
+
+{% block body %}
+
+    {% set current_subnav_id = 'venue_contact' %}
+
+    <div class="row">
+        <h2><a href="{{ path('get_venue', {identifier: entity.slug}) }}">{{ entity.name }}</a></h2>
+
+        <h3>Contact Venue</h3>
+
+        <p>Your message has been sent to the venue administrators.</p>
+
+        <p>
+            <a href="{{ path('get_venue', {identifier: entity.slug}) }}" class="button small">Return to the venue</a>
+        </p>
+    </div>
+
+{% endblock %}

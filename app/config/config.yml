@@ -1,7 +1,6 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: routing_auto.yml }
 
 framework:
     esi: { enabled: true }
@@ -48,11 +47,9 @@ monolog:
 # Doctrine Configuration
 doctrine:
     dbal:
-        # Use separate databases for the ORM and ODM
         default_connection: default
         connections:
             default:
-                # The ORM db connection, e.g. non-Infobase content
                 driver:   "%database_driver%"
                 host:     "%database_host%"
                 port:     "%database_port%"
@@ -62,18 +59,6 @@ doctrine:
                 path:     "%kernel.root_dir%/data/orm.db"
                 charset:  UTF8
                 schema_filter: ~^(?!phpcr_)~
-                mapping_types:
-                    enum:       string
-            odm:
-                # ODM db connection, e.g. Infobase conent
-                driver:   "%database_driver%"
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   "%database_name%"
-                user:     "%database_user%"
-                password: "%database_pass%"
-                path:     "%kernel.root_dir%/data/odm.db"
-                charset:  UTF8
                 mapping_types:
                     enum:       string
    
@@ -88,36 +73,6 @@ doctrine:
                 dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
                 alias: GedmoLoggable
                 is_bundle: false
-
-
-doctrine_phpcr:
-    session:
-        backend: {type: doctrinedbal, connection: odm}
-        workspace: default
-    # enable the ODM layer
-    odm:
-        auto_mapping: true
-        auto_generate_proxy_classes: %kernel.debug%
-
-sonata_block:
-    default_contexts: [cms]
-
-# Enable the DynamicRouter from the RoutingBundle
-cmf_routing:
-    chain:
-        routers_by_id:
-            cmf_routing.dynamic_router: 20
-            router.default: 100
-    dynamic:
-        enabled: true
-        persistence:
-            phpcr:
-                route_basepath: /cms/routes/page
-        controllers_by_class:
-            Acts\CamdramBundle\Document\Page: Acts\CamdramBundle\Controller\DefaultPageController::pageAction
-
-knp_menu:
-    twig: true
 
 # Swiftmailer Configuration
 swiftmailer:

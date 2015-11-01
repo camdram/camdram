@@ -1,13 +1,10 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Acts\CamdramSecurityBundle\Entity\UserIdentity;
 
 class UsersPeopleMapCommand extends ContainerAwareCommand
 {
@@ -59,7 +56,7 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
             //We're very certain that these are the same person
             $this->linkUserAndPerson($user, $person, $output);
         } elseif ($score > 70) {
-            if ($dialog->askConfirmation($output,$this->buildQuestion($user, $person, $score))) {
+            if ($dialog->askConfirmation($output, $this->buildQuestion($user, $person, $score))) {
                 $this->linkUserAndPerson($user, $person, $output);
                 $utils->registerEquivalence($user->getName(), $person->getName(), true);
             } else {
@@ -86,10 +83,10 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
             } else {
                 $question .= $role->getRole().', ';
             }
-
         }
 
         $question .= "\r\n  ?  ";
+
         return $question;
     }
 
@@ -98,6 +95,4 @@ class UsersPeopleMapCommand extends ContainerAwareCommand
         $user->setPerson($person);
         $output->writeln('Linked '.$user->getName().' -> '.$person->getName());
     }
-
-
 }

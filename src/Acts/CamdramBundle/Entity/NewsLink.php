@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class NewsLink
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,13 +22,12 @@ class NewsLink
     private $id;
 
     /** @var News
-     *
      * @ORM\ManyToOne(targetEntity="News", inversedBy="links")
      */
     private $news;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
@@ -72,7 +71,7 @@ class NewsLink
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -83,6 +82,7 @@ class NewsLink
      * Set name
      *
      * @param string $name
+     *
      * @return NewsLink
      */
     public function setName($name)
@@ -106,6 +106,7 @@ class NewsLink
      * Set link
      *
      * @param string $link
+     *
      * @return NewsLink
      */
     public function setLink($link)
@@ -129,6 +130,7 @@ class NewsLink
      * Set description
      *
      * @param string $description
+     *
      * @return NewsLink
      */
     public function setDescription($description)
@@ -152,6 +154,7 @@ class NewsLink
      * Set picture
      *
      * @param string $picture
+     *
      * @return NewsLink
      */
     public function setPicture($picture)
@@ -175,6 +178,7 @@ class NewsLink
      * Set news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
+     *
      * @return NewsLink
      */
     public function setNews(\Acts\CamdramBundle\Entity\News $news = null)
@@ -198,6 +202,7 @@ class NewsLink
      * Set source
      *
      * @param string $source
+     *
      * @return NewsLink
      */
     public function setSource($source)
@@ -221,6 +226,7 @@ class NewsLink
      * Set media_type
      *
      * @param string $mediaType
+     *
      * @return NewsLink
      */
     public function setMediaType($mediaType)
@@ -239,5 +245,4 @@ class NewsLink
     {
         return $this->media_type;
     }
-
 }

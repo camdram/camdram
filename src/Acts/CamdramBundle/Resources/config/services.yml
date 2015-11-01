@@ -97,7 +97,8 @@ services:
             - @doctrine.orm.entity_manager
             - @acts.camdram.email_dispatcher
             - @camdram.security.acl.provider
-            - @security.context
+            - @security.authorization_checker
+            - @security.token_storage
             - @monolog.logger.camdram
 
     acts.camdram.listener.doctrine_event_logger:
@@ -134,19 +135,6 @@ services:
         class: Acts\CamdramBundle\Service\WeekManager
         arguments: [@doctrine.orm.entity_manager]
 
-    acts.camdram.phpcr.initializer:
-        class: Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer
-        arguments: [ ["/cms/pages", "/cms/routes"], ]
-        tags:
-            - { name: doctrine_phpcr.initializer }
-
-    acts.camdram.menu_provider:
-        class: Symfony\Cmf\Bundle\MenuBundle\Provider\PhpcrMenuProvider
-        arguments:
-            - '@cmf_menu.factory'
-            - '@doctrine_phpcr'
-            - /cms/pages
-        tags:
-            - { name: knp_menu.provider }
-            - { name: cmf_request_aware }
-
+    acts.camdram.contact_entity_service:
+        class: Acts\CamdramBundle\Service\ContactEntityService
+        arguments: [@mailer, @camdram.security.acl.provider]

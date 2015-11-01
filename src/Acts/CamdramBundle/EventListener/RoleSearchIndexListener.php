@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Role;

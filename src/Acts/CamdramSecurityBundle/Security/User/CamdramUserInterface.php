@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -37,6 +38,7 @@ interface CamdramUserInterface extends UserInterface
 
     /**
      * @param \DateTime|null $last_login_at
+     *
      * @return CamdramUserInterface
      */
     public function setLastLoginAt($last_login_at);

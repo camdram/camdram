@@ -4,7 +4,6 @@ namespace Acts\CamdramLegacyBundle\Entity;
 
 use JMS\Serializer\Annotation\XmlRoot;
 use JMS\Serializer\Annotation\XmlElement;
-use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\VirtualProperty;
 
@@ -32,16 +31,15 @@ class ApiRole
 
     public function __construct($role, $show, $router)
     {
-    $this->role = $role;
-    $this->show = $show;
-    $this->router  = $router;
+        $this->role = $role;
+        $this->show = $show;
+        $this->router  = $router;
     }
 
     /**
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getName()
     {
         return $this->role->getPerson()->getName();
@@ -51,7 +49,6 @@ class ApiRole
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getRole()
     {
         return $this->role->getRole();
@@ -61,10 +58,8 @@ class ApiRole
      * @VirtualProperty
      * @XmlElement(cdata=false)
      */
-
     public function getUrl()
     {
-    return $this->router->generate('get_person', array('identifier' => $this->role->getPerson()->getSlug(), 'fromShow' => $this->show->getSlug()), true);
+        return $this->router->generate('get_person', array('identifier' => $this->role->getPerson()->getSlug(), 'fromShow' => $this->show->getSlug()), true);
     }
-
 }

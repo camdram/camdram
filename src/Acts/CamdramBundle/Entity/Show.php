@@ -5,7 +5,6 @@ namespace Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Search\SearchableInterface;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -182,14 +181,14 @@ class Show implements SearchableInterface, OwnableInterface
     private $other_society = '';
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="techsend", type="boolean", nullable=false)
      */
     private $tech_send = false;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="actorsend", type="boolean", nullable=false)
      */
@@ -224,16 +223,16 @@ class Show implements SearchableInterface, OwnableInterface
     private $venue;
 
     /**
-     * @var integer
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
-     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="authorised_shows")
+     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true)
      * @Gedmo\Versioned
      */
     private $authorised_by;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="entered", type="boolean", nullable=false)
      */
@@ -267,7 +266,7 @@ class Show implements SearchableInterface, OwnableInterface
     private $booking_code;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\OneToOne(targetEntity="Acts\CamdramLegacyBundle\Entity\ShowRef", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
@@ -303,7 +302,6 @@ class Show implements SearchableInterface, OwnableInterface
     private $applications;
 
     /**
-     *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
      * @ORM\OrderBy({"type" = "ASC", "order" = "ASC"})
      * @Api\Link(route="get_show_roles", params={"identifier": "object.getSlug()"})
@@ -379,6 +377,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set dates
      *
      * @param string $dates
+     *
      * @return Show
      */
     public function setDates($dates)
@@ -402,6 +401,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set author
      *
      * @param string $author
+     *
      * @return Show
      */
     public function setAuthor($author)
@@ -425,6 +425,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set prices
      *
      * @param string $prices
+     *
      * @return Show
      */
     public function setPrices($prices)
@@ -448,6 +449,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set photo_url
      *
      * @param string $photoUrl
+     *
      * @return Show
      */
     public function setPhotoUrl($photoUrl)
@@ -467,12 +469,11 @@ class Show implements SearchableInterface, OwnableInterface
         return $this->photo_url;
     }
 
-
-
     /**
      * Set other_venue
      *
      * @param string $venueName
+     *
      * @return Show
      */
     public function setOtherVenue($venueName)
@@ -510,6 +511,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set exclude_date
      *
      * @param \DateTime $excludeDate
+     *
      * @return Show
      */
     public function setExcludeDate($excludeDate)
@@ -538,6 +540,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set other_society
      *
      * @param string $societyName
+     *
      * @return Show
      */
     public function setOtherSociety($societyName)
@@ -560,7 +563,8 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Set tech_send
      *
-     * @param boolean $techSend
+     * @param bool $techSend
+     *
      * @return Show
      */
     public function setTechSend($techSend)
@@ -573,7 +577,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get tech_send
      *
-     * @return boolean
+     * @return bool
      */
     public function getTechSend()
     {
@@ -583,7 +587,8 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Set actor_send
      *
-     * @param boolean $actorSend
+     * @param bool $actorSend
+     *
      * @return Show
      */
     public function setActorSend($actorSend)
@@ -596,7 +601,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get actor_send
      *
-     * @return boolean
+     * @return bool
      */
     public function getActorSend()
     {
@@ -607,6 +612,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set audextra
      *
      * @param string $audextra
+     *
      * @return Show
      */
     public function setAudextra($audextra)
@@ -629,7 +635,8 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Set entered
      *
-     * @param boolean $entered
+     * @param bool $entered
+     *
      * @return Show
      */
     public function setEntered($entered)
@@ -642,7 +649,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get entered
      *
-     * @return boolean
+     * @return bool
      */
     public function getEntered()
     {
@@ -653,6 +660,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set entry_expiry
      *
      * @param \DateTime $entryExpiry
+     *
      * @return Show
      */
     public function setEntryExpiry($entryExpiry)
@@ -676,6 +684,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set category
      *
      * @param string $category
+     *
      * @return Show
      */
     public function setCategory($category)
@@ -699,6 +708,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set booking_code
      *
      * @param string $bookingCode
+     *
      * @return Show
      */
     public function setBookingCode($bookingCode)
@@ -721,7 +731,8 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Set primary_ref
      *
-     * @param integer $primaryRef
+     * @param int $primaryRef
+     *
      * @return Show
      */
     public function setPrimaryRef($primaryRef)
@@ -734,7 +745,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get primary_ref
      *
-     * @return integer
+     * @return int
      */
     public function getPrimaryRef()
     {
@@ -745,6 +756,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set timestamp
      *
      * @param \DateTime $timestamp
+     *
      * @return Show
      */
     public function setTimestamp($timestamp)
@@ -768,6 +780,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set venue
      *
      * @param \Acts\CamdramBundle\Entity\Venue $venue
+     *
      * @return Show
      */
     public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
@@ -791,6 +804,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Add roles
      *
      * @param \Acts\CamdramBundle\Entity\Role $roles
+     *
      * @return Show
      */
     public function addRole(\Acts\CamdramBundle\Entity\Role $roles)
@@ -834,18 +848,20 @@ class Show implements SearchableInterface, OwnableInterface
         }
 
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("type", $type))
+            ->where(Criteria::expr()->eq('type', $type))
             ->orderBy(array('order' => 'ASC', 'id' => 'ASC'))
         ;
+
         return $this->getRoles()->matching($criteria);
     }
 
     public function getRolesByPerson(Person $person)
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("person", $person))
+            ->where(Criteria::expr()->eq('person', $person))
             ->orderBy(array('order' => 'ASC', 'id' => 'ASC'))
         ;
+
         return $this->getRoles()->matching($criteria);
     }
 
@@ -853,6 +869,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set society
      *
      * @param \Acts\CamdramBundle\Entity\Society $society
+     *
      * @return Show
      */
     public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
@@ -876,6 +893,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Add performances
      *
      * @param \Acts\CamdramBundle\Entity\Performance $performances
+     *
      * @return Show
      */
     public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performance)
@@ -887,6 +905,7 @@ class Show implements SearchableInterface, OwnableInterface
               $performance->setVenue($this->getVenue());
             } else {
                 $performance->setOtherVenue($this->getOtherVenue());
+
             }
         }
 
@@ -919,14 +938,15 @@ class Show implements SearchableInterface, OwnableInterface
     {
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->entry_expiry = new \DateTime;
-        $this->timestamp = new \DateTime;
+        $this->entry_expiry = new \DateTime();
+        $this->timestamp = new \DateTime();
     }
 
     /**
      * Set start_at
      *
      * @param \DateTime $startAt
+     *
      * @return Show
      */
     public function setStartAt($startAt)
@@ -950,6 +970,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set end_at
      *
      * @param \DateTime $endAt
+     *
      * @return Show
      */
     public function setEndAt($endAt)
@@ -995,15 +1016,22 @@ class Show implements SearchableInterface, OwnableInterface
 
     public function getMultiVenue()
     {
-        if ($this->multi_venue) return $this->multi_venue;
+        if ($this->multi_venue) {
+            return $this->multi_venue;
+        }
 
-        if (count($this->getPerformances()) == 0) return 'single';
+        if (count($this->getPerformances()) == 0) {
+            return 'single';
+        }
 
         $venue = null;
         $same = true;
         foreach ($this->getPerformances() as $performance) {
-            if ($performance->getVenue()) $cur_venue = $performance->getVenue()->getName();
-            else $cur_venue = $performance->getVenueName();
+            if ($performance->getVenue()) {
+                $cur_venue = $performance->getVenue()->getName();
+            } else {
+                $cur_venue = $performance->getVenueName();
+            }
             if ($venue == null) {
                 $venue = $cur_venue;
             } elseif ($venue != $cur_venue) {
@@ -1011,6 +1039,7 @@ class Show implements SearchableInterface, OwnableInterface
                 break;
             }
         }
+
         return $same ? 'single' : 'multi';
     }
 
@@ -1069,14 +1098,15 @@ class Show implements SearchableInterface, OwnableInterface
     public function getRank()
     {
         $rank = $this->getIndexDate();
+
         return $rank ? $rank->format('Ymd') : null;
     }
-
 
     /**
      * Set freebase_id
      *
      * @param string $freebaseId
+     *
      * @return Show
      */
     public function setFreebaseId($freebaseId)
@@ -1105,6 +1135,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Add techie_adverts
      *
      * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     *
      * @return Show
      */
     public function addTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
@@ -1133,7 +1164,7 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getActiveTechieAdvert()
     {
-        $now = new \DateTime;
+        $now = new \DateTime();
         $today = new \DateTime($now->format('Y-m-d'));
         $criteria = Criteria::create()
             ->where(Criteria::expr()->gt('expiry', $today))
@@ -1159,6 +1190,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Add auditions
      *
      * @param \Acts\CamdramBundle\Entity\Audition $auditions
+     *
      * @return Show
      */
     public function addAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
@@ -1203,9 +1235,8 @@ class Show implements SearchableInterface, OwnableInterface
     public function getAuditions()
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("display", 0))
+            ->where(Criteria::expr()->eq('display', 0))
             ->andWhere(Criteria::expr()->gte('date', new \DateTime()));
-
 
         return $this->auditions->matching($criteria);
     }
@@ -1242,6 +1273,7 @@ class Show implements SearchableInterface, OwnableInterface
                 $this->addAudition($audition);
             }
         }
+
         return $this;
     }
 
@@ -1255,7 +1287,7 @@ class Show implements SearchableInterface, OwnableInterface
 
     public function setNonScheduledAuditions($auditions)
     {
-         foreach ($this->getNonScheduledAuditions() as $k => $audition) {
+        foreach ($this->getNonScheduledAuditions() as $k => $audition) {
             $found = false;
             foreach ($auditions as $a) {
                 if ($audition->getId() == $a->getId()) {
@@ -1284,6 +1316,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Add applications
      *
      * @param \Acts\CamdramBundle\Entity\Application $applications
+     *
      * @return Show
      */
     public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
@@ -1322,7 +1355,7 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getActiveApplication()
     {
-        $now = new \DateTime;
+        $now = new \DateTime();
         $today = new \DateTime($now->format('Y-m-d'));
         $criteria = Criteria::create()
             ->where(Criteria::expr()->gt('deadlineDate', $today))
@@ -1345,6 +1378,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set authorised_by
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $authorisedBy
+     *
      * @return Show
      */
     public function setAuthorisedBy(User $authorisedBy = null)
@@ -1369,11 +1403,10 @@ class Show implements SearchableInterface, OwnableInterface
         return $this->getAuthorisedBy() !== null;
     }
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -1384,6 +1417,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set name
      *
      * @param string $name
+     *
      * @return Show
      */
     public function setName($name)
@@ -1407,6 +1441,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set description
      *
      * @param string $description
+     *
      * @return Show
      */
     public function setDescription($description)
@@ -1430,6 +1465,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set facebook_id
      *
      * @param string $facebookId
+     *
      * @return Show
      */
     public function setFacebookId($facebookId)
@@ -1453,6 +1489,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set twitter_id
      *
      * @param string $twitterId
+     *
      * @return Show
      */
     public function setTwitterId($twitterId)
@@ -1476,6 +1513,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set image
      *
      * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     *
      * @return Show
      */
     public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
@@ -1499,6 +1537,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set slug
      *
      * @param string $slug
+     *
      * @return Show
      */
     public function setSlug($slug)
@@ -1522,6 +1561,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set facebook_url
      *
      * @param string $facebookUrl
+     *
      * @return Show
      */
     public function setFacebookUrl($facebookUrl)
@@ -1545,6 +1585,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set other_url
      *
      * @param string $otherUrl
+     *
      * @return Show
      */
     public function setOtherUrl($otherUrl)
@@ -1568,6 +1609,7 @@ class Show implements SearchableInterface, OwnableInterface
      * Set online_booking_url
      *
      * @param string $onlineBookingUrl
+     *
      * @return Show
      */
     public function setOnlineBookingUrl($onlineBookingUrl)
@@ -1588,16 +1630,8 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-
-    Returns an array of performances, in ascending date order, with the following fields set:
-        date     => Performance Date
-        time     => Performance Time
-    datetime => Performance date and time
-        venue    => Venue (string)
-
-    date, time and datetime are descended from php DateTime objects
-
-    */
+     
+     */
     public function getAllPerformances()
     {
         $ret = array();
@@ -1611,18 +1645,19 @@ class Show implements SearchableInterface, OwnableInterface
             } else {
                 $venue = $performance->getOtherVenue();
             }
-            while($current_day <= $end_day) {
+            while ($current_day <= $end_day) {
                 if ($current_day != $exclude) {
-            $datetime = clone $current_day;
+                    $datetime = clone $current_day;
 
-            $datetime->setTime($time->format('G'),$time->format('i'),$time->format('s')); //  Eugh. PHP doesn't seem to give a better way
-                    array_push($ret, array( 'date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue ));
+                    $datetime->setTime($time->format('G'), $time->format('i'), $time->format('s')); //  Eugh. PHP doesn't seem to give a better way
+                    array_push($ret, array('date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue));
                 }
                 $current_day = clone $current_day;
                 $current_day->modify('+1 day');
             }
         }
         usort($ret, array($this, 'cmpPerformances'));
+
         return $ret;
     }
 
@@ -1633,15 +1668,15 @@ class Show implements SearchableInterface, OwnableInterface
      */
     private function cmpPerformances($a, $b)
     {
-        if($a['date'] < $b['date']){
+        if ($a['date'] < $b['date']) {
             return -1;
-        }else if($a['date'] > $b['date']){
+        } elseif ($a['date'] > $b['date']) {
             return 1;
-        }else if($a['time'] < $b['time']){
+        } elseif ($a['time'] < $b['time']) {
             return -1;
-        }else if($a['time'] > $b['time']){
+        } elseif ($a['time'] > $b['time']) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
@@ -1656,7 +1691,8 @@ class Show implements SearchableInterface, OwnableInterface
         return '';
     }
 
-    public function getIndexDate() {
+    public function getIndexDate()
+    {
         return $this->getStartAt();
     }
 
@@ -1665,7 +1701,8 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @return \DateTime
      */
-    public function getCreatedAt() {
+    public function getCreatedAt()
+    {
         return $this->getTimestamp();
     }
 
@@ -1674,20 +1711,36 @@ class Show implements SearchableInterface, OwnableInterface
      *
      * @return \DateTime
      */
-    public function getUpdatedAt() {
+    public function getUpdatedAt()
+    {
         return $this->getTimestamp();
     }
 
     public function hasFuturePerformances()
     {
         $future = false;
-        $now = new \DateTime;
-        foreach ($this->getPerformances() as $performance){
+        $now = new \DateTime();
+        foreach ($this->getPerformances() as $performance) {
             if ($performance->getEndDate() >= $now) {
                 $future = true;
                 break;
             }
         }
+
         return $future;
+    }
+
+    public function isArchived()
+    {
+        $archived = true;
+        $now = new \DateTime();
+        foreach ($this->getPerformances() as $performance) {
+            if ($performance->getStartDate()->modify('+1 year') >= $now) {
+                $archived = false;
+                break;
+            }
+        }
+
+        return $archived;
     }
 }

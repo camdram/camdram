@@ -5,7 +5,11 @@
 
 {% block vacancies_body %}
 
-<h3>Producer/director roles and show applications</h3>
+   <ul class="inline-list right">
+        <li><a href="applications.rss">RSS Feed</a></li>
+    </ul>
+
+	<h3>Producer/director roles and show applications</h3>
 
     {% spaceless %}
     {% set current = null %}
@@ -19,7 +23,7 @@
             <div>
         {% endif %}
         <hr>
-        <div id="{% if a.show %}{{ a.show.slug }}{% elseif a.society %}{{ a.society.slug }}{% endif %}">
+        <div id="{{ a.show ? a.show.slug : a.society.slug }}">
         <h4><a href="{{ path((a.show ? 'get_show' : 'get_society'),
             {identifier: entity.slug}) }}">{{ current }}</a></h4>
         <h5>{{ a.text }}</h5>

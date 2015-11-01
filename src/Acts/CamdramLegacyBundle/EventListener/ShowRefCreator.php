@@ -1,19 +1,16 @@
 <?php
+
 namespace Acts\CamdramLegacyBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramLegacyBundle\Entity\ShowRef;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\ORM\EntityManager;
-
 use Gedmo\Sluggable\Util as Sluggable;
 
 /**
  * Class ShowRefCreator
  *
  * Creates a show-ref based on the show's slug. It isn't used by Camdram v2 but is required for shows to appear on v1
- *
- * @package Acts\CamdramBundle\EventListener
  */
 class ShowRefCreator
 {
@@ -30,7 +27,6 @@ class ShowRefCreator
             $ref->setShow($show);
             $ref->setRef($refname);
             $show->setPrimaryRef($ref);
-         }
+        }
     }
-
 }

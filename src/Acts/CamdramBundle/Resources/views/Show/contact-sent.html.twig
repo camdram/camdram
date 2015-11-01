@@ -1,0 +1,19 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Show - {{ entity.name }} - Contact{% endblock %}
+
+{% block body %}
+
+    {% set current_subnav_id = 'show_contact' %}
+
+    <div class="row">
+        <h2><a href="{{ path('get_show', {identifier: entity.slug}) }}">{{ entity.name }}</a></h2>
+
+        <h3>Contact Show</h3>
+
+        <p>Your message has been sent to the show administrators.</p>
+
+        <p><a href="{{ path('get_show', {identifier: entity.slug}) }}" class="button small">Return to the show</a></p>
+    </div>
+
+{% endblock %}

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Venue;
@@ -10,7 +11,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class EditorVoterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter
      */
@@ -62,5 +62,4 @@ class EditorVoterTest extends \PHPUnit_Framework_TestCase
                 $token, new Venue(), array('EDIT')
             ));
     }
-
 }

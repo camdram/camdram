@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramApiBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\AccessToken as BaseAccessToken;
@@ -35,7 +36,7 @@ class AccessToken extends BaseAccessToken
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -46,6 +47,7 @@ class AccessToken extends BaseAccessToken
      * Set client
      *
      * @param \Acts\CamdramApiBundle\Entity\ApiApp $client
+     *
      * @return AccessToken
      */
     public function setClient(ClientInterface $client)
@@ -69,6 +71,7 @@ class AccessToken extends BaseAccessToken
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return AccessToken
      */
     public function setUser(UserInterface $user = null)

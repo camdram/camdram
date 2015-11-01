@@ -24,7 +24,7 @@ services:
 
     camdram.security.entry_point:
         class: Acts\CamdramSecurityBundle\Security\EntryPoint\CamdramLoginEntryPoint
-        arguments: [@security.authentication.form_entry_point.public, @security.context]
+        arguments: [@security.authentication.form_entry_point.public, @security.token_storage]
 
     camdram.security.user_linker:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
@@ -48,7 +48,7 @@ services:
 
     camdram.security.acl.helper:
         class: Acts\CamdramSecurityBundle\Security\Acl\Helper
-        arguments: [@security.context, @camdram.security.acl.provider]
+        arguments: [@security.authorization_checker, @camdram.security.acl.provider]
 
     camdram.security.user.provider:
         class: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider

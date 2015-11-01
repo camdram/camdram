@@ -1,10 +1,9 @@
 <?php
+
 namespace Acts\CamdramBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Doctrine\Common\Persistence\ObjectManager;
-
 use Acts\SocialApiBundle\Service\OAuthApi;
 
 /**
@@ -12,8 +11,6 @@ use Acts\SocialApiBundle\Service\OAuthApi;
  *
  * Transforms a facebook_id from it's database representation (it's page ID) to it's user-facing representation
  * (it's page username) whenever a form is loaded.
- *
- * @package Acts\CamdramBundle\Form\DataTransformer
  */
 class FacebookLinkTransformer implements DataTransformerInterface
 {
@@ -31,14 +28,20 @@ class FacebookLinkTransformer implements DataTransformerInterface
      * Converts a Facebook page ID into the page username
      *
      * @param mixed $value
+     *
      * @return mixed|null
+     *
      * @throws \Symfony\Component\Form\Exception\TransformationFailedException
      */
     public function transform($value)
     {
-        if (empty($value)) return NULL;
+        if (empty($value)) {
+            return null;
+        }
         try {
-            if (!$this->api->isAuthenticated()) $this->api->authenticateAsSelf();
+            if (!$this->api->isAuthenticated()) {
+                $this->api->authenticateAsSelf();
+            }
 
             $data = $this->api->doGetById($value);
             if (isset($data['error'])) {
@@ -56,19 +59,25 @@ class FacebookLinkTransformer implements DataTransformerInterface
      * Convert a Facebook page username, URL or ID into its page ID
      *
      * @param mixed $value
+     *
      * @return mixed|null
+     *
      * @throws \Symfony\Component\Form\Exception\TransformationFailedException
      */
     public function reverseTransform($value)
     {
-        if (empty($value)) return NULL;
+        if (empty($value)) {
+            return null;
+        }
 
         if (preg_match('/^(?:https?\:\\/\\/)?www\.facebook\.com\\/([^\?]+)(?:\?.*)?$/i', $value, $matches)) {
             $value = $matches[1];
         }
 
         try {
-            if (!$this->api->isAuthenticated()) $this->api->authenticateAsSelf();
+            if (!$this->api->isAuthenticated()) {
+                $this->api->authenticateAsSelf();
+            }
 
             $data = $this->api->doGetByUsername($value);
             if (isset($data['error'])) {
@@ -80,5 +89,4 @@ class FacebookLinkTransformer implements DataTransformerInterface
             throw new TransformationFailedException("We cannot accept Facebook pages at this time - we can't communicate with Facebook");
         }
     }
-
 }

@@ -15,7 +15,6 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  */
 class Society extends Organisation
 {
-
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="society")
      * @Api\Link(route="get_society_shows", params={"identifier": "object.getSlug()"})
@@ -41,6 +40,7 @@ class Society extends Organisation
      * Add shows
      *
      * @param \Acts\CamdramBundle\Entity\Show $shows
+     *
      * @return Society
      */
     public function addShow(\Acts\CamdramBundle\Entity\Show $shows)

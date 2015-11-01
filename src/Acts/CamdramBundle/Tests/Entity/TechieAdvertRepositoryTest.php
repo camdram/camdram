@@ -9,7 +9,6 @@ use Acts\CamdramSecurityBundle\Entity\User;
 
 class TechieAdvertRepositoryTest extends RepositoryTestCase
 {
-
     private $user;
 
     private $show;
@@ -34,7 +33,8 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
     /**
      * @return \Acts\CamdramBundle\Entity\TechieAdvertRepository
      */
-    private function getRepository() {
+    private function getRepository()
+    {
         return $this->em->getRepository('ActsCamdramBundle:TechieAdvert');
     }
 
@@ -130,7 +130,6 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $this->assertEquals(0, count($res));
     }
 
-
     public function testfindLatest()
     {
         $ad = new TechieAdvert();
@@ -149,7 +148,6 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $this->assertEquals(1, count($res));
     }
 
-
     public function testFindOneByShowSlug()
     {
         $ad = new TechieAdvert();
@@ -167,5 +165,4 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $show = $this->getRepository()->findOneByShowSlug($this->show->getSlug(), new \DateTime('2014-03-01'));
         $this->assertInstanceOf('\\Acts\\CamdramBundle\\Entity\\TechieAdvert', $show);
     }
-
 }

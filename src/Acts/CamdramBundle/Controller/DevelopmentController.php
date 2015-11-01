@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -8,15 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  *
  * Very basic controller used by the small 'Development' section, which contains information about contributing to
  * Camdram.
- *
- * @package Acts\CamdramBundle\Controller
  */
-
 class DevelopmentController extends Controller
 {
     public function indexAction()
     {
         $response = $this->render('ActsCamdramBundle:Development:index.html.twig');
+
         return $response;
     }
 
@@ -34,7 +33,8 @@ class DevelopmentController extends Controller
         );
 
         $response = $this->render('ActsCamdramBundle:Development:activity.html.twig', $data);
-        $response->setSharedMaxAge(60*15);
+        $response->setSharedMaxAge(60 * 15);
+
         return $response;
     }
 }

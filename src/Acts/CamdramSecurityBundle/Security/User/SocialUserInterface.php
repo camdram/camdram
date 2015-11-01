@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;

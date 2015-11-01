@@ -1,12 +1,9 @@
 <?php
+
 namespace Acts\DiaryBundle\Event;
 
 /**
  * Class MultiDayEventInterface
- *
- *
- *
- * @package Acts\DiaryBundle\Event
  */
 interface MultiDayEventInterface extends EventInterface
 {

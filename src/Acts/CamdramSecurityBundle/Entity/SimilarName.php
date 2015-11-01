@@ -19,7 +19,7 @@ class SimilarName
     const UNKNOWN = 0;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -48,11 +48,10 @@ class SimilarName
      */
     private $equivalence;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -63,6 +62,7 @@ class SimilarName
      * Set name1
      *
      * @param string $name1
+     *
      * @return SimilarName
      */
     public function setName1($name1)
@@ -86,6 +86,7 @@ class SimilarName
      * Set name2
      *
      * @param string $name2
+     *
      * @return SimilarName
      */
     public function setName2($name2)
@@ -108,7 +109,8 @@ class SimilarName
     /**
      * Set equivalence
      *
-     * @param boolean $equivalence
+     * @param bool $equivalence
+     *
      * @return SimilarName
      */
     public function setEquivalence($equivalence)
@@ -121,7 +123,7 @@ class SimilarName
     /**
      * Get equivalence
      *
-     * @return boolean
+     * @return bool
      */
     public function getEquivalence()
     {

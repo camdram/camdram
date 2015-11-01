@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class EmailAlias
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class EmailAlias
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="uid", type="integer", nullable=false)
      */
@@ -52,11 +52,10 @@ class EmailAlias
      */
     private $email;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,7 +65,8 @@ class EmailAlias
     /**
      * Set user_id
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return EmailAlias
      */
     public function setUserId($userId)
@@ -79,7 +79,7 @@ class EmailAlias
     /**
      * Get user_id
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -90,6 +90,7 @@ class EmailAlias
      * Set name
      *
      * @param string $name
+     *
      * @return EmailAlias
      */
     public function setName($name)
@@ -113,6 +114,7 @@ class EmailAlias
      * Set email
      *
      * @param string $email
+     *
      * @return EmailAlias
      */
     public function setEmail($email)
@@ -136,6 +138,7 @@ class EmailAlias
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return EmailAlias
      */
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)

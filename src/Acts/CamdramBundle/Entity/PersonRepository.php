@@ -3,14 +3,12 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr as Expr;
 
 /**
  * PersonRepository
  */
 class PersonRepository extends EntityRepository
 {
-
     public function findWithSimilarName($name)
     {
         preg_match('/.* ([a-z\'\-]+)$/i', trim($name), $matches);
@@ -23,6 +21,7 @@ class PersonRepository extends EntityRepository
             ->where('p.name LIKE :name')
             ->setParameter('name', '%'.$surname)
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -39,10 +38,12 @@ class PersonRepository extends EntityRepository
             ->setParameter('end', $end);
 
         $result = $qb->getQuery()->getOneOrNullResult();
+
         return current($result);
     }
 
-    public function findCanonicalPerson($name){
+    public function findCanonicalPerson($name)
+    {
         $person = $this->createQueryBuilder('p')
             ->leftJoin('p.mapped_to', 'm')
             ->where('p.name = :name')
@@ -52,10 +53,8 @@ class PersonRepository extends EntityRepository
             ->getQuery()->getOneOrNullResult();
         if ($person && $person->getMappedTo() instanceof Person) {
             return $person->getMappedTo();
-        }
-        else {
+        } else {
             return $person;
         }
     }
-
 }

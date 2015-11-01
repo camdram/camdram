@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * Class AppController
- * @package Acts\CamdramApiBundle\Controller
+ *
  * @RouteResource("App")
  */
 class AppController extends FOSRestController
@@ -42,6 +42,7 @@ class AppController extends FOSRestController
         if (!$app) {
             return $this->createNotFoundException();
         }
+
         return $app;
     }
 
@@ -64,6 +65,7 @@ class AppController extends FOSRestController
     public function newAction()
     {
         $this->checkAuthenticated();
+
         return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
             'form' => $this->getForm()->createView()
         ));
@@ -79,6 +81,7 @@ class AppController extends FOSRestController
             $app->setUser($this->getUser());
             $clientManager = $this->get('fos_oauth_server.client_manager.default');
             $clientManager->updateClient($app);
+
             return $this->redirect($this->generateUrl('get_apps'));
         } else {
             return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
@@ -95,6 +98,7 @@ class AppController extends FOSRestController
         $form->submit($request);
         if ($form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
             return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
         } else {
             return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
@@ -109,6 +113,7 @@ class AppController extends FOSRestController
         $app = $this->getApp($app_id);
         $this->getDoctrine()->getManager()->remove($app);
         $this->getDoctrine()->getManager()->flush();
+
         return $this->redirect($this->generateUrl('get_apps'));
     }
 }

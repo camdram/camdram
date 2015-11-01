@@ -33,9 +33,9 @@ acts_camdram_security:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #    prefix:   /_internal
 _security_check:
-      pattern:  /login_check
+      path:  /login_check
 _security_logout:
-      pattern:  /logout
+      path:  /logout
 
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"

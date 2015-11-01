@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
-
 use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramBundle\Controller\AbstractRestController;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -97,6 +95,7 @@ class UserController extends FOSRestController
             ->setTemplate('ActsCamdramAdminBundle:User:show.html.twig')
             ->setTemplateVar('user')
         ;
+
         return $view;
     }
 
@@ -107,6 +106,7 @@ class UserController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
+
         return $this->view($form, 200)
             ->setTemplateVar('form')
             ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
@@ -124,6 +124,7 @@ class UserController extends FOSRestController
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
             return $this->routeRedirectView('get_user', $this->getRouteParams($form->getData()));
         } else {
             return $this->view($form, 400)
@@ -141,6 +142,7 @@ class UserController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
+
         return $this->routeRedirectView('get_user');
     }
 
@@ -161,6 +163,7 @@ class UserController extends FOSRestController
             $user = $this->getEntity($identifier);
             $data = $form->getData();
             $this->get('camdram.security.acl.provider')->grantAccess($data['entity'], $user, $this->getUser());
+
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($user));
         } else {
             return $this->view($form, 400)
@@ -172,6 +175,7 @@ class UserController extends FOSRestController
     /**
      * @param $identifier
      * @Get("/users/{identifier}/reset-password")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function resetPasswordAction($identifier)
@@ -202,6 +206,7 @@ class UserController extends FOSRestController
     /**
      * @param $identifier
      * @param $request Request
+     *
      * @return $this
      */
     public function mergeAction($identifier, Request $request)
@@ -222,6 +227,7 @@ class UserController extends FOSRestController
                     $form->addError(new FormError('You cannot merge a user with itself'));
                 } else {
                     $newUser = $merger->mergeUsers($user, $otherUser, $data['keep_user'] == 'this');
+
                     return $this->redirectToRoute('get_user', array('identifier' => $newUser->getId()));
                 }
             } else {
@@ -234,5 +240,4 @@ class UserController extends FOSRestController
             'form' => $form->createView()
         ));
     }
-
 }

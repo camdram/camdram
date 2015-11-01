@@ -1,9 +1,8 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security;
 
-use Acts\CamdramSecurityBundle\Security\User\SocialUserInterface;
 use Acts\CamdramSecurityBundle\Entity\SimilarName;
-
 use Doctrine\ORM\EntityManager;
 
 class NameUtils
@@ -25,6 +24,7 @@ class NameUtils
      *
      * @param $name1
      * @param $name2
+     *
      * @return bool
      */
     public function isSamePerson($name1, $name2)
@@ -42,21 +42,25 @@ class NameUtils
 
     public function getSimilarityScore($name1, $name2)
     {
-        if (strcasecmp($name1, $name2) == 0) return 100;
+        if (strcasecmp($name1, $name2) == 0) {
+            return 100;
+        }
 
         //Remove surrounding whitespace and avoid case differences
         $name1 = trim(strtolower($name1));
         $name2 = trim(strtolower($name2));
 
-        $parts1 = preg_split('/[\s,\-]+/',$name1);
-        $parts2 = preg_split('/[\s,\-]+/',$name2);
+        $parts1 = preg_split('/[\s,\-]+/', $name1);
+        $parts2 = preg_split('/[\s,\-]+/', $name2);
 
         //Return a high score if one of the versions simply has a middle name inserted
         if (
             count($parts1) > 1 && count($parts2) > 1
                 && $parts1[0] == $parts2[0]
                 && end($parts1) == end($parts2)
-         ) return 95;
+         ) {
+            return 95;
+        }
 
         //Join back together the parts of each name that are different
         $remain1 = implode(' ', array_diff($parts1, $parts2));
@@ -68,7 +72,6 @@ class NameUtils
         } elseif ($equivalence ==  SimilarName::NOT_EQUIVALENT) {
             return 0;
         } else {
-
             $frac_common_parts = count(array_intersect($parts1, $parts2)) / max(count($parts1), count($parts2));
             if ($frac_common_parts > 0.5) {
                 //i.e. one of them has an extra middle name
@@ -79,7 +82,7 @@ class NameUtils
             similar_text($remain1, $remain2, $percent);
 
             //Increase score if the first letter is the same
-            if (substr($remain1,0,1) == substr($remain2, 0, 1)) {
+            if (substr($remain1, 0, 1) == substr($remain2, 0, 1)) {
                 $percent = (int) ($percent * 0.7 + 30);
             }
 
@@ -122,6 +125,7 @@ class NameUtils
         if (preg_match('/^.* ([a-z\-\']+)$/i', $name, $matches)) {
             return $matches[1];
         }
+
         return $name;
     }
 
@@ -131,6 +135,7 @@ class NameUtils
         if (preg_match('/^(.*) [a-z\-\']+$/i', $name, $matches)) {
             return $matches[1];
         }
+
         return $name;
     }
 
@@ -138,14 +143,17 @@ class NameUtils
     {
         $name1 = trim(strtolower($name1));
         $name2 = trim(strtolower($name2));
-        if (empty($name1) && empty($name2)) return;
-        if (empty($name1) || empty($name2) && $equivalent) return;
+        if (empty($name1) && empty($name2)) {
+            return;
+        }
+        if (empty($name1) || empty($name2) && $equivalent) {
+            return;
+        }
 
-        $parts1 = preg_split('/[\s,\-]+/',$name1);
-        $parts2 = preg_split('/[\s,\-]+/',$name2);
+        $parts1 = preg_split('/[\s,\-]+/', $name1);
+        $parts2 = preg_split('/[\s,\-]+/', $name2);
         $remain1 = implode(' ', array_diff($parts1, $parts2));
         $remain2 = implode(' ', array_diff($parts2, $parts1));
         $this->getRepository()->saveEquivalence($remain1, $remain2, $equivalent);
     }
-
 }

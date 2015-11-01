@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Event;
 
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
@@ -18,4 +19,3 @@ class AccessControlEntryEvent extends Event
         return $this->ace;
     }
 }
-

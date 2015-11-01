@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TermDate
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -50,21 +50,21 @@ class TermDate
     private $end_date;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="firstweek", type="integer", nullable=false)
      */
     private $first_week;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="lastweek", type="integer", nullable=false)
      */
     private $last_week;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="displayweek", type="boolean", nullable=false)
      */
@@ -77,11 +77,10 @@ class TermDate
      */
     private $vacation;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -92,6 +91,7 @@ class TermDate
      * Set name
      *
      * @param string $name
+     *
      * @return TermDate
      */
     public function setName($name)
@@ -115,6 +115,7 @@ class TermDate
      * Set friendly_name
      *
      * @param string $friendlyName
+     *
      * @return TermDate
      */
     public function setFriendlyName($friendlyName)
@@ -138,6 +139,7 @@ class TermDate
      * Set start_date
      *
      * @param \DateTime $startDate
+     *
      * @return TermDate
      */
     public function setStartDate($startDate)
@@ -161,6 +163,7 @@ class TermDate
      * Set end_date
      *
      * @param \DateTime $endDate
+     *
      * @return TermDate
      */
     public function setEndDate($endDate)
@@ -183,7 +186,8 @@ class TermDate
     /**
      * Set first_week
      *
-     * @param boolean $firstWeek
+     * @param bool $firstWeek
+     *
      * @return TermDate
      */
     public function setFirstWeek($firstWeek)
@@ -196,7 +200,7 @@ class TermDate
     /**
      * Get first_week
      *
-     * @return boolean
+     * @return bool
      */
     public function getFirstWeek()
     {
@@ -206,7 +210,8 @@ class TermDate
     /**
      * Set last_week
      *
-     * @param boolean $lastWeek
+     * @param bool $lastWeek
+     *
      * @return TermDate
      */
     public function setLastWeek($lastWeek)
@@ -219,7 +224,7 @@ class TermDate
     /**
      * Get last_week
      *
-     * @return boolean
+     * @return bool
      */
     public function getLastWeek()
     {
@@ -229,7 +234,8 @@ class TermDate
     /**
      * Set display_week
      *
-     * @param boolean $displayWeek
+     * @param bool $displayWeek
+     *
      * @return TermDate
      */
     public function setDisplayWeek($displayWeek)
@@ -242,7 +248,7 @@ class TermDate
     /**
      * Get display_week
      *
-     * @return boolean
+     * @return bool
      */
     public function getDisplayWeek()
     {
@@ -253,6 +259,7 @@ class TermDate
      * Set vacation
      *
      * @param string $vacation
+     *
      * @return TermDate
      */
     public function setVacation($vacation)

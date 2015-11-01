@@ -4,17 +4,13 @@ namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acts\DiaryBundle\Diary\Diary;
-use Acts\DiaryBundle\Event\MultiDayEvent;
 
 /**
  * Class DefaultController
  *
  * Controlled for the home page. Most areas of the home page are split up into sub-actions which are triggered
  * individually from the main template.
- *
- * @package Acts\CamdramBundle\Controller
  */
-
 class DefaultController extends Controller
 {
     /**
@@ -54,7 +50,9 @@ class DefaultController extends Controller
     {
         $now = $this->get('acts.time_service')->getCurrentTime();
         $day = $now->format('N');
-        if ($day == 7) $day = 0;
+        if ($day == 7) {
+            $day = 0;
+        }
 
         $interval = new \DateInterval('P'.$day.'DT'.$now->format('H\\Hi\\Ms\\S'));
         $start = $now->sub($interval);
@@ -73,7 +71,8 @@ class DefaultController extends Controller
             'people_num' => $people_num,
             'venue_num' => $v_num,
         ));
-        $response->setSharedMaxAge(4*3600);
+        $response->setSharedMaxAge(4 * 3600);
+
         return $response;
     }
 
@@ -87,7 +86,7 @@ class DefaultController extends Controller
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
         $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
-        $now = new \DateTime;
+        $now = new \DateTime();
 
         $response = $this->render('ActsCamdramBundle:Default:vacancies.html.twig', array(
             'auditions' => $auditions_repo->findUpcoming(3, $now),
@@ -95,8 +94,8 @@ class DefaultController extends Controller
             'app_ads' => $applications_repo->findLatest(3, $now),
         ));
         $response->setSharedMaxAge(60);
-        return $response;
 
+        return $response;
     }
 
     /**
@@ -117,12 +116,15 @@ class DefaultController extends Controller
             $week = $this->get('acts.camdram.week_manager')->findAt($date);
             if ($week) {
                 $shows = $show_repo->findMostInterestingByWeek($week, 5);
-                if (count($shows) > 0) $data[$years] = $shows;
+                if (count($shows) > 0) {
+                    $data[$years] = $shows;
+                }
             }
         }
 
         $response = $this->render('ActsCamdramBundle:Default:historic-data.html.twig', array('data' => $data));
         $response->setSharedMaxAge(3600);
+
         return $response;
     }
 }

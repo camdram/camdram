@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class KnowledgeBaseRevision
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class KnowledgeBaseRevision
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="pageid", type="integer", nullable=true)
      */
@@ -46,7 +46,7 @@ class KnowledgeBaseRevision
     private $text;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="userid", type="integer", nullable=true)
      */
@@ -72,7 +72,7 @@ class KnowledgeBaseRevision
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -82,7 +82,7 @@ class KnowledgeBaseRevision
     /**
      * Get page_id
      *
-     * @return integer
+     * @return int
      */
     public function getPageId()
     {
@@ -102,7 +102,7 @@ class KnowledgeBaseRevision
     /**
      * Get user_id
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -142,7 +142,8 @@ class KnowledgeBaseRevision
     /**
      * Set page_id
      *
-     * @param integer $pageId
+     * @param int $pageId
+     *
      * @return KnowledgeBaseRevision
      */
     public function setPageId($pageId)
@@ -156,6 +157,7 @@ class KnowledgeBaseRevision
      * Set text
      *
      * @param string $text
+     *
      * @return KnowledgeBaseRevision
      */
     public function setText($text)
@@ -168,7 +170,8 @@ class KnowledgeBaseRevision
     /**
      * Set user_id
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return KnowledgeBaseRevision
      */
     public function setUserId($userId)
@@ -182,6 +185,7 @@ class KnowledgeBaseRevision
      * Set date
      *
      * @param \DateTime $date
+     *
      * @return KnowledgeBaseRevision
      */
     public function setDate($date)
@@ -195,6 +199,7 @@ class KnowledgeBaseRevision
      * Set page
      *
      * @param \Acts\CamdramLegacyBundle\Entity\Page $page
+     *
      * @return KnowledgeBaseRevision
      */
     public function setPage(\Acts\CamdramLegacyBundle\Entity\Page $page = null)
@@ -208,6 +213,7 @@ class KnowledgeBaseRevision
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return KnowledgeBaseRevision
      */
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)

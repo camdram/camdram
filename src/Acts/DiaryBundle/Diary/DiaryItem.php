@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Event\EventInterface;
@@ -9,12 +10,9 @@ use Acts\DiaryBundle\Event\EventInterface;
  * A single item in the diary. Loosely corresponds to an event, but an event may have multiple correponding DiaryItem
  * objects, e.g. if it takes place across multiple weeks or is a single event that occurs across midnight. Represents
  * a single 'block' in the diary.
- *
- * @package Acts\DiaryBundle\Diary
  */
 class DiaryItem
 {
-
     /**
      * @var \DateTime The start time of this diary item
      */
@@ -133,5 +131,4 @@ class DiaryItem
         }
         $this->index = $index;
     }
-
 }

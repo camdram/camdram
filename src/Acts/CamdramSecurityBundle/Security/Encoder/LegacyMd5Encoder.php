@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Encoder;
 
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -14,5 +15,4 @@ class LegacyMd5Encoder implements PasswordEncoderInterface
     {
         return $encoded === $this->encodePassword($raw, $salt);
     }
-
 }

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class NewsMention
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,6 @@ class NewsMention
     private $id;
 
     /** @var News
-     *
      * @ORM\ManyToOne(targetEntity="News", inversedBy="mentions")
      */
     private $news;
@@ -42,7 +41,6 @@ class NewsMention
     private $remote_id;
 
     /** @var Entity
-     *
      * @ORM\ManyToOne(targetEntity="Organisation")
      */
     private $entity;
@@ -55,24 +53,23 @@ class NewsMention
     private $service;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="offset", type="integer")
      */
     private $offset;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="length", type="integer")
      */
     private $length;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -83,6 +80,7 @@ class NewsMention
      * Set name
      *
      * @param string $name
+     *
      * @return NewsMention
      */
     public function setName($name)
@@ -106,6 +104,7 @@ class NewsMention
      * Set remote_id
      *
      * @param string $remoteId
+     *
      * @return NewsMention
      */
     public function setRemoteId($remoteId)
@@ -129,6 +128,7 @@ class NewsMention
      * Set service
      *
      * @param string $service
+     *
      * @return NewsMention
      */
     public function setService($service)
@@ -151,7 +151,8 @@ class NewsMention
     /**
      * Set offset
      *
-     * @param integer $offset
+     * @param int $offset
+     *
      * @return NewsMention
      */
     public function setOffset($offset)
@@ -164,7 +165,7 @@ class NewsMention
     /**
      * Get offset
      *
-     * @return integer
+     * @return int
      */
     public function getOffset()
     {
@@ -174,7 +175,8 @@ class NewsMention
     /**
      * Set length
      *
-     * @param integer $length
+     * @param int $length
+     *
      * @return NewsMention
      */
     public function setLength($length)
@@ -187,7 +189,7 @@ class NewsMention
     /**
      * Get length
      *
-     * @return integer
+     * @return int
      */
     public function getLength()
     {
@@ -198,6 +200,7 @@ class NewsMention
      * Set news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
+     *
      * @return NewsMention
      */
     public function setNews(\Acts\CamdramBundle\Entity\News $news = null)
@@ -221,6 +224,7 @@ class NewsMention
      * Set entity
      *
      * @param \Acts\CamdramBundle\Entity\Organisation $entity
+     *
      * @return NewsMention
      */
     public function setEntity(\Acts\CamdramBundle\Entity\Organisation $entity = null)

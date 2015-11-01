@@ -1,7 +1,8 @@
 acts_camdram_entities_res:
     resource: "routing/entities.yml"
+    type: rest
 acts_camdram_diary:
-    pattern: diary.{_format}
+    path: diary.{_format}
     defaults:
         _controller: ActsCamdramBundle:Diary:index
         _format: html
@@ -12,10 +13,10 @@ acts_camdram_development:
     resource: "routing/development.yml"
     prefix: /development
 acts_camdram_homepage:
-    pattern:  /
+    path:  /
     defaults: { _controller: ActsCamdramBundle:Default:index }
 acts_camdram_play:
-    pattern: /plays/{mid}
+    path: /plays/{mid}
     defaults: { _controller: ActsCamdramBundle:Play:display }
     requirements:
         mid: .*
@@ -31,9 +32,10 @@ acts_camdram_roles:
     prefix:   /
     resource: "Acts\CamdramBundle\Controller\RoleController"
 acts_camdram_signinsheet:
-    pattern: /shows/{slug}/signinsheet.{_format}
+    path: /shows/{slug}/signinsheet.{_format}
     defaults: { _controller: ActsCamdramBundle:Signinsheet:index, slug: ~, _format: html }
-    requirements: { _format: (csv|html), _method: GET }
+    requirements: { _format: (csv|html) }
+    methods: [GET]
 acts_camdram_about:
     path: /about
     defaults:

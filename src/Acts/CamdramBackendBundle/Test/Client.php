@@ -1,5 +1,7 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Test;
+
 use Symfony\Bundle\FrameworkBundle\Client as BaseClient;
 
 class Client extends BaseClient
@@ -9,8 +11,8 @@ class Client extends BaseClient
 
     protected function doRequest($request)
     {
-
         $this->injectConnection();
+
         return $this->kernel->handle($request);
     }
 

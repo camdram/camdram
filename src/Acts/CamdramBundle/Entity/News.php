@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class News
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,13 +22,12 @@ class News
     private $id;
 
     /** @var Entity
-     *
      * @ORM\ManyToOne(targetEntity="Organisation", inversedBy="news")
      */
     private $entity;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="remote_id", type="string", length=255, nullable=true)
      */
@@ -56,46 +55,42 @@ class News
     private $body;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="num_comments", type="integer", nullable=true)
      */
     private $num_comments;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="num_likes", type="integer", nullable=true)
      */
     private $num_likes;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
     private $public;
 
     /** @var array
-     *
      * @ORM\OneToMany(targetEntity="NewsLink", mappedBy="news", cascade={"all"})
      */
     private $links;
 
     /** @var array
-     *
      * @ORM\OneToMany(targetEntity="NewsMention", mappedBy="news", cascade={"all"})
      */
     private $mentions;
 
     /** @var \DateTime
-     *
      * @ORM\Column(name="posted_at", type="datetime", nullable=false)
      */
     private $posted_at;
 
     /** @var \DateTime
-     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $created_at;
@@ -103,7 +98,7 @@ class News
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -114,6 +109,7 @@ class News
      * Set remote_id
      *
      * @param string $remoteId
+     *
      * @return News
      */
     public function setRemoteId($remoteId)
@@ -137,6 +133,7 @@ class News
      * Set source
      *
      * @param string $source
+     *
      * @return News
      */
     public function setSource($source)
@@ -160,6 +157,7 @@ class News
      * Set body
      *
      * @param string $body
+     *
      * @return News
      */
     public function setBody($body)
@@ -182,7 +180,8 @@ class News
     /**
      * Set num_comments
      *
-     * @param integer $numComments
+     * @param int $numComments
+     *
      * @return News
      */
     public function setNumComments($numComments)
@@ -195,7 +194,7 @@ class News
     /**
      * Get num_comments
      *
-     * @return integer
+     * @return int
      */
     public function getNumComments()
     {
@@ -205,7 +204,8 @@ class News
     /**
      * Set num_likes
      *
-     * @param integer $numLikes
+     * @param int $numLikes
+     *
      * @return News
      */
     public function setNumLikes($numLikes)
@@ -218,7 +218,7 @@ class News
     /**
      * Get num_likes
      *
-     * @return integer
+     * @return int
      */
     public function getNumLikes()
     {
@@ -229,6 +229,7 @@ class News
      * Set entity
      *
      * @param \Acts\CamdramBundle\Entity\Organisation $entity
+     *
      * @return News
      */
     public function setEntity(\Acts\CamdramBundle\Entity\Organisation $entity = null)
@@ -251,7 +252,8 @@ class News
     /**
      * Set public
      *
-     * @param boolean $public
+     * @param bool $public
+     *
      * @return News
      */
     public function setPublic($public)
@@ -264,7 +266,7 @@ class News
     /**
      * Get public
      *
-     * @return boolean
+     * @return bool
      */
     public function getPublic()
     {
@@ -283,6 +285,7 @@ class News
      * Add links
      *
      * @param \Acts\CamdramBundle\Entity\NewsLink $links
+     *
      * @return News
      */
     public function addLink(\Acts\CamdramBundle\Entity\NewsLink $links)
@@ -316,6 +319,7 @@ class News
      * Set posted_at
      *
      * @param \DateTime $postedAt
+     *
      * @return News
      */
     public function setPostedAt($postedAt)
@@ -339,6 +343,7 @@ class News
      * Set created_at
      *
      * @param \DateTime $createdAt
+     *
      * @return News
      */
     public function setCreatedAt($createdAt)
@@ -362,6 +367,7 @@ class News
      * Add mentions
      *
      * @param \Acts\CamdramBundle\Entity\NewsMention $mentions
+     *
      * @return News
      */
     public function addMention(\Acts\CamdramBundle\Entity\NewsMention $mentions)
@@ -395,6 +401,7 @@ class News
      * Set picture
      *
      * @param string $picture
+     *
      * @return News
      */
     public function setPicture($picture)
@@ -421,5 +428,4 @@ class News
             case 'twitter' : return 'http://www.twitter.com/redirect/status/'.$this->getRemoteId(); break;
         }
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Event;
 
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
@@ -18,4 +19,3 @@ class PendingAccessEvent extends Event
         return $this->pending_ace;
     }
 }
-

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TechiePosition
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -35,11 +35,10 @@ class TechiePosition
      */
     private $order_id;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -50,6 +49,7 @@ class TechiePosition
      * Set position
      *
      * @param string $position
+     *
      * @return TechiePosition
      */
     public function setPosition($position)
@@ -73,6 +73,7 @@ class TechiePosition
      * Set order_id
      *
      * @param float $orderId
+     *
      * @return TechiePosition
      */
     public function setOrderId($orderId)

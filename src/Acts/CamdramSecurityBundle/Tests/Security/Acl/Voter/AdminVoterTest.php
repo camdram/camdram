@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -8,7 +9,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AdminVoterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\AdminVoter
      */
@@ -42,5 +42,4 @@ class AdminVoterTest extends \PHPUnit_Framework_TestCase
         $attributes = array('EDIT');
         $this->assertEquals(AdminVoter::ACCESS_ABSTAIN, $this->voter->vote($token, $request, $attributes));
     }
-
 }

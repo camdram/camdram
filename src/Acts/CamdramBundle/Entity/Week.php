@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Entity;
 
 /**
@@ -30,6 +31,7 @@ class Week
      * Set name
      *
      * @param string $short_name
+     *
      * @return Week
      */
     public function setShortName($short_name)
@@ -53,6 +55,7 @@ class Week
      * Set name
      *
      * @param string $name
+     *
      * @return Week
      */
     public function setName($name)
@@ -76,6 +79,7 @@ class Week
      * Set start_at
      *
      * @param \DateTime $startAt
+     *
      * @return Week
      */
     public function setStartAt($startAt)
@@ -99,6 +103,7 @@ class Week
      * Set end_at
      *
      * @param \DateTime $endAt
+     *
      * @return Week
      */
     public function setEndAt($endAt)
@@ -117,5 +122,4 @@ class Week
     {
         return $this->end_at;
     }
-
 }

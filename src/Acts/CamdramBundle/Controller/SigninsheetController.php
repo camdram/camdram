@@ -1,9 +1,9 @@
 <?php
+
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Acts\CamdramBundle\Entity\Show;
 
 /**
@@ -11,7 +11,6 @@ use Acts\CamdramBundle\Entity\Show;
  *
  * Very basic controller used for generating sign in sheets. Currently the two
  * forms supported are a basic HTML table and a CSV format for downloading.
- *
  */
 class SigninsheetController extends Controller
 {
@@ -21,7 +20,7 @@ class SigninsheetController extends Controller
      */
     public function indexAction(Request $request, $slug = null, $_format)
     {
-        $repo= $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
+        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
         $show = $repo->findOneBySlug($slug);
         if (!$show) {
             throw $this->createNotFoundException('That show does not exist.');
@@ -48,6 +47,7 @@ class SigninsheetController extends Controller
             $response->headers->set('Content-Type', 'text/csv');
             $response->headers->set('Content-Disposition', 'inline; attachment; filename="signinsheet.csv"');
         }
+
         return $response;
     }
 }

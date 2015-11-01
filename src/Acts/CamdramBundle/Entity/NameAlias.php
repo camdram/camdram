@@ -3,7 +3,6 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Person
@@ -14,7 +13,7 @@ use JMS\Serializer\Annotation\Exclude;
 class NameAlias
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -40,6 +39,7 @@ class NameAlias
      * Set name
      *
      * @param string $name
+     *
      * @return NameAlias
      */
     public function setName($name)
@@ -59,11 +59,10 @@ class NameAlias
         return $this->name;
     }
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -74,6 +73,7 @@ class NameAlias
      * Set person
      *
      * @param \Acts\CamdramBundle\Entity\Person $person
+     *
      * @return NameAlias
      */
     public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)

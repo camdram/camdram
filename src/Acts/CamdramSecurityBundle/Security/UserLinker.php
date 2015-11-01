@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security;
 
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
@@ -31,6 +32,7 @@ class UserLinker
                 return $token2;
             }
         }
+
         return false;
     }
 
@@ -75,7 +77,10 @@ class UserLinker
             $external_user->setUser($camdram_user);
             $camdram_user->addExternalUser($external_user);
             $this->entityManager->flush();
+
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 }

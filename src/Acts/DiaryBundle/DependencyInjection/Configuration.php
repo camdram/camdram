@@ -1,10 +1,9 @@
 <?php
+
 namespace Acts\DiaryBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -23,5 +22,4 @@ class Configuration implements ConfigurationInterface
 
         return $treeBuilder;
     }
-
 }

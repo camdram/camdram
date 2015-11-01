@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Event\EventInterface;
@@ -10,8 +11,6 @@ use Acts\DiaryBundle\Event\EventInterface;
  * end_date, which, if specified, cause the diary to ignore events or parts of multi-day events that take place
  * outside that time period. Only start and end dates that are at the beginning/end of weeks (midnight Sunday morning)
  * have been tested.
- *
- * @package Acts\DiaryBundle\Diary
  */
 class Diary
 {
@@ -85,6 +84,7 @@ class Diary
         }
         $view->addEvents($this->events);
         $view->addLabels($this->labels);
+
         return $view;
     }
 

@@ -4,7 +4,6 @@ namespace Acts\CamdramBundle\Document;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
-
 class ContentTrait
 {
     /**

@@ -5,8 +5,6 @@ namespace Acts\CamdramApiBundle\Entity;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
-use Doctrine\ORM\Query\Expr;
-
 /**
  * ExternalAppRepository
  *

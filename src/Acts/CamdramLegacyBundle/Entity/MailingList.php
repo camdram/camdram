@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class MailingList
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -43,24 +43,23 @@ class MailingList
     private $description;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
     private $public;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="defaultsubscribe", type="boolean", nullable=false)
      */
     private $default_subscribe;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -71,6 +70,7 @@ class MailingList
      * Set name
      *
      * @param string $name
+     *
      * @return MailingList
      */
     public function setName($name)
@@ -94,6 +94,7 @@ class MailingList
      * Set short_name
      *
      * @param string $shortName
+     *
      * @return MailingList
      */
     public function setShortName($shortName)
@@ -117,6 +118,7 @@ class MailingList
      * Set description
      *
      * @param string $description
+     *
      * @return MailingList
      */
     public function setDescription($description)
@@ -139,7 +141,8 @@ class MailingList
     /**
      * Set public
      *
-     * @param boolean $public
+     * @param bool $public
+     *
      * @return MailingList
      */
     public function setPublic($public)
@@ -152,7 +155,7 @@ class MailingList
     /**
      * Get public
      *
-     * @return boolean
+     * @return bool
      */
     public function getPublic()
     {
@@ -162,7 +165,8 @@ class MailingList
     /**
      * Set default_subscribe
      *
-     * @param boolean $defaultSubscribe
+     * @param bool $defaultSubscribe
+     *
      * @return MailingList
      */
     public function setDefaultSubscribe($defaultSubscribe)
@@ -175,7 +179,7 @@ class MailingList
     /**
      * Get default_subscribe
      *
-     * @return boolean
+     * @return bool
      */
     public function getDefaultSubscribe()
     {

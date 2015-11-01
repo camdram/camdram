@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Event;
 
 class MultiDayEvent extends AbstractEvent implements MultiDayEventInterface

@@ -1,7 +1,6 @@
 <?php
-namespace Acts\CamdramBundle\Search;
 
-use Pagerfanta\PagerfantaInterface;
+namespace Acts\CamdramBundle\Search;
 
 /**
  * Class ProviderInterface
@@ -10,17 +9,15 @@ use Pagerfanta\PagerfantaInterface;
  * default is Doctrine as it doesn't require any other software, but more sophisticated backends can be swapped in
  * (e.g. Sphinx). This is the common interface that the 'search providers' much follow. The choice of search provider
  * to use is defined in parameters.yml
- *
- * @package Acts\CamdramBundle\Service\Search
  */
 interface ProviderInterface
 {
-
     /**
      * @param $repository
      * @param $query
      * @param $limit
      * @param $offset
+     *
      * @return array
      */
     public function executeAutocomplete($repository, $query, $limit, array $orderBy = array());
@@ -30,6 +27,7 @@ interface ProviderInterface
      * @param $query
      * @param $limit
      * @param $offset
+     *
      * @return \Pagerfanta\PagerfantaInterface;
      */
     public function executeTextSearch($repository, $query, $offset, $limit, array $orderBy = array());
@@ -37,6 +35,7 @@ interface ProviderInterface
     /**
      * @param $q
      * @param $limit
+     *
      * @return array
      */
     public function executeUserSearch($q, $limit);

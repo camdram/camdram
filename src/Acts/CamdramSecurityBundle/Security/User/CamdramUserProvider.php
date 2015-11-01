@@ -1,12 +1,12 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\User;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use  Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Exception\IdentityNotFoundException;
-use Doctrine\ORM\EntityManager;
 
 class CamdramUserProvider implements UserProviderInterface
 {
@@ -24,7 +24,9 @@ class CamdramUserProvider implements UserProviderInterface
      * Actually loads by id...but has to comply with the Symfony interface
      *
      * @param string $username
+     *
      * @return \Symfony\Component\Security\Core\User\UserInterface
+     *
      * @throws
      */
     public function loadUserByUsername($id)

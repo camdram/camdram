@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class EmailSig
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -21,7 +21,7 @@ class EmailSig
      */
     private $id;
 
-   /**
+    /**
      * @var \Acts\CamdramSecurityBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="email_sigs")
@@ -31,7 +31,7 @@ class EmailSig
      */
     private $user;
 
-   /**
+    /**
      * @var string
      *
      * @ORM\Column(name="sig", type="text", nullable=false)
@@ -41,7 +41,7 @@ class EmailSig
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -52,6 +52,7 @@ class EmailSig
      * Set sig
      *
      * @param string $sig
+     *
      * @return EmailSig
      */
     public function setSig($sig)
@@ -75,6 +76,7 @@ class EmailSig
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return EmailSig
      */
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)

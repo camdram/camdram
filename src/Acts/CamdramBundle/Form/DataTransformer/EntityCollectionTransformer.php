@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
@@ -10,8 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Class EntityCollectionTransformer
  *
  * * Transforms an collection of linked entities into their names for when they are displayed in a form.
- *
- * @package Acts\CamdramBundle\Form\DataTransformer
  */
 class EntityCollectionTransformer implements DataTransformerInterface
 {
@@ -38,14 +37,17 @@ class EntityCollectionTransformer implements DataTransformerInterface
             foreach ($value as $item) {
                 $ids[] = array('id' => $item->getId(), 'name' => $item->getName());
             }
+
             return $ids;
-        } else return $value;
+        } else {
+            return $value;
+        }
     }
 
     public function reverseTransform($value)
     {
         if (is_array($value)) {
-            $entities = new ArrayCollection;
+            $entities = new ArrayCollection();
             $repo = $this->em->getRepository($this->repository_name);
 
             foreach ($value as $item) {
@@ -56,9 +58,10 @@ class EntityCollectionTransformer implements DataTransformerInterface
                     }
                 }
             }
+
             return $entities;
         }
+
         return $value;
     }
-
 }

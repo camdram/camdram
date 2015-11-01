@@ -9,7 +9,6 @@ use Acts\CamdramBundle\Service\DiaryHelper;
 
 class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -42,6 +41,7 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $p->setStartDate(new \DateTime('2013-02-10'));
         $p->setEndDate(new \DateTime('2013-02-15'));
         $p->setTime(new \DateTime('19:45'));
+
         return $p;
     }
 
@@ -151,5 +151,4 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new \DateTime('2013-02-10'), $events[1]->getStartDate());
         $this->assertEquals(new \DateTime('2013-02-15'), $events[2]->getStartDate());
     }
-
 }

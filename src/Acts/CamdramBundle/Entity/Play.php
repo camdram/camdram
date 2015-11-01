@@ -4,7 +4,6 @@ namespace Acts\CamdramBundle\Entity;
 
 /**
  * Play (or other theatrical work)
- *
  */
 class Play
 {
@@ -83,5 +82,4 @@ class Play
     {
         return 'https://www.freebase.com/'.$this->getMid();
     }
-
 }

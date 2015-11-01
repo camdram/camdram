@@ -3,14 +3,12 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr as Expr;
 
 /**
  * OrganisationRepository
  */
 class OrganisationRepository extends EntityRepository
 {
-
     public function findWithService($service)
     {
         $qb = $this->createQueryBuilder('o');

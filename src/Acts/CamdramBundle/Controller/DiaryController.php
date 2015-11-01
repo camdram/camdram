@@ -5,31 +5,26 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Label;
 use FOS\RestBundle\Controller\FOSRestController;
-use Acts\DiaryBundle\Event\MultiDayEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class DiaryController
  *
  * Controller for the diary page. The diary
- *
- * @package Acts\CamdramBundle\Controller
  */
-
 class DiaryController extends FOSRestController
 {
-
     /**
      * Renders the main diary template
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-
         $now = $this->get('acts.time_service')->getCurrentTime();
         $week_start = $this->get('acts.camdram.week_manager')->previousSunday($now);
-        return $this->dateAction($week_start);
+
+        return $this->dateAction($request, $week_start);
     }
 
     /**
@@ -39,7 +34,9 @@ class DiaryController extends FOSRestController
      */
     public function toolbarAction($start_date = null)
     {
-        if (!$start_date) $start_date = $this->get('acts.time_service')->getCurrentTime();
+        if (!$start_date) {
+            $start_date = $this->get('acts.time_service')->getCurrentTime();
+        }
         $current_year = $start_date->format('Y');
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
@@ -51,7 +48,6 @@ class DiaryController extends FOSRestController
         $periods = $repo->findByYearBefore($current_year, $last_date);
         $current_period = $repo->findAt($start_date);
 
-
         return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(
             'years' => $years,
             'current_year' => $current_year,
@@ -60,45 +56,47 @@ class DiaryController extends FOSRestController
         ));
     }
 
-    private function renderDiary(Diary $diary)
+    private function renderDiary(Request $request, Diary $diary)
     {
         $view = $this->view($diary)
             ->setTemplateVar('diary');
-        if ($this->getRequest()->get('fragment') || $this->getRequest()->isXmlHttpRequest()) {
+        if ($request->get('fragment') || $request->isXmlHttpRequest()) {
             $view->setTemplate('ActsCamdramBundle:Diary:fragment.html.twig');
         } else {
             $view->setTemplate('ActsCamdramBundle:Diary:index.html.twig');
         }
+
         return $view;
     }
 
-    public function yearAction($year)
+    public function yearAction(Request $request, $year)
     {
         $start_date = new \DateTime($year.'-01-01');
-        return $this->dateAction($start_date);
+
+        return $this->dateAction($request, $start_date);
     }
 
-    public function periodAction($year, $period)
+    public function periodAction(Request $request, $year, $period)
     {
         $period = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')->getBySlugAndYear($period, $year);
         if ($period) {
-            return $this->dateAction($period->getStartAt());
+            return $this->dateAction($request, $period->getStartAt());
         } else {
             throw $this->createNotFoundException('Invalid time period specified');
         }
     }
 
-    public function weekAction($year, $period, $week)
+    public function weekAction(Request $request, $year, $period, $week)
     {
-        if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/',$week)) {
+        if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/', $week)) {
             return $this->rangeAction($week);
-        } elseif (preg_match('/[0-9]{2}\-[0-9]{2}/',$week)) {
+        } elseif (preg_match('/[0-9]{2}\-[0-9]{2}/', $week)) {
             return $this->rangeAction($year.'-'.$week);
         }
 
         $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
         if ($week) {
-            return $this->dateAction($week->getStartAt());
+            return $this->dateAction($request, $week->getStartAt());
         } else {
             throw $this->createNotFoundException('Invalid week specified');
         }
@@ -107,10 +105,12 @@ class DiaryController extends FOSRestController
     /**
      * Renders a single week.
      *
+     * @param Request $request
      * @param $date \DateTime Start date of the week to be rendered
+     *
      * @return \Acts\DiaryBundle\Diary\Diary
      */
-    public function singleWeekAction($date)
+    public function singleWeekAction(Request $request, $date)
     {
         $week_manager = $this->get('acts.camdram.week_manager');
         $start_date = $week_manager->previousSunday(new \DateTime($date));
@@ -125,18 +125,20 @@ class DiaryController extends FOSRestController
         $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
         $diary->addEvents($events);
 
-        return $this->renderDiary($diary);
+        return $this->renderDiary($request, $diary);
     }
 
-    public function dateAction($start)
+    public function dateAction(Request $request, $start)
     {
-        if (is_string($start)) $start = new \DateTime($start);
+        if (is_string($start)) {
+            $start = new \DateTime($start);
+        }
 
-        if ($this->getRequest()->query->has('end')) {
-            $end = new \DateTime($this->getRequest()->query->get('end'));
-        } elseif ($this->getRequest()->query->has('length')) {
+        if ($request->query->has('end')) {
+            $end = new \DateTime($request->query->get('end'));
+        } elseif ($request->query->has('length')) {
             $end = clone $start;
-            $end->modify($this->getRequest()->query->get('length'));
+            $end->modify($request->query->get('length'));
         } else {
             $end = clone $start;
             $end->modify('+8 weeks');
@@ -161,7 +163,6 @@ class DiaryController extends FOSRestController
         $week_manager = $this->get('acts.camdram.week_manager');
         $diary->setDateRange($week_manager->previousSunday($start), $week_manager->nextSunday($end));
 
-        return $this->renderDiary($diary);
+        return $this->renderDiary($request, $diary);
     }
-
 }

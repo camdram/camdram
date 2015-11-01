@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
@@ -26,7 +27,7 @@ class ViewVoter extends BaseVoter
         if ($object instanceof Show) {
             return $object->getAuthorisedBy() !== null;
         }
+
         return true;
     }
-
 }

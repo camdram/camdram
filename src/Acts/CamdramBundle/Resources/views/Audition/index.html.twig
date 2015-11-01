@@ -8,6 +8,7 @@
     <ul class="inline-list right">
         <li>List view</li>
         <li><a href="{{ path('get_auditions_diary') }}">Diary view</a></li>
+        <li><a href="auditions.rss">RSS Feed</a></li>
     </ul>
 
     <h3>Auditions</h3>
@@ -23,7 +24,7 @@
                 {% endif %}
                 {% set currentName = a.show.name %}
                 <hr>
-                <div id="auditions-{{ a.show.id }}">
+                <div id="{{ a.show.slug }}">
                 <h4><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a>
                 {% if a.show.society %}
                     - <a href="{{ path('get_society', {identifier: a.show.society.slug}) }}">{{ a.show.society.shortname ?: a.show.society.name }}</a>

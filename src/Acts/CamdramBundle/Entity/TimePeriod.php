@@ -16,7 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
 class TimePeriod
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -80,7 +80,7 @@ class TimePeriod
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -91,6 +91,7 @@ class TimePeriod
      * Set short_name
      *
      * @param string $shortName
+     *
      * @return TimePeriod
      */
     public function setShortName($shortName)
@@ -114,6 +115,7 @@ class TimePeriod
      * Set name
      *
      * @param string $name
+     *
      * @return TimePeriod
      */
     public function setName($name)
@@ -137,6 +139,7 @@ class TimePeriod
      * Set start_at
      *
      * @param \DateTime $startAt
+     *
      * @return TimePeriod
      */
     public function setStartAt($startAt)
@@ -160,6 +163,7 @@ class TimePeriod
      * Set end_at
      *
      * @param \DateTime $endAt
+     *
      * @return TimePeriod
      */
     public function setEndAt($endAt)
@@ -179,11 +183,11 @@ class TimePeriod
         return $this->end_at;
     }
 
-
     /**
      * Add weeks
      *
      * @param \Acts\CamdramBundle\Entity\WeekName $weeks
+     *
      * @return TimePeriod
      */
     public function addWeek(\Acts\CamdramBundle\Entity\WeekName $weeks)
@@ -217,6 +221,7 @@ class TimePeriod
      * Set full_name
      *
      * @param string $fullName
+     *
      * @return TimePeriod
      */
     public function setFullName($fullName)
@@ -240,6 +245,7 @@ class TimePeriod
      * Set slug
      *
      * @param string $slug
+     *
      * @return TimePeriod
      */
     public function setSlug($slug)
@@ -263,6 +269,7 @@ class TimePeriod
      * Add week_names
      *
      * @param \Acts\CamdramBundle\Entity\WeekName $weekNames
+     *
      * @return TimePeriod
      */
     public function addWeekName(\Acts\CamdramBundle\Entity\WeekName $weekNames)

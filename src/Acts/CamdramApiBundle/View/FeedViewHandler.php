@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramApiBundle\View;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -7,11 +8,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Zend\Feed\Writer\Feed;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
-
 use Acts\CamdramApiBundle\Service\EntityUrlGenerator;
 use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
-use Acts\CamdramBundle\Rest\PaginatedCollection;
 
 class FeedViewHandler
 {
@@ -33,6 +32,7 @@ class FeedViewHandler
 
     /**
      * Converts the viewdata to a RSS feed. Modify to suit your datastructure.
+     *
      * @return Response
      */
     public function createResponse(ViewHandler $handler, View $view, Request $request)
@@ -41,7 +41,7 @@ class FeedViewHandler
             $content = $this->createFeed($view, $request);
             $code = Response::HTTP_OK;
         } catch (UnsupportedTypeException $e) {
-            $content = "Unsupported entity";
+            $content = 'Unsupported entity';
             $code = Response::HTTP_BAD_REQUEST;
         }
 

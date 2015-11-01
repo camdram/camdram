@@ -11,8 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * The form that's presented when when adding multiple roles simultaneously
  * to a show.
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class RolesType extends AbstractType
 {
@@ -37,8 +35,8 @@ class RolesType extends AbstractType
                 ))
             ->add('type', 'choice', array(
                 'choices' => array(
-                    'cast' => 'Cast', 
-                    'prod' => 'Production Team', 
+                    'cast' => 'Cast',
+                    'prod' => 'Production Team',
                     'band' => 'Band/Orchestra'
                     )
                 ))
@@ -48,7 +46,7 @@ class RolesType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => Null));
+        $resolver->setDefaults(array('data_class' => null));
     }
 
     public function getName()

@@ -4,8 +4,6 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
-use Doctrine\ORM\Query\Expr;
-
 /**
  * PerformanceRepository
  *
@@ -22,6 +20,7 @@ class PerformanceRepository extends EntityRepository
      *
      * @param \DateTime $start
      * @param \DateTime $end
+     *
      * @return array
      */
     public function findInDateRange(\DateTime $start, \DateTime $end)
@@ -38,6 +37,7 @@ class PerformanceRepository extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end)
         ;
+
         return $qb->getQuery()->getResult();
     }
 
@@ -60,18 +60,23 @@ class PerformanceRepository extends EntityRepository
             if ($p->getShow()) {
                 $start_at = $p->getStartDate();
                 $end_at = $p->getEndDate();
-                if ($start_at < $start) $start_at = $start;
-                if ($end_at > $end) $end_at = $max_end;
+                if ($start_at < $start) {
+                    $start_at = $start;
+                }
+                if ($end_at > $end) {
+                    $end_at = $max_end;
+                }
 
                 $count += $end_at->diff($start_at)->d + 1;
                 if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0
-                    && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) $count--;
+                    && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) {
+                    $count--;
+                }
             }
         }
 
         return $count;
     }
-
 
     public function getNumberOfVenueNamesInDateRange(\DateTime $start, \DateTime $end)
     {
@@ -85,6 +90,7 @@ class PerformanceRepository extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();
+
         return current($result);
     }
 
@@ -96,20 +102,21 @@ class PerformanceRepository extends EntityRepository
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')            
+            ->andWhere('s.entered = true')
             ->andWhere('s.society = :society');
-            
-        if($from){
+
+        if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
         }
-        
-        if($to){
+
+        if ($to) {
             $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
         }
 
         $query = $query->orderBy('p.start_date', 'ASC')
             ->setParameter('society', $society)
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -117,24 +124,25 @@ class PerformanceRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->join('p.show', 's')
-            ->join('s.venue', 'v')
+            ->join('p.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised_by is not null')
             ->andWhere('s.entered = true');
-            
-        if($from){
+
+        if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
         }
-        
-        if($to){
+
+        if ($to) {
             $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
         }
-        
+
         $query = $query->andWhere('s.venue = :venue')
             ->orderBy('p.start_date', 'ASC')
             ->setParameter('venue', $venue)
             ->getQuery();
+
         return $query->getResult();
     }
 }

@@ -1,13 +1,12 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Grants access if
@@ -45,8 +44,6 @@ class OwnerVoter extends BaseVoter
             }
 
         }
-
         return $this->aclProvider->isOwner($token->getUser(), $object);
     }
-
 }

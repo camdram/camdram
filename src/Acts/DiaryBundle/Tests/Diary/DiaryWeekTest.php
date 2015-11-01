@@ -1,13 +1,12 @@
 <?php
+
 namespace Acts\DiaryBundle\Tests\Diary;
 
-use Acts\DiaryBundle\Diary\DiaryItem;
 use Acts\DiaryBundle\Diary\Week;
 use Acts\DiaryBundle\Event\SingleDayEvent;
 
-class WeekTest extends \PHPUnit_Framework_TestCase
+class DiaryWeekTest extends \PHPUnit_Framework_TestCase
 {
-
     private $week;
 
     public function setUp()
@@ -99,5 +98,4 @@ class WeekTest extends \PHPUnit_Framework_TestCase
         $rows = $this->week->getRows();
         $this->assertEquals(2, count($rows));
     }
-
 }

@@ -1,15 +1,14 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Person;
-use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ProfileVoterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter
      */
@@ -62,5 +61,4 @@ class ProfileVoterTest extends \PHPUnit_Framework_TestCase
                 $this->token, $person, array('DELETE')
             ));
     }
-
 }

@@ -1,25 +1,20 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Acts\CamdramBundle\Entity\News,
-    Acts\CamdramBundle\Entity\NewsLink,
-    Acts\CamdramBundle\Entity\NewsMention;
+use Acts\CamdramBundle\Entity\News;
+use Acts\CamdramBundle\Entity\NewsLink;
+use Acts\CamdramBundle\Entity\NewsMention;
 
 /**
  * Class EntitiesNewsCommand
  *
  * A console command to pull in the latest 'news' for societies and venues (i.e. Facebook page updates and tweets).
  * Should be run regularly from a cron job.
- *
- * @package Acts\CamdramBackendBundle\Command
  */
-
 class EntitiesNewsCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -57,14 +52,16 @@ class EntitiesNewsCommand extends ContainerAwareCommand
 
     private function addNews($service_name, $item, $entity, OutputInterface $output)
     {
-        if (!isset($item['text']) || empty($item['text'])) return;
+        if (!isset($item['text']) || empty($item['text'])) {
+            return;
+        }
 
         if (isset($item['application']['name']) && $item['application']['name'] == 'Twitter') {
             //Item is cross-posted from Twitter...no point picking it up twice
             return;
         }
 
-        $news = new News;
+        $news = new News();
         $news->setBody(htmlspecialchars_decode($item['text']));
         $news->setEntity($entity);
         $news->setRemoteId($item['id']);
@@ -73,7 +70,9 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         $news->setSource($service_name);
         $news->setPublic(true);
 
-        if (isset($item['picture'])) $news->setPicture($item['picture']);
+        if (isset($item['picture'])) {
+            $news->setPicture($item['picture']);
+        }
 
         if (isset($item['link'])) {
             if (isset($item['source'])) {
@@ -91,7 +90,9 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         }
         if (isset($item['mentions'])) {
             foreach ($item['mentions'] as $m) {
-                if (isset($m[0])) $m = $m[0];
+                if (isset($m[0])) {
+                    $m = $m[0];
+                }
                 if ($service_name == 'twitter') {
                     $m['offset'] = $m['indices'][0];
                     $m['length'] = $m['indicies'][1] - $m['indicies'][0];
@@ -115,7 +116,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
 
     private function addLink(News $news, $url, $name, $description = null, $picture = null, $source = null, $media_type = null)
     {
-        $link = new NewsLink;
+        $link = new NewsLink();
         $link->setLink($url)
             ->setName($name)
             ->setDescription(htmlspecialchars_decode($description))
@@ -128,7 +129,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
 
     private function addMention(News $news, $name, $id, $service_name, $offset, $length)
     {
-        $m = new NewsMention;
+        $m = new NewsMention();
         $m->setName($name)
             ->setName($name)
             ->setRemoteId($id)
@@ -138,5 +139,4 @@ class EntitiesNewsCommand extends ContainerAwareCommand
             ->setNews($news);
         $news->addMention($m);
     }
-
 }

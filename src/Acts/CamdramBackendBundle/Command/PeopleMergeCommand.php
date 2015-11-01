@@ -1,12 +1,11 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\NameAlias;
 
@@ -58,12 +57,13 @@ class PeopleMergeCommand extends ContainerAwareCommand
                 $possible = $utils->getMostLikelyUser($person->getName(), $possibles, 70);
                 if ($possible) {
                     //If the names are absolutely identical...assume there are two separate entries for a good reason
-                    if ($possible->getName() == $person->getName()) continue;
+                    if ($possible->getName() == $person->getName()) {
+                        continue;
+                    }
 
                     $this->handleLinkPerson($person, $possible, $output);
                 }
             }
-
         }
         $em->flush();
 
@@ -81,9 +81,6 @@ class PeopleMergeCommand extends ContainerAwareCommand
             //We're very certain that these are the same person
             $this->linkPeople($p1, $p2, $output);
         } elseif ($score > 70) {
-
-
-
             if ($dialog->askConfirmation($output, $this->buildQuestion($p1, $p2, $score))) {
                 $this->linkPeople($p1, $p2, $output);
                 $utils->registerEquivalence($p1->getName(), $p2->getName(), true);
@@ -98,7 +95,7 @@ class PeopleMergeCommand extends ContainerAwareCommand
         $question = '<question>Merge people "'.$p1->getName().'" and "'.$p2->getName()
             .'" (similarity: '.$score.'/100) :';
         foreach (array($p1, $p2) as $person) {
-            $question .= "\r\n    ".$person->getName().": ";
+            $question .= "\r\n    ".$person->getName().': ';
             foreach ($person->getRoles() as $role) {
                 $show = $role->getShow();
                 if ($show && $show->getDates()) {
@@ -108,14 +105,15 @@ class PeopleMergeCommand extends ContainerAwareCommand
                 } else {
                     $question .= $role->getRole().', ';
                 }
-
             }
-            if (count($person->getRoles()) > 0) $question = substr($question,0, -2);
+            if (count($person->getRoles()) > 0) {
+                $question = substr($question, 0, -2);
+            }
         }
         $question .= "</question>\r\n?  ";
+
         return $question;
     }
-
 
     private function mergeMapped(OutputInterface $output)
     {
@@ -123,17 +121,17 @@ class PeopleMergeCommand extends ContainerAwareCommand
 
         $people_res = $em->getRepository('ActsCamdramBundle:Person');
         foreach ($people_res->findAll() as $person) {
-
             if ($person->getMapTo()) {
                 $other = $people_res->findOneById($person->getMapTo());
                 $person->setMapTo(null);
-                if (!$other) continue;
+                if (!$other) {
+                    continue;
+                }
                 $this->linkPeople($person, $other, $output);
             }
         }
         $em->flush();
     }
-
 
     private function linkPeople(Person $p1, Person $p2, OutputInterface $output)
     {
@@ -153,9 +151,9 @@ class PeopleMergeCommand extends ContainerAwareCommand
         foreach ($p2->getUsers() as $u) {
             $u->setPerson($p1);
         }
-        $output->writeln("Merged person ".$p2->getName().' into '.$p1->getName());
+        $output->writeln('Merged person '.$p2->getName().' into '.$p1->getName());
 
-        $alias = new NameAlias;
+        $alias = new NameAlias();
         $p1->addAlias($alias);
         $alias->setName($p2->getName());
         $em->persist($alias);

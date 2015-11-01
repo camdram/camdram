@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Store
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -35,11 +35,10 @@ class Store
      */
     private $short_name;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -50,6 +49,7 @@ class Store
      * Set name
      *
      * @param string $name
+     *
      * @return Store
      */
     public function setName($name)
@@ -73,6 +73,7 @@ class Store
      * Set short_name
      *
      * @param string $shortName
+     *
      * @return Store
      */
     public function setShortName($shortName)

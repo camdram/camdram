@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class SearchCache
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -50,14 +50,14 @@ class SearchCache
     private $url;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="sindex", type="integer", nullable=false)
      */
     private $s_index;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="obsolete", type="boolean", nullable=false)
      */
@@ -70,11 +70,10 @@ class SearchCache
      */
     private $link_code;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -85,6 +84,7 @@ class SearchCache
      * Set keyword
      *
      * @param string $keyword
+     *
      * @return SearchCache
      */
     public function setKeyword($keyword)
@@ -108,6 +108,7 @@ class SearchCache
      * Set text
      *
      * @param string $text
+     *
      * @return SearchCache
      */
     public function setText($text)
@@ -131,6 +132,7 @@ class SearchCache
      * Set type
      *
      * @param string $type
+     *
      * @return SearchCache
      */
     public function setType($type)
@@ -154,6 +156,7 @@ class SearchCache
      * Set url
      *
      * @param string $url
+     *
      * @return SearchCache
      */
     public function setUrl($url)
@@ -176,7 +179,8 @@ class SearchCache
     /**
      * Set s_index
      *
-     * @param integer $sIndex
+     * @param int $sIndex
+     *
      * @return SearchCache
      */
     public function setSIndex($sIndex)
@@ -189,7 +193,7 @@ class SearchCache
     /**
      * Get s_index
      *
-     * @return integer
+     * @return int
      */
     public function getSIndex()
     {
@@ -199,7 +203,8 @@ class SearchCache
     /**
      * Set obsolete
      *
-     * @param boolean $obsolete
+     * @param bool $obsolete
+     *
      * @return SearchCache
      */
     public function setObsolete($obsolete)
@@ -212,7 +217,7 @@ class SearchCache
     /**
      * Get obsolete
      *
-     * @return boolean
+     * @return bool
      */
     public function getObsolete()
     {
@@ -223,6 +228,7 @@ class SearchCache
      * Set link_code
      *
      * @param string $linkCode
+     *
      * @return SearchCache
      */
     public function setLinkCode($linkCode)

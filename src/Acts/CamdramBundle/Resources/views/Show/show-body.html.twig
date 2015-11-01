@@ -1,0 +1,7 @@
+<p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
+<p>{{ show.description | camdram_markdown }}</p>
+{% if not show.isArchived() %}
+<p><a href="{{ path('get_show_contact', {identifier: show.slug}) }}">
+    <i class="fa fa-envelope-o"></i> Contact organizers</a>
+</p>
+{% endif %}

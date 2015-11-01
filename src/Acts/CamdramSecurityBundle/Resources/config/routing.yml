@@ -1,28 +1,28 @@
 acts_camdram_security_login:
-    pattern:   /login
+    path:   /login
     defaults:  {  _controller: ActsCamdramSecurityBundle:Default:login }
 acts_camdram_security_login_check:
-    pattern:   /login_check
+    path:   /login_check
 acts_camdram_security_link_user:
-    pattern:   /link-user
+    path:   /link-user
     defaults: { _controller: ActsCamdramSecurityBundle:Default:linkUser }
 acts_camdram_security_create_account:
-    pattern:   /create-account
+    path:   /create-account
     defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccount }
 acts_camdram_security_create_account_complete:
-    pattern:   /create-account-complete
+    path:   /create-account-complete
     defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccountComplete }
 acts_camdram_security_create_password:
-    pattern:   /create-password
+    path:   /create-password
     defaults: { _controller: ActsCamdramSecurityBundle:Default:createPassword }
 acts_camdram_security_confirm_email:
-    pattern:   /confirm-email/{email}/{token}
+    path:   /confirm-email/{email}/{token}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:confirmEmail }
 acts_camdram_security_forgotten_password:
-    pattern:   /forgotten-password
+    path:   /forgotten-password
     defaults: { _controller: ActsCamdramSecurityBundle:Default:forgottenPassword }
 acts_camdram_security_reset_password:
-    pattern:   /reset-password/{email}/{token}
+    path:   /reset-password/{email}/{token}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:resetPassword }
 
 acts_camdram_security_account:

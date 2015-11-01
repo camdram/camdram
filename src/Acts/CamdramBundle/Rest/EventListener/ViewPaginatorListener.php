@@ -1,19 +1,13 @@
 <?php
+
 namespace Acts\CamdramBundle\Rest\EventListener;
 
 use Symfony\Component\BrowserKit\Response;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
-use Symfony\Bundle\FrameworkBundle\Templating\TemplateReference;
 use Symfony\Component\Routing\RouterInterface;
-
 use FOS\RestBundle\View\View;
 use Pagerfanta\Pagerfanta;
-
 use Acts\CamdramBundle\Rest\PaginatedCollection;
-use Acts\CamdramBundle\Rest\ResponseQueryParams;
-use Acts\CamdramBundle\Rest\ResponseUrls;
-
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Renderer\HtmlRenderer;
 
@@ -23,13 +17,9 @@ use Acts\DiaryBundle\Diary\Renderer\HtmlRenderer;
  * This listener is called by Symfony after between calling the controller and sending the response to the browser.
  * It catches certain sorts of responses returned by controllers (for convenience) and converts them into a format
  * that the browser can render
- *
- * @package Acts\CamdramBundle\Rest\EventListener
  */
-
 class ViewPaginatorListener
 {
-
     /**
      * @var \Symfony\Component\Routing\RouterInterface
      */
@@ -59,7 +49,7 @@ class ViewPaginatorListener
         /** @var $view \FOS\RestBundle\View\View  */
         $view = $event->getControllerResult();
         if ($view instanceof View) {
-            if ($view->getData() instanceOf Pagerfanta) {
+            if ($view->getData() instanceof Pagerfanta) {
                 $paginator = $view->getData();
 
                 if (!$request->get('page')) {
@@ -69,7 +59,9 @@ class ViewPaginatorListener
                     $request->query->set('limit', $paginator->getMaxPerPage());
                 }
 
-                if (!$paginator->getMaxPerPage()) $paginator->setMaxPerPage($request->get('limit'));
+                if (!$paginator->getMaxPerPage()) {
+                    $paginator->setMaxPerPage($request->get('limit'));
+                }
                 $paginator->setCurrentPage($request->get('page'));
 
                 $url = $this->router->generate($request->get('_route'), array('_format' => $request->getRequestFormat('')), true);

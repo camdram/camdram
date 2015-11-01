@@ -1,0 +1,30 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Venue: {{ entity.name }} - Contact{% endblock %}
+
+{% block body %}
+
+    {% set current_subnav_id = 'venue_contact' %}
+
+    <div class="row">
+        <h2><a href="{{ path('get_venue', {identifier: entity.slug}) }}">{{ entity.name }}</a></h2>
+
+        <h3>Contact Venue</h3>
+
+        <div class="panel">
+            <p>
+                You can use this form to get in touch with the people who administrate this venue on Camdram.
+            </p>
+            <p>
+                If you are an administrator for this venue and require technical support, please visit our
+                <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a> page instead, where you can get in
+                touch with one of the Camdram admins.
+            </p>
+        </div>
+
+        <form action="{{ path("post_venue_contact", {identifier: entity.slug}) }}" method="post">
+            {{ include('ActsCamdramBundle:ContactUs:form.html.twig') }}
+        </form>
+    </div>
+
+{% endblock %}

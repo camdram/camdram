@@ -3,15 +3,9 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use JMS\SecurityExtraBundle\Annotation\Secure;
-
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\SocietyType;
-
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class SocietyController
@@ -71,6 +65,7 @@ class SocietyController extends OrganisationController
             'techie_ads' => $techie_repo->findLatestBySociety($society, 10, $now),
             'app_ads' => $applications_repo->findLatestBySociety($society, 10, $now),
         );
+
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')
             ->setTemplate('ActsCamdramBundle:Society:vacancies.html.twig')
@@ -83,11 +78,13 @@ class SocietyController extends OrganisationController
      * @param $slug
      * @param \DateTime $from
      * @param \DateTime $to
+     *
      * @return mixed
      */
     protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+
         return $performance_repo->getBySociety($this->getEntity($slug), $from, $to);
     }
 
@@ -97,11 +94,13 @@ class SocietyController extends OrganisationController
      * @param $slug
      * @param \DateTime $from
      * @param \DateTime $to
+     *
      * @return mixed
      */
     protected function getShows($slug, \DateTime $from, \DateTime $to)
     {
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+
         return $show_repo->getBySociety($this->getEntity($slug), $from, $to);
     }
 }

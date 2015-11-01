@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

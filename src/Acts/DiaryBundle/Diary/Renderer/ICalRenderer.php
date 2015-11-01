@@ -1,20 +1,16 @@
 <?php
+
 namespace Acts\DiaryBundle\Diary\Renderer;
 
 use Acts\DiaryBundle\Diary\Diary;
-use Acts\DiaryBundle\Event\EventInterface;
 use Acts\DiaryBundle\Event\MultiDayEventInterface;
 use Acts\DiaryBundle\Event\SingleDayEventInterface;
-
 use Sabre\VObject\Component\VCalendar;
-use Sabre\VObject\Document;
 
 /**
  * Class ICalRenderer
  *
  * Takes a Diary object and outputs all the events in iCal format
- *
- * @package Acts\DiaryBundle\Diary\Renderer
  */
 class ICalRenderer
 {
@@ -32,8 +28,7 @@ class ICalRenderer
                 $start_time = new \DateTime($event->getStartDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
                 $last_start_time = new \DateTime($event->getEndDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
                 $rrule = 'FREQ=DAILY;UNTIL='.$last_start_time->format('Ymd\\THis\\Z');
-            }
-            elseif ($event instanceof SingleDayEventInterface) {
+            } elseif ($event instanceof SingleDayEventInterface) {
                 $start_time = new \DateTime($event->getDate().' '.$event->getStartTime()->format('H:i:s'));
             }
 

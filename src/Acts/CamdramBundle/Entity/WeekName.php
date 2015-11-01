@@ -14,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class WeekName
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -58,7 +58,7 @@ class WeekName
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -69,6 +69,7 @@ class WeekName
      * Set name
      *
      * @param string $name
+     *
      * @return TimePeriod
      */
     public function setName($name)
@@ -92,6 +93,7 @@ class WeekName
      * Set start_at
      *
      * @param \DateTime $startAt
+     *
      * @return TimePeriod
      */
     public function setStartAt($startAt)
@@ -111,11 +113,11 @@ class WeekName
         return $this->start_at;
     }
 
-
     /**
      * Set time_period
      *
      * @param \Acts\CamdramBundle\Entity\TimePeriod $timePeriod
+     *
      * @return Week
      */
     public function setTimePeriod(\Acts\CamdramBundle\Entity\TimePeriod $timePeriod = null)
@@ -139,6 +141,7 @@ class WeekName
      * Set short_name
      *
      * @param string $shortName
+     *
      * @return WeekName
      */
     public function setShortName($shortName)
@@ -162,6 +165,7 @@ class WeekName
      * Set slug
      *
      * @param string $slug
+     *
      * @return WeekName
      */
     public function setSlug($slug)

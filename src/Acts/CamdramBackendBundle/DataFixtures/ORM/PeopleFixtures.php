@@ -1,7 +1,7 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -11,8 +11,8 @@ use Acts\CamdramBundle\Entity\Person;
 class PeopleFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager)
     {
         $file = __DIR__.'/../../Resources/data/people.yml';

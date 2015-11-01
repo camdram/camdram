@@ -5,11 +5,6 @@ namespace Acts\CamdramBackendBundle\Features\Context;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
-use Behat\Behat\Context\BehatContext;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 
 /**
@@ -34,6 +29,7 @@ class UserContext extends AbstractContext
 
         $em->persist($user);
         $em->flush();
+
         return $user;
     }
 
@@ -57,8 +53,8 @@ class UserContext extends AbstractContext
     }
 
     /**
-      * @When /^I log in as "([^"]*)" with "([^"]*)"$/
-      * @Given /^I am logged in as "([^"]*)" with "([^"]*)"$/
+     * @When /^I log in as "([^"]*)" with "([^"]*)"$/
+     * @Given /^I am logged in as "([^"]*)" with "([^"]*)"$/
      */
     public function login($email, $password)
     {
@@ -94,7 +90,6 @@ class UserContext extends AbstractContext
         $em->persist($external_user);
         $em->flush();
     }
-
 
     /**
      * @Given /^I am logged in using "([^"]*)" as "([^"]*)"$/
@@ -134,7 +129,6 @@ class UserContext extends AbstractContext
         $this->getMinkContext()->pressButton('Submit');
     }
 
-
     /**
      * @Then /^I log out$/
      */
@@ -151,6 +145,4 @@ class UserContext extends AbstractContext
         $cookies = $this->getMinkContext()->getSession()->getDriver()->getClient()->getCookieJar();
         $cookies->expire('MOCKSESSID');
     }
-
-
 }

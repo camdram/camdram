@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ShowRef
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="refid", type="integer", nullable=false)
      * @ORM\Id
@@ -38,11 +38,10 @@ class ShowRef
      */
     private $ref;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getRefid()
     {
@@ -53,6 +52,7 @@ class ShowRef
      * Set ref
      *
      * @param string $ref
+     *
      * @return ShowRef
      */
     public function setRef($ref)
@@ -76,6 +76,7 @@ class ShowRef
      * Set show_id
      *
      * @param \Acts\CamdramBundle\Entity\Show $showId
+     *
      * @return ShowRef
      */
     public function setShowId(\Acts\CamdramBundle\Entity\Show $show = null)
@@ -99,6 +100,7 @@ class ShowRef
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $show
+     *
      * @return ShowRef
      */
     public function setShow(\Acts\CamdramBundle\Entity\Show $show)
@@ -107,5 +109,4 @@ class ShowRef
 
         return $this;
     }
-
 }

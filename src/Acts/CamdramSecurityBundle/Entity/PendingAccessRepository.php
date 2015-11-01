@@ -1,10 +1,10 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\EntityRepository;
-
 use Acts\CamdramBundle\Entity\Show;
 
 class PendingAccessRepository extends EntityRepository
@@ -27,7 +27,8 @@ class PendingAccessRepository extends EntityRepository
                 'email' => $ace->getEmail()
                 ));
         $result = $qb->getQuery()->getOneOrNullResult();
-        return ($result == null) ? False : True;
+
+        return ($result == null) ? false : true;
     }
     /**
      * Find records for pending access based on resource.

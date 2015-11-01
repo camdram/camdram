@@ -1,8 +1,6 @@
 <?php
-namespace Acts\CamdramSecurityBundle\Tests\Security;
 
-use Acts\CamdramSecurityBundle\Security\NamesUtils;
-use Acts\CamdramSecurityBundle\Entity\SimilarNameRepository;
+namespace Acts\CamdramSecurityBundle\Tests\Security;
 
 class NameUtilsTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +16,6 @@ class NameUtilsTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-
         $this->utils = $this->getMockBuilder('\Acts\CamdramSecurityBundle\Security\NameUtils')
             ->disableOriginalConstructor()
             ->setMethods(array('getRepository'))
@@ -29,7 +26,6 @@ class NameUtilsTest extends \PHPUnit_Framework_TestCase
 
         $this->utils->expects($this->any())->method('getRepository')
             ->will($this->returnValue($this->repo));
-
     }
 
     public function testSamePerson()

@@ -11,6 +11,14 @@
         <meta name="description" content="Camdram is an information hub for the student performing arts community in Cambridge, England." />
 
         <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+        
+        {# Opengraph properties for facebook posts #}
+        <meta property="og:type" content="website" />
+		<meta property="og:locale" content="en_GB" />
+		<meta property="og:site_name" content="Camdram" />
+		<meta property="fb:app_id" content="464689303574287" />
+        {% block opengraph %}{% endblock %}
+        
         <link rel='icon' href='/favicon.png' type='image/png' />
 
         <title>{% block title %}{% endblock %} - Camdram</title>

@@ -19,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Performance
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -96,16 +96,14 @@ class Performance
      */
     private $other_venue;
 
-
     public function __construct()
     {
-
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -115,7 +113,8 @@ class Performance
     /**
      * Set show_id
      *
-     * @param integer $showId
+     * @param int $showId
+     *
      * @return Performance
      */
     public function setShowId($showId)
@@ -126,9 +125,23 @@ class Performance
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Get show_id
+     *
+     * @return int
+     */
+    public function getShowId()
+    {
+        return $this->show_id;
+    }
+
+    /**
+>>>>>>> master
      * Set start_date
      *
      * @param \DateTime $startDate
+     *
      * @return Performance
      */
     public function setStartDate($startDate)
@@ -152,6 +165,7 @@ class Performance
      * Set end_date
      *
      * @param \DateTime $endDate
+     *
      * @return Performance
      */
     public function setEndDate($endDate)
@@ -175,6 +189,7 @@ class Performance
      * Set exclude_date
      *
      * @param \DateTime $excludeDate
+     *
      * @return Performance
      */
     public function setExcludeDate($excludeDate)
@@ -198,6 +213,7 @@ class Performance
      * Set time
      *
      * @param \DateTime $time
+     *
      * @return Performance
      */
     public function setTime($time)
@@ -221,6 +237,7 @@ class Performance
      * Set other_venue
      *
      * @param string $venueName
+     *
      * @return Performance
      */
     public function setOtherVenue($venueName)
@@ -258,6 +275,7 @@ class Performance
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $show
+     *
      * @return Performance
      */
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
@@ -291,6 +309,7 @@ class Performance
      * Set venue
      *
      * @param \Acts\CamdramBundle\Entity\Venue $venue
+     *
      * @return Performance
      */
     public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
@@ -312,8 +331,7 @@ class Performance
         $entry = array();
 
         if (($this->exclude_date > $this->start_date) &&
-            ($this->exclude_date < $this->end_date))
-        {
+            ($this->exclude_date < $this->end_date)) {
             /* If there's a valid exclude date then they'll be two entries */
             $entry['startdate'] = $this->start_date;
             $entry['enddate'] = $this->exclude_date->modify('-1 day');
@@ -338,5 +356,4 @@ class Performance
 
         return $entries;
     }
-
 }

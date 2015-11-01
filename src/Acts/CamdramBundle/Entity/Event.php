@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Event
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -57,7 +57,7 @@ class Event
     private $description;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="linkid", type="integer", nullable=false)
      */
@@ -73,11 +73,10 @@ class Event
      */
     private $society;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -88,6 +87,7 @@ class Event
      * Set end_time
      *
      * @param \DateTime $endTime
+     *
      * @return Event
      */
     public function setEndTime($endTime)
@@ -111,6 +111,7 @@ class Event
      * Set start_time
      *
      * @param \DateTime $startTime
+     *
      * @return Event
      */
     public function setStartTime($startTime)
@@ -134,6 +135,7 @@ class Event
      * Set date
      *
      * @param \DateTime $date
+     *
      * @return Event
      */
     public function setDate($date)
@@ -157,6 +159,7 @@ class Event
      * Set description
      *
      * @param string $description
+     *
      * @return Event
      */
     public function setDescription($description)
@@ -179,7 +182,8 @@ class Event
     /**
      * Set link_id
      *
-     * @param integer $linkId
+     * @param int $linkId
+     *
      * @return Event
      */
     public function setLinkId($linkId)
@@ -192,7 +196,7 @@ class Event
     /**
      * Get link_id
      *
-     * @return integer
+     * @return int
      */
     public function getLinkId()
     {
@@ -203,6 +207,7 @@ class Event
      * Set society
      *
      * @param \Acts\CamdramBundle\Entity\Society $society
+     *
      * @return Event
      */
     public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
@@ -226,6 +231,7 @@ class Event
      * Set title
      *
      * @param string $title
+     *
      * @return Event
      */
     public function setTitle($title)

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Diary;
 
 /**
@@ -6,8 +7,6 @@ namespace Acts\DiaryBundle\Diary;
  *
  * A label that appears at a certain point in the Diary. 'Week' labels are attached to a week; 'Period' labels
  * are attached to one or more weeks.
- *
- * @package Acts\DiaryBundle\Diary
  */
 class Label
 {
@@ -16,7 +15,7 @@ class Label
 
     /**
      * @var string
-     * The type of label, either LABEL_TYPE_WEEK or LABEL_TYPE_PERIOD
+     *             The type of label, either LABEL_TYPE_WEEK or LABEL_TYPE_PERIOD
      */
     private $type;
 
@@ -49,11 +48,13 @@ class Label
 
     /**
      * @param string $text
+     *
      * @return $this
      */
     public function setText($text)
     {
         $this->text = $text;
+
         return $this;
     }
 
@@ -67,11 +68,13 @@ class Label
 
     /**
      * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -114,5 +117,4 @@ class Label
     {
         return $this->start_at;
     }
-
 }

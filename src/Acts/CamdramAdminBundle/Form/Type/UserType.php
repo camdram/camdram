@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class UserType
  *
  * The form that's presented when a user is edited
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class UserType extends AbstractType
 {

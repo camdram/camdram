@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Event\EventInterface;
@@ -8,8 +9,6 @@ use Acts\DiaryBundle\Event\EventInterface;
  *
  * A single week in the diary. Consists of a grid, with a column for each day and number of rows. Events are placed
  * into rows, roughly corresponding to their event time.
- *
- * @package Acts\DiaryBundle\Diary
  */
 class Week
 {
@@ -54,14 +53,18 @@ class Week
      * Given a particular date, returns the date of the beginning of the week
      *
      * @param \DateTime $date
+     *
      * @return \DateTime
      */
     public static function getWeekStart(\DateTime $date)
     {
         $day = $date->format('N');
         $start = clone $date;
-        if ($day < 7) $start->modify('-'.$day.' days');
+        if ($day < 7) {
+            $start->modify('-'.$day.' days');
+        }
         $start->setTime(0, 0, 0);
+
         return $start;
     }
 
@@ -69,6 +72,7 @@ class Week
      * Returns whether this week contains a given date
      *
      * @param \DateTime $date
+     *
      * @return bool
      */
     public function contains(\DateTime $date)
@@ -81,6 +85,7 @@ class Week
      *
      * @param \DateTime $start
      * @param \DateTime $end
+     *
      * @return bool
      */
     public function intersects(\DateTime $start, \DateTime $end)
@@ -99,6 +104,7 @@ class Week
         foreach ($this->rows as $row) {
             if ($row->canAccept($event)) {
                 $row->addEvent($event);
+
                 return;
             }
         }
@@ -127,6 +133,7 @@ class Week
     public function getRows()
     {
         ksort($this->rows);
+
         return $this->rows;
     }
 
@@ -190,7 +197,7 @@ class Week
         for ($date = clone $this->start; $date < $this->end; $date->modify('+1 day')) {
             $dates[] = clone $date;
         }
-        return $dates;
 
+        return $dates;
     }
 }

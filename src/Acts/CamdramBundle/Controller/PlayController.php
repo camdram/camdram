@@ -3,20 +3,15 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Acts\CamdramBundle\Entity\Play;
 
 /**
  * Class PlayController
  *
  * Experimental controller which displays all the shows of a particular play in the Freebase database
- *
- * @package Acts\CamdramBundle\Controller
  */
-
 class PlayController extends Controller
 {
-
     public function displayAction($mid)
     {
         $social = $this->get('acts.social_api.provider');
@@ -29,5 +24,4 @@ class PlayController extends Controller
 
         return $this->render('ActsCamdramBundle:Play:display.html.twig', array('play' => $play, 'shows' => $shows));
     }
-
 }

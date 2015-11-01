@@ -16,7 +16,6 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
         $this->textService = new TextService();
     }
 
-
     public function testTruncate()
     {
         $text = 'A quick brown fox';
@@ -143,5 +142,4 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
             $this->textService->stripMarkdown('The [E:websupport@camdram.net;support email] can be used for support')
         );
     }
-
 }

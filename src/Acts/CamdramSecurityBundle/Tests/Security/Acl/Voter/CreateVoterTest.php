@@ -1,15 +1,13 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 
-use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class CreateVoterTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter
      */
@@ -67,5 +65,4 @@ class CreateVoterTest extends \PHPUnit_Framework_TestCase
                 $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'), array('CREATE')
             ));
     }
-
 }

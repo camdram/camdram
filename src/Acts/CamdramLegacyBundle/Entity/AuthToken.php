@@ -9,12 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="acts_authtokens")
  * @ORM\Entity
- *
  */
 class AuthToken
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -30,14 +29,14 @@ class AuthToken
     private $token;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="siteid", type="integer", nullable=false)
      */
     private $site_id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="userid", type="integer", nullable=false)
      */
@@ -60,11 +59,10 @@ class AuthToken
      */
     private $issued;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -75,6 +73,7 @@ class AuthToken
      * Set token
      *
      * @param string $token
+     *
      * @return AuthToken
      */
     public function setToken($token)
@@ -97,7 +96,8 @@ class AuthToken
     /**
      * Set site_id
      *
-     * @param integer $siteId
+     * @param int $siteId
+     *
      * @return AuthToken
      */
     public function setSiteId($siteId)
@@ -110,7 +110,7 @@ class AuthToken
     /**
      * Get site_id
      *
-     * @return integer
+     * @return int
      */
     public function getSiteId()
     {
@@ -120,7 +120,8 @@ class AuthToken
     /**
      * Set user_id
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return AuthToken
      */
     public function setUserId($userId)
@@ -133,7 +134,7 @@ class AuthToken
     /**
      * Get user_id
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -144,6 +145,7 @@ class AuthToken
      * Set issued
      *
      * @param \DateTime $issued
+     *
      * @return AuthToken
      */
     public function setIssued($issued)
@@ -167,6 +169,7 @@ class AuthToken
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return AuthToken
      */
     public function setUser(\Acts\CamdramSecurityBundle\Entity\User $user = null)

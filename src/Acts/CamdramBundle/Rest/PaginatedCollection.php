@@ -1,14 +1,10 @@
 <?php
+
 namespace Acts\CamdramBundle\Rest;
 
 use Pagerfanta\Pagerfanta;
-use Pagerfanta\PagerfantaInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\Request;
-
-use Acts\CamdramBundle\Rest\ResponseQueryParams;
-use Acts\CamdramBundle\Rest\ResponseUrls;
-
 /**
  * Class PaginatedCollection
  *
@@ -16,8 +12,6 @@ use Acts\CamdramBundle\Rest\ResponseUrls;
  * results collection (in the form of a Pagerfanta interface) and the desired number of results per page and
  * page number. The ViewPaginatorListener detects when one of these objects is returned, and uses the information
  * contained in this class to render a template or populate a JSON/XML object as appropriate.
- *
- * @package Acts\CamdramBundle\Rest
  */
 class PaginatedCollection
 {
@@ -67,7 +61,7 @@ class PaginatedCollection
             $query['page'] = $paginator->getNextPage();
             $this->urls['next'] = $base_url.'?'.http_build_query($query);
             if ($paginator->getCurrentPage() < $paginator->getNbPages() - 1) {
-                $query['page'] = $paginator->getNbPages();;
+                $query['page'] = $paginator->getNbPages();
                 $this->urls['end'] = $base_url.'?'.http_build_query($query);
             }
         }

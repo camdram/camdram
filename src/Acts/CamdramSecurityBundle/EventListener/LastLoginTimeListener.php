@@ -1,8 +1,8 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\EventListener;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
-
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Acts\TimeMockBundle\Service\TimeService;
 use Doctrine\ORM\EntityManager;
@@ -11,7 +11,6 @@ use Doctrine\ORM\EntityManager;
  * LastLoginTimeListener
  *
  * Updates the 'last_login_at' field of the user every time he/she logs in
- *
  */
 class LastLoginTimeListener
 {

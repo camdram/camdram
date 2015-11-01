@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Catalogue
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -22,7 +22,7 @@ class Catalogue
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="storeid", type="integer", nullable=false)
      */
@@ -35,11 +35,10 @@ class Catalogue
      */
     private $description;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -49,7 +48,8 @@ class Catalogue
     /**
      * Set store_id
      *
-     * @param integer $storeId
+     * @param int $storeId
+     *
      * @return Catalogue
      */
     public function setStoreId($storeId)
@@ -62,7 +62,7 @@ class Catalogue
     /**
      * Get store_id
      *
-     * @return integer
+     * @return int
      */
     public function getStoreId()
     {
@@ -73,6 +73,7 @@ class Catalogue
      * Set description
      *
      * @param string $description
+     *
      * @return Catalogue
      */
     public function setDescription($description)

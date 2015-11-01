@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -67,6 +66,7 @@ class Venue extends Organisation
      * Set latitude
      *
      * @param float $latitude
+     *
      * @return Venue
      */
     public function setLatitude($latitude)
@@ -90,6 +90,7 @@ class Venue extends Organisation
      * Set longitude
      *
      * @param float $longitude
+     *
      * @return Venue
      */
     public function setLongitude($longitude)
@@ -121,6 +122,7 @@ class Venue extends Organisation
      * Add shows
      *
      * @param \Acts\CamdramBundle\Entity\Show $shows
+     *
      * @return Venue
      */
     public function addShow(\Acts\CamdramBundle\Entity\Show $shows)
@@ -154,6 +156,7 @@ class Venue extends Organisation
      * Set address
      *
      * @param string $address
+     *
      * @return Venue
      */
     public function setAddress($address)
@@ -202,6 +205,7 @@ class Venue extends Organisation
      * Add performances
      *
      * @param \Acts\CamdramBundle\Entity\Performance $performances
+     *
      * @return Venue
      */
     public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performances)
@@ -224,7 +228,7 @@ class Venue extends Organisation
     /**
      * Get performances
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPerformances()
     {
