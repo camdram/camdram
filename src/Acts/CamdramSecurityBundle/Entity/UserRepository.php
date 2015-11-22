@@ -35,7 +35,7 @@ class UserRepository extends EntityRepository
                 ->orWhere('u.email = :crsid')
                 ->setParameter('email', $email)
                 ->setParameter('crsid', $crsid)
-                ->getQuery()->getOneOrNullResult();
+                ->getQuery()->setMaxResults(1)->getOneOrNullResult();
         } else {
             return parent::findOneByEmail($email);
         }
