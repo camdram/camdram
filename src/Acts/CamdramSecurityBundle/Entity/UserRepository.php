@@ -40,6 +40,11 @@ class UserRepository extends EntityRepository
             return parent::findOneByEmail($email);
         }
     }
+    
+    public function findOneByFullEmail($email)
+    {
+        return parent::findOneByEmail($email);
+    }
 
     public function findByEmailAndPassword($email, $password)
     {
