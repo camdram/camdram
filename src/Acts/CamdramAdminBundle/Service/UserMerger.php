@@ -22,7 +22,7 @@ class UserMerger
     public function createForm()
     {
         return $this->formFactory->createBuilder()
-            ->add('email', 'email', array('label' => "Other user's email", 'required' => true))
+            ->add('email', 'text', array('label' => "Other user's email", 'required' => true))
             ->add('keep_user', 'choice', array(
                 'label' => 'Keep which user?',
                 'expanded' => true,
