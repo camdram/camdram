@@ -96,8 +96,10 @@ fos_rest:
             ics: true
         mime_types:
             ics: text/calendar
+            txt: text/plain
         templating_formats:
             html: true
+            txt: true
         force_redirects:
             html: true
         view_response_listener: force

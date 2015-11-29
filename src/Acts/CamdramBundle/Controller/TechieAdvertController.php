@@ -4,6 +4,8 @@ namespace Acts\CamdramBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use Symfony\Component\HttpFoundation\Request;
+
 use Acts\CamdramBundle\Entity\TechieAdvert;
 
 /**
@@ -32,13 +34,12 @@ class TechieAdvertController extends FOSRestController
      *
      * Display technician adverts from now until the end of (camdram) time
      */
-    public function cgetAction()
+    public function cgetAction(Request $request)
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
             ->findNotExpiredOrderedByDateName(new \DateTime());
-
         $view = $this->view($techieAdverts, 200)
-            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.html.twig')
+            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig')
             ->setTemplateVar('techieadverts')
         ;
 
