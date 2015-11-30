@@ -41,6 +41,11 @@ acts_camdram_about:
     defaults:
         _controller: FrameworkBundle:Template:template
         template: 'ActsCamdramBundle:Static:about.html.twig'
+acts_camdram_faq:
+    path: /faq
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: 'ActsCamdramBundle:Static:faq.html.twig'
 acts_camdram_infobase_placeholder:
     path: /infobase-placeholder
     defaults:

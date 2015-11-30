@@ -1,0 +1,58 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Frequently Asked Questions{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="twelve columns">
+        <h2>Frequently Asked Questions</h2>
+
+        <p>
+        We hope that Camdram is easy to use, but sometimes our users have a few
+        questions. We've put some answers to our most frequently asked questions
+        below. If you have a question that hasn't been answered below, then you
+        can <a href="{{ path('acts_camdram_contact_us') }}">contact us</a>.
+        </p>
+
+        <h3>My name has been misspelt, can you change it?</h3>
+
+        <p>Details on Camdram as all added by our users. For most shows it's either
+        the producer or director who adds this information, and they are normally
+        happy to change things for you.
+        </p>
+
+        <h3>Can I buy tickets for your show?</h3>
+
+        <p>Camdram provides show listings only. Tickets can usually be bought from
+        the peroformance venue. Some of the most commonly used venues for student
+        shows are listed below:
+        <ul>
+            <li><a href="http://www.adctheatre.com/">ADC Theatre</a></li>
+            <li><a href="http://www.corpusplayroom.com/">Corpus Playroom</a></li>
+            <li><a href="http://www.westroad.org/">West Road Concert Hall</a></li>
+        </ul>
+        </p>
+        
+        <h3>I've written a fantastic new play, would you like to buy the rights?</h3>
+
+        <p>Sounds great! Since Camdram provides show listings only, you may wish to contact one
+        of a number of groups that support new writing in Cambridge.
+        <ul>
+            <li><a href="http://www.writeon.org.uk/">WRiTEON</a> regularly 
+            perform new writing in Cambridge.
+            </li>
+            <li><a href="http://www.menagerie.uk.com">Menagerie Theatre Company</a> supports 
+            new writing through workshops and courses.
+            </li>
+            <li><a href="http://www.themarlowesociety.com/">The Marlowe Society's</a> The 
+            Other Prize is dedicated to new student writing.
+            </li>
+            <li><a href="https://www.adctheatre.com/get-involved/new-writing.aspx">The ADC Theatre</a> has
+            a dedicated scheme to support new student writing.
+            </li>
+        </ul>
+        <br />
+    </div>
+</div>
+{% endblock %}
+
