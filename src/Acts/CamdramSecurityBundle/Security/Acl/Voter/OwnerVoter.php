@@ -2,13 +2,15 @@
 
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
 /**
- * Grants access if
+ * Grants access if user is the 'owner' of the subject
  */
-class OwnerVoter extends AbstractVoter
+class OwnerVoter extends Voter
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -20,19 +22,15 @@ class OwnerVoter extends AbstractVoter
         $this->aclProvider = $aclProvider;
     }
 
-    protected function getSupportedClasses()
+    public function supports($attribute, $subject)
     {
-        return array('\\Acts\\CamdramSecurityBundle\\Security\\OwnableInterface');
+        return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
+                   && $subject instanceof OwnableInterface;
     }
 
-    protected function getSupportedAttributes()
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return array('VIEW', 'EDIT', 'DELETE');
-    }
-
-    protected function isGranted($attribute, $object, $user = null)
-    {
-        if ($this->aclProvider->isOwner($user, $object)) {
+        if ($this->aclProvider->isOwner($token->getUser(), $subject)) {
             return true;
         }
 

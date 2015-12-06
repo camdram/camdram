@@ -18,4 +18,5 @@ class ClassIdentity
     {
         return $this->class_name;
     }
+    
 }
