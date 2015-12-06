@@ -5,7 +5,7 @@ namespace Acts\CamdramSecurityBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
 
 class RegistrationType extends AbstractType
 {
@@ -30,7 +30,7 @@ class RegistrationType extends AbstractType
                 ),
                 'mapped'      => false,
                 'constraints' => array(
-                    new True()
+                    new IsTrue()
                 )
             ))
         ;

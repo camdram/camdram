@@ -3,50 +3,30 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * Grants access if
  */
-class AdminVoter extends BaseVoter
+class AdminVoter extends Voter
 {
-    public function supportsAttribute($attribute)
+    public function supports($attribute, $subject)
     {
-        return true;
+        return is_object($subject) && 
+                    strpos(get_class($subject), 'Acts\\') !== false;
     }
 
-    /**
-     * You can override this method when writing a voter for a specific domain
-     * class.
-     *
-     * @param string $class The class name
-     *
-     * @return Boolean
-     */
-    public function supportsClass($class)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return strpos($class, 'Acts\\') !== false;
-    }
-
-    /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     * @param \Acts\CamdramBundle\Entity\Show $object
-     * @param array $attributes
-     * @return int
-     */
-    public function isGranted($attribute, $object, TokenInterface $token)
-    {
-        if (is_object($object) && $this->isInteractiveRequest($token)) {
-            return $this->hasRole($token, 'ROLE_ADMIN')
-                || $this->hasRole($token, 'ROLE_SUPER_ADMIN');
+        if (TokenUtilities::isInteractiveRequest($token)) {
+            foreach ($token->getRoles() as $role) {
+                if ($role->getRole() == 'ROLE_ADMIN'
+                    || $role->getRole() == 'ROLE_SUPER_ADMIN') {
+                    return true;
+                }
+            }
         }
 
         return false;
     }
-
-    //Not used
-    protected function getSupportedClasses() {}
-
-    protected function getSupportedAttributes() {}
 }

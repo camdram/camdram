@@ -5,13 +5,14 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 
 /**
- * Grants access if
+ * Grants access if user is the 'owner' of the subject
  */
-class OwnerVoter extends BaseVoter
+class OwnerVoter extends Voter
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -23,27 +24,22 @@ class OwnerVoter extends BaseVoter
         $this->aclProvider = $aclProvider;
     }
 
-    protected function getSupportedClasses()
+    public function supports($attribute, $subject)
     {
-        return array('\\Acts\\CamdramSecurityBundle\\Security\\OwnableInterface');
+        return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
+                   && $subject instanceof OwnableInterface;
     }
 
-    protected function getSupportedAttributes()
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return array('VIEW', 'EDIT', 'DELETE');
-    }
-
-    protected function isGranted($attribute, $object, TokenInterface $token)
-    {
-        if ($this->isApiRequest($token) && $attribute != 'VIEW') {
-            if ($object instanceof Society || $object instanceof Venue) {
-                if (!$this->hasRole($token, 'ROLE_API_WRITE_ORG')) return false;
+        if (TokenUtilities::isApiRequest($token)) {
+            if ($subject instanceof Society || $object instanceof Venue) {
+                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG')) return false;
             }
             else {
-                if (!$this->hasRole($token, 'ROLE_API_WRITE')) return false;
+                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE')) return false;
             }
-
         }
-        return $this->aclProvider->isOwner($token->getUser(), $object);
+        return $this->aclProvider->isOwner($token->getUser(), $subject);
     }
 }

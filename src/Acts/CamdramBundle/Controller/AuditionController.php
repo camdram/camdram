@@ -4,6 +4,8 @@ namespace Acts\CamdramBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use Symfony\Component\HttpFoundation\Request;
+
 use Acts\CamdramBundle\Entity\Audition;
 
 /**
@@ -11,12 +13,12 @@ use Acts\CamdramBundle\Entity\Audition;
  */
 class AuditionController extends FOSRestController
 {
-    public function cgetAction()
+    public function cgetAction(Request $request)
     {
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(new \DateTime());
 
         $view = $this->view($auditions, 200)
-                  ->setTemplate('ActsCamdramBundle:Audition:index.html.twig')
+                  ->setTemplate('ActsCamdramBundle:Audition:index.'.$request->getRequestFormat().'.twig')
                   ->setTemplateVar('auditions')
         ;
 

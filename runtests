@@ -2,5 +2,5 @@
 PROFILE=${1:-"default"}
 set -e
 bin/phpunit -c app
-app/behat --profile $PROFILE @ActsCamdramBundle
-app/behat --profile $PROFILE @ActsCamdramSecurityBundle
+bin/behat --profile $PROFILE @ActsCamdramBundle
+bin/behat --profile $PROFILE @ActsCamdramSecurityBundle

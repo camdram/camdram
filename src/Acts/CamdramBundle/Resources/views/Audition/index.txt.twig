@@ -1,0 +1,32 @@
+{% set currentName = null %}
+{% for a in auditions %}
+{% if a.show %}
+{% if currentName != a.show.name %}
+    {%- if currentName is not empty %} 
+
+
+    {% endif %}
+    {%- set currentName = a.show.name %}
+
+***************************************************
+{{ a.show.name }}
+{%- if a.show.society %}
+ - {{ a.show.society.shortname ?: a.show.society.name }}
+{%- elseif a.show.societyname is not empty %}
+ - {{ a.show.societyname }}
+{% endif %}
+
+
+{{ a.show.audextra }}
+
+{% endif %}
+{% if a.nonscheduled -%}
+    Contact {{a.location}} before {{a.starttime|date('g:ia')}} {{a.date|date('D d M')}} for more details.
+{% set currentName = null %}
+{%- else %}
+    {{- a.date|date('D jS M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}
+{% endif %}
+{% endif %}
+{% else %}
+    There are currently no auditions listed - please check again later.
+{% endfor %}

@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramBundle\Entity\Show;
@@ -9,7 +10,7 @@ use Acts\CamdramBundle\Entity\Show;
 /**
  * Grants access to a show if the user is an admin of a society/venue of the show
  */
-class ShowVoter extends BaseVoter
+class ShowVoter extends Voter
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -21,29 +22,25 @@ class ShowVoter extends BaseVoter
         $this->aclProvider = $aclProvider;
     }
 
-    protected function getSupportedClasses()
+    public function supports($attribute, $subject)
     {
-        return array('Acts\\CamdramBundle\\Entity\\Show');
+        return in_array($attribute, ['VIEW', 'EDIT', 'APPROVE', 'DELETE'])
+                       && $subject instanceof Show;
     }
 
-    protected function getSupportedAttributes()
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return array('VIEW', 'EDIT', 'APPROVE', 'DELETE');
-    }
-
-    protected function isGranted($attribute, $object, TokenInterface $token)
-    {
-        if ($this->isApiRequest($token) && !$this->hasRole($token, 'ROLE_API_WRITE_ORG')) {
+        if (TokenUtilities::isApiRequest($token) && !TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG')) {
             return false;
         }
 
-        if ($object->getVenue()) {
-            if ($this->aclProvider->isOwner($token->getUser(), $object->getVenue())) {
+        if ($subject->getVenue()) {
+            if ($this->aclProvider->isOwner($token->getUser(), $subject->getVenue())) {
                 return true;
             }
         }
-        if ($object->getSociety()) {
-            if ($this->aclProvider->isOwner($token->getUser(), $object->getSociety())) {
+        if ($subject->getSociety()) {
+            if ($this->aclProvider->isOwner($token->getUser(), $subject->getSociety())) {
                 return true;
             }
         }

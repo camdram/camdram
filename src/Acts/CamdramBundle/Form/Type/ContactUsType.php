@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\Form\Type;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -64,7 +64,7 @@ class ContactUsType extends AbstractType
                         ],
                         'mapped'      => false,
                         'constraints' => [
-                            new True()
+                            new IsTrue()
                         ]
                     ]);
             }

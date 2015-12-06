@@ -3,37 +3,23 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Person;
 
-class ProfileVoter extends BaseVoter
+class ProfileVoter extends Voter
 {
-    /**
-     * Return an array of supported classes. This will be called by supportsClass
-     *
-     * @return array an array of supported classes, i.e. array('Acme\DemoBundle\Model\Product')
-     */
-    protected function getSupportedClasses()
+
+    public function supports($attribute, $subject)
     {
-        return array('Acts\\CamdramBundle\\Entity\\Person');
+        return $attribute == 'EDIT'
+                  && $subject instanceof Person;
     }
 
-    /**
-     * Return an array of supported attributes. This will be called by supportsAttribute
-     *
-     * @return array an array of supported attributes, i.e. array('CREATE', 'READ')
-     */
-    protected function getSupportedAttributes()
-    {
-        return array('EDIT');
-    }
-
-
-    public function isGranted($attribute, $object, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $user = $token->getUser();
-        return $user instanceof User && $user->getPerson() == $object;
+        return $user instanceof User && $user->getPerson() == $subject;
     }
 
 }
