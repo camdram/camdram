@@ -6,6 +6,8 @@ use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\DiaryHelper;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -77,8 +79,8 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $this->router->expects($this->exactly(2))
             ->method('generate')
             ->will($this->returnValueMap(array(
-                    array('get_show', array('identifier' => 'test-show'), false, '/shows/test-show'),
-                    array('get_venue', array('identifier' => 'test-venue'), false, '/venues/test-venue'),
+                    array('get_show', array('identifier' => 'test-show'), UrlGeneratorInterface::ABSOLUTE_PATH, '/shows/test-show'),
+                    array('get_venue', array('identifier' => 'test-venue'), UrlGeneratorInterface::ABSOLUTE_PATH, '/venues/test-venue'),
                 )));
 
         list($event) = $this->diaryHelper->createEventsFromPerformance($performance);
