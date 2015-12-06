@@ -38,10 +38,17 @@ class TechieAdvertController extends FOSRestController
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
             ->findNotExpiredOrderedByDateName(new \DateTime());
-        $view = $this->view($techieAdverts, 200)
-            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig')
-            ->setTemplateVar('techieadverts')
-        ;
+        
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $weeks = array();
+        foreach ($techieAdverts as $advert) {
+            $weeks[$advert->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($advert->getShow()->getPerformances());
+        }
+        $view = $this->render(
+            'ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig',
+            array('techieadverts' => $techieAdverts,
+                  'weeks' => $weeks)
+            );
 
         return $view;
     }

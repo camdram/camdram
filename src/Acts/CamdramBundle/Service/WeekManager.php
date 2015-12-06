@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Service;
 
+use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
 use Doctrine\ORM\EntityManager;
@@ -43,35 +44,6 @@ class WeekManager
         return $date;
     }
 
-    private function getWeekFromWeekName(WeekName $week_name)
-    {
-        $week = new Week();
-        $week->setStartAt($week_name->getStartAt());
-        $end_at = clone $week_name->getStartAt();
-        $end_at->modify('+1 week');
-        $week->setEndAt($end_at);
-        $week->setShortName($week_name->getShortName());
-        $week->setName($week_name->getName());
-
-        return $week;
-    }
-
-    private function getWeekFromDate(\DateTime $date)
-    {
-        $date = clone $date;
-        $week = new Week();
-        if (($period = $this->periodRepository->findAt($date))) {
-            $week->setName($period->getShortName());
-            $week->setShortName('');
-        }
-        $week->setStartAt(clone $date);
-        $date->modify('+1 week');
-        $week->setEndAt($date);
-        $week->setShortName('');
-
-        return $week;
-    }
-
     public function findBetween(\DateTime $start_date, \DateTime $end_date)
     {
         $weeks = array();
@@ -102,5 +74,65 @@ class WeekManager
         } else {
             return $this->getWeekFromDate($date);
         }
+    }
+    
+    /**
+     * Given any array of performances return a string version
+     * of the performances datses in "Cambridge terms" e.g.
+     * "Lent Week 8 to Week 9".
+     *
+     * This function is used when advertising show vacancies, for
+     * example.
+     *
+     * @param performances
+     *
+     * @return string
+     */
+    public function getPerformancesWeeksAsString($performances)
+    {
+        $res = "";
+        $start_week = $this->findAt($performances[0]->getStartDate());
+        $end_week = $this->findAt($performances[count($performances) - 1]->getEndDate());
+        if ($start_week->getName() == $end_week->getName()) {
+            /* Any show that runs for less than a week, e.g. most
+             * shows at the ADC Theatre.
+             */
+            $res = $start_week->getName();
+        }
+        else {
+            /* Less common, perhaps a two week run. */
+            $res = $start_week->getName() . " to " . $end_week->getShortName();
+        }
+
+        return $res;
+    }
+
+    private function getWeekFromWeekName(WeekName $week_name)
+    {
+        $week = new Week();
+        $week->setStartAt($week_name->getStartAt());
+        $end_at = clone $week_name->getStartAt();
+        $end_at->modify('+1 week');
+        $week->setEndAt($end_at);
+        $week->setShortName($week_name->getShortName());
+        $week->setName($week_name->getName());
+
+        return $week;
+    }
+
+    private function getWeekFromDate(\DateTime $date)
+    {
+        $date = clone $date;
+        $week = new Week();
+        if (($period = $this->periodRepository->findAt($date))) {
+            $week->setName($period->getShortName());
+            $week->setShortName('');
+        }
+        $week->setStartAt(clone $date);
+        $date->modify('+1 week');
+        $week->setEndAt($date);
+        $week->setShortName('');
+
+        return $week;
     }
 }

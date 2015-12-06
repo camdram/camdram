@@ -24,8 +24,17 @@
         {% endif %}
         <hr>
         <div id="{{ a.show ? a.show.slug : a.society.slug }}">
-        <h4><a href="{{ path((a.show ? 'get_show' : 'get_society'),
-            {identifier: entity.slug}) }}">{{ current }}</a></h4>
+        {% if a.show %}
+            {%- if weeks[a.show.id] is not empty -%}
+                {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
+                    {'show': a.show, 'weeks' : weeks[a.show.id]} %}
+            {%- else -%}
+                {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
+                    {'show': a.show} %}
+            {%- endif -%}
+        {% else %}
+            <h4><a href="{{ path('get_society', {identifier: entity.slug}) }}">{{ current }}</a></h4>
+        {% endif %}
         <h5>{{ a.text }}</h5>
         {% if a.furtherinfo %}
             <p>{{ a.furtherinfo|nl2br|detect_links }}</p>

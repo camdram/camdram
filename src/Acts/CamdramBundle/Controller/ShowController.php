@@ -66,6 +66,22 @@ class ShowController extends AbstractRestController
         }
     }
 
+    public function getAction($identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
+        
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $weeks = $week_manager->getPerformancesWeeksAsString($entity->getPerformances());
+        $view = $this->render(
+            'ActsCamdramBundle:'.$this->getController().':show.html.twig',
+            array('show' => $entity,
+            'weeks' => $weeks)
+            );
+
+        return $view;
+    }
     /**
      * Render the Admin Panel
      */

@@ -4,6 +4,8 @@ namespace Acts\CamdramBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use Symfony\Component\HttpFoundation\Request;
+
 use Acts\CamdramBundle\Entity\Application;
 
 /**
@@ -16,15 +18,23 @@ class ApplicationController extends FOSRestController
      *
      * Display application deadlines from now until the end of (camdram) time
      */
-    public function cgetAction()
+    public function cgetAction(Request $request)
     {
         $applications = array_reverse($this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
             ->findLatest(-1, new \DateTime()));
 
-        $view = $this->view($applications, 200)
-            ->setTemplate('ActsCamdramBundle:Application:index.html.twig')
-            ->setTemplateVar('applications')
-        ;
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $weeks = array();
+        foreach ($applications as $application) {
+            if ($application->getShow()) {
+                $weeks[$application->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($application->getShow()->getPerformances());
+            }
+        }
+        $view = $this->render(
+            'ActsCamdramBundle:Application:index.'.$request->getRequestFormat().'.twig',
+            array('applications' => $applications,
+                  'weeks' => $weeks)
+            );
 
         return $view;
     }

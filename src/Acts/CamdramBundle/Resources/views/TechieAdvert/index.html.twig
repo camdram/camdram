@@ -11,20 +11,17 @@
     </ul>
 
     <h3>Technical and designer roles</h3>
-
     {% spaceless %}
     {% for a in techieadverts %}
         <hr>
         <div id="{{ a.show.slug }}">
-        <h4><a href="{{ path('get_show',
-            {identifier: a.show.slug}) }}">{{ a.show.name }}</a>
-        {% if a.show.society %}
-            - <a href="{{ path('get_society', {identifier: a.show.society.slug}) }}">{{ a.show.society.shortname ?: a.show.society.name }}</a>
-        {% elseif a.show.societyname is not empty %}
-            - {{ a.show.societyname }}
-        {% endif %}
-        </h4>
-        <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with { 'performances' : a.show.performances} %}</p>
+        {%- if weeks[a.show.id] is not empty -%}
+            {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
+                {'show': a.show, 'weeks' : weeks[a.show.id]} %}
+        {%- else -%}
+            {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
+                {'show': a.show} %}
+        {%- endif -%}
         <p><strong>Looking for</strong>
         <ul>
         {% for p in a.positions|split("\n") %}

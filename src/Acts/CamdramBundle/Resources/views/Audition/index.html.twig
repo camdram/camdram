@@ -25,13 +25,13 @@
                 {% set currentName = a.show.name %}
                 <hr>
                 <div id="{{ a.show.slug }}">
-                <h4><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a>
-                {% if a.show.society %}
-                    - <a href="{{ path('get_society', {identifier: a.show.society.slug}) }}">{{ a.show.society.shortname ?: a.show.society.name }}</a>
-                {% elseif a.show.societyname is not empty %}
-                    - {{ a.show.societyname }}
-                {% endif %}
-                </h4>
+                {%- if weeks[a.show.id] is not empty -%}
+                    {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
+                        {'show': a.show, 'weeks' : weeks[a.show.id]} %}
+                {%- else -%}
+                    {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
+                        {'show': a.show} %}
+                {%- endif -%}
                     <p>{{ a.show.audextra | camdram_markdown }}</p>
                     <ul>
             {% endif %}

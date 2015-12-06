@@ -17,10 +17,16 @@ class AuditionController extends FOSRestController
     {
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(new \DateTime());
 
-        $view = $this->view($auditions, 200)
-                  ->setTemplate('ActsCamdramBundle:Audition:index.'.$request->getRequestFormat().'.twig')
-                  ->setTemplateVar('auditions')
-        ;
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $weeks = array();
+        foreach ($auditions as $audition) {
+            $weeks[$audition->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($audition->getShow()->getPerformances());
+        }
+        $view = $this->render(
+            'ActsCamdramBundle:Audition:index.'.$request->getRequestFormat().'.twig',
+            array('auditions' => $auditions,
+                  'weeks' => $weeks)
+            );
 
         return $view;
     }
