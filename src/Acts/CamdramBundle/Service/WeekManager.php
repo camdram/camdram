@@ -92,7 +92,7 @@ class WeekManager
     {
         $res = "";
         /* Guard condition. */
-        if (is_array($performances)) {
+        if ($performances != null) {
             $start_week = $this->findAt($performances[0]->getStartDate());
             /* Assume performances are supplied in chronological order. */
             $end_week = $this->findAt($performances[count($performances) - 1]->getEndDate());
