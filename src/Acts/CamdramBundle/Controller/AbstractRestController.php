@@ -56,7 +56,7 @@ abstract class AbstractRestController extends FOSRestController
      */
     protected function getRouteParams($entity)
     {
-        return array('identifier' => $entity->getSlug());
+        return array('identifier' => $entity->getSlug(), '_format' => $this->getRequest()->getRequestFormat());
     }
 
     /**
@@ -126,7 +126,6 @@ abstract class AbstractRestController extends FOSRestController
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
-
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         } else {
             return $this->view($form, 400)
@@ -162,7 +161,7 @@ abstract class AbstractRestController extends FOSRestController
 
         $form = $this->getForm($entity);
 
-        $form->bind($request);
+        $form->submit($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -172,6 +171,28 @@ abstract class AbstractRestController extends FOSRestController
             return $this->view($form, 400)
                 ->setTemplateVar('form')
                 ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
+        }
+    }
+
+    /**
+     * Action where PATCH request is submitted from edit entity form
+     */
+    public function patchAction(Request $request, $identifier)
+    {
+        $this->checkAuthenticated();
+        $entity = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+
+        $form = $this->getForm($entity);
+
+        $form->submit($request, false);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
+        } else {
+            return $this->view($form, 400)
+                ->setTemplateVar('form');
         }
     }
 

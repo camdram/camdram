@@ -3,49 +3,30 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * Grants access if
  */
-class AdminVoter implements VoterInterface
+class AdminVoter extends Voter
 {
-    public function supportsAttribute($attribute)
+    public function supports($attribute, $subject)
     {
-        return true;
+        return is_object($subject) && 
+                    strpos(get_class($subject), 'Acts\\') !== false;
     }
 
-    /**
-     * @param \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token
-     * @param \Acts\CamdramBundle\Entity\Show                                      $object
-     * @param array                                                                $attributes
-     *
-     * @return int
-     */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        if (is_object($object) && $this->supportsClass(get_class($object))) {
+        if (TokenUtilities::isInteractiveRequest($token)) {
             foreach ($token->getRoles() as $role) {
                 if ($role->getRole() == 'ROLE_ADMIN'
                     || $role->getRole() == 'ROLE_SUPER_ADMIN') {
-                    return self::ACCESS_GRANTED;
+                    return true;
                 }
             }
         }
 
-        return self::ACCESS_ABSTAIN;
-    }
-
-    /**
-     * You can override this method when writing a voter for a specific domain
-     * class.
-     *
-     * @param string $class The class name
-     *
-     * @return Boolean
-     */
-    public function supportsClass($class)
-    {
-        return strpos($class, 'Acts\\') !== false;
+        return false;
     }
 }

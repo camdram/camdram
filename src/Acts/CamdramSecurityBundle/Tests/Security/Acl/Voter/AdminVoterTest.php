@@ -32,7 +32,7 @@ class AdminVoterTest extends \PHPUnit_Framework_TestCase
         $token = new UsernamePasswordToken('testuser', 'password', 'public', array());
         $show = new Show();
         $attributes = array('EDIT');
-        $this->assertEquals(AdminVoter::ACCESS_ABSTAIN, $this->voter->vote($token, $show, $attributes));
+        $this->assertEquals(AdminVoter::ACCESS_DENIED, $this->voter->vote($token, $show, $attributes));
     }
 
     public function testNonCamdramObject()

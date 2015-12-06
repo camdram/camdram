@@ -31,10 +31,15 @@ class CreateVoter extends Voter
             ]
         );
     }
-    
+
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        //Any user can create the above classes
-        return true;
+        if (TokenUtilities::isApiRequest($token)) {
+            return TokenUtilities::hasRole($token, 'ROLE_API_WRITE')
+                || TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG'); 
+        }
+        else {
+            return true;
+        }
     }
 }

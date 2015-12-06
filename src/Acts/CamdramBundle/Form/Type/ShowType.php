@@ -53,6 +53,7 @@ class ShowType extends AbstractType
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
                 'required' => false,
+                'text_field' => 'other_venue'
             ))
             ->add('online_booking_url', 'url', array(
                 'required' => false, 'label' => 'URL for purchasing tickets'
@@ -74,7 +75,8 @@ class ShowType extends AbstractType
                     'route' => 'get_societies',
                     'class' => 'Acts\\CamdramBundle\\Entity\\Society',
                     'required' => false,
-                    'disabled' => $disabled
+                    'disabled' => $disabled,
+                    'text_field' => 'other_society'
                 ));
 
             })
@@ -90,6 +92,6 @@ class ShowType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_showtype';
+        return 'show';
     }
 }

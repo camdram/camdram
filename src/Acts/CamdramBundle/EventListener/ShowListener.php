@@ -22,7 +22,7 @@ class ShowListener
     private function updateFields(Show $show, EntityManager $om)
     {
         //ensure the venue attached to the show and to the performances are consistent
-        $this->updateVenues($show);
+        $show->updateVenues();
         //ensure the start_at and end_at fields are equal to the start and end of the first and last performances
         $this->updateTimes($show);
     }

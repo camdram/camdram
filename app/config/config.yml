@@ -109,9 +109,19 @@ fos_rest:
         view_handler: acts.camdram_api.view_handler
     routing_loader:
         default_format: html
-    body_listener: true
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.jsontoform
     format_listener: true
-    access_denied_listener: true
+    access_denied_listener:
+        json: true
+        xml: true
+    disable_csrf_role: ROLE_API
+
+jms_serializer:
+    visitors:
+        json:
+            options: JSON_PRETTY_PRINT
 
 acts_camdram:
     search_provider: %search_provider%
@@ -151,8 +161,9 @@ fos_oauth_server:
     refresh_token_class: Acts\CamdramApiBundle\Entity\RefreshToken
     auth_code_class:     Acts\CamdramApiBundle\Entity\AuthCode
     service:
+        storage: acts.camdram_api.oauth2_storage.default
         options:
-            supported_scopes: write
+            supported_scopes: api_email api_write api_write_org
 
 acts_sphinx_real_time:
     clients:

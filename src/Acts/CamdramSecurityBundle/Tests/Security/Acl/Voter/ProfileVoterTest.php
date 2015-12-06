@@ -48,7 +48,7 @@ class ProfileVoterTest extends \PHPUnit_Framework_TestCase
         $person2 = new Person();
         $person2->setName('Joe Bloggs');
         $this->user->setPerson($person2);
-        $this->assertEquals(ProfileVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(ProfileVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token, $person1, array('EDIT')
             ));
     }

@@ -36,11 +36,8 @@ class EditorVoter extends Voter
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        foreach ($token->getRoles() as $role) {
-            if ($role->getRole() == 'ROLE_EDITOR') {
-                return true;
-            }
-        }
+        return TokenUtilities::isInteractiveRequest($token)
+            && TokenUtilities::hasRole($token, 'ROLE_EDITOR');
         
         return false;
     }

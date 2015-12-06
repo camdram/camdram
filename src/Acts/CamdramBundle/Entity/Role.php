@@ -3,9 +3,10 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\VirtualProperty;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Role
@@ -15,6 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\RoleSearchIndexListener"})
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable
+ * @Serializer\XmlRoot("role")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Role
 {
@@ -24,6 +27,8 @@ class Role
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
+     * @Serializer\XmlAttribute
      */
     private $id;
 
@@ -39,6 +44,8 @@ class Role
      *
      * @ORM\Column(name="type", type="string", length=20, nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $type;
 
@@ -47,6 +54,8 @@ class Role
      *
      * @ORM\Column(name="role", type="string", length=255, nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $role;
 
@@ -55,26 +64,28 @@ class Role
      *
      * @ORM\Column(name="`order`", type="integer", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlAttribute()
      */
     private $order;
 
     /**
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
-     * @Exclude
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(route="get_show", embed=true, params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 
     /**
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="roles")
-     * @Exclude
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(route="get_person", embed=true, params={"identifier": "object.getPerson().getSlug()"})
      */
     private $person;
 
@@ -243,4 +254,5 @@ class Role
     {
         return $this->person->getName();
     }
+
 }

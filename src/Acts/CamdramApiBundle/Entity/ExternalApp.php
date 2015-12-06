@@ -55,13 +55,13 @@ class ExternalApp extends BaseClient
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    protected $is_admin;
+    protected $is_admin = false;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=1024)
      */
-    protected $website;
+    protected $website = '';
 
     /**
      * @var \DateTime
@@ -74,12 +74,6 @@ class ExternalApp extends BaseClient
      * @ORM\Column(type="datetime")
      */
     protected $updated_at;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\User", inversedBy="apps")
-     * @ORM\JoinTable(name="acts_api_authorisations")
-     */
-    private $users;
 
     public function __construct()
     {
@@ -346,7 +340,7 @@ class ExternalApp extends BaseClient
      *
      * @return ExternalApp
      */
-    public function addUser(User $users)
+    public function addUser(\Acts\CamdramSecurityBundle\Entity\User $users)
     {
         $this->users[] = $users;
 
@@ -358,7 +352,7 @@ class ExternalApp extends BaseClient
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $users
      */
-    public function removeUser(User $users)
+    public function removeUser(\Acts\CamdramSecurityBundle\Entity\User $users)
     {
         $this->users->removeElement($users);
     }
@@ -366,7 +360,7 @@ class ExternalApp extends BaseClient
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getUsers()
     {

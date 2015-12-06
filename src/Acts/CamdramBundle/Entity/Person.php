@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Acts\CamdramSecurityBundle\Entity\User;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Person
@@ -16,6 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="people_slugs",columns={"slug"})})
  * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="PersonRepository")
+ * @Serializer\XmlRoot("person")
  */
 class Person implements SearchableInterface
 {
@@ -35,6 +37,7 @@ class Person implements SearchableInterface
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Gedmo\Versioned
      * @Assert\NotBlank()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $name;
 
@@ -58,6 +61,7 @@ class Person implements SearchableInterface
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $slug;
 
@@ -112,6 +116,7 @@ class Person implements SearchableInterface
 
     /**
      * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     protected $entity_type = 'person';
 

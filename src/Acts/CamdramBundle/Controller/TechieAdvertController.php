@@ -7,6 +7,8 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
 use Acts\CamdramBundle\Entity\TechieAdvert;
+use Doctrine\Common\Collections\Criteria;
+
 
 /**
  * @RouteResource("Techie")
@@ -53,14 +55,22 @@ class TechieAdvertController extends FOSRestController
         return $view;
     }
 
-    public function getAction($identifier)
+    public function getAction($identifier, Request $request)
     {
         $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findOneByShowSlug($identifier, new \DateTime());
+            ->findOneByShowSlug($identifier, $this->get('acts.time_service')->getCurrentTime());
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {
+
             throw $this->createNotFoundException('No techie advert exists with that identifier');
+        }
+
+        if ($request->getRequestFormat() == 'html') {
+            return $this->redirect($this->generateUrl('get_techie').'#'.$identifier);
+        }
+        else {
+            return $this->view($data);
         }
     }
 }

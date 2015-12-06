@@ -13,6 +13,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\PerformanceRepository")
  * @Serializer\ExclusionPolicy("all")
  * @Gedmo\Loggable
+ * @Serializer\XmlRoot("performance")
+ *
  */
 class Performance
 {
@@ -42,6 +44,7 @@ class Performance
      * @ORM\Column(name="startdate", type="date", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $start_date;
 
@@ -51,6 +54,7 @@ class Performance
      * @ORM\Column(name="enddate", type="date", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $end_date;
 
@@ -69,6 +73,7 @@ class Performance
      * @ORM\Column(name="time", type="time", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $time;
 
@@ -87,8 +92,9 @@ class Performance
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
-    private $venue_name;
+    private $other_venue;
 
     public function __construct()
     {
@@ -119,6 +125,8 @@ class Performance
     }
 
     /**
+<<<<<<< HEAD
+=======
      * Get show_id
      *
      * @return int
@@ -129,6 +137,7 @@ class Performance
     }
 
     /**
+>>>>>>> master
      * Set start_date
      *
      * @param \DateTime $startDate
@@ -225,17 +234,27 @@ class Performance
     }
 
     /**
-     * Set venue_name
+     * Set other_venue
      *
      * @param string $venueName
      *
      * @return Performance
      */
-    public function setVenueName($venueName)
+    public function setOtherVenue($venueName)
     {
-        $this->venue_name = $venueName;
+        $this->other_venue = $venueName;
 
         return $this;
+    }
+
+    /**
+     * Get other_venue
+     *
+     * @return string
+     */
+    public function getOtherVenue()
+    {
+        return $this->other_venue;
     }
 
     /**
@@ -247,8 +266,8 @@ class Performance
     {
         if ($this->venue) {
             return $this->venue->getName();
-        } elseif ($this->venue_name) {
-            return $this->venue_name;
+        } elseif ($this->other_venue) {
+            return $this->other_venue;
         }
     }
 

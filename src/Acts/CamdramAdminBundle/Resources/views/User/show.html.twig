@@ -31,7 +31,7 @@
         {% set seen_society = false %}
         <h4>Societies</h4>
         <ul>
-        {% for org in organisations if org.entitytype == 'society' %}
+        {% for org in organisations if org.organisationType == 'society' %}
             <li><a href="{{ path('get_society', {identifier: org.slug}) }}">{{ org.name }}</a></li>
             {% set seen_society = true %}
         {% endfor %}
@@ -42,7 +42,7 @@
         {% set seen_venue = false %}
         <h4>Venues</h4>
         <ul>
-        {% for org in organisations if org.entitytype == 'venue' %}
+        {% for org in organisations if org.organisationType == 'venue' %}
             <li><a href="{{ path('get_venue', {identifier: org.slug}) }}">{{ org.name }}</a></li>
             {% set seen_venue = true %}
         {% endfor %}

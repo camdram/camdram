@@ -102,7 +102,7 @@ class DoctrineProvider implements ProviderInterface
             'description' => $entity->getDescription(),
             'slug' => $entity->getSlug(),
             'short_name' => $entity->getShortName(),
-            'entity_type' => $entity->getEntityType(),
+            'entity_type' => strtolower((new \ReflectionClass($entity))->getShortName()),
         );
         if ($entity instanceof Show || $entity instanceof Person) {
             $index_date = $entity->getIndexDate();

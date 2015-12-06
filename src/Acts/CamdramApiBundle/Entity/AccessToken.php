@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * API Access Tokens
  *
  * @ORM\Table(name="acts_api_access_tokens")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AuthorizationRepository")
  */
 class AccessToken extends BaseAccessToken
 {

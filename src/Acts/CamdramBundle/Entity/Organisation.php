@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Organisation
@@ -40,6 +41,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @Assert\NotBlank()
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $name;
 
@@ -66,6 +68,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $facebook_id;
 
@@ -75,16 +78,17 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $twitter_id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
-     * @Assert\NotBlank(groups={"new"})
+     * @ORM\Column(name="shortname", type="string", length=100, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $short_name;
 
@@ -94,6 +98,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="college", type="string", length=100, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $college;
 
@@ -116,6 +121,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $slug;
 
@@ -132,7 +138,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     private $news;
 
     /**
-     * @var \Society
+     * @var Application[]
      *
      * @ORM\OneToMany(targetEntity="Application", mappedBy="society")
      */
@@ -560,4 +566,6 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     {
         return 'society';
     }
+
+    abstract public function getOrganisationType();
 }

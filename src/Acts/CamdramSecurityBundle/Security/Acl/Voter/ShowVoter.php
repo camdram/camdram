@@ -30,6 +30,10 @@ class ShowVoter extends Voter
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
+        if (TokenUtilities::isApiRequest($token) && !TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG')) {
+            return false;
+        }
+
         if ($subject->getVenue()) {
             if ($this->aclProvider->isOwner($token->getUser(), $subject->getVenue())) {
                 return true;

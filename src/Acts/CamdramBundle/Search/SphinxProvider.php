@@ -87,7 +87,7 @@ class  SphinxProvider implements ProviderInterface
             return array();
         }
 
-        $query = SphinxQL::forge()->select('*')
+        $query = SphinxQL::create($this->client->getConnection())->select('*')
             ->from('user')->match(array('name'), $q.'*')->limit($limit);
 
         $results = $this->client->query($query);

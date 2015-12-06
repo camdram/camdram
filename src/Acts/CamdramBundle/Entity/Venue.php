@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="VenueRepository")
  * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("venue")
  */
 class Venue extends Organisation
 {
@@ -44,6 +46,7 @@ class Venue extends Organisation
 
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="venue")
+     * @Api\Link(route="get_venue_shows", params={"identifier": "object.getSlug()"})
      */
     private $shows;
 
@@ -52,10 +55,12 @@ class Venue extends Organisation
      */
     private $performances;
 
-    /**
-     * @Serializer\Expose
-     */
-    protected $entity_type = 'venue';
+    private $entity_type = 'venue';
+
+    public function getEntityType()
+    {
+        return $this->entity_type;
+    }
 
     /**
      * Set latitude
@@ -191,11 +196,6 @@ class Venue extends Organisation
         return new MapLocation($this->latitude, $this->longitude);
     }
 
-    public function getEntityType()
-    {
-        return $this->entity_type;
-    }
-
     public function getIndexDate()
     {
         return null;
@@ -233,5 +233,10 @@ class Venue extends Organisation
     public function getPerformances()
     {
         return $this->performances;
+    }
+
+    public function getOrganisationType()
+    {
+        return 'venue';
     }
 }

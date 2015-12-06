@@ -7,6 +7,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
 use Acts\CamdramBundle\Entity\Application;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @RouteResource("Application")
@@ -39,14 +40,19 @@ class ApplicationController extends FOSRestController
         return $view;
     }
 
-    public function getAction($identifier)
+    public function getAction($identifier, Request $request)
     {
-        $application = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
-            ->findOneBySlug($identifier, new \DateTime());
-        if ($application) {
-            return $this->redirect($this->generateUrl('get_applications').'#'.$application->getSlug());
-        } else {
-            throw $this->createNotFoundException('No appplication advert exists with that identifier');
+        $data = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
+            ->findOneByShowSlug($identifier, $this->get('acts.time_service')->getCurrentTime());
+        if (!$data) {
+            throw $this->createNotFoundException('No application exists with that identifier');
+        }
+
+        if ($request->getRequestFormat() == 'html') {
+            return $this->redirect($this->generateUrl('get_applications').'#'.$identifier);
+        }
+        else {
+            return $this->view($data);
         }
     }
 

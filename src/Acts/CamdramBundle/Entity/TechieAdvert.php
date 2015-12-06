@@ -6,8 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiry;
-use Acts\CamdramApiBundle\Annotation as Api;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * TechieAdvert
@@ -21,6 +22,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     template="ActsCamdramBundle:TechieAdvert:rss.html.twig")
  * @TechieAdvertExpiry()
  * @Gedmo\Loggable
+ * @Serializer\ExclusionPolicy("all")
+ * @Api\Link(route="get_techie", params={"identifier": "object.getShow().getSlug()"})
+ * @Serializer\XmlRoot("techieadvert")
  */
 class TechieAdvert
 {
@@ -30,6 +34,8 @@ class TechieAdvert
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
+     * @Serializer\XmlAttribute
      */
     private $id;
 
@@ -41,6 +47,7 @@ class TechieAdvert
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 
@@ -50,6 +57,7 @@ class TechieAdvert
      * @ORM\Column(name="positions", type="text", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $positions;
 
@@ -59,6 +67,7 @@ class TechieAdvert
      * @ORM\Column(name="contact", type="text", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $contact;
 
@@ -67,6 +76,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="deadline", type="boolean", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $deadline;
 
@@ -75,6 +85,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $deadlineTime;
 
@@ -84,6 +95,7 @@ class TechieAdvert
      * @ORM\Column(name="expiry", type="date", nullable=false)
      * @Assert\Date()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $expiry;
 
@@ -109,6 +121,7 @@ class TechieAdvert
      * @ORM\Column(name="techextra", type="text", nullable=false)
      * @Assert\Length(max=1140)
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $tech_extra = '';
 
@@ -117,6 +130,8 @@ class TechieAdvert
      *
      * @ORM\Column(name="lastupdated", type="datetime", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $last_updated;
 

@@ -257,10 +257,10 @@ class User implements \Serializable, CamdramUserInterface
     private $owned_issues;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Acts\CamdramApiBundle\Entity\ExternalApp", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="Acts\CamdramApiBundle\Entity\Authorization", mappedBy="user")
      * @Serializer\Exclude()
      */
-    private $apps;
+    private $authorizations;
 
     /**
      * @ORM\OneToMany(targetEntity="Acts\CamdramBundle\Entity\Show", mappedBy="authorised_by")
@@ -1266,36 +1266,34 @@ class User implements \Serializable, CamdramUserInterface
     }
 
     /**
-     * Add authorisedShow
+     * Add authorizations
      *
-     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
-     *
+     * @param \Acts\CamdramApiBundle\Entity\Authorization $authorizations
      * @return User
      */
-    public function addAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    public function addAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations)
     {
-        $this->authorised_shows[] = $authorisedShow;
-
+        $this->authorizations[] = $authorizations;
         return $this;
     }
 
     /**
-     * Remove authorisedShow
+     * Remove authorizations
      *
-     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
+     * @param \Acts\CamdramApiBundle\Entity\Authorization $authorizations
      */
-    public function removeAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    public function removeAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations)
     {
-        $this->authorised_shows->removeElement($authorisedShow);
+        $this->authorizations->removeElement($authorizations);
     }
 
     /**
-     * Get authorisedShows
+     * Get authorizations
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getAuthorisedShows()
+    public function getAuthorizations()
     {
-        return $this->authorised_shows;
+        return $this->authorizations;
     }
 }

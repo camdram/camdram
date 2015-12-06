@@ -35,6 +35,6 @@ class SocietyType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_societytype';
+        return 'society';
     }
 }

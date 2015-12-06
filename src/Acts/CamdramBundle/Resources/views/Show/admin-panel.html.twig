@@ -54,9 +54,9 @@
             {%- else -%}
                 {{ admin.name }}
             {%- endif -%}
-        {%- elseif admin.entityType == 'society' %}
+        {%- elseif admin.organisationType == 'society' %}
             <a href="{{ path('get_society', {identifier: admin.slug}) }}">{{ admin.name }}</a>
-        {%- elseif admin.entityType == 'venue' %}
+        {%- elseif admin.organisationType == 'venue' %}
             <a href="{{ path('get_venue', {identifier: admin.slug}) }}">{{ admin.name }}</a>
         {%- endif %}
         {{- not loop.last ? ',' }}

@@ -35,6 +35,25 @@ class ApplicationRepository extends EntityRepository
         return $qb;
     }
 
+    public function findOneByShowSlug($slug, \DateTime $now)
+    {
+        $qb = $this->createQueryBuilder('a');
+        return $qb
+            ->join('a.show', 's')
+            ->where('s.slug = :slug')
+            ->andWhere($qb->expr()->orX('a.deadlineDate > :current_date',
+                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')))
+            ->andWhere('s.slug = :slug')
+            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.entered = 1')
+            ->setParameter('slug', $slug)
+
+            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->setMaxResults(1)
+        ->getQuery()->getOneOrNullResult();
+    }
+
     public function findLatest($limit, \DateTime $now)
     {
         return $this->getLatestQuery($limit, $now)->getQuery()->getResult();
