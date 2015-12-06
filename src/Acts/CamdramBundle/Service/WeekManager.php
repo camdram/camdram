@@ -91,17 +91,21 @@ class WeekManager
     public function getPerformancesWeeksAsString($performances)
     {
         $res = "";
-        $start_week = $this->findAt($performances[0]->getStartDate());
-        $end_week = $this->findAt($performances[count($performances) - 1]->getEndDate());
-        if ($start_week->getName() == $end_week->getName()) {
-            /* Any show that runs for less than a week, e.g. most
-             * shows at the ADC Theatre.
-             */
-            $res = $start_week->getName();
-        }
-        else {
-            /* Less common, perhaps a two week run. */
-            $res = $start_week->getName() . " to " . $end_week->getShortName();
+        /* Guard condition. */
+        if (is_array($performances)) {
+            $start_week = $this->findAt($performances[0]->getStartDate());
+            /* Assume performances are supplied in chronological order. */
+            $end_week = $this->findAt($performances[count($performances) - 1]->getEndDate());
+            if ($start_week->getName() == $end_week->getName()) {
+                /* Any show that runs for less than a week, e.g. most
+                 * shows at the ADC Theatre.
+                 */
+                $res = $start_week->getName();
+            }
+            else {
+                /* Less common, perhaps a two week run. */
+                $res = $start_week->getName() . " to " . $end_week->getShortName();
+            }
         }
 
         return $res;

@@ -1,5 +1,5 @@
 <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}
-{% if weeks is defined %}
+{% if weeks is defined and weeks is not empty %}
 ({{ weeks }})
 {% endif %}
 </p>
