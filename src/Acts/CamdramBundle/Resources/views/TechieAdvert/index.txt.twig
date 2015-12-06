@@ -1,17 +1,19 @@
 {% for a in techieadverts %}
     {{- loop.index }}. {{ a.show.name }}
+{%- if weeks is defined and weeks[a.show.id] is not empty %}
+ ({{ weeks[a.show.id] }})
+{% endif %}
 {% endfor %}
 
 {% for a in techieadverts %}
 ***************************************************
-{% if a.show.society %}
-    {{- a.show.society.shortname ?: a.show.society.name }} presents
-{% elseif a.show.societyname is not empty %}
-    {{- a.show.societyname }} presents
-{% endif %}
-{{ a.show.name }}
-{% include 'ActsCamdramBundle:Performance:show.txt.twig' with {
-    'performances' : a.show.performances} %}
+{% if weeks[a.show.id] is not empty -%}
+    {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+        {'show': a.show, 'weeks' : weeks[a.show.id]} %}
+{% else -%}
+    {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+        {'show': a.show} %}
+{%- endif -%}
 
 Looking for:
 {% for p in a.positions|split("\n") %}
