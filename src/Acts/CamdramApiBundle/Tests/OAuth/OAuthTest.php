@@ -190,8 +190,16 @@ class OAuthTest extends WebTestCase
         $this->login('user1@camdram.net', 'password');
         $token = $this->performOAuthUserLogin('');
 
-        $this->client->request('POST', '/shows.json?access_token='.$token);
+        $data = array(
+            'show' => array(
+                'name' => 'Test Show', 'category' => 'drama'
+            )
+        );
+
+        $this->client->request('POST', '/shows.json?access_token='.$token, $data);
+//        var_dump($this->client->getResponse());
         $data = json_decode($this->client->getResponse()->getContent(), true);
+        //var_dump($data);die();
         $this->assertEquals(403, $data['error']['code']);
     }
 

@@ -5,6 +5,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 
 class TokenUtilities
 {
