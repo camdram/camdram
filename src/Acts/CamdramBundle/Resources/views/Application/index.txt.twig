@@ -1,0 +1,48 @@
+{% for a in applications %}
+    {{- loop.index }}. {{ a.show ? a.show.name : a.society.name }}
+{%- if a.show %}
+{%- if weeks is defined and weeks[a.show.id] is not empty %}
+ ({{ weeks[a.show.id] }})
+{% endif %}
+{%- else %}
+ - {{ a.text }}
+{% endif %}
+{% endfor %}
+
+{% set current = null %}
+{% for a in applications %}
+    {%- set entity = a.society ? a.society : a.show %}
+    {%- if entity.name != current%}
+        {%- if current != null %}
+
+        {%- endif %}
+        {%- set current = entity.name %}
+    {%- endif %}
+***************************************************
+{% if a.show %}
+    {%- if weeks[a.show.id] is not empty -%}
+        {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+            {'show': a.show, 'weeks' : weeks[a.show.id]} %}
+    {%- else -%}
+        {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+            {'show': a.show} %}
+    {%- endif -%}
+{% else %}
+    {{- current }}
+
+{% endif %}
+{{ a.text }}
+{% if a.furtherinfo %}
+
+{{ a.furtherinfo }}
+{% endif %}
+
+Deadline: {{ a.deadlinedate|date('l jS F') }}
+{%- if a.deadlinetime %}
+ {{ a.deadlinetime|date('g:ia') }}
+{% endif %}
+
+{% else %}
+    <p>There are currently no vacancies or show applications listed - please check again later.</p>
+{% endfor %}
+
