@@ -1,33 +1,28 @@
 {% for a in techieadverts %}
     {{- loop.index }}. {{ a.show.name }}
-{%- if weeks is defined and weeks[a.show.id] is not empty %}
- ({{ weeks[a.show.id] }})
+{%- if a.show.weeks is not empty %}
+ ({{ a.show.weeks }})
 {% endif %}
 {% endfor %}
 
 {% for a in techieadverts %}
 ***************************************************
-{% if weeks[a.show.id] is not empty -%}
-    {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
-        {'show': a.show, 'weeks' : weeks[a.show.id]} %}
-{% else -%}
-    {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
-        {'show': a.show} %}
-{%- endif -%}
+{% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+    {'show': a.show} %}
 
 Looking for:
 {% for p in a.positions|split("\n") %}
-    {%- if p is not empty %}
-        {{- p|title }}
-    {%- endif %}
+{%- if p is not empty %}
+{{- p|title }}
+{% endif %}
 {% endfor %}
 
+{%- if a.techextra %}
 
-{% if a.techextra %}
-    {{- a.techextra }}
+{{ a.techextra }}
 {% endif %}
 
-Contact: {{ a.contact|camdram_markdown }}
+Contact: {{ a.contact|strip_camdram_markdown }}
 Deadline for applications: {{ a.expiry|date('l jS F') }}
 {%- if a.deadlinetime and a.deadlinetime | date('H:i') != '00:00' %}
 , {{ a.deadlinetime | date('g:ia') }}

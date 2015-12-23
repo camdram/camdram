@@ -109,7 +109,7 @@ services:
 
     acts.camdram.listener.show:
         class: Acts\CamdramBundle\EventListener\ShowListener
-        arguments: [@acts.camdram.moderation_manager]
+        arguments: [@acts.camdram.moderation_manager, @acts.camdram.week_manager]
         tags:
             - { name: doctrine.entity_listener }
 

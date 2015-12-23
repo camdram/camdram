@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\EventListener;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
+use Acts\CamdramBundle\Service\WeekManager;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
@@ -14,9 +15,12 @@ class ShowListener
 {
     private $moderationManager;
 
-    public function __construct(ModerationManager $moderationManager)
+    private $weekManager;
+
+    public function __construct(ModerationManager $moderationManager, WeekManager $weekManager)
     {
         $this->moderationManager = $moderationManager;
+        $this->weekManager = $weekManager;
     }
 
     private function updateFields(Show $show, EntityManager $om)
@@ -30,6 +34,12 @@ class ShowListener
     public function prePersist(Show $show, LifecycleEventArgs $event)
     {
         $this->updateFields($show, $event->getObjectManager());
+    }
+
+    public function postLoad(Show $show, LifecycleEventArgs $event)
+    {
+        $weeks = $this->weekManager->getPerformancesWeeksAsString($show->getPerformances());
+        $show->setWeeks($weeks);
     }
 
     public function postPersist(Show $show, LifecycleEventArgs $event)

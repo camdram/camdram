@@ -23,20 +23,11 @@ class ApplicationController extends FOSRestController
     {
         $applications = array_reverse($this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
             ->findLatest(-1, new \DateTime()));
-
-        $week_manager = $this->get('acts.camdram.week_manager');
-        $weeks = array();
-        foreach ($applications as $application) {
-            if ($application->getShow()) {
-                $weeks[$application->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($application->getShow()->getPerformances());
-            }
-        }
-        $view = $this->render(
-            'ActsCamdramBundle:Application:index.'.$request->getRequestFormat().'.twig',
-            array('applications' => $applications,
-                  'weeks' => $weeks)
-            );
-
+        
+        $view = $this->view($applications, 200)
+                  ->setTemplate('ActsCamdramBundle:Application:index.'.$request->getRequestFormat().'.twig')
+                   ->setTemplateVar('applications')
+               ;
         return $view;
     }
 

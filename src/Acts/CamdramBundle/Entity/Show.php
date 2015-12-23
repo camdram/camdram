@@ -314,7 +314,7 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_date" = "ASC"})
      * @Serializer\Expose()
-     * @Serializer\XmlList(inline = true, entry = "performance")
+     * @Serializer\XmlList(entry = "performance")
      */
     private $performances;
 
@@ -366,6 +366,8 @@ class Show implements SearchableInterface, OwnableInterface
      */
     private $online_booking_url;
 
+    private $weeks = array();
+
     private $entity_type = 'show';
 
     public function getEntityType()
@@ -383,7 +385,6 @@ class Show implements SearchableInterface, OwnableInterface
     public function setDates($dates)
     {
         $this->dates = $dates;
-
         return $this;
     }
 
@@ -1630,7 +1631,7 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-     
+
      */
     public function getAllPerformances()
     {
@@ -1742,5 +1743,15 @@ class Show implements SearchableInterface, OwnableInterface
         }
 
         return $archived;
+    }
+
+    public function getWeeks()
+    {
+        return $this->weeks;
+    }
+
+    public function setWeeks($weeks)
+    {
+        $this->weeks = $weeks;
     }
 }

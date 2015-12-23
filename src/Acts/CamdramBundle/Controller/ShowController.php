@@ -71,14 +71,12 @@ class ShowController extends AbstractRestController
         $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
-        
-        $week_manager = $this->get('acts.camdram.week_manager');
-        $weeks = $week_manager->getPerformancesWeeksAsString($entity->getPerformances());
-        $view = $this->render(
-            'ActsCamdramBundle:'.$this->getController().':show.html.twig',
-            array('show' => $entity,
-            'weeks' => $weeks)
-            );
+
+        $view = $this->view($entity, 200)
+            ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
+            ->setTemplateVar($this->type)
+        ;
+        return $view;
 
         return $view;
     }

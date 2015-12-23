@@ -8,8 +8,7 @@
 {% endif %}
 {{ show.name }}
 {% include 'ActsCamdramBundle:Performance:show.txt.twig' with {
-    'performances' : show.performances} %}
-{% if weeks is defined and weeks is not empty %}
-({{ weeks }})
+    'performances' : show.performances} -%}
+{%- if show.weeks is not empty -%}
+{{- show.weeks }}
 {% endif %}
-

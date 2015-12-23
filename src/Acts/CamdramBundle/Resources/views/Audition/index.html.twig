@@ -7,9 +7,9 @@
 
     <ul class="inline-list right">
         <li>List view</li>
-        <li><a href="{{ path('get_auditions_diary') }}"><i class="fa fa-calendar"></i> Diary view</a></li>
+        <li><a href="{{ path('get_auditions_diary') }}"><i class="fa fa-calendar"></i> Diary View</a></li>
         <li><a href="auditions.rss"><i class="fa fa-rss"></i> RSS Feed</a></li>
-        <li><a href="auditions.txt"><i class="fa fa-file-text-o"></i> Plaintext</a></li>
+        <li><a href="auditions.txt"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
     </ul>
 
     <h3>Auditions</h3>
@@ -19,20 +19,15 @@
     {% for a in auditions %}
         {% if a.show %}
             {% if currentName != a.show.name %}
-                {% if currentName is not empty %} 
+                {% if currentName is not empty %}
                     </ul>
                     </div>
                 {% endif %}
                 {% set currentName = a.show.name %}
                 <hr>
                 <div id="{{ a.show.slug }}">
-                {%- if weeks[a.show.id] is not empty -%}
-                    {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
-                        {'show': a.show, 'weeks' : weeks[a.show.id]} %}
-                {%- else -%}
                     {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
                         {'show': a.show} %}
-                {%- endif -%}
                     <p>{{ a.show.audextra | camdram_markdown }}</p>
                     <ul>
             {% endif %}

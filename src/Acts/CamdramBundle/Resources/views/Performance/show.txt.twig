@@ -10,14 +10,13 @@
 {% endif %}
 {%- if p.venue %}
  at {{ p.venue.name }}
-{%- elseif p.venuename is not empty %}
+{% elseif p.venuename is not empty %}
  at {{ p.venuename }}
-{%- else %}
+{% else %}
  Venue to be confirmed
 {% endif %}
 {% endfor %}
 {% else %}
 Dates and venues to be confirmed.
 {% endif %}
-
 {# Make sure the last row is complete  #}

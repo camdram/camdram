@@ -6,9 +6,9 @@
 {% block vacancies_body %}
 
    <ul class="inline-list right">
-        <li>List view</li>
+        <li>List View</li>
         <li><a href="applications.rss"><i class="fa fa-rss"></i> RSS Feed</a></li>
-        <li><a href="applications.txt"><i class="fa fa-file-text-o"></i> Plaintext</a></li>
+        <li><a href="applications.txt"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
     </ul>
 
 	<h3>Producer/director roles and show applications</h3>
@@ -27,13 +27,7 @@
         <hr>
         <div id="{{ a.show ? a.show.slug : a.society.slug }}">
         {% if a.show %}
-            {%- if weeks[a.show.id] is not empty -%}
-                {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
-                    {'show': a.show, 'weeks' : weeks[a.show.id]} %}
-            {%- else -%}
-                {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
-                    {'show': a.show} %}
-            {%- endif -%}
+            {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with {'show': a.show} %}
         {% else %}
             <h4><a href="{{ path('get_society', {identifier: entity.slug}) }}">{{ current }}</a></h4>
         {% endif %}

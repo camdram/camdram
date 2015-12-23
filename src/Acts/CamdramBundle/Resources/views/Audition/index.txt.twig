@@ -2,19 +2,14 @@
 {% for a in auditions %}
 {% if a.show %}
 {% if currentName != a.show.name %}
-    {%- if currentName is not empty %} 
+    {%- if currentName is not empty %}
         {{ auditions[loop.index0 - 1].show.audextra }}
     {% endif %}
     {%- set currentName = a.show.name %}
 
 ***************************************************
-{% if weeks[a.show.id] is not empty -%}
-    {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
-        {'show': a.show, 'weeks' : weeks[a.show.id]} %}
-{% else -%}
-    {% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
-        {'show': a.show} %}
-{%- endif -%}
+{% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+    {'show': a.show} %}
 
 Is holding auditions:
 {% endif %}
