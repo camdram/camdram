@@ -51,7 +51,7 @@
             <p class="show-society">{{ show.societyname }} presents...</p>
         {% endif %}
         <h2>{{ show.name }}{% if show.author %}<br/><small> By {{ show.author }}</small>{% endif %}</h2>
-		
+
 		{# Display show image #}
         {% if show.image %}
             <div class="row">
@@ -105,12 +105,12 @@
                 {% for p in show.activeTechieAdvert.positions|split("\n") %}
                     {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}
                     {{- p }}
-                - <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
-            {% endfor %}
+                {% endfor %}
+            - <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
         {% endif %}
         {% if show.activeApplication %}
             <p>{{ show.activeApplication.text() }} -
-            <a href="{{ path('get_application', {identifier: advert.show.slug}) }}">more details</a></p>
+            <a href="{{ path('get_application', {identifier: show.activeApplication.show.slug}) }}">more details</a></p>
         {% endif %}
     </div>
 </div>
