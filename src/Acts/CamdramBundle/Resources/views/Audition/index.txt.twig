@@ -1,4 +1,18 @@
 {% set currentName = null %}
+{% set showIndex = 0 %}
+{% for a in auditions %}
+{% if currentName != a.show.name %}
+    {%- if currentName is not empty -%}
+        {{- auditions[loop.index0 - 1].show.name }}
+{%- if auditions[loop.index0 - 1].show.weeks %}
+ ({{ auditions[loop.index0 - 1].show.weeks }})
+{% endif %}
+{% endif %}
+{%- set currentName = a.show.name %}
+{% endif %}
+{% endfor %}
+
+{% set currentName = null %}
 {% for a in auditions %}
 {% if a.show %}
 {% if currentName != a.show.name %}
