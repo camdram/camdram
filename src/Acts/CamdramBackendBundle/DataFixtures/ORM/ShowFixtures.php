@@ -156,7 +156,7 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     private function allocateVenue($item)
     {
         if (mt_rand(0, 5) == 0) {
-            $item->setVenueName('Random Venue '.mt_rand(1, 100));
+            $item->setOtherVenue('Random Venue '.mt_rand(1, 100));
         } else {
             return $item->setVenue($this->venue_repo->findOneById($this->venue_ids[mt_rand(0, count($this->venue_ids) - 1)]));
         }
@@ -165,7 +165,7 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     private function allocateSociety(Show $show)
     {
         if (mt_rand(0, 3) == 0) {
-            $show->setSocietyName('Random Society '.mt_rand(1, 100));
+            $show->setOtherSociety('Random Society '.mt_rand(1, 100));
         } else {
             $show->setSociety($this->society_repo->findOneById($this->society_ids[mt_rand(0, count($this->society_ids) - 1)]));
         }
