@@ -26,7 +26,7 @@ Use one of the following commands to install the necessary packages required to 
     
 Make sure you have [Macports]( https://www.macports.org/) installed and up to date.
 
-    $ sudo port install git php55 php55-curl php55-intl php55-sqlite php55-openssl php55-mysql php55-mbstring php55-gd
+    $ sudo port install git php55 php55-curl php55-intl php55-sqlite php55-openssl php55-mysql php55-mbstring php55-gd php55-iconv
 
 Additionally, make sure to replace every invocation of "php" with "php55" below.
 
