@@ -5,14 +5,14 @@ The portal website for student theatre in Cambridge
 
 [![Build Status](https://travis-ci.org/camdram/camdram.png?branch=master)](https://travis-ci.org/camdram/camdram)
 
-Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and Github. A brief overview of the software stack can be found [here](https://github.com/camdram/camdram/wiki/Software-Stack). [Github's help](http://help.github.com) is comprehensive and can be used to find more information about using Git in general. 
+Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and Github. A brief overview of the software stack can be found [here](https://github.com/camdram/camdram/wiki/Software-Stack). [Github's help](http://help.github.com) is comprehensive and can be used to find more information about using Git in general.
 
-If you encounter any problems with the instructions below, please [create a Github issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net. 
+If you encounter any problems with the instructions below, please [create a Github issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net.
 
 1) Install programs
 --------------------
 
-Use one of the following commands to install the necessary packages required to run Camdram
+Use one of the following commands to install the necessary packages required to run Camdram. Camdram currently runs on PHP 5.5.
 
 ###Debian-based distributions, e.g. Ubuntu
 
@@ -23,7 +23,7 @@ Use one of the following commands to install the necessary packages required to 
     $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
 ###OSX
-    
+
 Make sure you have [Macports]( https://www.macports.org/) installed and up to date.
 
     $ sudo port install git php55 php55-curl php55-intl php55-sqlite php55-openssl php55-mysql php55-mbstring php55-gd php55-iconv
@@ -49,7 +49,7 @@ Symfony (and therefore Camdram) uses [Composer](https://getcomposer.org/) to dow
 This downloads a file named 'composer.phar'. Run this to download all the PHP libaries:
 
     php composer.phar install -n
-    
+
 If this generates an error `unable to open database file`, check if the subdirectory app/data exists.  If not, create it (`mkdir app/data`).  
 
 If app/data/orm.db and app/data/odm.db already exist, delete them or chown them to your user and try again.
@@ -60,7 +60,7 @@ If app/data/orm.db and app/data/odm.db already exist, delete them or chown them 
 Run the command below to generate a SQLite datastore which contains randomly-generated sample data
 
     php app/console camdram:database:update
-    
+
 Should this (or any other php commands) produce 'out of memory' errors ("allowed memory size exhausted" or similar), you can allow more memory for this command only like this:
 
     php -d memory_limit=512M app/console camdram:database:update
@@ -79,7 +79,7 @@ If this produces a Date/Time related error, make sure that the function "date.ti
 6) Read the Wiki
 ----------------
 
-[The Wiki][1] has various pieces of information about both the current and in-development 
+[The Wiki][1] has various pieces of information about both the current and in-development
 versions of Camdram. Reading through those pages can give insight into the more esoteric
 parts of the system.
 
@@ -109,9 +109,9 @@ This will pull in the latest code, update any changes to the dependencies and up
 
  * The site uses the Symfony PHP framework - (read the documentation)[http://symfony.com/doc/2.3/index.html]
  * Use the Github issue tracker to get an idea what we're currently working on.
-   If you think you know how to do something, write the code, commit it, and 
+   If you think you know how to do something, write the code, commit it, and
    submit a pull request.
- * If you want to discuss how to implement a new feature or how to fix a bug, 
+ * If you want to discuss how to implement a new feature or how to fix a bug,
    get in touch with one of the developers. It would probably be wise to get in
    touch before starting on any significant projects to avoid wasted effort!
  * Visit http://try.github.io/ if you're not familiar with Git.
@@ -119,7 +119,7 @@ This will pull in the latest code, update any changes to the dependencies and up
    If this is far too daunting, a poorly styled but functional improvement is better than no improvement.
    You can use http://cs.sensiolabs.org/ to (mostly) clean your code up after writing it.
 
-9) Check your code 
+9) Check your code
 --------------------
 
 Depending on the type of change, make sure to check it works as a logged-in and/or non-logged in visitor.
