@@ -4,7 +4,7 @@ acts_camdram_diary_date:
         _controller: ActsCamdramBundle:Diary:date
         _format: html
     requirements:
-        start: "[0-9]{4}\-[0-9]{2}\-[0-9]{2}"
+        start: '[0-9]{4}\-[0-9]{2}\-[0-9]{2}'
 
 acts_camdram_diary_year:
     path:  /{year}.{_format}
@@ -35,4 +35,3 @@ acts_camdram_diary_single_week:
     defaults:
         _controller: ActsCamdramBundle:Diary:singleWeek
         _format: html
-

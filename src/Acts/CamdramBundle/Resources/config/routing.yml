@@ -30,7 +30,7 @@ acts_camdram_privacy:
 acts_camdram_roles:
     type:     rest
     prefix:   /
-    resource: "Acts\CamdramBundle\Controller\RoleController"
+    resource: Acts\CamdramBundle\Controller\RoleController
 acts_camdram_signinsheet:
     path: /shows/{slug}/signinsheet.{_format}
     defaults: { _controller: ActsCamdramBundle:Signinsheet:index, slug: ~, _format: html }

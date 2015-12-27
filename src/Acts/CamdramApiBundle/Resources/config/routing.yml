@@ -8,4 +8,4 @@ acts_camdram_api_test_console:
 
 acts_camdram_api_apps:
     type: rest
-    resource: "Acts\CamdramApiBundle\Controller\AppController"
+    resource: Acts\CamdramApiBundle\Controller\AppController

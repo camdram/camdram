@@ -28,7 +28,7 @@ monolog:
 assetic:
     filters:
         closure:
-            apply_to: "\.js$"
+            apply_to: '\.js$'
             compression_level: ADVANCED_OPTIMIZATIONS
     workers:
         cache_busting: ~

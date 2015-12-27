@@ -10,24 +10,24 @@ services:
 
     acts.camdram_api.annotation_reader:
         class: Acts\CamdramApiBundle\Configuration\AnnotationReader
-        arguments: [@annotation_reader, @doctrine.orm.entity_manager]
+        arguments: ['@annotation_reader', '@doctrine.orm.entity_manager']
 
     acts.camdram_api.view_handler:
         parent: fos_rest.view_handler.default
         calls:
-            - ['registerHandler', [ 'rss', [@acts.camdram_api.feed_view_handler, 'createResponse'] ] ]
-            - ['registerHandler', [ 'ics', [@acts.camdram_api.ical_view_handler, 'createResponse'] ] ]
+            - ['registerHandler', [ 'rss', ['@acts.camdram_api.feed_view_handler', 'createResponse'] ] ]
+            - ['registerHandler', [ 'ics', ['@acts.camdram_api.ical_view_handler', 'createResponse'] ] ]
 
     acts.camdram_api.entity_url_generator:
         class: Acts\CamdramApiBundle\Service\EntityUrlGenerator
-        arguments: [@router]
+        arguments: ['@router']
 
     acts.camdram_api.feed_view_handler:
         class: Acts\CamdramApiBundle\View\FeedViewHandler
         arguments:
-            - @acts.camdram_api.annotation_reader
-            - @twig
-            - @acts.camdram_api.entity_url_generator
+            - '@acts.camdram_api.annotation_reader'
+            - '@twig'
+            - '@acts.camdram_api.entity_url_generator'
             - %mailer_sender_address%
 
     acts.camdram_api.ical_view_handler:
@@ -35,13 +35,13 @@ services:
 
     acts.camdram_api.json_subscriber:
         class: Acts\CamdramApiBundle\Serializer\JsonEventSubscriber
-        arguments: [@acts.camdram_api.annotation_reader, @router]
+        arguments: ['@acts.camdram_api.annotation_reader', '@router']
         tags:
             - {name: jms_serializer.event_subscriber}
 
     acts.camdram_api.xml_subscriber:
         class: Acts\CamdramApiBundle\Serializer\XmlEventSubscriber
-        arguments: [@acts.camdram_api.annotation_reader, @router]
+        arguments: ['@acts.camdram_api.annotation_reader', '@router']
         tags:
             - {name: jms_serializer.event_subscriber}
 
@@ -51,7 +51,7 @@ services:
 
     oauth_event_listener:
         class: Acts\CamdramApiBundle\EventListener\OAuthEventListener
-        arguments: [@doctrine.orm.entity_manager, @request_stack]
+        arguments: ['@doctrine.orm.entity_manager', '@request_stack']
         tags:
             - { name: kernel.event_listener, event: fos_oauth_server.pre_authorization_process, method: onPreAuthorizationProcess }
             - { name: kernel.event_listener, event: fos_oauth_server.post_authorization_process, method: onPostAuthorizationProcess }
