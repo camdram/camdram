@@ -101,7 +101,7 @@ At a later date, once your local repository has become out of sync with Gituhb (
     php composer.phar install
     php app/console camdram:database:update
 
-This will pull in the latest code, update any changes to the dependencies and update the database. If you have forked the project then be sure that you have followed all of the instructions in the help guide, particularly noting the need to [configure remotes](https://getcomposer.org/). The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
+This will pull in the latest code, update any changes to the dependencies and update the database. If you have forked the project then be sure that you have followed all of the instructions in the help guide, particularly noting the need to [configure remotes](https://help.github.com/articles/fork-a-repo/#step-3-configure-git-to-sync-your-fork-with-the-original-spoon-knife-repository). The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
 
 
 8) Write some code
