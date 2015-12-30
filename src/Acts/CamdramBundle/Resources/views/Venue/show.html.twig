@@ -10,19 +10,25 @@
     {% endif %}
 
       <div class="row">
-          <div class="large-12 columns panel">
-              <h2>{{ venue.name }}</h2>
-              <h5>{% if venue.address %}{{ venue.address }}{% endif %}</h5>
+          <div class="large-12 columns panel" itemscope="" itemtype="http://schema.org/PerformingArtsTheater">
+              <h2 itemprop="name">{{ venue.name }}</h2>
+              <h5 itemprop="address">{% if venue.address %}{{ venue.address }}{% endif %}</h5>
 
               {% if venue.college %}<p>College: {{ venue.college }}</p>{% endif %}
               <div class="row">
                   <div class="large-4 columns">
-                      {% if venue.latitude %}<p><div class="map-small">{{ render(url('acts_camdram_venues_map', {identifier: venue.slug})) }}</div></p>{% endif %}
+                      {% if venue.latitude %}
+                          <p><div class="map-small">{{ render(url('acts_camdram_venues_map', {identifier: venue.slug})) }}</div></p>
+                          <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                            <meta itemprop="latitude" content="{{ venue.latitude }}"/>
+                            <meta itemprop="longitude" content="{{ venue.longitude }}"/>
+                          </div>
+                      {% endif %}
                       {% if venue.image %}<p><a href="{{ image_url(venue.image, 1024, 768) }}" class="fancybox">{{ render_image(venue.image, 270, 270) }}</a></p>{% endif %}
                   </div>
                   <div class="large-8 columns">
 
-                      <p>{{ venue.description | camdram_markdown }}</p>
+                      <p itemprop="description">{{ venue.description | camdram_markdown }}</p>
                       {% if has_owners(venue) %}
                         <p><a href="{{ path('get_venue_contact', {identifier: venue.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ venue.name }}</a></p>
                       {% endif %}

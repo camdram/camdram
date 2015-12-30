@@ -10,13 +10,25 @@
         <div class="small-11 columns">
         {# Pretify name-less roles held by people. #}
         {% if role.role %}
-            {{ role.role }} -
+            {%- if type == 'cast' -%}
+                <span itemprop="character" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">{{ role.role }}</span></span> -
+            {%- else -%}
+                {{ role.role }} -
+            {%- endif -%}
             {% set current_role = role.role %}
         {% endif %}
     {%- else -%}
         ,
     {% endif %}
-    <a href="{{ path('get_person', {identifier: role.person.slug}) }}">{{ role.person.name }}</a>
+    <span itemprop="
+    {%- if type == 'cast' or type == 'band' -%}
+        performer
+    {%- else -%}
+        contributor
+    {%- endif -%}
+    " itemscope="" itemtype="http://schema.org/Person">
+        <a itemprop="url" href="{{ path('get_person', {identifier: role.person.slug}) }}"><span itemprop="name">{{ role.person.name }}</span></a>
+    </span>
     {%- if editable -%}
     </div><div class-"small-1 columns"><i class="fa fa-arrows-v"></i>&nbsp;<span data-tooltip class="has-tip" title="Remove this role."><a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a></span>
     {%- endif -%}

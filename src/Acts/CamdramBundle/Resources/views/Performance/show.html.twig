@@ -1,8 +1,20 @@
 {# A template for displaying the performance details for a show #}
 {% if performances|length > 0  %}
+    <meta itemprop="startDate" content="{{ performances[0].startdate|date('Y-m-d') }}"/>
+    <div itemprop="location" itemscope="" itemtype="http://schema.org/PerformingArtsTheater">
+        <meta itemprop="name" content="
+        {%- if performances[0].venue -%}
+            {{- performances[0].venue.name -}}
+        {%- elseif p.venuename is not empty -%}
+            {{- performances[0].venuename -}}
+        {%- else -%}
+            TBC
+        {%- endif -%}
+        "/><meta itemprop="address" content="United Kingdom"/>
+    </div>
     {% for p in performances %}
-        {{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}
-        {% if date(p.startdate) != date(p.enddate) %}
+        {{- p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}
+        {%- if date(p.startdate) != date(p.enddate) -%}
             {# Show the duration #}
              - {{ p.enddate|date('D jS F Y') }},
             {% if (p.excludedate > p.startdate) and (p.excludedate < p.enddate) %}
@@ -29,3 +41,4 @@
 {% endif %}
 
 {# Make sure the last row is complete  #}
+

@@ -23,7 +23,8 @@
 
 <div class="row">
 
-    <div class="large-12 columns panel">
+    <div class="large-12 columns panel" itemscope="" itemtype="http://schema.org/TheaterEvent">
+        <meta itemprop="name" content="{{ show.name }}"/>
         <ul class="inline-list right">
             {% if show.hasFuturePerformances() %}
                 {% if show.onlineBookingUrl %}
@@ -46,17 +47,26 @@
         </ul>
 
         {% if show.society %}
-            <p class="show-society"><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
+            <p class="show-society" itemprop="organizer" itemscope="" itemtype="http://schema.org/TheaterGroup">
+                <a href="{{ path('get_society', {identifier: show.society.slug}) }}" itemprop="url"><span itemprop="name">{{ show.society.name }}</span></a> presents...
+            </p>
         {% elseif show.societyname is not empty %}
-            <p class="show-society">{{ show.societyname }} presents...</p>
+            <p class="show-society" itemprop="organizer" itemscope="" itemtype="http://schema.org/TheaterGroup">
+                <span itemprop="name" content="{{ show.societyname }}">{{ show.societyname }}</span> presents...
+            </p>
         {% endif %}
-        <h2>{{ show.name }}{% if show.author %}<br/><small> By {{ show.author }}</small>{% endif %}</h2>
-
+        <div itemprop="workPerformed" itemscope="" itemtype="http://schema.org/CreativeWork">
+            <h2><span itemprop="name">{{ show.name }}</span>
+            {% if show.author %}
+                <br/><small itemprop="creator" itemscope="" itemtype="http://schema.org/Person"> By <span itemprop="name">{{ show.author }}</span></small>
+            {% endif %}
+            </h2>
+        </div>
 		{# Display show image #}
         {% if show.image %}
             <div class="row">
             <div class="large-3 columns text-center">
-                <a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>
+                <a itemprop="image" href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>
             </div>
             <div class="large-9 columns">
                 {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
