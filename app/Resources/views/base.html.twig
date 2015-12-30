@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!doctype html>
+<html class="no-js" lang="">
     <head>
         <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
         <meta name="keywords" content="camdram,cambridge,theatre,drama,comedy,musicals,shows,society,societies,ACTS,association" />
         <meta name="description" content="Camdram is an information hub for the student performing arts community in Cambridge, England." />
@@ -19,6 +16,7 @@
 		<meta property="fb:app_id" content="464689303574287" />
         {% block opengraph %}{% endblock %}
         
+        <!-- TODO link rel="apple-touch-icon" href="apple-touch-icon.png" -->
         <link rel='icon' href='/favicon.png' type='image/png' />
 
         <title>{% block title %}{% endblock %} - Camdram</title>
@@ -27,6 +25,7 @@
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet"/>
         <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
         {% stylesheets output='css/main.css'
+        'css/normalize.css'
         'bundles/actscamdram/stylesheets/app/*.scss'
         'bundles/actsdiary/css/diary.css'
         'bundles/hoyesimagemanager/css/fancybox.css'%}
@@ -93,6 +92,9 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
         <div id="wrapper">
             {% if development_warning %}{% include '::dev-warning.html.twig' %}{% endif %}
             {% block main %}{% endblock %}
