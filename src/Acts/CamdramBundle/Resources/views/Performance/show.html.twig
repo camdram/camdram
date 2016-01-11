@@ -5,7 +5,7 @@
         <meta itemprop="name" content="
         {%- if performances[0].venue -%}
             {{- performances[0].venue.name -}}
-        {%- elseif p.venuename is not empty -%}
+        {%- elseif performances[0].venuename is not empty -%}
             {{- performances[0].venuename -}}
         {%- else -%}
             TBC
