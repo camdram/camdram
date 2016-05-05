@@ -15,11 +15,14 @@ class SocietyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /* Short names must be included to generate URL slugs. */
         $builder
             ->add('name')
-            ->add('short_name')
+            ->add('short_name', null, array('required' => true))
             ->add('description')
-            ->add('image', 'image_upload', array('label' => 'Logo'))
+            ->add('image', 'image_upload', array('label' => 'Logo',
+                'required' => false
+                ))
             ->add('college', 'college')
             ->add('facebook_id')
             ->add('twitter_id')
