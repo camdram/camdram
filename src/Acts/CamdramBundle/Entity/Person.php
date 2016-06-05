@@ -530,8 +530,8 @@ class Person implements SearchableInterface
     {
         $latest = null;
         foreach ($this->getRoles() as $role) {
-            if ($role->getShow() && (!$latest || $role->getShow()->getStartAt() > $latest) && $role->getShow()->getStartAt()) {
-                $latest = $role->getShow()->getStartAt();
+            if ($role->getShow() && (!$latest || $role->getShow()->getEndAt() > $latest) && $role->getShow()->getEndAt()) {
+                $latest = $role->getShow()->getEndAt();
             }
         }
 
