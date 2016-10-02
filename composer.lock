@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8e8e364ebe5b05e3713f82a707d97970",
-    "content-hash": "befd2cc2498c16e25b359c17b930aa27",
+    "hash": "55b520656b0b1af91e5ce53de74dea26",
+    "content-hash": "eb884266fdc1c76ebe369231cd0a1b4d",
     "packages": [
         {
             "name": "acts/external-login-bundle",
@@ -1502,27 +1502,27 @@
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "1.5.4",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "539a6ac0c1fb6b010f92a1c877426a4caa5abba1"
+                "reference": "2f52d924692647db02bbcb27c159fef03bf000c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/539a6ac0c1fb6b010f92a1c877426a4caa5abba1",
-                "reference": "539a6ac0c1fb6b010f92a1c877426a4caa5abba1",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/2f52d924692647db02bbcb27c159fef03bf000c9",
+                "reference": "2f52d924692647db02bbcb27c159fef03bf000c9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/console": "~2.0",
-                "symfony/framework-bundle": "~2.0",
-                "symfony/serializer": "~2.0",
+                "symfony/console": "~2.0|3.*",
+                "symfony/framework-bundle": "~2.0|3.*",
+                "symfony/serializer": "~2.0|3.*",
                 "willdurand/jsonp-callback-validator": "~1.0"
             },
             "require-dev": {
-                "symfony/expression-language": "~2.4"
+                "symfony/expression-language": "~2.4|3.*"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1556,52 +1556,55 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2015-01-23 02:44:26"
+            "time": "2015-10-28 15:08:39"
         },
         {
             "name": "friendsofsymfony/oauth-server-bundle",
-            "version": "1.4.2",
-            "target-dir": "FOS/OAuthServerBundle",
+            "version": "1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git",
-                "reference": "9e15c229eff547443d686445d629e9356ab0672e"
+                "reference": "0b25cdaae8983c630bb62d14b6993219b1dadb8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/9e15c229eff547443d686445d629e9356ab0672e",
-                "reference": "9e15c229eff547443d686445d629e9356ab0672e",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/0b25cdaae8983c630bb62d14b6993219b1dadb8d",
+                "reference": "0b25cdaae8983c630bb62d14b6993219b1dadb8d",
                 "shasum": ""
             },
             "require": {
-                "friendsofsymfony/oauth2-php": "~1.1.0",
-                "php": ">=5.3.3",
-                "symfony/framework-bundle": "~2.1",
-                "symfony/security-bundle": "~2.1"
+                "friendsofsymfony/oauth2-php": "~1.1",
+                "php": "^5.3.3|^7.0",
+                "symfony/framework-bundle": "~2.2|~3.0",
+                "symfony/security-bundle": "~2.1|~3.0"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.0",
-                "doctrine/mongodb-odm": "1.0.*@dev",
-                "doctrine/orm": ">=2.2,<2.5-dev",
-                "symfony/class-loader": "~2.1",
-                "symfony/yaml": "~2.1",
-                "willdurand/propel-typehintable-behavior": "1.0.*"
+                "doctrine/mongodb-odm": "~1.0",
+                "doctrine/orm": "~2.2",
+                "phing/phing": "~2.4",
+                "propel/propel1": "^1.6.5",
+                "symfony/class-loader": "~2.1|~3.0",
+                "symfony/form": "~2.3|~3.0",
+                "symfony/yaml": "~2.1|~3.0",
+                "willdurand/propel-typehintable-behavior": "^1.0.4"
             },
             "suggest": {
                 "doctrine/doctrine-bundle": "*",
                 "doctrine/mongodb-odm-bundle": "*",
                 "propel/propel-bundle": "If you want to use Propel with Symfony2, then you will have to install the PropelBundle",
+                "symfony/form": "Needed to be able to use the AuthorizeFormType",
                 "willdurand/propel-typehintable-behavior": "The Typehintable behavior is useful to add type hints on generated methods, to be compliant with interfaces"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "FOS\\OAuthServerBundle": ""
+                "psr-4": {
+                    "FOS\\OAuthServerBundle\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1625,25 +1628,25 @@
                 "oauth2",
                 "server"
             ],
-            "time": "2014-10-31 13:44:14"
+            "time": "2016-02-22 13:57:55"
         },
         {
             "name": "friendsofsymfony/oauth2-php",
-            "version": "1.1.1",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/oauth2-php.git",
-                "reference": "23e76537c4a02e666ab4ba5abe67a69a886a0310"
+                "reference": "fa2aecb1fca2a03fd5f9aca19fe9adb9dfff928c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/oauth2-php/zipball/23e76537c4a02e666ab4ba5abe67a69a886a0310",
-                "reference": "23e76537c4a02e666ab4ba5abe67a69a886a0310",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/oauth2-php/zipball/fa2aecb1fca2a03fd5f9aca19fe9adb9dfff928c",
+                "reference": "fa2aecb1fca2a03fd5f9aca19fe9adb9dfff928c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/http-foundation": "~2.0"
+                "symfony/http-foundation": "~2.0|~3.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -1651,7 +1654,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -1679,42 +1682,44 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2014-11-03 10:21:20"
+            "time": "2016-03-31 14:24:17"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
-            "version": "1.7.7",
+            "version": "1.8.0",
             "target-dir": "FOS/RestBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSRestBundle.git",
-                "reference": "c79b7e5df96e5581591ceb6a026bd4e5f9346de0"
+                "reference": "c0f1aaf9e61a89b02eb5f2fbd2871d686706acb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRestBundle/zipball/c79b7e5df96e5581591ceb6a026bd4e5f9346de0",
-                "reference": "c79b7e5df96e5581591ceb6a026bd4e5f9346de0",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRestBundle/zipball/c0f1aaf9e61a89b02eb5f2fbd2871d686706acb1",
+                "reference": "c0f1aaf9e61a89b02eb5f2fbd2871d686706acb1",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "~1.0",
                 "php": "^5.3.9|~7.0",
                 "psr/log": "~1.0",
+                "symfony/finder": "~2.3|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0",
                 "symfony/http-kernel": "^2.3.24|~3.0",
                 "willdurand/jsonp-callback-validator": "~1.0",
                 "willdurand/negotiation": "~1.2"
             },
             "conflict": {
-                "jms/serializer": "<0.12",
+                "jms/serializer": "<0.13",
                 "jms/serializer-bundle": "<0.11",
+                "sensio/framework-extra-bundle": ">=3.0.13",
                 "symfony/validator": ">=2.5.0,<2.5.5"
             },
             "require-dev": {
                 "jms/serializer": "~0.13|~1.0",
-                "jms/serializer-bundle": "~0.12|~1.0",
+                "jms/serializer-bundle": "~0.11|~1.0",
                 "phpoption/phpoption": "~1.1.0",
-                "sensio/framework-extra-bundle": "~2.0|~3.0",
+                "sensio/framework-extra-bundle": "~2.0|~3.0,<3.0.13",
                 "sllh/php-cs-fixer-styleci-bridge": "^1.3",
                 "symfony/browser-kit": "~2.3|~3.0",
                 "symfony/dependency-injection": "~2.3|~3.0",
@@ -1726,15 +1731,15 @@
                 "symfony/yaml": "~2.3|~3.0"
             },
             "suggest": {
-                "jms/serializer-bundle": "Add support for advanced serialization capabilities, recommended, requires ~0.12||~1.0",
-                "sensio/framework-extra-bundle": "Add support for route annotations and the view response listener, requires ~3.0",
+                "jms/serializer-bundle": "Add support for advanced serialization capabilities, recommended, requires ~0.12|~1.0",
+                "sensio/framework-extra-bundle": "Add support for route annotations and the view response listener, requires ~2.0|~3.0",
                 "symfony/serializer": "Add support for basic serialization capabilities and xml decoding, requires ~2.3",
                 "symfony/validator": "Add support for validation capabilities in the ParamFetcher, requires ~2.3"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7-dev"
+                    "dev-master": "1.8-dev"
                 }
             },
             "autoload": {
@@ -1765,7 +1770,7 @@
             "keywords": [
                 "rest"
             ],
-            "time": "2015-12-29 16:02:50"
+            "time": "2016-06-21 08:42:59"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -3105,32 +3110,25 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.16",
+            "version": "v3.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "507a15f56fa7699f6cc8c2c7de4080b19ce22546"
+                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/507a15f56fa7699f6cc8c2c7de4080b19ce22546",
-                "reference": "507a15f56fa7699f6cc8c2c7de4080b19ce22546",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/3e8936fe13aa4086644977d334d8fcd275f50357",
+                "reference": "3e8936fe13aa4086644977d334d8fcd275f50357",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
-                "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0"
             },
             "require-dev": {
-                "symfony/browser-kit": "~2.3|~3.0",
-                "symfony/dom-crawler": "~2.3|~3.0",
                 "symfony/expression-language": "~2.4|~3.0",
-                "symfony/finder": "~2.3|~3.0",
-                "symfony/phpunit-bridge": "~2.7|~3.0",
-                "symfony/security-bundle": "~2.4|~3.0",
-                "symfony/twig-bundle": "~2.3|~3.0",
-                "twig/twig": "~1.11|~2.0"
+                "symfony/security-bundle": "~2.4|~3.0"
             },
             "suggest": {
                 "symfony/expression-language": "",
@@ -3163,7 +3161,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2016-03-25 17:08:27"
+            "time": "2015-12-18 17:39:27"
         },
         {
             "name": "sensiolabs/security-checker",
