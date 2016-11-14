@@ -119,7 +119,7 @@ class TechieAdvert
      * @var string
      *
      * @ORM\Column(name="techextra", type="text", nullable=false)
-     * @Assert\Length(max=1140)
+     * @Assert\Length(max=8000)
      * @Gedmo\Versioned
      * @Serializer\Expose
      */
