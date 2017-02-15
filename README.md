@@ -5,9 +5,9 @@ The portal website for student theatre in Cambridge
 
 [![Build Status](https://travis-ci.org/camdram/camdram.png?branch=master)](https://travis-ci.org/camdram/camdram)
 
-Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and Github. A brief overview of the software stack can be found [here](https://github.com/camdram/camdram/wiki/Software-Stack). [Github's help](http://help.github.com) is comprehensive and can be used to find more information about using Git in general.
+Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub. A brief overview of the software stack can be found [here](https://github.com/camdram/camdram/wiki/Software-Stack). [GitHub's help](http://help.github.com) is comprehensive and can be used to find more information about using Git in general.
 
-If you encounter any problems with the instructions below, please [create a Github issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net.
+If you encounter any problems with the instructions below, please [create a GitHub issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net.
 
 1) Install programs
 --------------------
@@ -33,7 +33,7 @@ Additionally, make sure to replace every invocation of "php" with "php55" below.
 2) Get a copy of the Camdram repository
 ----------------------------------------------
 
-Camdram's development model follows the standard idioms used by FOSS projects hosted on Github. If you are interested in just experimenting with the codebase, clone the project from the project's homepage. If you'd like to contribute to the project than you will want to [fork the repository](https://help.github.com/articles/fork-a-repo).
+Camdram's development model follows the standard idioms used by FOSS projects hosted on GitHub. If you are interested in just experimenting with the codebase, clone the project from the project's homepage. If you'd like to contribute to the project than you will want to [fork the repository](https://help.github.com/articles/fork-a-repo).
 
 After obtaining a copy of the code change into the newly created 'camdram' directory before proceeding:
 
@@ -108,7 +108,7 @@ This will pull in the latest code, update any changes to the dependencies and up
 --------------------
 
  * The site uses the Symfony PHP framework - (read the documentation)[http://symfony.com/doc/2.3/index.html]
- * Use the Github issue tracker to get an idea what we're currently working on.
+ * Use the GitHub issue tracker to get an idea what we're currently working on.
    If you think you know how to do something, write the code, commit it, and
    submit a pull request.
  * If you want to discuss how to implement a new feature or how to fix a bug,
@@ -136,8 +136,8 @@ The password for each is just 'password'.
 
  * Run `git add file1.php file2.php` for each file you wish to include in the commit
  * Run `git commit` and enter a message describing the changes you have made
- * Run `git push` to send your changes to Github
+ * Run `git push` to send your changes to GitHub
 
-It is good practice to include the relevant issue number (prefixed with a hash #) at the end of the commit message - this will cause your commit message to appear on the issue page on Github.
+It is good practice to include the relevant issue number (prefixed with a hash #) at the end of the commit message - this will cause your commit message to appear on the issue page on GitHub.
 
 [1]: http://github.com/camdram/camdram/wiki
