@@ -50,9 +50,9 @@ class UserMerger
             $user1 = $tempUser;
         }
 
-        foreach ($user2->getAuthorisedShows() as $show)
+        foreach ($user2->getAuthorizations() as $auth)
         {
-            $show->setAuthorisedBy($user1);
+            $auth->setAuthorisedBy($user1);     // SJC: this may fail now I've changed getAuthorizations()
         }
         foreach ($user2->getAces() as $ace) {
             $ace->setUser($user1);
