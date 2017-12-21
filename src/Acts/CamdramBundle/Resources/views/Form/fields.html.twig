@@ -74,7 +74,7 @@
 {% endblock %}
 
 {% block choice_widget_expanded %}
-<div {{ block('widget_container_attributes', form) }}>
+<div {{ block('widget_container_attributes') }}>
 {% for child in form %}
     <label for="{{ child.vars.id }}">
         {{ form_widget(child) }}
