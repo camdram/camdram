@@ -4,11 +4,11 @@ CWD=$(dirname "$SCRIPT")
 
 # install sphinxsearch:
 sudo add-apt-repository ppa:builds/sphinxsearch-rel21 -y
-sudo apt-get update
+sudo apt-get update -qq
 sudo apt-get install sphinxsearch
 
 # run searchd:
 sudo service sphinxsearch stop
 php app/console --env=test_sphinx acts:sphinx:config
-sudo ln -sf $CWD/app/config/sphinx.default.cfg ./sphinx.conf
+sudo ln -sf $CWD/app/config/sphinx.default.cfg /etc/sphinxsearch/sphinx.conf
 sudo searchd
