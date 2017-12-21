@@ -34,6 +34,16 @@ class AuthToken
      * @ORM\Column(name="siteid", type="integer", nullable=false)
      */
     private $site_id;
+    
+    /**
+     * @var \Acts\CamdramSecurityBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramLegacyBundle\Entity\ExternalSite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="siteid", referencedColumnName="id")
+     * })
+     */
+    private $site;
 
     /**
      * @var int
@@ -187,5 +197,29 @@ class AuthToken
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set site
+     *
+     * @param \Acts\CamdramLegacyBundle\Entity\ExternalSite $site
+     *
+     * @return AuthToken
+     */
+    public function setSite(\Acts\CamdramLegacyBundle\Entity\ExternalSite $site = null)
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * Get site
+     *
+     * @return \Acts\CamdramLegacyBundle\Entity\ExternalSite
+     */
+    public function getSite()
+    {
+        return $this->site;
     }
 }
