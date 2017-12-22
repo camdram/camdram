@@ -37,6 +37,6 @@
 </div>
 {% if editable %}
     <br/>
-    {% render url('new_show_role', {identifier: show.slug, type: type}) %}
+    {{ render(path('new_show_role', {identifier: show.slug, type: type})) }}
 {% endif %}
 {% endspaceless %}

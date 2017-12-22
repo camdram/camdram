@@ -26,9 +26,9 @@ class DefaultController extends Controller
         ));
     }
 
-    public function loginAction()
+    public function loginAction(Request $request)
     {
-        $session = $this->getRequest()->getSession();
+        $session = $request->getSession();
 
         $error = $session->get(Security::AUTHENTICATION_ERROR);
         $session->remove(Security::AUTHENTICATION_ERROR);
@@ -217,12 +217,12 @@ class DefaultController extends Controller
         return $this->render('ActsCamdramSecurityBundle:Default:confirm_email_error.html.twig', array());
     }
 
-    public function forgottenPasswordAction()
+    public function forgottenPasswordAction(Request $request)
     {
         $email = $this->getUser() ? $this->getUser()->getEmail() : null;
         $form = $this->createForm(new ForgottenPasswordType(), array('email' => $email));
 
-        if ($this->getRequest()->getMethod() == 'POST') {
+        if ($request->getMethod() == 'POST') {
             $form->submit($this->getRequest());
             if ($form->isValid()) {
                 $data = $form->getData();

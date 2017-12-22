@@ -4,7 +4,8 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Acts\CamdramBundle\Form\Type\EntitySearchType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PerformanceType
@@ -21,7 +22,7 @@ class PerformanceType extends AbstractType
             ->add('time', 'time', array('label' => 'Time', 'widget' => 'single_text', 'attr' => array(
                 'placeholder' => 'e.g. 19:45'
             )))
-            ->add('venue', 'entity_search', array(
+            ->add('venue', EntitySearchType::class, array(
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
                 'required' => false,
@@ -30,7 +31,7 @@ class PerformanceType extends AbstractType
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Performance'

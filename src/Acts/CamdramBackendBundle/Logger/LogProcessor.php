@@ -22,7 +22,7 @@ class LogProcessor
 
     private function getUser()
     {
-        $token = $this->container->get('security.context')->getToken();
+        $token = $this->container->get('security.token_storage')->getToken();
         if ($token && $token->getUser() instanceof UserInterface) {
             return $token->getUser();
         }

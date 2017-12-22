@@ -49,7 +49,7 @@ class ShowController extends AbstractRestController
             $show->addPerformance(new Performance());
         }
 
-        return $this->createForm(new ShowType($this->get('security.context')), $show);
+        return $this->createForm(ShowType::class, $show);
     }
 
     public function cgetAction(Request $request)

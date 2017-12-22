@@ -15,6 +15,12 @@ services:
             class: Acts\CamdramBundle\Service\DiaryHelper
             arguments: ['@router']
 
+    acts.camdram.type.show:
+        class: Acts\CamdramBundle\Form\Type\ShowType
+        arguments: ['@security.authorization_checker']
+        tags:
+            - { name: form.type, alias: show }
+
     acts.camdram.type.college:
         class: Acts\CamdramBundle\Form\Type\CollegeType
         arguments: ~
@@ -41,7 +47,7 @@ services:
 
     acts.camdram.type.map_location:
         class: Acts\CamdramBundle\Form\Type\MapLocationType
-        arguments: ['@ivory_google_map.map=', %map_center%]
+        arguments: [%map_center%]
         tags:
             - { name: form.type, alias: map_location }
 
@@ -71,7 +77,7 @@ services:
     acts.camdram.type.form_extension:
         class: Acts\CamdramBundle\Form\CamdramFormTypeExtension
         tags:
-            - { name: form.type_extension, alias: form }
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
     acts.camdram.paginator_response_listener:
         class: Acts\CamdramBundle\Rest\EventListener\ViewPaginatorListener

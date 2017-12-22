@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Ivory\GoogleMap\Map;
 
 /**
  * Class MapLocationType
@@ -18,8 +19,9 @@ class MapLocationType extends AbstractType
 {
     private $map;
 
-    public function __construct(\Ivory\GoogleMap\Map $map, array $center)
+    public function __construct(array $center)
     {
+        $map = new Map;
         $map->setCenter($center[0], $center[1], true);
         $map->setMapOption('zoom', 14);
         $map->setStylesheetOptions(array('width' => '100%', 'height' => '100%'));

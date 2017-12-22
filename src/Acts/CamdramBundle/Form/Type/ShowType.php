@@ -6,8 +6,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Acts\CamdramBundle\Form\Type\EntitySearchType;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Hoyes\ImageManagerBundle\Form\Type\ImageType;
 
 /**
  * Class ShowType
@@ -29,11 +33,11 @@ class ShowType extends AbstractType
             ->add('name')
             ->add('author', null, array('required' => false))
             ->add('description')
-            ->add('image', 'image_upload', array('label' => 'Publicity image', 'required' => false))
+            ->add('image', ImageType::class, array('label' => 'Publicity image', 'required' => false))
             ->add('prices', null, array('required' => false, 'label' => 'Ticket prices', 'attr' => array(
                 'placeholder' => 'e.g. £6/5'
             )))
-            ->add('multi_venue', 'choice', array(
+            ->add('multi_venue', ChoiceType::class, array(
                 'expanded' => true,
                 'by_reference' => false,
                 'choices' => array(
@@ -41,21 +45,21 @@ class ShowType extends AbstractType
                     'multi' => 'The performances are at a number of different venues (e.g. a tour)',
                 ),
             ))
-            ->add('performances', 'collection', array(
-                'type' => new PerformanceType(),
+            ->add('performances', EntityCollectionType::class, array(
+                'type' => PerformanceType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => 'Dates and times'
             ))
-            ->add('category', 'show_category')
-            ->add('venue', 'entity_search', array(
+            ->add('category', ShowCategoryType::class)
+            ->add('venue', EntitySearchType::class, array(
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
                 'required' => false,
                 'text_field' => 'other_venue'
             ))
-            ->add('online_booking_url', 'url', array(
+            ->add('online_booking_url', UrlType::class, array(
                 'required' => false, 'label' => 'URL for purchasing tickets'
             ))
             ->add('facebook_id', null, array('required' => false))
@@ -71,7 +75,7 @@ class ShowType extends AbstractType
                     && !$this->authorizationChecker->isGranted('ROLE_ADMIN')
                     ;
 
-                $form->add('society', 'entity_search', array(
+                $form->add('society', EntitySearchType::class, array(
                     'route' => 'get_societies',
                     'class' => 'Acts\\CamdramBundle\\Entity\\Society',
                     'required' => false,
@@ -83,7 +87,7 @@ class ShowType extends AbstractType
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Show'

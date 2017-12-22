@@ -83,7 +83,7 @@ swiftmailer:
     sender_address: %mailer_sender_address%
 
 sensio_framework_extra:
-    view:    { annotations: false }
+    view:    { annotations: true }
 
 fos_rest:
     view:

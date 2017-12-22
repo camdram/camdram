@@ -4,11 +4,12 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManager;
 use Acts\CamdramBundle\Form\DataTransformer\EntityCollectionTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 /**
  * Class EntityCollectionType
@@ -36,14 +37,14 @@ class EntityCollectionType extends AbstractType
         ));
         $builder->addViewTransformer(new EntityCollectionTransformer($this->em, $options['class']));
     }
-
+ 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['route'] = $options['route'];
         $view->vars['new_label'] = $options['new_label'];
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'route' => null,
@@ -56,7 +57,7 @@ class EntityCollectionType extends AbstractType
 
     public function getParent()
     {
-        return 'collection';
+        return CollectionType::class;
     }
 
     public function getName()
