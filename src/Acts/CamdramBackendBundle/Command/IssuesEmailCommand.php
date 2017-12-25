@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBackendBundle\Command;
 
-use Acts\CamdramAdminBundle\Entity\Support;
+use Acts\CamdramAdminBundle\Entity\Support2;
 use Acts\CamdramBackendBundle\Entity\EmailBounce;
 use Acts\CamdramBackendBundle\Service\EmailParser;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
@@ -31,7 +31,7 @@ class IssuesEmailCommand extends ContainerAwareCommand
 
         $parser = new EmailParser($raw);
 
-        $issue = new Support();
+        $issue = new Support2();
         $issue->setFrom($parser->getRawFrom())
             ->setTo($parser->getRawTo())
             ->setCc($parser->getRawCc())
@@ -67,7 +67,7 @@ class IssuesEmailCommand extends ContainerAwareCommand
     protected function processReply(Support $issue, $issue_id, $forwardMessage, $output)
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $repo = $em->getRepository('ActsCamdramAdminBundle:Support');
+        $repo = $em->getRepository('ActsCamdramAdminBundle:Support2');
         if (($orig = $repo->findOneById($issue_id)) !== null) {
             $issue->setParent($orig);
             //Reopen issue if it's been closed

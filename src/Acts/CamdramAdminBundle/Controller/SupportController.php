@@ -8,6 +8,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use Symfony\Component\HttpFoundation\Request;
 use Acts\CamdramAdminBundle\Form\Type\SupportType;
 use Acts\CamdramAdminBundle\Entity\Support;
+use Acts\CamdramAdminBundle\Entity\Support2;
 
 /**
  * Controller for accessing support tickets created by emails to
@@ -72,7 +73,6 @@ class SupportController extends FOSRestController
     {
         $this->checkAuthorised();
 
-        $request = $this->getRequest();
         if ($request->query->has('action') && $request->query->has('id')) {
             $issue = $this->getEntity($request->query->get('id'));
             $this->processRequestData($request, $issue);
@@ -115,7 +115,20 @@ class SupportController extends FOSRestController
             $reply->setParent($this->getEntity($identifier));
             $reply->setState('assigned');
             $em->persist($reply);
+            
+            //Temporarily write to second support table too
+            $repo2 = $this->getDoctrine()->getManager()->getRepository('ActsCamdramAdminBundle:Support2');
+            if ($parent = $repo2->findOneById($identifier))
+            {
+                $reply2 = new Support2();
+                $reply2->setFrom($from);
+                $reply2->setParent($this->getEntity2($identifier));
+                $reply2->setState('assigned');
+                $em->persist($reply2);
+            }
+            
             $em->flush();
+            
             // Send the actual email.
             $message = \Swift_Message::newInstance()
                 ->setSubject($reply->getSubject())
@@ -155,11 +168,10 @@ class SupportController extends FOSRestController
     /**
      * Action for pages that represent a single issue.
      */
-    public function getAction($identifier)
+    public function getAction(Request $request, $identifier)
     {
         $this->checkAuthorised();
         $issue = $this->getEntity($identifier);
-        $request = $this->getRequest();
         if ($request->query->has('action')) {
             $this->processRequestData($request, $issue);
         }
@@ -186,7 +198,7 @@ class SupportController extends FOSRestController
      */
     private function processRequestData(Request $request, $issue)
     {
-        $action = $this->getRequest()->query->get('action');
+        $action = $request->query->get('action');
         if ($issue->getOwner() != null && $issue->getOwner()->getId() == $this->getUser()->getId()) {
             $user_is_owner =  true;
         } else {
