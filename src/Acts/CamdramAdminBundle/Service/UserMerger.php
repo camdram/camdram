@@ -6,6 +6,7 @@ use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class UserMerger
 {
@@ -49,39 +50,37 @@ class UserMerger
             $user2 = $user1;
             $user1 = $tempUser;
         }
-
-        foreach ($user2->getAuthorizations() as $auth)
+        
+        $metadata = $this->entityManager->getClassMetadata('ActsCamdramSecurityBundle:User');
+        $accessor = PropertyAccess::createPropertyAccessor();
+        foreach ($metadata->getAssociationMappings() as $mapping)
         {
-            $auth->setAuthorisedBy($user1);     // SJC: this may fail now I've changed getAuthorizations()
+            $fieldName = $mapping['fieldName'];
+            
+            if ($accessor->isReadable($user2, $fieldName)
+                && $accessor->isWritable($user1, $fieldName))
+            {
+                $user2Value = $accessor->getValue($user2, $fieldName);
+                if ($user2Value instanceof \Traversable)
+                {
+                    //1-to-many mapping
+                    $mappedBy = $mapping['mappedBy'];
+                    foreach ($user2Value as $user2Obj) {
+                        $accessor->setValue($user2Obj, $mappedBy, $user1);
+                    }
+                }
+                else
+                {
+                    //1-to-1 mapping. Only set on merged object if not already set
+                    $user1Value = $accessor->getValue($user1, $fieldName);
+                    if (is_null($user1Value) && !is_null($user2Value))
+                    {
+                        $accessor->setValue($user1, $fieldName, $user2Value);
+                    }
+                }
+            }
         }
-        foreach ($user2->getAces() as $ace) {
-            $ace->setUser($user1);
-        }
-        foreach ($user2->getApps() as $app) {
-            $app->setUser($user1);
-        }
-        foreach ($user2->getKnowledgeBaseRevisions() as $revision) {
-            $revision->setUser($user1);
-        }
-        foreach ($user2->getAceGrants() as $ace) {
-            $ace->setGrantedBy($user1);
-        }
-        foreach ($user2->getEmailBuilders() as $email) {
-            $email->setUser($user1);
-        }
-        foreach ($user2->getEmailAliases() as $alias) {
-            $alias->setUser($user1);
-        }
-        foreach ($user2->getEmailSigs() as $sig) {
-            $sig->setUser($user1);
-        }
-        foreach ($user2->getOwnedIssues() as $issue) {
-            $issue->setOwner($user1);
-        }
-        if (!$user1->getPerson() && $user2->getPerson()) {
-            $user1->setPerson($user2->getPerson());
-        }
-
+        
         $this->entityManager->remove($user2);
         
         $this->entityManager->flush();
