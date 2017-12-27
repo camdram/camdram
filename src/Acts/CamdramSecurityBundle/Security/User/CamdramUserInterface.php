@@ -15,6 +15,11 @@ interface CamdramUserInterface extends UserInterface
      * @return string
      */
     public function getEmail();
+    
+    /**
+     * @return string
+     */
+    public function getFullEmail();
 
     /**
      * @return string

@@ -226,6 +226,16 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     {
         return $this->email;
     }
+    
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getFullEmail()
+    {
+        return $this->email;
+    }
 
     /**
      * @inheritdoc
