@@ -38,8 +38,7 @@
         "zendframework/zend-mail": "2.4.*",
         "zendframework/zend-servicemanager": "2.4.*",
         "excelwebzone/recaptcha-bundle" : "2.6.*@dev",
-        "hwi/oauth-bundle": "^0.5.3",
-        "misd/raven-bundle": "~1.0"
+        "hwi/oauth-bundle": "dev-0.5.3-camdram"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
@@ -50,6 +49,12 @@
         "behat/symfony2-extension": "1.1.*",
         "phpunit/phpunit": "4.8.*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/camdram/HWIOAuthBundle"
+        }
+    ],
     "scripts": {
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"

@@ -31,7 +31,6 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new \EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-            new Misd\RavenBundle\MisdRavenBundle(),
             new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
             new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),

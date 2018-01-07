@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dc22e7875f160607e1ae76944cf5a50d",
-    "content-hash": "65b87fffe58bdbb79d4ca6ddda5cf7c6",
+    "content-hash": "2ca7c480f8c5d0986c530c12e89fda22",
     "packages": [
         {
             "name": "acts/social-api-bundle",
@@ -51,7 +50,7 @@
                 "social",
                 "twitter"
             ],
-            "time": "2014-10-24 07:50:31"
+            "time": "2014-10-24T07:50:31+00:00"
         },
         {
             "name": "acts/time-mock-bundle",
@@ -95,7 +94,7 @@
                 "testing",
                 "time"
             ],
-            "time": "2013-11-16 14:48:25"
+            "time": "2013-11-16T14:48:25+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -139,7 +138,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2017-04-04 11:38:05"
+            "time": "2017-04-04T11:38:05+00:00"
         },
         {
             "name": "camdram/sphinx-realtime-bundle",
@@ -148,12 +147,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/camdram/sphinx-realtime-bundle.git",
-                "reference": "e6ee596608834cf2d9da21120d34f0f9dbdc9b4a"
+                "reference": "3d37b724afae65851ddcb5332d15b17f3798257f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/e6ee596608834cf2d9da21120d34f0f9dbdc9b4a",
-                "reference": "e6ee596608834cf2d9da21120d34f0f9dbdc9b4a",
+                "url": "https://api.github.com/repos/camdram/sphinx-realtime-bundle/zipball/3d37b724afae65851ddcb5332d15b17f3798257f",
+                "reference": "3d37b724afae65851ddcb5332d15b17f3798257f",
                 "shasum": ""
             },
             "require": {
@@ -184,7 +183,7 @@
                 "search",
                 "sphinx"
             ],
-            "time": "2015-03-29 21:04:29"
+            "time": "2015-03-29T21:04:29+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -240,7 +239,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2017-11-29 09:37:33"
+            "time": "2017-11-29T09:37:33+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -308,7 +307,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2015-08-31 12:32:49"
+            "time": "2015-08-31T12:32:49+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -378,7 +377,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-12-19 05:03:47"
+            "time": "2015-12-19T05:03:47+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -444,7 +443,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2015-04-14 22:21:58"
+            "time": "2015-04-14T22:21:58+00:00"
         },
         {
             "name": "doctrine/common",
@@ -517,7 +516,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-12-25 13:10:16"
+            "time": "2015-12-25T13:10:16+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -574,7 +573,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2015-03-30 12:14:13"
+            "time": "2015-03-30T12:14:13+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -645,7 +644,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-07-22 20:44:48"
+            "time": "2017-07-22T20:44:48+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -726,7 +725,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2016-08-10 15:35:22"
+            "time": "2016-08-10T15:35:22+00:00"
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
@@ -814,7 +813,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2017-10-12 17:23:29"
+            "time": "2017-10-12T17:23:29+00:00"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -871,7 +870,7 @@
                 "Fixture",
                 "persistence"
             ],
-            "time": "2017-10-30 19:26:42"
+            "time": "2017-10-30T19:26:42+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
@@ -932,7 +931,7 @@
                 "migrations",
                 "schema"
             ],
-            "time": "2016-12-05 18:36:37"
+            "time": "2016-12-05T18:36:37+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -999,7 +998,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06 14:35:42"
+            "time": "2015-11-06T14:35:42+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -1053,7 +1052,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -1107,7 +1106,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09 13:34:57"
+            "time": "2014-09-09T13:34:57+00:00"
         },
         {
             "name": "doctrine/migrations",
@@ -1175,7 +1174,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2016-01-07 21:28:50"
+            "time": "2016-01-07T21:28:50+00:00"
         },
         {
             "name": "doctrine/orm",
@@ -1251,7 +1250,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2017-12-17 02:57:51"
+            "time": "2017-12-17T02:57:51+00:00"
         },
         {
             "name": "egeloen/google-map",
@@ -1306,7 +1305,7 @@
             "keywords": [
                 "google map"
             ],
-            "time": "2014-10-30 19:30:44"
+            "time": "2014-10-30T19:30:44+00:00"
         },
         {
             "name": "egeloen/google-map-bundle",
@@ -1361,7 +1360,7 @@
             "keywords": [
                 "google map"
             ],
-            "time": "2014-10-30 19:37:27"
+            "time": "2014-10-30T19:37:27+00:00"
         },
         {
             "name": "egeloen/json-builder",
@@ -1413,7 +1412,7 @@
                 "builder",
                 "json"
             ],
-            "time": "2014-11-08 10:51:34"
+            "time": "2014-11-08T10:51:34+00:00"
         },
         {
             "name": "excelwebzone/recaptcha-bundle",
@@ -1455,7 +1454,7 @@
             "keywords": [
                 "recaptcha"
             ],
-            "time": "2016-04-28 18:13:58"
+            "time": "2016-04-28T18:13:58+00:00"
         },
         {
             "name": "foolz/sphinxql-query-builder",
@@ -1503,7 +1502,7 @@
                 "sphinxql",
                 "sql"
             ],
-            "time": "2014-11-25 22:28:50"
+            "time": "2014-11-25T22:28:50+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1562,7 +1561,7 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2017-08-25 15:21:42"
+            "time": "2017-08-25T15:21:42+00:00"
         },
         {
             "name": "friendsofsymfony/oauth-server-bundle",
@@ -1634,25 +1633,25 @@
                 "oauth2",
                 "server"
             ],
-            "time": "2016-02-22 13:57:55"
+            "time": "2016-02-22T13:57:55+00:00"
         },
         {
             "name": "friendsofsymfony/oauth2-php",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/oauth2-php.git",
-                "reference": "fa2aecb1fca2a03fd5f9aca19fe9adb9dfff928c"
+                "reference": "486a6a5f70c3bfe8284a1e7e7b4b029b772d5b93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/oauth2-php/zipball/fa2aecb1fca2a03fd5f9aca19fe9adb9dfff928c",
-                "reference": "fa2aecb1fca2a03fd5f9aca19fe9adb9dfff928c",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/oauth2-php/zipball/486a6a5f70c3bfe8284a1e7e7b4b029b772d5b93",
+                "reference": "486a6a5f70c3bfe8284a1e7e7b4b029b772d5b93",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/http-foundation": "~2.0|~3.0"
+                "symfony/http-foundation": "~2.0|~3.0|~4.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -1688,7 +1687,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2016-03-31 14:24:17"
+            "time": "2018-01-05T15:20:40+00:00"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
@@ -1776,20 +1775,20 @@
             "keywords": [
                 "rest"
             ],
-            "time": "2016-06-21 08:42:59"
+            "time": "2016-06-21T08:42:59+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.31",
+            "version": "v2.4.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "79cd1d49898a21ede9a5dfad41c021abd9a14339"
+                "reference": "a268224b312353be62d72e6390a286f4166a7542"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/79cd1d49898a21ede9a5dfad41c021abd9a14339",
-                "reference": "79cd1d49898a21ede9a5dfad41c021abd9a14339",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/a268224b312353be62d72e6390a286f4166a7542",
+                "reference": "a268224b312353be62d72e6390a286f4166a7542",
                 "shasum": ""
             },
             "require": {
@@ -1802,7 +1801,7 @@
                 "doctrine/mongodb-odm": ">=1.0.2",
                 "doctrine/orm": ">=2.5.0",
                 "phpunit/phpunit": "*",
-                "symfony/yaml": "~2.6|~3.0"
+                "symfony/yaml": "~2.6|~3.0|~4.0"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "to use the extensions with the MongoDB ODM",
@@ -1854,7 +1853,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-10-12 06:26:21"
+            "time": "2017-12-28T14:36:10+00:00"
         },
         {
             "name": "hoyes/symfony2-image-manager",
@@ -1897,20 +1896,20 @@
                 "image",
                 "upload"
             ],
-            "time": "2015-10-12 20:31:30"
+            "time": "2015-10-12T20:31:30+00:00"
         },
         {
             "name": "hwi/oauth-bundle",
-            "version": "0.5.3",
+            "version": "dev-0.5.3-camdram",
             "source": {
                 "type": "git",
-                "url": "https://github.com/hwi/HWIOAuthBundle.git",
-                "reference": "50f4bcbe5c217cfdf0f7f40a174b87199b76d1e1"
+                "url": "https://github.com/camdram/HWIOAuthBundle.git",
+                "reference": "c6ee31d6d2222bcb95f77353b754863dedff4890"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/50f4bcbe5c217cfdf0f7f40a174b87199b76d1e1",
-                "reference": "50f4bcbe5c217cfdf0f7f40a174b87199b76d1e1",
+                "url": "https://api.github.com/repos/camdram/HWIOAuthBundle/zipball/c6ee31d6d2222bcb95f77353b754863dedff4890",
+                "reference": "c6ee31d6d2222bcb95f77353b754863dedff4890",
                 "shasum": ""
             },
             "require": {
@@ -1957,38 +1956,40 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "HWI\\Bundle\\OAuthBundle\\Tests\\": "Tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/hwi/HWIOAuthBundle/contributors"
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
                 },
                 {
                     "name": "Joseph Bielawski",
                     "email": "stloyd@gmail.com"
                 },
                 {
-                    "name": "Alexander",
-                    "email": "iam.asm89@gmail.com"
-                },
-                {
                     "name": "Geoffrey Bachelet",
                     "email": "geoffrey.bachelet@gmail.com"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/hwi/HWIOAuthBundle/contributors"
                 }
             ],
             "description": "Support for authenticating users using both OAuth1.0a and OAuth2 in Symfony2.",
             "homepage": "http://github.com/hwi/HWIOAuthBundle",
             "keywords": [
                 "37signals",
-                "Authentication",
-                "Deezer",
-                "EVE Online",
                 "amazon",
                 "asana",
                 "auth0",
+                "authentication",
                 "azure",
                 "bitbucket",
                 "bitly",
@@ -1996,10 +1997,12 @@
                 "bufferapp",
                 "clever",
                 "dailymotion",
+                "deezer",
                 "deviantart",
                 "discogs",
                 "disqus",
                 "dropbox",
+                "eve online",
                 "eventbrite",
                 "facebook",
                 "firewall",
@@ -2047,7 +2050,10 @@
                 "yandex",
                 "youtube"
             ],
-            "time": "2017-01-08 14:13:58"
+            "support": {
+                "source": "https://github.com/camdram/HWIOAuthBundle/tree/0.5.3-camdram"
+            },
+            "time": "2018-01-07T21:55:37+00:00"
         },
         {
             "name": "imagine/Imagine",
@@ -2094,7 +2100,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2012-11-12 21:16:43"
+            "time": "2012-11-12T21:16:43+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2145,7 +2151,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2015-11-10 17:04:01"
+            "time": "2015-11-10T17:04:01+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -2187,7 +2193,7 @@
                 "hashing",
                 "password"
             ],
-            "time": "2014-11-20 16:49:30"
+            "time": "2014-11-20T16:49:30+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -2237,7 +2243,7 @@
                 "highlight",
                 "sql"
             ],
-            "time": "2014-01-12 16:20:24"
+            "time": "2014-01-12T16:20:24+00:00"
         },
         {
             "name": "jms/metadata",
@@ -2288,7 +2294,7 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2016-12-05 10:18:33"
+            "time": "2016-12-05T10:18:33+00:00"
         },
         {
             "name": "jms/parser-lib",
@@ -2323,7 +2329,7 @@
                 "Apache2"
             ],
             "description": "A library for easily creating recursive-descent parsers.",
-            "time": "2012-11-18 18:08:43"
+            "time": "2012-11-18T18:08:43+00:00"
         },
         {
             "name": "jms/serializer",
@@ -2396,7 +2402,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2015-10-27 09:24:41"
+            "time": "2015-10-27T09:24:41+00:00"
         },
         {
             "name": "jms/serializer-bundle",
@@ -2466,7 +2472,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2015-11-10 12:26:42"
+            "time": "2015-11-10T12:26:42+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -2543,7 +2549,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2016-11-11 18:43:20"
+            "time": "2016-11-11T18:43:20+00:00"
         },
         {
             "name": "kriswallsmith/buzz",
@@ -2591,7 +2597,7 @@
                 "curl",
                 "http client"
             ],
-            "time": "2017-11-24 19:18:50"
+            "time": "2017-11-24T19:18:50+00:00"
         },
         {
             "name": "leafo/scssphp",
@@ -2644,64 +2650,7 @@
                 "scss",
                 "stylesheet"
             ],
-            "time": "2017-02-23 05:07:33"
-        },
-        {
-            "name": "misd/raven-bundle",
-            "version": "v1.1.0",
-            "target-dir": "Misd/RavenBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/misd-service-development/raven-bundle.git",
-                "reference": "af5015d8456dedbcee6c3a2e24115fbd95b0f4e9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/misd-service-development/raven-bundle/zipball/af5015d8456dedbcee6c3a2e24115fbd95b0f4e9",
-                "reference": "af5015d8456dedbcee6c3a2e24115fbd95b0f4e9",
-                "shasum": ""
-            },
-            "require": {
-                "ext-openssl": "*",
-                "php": ">=5.3.3",
-                "symfony/framework-bundle": "~2.2",
-                "symfony/security-bundle": "~2.2"
-            },
-            "require-dev": {
-                "symfony/browser-kit": "~2.2",
-                "symfony/form": "~2.2",
-                "symfony/process": "~2.2",
-                "symfony/yaml": "~2.2"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Misd\\RavenBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Chris Wilkinson",
-                    "email": "chris.wilkinson@admin.cam.ac.uk"
-                }
-            ],
-            "description": "Adds Raven authentication to your Symfony2 application",
-            "homepage": "https://github.com/misd-service-development/raven-bundle",
-            "keywords": [
-                "Authentication",
-                "University of Cambridge",
-                "bundle"
-            ],
-            "time": "2013-03-08 16:07:07"
+            "time": "2017-02-23T05:07:33+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2779,7 +2728,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-06-19 01:22:40"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -2848,7 +2797,7 @@
                 "paginator",
                 "paging"
             ],
-            "time": "2017-03-20 13:46:15"
+            "time": "2017-03-20T13:46:15+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -2896,7 +2845,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-09-27 21:40:39"
+            "time": "2017-09-27T21:40:39+00:00"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -2944,7 +2893,7 @@
                 "sequence",
                 "set"
             ],
-            "time": "2015-05-17 12:39:23"
+            "time": "2015-05-17T12:39:23+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -2994,7 +2943,7 @@
                 "php",
                 "type"
             ],
-            "time": "2015-07-25 16:39:46"
+            "time": "2015-07-25T16:39:46+00:00"
         },
         {
             "name": "psr/log",
@@ -3041,7 +2990,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "sabre/vobject",
@@ -3107,7 +3056,7 @@
                 "jCard",
                 "vCard"
             ],
-            "time": "2016-10-07 03:20:40"
+            "time": "2016-10-07T03:20:40+00:00"
         },
         {
             "name": "sensio/buzz-bundle",
@@ -3155,7 +3104,7 @@
                 "buzz",
                 "http client"
             ],
-            "time": "2016-03-15 10:06:41"
+            "time": "2016-03-15T10:06:41+00:00"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -3207,7 +3156,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-08-25 16:55:44"
+            "time": "2017-08-25T16:55:44+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3262,7 +3211,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2015-12-18 17:39:27"
+            "time": "2015-12-18T17:39:27+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -3307,7 +3256,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-10-29 18:48:08"
+            "time": "2017-10-29T18:48:08+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -3368,7 +3317,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2016-01-26 23:58:32"
+            "time": "2016-01-26T23:58:32+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3422,7 +3371,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2017-05-01 15:54:03"
+            "time": "2017-05-01T15:54:03+00:00"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -3492,7 +3441,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2017-07-14 07:26:46"
+            "time": "2017-07-14T07:26:46+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -3552,7 +3501,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-01-02 19:04:26"
+            "time": "2017-01-02T19:04:26+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -3608,7 +3557,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -3666,7 +3615,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -3725,7 +3674,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php54",
@@ -3783,7 +3732,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php55",
@@ -3839,7 +3788,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php56",
@@ -3895,7 +3844,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -3954,7 +3903,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-util",
@@ -4006,7 +3955,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/security-acl",
@@ -4067,7 +4016,7 @@
             ],
             "description": "Symfony Security Component - ACL (Access Control List)",
             "homepage": "https://symfony.com",
-            "time": "2015-12-28 09:39:09"
+            "time": "2015-12-28T09:39:09+00:00"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -4126,20 +4075,20 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2017-10-19 01:06:41"
+            "time": "2017-10-19T01:06:41+00:00"
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.32",
+            "version": "v2.8.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0efa80d0a01f60e28ae5800c94d6288239cefefe"
+                "reference": "a3bb63a81e5cb9bec9f3c8f30405d3107411ba8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0efa80d0a01f60e28ae5800c94d6288239cefefe",
-                "reference": "0efa80d0a01f60e28ae5800c94d6288239cefefe",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/a3bb63a81e5cb9bec9f3c8f30405d3107411ba8c",
+                "reference": "a3bb63a81e5cb9bec9f3c8f30405d3107411ba8c",
                 "shasum": ""
             },
             "require": {
@@ -4265,7 +4214,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-12-04 22:02:29"
+            "time": "2018-01-05T06:19:59+00:00"
         },
         {
             "name": "twig/extensions",
@@ -4321,7 +4270,7 @@
                 "i18n",
                 "text"
             ],
-            "time": "2017-06-08 18:19:53"
+            "time": "2017-06-08T18:19:53+00:00"
         },
         {
             "name": "twig/twig",
@@ -4386,7 +4335,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27 18:06:46"
+            "time": "2017-09-27T18:06:46+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -4426,7 +4375,7 @@
                 }
             ],
             "description": "JSONP callback validator.",
-            "time": "2014-01-20 22:35:06"
+            "time": "2014-01-20T22:35:06+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -4475,7 +4424,7 @@
                 "header",
                 "negotiation"
             ],
-            "time": "2015-10-01 07:42:40"
+            "time": "2015-10-01T07:42:40+00:00"
         },
         {
             "name": "zendframework/zend-crypt",
@@ -4527,7 +4476,7 @@
                 "crypt",
                 "zf2"
             ],
-            "time": "2015-11-23 16:33:27"
+            "time": "2015-11-23T16:33:27+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -4572,7 +4521,7 @@
                 "escaper",
                 "zf2"
             ],
-            "time": "2015-05-07 14:55:31"
+            "time": "2015-05-07T14:55:31+00:00"
         },
         {
             "name": "zendframework/zend-feed",
@@ -4632,7 +4581,7 @@
                 "feed",
                 "zf2"
             ],
-            "time": "2015-05-07 14:55:31"
+            "time": "2015-05-07T14:55:31+00:00"
         },
         {
             "name": "zendframework/zend-loader",
@@ -4677,7 +4626,7 @@
                 "loader",
                 "zf2"
             ],
-            "time": "2015-05-07 14:55:31"
+            "time": "2015-05-07T14:55:31+00:00"
         },
         {
             "name": "zendframework/zend-mail",
@@ -4733,7 +4682,7 @@
                 "mail",
                 "zf2"
             ],
-            "time": "2017-07-13 16:53:17"
+            "time": "2017-07-13T16:53:17+00:00"
         },
         {
             "name": "zendframework/zend-math",
@@ -4784,7 +4733,7 @@
                 "math",
                 "zf2"
             ],
-            "time": "2015-05-07 14:55:31"
+            "time": "2015-05-07T14:55:31+00:00"
         },
         {
             "name": "zendframework/zend-mime",
@@ -4834,7 +4783,7 @@
                 "mime",
                 "zf2"
             ],
-            "time": "2015-05-07 16:53:42"
+            "time": "2015-05-07T16:53:42+00:00"
         },
         {
             "name": "zendframework/zend-servicemanager",
@@ -4884,7 +4833,7 @@
                 "servicemanager",
                 "zf2"
             ],
-            "time": "2015-05-07 14:55:31"
+            "time": "2015-05-07T14:55:31+00:00"
         },
         {
             "name": "zendframework/zend-stdlib",
@@ -4939,7 +4888,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2015-07-21 13:55:46"
+            "time": "2015-07-21T13:55:46+00:00"
         },
         {
             "name": "zendframework/zend-validator",
@@ -5004,7 +4953,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2015-09-08 21:04:17"
+            "time": "2015-09-08T21:04:17+00:00"
         },
         {
             "name": "zurb/foundation",
@@ -5031,7 +4980,7 @@
                 "foundation",
                 "scss"
             ],
-            "time": "2013-09-23 18:37:31"
+            "time": "2013-09-23T18:37:31+00:00"
         }
     ],
     "packages-dev": [
@@ -5095,7 +5044,7 @@
                 "Behat",
                 "Symfony2"
             ],
-            "time": "2015-06-01 09:37:55"
+            "time": "2015-06-01T09:37:55+00:00"
         },
         {
             "name": "behat/gherkin",
@@ -5156,7 +5105,7 @@
                 "Symfony2",
                 "parser"
             ],
-            "time": "2013-10-15 11:22:17"
+            "time": "2013-10-15T11:22:17+00:00"
         },
         {
             "name": "behat/mink",
@@ -5211,7 +5160,7 @@
                 "testing",
                 "web"
             ],
-            "time": "2015-02-04 17:02:06"
+            "time": "2015-02-04T17:02:06+00:00"
         },
         {
             "name": "behat/mink-browserkit-driver",
@@ -5266,7 +5215,7 @@
                 "browser",
                 "testing"
             ],
-            "time": "2014-09-26 11:35:19"
+            "time": "2014-09-26T11:35:19+00:00"
         },
         {
             "name": "behat/mink-extension",
@@ -5317,7 +5266,7 @@
                 "test",
                 "web"
             ],
-            "time": "2014-05-15 19:27:39"
+            "time": "2014-05-15T19:27:39+00:00"
         },
         {
             "name": "behat/mink-goutte-driver",
@@ -5369,7 +5318,7 @@
                 "headless",
                 "testing"
             ],
-            "time": "2014-10-09 09:21:12"
+            "time": "2014-10-09T09:21:12+00:00"
         },
         {
             "name": "behat/symfony2-extension",
@@ -5425,7 +5374,7 @@
                 "framework",
                 "symfony"
             ],
-            "time": "2014-02-03 22:28:56"
+            "time": "2014-02-03T22:28:56+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -5474,7 +5423,7 @@
             "keywords": [
                 "scraper"
             ],
-            "time": "2015-05-05 21:14:57"
+            "time": "2015-05-05T21:14:57+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -5526,7 +5475,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-07-15 19:28:39"
+            "time": "2016-07-15T19:28:39+00:00"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -5577,7 +5526,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-05-20 03:37:09"
+            "time": "2015-05-20T03:37:09+00:00"
         },
         {
             "name": "guzzlehttp/streams",
@@ -5627,7 +5576,7 @@
                 "Guzzle",
                 "stream"
             ],
-            "time": "2014-10-12 19:18:40"
+            "time": "2014-10-12T19:18:40+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -5676,7 +5625,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2016-01-25 08:17:30"
+            "time": "2016-01-25T08:17:30+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -5739,7 +5688,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-11-24 13:59:53"
+            "time": "2017-11-24T13:59:53+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -5801,7 +5750,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-06 15:47:00"
+            "time": "2015-10-06T15:47:00+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -5848,7 +5797,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2017-11-27 13:52:08"
+            "time": "2017-11-27T13:52:08+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -5889,7 +5838,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21 13:50:34"
+            "time": "2015-06-21T13:50:34+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -5938,7 +5887,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26 11:10:40"
+            "time": "2017-02-26T11:10:40+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -5987,7 +5936,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-12-04 08:55:13"
+            "time": "2017-12-04T08:55:13+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -6059,7 +6008,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-06-21 08:07:12"
+            "time": "2017-06-21T08:07:12+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -6115,7 +6064,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-10-02 06:51:40"
+            "time": "2015-10-02T06:51:40+00:00"
         },
         {
             "name": "react/promise",
@@ -6161,7 +6110,7 @@
                 "promise",
                 "promises"
             ],
-            "time": "2017-03-25 12:08:31"
+            "time": "2017-03-25T12:08:31+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -6225,7 +6174,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-01-29 09:50:25"
+            "time": "2017-01-29T09:50:25+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -6277,7 +6226,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-05-22 07:24:03"
+            "time": "2017-05-22T07:24:03+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -6327,7 +6276,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-08-18 05:49:44"
+            "time": "2016-08-18T05:49:44+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -6394,7 +6343,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2016-06-17 09:04:28"
+            "time": "2016-06-17T09:04:28+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -6445,7 +6394,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12 03:26:01"
+            "time": "2015-10-12T03:26:01+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -6498,7 +6447,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2016-10-03 07:41:43"
+            "time": "2016-10-03T07:41:43+00:00"
         },
         {
             "name": "sebastian/version",
@@ -6533,7 +6482,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21 13:59:46"
+            "time": "2015-06-21T13:59:46+00:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -6587,7 +6536,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2017-12-07 15:36:41"
+            "time": "2017-12-07T15:36:41+00:00"
         }
     ],
     "aliases": [],
@@ -6595,6 +6544,7 @@
     "stability-flags": {
         "acts/time-mock-bundle": 20,
         "excelwebzone/recaptcha-bundle": 20,
+        "hwi/oauth-bundle": 20,
         "behat/behat": 0,
         "behat/mink": 0
     },
