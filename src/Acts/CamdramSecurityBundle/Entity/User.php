@@ -2,7 +2,6 @@
 
 namespace Acts\CamdramSecurityBundle\Entity;
 
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,6 +9,7 @@ use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramBundle\Entity\Person;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -21,7 +21,7 @@ use Acts\CamdramBundle\Entity\Person;
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("user")
  */
-class User implements \Serializable, CamdramUserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -818,15 +818,12 @@ class User implements \Serializable, CamdramUserInterface
     public function serialize()
     {
         return serialize(array(
-                $this->id, $this->name, $this->email, $this->password, $this->registered_at,
-                $this->last_login_at, $this->occupation, $this->graduation, $this->is_email_verified
+                $this->id, $this->name, $this->email, $this->password
         ));
     }
     public function unserialize($serialized)
     {
-        list($this->id, $this->name, $this->email, $this->password, $this->registered_at,
-            $this->last_login_at, $this->occupation, $this->graduation,
-            $this->is_email_verified) = unserialize($serialized);
+        list($this->id, $this->name, $this->email, $this->password) = unserialize($serialized);
     }
 
     /**
@@ -922,8 +919,13 @@ class User implements \Serializable, CamdramUserInterface
 
     public function getExternalUserByService($service)
     {
+        if (is_null($this->external_users))
+        {
+            return null;
+        }
+        
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('service', $service));
+        ->where(Criteria::expr()->eq('service', $service));
         $res = $this->external_users->matching($criteria);
         if (count($res) > 0) {
             return $res->first();

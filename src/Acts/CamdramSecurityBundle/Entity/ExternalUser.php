@@ -2,7 +2,6 @@
 
 namespace Acts\CamdramSecurityBundle\Entity;
 
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="acts_external_users")
  * @ORM\Entity
  */
-class ExternalUser implements CamdramUserInterface, \Serializable
+class ExternalUser implements \Serializable
 {
     public function __construct()
     {
@@ -40,13 +39,6 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * @ORM\Column(name="service", type="string", length=50, nullable=false)
      */
     private $service;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="remote_id", type="string", length=100, nullable=true)
-     */
-    private $remote_id;
 
     /**
      * @var string
@@ -132,30 +124,6 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     }
 
     /**
-     * Set remote_id
-     *
-     * @param string $remoteId
-     *
-     * @return ExternalUser
-     */
-    public function setRemoteId($remoteId)
-    {
-        $this->remote_id = $remoteId;
-
-        return $this;
-    }
-
-    /**
-     * Get remote_id
-     *
-     * @return string
-     */
-    public function getRemoteId()
-    {
-        return $this->remote_id;
-    }
-
-    /**
      * Set username
      *
      * @param string $username
@@ -223,16 +191,6 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * @return string
      */
     public function getEmail()
-    {
-        return $this->email;
-    }
-    
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getFullEmail()
     {
         return $this->email;
     }

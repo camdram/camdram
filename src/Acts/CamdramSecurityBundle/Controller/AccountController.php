@@ -26,9 +26,7 @@ class AccountController extends FOSRestController
 
     public function linkedAccountsAction()
     {
-        return $this->render('ActsCamdramSecurityBundle:Account:linked_accounts.html.twig', array(
-            'services' => $this->get('external_login.service_provider')->getServices()
-        ));
+        return $this->render('ActsCamdramSecurityBundle:Account:linked_accounts.html.twig');
     }
 
     public function getShowsAction()
@@ -71,16 +69,15 @@ class AccountController extends FOSRestController
 
     public function changePasswordAction(Request $request)
     {
-        $form = $form = $this->createForm(new ChangePasswordType(), array());
-        if ($request->getMethod() == 'POST') {
-            $form->submit($request);
+        $form = $form = $this->createForm(new ChangePasswordType(), $this->getUser());
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $user = $this->getUser();
-                $data = $form->getData();
+                $user = $form->getData();
 
                 $factory = $this->get('security.encoder_factory');
                 $encoder = $factory->getEncoder($user);
-                $password = $encoder->encodePassword($data['password'], $user->getSalt());
+                $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
                 $user->setPassword($password);
 
                 $this->getDoctrine()->getManager()->flush();

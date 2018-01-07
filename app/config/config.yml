@@ -258,6 +258,5 @@ ewz_recaptcha:
     locale_key: %kernel.default_locale%
 
 parameters:
-    security.authentication.trust_resolver.class: Acts\ExternalLoginBundle\Security\Authentication\AuthenticationTrustResolver
     test.client.class: Acts\CamdramBackendBundle\Test\Client
     router.request_context.host: www.camdram.net

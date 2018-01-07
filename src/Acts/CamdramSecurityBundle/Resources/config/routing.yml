@@ -1,6 +1,11 @@
 acts_camdram_security_login:
     path:   /login
     defaults:  {  _controller: ActsCamdramSecurityBundle:Default:login }
+
+acts_camdram_security_login_password:
+    path:   /login/password
+    defaults:  {  _controller: ActsCamdramSecurityBundle:Default:passwordLogin }
+
 acts_camdram_security_login_check:
     path:   /login_check
 acts_camdram_security_link_user:
@@ -32,3 +37,28 @@ acts_camdram_security_account:
 acts_camdram_security_settings_res:
     prefix: /settings
     resource: routing/settings.yml
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /oauth/connect
+    
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /oauth/connect
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /oauth/login
+
+raven_login:
+    resource: "@MisdRavenBundle/Resources/config/routing.xml"
+    prefix:   /raven-login
+ 
+facebook_login:
+    path: /oauth/check-facebook
+
+google_login:
+    path: /oauth/check-google
+    
+raven_login:
+    path: /check-raven

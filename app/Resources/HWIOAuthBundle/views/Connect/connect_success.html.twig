@@ -1,0 +1,12 @@
+{% extends 'ActsCamdramBundle::layout.html.twig' %}
+
+{% block title %}Connect account{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="large-12 columns">
+    <h3>Connect Account</h3>
+    <p>Successfully connected the {{ service | capitalize }} account {{ userInformation.email }}</p>
+    <p><a href="{{ path('get_account') }}" class="button">Account settings</a></p>
+</div>
+{% endblock body %}
