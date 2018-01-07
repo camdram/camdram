@@ -1,0 +1,9 @@
+<ul class="inline-list">
+    <li>Log in using</li>
+    {% for owner in hwi_oauth_resource_owners() %}
+        <li><a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link">
+                <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+                {{ owner | capitalize }}
+            </a></li>
+    {% endfor %}
+</ul>

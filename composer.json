@@ -24,7 +24,6 @@
         "jms/serializer-bundle": "1.1.*",
         "friendsofsymfony/oauth-server-bundle": "1.5.*",
         "acts/social-api-bundle": "0.1.*",
-        "acts/external-login-bundle": "0.2.*",
         "egeloen/google-map-bundle" : "~2.2",
         "pagerfanta/pagerfanta": "1.0.*",
         "friendsofsymfony/jsrouting-bundle": "1.6.*",
@@ -38,7 +37,9 @@
         "zendframework/zend-feed": "2.4.*",
         "zendframework/zend-mail": "2.4.*",
         "zendframework/zend-servicemanager": "2.4.*",
-        "excelwebzone/recaptcha-bundle" : "2.6.*@dev"
+        "excelwebzone/recaptcha-bundle" : "2.6.*@dev",
+        "hwi/oauth-bundle": "^0.5.3",
+        "misd/raven-bundle": "~1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

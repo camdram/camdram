@@ -6,26 +6,24 @@
 <div class="row">
     <div class="twelve columns">
 
-        <h4>Log in to camdram.net</h4>
+        <h4>Log in to Camdram</h4>
+        
+        {% if has_role('IS_AUTHENTICATED_REMEMBERED') %}
+        <p class="panel">For security reasons, you must log in again before accessing this page.</p>
+        {% endif %}
 
-        {% if error %}
+        {% if error is defined %}
             <div class="error_panel">
+            <p>{{ error }}</p>
                 <p>Either the username or password is invalid - please try again</p>
             </div>
         {% endif %}
 
-        <ul class="inline-list">
-            <li>Log in using</li>
-            {% for service in services %}
-                <li><a href="{{ path('acts_external_login_entry', {service: service.name}) }}" class="icon-link">
-                        <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service.name ~ '.png') }}" alt="{{ service.name | capitalize }}" title="{{ service.name | capitalize }}" width="19" height="19" />
-                        {{ service.name | capitalize }}
-                    </a></li>
-            {% endfor %}
-        </ul>
-        <p>Or, if you have already registered, use your e-mail address and password:</p>
+        {{ render(path('hwi_oauth_connect')) }}
+        
+        <p>Or, use your e-mail address and password:</p>
 
-        {% include 'ActsCamdramSecurityBundle:Default:login_form.html.twig' %}
+        {{ render(path('acts_camdram_security_login_password')) }}
     </div>
 </div>
 {% endblock %}
