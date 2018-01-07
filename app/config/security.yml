@@ -33,13 +33,13 @@ security:
                 resource_owners:
                     facebook:           "/auth/oauth/check-facebook"
                     google:             "/auth/oauth/check-google"
+                    raven:              "/auth/check-raven"
                 login_path:        /auth/login
                 use_forward:       false
                 failure_path:      /auth/login
                 oauth_user_provider:
                     service: camdram.security.user.provider
-            raven:
-                check_path: "/auth/check-raven"
+            
                 login_path: "/auth/login"
             remember_me:
                 secret:      %secret%
@@ -81,3 +81,5 @@ hwi_oauth:
             scope: "email profile"
             options:
                 csrf: true
+        raven:
+            service: "camdram.security.raven.resource_owner"

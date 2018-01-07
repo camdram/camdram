@@ -49,10 +49,6 @@ hwi_oauth_connect:
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /oauth/login
-
-raven_login:
-    resource: "@MisdRavenBundle/Resources/config/routing.xml"
-    prefix:   /raven-login
  
 facebook_login:
     path: /oauth/check-facebook
