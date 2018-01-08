@@ -46,6 +46,7 @@ security:
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~
+                always_remember_me: true
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/

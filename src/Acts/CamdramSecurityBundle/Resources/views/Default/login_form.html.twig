@@ -27,17 +27,6 @@
     <input type="hidden" name="_target_path" value="{{ target_path }}" />
     {% endif %}
 
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-    <input type="hidden" name="_remember_me" value="1"/>
-    {% else %}
-    <div class="row">
-        <div class="large-9 columns large-offset-3">
-            <label for=form_remember_me><input type="checkbox" id="form_remember_me" name="_remember_me" value="1" />
-                Automatically log in on this computer next time
-            </label>
-        </div>
-    </div>
-    {% endif %}
     <div class="row">
         <div class="large-6 columns">
             <a href="{{ path('acts_camdram_security_forgotten_password') }}">Forgotten password?</a>
