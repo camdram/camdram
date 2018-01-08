@@ -23,6 +23,10 @@
         </div>
     </div>
 
+    {% if target_path is defined %}
+    <input type="hidden" name="_target_path" value="{{ target_path }}" />
+    {% endif %}
+
     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
     <input type="hidden" name="_remember_me" value="1"/>
     {% else %}
