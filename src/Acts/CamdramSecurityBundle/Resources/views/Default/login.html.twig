@@ -20,9 +20,12 @@
 
         {{ render(path('hwi_oauth_connect')) }}
         
+        {% if not app.user or (app.user and app.user.password) %}
         <p>Or, use your e-mail address and password:</p>
 
         {{ render(path('acts_camdram_security_login_password')) }}
+
+        {% endif %}
     </div>
 </div>
 {% endblock %}

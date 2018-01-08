@@ -1,9 +1,18 @@
 <ul class="inline-list">
     <li>Log in using</li>
-    {% for owner in hwi_oauth_resource_owners() %}
-        <li><a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link">
-                <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
-                {{ owner | capitalize }}
-            </a></li>
-    {% endfor %}
+    {% if app.user %}
+        {% for ext in app.user.externalUsers %}
+            <li><a href="{{ hwi_oauth_login_url(ext.service) }}" class="icon-link">
+                    <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ ext.service ~ '.png') }}" alt="{{ ext.service | capitalize }}" title="{{ ext.service | capitalize }}" width="19" height="19" />
+                    {{ ext.service | capitalize }}
+                </a></li>
+        {% endfor %}
+    {% else %}
+        {% for owner in hwi_oauth_resource_owners() %}
+            <li><a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link">
+                    <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+                    {{ owner | capitalize }}
+                </a></li>
+        {% endfor %}
+    {% endif %}
 </ul>
