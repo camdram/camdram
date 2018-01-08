@@ -12,9 +12,8 @@
         <p class="panel">For security reasons, you must log in again before accessing this page.</p>
         {% endif %}
 
-        {% if error is defined %}
+        {% if error is defined and error %}
             <div class="error_panel">
-            <p>{{ error }}</p>
                 <p>Either the username or password is invalid - please try again</p>
             </div>
         {% endif %}

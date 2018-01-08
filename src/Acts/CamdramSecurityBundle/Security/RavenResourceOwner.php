@@ -33,7 +33,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
 
     public function getOption($name)
     {
-        throw new \InvalidArgumentException(sprintf('Unknown option "%s"', $name));
+        return false;
     }
     
     public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())

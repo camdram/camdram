@@ -37,11 +37,13 @@
         </div>
     {{ form_end(form) }}
     
-    <h4>Create a Camdram password</h4>
-        <p>Alternatively, if you already have a Camdram account, please log in using your email and password below to link it to your
-        {{ userInformation.resourceOwner.name | capitalize }} account.</p>
+    <h4>Already have an account?</h4>
+        <p>If you already have a Camdram account, please log in using your email and password below to go
+        directly to your account settings. From there, you can manually connect your {{ userInformation.resourceOwner.name | capitalize }}
+        and Camdram accounts so you can log in without a Camdram password in future.</p>
 
-        {{ include('ActsCamdramSecurityBundle:Default:login_form.html.twig', {last_email: userInformation.email, error: ''}) }}
+        {{ include('ActsCamdramSecurityBundle:Default:login_form.html.twig', {last_email: userInformation.email, error: false,
+            target_path: 'get_account'}) }}
     </div>
 </div>
 {% endblock %}
