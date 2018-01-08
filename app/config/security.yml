@@ -31,9 +31,9 @@ security:
                 password_parameter: password
             oauth:
                 resource_owners:
-                    facebook:           "/auth/oauth/check-facebook"
-                    google:             "/auth/oauth/check-google"
                     raven:              "/auth/check-raven"
+                    facebook:           "/auth/oauth/check-facebook"
+                    google:             "/auth/oauth/check-google"   
                 login_path:        /auth/login
                 use_forward:       false
                 failure_path:      /auth/login

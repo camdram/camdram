@@ -5,8 +5,20 @@
 {% block body %}
 <div class="row">
     <div class="large-12 columns">
-    <h4>Create a Camdram account</h4>
-    <p>Please fill in the details below to create a Camdram account. An account is required to create or edit shows.</p>
+    <h4>Create an account</h4>
+
+    <ul class="inline-list">
+    <li>You can create an account using</li>
+    {% for owner in hwi_oauth_resource_owners() %}
+        <li><a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link">
+                <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+                {{ owner | capitalize }}
+            </a></li>
+    {% endfor %}
+    </ul>
+
+    <h5>Register without using an external account</h5>
+    <p>To create a Camdram account by specifying an e-mail address and password manually, please fill in the details below.</p>
     <form action="{{ path('acts_camdram_security_create_account') }}" method="post">
         {{ form_row(form.name) }}
         {{ form_row(form.email) }}
