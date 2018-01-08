@@ -47,7 +47,8 @@ class TokenUtilities
      */
     public static function isInteractiveRequest(TokenInterface $token)
     {
-        return $token instanceof UsernamePasswordToken || $token instanceof ExternalLoginToken;
+        return $token instanceof UsernamePasswordToken 
+            || $token instanceof \HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
     }
 
 }

@@ -16,6 +16,7 @@ framework:
     trusted_proxies: ['127.0.0.1']
     session:
         name: camdram
+        gc_maxlifetime: 1800
     fragments: { path: /_fragment }
 
 # Twig Configuration
