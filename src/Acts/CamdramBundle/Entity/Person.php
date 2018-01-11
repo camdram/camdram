@@ -50,9 +50,9 @@ class Person implements SearchableInterface
     private $description;
 
     /**
-     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     * @var Image
      *
-     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
      */
     private $image;
@@ -404,11 +404,11 @@ class Person implements SearchableInterface
     /**
      * Set image
      *
-     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @param Image $image
      *
      * @return Person
      */
-    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    public function setImage(Image $image = null)
     {
         $this->image = $image;
 
@@ -418,7 +418,7 @@ class Person implements SearchableInterface
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     * @return Image
      */
     public function getImage()
     {

@@ -9,7 +9,7 @@
     <meta property="og:title" content="{{ show.name }}" />
     <meta property="og:description" content="{{ show.description | strip_camdram_markdown | strip_new_lines | truncate(500) }}" />
     {% if show.image %}
-        <meta property="og:image" content="{{ image_url(show.image, 1024, 768) }}" />
+        <meta property="og:image" content="{{ show.image.hash | imagine_filter('preview') }}" />
     {% else %}
         {# Maybe put a stock camdram image here? #}
     {% endif %}
@@ -66,7 +66,7 @@
         {% if show.image %}
             <div class="row">
             <div class="large-3 columns text-center">
-                <a itemprop="image" href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>
+                <a itemprop="image" href="{{ show.image.hash | imagine_filter('preview') }}" class="fancybox"><img src="{{ show.image.hash | imagine_filter('thumbnail') }}" width="300" /></a>
             </div>
             <div class="large-9 columns">
                 {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}

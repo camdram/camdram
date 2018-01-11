@@ -69,9 +69,9 @@ class Show implements SearchableInterface, OwnableInterface
     private $description;
 
     /**
-     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     * @var Image
      *
-     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
      */
     private $image;
@@ -1513,11 +1513,11 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Set image
      *
-     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @param Image $image
      *
      * @return Show
      */
-    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    public function setImage(Image $image = null)
     {
         $this->image = $image;
 
@@ -1527,7 +1527,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     * @return Image
      */
     public function getImage()
     {

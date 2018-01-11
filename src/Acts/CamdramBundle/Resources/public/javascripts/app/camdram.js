@@ -12,7 +12,7 @@
     // on extra elements as they are added to the page.
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
-        $('a.fancybox', elementsToFix).fancybox();
+        //$('a.fancybox', elementsToFix).fancybox();
         $('a.delete-link').deleteLink();
 
         if (!Modernizr.inputtypes.date) {
