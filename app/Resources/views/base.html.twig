@@ -38,7 +38,7 @@
         'bundles/actscamdram/stylesheets/h5bp/normalize.css'
         'bundles/actscamdram/stylesheets/app/*.scss'
         'bundles/actsdiary/css/diary.css'
-        'bundles/hoyesimagemanager/css/fancybox.css'%}
+        %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 
@@ -57,9 +57,7 @@
         '@ActsCamdramBundle/Resources/public/javascripts/typeahead.js'
         '@ActsDiaryBundle/Resources/public/js/diary.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
-        '@HoyesImageManagerBundle/Resources/public/js/plupload.full.min.js'
-        '@HoyesImageManagerBundle/Resources/public/js/upload_widget.js'
-        '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js' %}
+         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         {% if app.environment == 'prod' %}

@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * Class ShowType
@@ -29,7 +30,8 @@ class ShowType extends AbstractType
             ->add('name')
             ->add('author', null, array('required' => false))
             ->add('description')
-            ->add('image', 'image_upload', array('label' => 'Publicity image', 'required' => false))
+            ->add('image', 'vich_image', array('allow_delete' => true,
+                'label' => 'Publicity image', 'required' => false, 'property_path' => 'image.imageFile'))
             ->add('prices', null, array('required' => false, 'label' => 'Ticket prices', 'attr' => array(
                 'placeholder' => 'e.g. £6/5'
             )))

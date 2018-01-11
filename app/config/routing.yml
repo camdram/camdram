@@ -39,9 +39,8 @@ fos_oauth_server_token:
 fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 
-hoyes_image_manager_bundle:
-    resource: "@HoyesImageManagerBundle/Resources/config/routing.yml"
-    prefix: /images
-
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    
+liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"

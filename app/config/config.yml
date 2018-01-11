@@ -24,7 +24,6 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-        - 'HoyesImageManagerBundle:Form:fields.html.twig'
         - 'ActsCamdramBundle:Form:fields.html.twig'
     globals:
         development_warning: %development_warning%
@@ -243,6 +242,37 @@ acts_sphinx_real_time:
                 min_prefix_len: 1
                 enable_star: true
                 dict: keywords
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+        images:
+            uri_prefix:         ~
+            upload_destination: %kernel.root_dir%/data/
+            namer: vich_uploader.namer_uniqid
+    
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                data_root: %kernel.root_dir%/data/
+
+    filter_sets:
+        cache: ~
+        preview:
+            quality: 90
+            filters:
+                thumbnail: { size : [1024, 768], mode : inset }
+                strip: ~
+        thumbnail:
+            quality: 75
+            filters:
+                thumbnail: { size : [300, 200], mode : inset }
+                strip: ~
 
 stof_doctrine_extensions:
     orm:
