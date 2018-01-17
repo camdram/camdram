@@ -41,6 +41,10 @@ fos_oauth_server_authorize:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-    
+
+oneup_uploader:
+    resource: .
+    type: uploader
+
 liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"

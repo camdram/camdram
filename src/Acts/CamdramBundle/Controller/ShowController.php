@@ -181,12 +181,25 @@ class ShowController extends AbstractRestController
             );
     }
 
-    public function getRolesAction($identifier)
+    public function editInlineAction($identifier)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
-        return $this->getAction($identifier);
+        return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
+    }
+    
+    public function removeImageAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($show->getImage());
+        $show->setImage(null);
+        $em->flush();
+        
+        return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
     public function getPeopleAction($identifier)

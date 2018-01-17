@@ -30,7 +30,6 @@
         "sabre/vobject": "~3.3",
         "camdram/sphinx-realtime-bundle": "0.1.*",
         "incenteev/composer-parameter-handler": "~2.1",
-        "vich/uploader-bundle": "0.14.0",
         "liip/imagine-bundle": "~1.9",
         "acts/time-mock-bundle": "*@dev",
         "zurb/foundation": "4.*",
@@ -39,7 +38,8 @@
         "zendframework/zend-mail": "2.4.*",
         "zendframework/zend-servicemanager": "2.4.*",
         "excelwebzone/recaptcha-bundle" : "2.6.*@dev",
-        "hwi/oauth-bundle": "dev-0.5.3-camdram"
+        "hwi/oauth-bundle": "dev-0.5.3-camdram",
+        "oneup/uploader-bundle": "^1.9"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
