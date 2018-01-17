@@ -52,7 +52,7 @@ class ImageListener
     
     public function validate(ValidationEvent $event)
     {
-        if (!$event->getFile())
+        if (is_null($event->getFile()))
         {
             throw new ValidationException('No image uploaded');
         }
@@ -86,6 +86,11 @@ class ImageListener
         {
             throw new ValidationException('Not authorized to edit '.$type);
         }
+        
+        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'))
+        {
+            throw new ValidationException('Re-authentication required');
+        }
     }
     
     public function onUpload(PostPersistEvent $event)
@@ -94,7 +99,8 @@ class ImageListener
         $repo = $this->getRepository($type);
         $identifier = $event->getRequest()->request->get('identifier', '');
         $entity = $repo->findOneBySlug($identifier);
-        if (!$this->authorizationChecker->isGranted('EDIT', $entity))
+        if (!$this->authorizationChecker->isGranted('EDIT', $entity)
+            || !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'))
         {
             return;
         }
