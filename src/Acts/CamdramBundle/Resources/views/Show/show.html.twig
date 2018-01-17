@@ -21,8 +21,15 @@
 {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
 {% endif %}
 
+{% if not is_granted('EDIT', show, true) and is_granted('EDIT', show, false) %}
 <div class="row">
+    <div class="large-12 columns text-center">
+   	   <p><a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to edit show details</a></p>        
+    </div>
+</div>
+{% endif %}
 
+<div class="row">	
     <div class="large-12 columns panel" itemscope="" itemtype="http://schema.org/TheaterEvent">
         <meta itemprop="name" content="{{ show.name }}"/>
         <ul class="inline-list right">
@@ -70,8 +77,6 @@
                 <ul class="inline-list">    	
                 {% if is_granted('EDIT', show, true) %}
             		{{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show_image',{identifier:show.slug}), text: 'Remove image', name: show.name, type: 'image'} }) }}
-            	{% elseif is_granted('EDIT', show, false) %}
-            		 <li><a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to modify image</a></li>
             	{% endif %}
             	</ul>
             </div>
@@ -80,7 +85,7 @@
             </div>
             </div>
         {# Show prompt to upload image #}
-        {% elseif is_granted('EDIT', show) %}
+        {% elseif is_granted('EDIT', show, true) %}
         	<div class="row">
             <div class="large-3 columns text-center">
             	<form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
@@ -156,14 +161,7 @@
             {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'prod', id: 'sortable-prod'} %}
         </div>
 </div>
-<br/>
-{% if not is_granted('EDIT', show, true) and is_granted('EDIT', show, false) %}
-<div class="row">
-    <div class="large-12 columns">
-        <p><a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to edit roles on this show</a></p>
-    </div>
-</div>
-{% endif %}
+<br />
 
 <div class="row">
     <div class="column large-12">
