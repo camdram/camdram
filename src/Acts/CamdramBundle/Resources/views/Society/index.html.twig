@@ -32,7 +32,7 @@
             {% if society.image %}
                 <div class="row">
                     <div class="small-3 columns">
-                        <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ render_image(society.image, 88, 70) }}</a>
+                        <a href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('list') }}" /></a>
                     </div>
                     <div class="small-9 columns">
                         <p>{{ society.description | strip_camdram_markdown | truncate(200) }}</p>

@@ -268,6 +268,10 @@ liip_imagine:
             filters:
                 thumbnail: { size : [300, 200], mode : inset }
                 strip: ~
+        list:
+            quality: 75
+            filters:
+                thumbnail: { size: [88, 70], mode: inset }
 
 stof_doctrine_extensions:
     orm:

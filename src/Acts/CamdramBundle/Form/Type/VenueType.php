@@ -18,7 +18,6 @@ class VenueType extends AbstractType
         $builder
             ->add('name')
             ->add('short_name')
-            ->add('image', 'image_upload', array('label' => 'Photo'))
             ->add('college')
             ->add('description')
             ->add('address')
