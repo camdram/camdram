@@ -30,8 +30,6 @@ class ShowType extends AbstractType
             ->add('name')
             ->add('author', null, array('required' => false))
             ->add('description')
-            ->add('image', 'vich_image', array('allow_delete' => true,
-                'label' => 'Publicity image', 'required' => false, 'property_path' => 'image.imageFile'))
             ->add('prices', null, array('required' => false, 'label' => 'Ticket prices', 'attr' => array(
                 'placeholder' => 'e.g. £6/5'
             )))

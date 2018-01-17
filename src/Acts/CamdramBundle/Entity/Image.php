@@ -4,15 +4,12 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Entity\File as EmbeddedFile;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Image
  *
  * @ORM\Table(name="images")
  * @ORM\Entity
- * @Vich\Uploadable
  */
 class Image
 {
@@ -26,18 +23,11 @@ class Image
     private $id;
     
     /**
-    * @Vich\UploadableField(mapping="images", fileNameProperty="hash", mimeType="type", dimensions="width")
-    *
-    * @var File
-    */
-    private $imageFile;
-    
-    /**
      * @var string
      *
      * @ORM\Column(name="hash", type="string", length=40, unique=true)
      */
-    private $hash;
+    private $filename;
     /**
      * @var \DateTime
      *
@@ -85,44 +75,25 @@ class Image
     }
     
     /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
-     */
-    public function setImageFile(File $image = null)
-    {
-        $this->imageFile = $image;
-        
-        if (null !== $image) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
-    }
-    
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
-    
-    /**
-     * Set hash
+     * Set filename
      *
-     * @param string $hash
+     * @param string $filename
      * @return Image
      */
-    public function setHash($hash)
+    public function setFilename($filename)
     {
-        $this->hash = $hash;
+        $this->filename = $filename;
     
         return $this;
     }
     /**
-     * Get hash
+     * Get filename
      *
      * @return string 
      */
-    public function getHash()
+    public function getFilename()
     {
-        return $this->hash;
+        return $this->filename;
     }
     /**
      * Set created_at

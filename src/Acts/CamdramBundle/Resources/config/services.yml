@@ -138,3 +138,10 @@ services:
     acts.camdram.contact_entity_service:
         class: Acts\CamdramBundle\Service\ContactEntityService
         arguments: ['@mailer', '@camdram.security.acl.provider']
+
+    acts.camdram.image_listener:
+        class: Acts\CamdramBundle\EventListener\ImageListener
+        arguments: ['@doctrine.orm.entity_manager', '@security.authorization_checker', '@liip_imagine']
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.validation, method: validate }
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }

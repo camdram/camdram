@@ -9,7 +9,7 @@
     <meta property="og:title" content="{{ show.name }}" />
     <meta property="og:description" content="{{ show.description | strip_camdram_markdown | strip_new_lines | truncate(500) }}" />
     {% if show.image %}
-        <meta property="og:image" content="{{ show.image.hash | imagine_filter('preview') }}" />
+        <meta property="og:image" content="{{ show.image.filename | imagine_filter('preview') }}" />
     {% else %}
         {# Maybe put a stock camdram image here? #}
     {% endif %}
@@ -66,7 +66,14 @@
         {% if show.image %}
             <div class="row">
             <div class="large-3 columns text-center">
-                <a itemprop="image" href="{{ show.image.hash | imagine_filter('preview') }}" class="fancybox"><img src="{{ show.image.hash | imagine_filter('thumbnail') }}" width="300" /></a>
+                <a itemprop="image" href="{{ show.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" width="300" /></a>
+                <ul class="inline-list">    	
+                {% if is_granted('EDIT', show, true) %}
+            		{{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show_image',{identifier:show.slug}), text: 'Remove image', name: show.name, type: 'image'} }) }}
+            	{% elseif is_granted('EDIT', show, false) %}
+            		 <li><a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to modify image</a></li>
+            	{% endif %}
+            	</ul>
             </div>
             <div class="large-9 columns">
                 {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
@@ -76,9 +83,10 @@
         {% elseif is_granted('EDIT', show) %}
         	<div class="row">
             <div class="large-3 columns text-center">
-            	<ul class="inline-list">
-                	{{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier: show.slug}), icon: 'pencil', text: 'Upload show image'} }) }}
-            	</ul>
+            	<form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
+					<input type="hidden" name="identifier" value="{{ show.slug }}"/>
+					<input type="hidden" name="type" value="show"/>
+				</form>
             </div>
             <div class="large-9 columns">
                 {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
@@ -152,7 +160,7 @@
 {% if not is_granted('EDIT', show, true) and is_granted('EDIT', show, false) %}
 <div class="row">
     <div class="large-12 columns">
-        <p><a href="{{ path('get_show_roles', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in again to edit roles on this show</a></p>
+        <p><a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to edit roles on this show</a></p>
     </div>
 </div>
 {% endif %}

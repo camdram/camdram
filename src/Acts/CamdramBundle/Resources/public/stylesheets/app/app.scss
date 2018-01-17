@@ -275,6 +275,13 @@ $panel-font-color-alt: #f00;
   @include panel(rgba(198, 15, 19, 0.1));
 }
 
+.dropzone {
+    @include panel(#ddd);
+    border: 4px dashed black;
+    min-height: 150px;
+    cursor: pointer;
+}
+
 #dev-warning {
   background:#ffdddd;
   text-align:center;
