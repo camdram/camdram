@@ -31,7 +31,7 @@
 
         <title>{% block title %}{% endblock %} - Camdram</title>
 
-        <link rel="stylesheet" type="text/css" href="https://s3-eu-west-1.amazonaws.com/assets.cookieconsent.silktide.com/current/style.min.css"/>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet"/>
         <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
         {% stylesheets output='css/main.css'
@@ -75,27 +75,24 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
     <script type="text/javascript">
         // <![CDATA[
-        window.cookieconsent.initialise({
-            cookies: {
-                analytics: {},
-                necessary: {}
-            },
-            settings: {
-                consenttype: "implicit",
-                bannerPosition: "bottom",
-                onlyshowbanneronce: true,
-                disableallsites: true,
-                useSSL: true,
-                hideallsitesbutton: true,
-                disableallsites: true,
-                hideprivacysettingstab: true
-            },
-            strings: {
-                notificationTitleImplicit: 'Camdram uses <a href="{{ path('acts_camdram_privacy') }}#cookies">cookies</a> to ensure you get the best experience. By continuing to use our site, you agree to our <a href="{{ path('acts_camdram_privacy') }}#privacy">privacy policy</a>.'
-            }
+        window.addEventListener("load", function(){
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                         "background": "#fe5c1f",
+                         "text": "#ffffff"
+                    },
+                    "button": {
+                          "background": "#fff0c8"
+                    }
+                },
+                "content": {
+                    "href": "{{ path('acts_camdram_privacy') }}#cookies"
+                }
+            });
         });
         // ]]>
     </script>
