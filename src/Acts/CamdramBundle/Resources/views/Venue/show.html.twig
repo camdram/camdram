@@ -24,7 +24,7 @@
                             <meta itemprop="longitude" content="{{ venue.longitude }}"/>
                           </div>
                       {% endif %}
-                      {% if venue.image %}<p><a href="{{ image_url(venue.image, 1024, 768) }}" class="fancybox">{{ render_image(venue.image, 270, 270) }}</a></p>{% endif %}
+                      {% if venue.image %}<p><a href="{{ venue.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ venue.image.filename | imagine_filter('thumbnail') }}" /></a></p>{% endif %}
                   </div>
                   <div class="large-8 columns">
 
