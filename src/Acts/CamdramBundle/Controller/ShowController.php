@@ -202,12 +202,17 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
-    public function getPeopleAction($identifier)
+    public function getRolesAction($identifier)
     {
         $show = $this->getEntity($identifier);
         $role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
         $roles = $role_repo->findByShow($show);
 
         return $this->view($roles);
+    }
+
+    public function getPeopleAction($identifier)
+    {
+        return $this->getRolesAction($identifier);
     }
 }
