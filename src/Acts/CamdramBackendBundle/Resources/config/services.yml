@@ -38,3 +38,6 @@ services:
           - %twitter_token%
           - %twitter_token_secret%
           
+    github.api:
+        class: \Github\Client
+        lazy: true
