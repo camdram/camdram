@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0b112f5809ed29aa5887d99609f346ab",
-    "content-hash": "93fa9d50d6913f902854f2cc734ceff8",
+    "hash": "0ed9d5e312d31c148263155df2874573",
+    "content-hash": "698744fcacc61a0826fc23308297e2a1",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -60,52 +60,6 @@
                 "twitter"
             ],
             "time": "2015-08-18 15:56:04"
-        },
-        {
-            "name": "acts/social-api-bundle",
-            "version": "0.1.4",
-            "target-dir": "Acts/SocialApiBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/camdram/social-api-bundle.git",
-                "reference": "3a964ff044820befc345b54f2567a32cdd0c6b98"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/camdram/social-api-bundle/zipball/3a964ff044820befc345b54f2567a32cdd0c6b98",
-                "reference": "3a964ff044820befc345b54f2567a32cdd0c6b98",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "sensio/buzz-bundle": "1.*",
-                "symfony/symfony": ">=2.3"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Acts\\SocialApiBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Peter Hoyes",
-                    "email": "pahoyes@gmail.com"
-                }
-            ],
-            "description": "A bundle for accessing data from OAuth 1/2 REST APIs. Provides an extendable list of methods for calling Facebook and Twitter APIs.",
-            "keywords": [
-                "api",
-                "facebook",
-                "oauth",
-                "social",
-                "twitter"
-            ],
-            "time": "2014-10-24 07:50:31"
         },
         {
             "name": "acts/time-mock-bundle",
@@ -3736,16 +3690,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.8",
+            "version": "v5.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517"
+                "reference": "7ffc1ea296ed14bf8260b6ef11b80208dbadba91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/9a06dc570a0367850280eefd3f1dc2da45aef517",
-                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7ffc1ea296ed14bf8260b6ef11b80208dbadba91",
+                "reference": "7ffc1ea296ed14bf8260b6ef11b80208dbadba91",
                 "shasum": ""
             },
             "require": {
@@ -3780,13 +3734,13 @@
                 }
             ],
             "description": "Swiftmailer, free feature-rich PHP mailer",
-            "homepage": "http://swiftmailer.org",
+            "homepage": "https://swiftmailer.symfony.com",
             "keywords": [
                 "email",
                 "mail",
                 "mailer"
             ],
-            "time": "2017-05-01 15:54:03"
+            "time": "2018-01-23 07:37:21"
         },
         {
             "name": "symfony/assetic-bundle",

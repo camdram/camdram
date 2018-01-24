@@ -23,7 +23,7 @@
         "friendsofsymfony/rest-bundle": "1.8.*",
         "jms/serializer-bundle": "1.1.*",
         "friendsofsymfony/oauth-server-bundle": "1.5.*",
-        "acts/social-api-bundle": "0.1.*",
+        "sensio/buzz-bundle": "1.*",
         "egeloen/google-map-bundle" : "~2.2",
         "pagerfanta/pagerfanta": "1.0.*",
         "friendsofsymfony/jsrouting-bundle": "1.6.*",

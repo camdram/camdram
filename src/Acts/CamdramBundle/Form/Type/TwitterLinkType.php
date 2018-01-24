@@ -4,7 +4,7 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Acts\CamdramBundle\Form\DataTransformer\TwitterLinkTransformer;
 
 /**
@@ -15,9 +15,13 @@ use Acts\CamdramBundle\Form\DataTransformer\TwitterLinkTransformer;
  */
 class TwitterLinkType extends AbstractType
 {
+    /**
+     * 
+     * @var \Abraham\TwitterOAuth\TwitterOAuth
+     */
     private $api;
 
-    public function __construct($api)
+    public function __construct(\Abraham\TwitterOAuth\TwitterOAuth $api)
     {
         $this->api = $api;
     }
@@ -27,7 +31,7 @@ class TwitterLinkType extends AbstractType
         $builder->addModelTransformer(new TwitterLinkTransformer($this->api));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'medium',

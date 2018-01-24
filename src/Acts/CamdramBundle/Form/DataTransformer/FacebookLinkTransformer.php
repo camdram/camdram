@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Acts\SocialApiBundle\Service\OAuthApi;
+use Facebook\Facebook;
 
 /**
  * Class FacebookLinkTransformer
@@ -15,11 +16,11 @@ use Acts\SocialApiBundle\Service\OAuthApi;
 class FacebookLinkTransformer implements DataTransformerInterface
 {
     /**
-     * @var \Acts\SocialApiBundle\Service\OAuthApi;
+     * @var Facebook
      */
     private $api;
 
-    public function __construct(OAuthApi $api)
+    public function __construct(Facebook $api)
     {
         $this->api = $api;
     }
@@ -39,18 +40,16 @@ class FacebookLinkTransformer implements DataTransformerInterface
             return null;
         }
         try {
-            if (!$this->api->isAuthenticated()) {
-                $this->api->authenticateAsSelf();
-            }
 
-            $data = $this->api->doGetById($value);
-            if (isset($data['error'])) {
-                throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
-            } else {
-                return $data['username'];
-            }
-        } catch (\Acts\SocialApiBundle\Exception\SocialApiException $e) {
+            $data = $this->api->sendRequest('GET', '/'.$value, ['fields' => 'username']);
+            return $data->getDecodedBody()['username'];
+        }
+        catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
+        }
+        catch(\Facebook\Exceptions\FacebookSDKException $e) {
             //Just return the id, which is valid but less user-friendly
+            die('xx');
             return $value;
         }
     }
@@ -75,17 +74,13 @@ class FacebookLinkTransformer implements DataTransformerInterface
         }
 
         try {
-            if (!$this->api->isAuthenticated()) {
-                $this->api->authenticateAsSelf();
-            }
-
-            $data = $this->api->doGetByUsername($value);
-            if (isset($data['error'])) {
-                throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
-            } else {
-                return $data['id'];
-            }
-        } catch (\Acts\SocialApiBundle\Exception\SocialApiException $e) {
+            $data = $this->api->get('/'.urlencode($value));
+            return $data->getDecodedBody()['id'];
+        } 
+        catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
+        }
+        catch(\Facebook\Exceptions\FacebookSDKException $e) {
             throw new TransformationFailedException("We cannot accept Facebook pages at this time - we can't communicate with Facebook");
         }
     }

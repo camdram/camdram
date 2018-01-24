@@ -29,13 +29,13 @@ services:
 
     acts.camdram.type.facebook_link:
         class: Acts\CamdramBundle\Form\Type\FacebookLinkType
-        arguments: ['@acts.social_api.apis.facebook']
+        arguments: ['@facebook.api']
         tags:
             - { name: form.type, alias: facebook_link }
 
     acts.camdram.type.twitter_link:
         class: Acts\CamdramBundle\Form\Type\TwitterLinkType
-        arguments: ['@acts.social_api.apis.twitter']
+        arguments: ['@twitter.api']
         tags:
             - { name: form.type, alias: twitter_link }
 

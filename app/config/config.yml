@@ -131,28 +131,6 @@ acts_camdram:
 acts_camdram_legacy:
     v1_hostname: %v1_hostname%
 
-acts_social_api:
-      http_client:
-          timeout: 30,
-          user_agent: 'Camdram.net - websupport@camdram.net'
-      apis:
-          facebook:
-              client_id: %facebook_id%
-              client_secret: %facebook_secret%
-          twitter:
-              client_id: %twitter_key%
-              client_secret: %twitter_secret%
-              access_token: %twitter_token%
-              access_token_secret: %twitter_token_secret%
-          google:
-              client_id: %google_client_id%
-              client_secret: %google_client_secret%
-          google_simple:
-              key: %google_key%
-          github:
-              client_id: %github_id%
-              client_secret: %github_secret%
-
 fos_oauth_server:
     db_driver:           orm
     client_class:        Acts\CamdramApiBundle\Entity\ExternalApp
