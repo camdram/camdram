@@ -27,46 +27,108 @@ class EntitiesNewsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->executeForService('twitter', $output);
-        $this->executeForService('facebook', $output);
+        //$this->executeForFacebook($output);
+        $this->executeForTwitter($output);
     }
 
-    private function executeForService($service_name, OutputInterface $output)
+    private function executeForFacebook(OutputInterface $output)
     {
-        $api = $this->getContainer()->get('acts.social_api.provider')->get($service_name);
-        $api->authenticateAsSelf();
+        /**
+         * @var \Facebook\Facebook $facebook
+         */
+        $facebook = $this->getContainer()->get('facebook.api');
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $org_repo = $em->getRepository('ActsCamdramBundle:Organisation');
         $news_repo = $em->getRepository('ActsCamdramBundle:News');
-        $entities = $org_repo->findWithService($service_name);
+        $entities = $org_repo->findWithService('facebook');
         foreach ($entities as $entity) {
-            $news = $api->doPosts($entity->getSocialId($service_name));
-            foreach ($news as $item) {
-                if (!$news_repo->itemExists($service_name, $item['id'])) {
-                    $this->addNews($service_name, $item, $entity, $output);
+            try {
+                $response = $facebook->get('/'.$entity->getFacebookId().'/posts');
+                $body = $response->getDecodedBody();
+                
+                foreach ($body['data'] as $item) {
+                    if (!$news_repo->itemExists('facebook', $item['id'])) {
+                        $this->addNews('facebook', $item, $entity, $output);
+                    }
                 }
+            } 
+            catch(\Facebook\Exceptions\FacebookResponseException $e) {
+                // When Graph returns an error
+                $output->writeln('Graph returned an error: ' . $e->getMessage());
+            } 
+            catch(\Facebook\Exceptions\FacebookSDKException $e) {
+                // When validation fails or other local issues
+                $output->writeln('Facebook SDK returned an error: ' . $e->getMessage());
             }
+        }
+    }
+    
+    private function executeForTwitter(OutputInterface $output)
+    {
+        /**
+         * 
+         * @var \Abraham\TwitterOAuth\TwitterOAuth $twitter
+         */
+        $twitter = $this->getContainer()->get('twitter.api');
+        $twitter->setDecodeJsonAsArray(true);
+
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        $org_repo = $em->getRepository('ActsCamdramBundle:Organisation');
+        $news_repo = $em->getRepository('ActsCamdramBundle:News');
+        $entities = $org_repo->findWithService('twitter');
+        foreach ($entities as $entity) {
+            $response = $twitter->get('statuses/user_timeline', 
+                ['user_id' => $entity->getTwitterId(), 'count' => 50,
+                    'trim_user' => true, 'include_rts' => false
+                ]);
+            if ($twitter->getLastHttpCode() == 200) {
+                foreach ($response as $tweet) {
+                    if (!$news_repo->itemExists('twitter', $tweet['id'])) {
+                        $this->addNews('twitter', $tweet, $entity, $output);
+                    }
+                }
+            } else {
+                $output->writeln('Twitter API error');
+            }
+            
         }
     }
 
     private function addNews($service_name, $item, $entity, OutputInterface $output)
     {
-        if (!isset($item['text']) || empty($item['text'])) {
-            return;
-        }
-
         if (isset($item['application']['name']) && $item['application']['name'] == 'Twitter') {
             //Item is cross-posted from Twitter...no point picking it up twice
             return;
         }
+        
+        if (isset($item['message']) && !empty($item['message'])) {
+            $message = $item['message'];
+        }
+        else if (isset($item['text']) && !empty($item['text']))
+        {
+            $message = $item['text'];
+        }
+        else
+        {
+            return;
+        }
 
         $news = new News();
-        $news->setBody(htmlspecialchars_decode($item['text']));
+        $news->setBody($message);
         $news->setEntity($entity);
-        $news->setRemoteId($item['id']);
+        $news->setRemoteId(isset($item['id_str']) ? $item['id_str'] : $item['id']);
 
-        $news->setPostedAt(new \DateTime($item['created_at']));
+        if (isset($item['created_at']))
+        {
+            $news->setPostedAt(new \DateTime($item['created_at']));
+        }
+        else if (isset($item['created_time']))
+        {
+            $news->setPostedAt(new \DateTime($item['created_time']));
+        }
+        
         $news->setSource($service_name);
         $news->setPublic(true);
 
@@ -88,15 +150,22 @@ class EntitiesNewsCommand extends ContainerAwareCommand
                 $this->addLink($news, $url['url'], $url['display_url']);
             }
         }
-        if (isset($item['mentions'])) {
-            foreach ($item['mentions'] as $m) {
+        if (isset($item['message_tags']))
+        {
+            foreach ($item['message_tags'] as $m) {
                 if (isset($m[0])) {
                     $m = $m[0];
                 }
-                if ($service_name == 'twitter') {
-                    $m['offset'] = $m['indices'][0];
-                    $m['length'] = $m['indicies'][1] - $m['indicies'][0];
+                $this->addMention($news, $m['name'], $m['id'], $service_name, $m['offset'], $m['length']);
+            }
+        }
+        if (isset($item['entities']['user_mentions'])) {
+            foreach ($item['entities']['user_mentions'] as $m) {
+                if (isset($m[0])) {
+                    $m = $m[0];
                 }
+                $m['offset'] = $m['indices'][0];
+                $m['length'] = $m['indicies'][1] - $m['indicies'][0];
                 $this->addMention($news, $m['name'], $m['id'], $service_name, $m['offset'], $m['length']);
             }
         }
