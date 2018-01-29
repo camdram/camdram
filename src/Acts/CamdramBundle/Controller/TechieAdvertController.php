@@ -46,11 +46,11 @@ class TechieAdvertController extends FOSRestController
         foreach ($techieAdverts as $advert) {
             $weeks[$advert->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($advert->getShow()->getPerformances());
         }
-        $view = $this->render(
-            'ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig',
-            array('techieadverts' => $techieAdverts,
-                  'weeks' => $weeks)
-            );
+        
+        $view = $this->view($techieAdverts)
+            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.html.twig')
+            ->setTemplateVar('techieadverts')
+            ->setTemplateData(['weeks' => $weeks]);
 
         return $view;
     }
