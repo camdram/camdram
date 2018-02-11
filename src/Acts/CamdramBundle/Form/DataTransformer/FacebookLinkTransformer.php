@@ -4,7 +4,6 @@ namespace Acts\CamdramBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Acts\SocialApiBundle\Service\OAuthApi;
 use Facebook\Facebook;
 
 /**
@@ -45,12 +44,11 @@ class FacebookLinkTransformer implements DataTransformerInterface
             return $data->getDecodedBody()['username'];
         }
         catch(\Facebook\Exceptions\FacebookResponseException $e) {
-            throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
+            //Just return the id, which is valid but less user-friendly
+            return "https://www.facebook.com/".$value;
         }
         catch(\Facebook\Exceptions\FacebookSDKException $e) {
-            //Just return the id, which is valid but less user-friendly
-            die('xx');
-            return $value;
+            return "https://www.facebook.com/".$value;
         }
     }
 
@@ -72,6 +70,10 @@ class FacebookLinkTransformer implements DataTransformerInterface
         if (preg_match('/^(?:https?\:\\/\\/)?www\.facebook\.com\\/([^\?]+)(?:\?.*)?$/i', $value, $matches)) {
             $value = $matches[1];
         }
+        if (preg_match('/^events\\/([0-9]+)\\/?/i', $value, $matches))
+        {
+            $value = $matches[1];
+        }
 
         try {
             $data = $this->api->get('/'.urlencode($value));
@@ -81,7 +83,14 @@ class FacebookLinkTransformer implements DataTransformerInterface
             throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
         }
         catch(\Facebook\Exceptions\FacebookSDKException $e) {
-            throw new TransformationFailedException("We cannot accept Facebook pages at this time - we can't communicate with Facebook");
+            if (is_numeric($value))
+            {
+                return $value;
+            }
+            else
+            {
+                throw new TransformationFailedException("We cannot accept Facebook pages at this time - we can't communicate with Facebook");
+            }
         }
     }
 }

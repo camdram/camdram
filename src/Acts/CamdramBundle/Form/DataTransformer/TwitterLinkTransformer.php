@@ -4,8 +4,7 @@ namespace Acts\CamdramBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Acts\SocialApiBundle\Service\OAuthApi;
-use Abraham;
+use Abraham\TwitterOAuth\TwitterOAuth;
 
 /**
  * Class TwitterLinkTransformer
@@ -16,11 +15,11 @@ use Abraham;
 class TwitterLinkTransformer implements DataTransformerInterface
 {
     /**
-     * @var \Abraham\TwitterOAuth\TwitterOAuth
+     * @var TwitterOAuth
      */
     private $api;
 
-    public function __construct(\Abraham\TwitterOAuth\TwitterOAuth $api)
+    public function __construct(TwitterOAuth $api)
     {
         $this->api = $api;
         $this->api->setDecodeJsonAsArray(true);
@@ -48,7 +47,7 @@ class TwitterLinkTransformer implements DataTransformerInterface
         }
         else 
         {
-            throw new TransformationFailedException(sprintf('%s is an invalid Twitter id', $value));
+            return $value;
         }
     }
 
@@ -71,6 +70,10 @@ class TwitterLinkTransformer implements DataTransformerInterface
             $value = $matches[1];
         }
 
+        if (is_numeric($value))
+        {
+            return $value;
+        }
 
         $data = $this->api->get('users/show', ['screen_name' => $value]);
         if ($this->api->getLastHttpCode() == 200)
