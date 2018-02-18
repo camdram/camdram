@@ -7,6 +7,7 @@
         {% endif %}
         {% if has_role('ROLE_SUPER_ADMIN') %}
             <li><a href="{{ path('get_users') }}"><i class="fa fa-user fa-fw"></i> User Admin</a></li>
+            <li><a href="{{ path('acts_camdram_mailout') }}"><i class="fa fa-envelope fa-fw"></i> Mailouts</a></li>
             <li><a href="{{ path('acts_camdram_logs') }}"><i class="fa fa-file-text fa-fw"></i> Log Viewer</a></li>
         {% endif %}
     </ul>

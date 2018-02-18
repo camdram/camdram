@@ -71,6 +71,31 @@ class UserRepository extends EntityRepository
 
         return $query->getResult();
     }
+    
+    public function findOrganisationAdmins()
+    {
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->innerJoin('u.aces', 'e')
+            ->where('e.type IN (:types)')
+            ->andWhere('e.revokedBy IS NULL')
+            ->setParameter('types', ['society', 'venue', 'security'])
+            ->getQuery();
+        
+        return $query->getResult();
+    }
+    
+    public function findActiveUsersForMailOut()
+    {
+        $loginThreshold = new \DateTime('-2 years');
+        
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->where('u.is_email_verified = true')
+        ->andWhere('u.last_login_at >= :loginThreshold')
+        ->setParameter('loginThreshold', $loginThreshold)
+        ->getQuery();
+        
+        return $query->getResult();
+    }
 
     public function getEntityOwners($entity)
     {

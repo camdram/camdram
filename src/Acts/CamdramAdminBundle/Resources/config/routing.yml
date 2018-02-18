@@ -20,3 +20,8 @@ acts_camdram_audit:
     path: /audit
     defaults:
         _controller: ActsCamdramAdminBundle:Audit:index
+
+acts_camdram_mailout:
+    path: /mailout
+    defaults:
+        _controller: ActsCamdramAdminBundle:Mailout:index
