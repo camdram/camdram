@@ -86,8 +86,7 @@ class DefaultController extends Controller
                 $token = new UsernamePasswordToken($user, $user->getPassword(), 'public', $user->getRoles());
                 $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::REGISTRATION_COMPLETE, new UserEvent($user));
                 $this->get('security.context')->setToken($token);
-                $this->get('camdram.security.authentication_success_handler')->onAuthenticationSuccess($request, $token);
-
+                
                 return $this->redirect($this->generateUrl('acts_camdram_security_create_account_complete'));
             }
         }
