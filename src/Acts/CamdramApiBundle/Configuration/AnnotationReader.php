@@ -28,8 +28,12 @@ class AnnotationReader {
      */
     public function read($object)
     {
-        $reflection = new \ReflectionObject($object);
         $data = new ApiData();
+        
+        if (!is_object($object))
+            return $data;
+        
+        $reflection = new \ReflectionObject($object);
 
         $annotation = $this->reader->getClassAnnotation($reflection, 'Acts\\CamdramApiBundle\\Configuration\\Annotation\\Feed');
         if ($annotation instanceof Feed) {
