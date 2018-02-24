@@ -159,12 +159,12 @@ class OAuthTest extends WebTestCase
     {
 
         $this->login('user1@camdram.net', 'password');
-        $token = $this->performOAuthUserLogin('');
+        $token = $this->performOAuthUserLogin('user_shows');
         $this->assertTrue(is_string($token));
 
-        $this->client->request('GET', '/auth/account/shows.json?access_token='.$token);
+        $this->client->request('GET', '/auth/account.json?access_token='.$token);
         $data = json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertEquals(array(), $data);
+        $this->assertEquals($data['name'], "Test User 2");
     }
 
     public function testRememberAuthorization()
