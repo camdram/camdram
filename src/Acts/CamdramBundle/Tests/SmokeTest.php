@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class SmokeTest extends WebTestCase
 {
 
-    const HTML_URLS = [
+    private $HTML_URLS = [
         "/",
         "/societies",
         "/venues",
@@ -16,13 +16,13 @@ class SmokeTest extends WebTestCase
         "/vacancies/applications",
     ];
     
-    const RSS_URLS = [
+    private $RSS_URLS = [
         "/vacancies/auditions.rss",
         "/vacancies/techies.rss",
         "/vacancies/applications.rss",
     ];
     
-    const TEXT_URLS = [
+    private $TEXT_URLS = [
         "/vacancies/auditions.txt",
         "/vacancies/techies.txt",
         "/vacancies/applications.txt",
@@ -43,7 +43,7 @@ class SmokeTest extends WebTestCase
     
     public function testHtmlSuccessful()
     {
-        foreach (self::HTML_URLS as $url)
+        foreach ($this->HTML_URLS as $url)
         {
             $this->client->request('GET', $url);
             $response = $this->client->getResponse();
@@ -57,7 +57,7 @@ class SmokeTest extends WebTestCase
     
     public function testTextSuccessful()
     {
-        foreach (self::TEXT_URLS as $url)
+        foreach ($this->TEXT_URLS as $url)
         {
             $this->client->request('GET', $url);
             $response = $this->client->getResponse();
@@ -70,7 +70,7 @@ class SmokeTest extends WebTestCase
     
     public function testRssSuccessful()
     {
-        foreach (self::RSS_URLS as $url)
+        foreach ($this->RSS_URLS as $url)
         {
             $this->client->request('GET', $url);
             $response = $this->client->getResponse();
