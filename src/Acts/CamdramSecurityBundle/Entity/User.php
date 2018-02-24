@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramBundle\Entity\Person;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * User
@@ -18,8 +19,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\EntityListeners({"Acts\CamdramSecurityBundle\EventListener\UserListener" })
  * @UniqueEntity(fields="email", message="An account already exists with that email address")
- * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("user")
+ * @Api\Link(route="get_account")
  */
 class User implements UserInterface, \Serializable
 {
@@ -29,7 +30,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Serializer\Expose
+     * @Serializer\Groups({"all"})
      * @Serializer\XmlAttribute
      */
     private $id;
@@ -39,7 +40,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
-     * @Serializer\Expose
+     * @Serializer\Groups({"all"})
      */
     private $name;
 
@@ -48,6 +49,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
      * @Assert\Email(checkMX = true)
+     * @Serializer\Groups({"user_email"})
      */
     private $email;
 
@@ -105,7 +107,6 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="occupation", type="string", length=255, nullable=true)
-     * @Serializer\Expose
      */
     private $occupation;
 
@@ -113,7 +114,6 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="graduation", type="string", length=255, nullable=true)
-     * @Serializer\Expose
      */
     private $graduation;
 
@@ -207,6 +207,16 @@ class User implements UserInterface, \Serializable
      * @Serializer\Exclude()
      */
     private $aces;
+    
+    /**
+     * @Api\Link(route="get_account_shows", targetType="Acts\\CamdramBundle\\Entity\\Show")
+     */
+    private $shows;
+    
+    /**
+     * @Api\Link(route="get_account_organisations", targetType="Acts\\CamdramBundle\\Entity\\Organisation")
+     */
+    private $organisations;
 
     /**
      * @var array
@@ -221,6 +231,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
      * @Serializer\Exclude()
+     * 
      */
     private $ace_grants;
 

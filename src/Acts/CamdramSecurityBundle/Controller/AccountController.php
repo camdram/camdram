@@ -8,6 +8,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Context\Context;
 
 /**
  * Class AccountController
@@ -19,8 +20,18 @@ class AccountController extends FOSRestController
 {
     public function getAction()
     {
+        $context = new Context();
+        $auth = $this->get('security.authorization_checker');
+        $serializationGroups = ['all'];
+        if ($auth->isGranted('ROLE_USER_EMAIL') || $auth->isGranted('IS_AUTHENTICATED_FULLY'))
+        {
+            $serializationGroups[] = 'user_email';
+        }
+        $context->setGroups($serializationGroups);
+        
         return $this->view($this->getUser())
             ->setTemplate('ActsCamdramSecurityBundle:Account:settings.html.twig')
+            ->setContext($context)
             ;
     }
 
@@ -29,6 +40,11 @@ class AccountController extends FOSRestController
         return $this->render('ActsCamdramSecurityBundle:Account:linked_accounts.html.twig');
     }
 
+    /**
+     * @Security("has_role('ROLE_USER_SHOWS')")
+     * 
+     * @return \FOS\RestBundle\View\View
+     */
     public function getShowsAction()
     {
         $shows = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Show');
@@ -36,6 +52,11 @@ class AccountController extends FOSRestController
         return $this->view($shows);
     }
 
+    /**
+     * @Security("has_role('ROLE_USER_ORGS')")
+     *
+     * @return \FOS\RestBundle\View\View
+     */
     public function getOrganisationsAction()
     {
         $orgs = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Organisation');
