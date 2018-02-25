@@ -30,7 +30,7 @@
 
                       <p itemprop="description">{{ venue.description | camdram_markdown }}</p>
                       {% if has_owners(venue) %}
-                        <p><a href="{{ path('get_venue_contact', {identifier: venue.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ venue.name }}</a></p>
+                        <p><a href="{{ path('contact_entity', {type: 'venue', identifier: venue.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ venue.name }}</a></p>
                       {% endif %}
                   </div>
               </div>

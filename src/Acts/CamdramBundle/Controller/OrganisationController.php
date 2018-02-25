@@ -19,7 +19,6 @@ use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
  */
 abstract class OrganisationController extends AbstractRestController
 {
-    use ContactTrait;
 
     /**
      * Render the Admin Panel

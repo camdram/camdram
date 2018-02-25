@@ -51,3 +51,7 @@ acts_camdram_infobase_placeholder:
     defaults:
         _controller: FrameworkBundle:Template:template
         template: ActsCamdramBundle:InfobasePlaceholder:index.html.twig
+        
+camdram_annotation:
+    resource: "@ActsCamdramBundle/Controller/"
+    type:     annotation

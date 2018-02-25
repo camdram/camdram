@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ShowController extends AbstractRestController
 {
-    use ContactTrait;
-
     protected $class = 'Acts\\CamdramBundle\\Entity\\Show';
 
     protected $type = 'show';
