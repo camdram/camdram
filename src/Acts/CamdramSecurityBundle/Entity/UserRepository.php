@@ -5,6 +5,7 @@ namespace Acts\CamdramSecurityBundle\Entity;
 use Acts\CamdramBundle\Entity\Show;
 use Doctrine\ORM\EntityRepository;
 use Acts\CamdramBundle\Entity\Organisation;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
 class UserRepository extends EntityRepository
 {
@@ -97,24 +98,32 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getEntityOwners($entity)
+    public function getEntityOwners(OwnableInterface $entity)
     {
-        if ($entity instanceof Show) {
-            $type = 'show';
-        } elseif ($entity instanceof Organisation) {
-            $type = 'society';
-        } else {
-            return array();
-        }
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
             ->andWhere('e.entityId = :id')
             ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $entity->getId())
-            ->setParameter('type', $type)
+            ->setParameter('type', $entity->getAceType())
             ->getQuery();
 
+        return $query->getResult();
+    }
+    
+    public function getContactableEntityOwners(OwnableInterface $entity)
+    {
+        $query = $this->createQueryBuilder('u')
+        ->innerJoin('u.aces', 'e')
+        ->where('e.type = :type')
+        ->andWhere('e.entityId = :id')
+        ->andWhere('e.revokedBy IS NULL')
+        ->andWhere('u.is_email_verified = true')
+        ->setParameter('id', $entity->getId())
+        ->setParameter('type', $entity->getAceType())
+        ->getQuery();
+        
         return $query->getResult();
     }
 

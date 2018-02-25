@@ -34,6 +34,22 @@ class SocietyController extends OrganisationController
         return $this->createForm(new SocietyType(), $society);
     }
 
+    public function getAction($identifier)
+    {
+        $society = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $society);
+        
+        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($society) > 0;
+        
+        $view = $this->view($society, 200)
+            ->setTemplate('ActsCamdramBundle:Society:show.html.twig')
+            ->setTemplateData(['society' => $society, 'can_contact' => $can_contact])
+        ;
+        
+        return $view;
+    }
+    
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {

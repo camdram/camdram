@@ -8,7 +8,7 @@
 
         <h4>Log in to Camdram</h4>
         
-        {% if has_role('IS_AUTHENTICATED_REMEMBERED') %}
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <p class="panel">For security reasons, you must log in again before accessing this page.</p>
         {% endif %}
 

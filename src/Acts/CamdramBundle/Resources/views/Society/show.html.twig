@@ -37,7 +37,7 @@
         <div class="row">
             <div class="large-12 columns">
                 <p itemprop="description">{{ society.description | camdram_markdown }}</p>
-                {% if has_owners(society) %}
+                {% if can_contact %}
                     <p><a href="{{ path('contact_entity', {type: 'society', identifier: society.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ society.name }}</a></p>
                 {% endif %}
             </div>

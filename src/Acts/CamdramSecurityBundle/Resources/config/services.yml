@@ -13,11 +13,6 @@ services:
         class: Acts\CamdramSecurityBundle\Security\NameUtils
         arguments: ['@doctrine.orm.entity_manager']
 
-    camdram.security.twig.extension:
-        class: Acts\CamdramSecurityBundle\Twig\Extension\CamdramSecurityExtension
-        arguments: ['@camdram.security.utils']
-        tags: [{ name: twig.extension }]
-
     camdram.security.user_linker:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
         arguments: ['@doctrine.orm.entity_manager']

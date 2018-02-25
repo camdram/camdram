@@ -66,16 +66,16 @@ class ShowController extends AbstractRestController
 
     public function getAction($identifier)
     {
-        $this->checkAuthenticated();
-        $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
+        $show = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $show);
 
-        $view = $this->view($entity, 200)
+        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($show) > 0;
+        
+        $view = $this->view($show, 200)
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
-            ->setTemplateVar($this->type)
+            ->setTemplateData(['show' => $show, 'can_contact' => $can_contact]);
         ;
-        return $view;
-
         return $view;
     }
 

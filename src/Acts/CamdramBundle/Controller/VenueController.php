@@ -36,6 +36,22 @@ class VenueController extends OrganisationController
     {
         return $this->createForm(new VenueType(), $venue);
     }
+    
+    public function getAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $venue);
+        
+        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($venue) > 0;
+        
+        $view = $this->view($venue, 200)
+            ->setTemplate('ActsCamdramBundle:Venue:show.html.twig')
+            ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
+        ;
+        
+        return $view;
+    }
 
     /**
      * We don't want the default behaviour of paginated results - just output all of them unless there's a query

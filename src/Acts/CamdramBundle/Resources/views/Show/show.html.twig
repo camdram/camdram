@@ -101,10 +101,7 @@
         {% else %}
             {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
         {% endif %}
-
-
-        {# show_contact : {path: path('get_show_contact',{identifier: show.slug}), icon: 'envelope-o', text: 'Contact show'}, #}
-    </div>
+	 </div>
 </div>
 {% if show.hasVacancies() %}
 <div class="vacancies-panel" class="row">
