@@ -1,14 +1,14 @@
 <?php
-
 namespace Acts\CamdramAdminBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Controller\Annotations\Post;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Acts\CamdramAdminBundle\Form\Type\SupportType;
 use Acts\CamdramAdminBundle\Entity\Support;
 use Acts\CamdramAdminBundle\Entity\Support2;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Controller for accessing support tickets created by emails to
@@ -16,22 +16,10 @@ use Acts\CamdramAdminBundle\Entity\Support2;
  * the database can be found at
  * https://github.com/camdram/camdram/wiki/Inbound-Email
  *
- * @RouteResource("Issue")
+ * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class SupportController extends FOSRestController
+class SupportController extends Controller
 {
-    protected $class = 'Acts\\CamdramBundle\\Entity\\Support';
-
-    protected $type = 'support';
-
-    protected $type_plural = 'issues';
-
-    protected $search_index = 'issue';
-
-    protected function getRouteParams($issue)
-    {
-        return array('identifier' => $issue->getId());
-    }
 
     protected function getEntity($identifier)
     {
@@ -46,21 +34,7 @@ class SupportController extends FOSRestController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramAdminBundle:Support');
-    }
-
-    protected function getForm($society = null)
-    {
-        return null;
-    }
-
-    /**
-     * Ensure that the user's authenticated and authorised to view issues.
-     */
-    protected function checkAuthorised()
-    {
-        $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
-        $this->get('camdram.security.utils')->ensureRole('ROLE_ADMIN');
+        return $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support');
     }
 
     /**
@@ -68,38 +42,36 @@ class SupportController extends FOSRestController
      *
      * Issues are grouped into those that are assigned to the logged in user,
      * unassigned issues, and issues assigned to other users.
+     * 
+     * @Route("/issues", name="get_issues")
      */
-    public function cgetAction(Request $request)
+    public function indexAction(Request $request)
     {
-        $this->checkAuthorised();
-
         if ($request->query->has('action') && $request->query->has('id')) {
             $issue = $this->getEntity($request->query->get('id'));
             $this->processRequestData($request, $issue);
         }
 
-        $mine = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
+        $mine = $this->getRepository()->findBy(
                     array('state' => 'assigned', 'parent' => null, 'owner' => $this->getUser()->getId())
                     );
-        $unassigned = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
+        $unassigned = $this->getRepository()->findBy(
                     array('state' => 'unassigned', 'parent' => null)
                     );
-        $others = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')
+        $others = $this->getRepository()
                       ->getOtherUsersIssues($this->getUser());
 
-        $view = $this->view(array('my_issues' => $mine,
-                                  'unassigned_issues' => $unassigned,
-                                  'other_peoples_issues' => $others),  200)
-                  ->setTemplate('ActsCamdramAdminBundle:Support:index.html.twig')
-                  ->setTemplateVar('issues')
-        ;
-
-        return $view;
+        return $this->render('ActsCamdramAdminBundle:Support:index.html.twig', [
+                'my_issues' => $mine, 
+                'unassigned_issues' => $unassigned,
+                'other_peoples_issues' => $others
+            ]);
     }
 
     /**
      * @param $identifier
-     * @Post("/issues/{identifier}/reply")
+     * @Route("/issues/{identifier}/reply", name="post_issue_reply")
+     * @Method("POST")
      */
     public function postReplyAction(Request $request, $identifier)
     {
@@ -167,10 +139,11 @@ class SupportController extends FOSRestController
 
     /**
      * Action for pages that represent a single issue.
+     * 
+     * @Route("/issues/{identifier}", name="get_issue")
      */
-    public function getAction(Request $request, $identifier)
+    public function issueAction(Request $request, $identifier)
     {
-        $this->checkAuthorised();
         $issue = $this->getEntity($identifier);
         if ($request->query->has('action')) {
             $this->processRequestData($request, $issue);
@@ -184,13 +157,8 @@ class SupportController extends FOSRestController
         $form = $this->createForm(new SupportType(), $reply, array(
             'action' => $this->generateUrl('post_issue_reply', array('identifier' => $identifier))));
 
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
-        $view = $this->view(array('issue' => $issue,
-                                  'form' => $form->createView()), 200)
-            ->setTemplate('ActsCamdramAdminBundle:Support:show.html.twig')
-        ;
-
-        return $view;
+        return $this->render('ActsCamdramAdminBundle:Support:show.html.twig',
+            ['issue' => $issue, 'form' => $form->createView()]);
     }
 
     /**
