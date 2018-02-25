@@ -15,11 +15,15 @@ monolog:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
-            channels: ['!camdram']
+            channels: ['!camdram', '!mailer']
         actions:
             type:     stream
             path:     "%kernel.logs_dir%/%kernel.environment%.action.log"
             channels: ["camdram"]
+        mailer:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.mailer.log"
+            channels: ["mailer"]
         firephp:
             type:  firephp
             level: info

@@ -149,3 +149,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.validation, method: validate }
             - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+            
+    acts.camdram.email_logger:
+        class: Acts\CamdramBundle\EventListener\EmailLogger
+        arguments:
+            - '@logger'
+            - '@request_stack'
+            - '@security.token_storage'
+        tags:
+          - { name: monolog.logger, channel: mailer }
+          - { name: "swiftmailer.default.plugin" }

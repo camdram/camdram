@@ -12,14 +12,14 @@ class LogController extends Controller
 {
     public function indexAction()
     {
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_SUPER_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
         return $this->render('ActsCamdramAdminBundle:Log:index.html.twig');
     }
 
     public function getAction($file)
     {
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_SUPER_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
 
         $log_dir = $this->get('kernel')->getRootDir().'/logs/';
         $env = $this->get('kernel')->getEnvironment();
@@ -27,6 +27,9 @@ class LogController extends Controller
         switch ($file) {
             case 'action.log':
                 $file = $log_dir.$env.'.action.log';
+                break;
+            case 'mailer.log':
+                $file = $log_dir.$env.'.mailer.log';
                 break;
             case 'symfony.log':
                 $file = $log_dir.$env.'.log';
@@ -45,8 +48,7 @@ class LogController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $text = nl2br(`tail $file -n500`);
-
+        $text = nl2br(`tail "$file" -n500`);
         return new Response($text);
     }
 }

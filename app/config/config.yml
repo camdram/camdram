@@ -41,7 +41,7 @@ assetic:
             apply_to: '\.scss$'
 
 monolog:
-    channels: ["camdram"]
+    channels: ["camdram", "mailer"]
 
 # Doctrine Configuration
 doctrine:
