@@ -5,23 +5,3 @@ acts_camdram_annotation:
 acts_camdram_users:
     type:     rest
     resource: Acts\CamdramAdminBundle\Controller\UserController
-
-acts_camdram_logs:
-    path: /logs
-    defaults:
-        _controller: ActsCamdramAdminBundle:Log:index
-
-acts_camdram_logs_get:
-    path: /logs/{file}
-    defaults:
-        _controller: ActsCamdramAdminBundle:Log:get
-
-acts_camdram_audit:
-    path: /audit
-    defaults:
-        _controller: ActsCamdramAdminBundle:Audit:index
-
-acts_camdram_mailout:
-    path: /mailout
-    defaults:
-        _controller: ActsCamdramAdminBundle:Mailout:index

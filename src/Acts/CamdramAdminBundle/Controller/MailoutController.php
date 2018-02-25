@@ -4,7 +4,13 @@ namespace Acts\CamdramAdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * 
+ * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
+ */
 class MailoutController extends Controller
 {
     const SIGNATURE = "
@@ -20,6 +26,12 @@ For any enquiries, please contact websupport@camdram.net.";
     
     const RETURN_EMAIL = "support-bounces@camdram.net";
     
+    /**
+     * @Route("/mailout", name="acts_camdram_mailout")
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request)
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');

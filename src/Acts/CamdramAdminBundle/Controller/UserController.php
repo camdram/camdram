@@ -12,22 +12,18 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @RouteResource("User")
+ * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class UserController extends FOSRestController
 {
     protected function getRouteParams($user)
     {
         return array('identifier' => $user->getId());
-    }
-
-    protected function checkAuthenticated()
-    {
-        $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
-        $this->get('camdram.security.utils')->ensureRole('ROLE_SUPER_ADMIN');
     }
 
     protected function getEntity($identifier)
@@ -59,7 +55,6 @@ class UserController extends FOSRestController
      */
     public function cgetAction(Request $request)
     {
-        $this->checkAuthenticated();
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
@@ -80,9 +75,8 @@ class UserController extends FOSRestController
 
     public function getAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
         $ids = $this->get('camdram.security.acl.provider')->getOrganisationIdsByUser($entity);
         $orgs = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
         $ids = $this->get('camdram.security.acl.provider')->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
@@ -101,9 +95,8 @@ class UserController extends FOSRestController
 
     public function editAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
 
@@ -114,9 +107,8 @@ class UserController extends FOSRestController
 
     public function putAction(Request $request, $identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
 
@@ -135,9 +127,8 @@ class UserController extends FOSRestController
 
     public function removeAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
+        $this->denyAccessUnlessGranted('DELETE', $entity);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
@@ -180,7 +171,6 @@ class UserController extends FOSRestController
      */
     public function resetPasswordAction($identifier)
     {
-        $this->checkAuthenticated();
         $user = $this->getEntity($identifier);
 
         $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
@@ -194,7 +184,6 @@ class UserController extends FOSRestController
 
     public function getMergeAction($identifier)
     {
-        $this->checkAuthenticated();
         $user = $this->getEntity($identifier);
 
         return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
@@ -211,8 +200,6 @@ class UserController extends FOSRestController
      */
     public function mergeAction($identifier, Request $request)
     {
-        $this->checkAuthenticated();
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
         $user = $this->getEntity($identifier);
         $merger = $this->get('acts_camdram_admin.user_merger');
 
