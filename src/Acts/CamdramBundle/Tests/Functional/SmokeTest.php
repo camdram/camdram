@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Tests;
+namespace Acts\CamdramBundle\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

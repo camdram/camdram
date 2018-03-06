@@ -70,11 +70,11 @@ class JsonEventSubscriber  implements EventSubscriberInterface
         }
         if ($metadata->getLinks()) {
             foreach ($metadata->getLinks() as $link) {
-                $linkJson[$link->getName()] = $this->createLinkUrl($link, $object);
-
                 if ($link->getEmbed()) {
                     $child = $accessor->getValue($event->getObject(), $link->getProperty());
                     if ($child === null) continue;
+
+                    $linkJson[$link->getName()] = $this->createLinkUrl($link, $object);
                     
                     $childData = array();
                     foreach (array('id', 'name', 'slug') as $property) {
