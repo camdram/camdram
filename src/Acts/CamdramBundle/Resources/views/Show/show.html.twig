@@ -21,7 +21,7 @@
 {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
 {% endif %}
 
-{% if not is_granted('EDIT', show, true) and is_granted('EDIT', show, false) %}
+{% if not is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', show) %}
 <div class="row">
     <div class="large-12 columns text-center">
    	   <p><a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to edit show details</a></p>        
@@ -75,7 +75,7 @@
             <div class="large-3 columns text-center">
                 <a itemprop="image" href="{{ show.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
                 <ul class="inline-list">    	
-                {% if is_granted('EDIT', show, true) %}
+                {% if is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
             		{{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show_image',{identifier:show.slug}), text: 'Remove image', name: show.name, type: 'image'} }) }}
             	{% endif %}
             	</ul>
@@ -85,7 +85,7 @@
             </div>
             </div>
         {# Show prompt to upload image #}
-        {% elseif is_granted('EDIT', show, true) %}
+        {% elseif is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
         	<div class="row">
             <div class="large-3 columns text-center">
             	<form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
