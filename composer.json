@@ -7,7 +7,7 @@
     },
     "license" : "GPL-2.0",
     "require": {
-        "php": ">5.4.0",
+        "php": ">5.6.0",
         "symfony/symfony": "2.8.*",
         "doctrine/orm": "2.5.*",
         "doctrine/doctrine-bundle": "~1.4",
@@ -20,13 +20,13 @@
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~5.0",
         "sensio/framework-extra-bundle": "~3.0",
-        "friendsofsymfony/rest-bundle": "1.8.*",
-        "jms/serializer-bundle": "1.1.*",
+        "friendsofsymfony/rest-bundle": "^2.3",
+        "jms/serializer-bundle": "^2.3",
         "friendsofsymfony/oauth-server-bundle": "1.5.*",
         "sensio/buzz-bundle": "1.*",
         "egeloen/google-map-bundle" : "~2.2",
         "pagerfanta/pagerfanta": "1.0.*",
-        "friendsofsymfony/jsrouting-bundle": "1.6.*",
+        "friendsofsymfony/jsrouting-bundle": "2.2.*",
         "sabre/vobject": "~3.3",
         "camdram/sphinx-realtime-bundle": "0.1.*",
         "incenteev/composer-parameter-handler": "~2.1",
@@ -51,7 +51,7 @@
         "behat/mink-extension": "1.3.*",
         "behat/mink-goutte-driver": "1.1.0",
         "behat/symfony2-extension": "1.1.*",
-        "phpunit/phpunit": "4.8.*"
+        "phpunit/phpunit": "5.7.*"
     },
     "repositories": [
         {
@@ -92,7 +92,7 @@
     "config": {
         "bin-dir": "bin/",
         "platform": {
-            "php": "5.4.45"
+            "php": "5.6.33"
         }
     }
 }

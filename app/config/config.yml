@@ -82,9 +82,6 @@ swiftmailer:
     spool  : { type: memory }
     sender_address: %mailer_sender_address%
 
-sensio_framework_extra:
-    view:    { annotations: false }
-
 fos_rest:
     view:
         formats:
