@@ -60,47 +60,6 @@ class DefaultController extends Controller
         );
     }
 
-    public function createAccountAction(Request $request)
-    {
-        if ($this->getUser()) {
-            return $this->redirect($this->generateUrl('acts_camdram_homepage'));
-        }
-        $user = new User();
-
-        $form = $this->createForm(new RegistrationType(), $user);
-
-        if ($request->getMethod() == 'POST') {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $user = $form->getData();
-
-                $factory = $this->get('security.encoder_factory');
-                $encoder = $factory->getEncoder($user);
-                $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
-                $user->setPassword($password);
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-
-                $token = new UsernamePasswordToken($user, $user->getPassword(), 'public', $user->getRoles());
-                $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::REGISTRATION_COMPLETE, new UserEvent($user));
-                $this->get('security.context')->setToken($token);
-                
-                return $this->redirect($this->generateUrl('acts_camdram_security_create_account_complete'));
-            }
-        }
-
-        return $this->render('ActsCamdramSecurityBundle:Default:create_account.html.twig', array(
-            'form' => $form->createView(),
-        ));
-    }
-
-    public function createAccountCompleteAction()
-    {
-        return $this->render('ActsCamdramSecurityBundle:Default:create_account_complete.html.twig', array());
-    }
-
     public function confirmEmailAction($email, $token)
     {
         $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);

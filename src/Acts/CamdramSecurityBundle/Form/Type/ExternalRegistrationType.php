@@ -13,8 +13,6 @@ class ExternalRegistrationType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('occupation', 'occupation')
-            ->add('graduation', 'graduation_year', array('required' => false))
         ;
     }
 

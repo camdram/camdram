@@ -6,31 +6,10 @@
 <div class="row">
     <div class="large-12 columns">
     <h4>Register with Camdram</h4>
-    <p>Please fill in the information below to register with Camdram</p>
+    <p>Please enter your name to create a Camdram account.</p>
     {{ form_start(form, {'action': path('hwi_oauth_connect_registration', {'key': key}), 'attr': {'class': 'hwi_oauth_registration_register'}}) }}
         {{ form_errors(form) }}
         {{ form_row(form.name, {value: userInformation.realName}) }}
-        <div class="row">
-            <div class="large-12 columns">
-                <p>We ask you to enter the following additional information to help us understand who is using Camdram and help improve it in the future.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="large-3 columns">
-                {{ form_label(form.occupation) }}
-            </div>
-            <div class="large-3 columns">
-                {{ form_widget(form.occupation) }}
-                {{ form_errors(form.occupation) }}
-            </div>
-            <div class="large-3 columns">
-                {{ form_label(form.graduation) }}
-            </div>
-            <div class="large-3 columns">
-                {{ form_widget(form.graduation) }}
-                {{ form_errors(form.graduation) }}
-            </div>
-        </div>
 
         <div class="row">
             <div class="large-12 text-right"><input type="submit" value="Register" class="button"/></div>
@@ -40,7 +19,7 @@
     <h4>Already have an account?</h4>
         <p>If you already have a Camdram account, please log in using your email and password below to go
         directly to your account settings. From there, you can manually connect your {{ userInformation.resourceOwner.name | capitalize }}
-        and Camdram accounts so you can log in without a Camdram password in future.</p>
+        and Camdram accounts.</p>
 
         {{ include('ActsCamdramSecurityBundle:Default:login_form.html.twig', {last_email: userInformation.email, error: false,
             target_path: 'get_account'}) }}

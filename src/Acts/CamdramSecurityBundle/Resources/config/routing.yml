@@ -11,15 +11,6 @@ acts_camdram_security_login_check:
 acts_camdram_security_link_user:
     path:   /link-user
     defaults: { _controller: ActsCamdramSecurityBundle:Default:linkUser }
-acts_camdram_security_create_account:
-    path:   /create-account
-    defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccount }
-acts_camdram_security_create_account_complete:
-    path:   /create-account-complete
-    defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccountComplete }
-acts_camdram_security_create_password:
-    path:   /create-password
-    defaults: { _controller: ActsCamdramSecurityBundle:Default:createPassword }
 acts_camdram_security_confirm_email:
     path:   /confirm-email/{email}/{token}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:confirmEmail }
