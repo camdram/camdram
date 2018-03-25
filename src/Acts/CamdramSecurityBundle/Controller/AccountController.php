@@ -2,13 +2,14 @@
 
 namespace Acts\CamdramSecurityBundle\Controller;
 
-use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
-use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
+use FOS\RestBundle\Context\Context;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
+use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Context\Context;
 
 /**
  * Class AccountController
@@ -90,6 +91,12 @@ class AccountController extends FOSRestController
 
     public function changePasswordAction(Request $request)
     {
+        if (!$this->getUser()->getPassword())
+        {
+            //Adding password only allowed if account already has a password
+            return new Response('', 200);
+        }
+
         $form = $form = $this->createForm(new ChangePasswordType(), $this->getUser());
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
