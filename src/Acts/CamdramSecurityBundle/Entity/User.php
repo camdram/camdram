@@ -404,17 +404,6 @@ class User implements UserInterface, \Serializable
      */
     public function __construct()
     {
-        $this->contact = false;
-        $this->alumni = false;
-        $this->publish_email = false;
-        $this->forum_notify = false;
-        $this->hear_about = '';
-        $this->tel = '';
-        $this->db_email = false;
-        $this->db_phone = false;
-        $this->thread_messages = false;
-        $this->reverse_time = true;
-
         $this->registered_at = new \DateTime();
         $this->last_login_at = new \DateTime();
 

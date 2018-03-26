@@ -28,7 +28,7 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->router = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
+        $this->router = $this->createMock('Symfony\\Component\\Routing\\RouterInterface');
         $this->diaryHelper = new DiaryHelper($this->router);
     }
 
