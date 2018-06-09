@@ -33,7 +33,7 @@ Additionally, make sure to replace every invocation of "php" with "php55" below.
 2) Get a copy of the Camdram repository
 ----------------------------------------------
 
-Camdram's development model follows the standard idioms used by FOSS projects hosted on GitHub. If you are interested in just experimenting with the codebase, clone the project from the project's homepage. If you'd like to contribute to the project than you will want to [fork the repository](https://help.github.com/articles/fork-a-repo).
+Camdram's development model follows the standard idioms used by FOSS projects hosted on GitHub. If you are interested in just experimenting with the codebase, clone the project from the project's homepage. If you'd like to contribute to the project then you will want to [fork the repository](https://help.github.com/articles/fork-a-repo).
 
 After obtaining a copy of the code change into the newly created 'camdram' directory before proceeding:
 
@@ -107,7 +107,7 @@ This will pull in the latest code, update any changes to the dependencies and up
 8) Write some code
 --------------------
 
- * The site uses the Symfony PHP framework - (read the documentation)[http://symfony.com/doc/2.3/index.html]
+ * The site uses the Symfony PHP framework - [read the documentation](http://symfony.com/doc/2.3/index.html).
  * Use the GitHub issue tracker to get an idea what we're currently working on.
    If you think you know how to do something, write the code, commit it, and
    submit a pull request.
