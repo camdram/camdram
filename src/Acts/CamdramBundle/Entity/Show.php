@@ -17,7 +17,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *
  * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="show_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
- * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener","Acts\CamdramLegacyBundle\EventListener\ShowRefCreator" })
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener"})
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("show")
  * @Gedmo\Loggable
@@ -264,14 +264,6 @@ class Show implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="bookingcode", type="string", length=255, nullable=true)
      */
     private $booking_code;
-
-    /**
-     * @var int
-     *
-     * @ORM\OneToOne(targetEntity="Acts\CamdramLegacyBundle\Entity\ShowRef", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
-     */
-    private $primary_ref;
 
     /**
      * @var \DateTime
@@ -727,30 +719,6 @@ class Show implements SearchableInterface, OwnableInterface
     public function getBookingCode()
     {
         return $this->booking_code;
-    }
-
-    /**
-     * Set primary_ref
-     *
-     * @param int $primaryRef
-     *
-     * @return Show
-     */
-    public function setPrimaryRef($primaryRef)
-    {
-        $this->primary_ref = $primaryRef;
-
-        return $this;
-    }
-
-    /**
-     * Get primary_ref
-     *
-     * @return int
-     */
-    public function getPrimaryRef()
-    {
-        return $this->primary_ref;
     }
 
     /**

@@ -129,43 +129,11 @@ class User implements UserInterface, \Serializable
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision", mappedBy="user")
-     * @Serializer\Exclude()
-     */
-    private $knowledge_base_revisions;
-
-    /**
-     * @var array
-     *
      * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
      * @Serializer\Exclude()
      * 
      */
     private $ace_grants;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\Email", mappedBy="user")
-     * @Serializer\Exclude()
-     */
-    private $email_builders;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\EmailAlias", mappedBy="user")
-     * @Serializer\Exclude()
-     */
-    private $email_aliases;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\EmailSig", mappedBy="user")
-     * @Serializer\Exclude()
-     */
-    private $email_sigs;
 
     /**
      * @var array
@@ -658,41 +626,7 @@ class User implements UserInterface, \Serializable
     {
         return $this->apps;
     }
-
-    /**
-     * Add knowledge_base_revisions
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions
-     *
-     * @return User
-     */
-    public function addKnowledgeBaseRevision(\Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions)
-    {
-        $this->knowledge_base_revisions[] = $knowledgeBaseRevisions;
-
-        return $this;
-    }
-
-    /**
-     * Remove knowledge_base_revisions
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions
-     */
-    public function removeKnowledgeBaseRevision(\Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions)
-    {
-        $this->knowledge_base_revisions->removeElement($knowledgeBaseRevisions);
-    }
-
-    /**
-     * Get knowledge_base_revisions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getKnowledgeBaseRevisions()
-    {
-        return $this->knowledge_base_revisions;
-    }
-
+    
     /**
      * Add ace_grants
      *
@@ -728,40 +662,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add email_builders
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\Email $emailBuilders
-     *
-     * @return User
-     */
-    public function addEmailBuilder(\Acts\CamdramLegacyBundle\Entity\Email $emailBuilders)
-    {
-        $this->email_builders[] = $emailBuilders;
-
-        return $this;
-    }
-
-    /**
-     * Remove email_builders
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\Email $emailBuilders
-     */
-    public function removeEmailBuilder(\Acts\CamdramLegacyBundle\Entity\Email $emailBuilders)
-    {
-        $this->email_builders->removeElement($emailBuilders);
-    }
-
-    /**
-     * Get email_builders
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmailBuilders()
-    {
-        return $this->email_builders;
-    }
-
-    /**
      * Add owned_issues
      *
      * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
@@ -793,74 +693,6 @@ class User implements UserInterface, \Serializable
     public function getOwnedIssues()
     {
         return $this->owned_issues;
-    }
-
-    /**
-     * Add email_aliases
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases
-     *
-     * @return User
-     */
-    public function addEmailAlias(\Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases)
-    {
-        $this->email_aliases[] = $emailAliases;
-
-        return $this;
-    }
-
-    /**
-     * Remove email_aliases
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases
-     */
-    public function removeEmailAlias(\Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases)
-    {
-        $this->email_aliases->removeElement($emailAliases);
-    }
-
-    /**
-     * Get email_aliases
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmailAliases()
-    {
-        return $this->email_aliases;
-    }
-
-    /**
-     * Add email_sigs
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs
-     *
-     * @return User
-     */
-    public function addEmailSig(\Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs)
-    {
-        $this->email_sigs[] = $emailSigs;
-
-        return $this;
-    }
-
-    /**
-     * Remove email_sigs
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs
-     */
-    public function removeEmailSig(\Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs)
-    {
-        $this->email_sigs->removeElement($emailSigs);
-    }
-
-    /**
-     * Get email_sigs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmailSigs()
-    {
-        return $this->email_sigs;
     }
 
     /**
