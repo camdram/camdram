@@ -14,15 +14,15 @@ If you encounter any problems with the instructions below, please [create a GitH
 
 Use one of the following commands to install the necessary packages required to run Camdram. Camdram currently runs on PHP 5.5.
 
-###Debian-based distributions, e.g. Ubuntu
+### Debian-based distributions, e.g. Ubuntu
 
     $ sudo apt-get install git-core php5 php5-cli curl php5-curl php5-intl php5-sqlite php-apc php5-gd php5-json
 
-###RPM-based distributions, e.g. Fedora
+### RPM-based distributions, e.g. Fedora
 
     $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
-###OSX
+### OSX
 
 Make sure you have [Macports]( https://www.macports.org/) installed and up to date.
 
