@@ -140,6 +140,7 @@ fos_oauth_server:
             supported_scopes: user_email user_shows user_orgs api_write api_write_org
 
 acts_sphinx_real_time:
+    enabled: true
     clients:
         default:
           log: /var/log/sphinxsearch/searchd.log
