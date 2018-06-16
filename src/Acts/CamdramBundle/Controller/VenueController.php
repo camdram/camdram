@@ -220,4 +220,17 @@ class VenueController extends OrganisationController
 
         return $show_repo->getByVenue($this->getEntity($slug), $from, $to);
     }
+
+    public function removeImageAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $venue);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($venue->getImage());
+        $venue->setImage(null);
+        $em->flush();
+        
+        return $this->redirectToRoute('get_venue', ['identifier' => $identifier]);
+    }
 }

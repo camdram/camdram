@@ -119,4 +119,17 @@ class SocietyController extends OrganisationController
 
         return $show_repo->getBySociety($this->getEntity($slug), $from, $to);
     }
+
+    public function removeImageAction($identifier)
+    {
+        $society = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $society);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($society->getImage());
+        $society->setImage(null);
+        $em->flush();
+        
+        return $this->redirectToRoute('get_society', ['identifier' => $identifier]);
+    }
 }
