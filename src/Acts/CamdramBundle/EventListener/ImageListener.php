@@ -52,6 +52,10 @@ class ImageListener
         {
             case 'show':
                 return $this->entityManager->getRepository('ActsCamdramBundle:Show');
+            case 'society':
+                return $this->entityManager->getRepository('ActsCamdramBundle:Society');
+            case 'venue':
+                return $this->entityManager->getRepository('ActsCamdramBundle:Venue');
             default:
                 return null;
         }

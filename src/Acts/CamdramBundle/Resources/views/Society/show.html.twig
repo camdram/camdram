@@ -14,18 +14,19 @@
         <div class="row">
         	{% if society.image %}
         	    {# Display the society's logo beside the name #} 
-        	    <div class="large-4 columns" itemprop="image">
+        	    <div class="large-3 columns" itemprop="image">
         	        <a href="{{ society.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
         	    </div>
-        	    <div class="large-8 columns">
-        	{##% elseif is_granted('EDIT', society) %}
+        	    <div class="large-9 columns">
+        	{% elseif is_granted('EDIT', society) %}
         		{# Display the prompt to upload image #} 
-        	   {#} <div class="large-4 columns">
-        	    	<ul class="inline-list">
-         	           {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_society', path: path('edit_society',{identifier: society.slug}), icon: 'pencil', text: 'Upload society logo'} }) }}
-        	    	</ul>
+        	    <div class="large-3 columns">
+        	    	<form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
+                        <input type="hidden" name="identifier" value="{{ society.slug }}"/>
+                        <input type="hidden" name="type" value="society"/>
+                    </form>
          	   </div>
-         	   <div class="large-8 columns">#}
+         	   <div class="large-9 columns">
         	{% else %}
         	    {# Society name spans the entire width. #}
         	    <div class="large-12 columns">

@@ -24,7 +24,18 @@
                             <meta itemprop="longitude" content="{{ venue.longitude }}"/>
                           </div>
                       {% endif %}
-                      {% if venue.image %}<p><a href="{{ venue.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ venue.image.filename | imagine_filter('thumbnail') }}" /></a></p>{% endif %}
+                      {% if venue.image %}
+                            <p>
+                                <a href="{{ venue.image.filename | imagine_filter('preview') }}" class="fancybox">
+                                    <img src="{{ venue.image.filename | imagine_filter('thumbnail') }}" />
+                                </a>
+                            </p>
+                       {% elseif is_granted('EDIT', venue) %}
+                            <form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
+                                <input type="hidden" name="identifier" value="{{ venue.slug }}"/>
+                                <input type="hidden" name="type" value="venue"/>
+                            </form>
+                       {% endif %}
                   </div>
                   <div class="large-8 columns">
 
