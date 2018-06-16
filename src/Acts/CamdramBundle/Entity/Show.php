@@ -161,13 +161,6 @@ class Show implements SearchableInterface, OwnableInterface
     private $other_venue = '';
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="excludedate", type="date", length=255, nullable=true)
-     */
-    private $exclude_date;
-
-    /**
      * The show's society, if it is not linked to a venue resource
      *
      * @var string
@@ -232,13 +225,6 @@ class Show implements SearchableInterface, OwnableInterface
     private $authorised_by;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="entered", type="boolean", nullable=false)
-     */
-    private $entered = 1;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="entryexpiry", type="date", nullable=false)
@@ -257,13 +243,6 @@ class Show implements SearchableInterface, OwnableInterface
      * @Serializer\XmlElement(cdata=false)
      */
     private $category;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="bookingcode", type="string", length=255, nullable=true)
-     */
-    private $booking_code;
 
     /**
      * @var \DateTime
@@ -500,30 +479,6 @@ class Show implements SearchableInterface, OwnableInterface
         }
     }
 
-    /**
-     * Set exclude_date
-     *
-     * @param \DateTime $excludeDate
-     *
-     * @return Show
-     */
-    public function setExcludeDate($excludeDate)
-    {
-        $this->exclude_date = $excludeDate;
-
-        return $this;
-    }
-
-    /**
-     * Get exclude_date
-     *
-     * @return \DateTime
-     */
-    public function getExcludeDate()
-    {
-        return $this->exclude_date;
-    }
-
     public function getOtherSociety()
     {
         return $this->other_society;
@@ -626,30 +581,6 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-     * Set entered
-     *
-     * @param bool $entered
-     *
-     * @return Show
-     */
-    public function setEntered($entered)
-    {
-        $this->entered = $entered;
-
-        return $this;
-    }
-
-    /**
-     * Get entered
-     *
-     * @return bool
-     */
-    public function getEntered()
-    {
-        return $this->entered;
-    }
-
-    /**
      * Set entry_expiry
      *
      * @param \DateTime $entryExpiry
@@ -695,30 +626,6 @@ class Show implements SearchableInterface, OwnableInterface
     public function getCategory()
     {
         return $this->category;
-    }
-
-    /**
-     * Set booking_code
-     *
-     * @param string $bookingCode
-     *
-     * @return Show
-     */
-    public function setBookingCode($bookingCode)
-    {
-        $this->booking_code = $bookingCode;
-
-        return $this;
-    }
-
-    /**
-     * Get booking_code - for Doctrine compatibility only
-     *
-     * @return string
-     */
-    public function getBookingCode()
-    {
-        return $this->booking_code;
     }
 
     /**
