@@ -33,7 +33,8 @@ security:
                 resource_owners:
                     raven:              "/auth/check-raven"
                     facebook:           "/auth/oauth/check-facebook"
-                    google:             "/auth/oauth/check-google"   
+                    google:             "/auth/oauth/check-google"
+                    twitter:            "/auth/oauth/check-twitter"
                 login_path:        /auth/login
                 use_forward:       false
                 failure_path:      /auth/login
@@ -82,5 +83,12 @@ hwi_oauth:
             scope: "email profile"
             options:
                 csrf: true
+        twitter:
+            type: twitter
+            client_id: %twitter_key%
+            client_secret: %twitter_secret%
+            options:
+                csrf: true
+                include_email: true
         raven:
             service: "camdram.security.raven.resource_owner"

@@ -46,6 +46,9 @@ facebook_login:
 
 google_login:
     path: /oauth/check-google
-    
+
+twitter_login:
+    path: /oauth/check-twitter
+
 raven_login:
     path: /check-raven
