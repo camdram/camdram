@@ -3,33 +3,29 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Acts\CamdramBundle\Entity\Venue,
-    Acts\CamdramBundle\Form\Type\VenueType;
-
-use Ivory\GoogleMap\Events\MouseEvent,
-    Ivory\GoogleMap\Overlays\Animation,
-    Ivory\GoogleMap\Overlays\Marker,
-    Ivory\GoogleMap\Overlays\InfoWindow;
+use Acts\CamdramBundle\Entity\Venue;
+use Acts\CamdramBundle\Form\Type\VenueType;
+use Ivory\GoogleMap\Events\MouseEvent;
+use Ivory\GoogleMap\Overlays\Marker;
+use Ivory\GoogleMap\Overlays\InfoWindow;
 
 /**
  * Class VenueController
  *
  * Controller for REST actions for venues. Inherits from AbstractRestController.
+ *
  * @RouteResource("Venue")
  */
 class VenueController extends OrganisationController
 {
-
     protected $class = 'Acts\\CamdramBundle\\Entity\\Venue';
 
     protected $type = 'venue';
 
     protected $type_plural = 'venues';
+
+    protected $search_index = 'venue';
 
     protected function getRepository()
     {
@@ -39,6 +35,22 @@ class VenueController extends OrganisationController
     protected function getForm($venue = null)
     {
         return $this->createForm(new VenueType(), $venue);
+    }
+    
+    public function getAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $venue);
+        
+        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($venue) > 0;
+        
+        $view = $this->view($venue, 200)
+            ->setTemplate('ActsCamdramBundle:Venue:show.html.twig')
+            ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
+        ;
+        
+        return $view;
     }
 
     /**
@@ -67,7 +79,7 @@ class VenueController extends OrganisationController
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
         $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
-        $now = new \DateTime;
+        $now = new \DateTime();
 
         $data = array(
             'venue' => $venue,
@@ -76,6 +88,7 @@ class VenueController extends OrganisationController
             'techie_ads' => $techie_repo->findLatestByVenue($venue, 10, $now),
             'app_ads' => $applications_repo->findLatestByVenue($venue, 10, $now),
         );
+
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')
             ->setTemplate('ActsCamdramBundle:Venue:vacancies.html.twig')
@@ -87,11 +100,11 @@ class VenueController extends OrganisationController
      * marker. Otherwise a large map will be output with a marker for each venue.
      *
      * @param null|string $identifier
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function mapAction($identifier = null)
     {
-
         $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
         if ($identifier) {
             $venues = array($repo->findOneBySlug($identifier));
@@ -118,14 +131,13 @@ class VenueController extends OrganisationController
         $info_boxes = array();
 
         foreach ($venues as $venue) {
-
             if ($venue->getLatitude() && $venue->getLongitude()) {
                 $content = $this->render('ActsCamdramBundle:Venue:infobox.html.twig', array(
                     'venue' => $venue,
                     'one_venue' => $one_venue,
                 ))->getContent();
 
-                $infoWindow = new InfoWindow;
+                $infoWindow = new InfoWindow();
                 $infoWindow->setPrefixJavascriptVariable('info_window_');
                 $infoWindow->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
                 $infoWindow->setContent($content);
@@ -135,7 +147,7 @@ class VenueController extends OrganisationController
                 $infoWindow->setOption('zIndex', 10);
                 $map->addInfoWindow($infoWindow);
 
-                $marker = new Marker;
+                $marker = new Marker();
                 $marker->setPrefixJavascriptVariable('marker_');
                 $marker->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
                 if ($one_venue) {
@@ -156,7 +168,9 @@ class VenueController extends OrganisationController
                 );
 
                 $letter++;
-                if ($letter == ord('Z') + 1) $letter = ord('A');
+                if ($letter == ord('Z') + 1) {
+                    $letter = ord('A');
+                }
             }
         }
 
@@ -167,6 +181,7 @@ class VenueController extends OrganisationController
      * Utility function used by mapAction to generate the URL of a marker image.
      *
      * @param $letter letter of the alphabet used in the marker
+     *
      * @return string
      */
     private function getMarkerUrl($letter)
@@ -180,11 +195,13 @@ class VenueController extends OrganisationController
      * @param $slug
      * @param \DateTime $from
      * @param \DateTime $to
+     *
      * @return mixed
      */
     protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
         $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+
         return $performance_repo->getByVenue($this->getEntity($slug), $from, $to);
     }
 
@@ -194,11 +211,26 @@ class VenueController extends OrganisationController
      * @param $slug
      * @param \DateTime $from
      * @param \DateTime $to
+     *
      * @return mixed
      */
     protected function getShows($slug, \DateTime $from, \DateTime $to)
     {
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+
         return $show_repo->getByVenue($this->getEntity($slug), $from, $to);
+    }
+
+    public function removeImageAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $venue);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($venue->getImage());
+        $venue->setImage(null);
+        $em->flush();
+        
+        return $this->redirectToRoute('get_venue', ['identifier' => $identifier]);
     }
 }

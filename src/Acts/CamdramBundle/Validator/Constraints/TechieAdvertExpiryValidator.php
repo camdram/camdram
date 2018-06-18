@@ -1,11 +1,11 @@
 <?php
+
 namespace Acts\CamdramBundle\Validator\Constraints;
 
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\TimeMockBundle\Service\TimeService;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
-
 use Acts\CamdramBundle\Entity\MapLocation;
 
 /**
@@ -27,8 +27,9 @@ class TechieAdvertExpiryValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         /** @var $value \Acts\CamdramBundle\Entity\TechieAdvert */
-
-        if (!($value instanceof TechieAdvert)) return;
+        if (!($value instanceof TechieAdvert)) {
+            return;
+        }
 
         if ($value->getDeadline()) {
             $max_expires = $this->timeService->getCurrentTime();
@@ -46,7 +47,5 @@ class TechieAdvertExpiryValidator extends ConstraintValidator
                 $this->context->addViolation($constraint->blank_time_message, array(), $value);
             }
         }
-
     }
-
 }

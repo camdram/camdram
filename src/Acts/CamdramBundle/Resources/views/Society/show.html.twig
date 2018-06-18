@@ -10,33 +10,43 @@
     {% endif %}
 
 <div class="row">
-    <div class="large-12 columns panel">
+    <div class="large-12 columns panel" itemscope="" itemtype="http://schema.org/TheaterGroup">
         <div class="row">
         	{% if society.image %}
         	    {# Display the society's logo beside the name #} 
-        	    <div class="large-4 columns">
-        	        {{ render_image(society.image, 300, 200) }}
-        	    </div>
-        	    <div class="large-8 columns">
+        	    <div class="large-3 columns" itemprop="image">
+        	        <a href="{{ society.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
+        	        {% if is_granted('EDIT', society) and is_granted("IS_AUTHENTICATED_FULLY") %}
+                        <ul class="inline-list">   
+                        {{ include('@ActsCamdram/Navigation/delete-item.html.twig', 
+                                    {item: {id: 'delete_society_image', path: path('remove_society_image',{identifier:society.slug}), text: 'Remove image', name: society.name, type: 'image'} }) }}
+                        </ul>
+                    {% endif %}
+                </div>
+        	    <div class="large-9 columns">
         	{% elseif is_granted('EDIT', society) %}
         		{# Display the prompt to upload image #} 
-        	    <div class="large-4 columns">
-        	    	<ul class="inline-list">
-         	           {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_society', path: path('edit_society',{identifier: society.slug}), icon: 'pencil', text: 'Upload society logo'} }) }}
-        	    	</ul>
+        	    <div class="large-3 columns">
+        	    	<form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
+                        <input type="hidden" name="identifier" value="{{ society.slug }}"/>
+                        <input type="hidden" name="type" value="society"/>
+                    </form>
          	   </div>
-         	   <div class="large-8 columns">
+         	   <div class="large-9 columns">
         	{% else %}
         	    {# Society name spans the entire width. #}
         	    <div class="large-12 columns">
         	{% endif %}
-        	<h2>{{ society.name }}<small>- {{ society.shortname }}</small></h2>
+        	<h2><div itemprop="name">{{ society.name }}</div><small>- </small><small itemprop="alternateName">{{ society.shortname }}</small></h2>
         	</div>
         </div><!-- row -->
         {# Place the society description beneath the title and image. #}
         <div class="row">
             <div class="large-12 columns">
-                <p>{{ society.description | camdram_markdown }}</p>
+                <p itemprop="description">{{ society.description | camdram_markdown }}</p>
+                {% if can_contact %}
+                    <p><a href="{{ path('contact_entity', {type: 'society', identifier: society.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ society.name }}</a></p>
+                {% endif %}
             </div>
         </div>
     </div><!-- twelve columns panel -->

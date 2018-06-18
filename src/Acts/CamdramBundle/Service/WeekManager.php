@@ -1,6 +1,8 @@
 <?php
+
 namespace Acts\CamdramBundle\Service;
 
+use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
 use Doctrine\ORM\EntityManager;
@@ -21,8 +23,11 @@ class WeekManager
         //Rewind start date to previous Sunday at midnight
         $date = clone $date;
         $day = $date->format('N');
-        if ($day < 7) $date->modify('-'.$day.' days');
-        $date->setTime(0,0,0);
+        if ($day < 7) {
+            $date->modify('-'.$day.' days');
+        }
+        $date->setTime(0, 0, 0);
+
         return $date;
     }
 
@@ -31,36 +36,12 @@ class WeekManager
         //Move start date to next Sunday at midnight
         $date = clone $date;
         $day = $date->format('N');
-        if ($day < 7) $date->modify('+'.(7-$day).' days');
-        $date->setTime(0,0,0);
-        return $date;
-    }
-
-    private function getWeekFromWeekName(WeekName $week_name)
-    {
-        $week = new Week();
-        $week->setStartAt($week_name->getStartAt());
-        $end_at = clone $week_name->getStartAt();
-        $end_at->modify('+1 week');
-        $week->setEndAt($end_at);
-        $week->setShortName($week_name->getShortName());
-        $week->setName($week_name->getName());
-        return $week;
-    }
-
-    private function getWeekFromDate(\DateTime $date)
-    {
-        $date = clone $date;
-        $week = new Week();
-        if (($period = $this->periodRepository->findAt($date))) {
-            $week->setName($period->getShortName());
-            $week->setShortName('');
+        if ($day < 7) {
+            $date->modify('+'.(7 - $day).' days');
         }
-        $week->setStartAt(clone $date);
-        $date->modify('+1 week');
-        $week->setEndAt($date);
-        $week->setShortName('');
-        return $week;
+        $date->setTime(0, 0, 0);
+
+        return $date;
     }
 
     public function findBetween(\DateTime $start_date, \DateTime $end_date)
@@ -81,6 +62,7 @@ class WeekManager
             $date->modify('+1 week');
         }
         ksort($weeks);
+
         return $weeks;
     }
 
@@ -92,7 +74,77 @@ class WeekManager
         } else {
             return $this->getWeekFromDate($date);
         }
+    }
+    
+    /**
+     * Given any array of performances return a string version
+     * of the performances datses in "Cambridge terms" e.g.
+     * "Lent Week 8 to Week 9".
+     *
+     * This function is used when advertising show vacancies, for
+     * example.
+     *
+     * @param performances
+     *
+     * @return string
+     */
+    public function getPerformancesWeeksAsString($performances)
+    {
+        $res = "";
+        /* Guard condition. */
+        if (count($performances) > 0) {
+            $start_week = $this->findAt($performances[0]->getStartDate());
+            /* Assume performances are supplied in chronological order. */
+            $end_week = $this->findAt($performances[count($performances) - 1]->getEndDate());
+            if ($start_week->getName() == $end_week->getName()) {
+                /* Any show that runs for less than a week, e.g. most
+                 * shows at the ADC Theatre.
+                 */
+                $res = $start_week->getName();
+            }
+            else {
+                /* Less common, perhaps a two week run. */
+                $res = $start_week->getName() . " to ";
+                if (explode(' ', $start_week->getName())[0] == explode(' ', $end_week->getName())[0]) {
+                    /* Both weeks are in the same term. */
+                    $res = $res . $end_week->getShortName();
+                }
+                else {
+                    /* The show spans multiple terms. */
+                    $res = $res . $end_week->getName();
+                }
+            }
+        }
 
+        return $res;
     }
 
+    private function getWeekFromWeekName(WeekName $week_name)
+    {
+        $week = new Week();
+        $week->setStartAt($week_name->getStartAt());
+        $end_at = clone $week_name->getStartAt();
+        $end_at->modify('+1 week');
+        $week->setEndAt($end_at);
+        $week->setShortName($week_name->getShortName());
+        $week->setName($week_name->getName());
+
+        return $week;
+    }
+
+    private function getWeekFromDate(\DateTime $date)
+    {
+        $date = clone $date;
+        $week = new Week();
+        if (($period = $this->periodRepository->findAt($date))) {
+            $week->setName($period->getShortName());
+            $week->setShortName('');
+        }
+        $week->setStartAt(clone $date);
+        $date->modify('+1 week');
+        $week->setEndAt($date);
+        $week->setShortName('');
+
+        return $week;
+    }
 }

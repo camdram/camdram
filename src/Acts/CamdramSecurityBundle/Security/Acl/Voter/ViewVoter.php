@@ -1,34 +1,33 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Acts\CamdramBundle\Entity\Show;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\Venue;
+use Acts\CamdramBundle\Entity\Person;
 
-class ViewVoter extends AbstractVoter
+class ViewVoter extends Voter
 {
-    protected function getSupportedClasses()
+    public function supports($attribute, $subject)
     {
-        return array(
-            'Acts\\CamdramBundle\\Entity\\Show',
-            'Acts\\CamdramBundle\\Entity\\Venue',
-            'Acts\\CamdramBundle\\Entity\\Society',
-            'Acts\\CamdramBundle\\Entity\\Person'
-        );
+        return $attribute == 'VIEW'
+            && ($subject instanceof Show
+                  || $subject instanceof Venue
+                  || $subject instanceof Society
+                  || $subject instanceof Person
+               );
     }
 
-    protected function getSupportedAttributes()
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return array('VIEW');
-    }
 
-    protected function isGranted($attribute, $object, $user = null)
-    {
-        if ($object instanceof Show) {
-            return $object->getAuthorisedBy() !== null;
+        if ($subject instanceof Show) {
+            return $subject->getAuthorisedBy() !== null;
         }
+
         return true;
     }
-
 }

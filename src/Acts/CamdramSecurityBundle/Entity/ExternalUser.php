@@ -1,29 +1,29 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Entity;
 
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-* External User
-*
-* @ORM\Table(name="acts_external_users")
-* @ORM\Entity
-*/
-class ExternalUser implements CamdramUserInterface, \Serializable
+ * External User
+ *
+ * @ORM\Table(name="acts_external_users")
+ * @ORM\Entity
+ */
+class ExternalUser implements \Serializable
 {
     public function __construct()
     {
-        $this->last_login_at = new \DateTime;
+        $this->last_login_at = new \DateTime();
     }
 
     /**
-    * @var integer
-    *
-    * @ORM\Column(name="id", type="integer", nullable=false)
-    * @ORM\Id
-    * @ORM\GeneratedValue(strategy="IDENTITY")
-    */
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
     private $id;
 
     /**
@@ -34,24 +34,17 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     private $user;
 
     /**
-    * @var string
-    *
-    * @ORM\Column(name="service", type="string", length=50, nullable=false)
-    */
+     * @var string
+     *
+     * @ORM\Column(name="service", type="string", length=50, nullable=false)
+     */
     private $service;
 
     /**
-    * @var integer
-    *
-    * @ORM\Column(name="remote_id", type="string", length=100, nullable=true)
-    */
-    private $remote_id;
-
-    /**
-    * @var string
-    *
-    * @ORM\Column(name="username", type="string", length=255, nullable=true)
-    */
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=255, nullable=true)
+     */
     private $username;
 
     /**
@@ -99,7 +92,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -110,6 +103,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * Set service
      *
      * @param string $service
+     *
      * @return ExternalUser
      */
     public function setService($service)
@@ -130,32 +124,10 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     }
 
     /**
-     * Set remote_id
-     *
-     * @param string $remoteId
-     * @return ExternalUser
-     */
-    public function setRemoteId($remoteId)
-    {
-        $this->remote_id = $remoteId;
-
-        return $this;
-    }
-
-    /**
-     * Get remote_id
-     *
-     * @return string
-     */
-    public function getRemoteId()
-    {
-        return $this->remote_id;
-    }
-
-    /**
      * Set username
      *
      * @param string $username
+     *
      * @return ExternalUser
      */
     public function setUsername($username)
@@ -179,6 +151,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * Set token
      *
      * @param string $token
+     *
      * @return ExternalUser
      */
     public function setToken($token)
@@ -202,6 +175,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * Set email
      *
      * @param string $email
+     *
      * @return ExternalUser
      */
     public function setEmail($email)
@@ -246,6 +220,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
         if ($this->getUser()) {
             $roles = array_merge($roles, $this->getUser()->getRoles());
         }
+
         return $roles;
     }
 
@@ -256,11 +231,11 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     {
     }
 
-
     /**
      * Set name
      *
      * @param string $name
+     *
      * @return ExternalUser
      */
     public function setName($name)
@@ -291,11 +266,11 @@ class ExternalUser implements CamdramUserInterface, \Serializable
         }
     }
 
-
     /**
      * Set linked_user
      *
      * @param User $linkedUser
+     *
      * @return ExternalUser
      */
     public function setUser(User $user = null)
@@ -324,6 +299,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * Set profile_picture_url
      *
      * @param string $profilePictureUrl
+     *
      * @return ExternalUser
      */
     public function setProfilePictureUrl($profilePictureUrl)
@@ -347,6 +323,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * Set person
      *
      * @param \Acts\CamdramBundle\Entity\Person $person
+     *
      * @return ExternalUser
      */
     public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
@@ -388,6 +365,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
      * Set last_login_at
      *
      * @param \DateTime $lastLoginAt
+     *
      * @return ExternalUser
      */
     public function setLastLoginAt($lastLoginAt)
@@ -400,7 +378,7 @@ class ExternalUser implements CamdramUserInterface, \Serializable
     /**
      * Get last_login_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastLoginAt()
     {

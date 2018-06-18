@@ -8,15 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManager;
-
 use Acts\CamdramBundle\Form\DataTransformer\EntityCollectionTransformer;
 
 /**
  * Class EntityCollectionType
  *
  * A form type that presents an autocomplete box which the user can use to add to/remove from a list of linked entities
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class EntityCollectionType extends AbstractType
 {
@@ -32,7 +29,6 @@ class EntityCollectionType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder->add('new_entity', 'text', array(
             'label' => 'Add',
             'attr' => array('class' => 'autocomplete_input'),
@@ -43,7 +39,6 @@ class EntityCollectionType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-
         $view->vars['route'] = $options['route'];
         $view->vars['new_label'] = $options['new_label'];
     }

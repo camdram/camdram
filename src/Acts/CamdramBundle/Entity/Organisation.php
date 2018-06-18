@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Organisation
@@ -23,7 +24,7 @@ use JMS\Serializer\Annotation as Serializer;
 abstract class Organisation implements SearchableInterface, OwnableInterface
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -40,6 +41,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @Assert\NotBlank()
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $name;
 
@@ -53,9 +55,9 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     private $description;
 
     /**
-     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     * @var Image
      *
-     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
      */
     private $image;
@@ -66,6 +68,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $facebook_id;
 
@@ -75,16 +78,17 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $twitter_id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shortname", type="string", length=100, nullable=false)
-     * @Assert\NotBlank(groups={"new"})
+     * @ORM\Column(name="shortname", type="string", length=100, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $short_name;
 
@@ -94,11 +98,12 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @ORM\Column(name="college", type="string", length=100, nullable=true)
      * @Serializer\Expose
      * @Gedmo\Versioned
+     * @Serializer\XmlElement(cdata=false)
      */
     private $college;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="affiliate", type="boolean", nullable=false)
      * @Gedmo\Versioned
@@ -116,6 +121,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $slug;
 
@@ -132,7 +138,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     private $news;
 
     /**
-     * @var \Society
+     * @var Application[]
      *
      * @ORM\OneToMany(targetEntity="Application", mappedBy="society")
      */
@@ -142,6 +148,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set short_name
      *
      * @param string $shortName
+     *
      * @return Society
      */
     public function setShortName($shortName)
@@ -165,6 +172,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set college
      *
      * @param string $college
+     *
      * @return Society
      */
     public function setCollege($college)
@@ -187,7 +195,8 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Set affiliate
      *
-     * @param boolean $affiliate
+     * @param bool $affiliate
+     *
      * @return Society
      */
     public function setAffiliate($affiliate)
@@ -200,7 +209,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Get affiliate
      *
-     * @return boolean
+     * @return bool
      */
     public function getAffiliate()
     {
@@ -211,6 +220,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set logo_url
      *
      * @param string $logoUrl
+     *
      * @return Society
      */
     public function setLogoUrl($logoUrl)
@@ -234,6 +244,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set expires
      *
      * @param \DateTime $expires
+     *
      * @return Society
      */
     public function setExpires($expires)
@@ -256,7 +267,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -267,6 +278,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set name
      *
      * @param string $name
+     *
      * @return Organisation
      */
     public function setName($name)
@@ -290,6 +302,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set description
      *
      * @param string $description
+     *
      * @return Organisation
      */
     public function setDescription($description)
@@ -313,6 +326,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set facebook_id
      *
      * @param string $facebookId
+     *
      * @return Organisation
      */
     public function setFacebookId($facebookId)
@@ -336,6 +350,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set twitter_id
      *
      * @param string $twitterId
+     *
      * @return Organisation
      */
     public function setTwitterId($twitterId)
@@ -397,10 +412,11 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Set image
      *
-     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @param Image $image
+     *
      * @return Organisation
      */
-    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    public function setImage(Image $image = null)
     {
         $this->image = $image;
 
@@ -410,7 +426,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     * @return Image
      */
     public function getImage()
     {
@@ -421,6 +437,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Set slug
      *
      * @param string $slug
+     *
      * @return Organisation
      */
     public function setSlug($slug)
@@ -449,6 +466,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Add news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
+     *
      * @return Organisation
      */
     public function addNew(\Acts\CamdramBundle\Entity\News $news)
@@ -490,6 +508,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Add news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
+     *
      * @return Organisation
      */
     public function addNews(\Acts\CamdramBundle\Entity\News $news)
@@ -513,6 +532,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
      * Add applications
      *
      * @param \Acts\CamdramBundle\Entity\Application $applications
+     *
      * @return Organisation
      */
     public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
@@ -546,4 +566,6 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     {
         return 'society';
     }
+
+    abstract public function getOrganisationType();
 }

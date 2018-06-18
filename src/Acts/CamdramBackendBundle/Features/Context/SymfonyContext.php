@@ -2,21 +2,11 @@
 
 namespace Acts\CamdramBackendBundle\Features\Context;
 
-use Acts\CamdramBackendBundle\DataFixtures\ORM\AccessControlEntryFixtures;
-use Acts\CamdramBackendBundle\DataFixtures\ORM\UserFixtures;
 use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Event\ScenarioEvent;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Mink\Exception\ExpectationException;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Context\Step;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader as DataFixturesLoader;
-use PHPUnit_Framework_ExpectationFailedException as AssertException;
 
 /**
  * Feature context.

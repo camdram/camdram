@@ -1,0 +1,13 @@
+{% if show.society %}{{ show.society.name }} presents {% endif %} 
+{{ show.name }}
+{% if show.author %}
+    by {{ show.author }}
+{% endif %}
+{% for p in show.performances %}{% spaceless %}
+    {{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}{% if date(p.startdate) != date(p.enddate) %} - {{ p.enddate|date('D jS F Y') }},{% endif %}
+    {%- if p.venue %} @ {{ p.venue.name|e }}
+    {%- elseif p.venuename is not empty %} @ {{ p.venuename }}
+    {%- else %} @ Venue to be confirmed{% endif %}
+{% endspaceless %}{% endfor %}
+
+{{ show.description }}

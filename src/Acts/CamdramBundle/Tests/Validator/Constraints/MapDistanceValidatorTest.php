@@ -8,7 +8,6 @@ use Acts\CamdramBundle\Validator\Constraints\MapDistanceValidator;
 
 class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -26,7 +25,7 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
+        $this->context = $this->createMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
         $this->validator = new MapDistanceValidator();
         $this->validator->initialize($this->context);
 
@@ -66,5 +65,4 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->validator->validate($value, $this->constraint);
     }
-
 }

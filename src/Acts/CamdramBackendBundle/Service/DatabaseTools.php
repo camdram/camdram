@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Service;
 
 use Doctrine\ORM\EntityManager;
@@ -22,5 +23,4 @@ class DatabaseTools
         $tool->dropDatabase();
         $tool->createSchema($metadatas);
     }
-
 }

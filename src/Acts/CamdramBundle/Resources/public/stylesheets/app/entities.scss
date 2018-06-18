@@ -2,7 +2,7 @@ $include-html-classes: false;
 @import "foundation";
 
 #entity-header {
-  @extend .panel;
+  @include panel();
 }
 
 /* Use the new feature panel to highlight new features on the site itself. */

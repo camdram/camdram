@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramApiBundle\AnnotationReader;
 
 use Doctrine\Common\Annotations\Reader;
@@ -16,7 +17,9 @@ class FeedAnnotationReader
 
     /**
      * @param $object
+     *
      * @return \Acts\CamdramApiBundle\Annotation\Feed
+     *
      * @throws \Acts\CamdramApiBundle\Exception\UnsupportedTypeException
      */
     public function read($object)

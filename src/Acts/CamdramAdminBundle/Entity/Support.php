@@ -3,7 +3,6 @@
 namespace Acts\CamdramAdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 /**
@@ -15,8 +14,12 @@ use Acts\CamdramSecurityBundle\Entity\User;
  */
 class Support
 {
+    const STATE_CLOSED = 'closed';
+    const STATE_ASSIGNED = 'assigned';
+    const STATE_UNASSIGNED = 'unassigned';
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -60,9 +63,9 @@ class Support
     private $body;
 
     /**
-     * @var integer
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="owned_issues")
      * @ORM\JoinColumn(name="ownerid", referencedColumnName="id", nullable=true)
      */
     private $owner;
@@ -100,6 +103,7 @@ class Support
 
     /**
      * Get children
+     *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getChildren()
@@ -110,7 +114,7 @@ class Support
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -121,6 +125,7 @@ class Support
      * Set from
      *
      * @param string $from
+     *
      * @return Support
      */
     public function setFrom($from)
@@ -145,6 +150,7 @@ class Support
      * getting or setting.
      *
      * @param string $to
+     *
      * @return Support
      */
     public function setTo($to)
@@ -168,6 +174,7 @@ class Support
      * Set cc
      *
      * @param string $cc
+     *
      * @return Support
      */
     public function setCc($cc)
@@ -191,6 +198,7 @@ class Support
      * Set subject
      *
      * @param string $subject
+     *
      * @return Support
      */
     public function setSubject($subject)
@@ -214,11 +222,12 @@ class Support
      * Set body
      *
      * @param string $body
+     *
      * @return Support
      */
     public function setBody($body)
     {
-        $this->body = str_replace(chr(13), "", $body);
+        $this->body = str_replace(chr(13), '', $body);
 
         return $this;
     }
@@ -237,6 +246,7 @@ class Support
      * Set owner
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $owner
+     *
      * @return Support
      */
     public function setOwner(User $owner = null)
@@ -261,6 +271,7 @@ class Support
      * state for issues should be one of [unassigned, assigned, closed]
      *
      * @param string $state
+     *
      * @return Support
      */
     public function setState($state)
@@ -307,6 +318,7 @@ class Support
      * Add children
      *
      * @param Support $children
+     *
      * @return Support
      */
     public function addChildren(Support $children)
@@ -330,6 +342,7 @@ class Support
      * Set parent
      *
      * @param \Acts\CamdramBundle\Entity\Support $parent
+     *
      * @return Support
      */
     public function setParent(Support $parent = null)
@@ -353,6 +366,7 @@ class Support
      * Add children
      *
      * @param Support $children
+     *
      * @return Support
      */
     public function addChild(Support $children)

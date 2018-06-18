@@ -10,18 +10,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class SocietyType
  *
  * The form that's presented when a user adds/edits a society
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class SocietyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /* Short names must be included to generate URL slugs. */
         $builder
             ->add('name')
-            ->add('short_name')
+            ->add('short_name', null, array('required' => true))
             ->add('description')
-            ->add('image', 'image_upload', array('label' => 'Logo'))
             ->add('college', 'college')
             ->add('facebook_id')
             ->add('twitter_id')
@@ -37,6 +35,6 @@ class SocietyType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_societytype';
+        return 'society';
     }
 }

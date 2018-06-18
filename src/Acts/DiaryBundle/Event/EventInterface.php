@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Event;
 
 /**
@@ -6,8 +7,6 @@ namespace Acts\DiaryBundle\Event;
  *
  * Interface which SingleDayEventInterface and MultiDayEventInterface extend. This shouldn't be used directly - use
  * one of the child classes instead.
- *
- * @package Acts\DiaryBundle\Event
  */
 interface EventInterface
 {

@@ -4,9 +4,7 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Yaml\Yaml;
-
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Acts\CamdramBundle\Form\DataTransformer\TwitterLinkTransformer;
 
 /**
@@ -14,14 +12,16 @@ use Acts\CamdramBundle\Form\DataTransformer\TwitterLinkTransformer;
  *
  * Form type for a Twitter account. The user just sees an input box, but some clever stuff on the backend uses
  * the Twitter API to do some validating and convert it into a Twitter account ID.
-
- * @package Acts\CamdramBundle\Form\Type
  */
 class TwitterLinkType extends AbstractType
 {
+    /**
+     * 
+     * @var \Abraham\TwitterOAuth\TwitterOAuth
+     */
     private $api;
 
-    public function __construct($api)
+    public function __construct(\Abraham\TwitterOAuth\TwitterOAuth $api)
     {
         $this->api = $api;
     }
@@ -31,7 +31,7 @@ class TwitterLinkType extends AbstractType
         $builder->addModelTransformer(new TwitterLinkTransformer($this->api));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'medium',

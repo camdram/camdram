@@ -1,0 +1,34 @@
+{% for a in techieadverts %}
+    {{- loop.index }}. {{ a.show.name }}
+{%- if a.show.weeks is not empty %}
+ ({{ a.show.weeks }})
+{% endif %}
+{% endfor %}
+
+{% for a in techieadverts %}
+***************************************************
+{% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+    {'show': a.show} %}
+
+Looking for:
+{% for p in a.positions|split("\n") %}
+{%- if p is not empty %}
+{{- p|title }}
+{% endif %}
+{% endfor %}
+
+{%- if a.techextra %}
+
+{{ a.techextra }}
+{% endif %}
+
+Contact: {{ a.contact|strip_camdram_markdown }}
+Deadline for applications: {{ a.expiry|date('l jS F') }}
+{%- if a.deadlinetime and a.deadlinetime | date('H:i') != '00:00' %}
+, {{ a.deadlinetime | date('g:ia') }}
+{% endif %}
+
+
+{% else -%}
+    There are currently no vacancies listed - please check again later.
+{% endfor %}

@@ -1,16 +1,14 @@
 <?php
-
 namespace Acts\CamdramAdminBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Controller\Annotations\Post;
-
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Collections\Criteria;
-
 use Acts\CamdramAdminBundle\Form\Type\SupportType;
 use Acts\CamdramAdminBundle\Entity\Support;
+use Acts\CamdramAdminBundle\Entity\Support2;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Controller for accessing support tickets created by emails to
@@ -18,22 +16,10 @@ use Acts\CamdramAdminBundle\Entity\Support;
  * the database can be found at
  * https://github.com/camdram/camdram/wiki/Inbound-Email
  *
- * @RouteResource("Issue")
+ * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class SupportController extends FOSRestController
+class SupportController extends Controller
 {
-    protected $class = 'Acts\\CamdramBundle\\Entity\\Support';
-
-    protected $type = 'support';
-
-    protected $type_plural = 'issues';
-
-    protected $search_index = 'issue';
-
-    protected function getRouteParams($issue)
-    {
-        return array('identifier' => $issue->getId());
-    }
 
     protected function getEntity($identifier)
     {
@@ -48,21 +34,7 @@ class SupportController extends FOSRestController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramAdminBundle:Support');
-    }
-
-    protected function getForm($society = null)
-    {
-        return Null;
-    }
-
-    /**
-     * Ensure that the user's authenticated and authorised to view issues.
-     */
-    protected function checkAuthorised()
-    {
-        $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
-        $this->get('camdram.security.utils')->ensureRole('ROLE_ADMIN');
+        return $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support');
     }
 
     /**
@@ -70,39 +42,36 @@ class SupportController extends FOSRestController
      *
      * Issues are grouped into those that are assigned to the logged in user,
      * unassigned issues, and issues assigned to other users.
-     *
+     * 
+     * @Route("/issues", name="get_issues")
      */
-    public function cgetAction(Request $request)
+    public function indexAction(Request $request)
     {
-        $this->checkAuthorised();
-
-        $request = $this->getRequest();
         if ($request->query->has('action') && $request->query->has('id')) {
             $issue = $this->getEntity($request->query->get('id'));
             $this->processRequestData($request, $issue);
         }
 
-        $mine = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
+        $mine = $this->getRepository()->findBy(
                     array('state' => 'assigned', 'parent' => null, 'owner' => $this->getUser()->getId())
                     );
-        $unassigned = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')->findBy(
+        $unassigned = $this->getRepository()->findBy(
                     array('state' => 'unassigned', 'parent' => null)
                     );
-        $others = $this->getDoctrine()->getRepository('ActsCamdramAdminBundle:Support')
+        $others = $this->getRepository()
                       ->getOtherUsersIssues($this->getUser());
 
-        $view = $this->view(array('my_issues' => $mine,
-                                  'unassigned_issues' => $unassigned,
-                                  'other_peoples_issues' => $others),  200)
-                  ->setTemplate("ActsCamdramAdminBundle:Support:index.html.twig")
-                  ->setTemplateVar('issues')
-        ;
-        return $view;
+        return $this->render('ActsCamdramAdminBundle:Support:index.html.twig', [
+                'my_issues' => $mine, 
+                'unassigned_issues' => $unassigned,
+                'other_peoples_issues' => $others
+            ]);
     }
 
     /**
      * @param $identifier
-     * @Post("/issues/{identifier}/reply")
+     * @Route("/issues/{identifier}/reply", name="post_issue_reply")
+     * @Method("POST")
      */
     public function postReplyAction(Request $request, $identifier)
     {
@@ -118,7 +87,20 @@ class SupportController extends FOSRestController
             $reply->setParent($this->getEntity($identifier));
             $reply->setState('assigned');
             $em->persist($reply);
+            
+            //Temporarily write to second support table too
+            $repo2 = $this->getDoctrine()->getManager()->getRepository('ActsCamdramAdminBundle:Support2');
+            if ($parent = $repo2->findOneById($identifier))
+            {
+                $reply2 = new Support2();
+                $reply2->setFrom($from);
+                $reply2->setParent($this->getEntity2($identifier));
+                $reply2->setState('assigned');
+                $em->persist($reply2);
+            }
+            
             $em->flush();
+            
             // Send the actual email.
             $message = \Swift_Message::newInstance()
                 ->setSubject($reply->getSubject())
@@ -127,42 +109,42 @@ class SupportController extends FOSRestController
             $emails = imap_rfc822_parse_adrlist($reply->getTo(), '');
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
-                    $message->addTo($val->mailbox . "@" . $val->host, $val->personal);
+                    $message->addTo($val->mailbox . '@' . $val->host, $val->personal);
                 } else {
-                    $message->addTo($val->mailbox . "@" . $val->host);
+                    $message->addTo($val->mailbox . '@' . $val->host);
                 }
             }
             $emails = imap_rfc822_parse_adrlist($reply->getCc(), '');
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
-                    $message->addCc($val->mailbox . "@" . $val->host, $val->personal);
+                    $message->addCc($val->mailbox . '@' . $val->host, $val->personal);
                 } else {
-                    $message->addCc($val->mailbox . "@" . $val->host);
+                    $message->addCc($val->mailbox . '@' . $val->host);
                 }
             }
             $emails = imap_rfc822_parse_adrlist($form->get('bcc')->getData(), '');
             foreach ($emails as $id => $val) {
                 if ($val->personal != '') {
-                    $message->addBcc($val->mailbox . "@" . $val->host, $val->personal);
+                    $message->addBcc($val->mailbox . '@' . $val->host, $val->personal);
                 } else {
-                    $message->addBcc($val->mailbox . "@" . $val->host);
+                    $message->addBcc($val->mailbox . '@' . $val->host);
                 }
             }
             $this->get('mailer')->send($message);
         }
+
         return $this->redirect($this->generateUrl('get_issue',
                     array('identifier' => $identifier)));
     }
 
     /**
      * Action for pages that represent a single issue.
-     *
+     * 
+     * @Route("/issues/{identifier}", name="get_issue")
      */
-    public function getAction($identifier)
+    public function issueAction(Request $request, $identifier)
     {
-        $this->checkAuthorised();
         $issue = $this->getEntity($identifier);
-        $request = $this->getRequest();
         if ($request->query->has('action')) {
             $this->processRequestData($request, $issue);
         }
@@ -170,18 +152,13 @@ class SupportController extends FOSRestController
         $reply = new Support();
         $reply->setTo(htmlspecialchars_decode($issue->getFrom()));
         $reply->setSubject('Re: ' . $issue->getSubject());
-        $reply->setBody("\n\n\n--\nSent by " . $this->getUser()->getName() . " on behalf of camdram.net websupport\nFor further correspondence relating to this email, contact support-" . $issue->getId() . "@camdram.net\nFor new enquries, contact websupport@camdram.net."
+        $reply->setBody("\n\n\n--\nSent by " . $this->getUser()->getName() . " on behalf of Camdram's support team.\nFor further correspondence relating to this email, contact support-" . $issue->getId() . "@camdram.net.\nFor new enquiries, contact websupport@camdram.net."
             );
         $form = $this->createForm(new SupportType(), $reply, array(
             'action' => $this->generateUrl('post_issue_reply', array('identifier' => $identifier))));
 
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $issue, false);
-        $view = $this->view(array('issue' => $issue,
-                                  'form' => $form->createView()), 200)
-            ->setTemplate('ActsCamdramAdminBundle:Support:show.html.twig')
-        ;
-
-        return $view;
+        return $this->render('ActsCamdramAdminBundle:Support:show.html.twig',
+            ['issue' => $issue, 'form' => $form->createView()]);
     }
 
     /**
@@ -189,7 +166,7 @@ class SupportController extends FOSRestController
      */
     private function processRequestData(Request $request, $issue)
     {
-        $action = $this->getRequest()->query->get('action');
+        $action = $request->query->get('action');
         if ($issue->getOwner() != null && $issue->getOwner()->getId() == $this->getUser()->getId()) {
             $user_is_owner =  true;
         } else {
@@ -201,13 +178,13 @@ class SupportController extends FOSRestController
             $issue->setState('assigned');
         }
         // Reject an issue assignment
-        else if (($action == 'rejectassign') &&
+        elseif (($action == 'rejectassign') &&
                 ($issue->getState() == 'assigned')) {
             $issue->setOwner(null);
             $issue->setState('unassigned');
         }
         // Admins may delete unassigned issues. Owners may resolve them.
-        else if ((($action == 'delete') && ($issue->getState() == 'unassigned')) ||
+        elseif ((($action == 'delete') && ($issue->getState() == 'unassigned')) ||
                 (($action == 'resolve') && ($issue->getState() == 'assigned') && ($user_is_owner == true))) {
             $issue->setState('closed');
         } elseif ($action == 'reopen') {

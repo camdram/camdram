@@ -77,7 +77,7 @@ class Requirement
     }
 
     /**
-     * Returns the help text for resolving the problem
+     * Returns the help text for resolving the problem.
      *
      * @return string The help text
      */
@@ -119,10 +119,10 @@ class PhpIniRequirement extends Requirement
      *
      * @param string        $cfgName           The configuration name used for ini_get()
      * @param bool|callback $evaluation        Either a boolean indicating whether the configuration should evaluate to true or false,
-                                               or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
+     *                                         or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
      * @param bool          $approveCfgAbsence If true the Requirement will be fulfilled even if the configuration option does not exist, i.e. ini_get() returns false.
-                                               This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
-                                               Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
+     *                                         This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
+     *                                         Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
      * @param string|null   $testMessage       The message for testing the requirement (when null and $evaluation is a boolean a default message is derived)
      * @param string|null   $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
@@ -168,6 +168,9 @@ class PhpIniRequirement extends Requirement
  */
 class RequirementCollection implements IteratorAggregate
 {
+    /**
+     * @var Requirement[]
+     */
     private $requirements = array();
 
     /**
@@ -221,10 +224,10 @@ class RequirementCollection implements IteratorAggregate
      *
      * @param string        $cfgName           The configuration name used for ini_get()
      * @param bool|callback $evaluation        Either a boolean indicating whether the configuration should evaluate to true or false,
-                                               or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
+     *                                         or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
      * @param bool          $approveCfgAbsence If true the Requirement will be fulfilled even if the configuration option does not exist, i.e. ini_get() returns false.
-                                               This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
-                                               Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
+     *                                         This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
+     *                                         Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
      * @param string        $testMessage       The message for testing the requirement (when null and $evaluation is a boolean a default message is derived)
      * @param string        $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
@@ -239,10 +242,10 @@ class RequirementCollection implements IteratorAggregate
      *
      * @param string        $cfgName           The configuration name used for ini_get()
      * @param bool|callback $evaluation        Either a boolean indicating whether the configuration should evaluate to true or false,
-                                               or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
+     *                                         or a callback function receiving the configuration value as parameter to determine the fulfillment of the requirement
      * @param bool          $approveCfgAbsence If true the Requirement will be fulfilled even if the configuration option does not exist, i.e. ini_get() returns false.
-                                               This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
-                                               Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
+     *                                         This is helpful for abandoned configs in later PHP versions or configs of an optional extension, like Suhosin.
+     *                                         Example: You require a config to be true but PHP later removes this config and defaults it to true internally.
      * @param string        $testMessage       The message for testing the requirement (when null and $evaluation is a boolean a default message is derived)
      * @param string        $helpHtml          The help text formatted in HTML for resolving the problem (when null and $evaluation is a boolean a default help is derived)
      * @param string|null   $helpText          The help text (when null, it will be inferred from $helpHtml, i.e. stripped from HTML tags)
@@ -265,7 +268,7 @@ class RequirementCollection implements IteratorAggregate
     /**
      * Returns both requirements and recommendations.
      *
-     * @return array Array of Requirement instances
+     * @return Requirement[]
      */
     public function all()
     {
@@ -275,7 +278,7 @@ class RequirementCollection implements IteratorAggregate
     /**
      * Returns all mandatory requirements.
      *
-     * @return array Array of Requirement instances
+     * @return Requirement[]
      */
     public function getRequirements()
     {
@@ -292,7 +295,7 @@ class RequirementCollection implements IteratorAggregate
     /**
      * Returns the mandatory requirements that were not met.
      *
-     * @return array Array of Requirement instances
+     * @return Requirement[]
      */
     public function getFailedRequirements()
     {
@@ -309,7 +312,7 @@ class RequirementCollection implements IteratorAggregate
     /**
      * Returns all optional recommendations.
      *
-     * @return array Array of Requirement instances
+     * @return Requirement[]
      */
     public function getRecommendations()
     {
@@ -326,7 +329,7 @@ class RequirementCollection implements IteratorAggregate
     /**
      * Returns the recommendations that were not met.
      *
-     * @return array Array of Requirement instances
+     * @return Requirement[]
      */
     public function getFailedRecommendations()
     {
@@ -376,7 +379,8 @@ class RequirementCollection implements IteratorAggregate
  */
 class SymfonyRequirements extends RequirementCollection
 {
-    const REQUIRED_PHP_VERSION = '5.3.3';
+    const LEGACY_REQUIRED_PHP_VERSION = '5.3.3';
+    const REQUIRED_PHP_VERSION = '5.5.9';
 
     /**
      * Constructor that initializes the requirements.
@@ -386,15 +390,25 @@ class SymfonyRequirements extends RequirementCollection
         /* mandatory requirements follow */
 
         $installedPhpVersion = phpversion();
+        $requiredPhpVersion = $this->getPhpRequiredVersion();
 
-        $this->addRequirement(
-            version_compare($installedPhpVersion, self::REQUIRED_PHP_VERSION, '>='),
-            sprintf('PHP version must be at least %s (%s installed)', self::REQUIRED_PHP_VERSION, $installedPhpVersion),
-            sprintf('You are running PHP version "<strong>%s</strong>", but Symfony needs at least PHP "<strong>%s</strong>" to run.
-                Before using Symfony, upgrade your PHP installation, preferably to the latest version.',
-                $installedPhpVersion, self::REQUIRED_PHP_VERSION),
-            sprintf('Install PHP %s or newer (installed version is %s)', self::REQUIRED_PHP_VERSION, $installedPhpVersion)
+        $this->addRecommendation(
+            $requiredPhpVersion,
+            'Vendors should be installed in order to check all requirements.',
+            'Run the <code>composer install</code> command.',
+            'Run the "composer install" command.'
         );
+
+        if (false !== $requiredPhpVersion) {
+            $this->addRequirement(
+                version_compare($installedPhpVersion, $requiredPhpVersion, '>='),
+                sprintf('PHP version must be at least %s (%s installed)', $requiredPhpVersion, $installedPhpVersion),
+                sprintf('You are running PHP version "<strong>%s</strong>", but Symfony needs at least PHP "<strong>%s</strong>" to run.
+                Before using Symfony, upgrade your PHP installation, preferably to the latest version.',
+                    $installedPhpVersion, $requiredPhpVersion),
+                sprintf('Install PHP %s or newer (installed version is %s)', $requiredPhpVersion, $installedPhpVersion)
+            );
+        }
 
         $this->addRequirement(
             version_compare($installedPhpVersion, '5.3.16', '!='),
@@ -403,7 +417,7 @@ class SymfonyRequirements extends RequirementCollection
         );
 
         $this->addRequirement(
-            is_dir($this->getComposerVendorDir()),
+            is_dir(__DIR__.'/../vendor/composer'),
             'Vendor libraries must be installed',
             'Vendor libraries are missing. Install composer following instructions from <a href="http://getcomposer.org/">http://getcomposer.org/</a>. '.
                 'Then run "<strong>php composer.phar install</strong>" to install them.'
@@ -425,13 +439,15 @@ class SymfonyRequirements extends RequirementCollection
             'Change the permissions of either "<strong>app/logs/</strong>" or  "<strong>var/logs/</strong>" directory so that the web server can write into it.'
         );
 
-        $this->addPhpIniRequirement(
-            'date.timezone', true, false,
-            'date.timezone setting must be set',
-            'Set the "<strong>date.timezone</strong>" setting in php.ini<a href="#phpini">*</a> (like Europe/Paris).'
-        );
+        if (version_compare($installedPhpVersion, '7.0.0', '<')) {
+            $this->addPhpIniRequirement(
+                'date.timezone', true, false,
+                'date.timezone setting must be set',
+                'Set the "<strong>date.timezone</strong>" setting in php.ini<a href="#phpini">*</a> (like Europe/Paris).'
+            );
+        }
 
-        if (version_compare($installedPhpVersion, self::REQUIRED_PHP_VERSION, '>=')) {
+        if (false !== $requiredPhpVersion && version_compare($installedPhpVersion, $requiredPhpVersion, '>=')) {
             $timezones = array();
             foreach (DateTimeZone::listAbbreviations() as $abbreviations) {
                 foreach ($abbreviations as $abbreviation) {
@@ -445,6 +461,12 @@ class SymfonyRequirements extends RequirementCollection
                 'Your default timezone is not supported by PHP. Check for typos in your <strong>php.ini</strong> file and have a look at the list of deprecated timezones at <a href="http://php.net/manual/en/timezones.others.php">http://php.net/manual/en/timezones.others.php</a>.'
             );
         }
+
+        $this->addRequirement(
+            function_exists('iconv'),
+            'iconv() must be available',
+            'Install and enable the <strong>iconv</strong> extension.'
+        );
 
         $this->addRequirement(
             function_exists('json_encode'),
@@ -542,11 +564,22 @@ class SymfonyRequirements extends RequirementCollection
 
         /* optional recommendations follow */
 
-        $this->addRecommendation(
-            file_get_contents(__FILE__) === file_get_contents($this->getComposerVendorDir().'/sensio/distribution-bundle/Sensio/Bundle/DistributionBundle/Resources/skeleton/app/SymfonyRequirements.php'),
-            'Requirements file should be up-to-date',
-            'Your requirements file is outdated. Run composer install and re-check your configuration.'
-        );
+        if (file_exists(__DIR__.'/../vendor/composer')) {
+            require_once __DIR__.'/../vendor/autoload.php';
+
+            try {
+                $r = new ReflectionClass('Sensio\Bundle\DistributionBundle\SensioDistributionBundle');
+
+                $contents = file_get_contents(dirname($r->getFileName()).'/Resources/skeleton/app/SymfonyRequirements.php');
+            } catch (ReflectionException $e) {
+                $contents = '';
+            }
+            $this->addRecommendation(
+                file_get_contents(__FILE__) === $contents,
+                'Requirements file should be up-to-date',
+                'Your requirements file is outdated. Run composer install and re-check your configuration.'
+            );
+        }
 
         $this->addRecommendation(
             version_compare($installedPhpVersion, '5.3.4', '>='),
@@ -590,20 +623,14 @@ class SymfonyRequirements extends RequirementCollection
 
         $this->addRecommendation(
             class_exists('DomDocument'),
-            'PHP-XML module should be installed',
-            'Install and enable the <strong>PHP-XML</strong> module.'
+            'PHP-DOM and PHP-XML modules should be installed',
+            'Install and enable the <strong>PHP-DOM</strong> and the <strong>PHP-XML</strong> modules.'
         );
 
         $this->addRecommendation(
             function_exists('mb_strlen'),
             'mb_strlen() should be available',
             'Install and enable the <strong>mbstring</strong> extension.'
-        );
-
-        $this->addRecommendation(
-            function_exists('iconv'),
-            'iconv() should be available',
-            'Install and enable the <strong>iconv</strong> extension.'
         );
 
         $this->addRecommendation(
@@ -627,20 +654,20 @@ class SymfonyRequirements extends RequirementCollection
         }
 
         $this->addRecommendation(
-            class_exists('Locale'),
+            extension_loaded('intl'),
             'intl extension should be available',
             'Install and enable the <strong>intl</strong> extension (used for validators).'
         );
 
-        if (class_exists('Collator')) {
+        if (extension_loaded('intl')) {
+            // in some WAMP server installations, new Collator() returns null
             $this->addRecommendation(
                 null !== new Collator('fr_FR'),
                 'intl extension should be correctly configured',
                 'The intl extension does not behave properly. This problem is typical on PHP 5.3.X x64 WIN builds.'
             );
-        }
 
-        if (class_exists('Locale')) {
+            // check for compatible ICU versions (only done when you have the intl extension)
             if (defined('INTL_ICU_VERSION')) {
                 $version = INTL_ICU_VERSION;
             } else {
@@ -658,6 +685,29 @@ class SymfonyRequirements extends RequirementCollection
                 version_compare($version, '4.0', '>='),
                 'intl ICU version should be at least 4+',
                 'Upgrade your <strong>intl</strong> extension with a newer ICU version (4+).'
+            );
+
+            if (class_exists('Symfony\Component\Intl\Intl')) {
+                $this->addRecommendation(
+                    \Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion(),
+                    sprintf('intl ICU version installed on your system is outdated (%s) and does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
+                    'To get the latest internationalization data upgrade the ICU system package and the intl PHP extension.'
+                );
+                if (\Symfony\Component\Intl\Intl::getIcuDataVersion() <= \Symfony\Component\Intl\Intl::getIcuVersion()) {
+                    $this->addRecommendation(
+                        \Symfony\Component\Intl\Intl::getIcuDataVersion() === \Symfony\Component\Intl\Intl::getIcuVersion(),
+                        sprintf('intl ICU version installed on your system (%s) does not match the ICU data bundled with Symfony (%s)', \Symfony\Component\Intl\Intl::getIcuVersion(), \Symfony\Component\Intl\Intl::getIcuDataVersion()),
+                        'To avoid internationalization data inconsistencies upgrade the symfony/intl component.'
+                    );
+                }
+            }
+
+            $this->addPhpIniRecommendation(
+                'intl.error_level',
+                create_function('$cfgValue', 'return (int) $cfgValue === 0;'),
+                true,
+                'intl.error_level should be 0 in php.ini',
+                'Set "<strong>intl.error_level</strong>" to "<strong>0</strong>" in php.ini<a href="#phpini">*</a> to inhibit the messages when an error occurs in ICU functions.'
             );
         }
 
@@ -683,9 +733,9 @@ class SymfonyRequirements extends RequirementCollection
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $this->addRecommendation(
-                $this->getRealpathCacheSize() > 1000,
-                'realpath_cache_size should be above 1024 in php.ini',
-                'Set "<strong>realpath_cache_size</strong>" to e.g. "<strong>1024</strong>" in php.ini<a href="#phpini">*</a> to improve performance on windows.'
+                $this->getRealpathCacheSize() >= 5 * 1024 * 1024,
+                'realpath_cache_size should be at least 5M in php.ini',
+                'Setting "<strong>realpath_cache_size</strong>" to e.g. "<strong>5242880</strong>" or "<strong>5M</strong>" in php.ini<a href="#phpini">*</a> may improve performance on Windows significantly in some cases.'
             );
         }
 
@@ -724,7 +774,11 @@ class SymfonyRequirements extends RequirementCollection
     {
         $size = ini_get('realpath_cache_size');
         $size = trim($size);
-        $unit = strtolower(substr($size, -1, 1));
+        $unit = '';
+        if (!ctype_digit($size)) {
+            $unit = strtolower(substr($size, -1, 1));
+            $size = (int) substr($size, 0, -1);
+        }
         switch ($unit) {
             case 'g':
                 return $size * 1024 * 1024 * 1024;
@@ -738,19 +792,26 @@ class SymfonyRequirements extends RequirementCollection
     }
 
     /**
-     * In some special setups, the vendor/ directory isn't located in the project's
-     * root directory. To make this command work for every case, read Composer's
-     * vendor/ directory location directly from composer.json file.
+     * Defines PHP required version from Symfony version.
      *
-     * @return string
+     * @return string|false The PHP required version or false if it could not be guessed
      */
-    private function getComposerVendorDir()
+    protected function getPhpRequiredVersion()
     {
-        $composerJson = json_decode(file_get_contents(__DIR__.'/../composer.json'));
-        if (isset($composerJson->config)) {
-            return $composerJson->config->{'vendor-dir'};
+        if (!file_exists($path = __DIR__.'/../composer.lock')) {
+            return false;
         }
 
-        return __DIR__.'/../vendor/composer';
+        $composerLock = json_decode(file_get_contents($path), true);
+        foreach ($composerLock['packages'] as $package) {
+            $name = $package['name'];
+            if ('symfony/symfony' !== $name && 'symfony/http-kernel' !== $name) {
+                continue;
+            }
+
+            return (int) $package['version'][1] > 2 ? self::REQUIRED_PHP_VERSION : self::LEGACY_REQUIRED_PHP_VERSION;
+        }
+
+        return false;
     }
 }

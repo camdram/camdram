@@ -5,21 +5,17 @@ namespace Acts\CamdramBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class ShowCategoryType
  *
  * A form type for show genres, The list of possible genres is pulled from a Yaml file.
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class ShowCategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

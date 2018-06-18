@@ -1,17 +1,18 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-abstract class BaseClassIdentityVoter extends AbstractVoter {
+
+abstract class BaseClassIdentityVoter extends BaseVoter 
+{
     public function supportsClass($class)
     {
         return $class == 'Acts\\CamdramSecurityBundle\\Security\\Acl\\ClassIdentity' || parent::supportsClass($class);
     }
-
 
     public function supportsClassIdentity($object)
     {
@@ -42,5 +43,4 @@ abstract class BaseClassIdentityVoter extends AbstractVoter {
 
         return parent::vote($token, $object, $attributes);
     }
-
-} 
+}

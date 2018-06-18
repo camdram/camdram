@@ -7,7 +7,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 /**
  * Class TimePeriodController
- * @package Acts\CamdramBundle\Controller
+ *
  * @RouteResource("time-period")
  */
 class TimePeriodController extends FOSRestController

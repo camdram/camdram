@@ -51,7 +51,14 @@
         {{ form_widget(text) }}
         {{ form_widget(hidden) }}
 
-        <script>$(function(){ $('#{{ text.vars.id }}').entitySearch({ route: '{{ route }}' }); })</script>
+        <script>
+            $(function(){
+                $('#{{ text.vars.id }}').entitySearch({
+                    route: '{{ route }}',
+                    prefetch: {% if prefetch %}true{% else %}false{% endif %}
+                });
+            })
+        </script>
 
     {% endspaceless %}
 {% endblock %}
@@ -67,7 +74,7 @@
 {% endblock %}
 
 {% block choice_widget_expanded %}
-<div {{ block('widget_container_attributes', form) }}>
+<div {{ block('widget_container_attributes') }}>
 {% for child in form %}
     <label for="{{ child.vars.id }}">
         {{ form_widget(child) }}

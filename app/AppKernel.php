@@ -24,34 +24,19 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
             new Acts\CamdramBackendBundle\ActsCamdramBackendBundle(),
-            new Acts\SocialApiBundle\ActsSocialApiBundle(),
             new Acts\DiaryBundle\ActsDiaryBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new \EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
-            new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Oneup\UploaderBundle\OneupUploaderBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
             new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
-            new Acts\ExternalLoginBundle\ActsExternalLoginBundle(),
             new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
             new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
-
-            // Bundles needed for the Content Management Framework (used by the Infobase).
-            new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
-            new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
-            new Symfony\Cmf\Bundle\RoutingAutoBundle\CmfRoutingAutoBundle(),
-            new Symfony\Cmf\Bundle\CoreBundle\CmfCoreBundle(),
-            new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
-            new Symfony\Cmf\Bundle\ContentBundle\CmfContentBundle(),
-            new Symfony\Cmf\Bundle\BlockBundle\CmfBlockBundle(),
-
-            // Dependencies of the CmfMenuBundle
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-
-            // Dependencies of the CmfBlockBundle
-            new Sonata\BlockBundle\SonataBlockBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

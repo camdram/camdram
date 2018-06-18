@@ -4,31 +4,26 @@ namespace Acts\CamdramAdminBundle\Controller;
 
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
-
 use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramBundle\Controller\AbstractRestController;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @RouteResource("User")
+ * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class UserController extends FOSRestController
 {
     protected function getRouteParams($user)
     {
         return array('identifier' => $user->getId());
-    }
-
-    protected function checkAuthenticated()
-    {
-        $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
-        $this->get('camdram.security.utils')->ensureRole('ROLE_SUPER_ADMIN');
     }
 
     protected function getEntity($identifier)
@@ -60,7 +55,6 @@ class UserController extends FOSRestController
      */
     public function cgetAction(Request $request)
     {
-        $this->checkAuthenticated();
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
             $search_provider = $this->get('acts.camdram.search_provider');
@@ -81,9 +75,8 @@ class UserController extends FOSRestController
 
     public function getAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
         $ids = $this->get('camdram.security.acl.provider')->getOrganisationIdsByUser($entity);
         $orgs = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
         $ids = $this->get('camdram.security.acl.provider')->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
@@ -96,16 +89,17 @@ class UserController extends FOSRestController
             ->setTemplate('ActsCamdramAdminBundle:User:show.html.twig')
             ->setTemplateVar('user')
         ;
+
         return $view;
     }
 
     public function editAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
+
         return $this->view($form, 200)
             ->setTemplateVar('form')
             ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
@@ -113,9 +107,8 @@ class UserController extends FOSRestController
 
     public function putAction(Request $request, $identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
 
@@ -123,6 +116,7 @@ class UserController extends FOSRestController
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
             return $this->routeRedirectView('get_user', $this->getRouteParams($form->getData()));
         } else {
             return $this->view($form, 400)
@@ -133,13 +127,13 @@ class UserController extends FOSRestController
 
     public function removeAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
+        $this->denyAccessUnlessGranted('DELETE', $entity);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
+
         return $this->routeRedirectView('get_user');
     }
 
@@ -160,6 +154,7 @@ class UserController extends FOSRestController
             $user = $this->getEntity($identifier);
             $data = $form->getData();
             $this->get('camdram.security.acl.provider')->grantAccess($data['entity'], $user, $this->getUser());
+
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($user));
         } else {
             return $this->view($form, 400)
@@ -171,11 +166,11 @@ class UserController extends FOSRestController
     /**
      * @param $identifier
      * @Get("/users/{identifier}/reset-password")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function resetPasswordAction($identifier)
     {
-        $this->checkAuthenticated();
         $user = $this->getEntity($identifier);
 
         $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
@@ -187,4 +182,49 @@ class UserController extends FOSRestController
               array('user' => $user, 'url' => $url));
     }
 
+    public function getMergeAction($identifier)
+    {
+        $user = $this->getEntity($identifier);
+
+        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+            'user' => $user,
+            'form' => $this->get('acts_camdram_admin.user_merger')->createForm()->createView()
+        ));
+    }
+
+    /**
+     * @param $identifier
+     * @param $request Request
+     *
+     * @return $this
+     */
+    public function mergeAction($identifier, Request $request)
+    {
+        $user = $this->getEntity($identifier);
+        $merger = $this->get('acts_camdram_admin.user_merger');
+
+        $form = $merger->createForm();
+        $form->submit($request);
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $otherUser = $this->get('doctrine.orm.entity_manager')->getRepository('ActsCamdramSecurityBundle:User')
+                ->findOneByFullEmail($data['email']);
+            if ($otherUser) {
+                if ($otherUser == $user) {
+                    $form->addError(new FormError('You cannot merge a user with itself'));
+                } else {
+                    $newUser = $merger->mergeUsers($user, $otherUser, $data['keep_user'] == 'this');
+
+                    return $this->redirectToRoute('get_user', array('identifier' => $newUser->getId()));
+                }
+            } else {
+                $form->addError(new FormError('User not found'));
+            }
+        }
+
+        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+            'user' => $user,
+            'form' => $form->createView()
+        ));
+    }
 }

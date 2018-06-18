@@ -5,14 +5,39 @@ parameters:
 services:
     acts_camdram_backend.database_tools:
         class: %acts_camdram_backend.database_tools.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: ['@doctrine.orm.entity_manager']
 
     acts_camdram_backend.log_procesor:
         class: Acts\CamdramBackendBundle\Logger\LogProcessor
-        arguments:  [@service_container]
+        arguments:  ['@service_container']
         tags:
             - { name: monolog.processor, method: processRecord, channel: camdram }
 
     acts_camdram_backend.doctrine.entity_listener_resolver:
         class: Acts\CamdramBackendBundle\Doctrine\EntityListenerResolver
-        arguments: [@service_container]
+        arguments: ['@service_container']
+
+    acts_camdram_backend.test.session_storage:
+        class: Acts\CamdramBackendBundle\Test\SessionStorage
+        parent: session.storage.mock_file
+
+    facebook.api:
+        class: Facebook\Facebook
+        lazy: true
+        arguments:
+          - app_id: %facebook_id%
+            app_secret: %facebook_secret%
+            default_access_token: "%facebook_id%|%facebook_secret%"
+            
+    twitter.api:
+        class: Abraham\TwitterOAuth\TwitterOAuth
+        lazy: true
+        arguments:
+          - %twitter_key%
+          - %twitter_secret%
+          - %twitter_token%
+          - %twitter_token_secret%
+          
+    github.api:
+        class: \Github\Client
+        lazy: true

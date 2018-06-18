@@ -1,10 +1,10 @@
 <?php
+
 namespace Acts\CamdramApiBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Entity\User;
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * API Applications
@@ -14,7 +14,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ExternalApp extends BaseClient
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -53,16 +52,16 @@ class ExternalApp extends BaseClient
     protected $organisation;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(type="boolean")
      */
-    protected $is_admin;
+    protected $is_admin = false;
 
     /**
      * @var string
      * @ORM\Column(type="string", length=1024)
      */
-    protected $website;
+    protected $website = '';
 
     /**
      * @var \DateTime
@@ -76,12 +75,6 @@ class ExternalApp extends BaseClient
      */
     protected $updated_at;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\User", inversedBy="apps")
-     * @ORM\JoinTable(name="acts_api_authorisations")
-     */
-    private $users;
-
     public function __construct()
     {
         parent::__construct();
@@ -92,7 +85,7 @@ class ExternalApp extends BaseClient
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -102,7 +95,8 @@ class ExternalApp extends BaseClient
     /**
      * Set is_admin
      *
-     * @param boolean $isAdmin
+     * @param bool $isAdmin
+     *
      * @return ApiApp
      */
     public function setIsAdmin()
@@ -117,7 +111,7 @@ class ExternalApp extends BaseClient
     /**
      * Get is_admin
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsAdmin()
     {
@@ -128,6 +122,7 @@ class ExternalApp extends BaseClient
      * Set user
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
+     *
      * @return ApiApp
      */
     public function setUser(User $user)
@@ -153,6 +148,7 @@ class ExternalApp extends BaseClient
      * Set organisation
      *
      * @param \Acts\CamdramBundle\Entity\Organisation $organisation
+     *
      * @return ApiApp
      */
     public function setOrganisation(\Acts\CamdramBundle\Entity\Organisation $organisation)
@@ -178,6 +174,7 @@ class ExternalApp extends BaseClient
      * Set name
      *
      * @param string $name
+     *
      * @return ExternalApp
      */
     public function setName($name)
@@ -201,6 +198,7 @@ class ExternalApp extends BaseClient
      * Set description
      *
      * @param string $description
+     *
      * @return ExternalApp
      */
     public function setDescription($description)
@@ -224,6 +222,7 @@ class ExternalApp extends BaseClient
      * Set app_type
      *
      * @param string $appType
+     *
      * @return ExternalApp
      */
     public function setAppType($appType)
@@ -256,6 +255,7 @@ class ExternalApp extends BaseClient
      * Set website
      *
      * @param string $website
+     *
      * @return ExternalApp
      */
     public function setWebsite($website)
@@ -277,18 +277,19 @@ class ExternalApp extends BaseClient
 
     public function getRedirectUrisString()
     {
-        return implode("\r\n",$this->getRedirectUris());
+        return implode("\r\n", $this->getRedirectUris());
     }
 
     public function setRedirectUrisString($redirect_uris)
     {
-        $this->setRedirectUris(preg_split('/[\r\n,]+/',$redirect_uris));
+        $this->setRedirectUris(preg_split('/[\r\n,]+/', $redirect_uris));
     }
 
     /**
      * Set created_at
      *
      * @param \DateTime $createdAt
+     *
      * @return ExternalApp
      */
     public function setCreatedAt($createdAt)
@@ -312,6 +313,7 @@ class ExternalApp extends BaseClient
      * Set updated_at
      *
      * @param \DateTime $updatedAt
+     *
      * @return ExternalApp
      */
     public function setUpdatedAt($updatedAt)
@@ -331,14 +333,14 @@ class ExternalApp extends BaseClient
         return $this->updated_at;
     }
 
-
     /**
      * Add users
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $users
+     *
      * @return ExternalApp
      */
-    public function addUser(User $users)
+    public function addUser(\Acts\CamdramSecurityBundle\Entity\User $users)
     {
         $this->users[] = $users;
 
@@ -350,7 +352,7 @@ class ExternalApp extends BaseClient
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $users
      */
-    public function removeUser(User $users)
+    public function removeUser(\Acts\CamdramSecurityBundle\Entity\User $users)
     {
         $this->users->removeElement($users);
     }
@@ -358,7 +360,7 @@ class ExternalApp extends BaseClient
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getUsers()
     {

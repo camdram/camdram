@@ -1,11 +1,11 @@
 acts_camdram_contact_us:
-    pattern: /contact-us
+    path: /contact-us
     defaults: { _controller: ActsCamdramBundle:ContactUs:index }
     methods:  [GET]
 acts_camdram_contact_us_send:
-    pattern: /contact-us
+    path: /contact-us
     defaults: { _controller: ActsCamdramBundle:ContactUs:send }
     methods:  [POST]
 acts_camdram_contact_us_sent:
-    pattern: /contact-us/sent
+    path: /contact-us/sent
     defaults: { _controller: ActsCamdramBundle:ContactUs:sent }

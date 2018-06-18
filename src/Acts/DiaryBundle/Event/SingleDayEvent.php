@@ -1,12 +1,11 @@
 <?php
+
 namespace Acts\DiaryBundle\Event;
 
 /**
  * Class SingleEvent
  *
  * A standard implementation of a single day event
- *
- * @package Acts\DiaryBundle\Event
  */
 class SingleDayEvent extends AbstractEvent implements SingleDayEventInterface
 {

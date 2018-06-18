@@ -1,9 +1,10 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Acts\CamdramBundle\Entity\Organisation;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\EntityRepository;
-
 use Acts\CamdramBundle\Entity\Show;
 
 class PendingAccessRepository extends EntityRepository
@@ -26,23 +27,25 @@ class PendingAccessRepository extends EntityRepository
                 'email' => $ace->getEmail()
                 ));
         $result = $qb->getQuery()->getOneOrNullResult();
-        return ($result == null) ? False : True;
+
+        return ($result == null) ? false : true;
     }
     /**
      * Find records for pending access based on resource.
      */
     public function findByResource($resource)
     {
-        $qb = $this->createQueryBuilder('p')
-            ->where('p.rid = :rid')
-            ->andWhere('p.type = :type')
-            ->setParameter('rid', $resource->getId());
-        if (($resource instanceof Show) ||
-            ($resource instanceof Organisation)) {
-            $qb->setParameter('type', $resource->getEntityType());
+        if ($resource instanceof OwnableInterface) {
+
+            $qb = $this->createQueryBuilder('p')
+                ->where('p.rid = :rid')
+                ->andWhere('p.type = :type')
+                ->setParameter('rid', $resource->getId())
+                ->setParameter('type', $resource->getAceType());
+            return $qb->getQuery()->getResult();
+
         } else {
             return array();
         }
-        return $qb->getQuery()->getResult();
     }
 }

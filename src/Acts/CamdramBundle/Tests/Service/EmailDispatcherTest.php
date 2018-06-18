@@ -2,15 +2,12 @@
 
 namespace Acts\CamdramBundle\Tests\Service;
 
-use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramBundle\Service\DiaryHelper;
 use Acts\CamdramBundle\Service\EmailDispatcher;
 
 class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -52,7 +49,7 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
         );
         $admins = array($user2);
 
-        $this->twig->expects($this->once())->method('render')
+        $this->twig->expects($this->exactly(2))->method('render')
             ->with($this->anything(), array('owners' => $owners, 'show' => $show))
             ->will($this->returnValue('The message'));
 
@@ -60,5 +57,4 @@ class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
 
         $this->emailDispatcher->sendShowCreatedEmail($show, $owners, $recipients, $admins);
     }
-
 }

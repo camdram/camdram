@@ -1,38 +1,45 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
-use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 
 /**
  * Grants access if a standard user can create the class
  */
-class CreateVoter extends BaseClassIdentityVoter
+class CreateVoter extends Voter
 {
-    protected function getSupportedAttributes()
-    {
-        return array('CREATE');
-    }
 
-    protected function getSupportedClasses()
+    public function supports($attribute, $subject)
     {
-        return array(
-            'Acts\\CamdramBundle\\Entity\\Show',
-            'Acts\\CamdramBundle\\Entity\\TechieAdvert',
-            'Acts\\CamdramBundle\\Entity\\Audition',
-            'Acts\\CamdramBundle\\Entity\\Application'
+        if ($attribute != "CREATE") return false;
+    
+        if (!$subject instanceof ClassIdentity) {
+            $subject = new ClassIdentity(get_class($subject));
+        }
+
+        return in_array(
+            $subject->getClassName(),
+            [
+                'Acts\\CamdramBundle\\Entity\\Show',
+                'Acts\\CamdramBundle\\Entity\\TechieAdvert',
+                'Acts\\CamdramBundle\\Entity\\Audition',
+                'Acts\\CamdramBundle\\Entity\\Application'
+            ]
         );
     }
 
-    protected function isGranted($attribute, $object, $user = null)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return true;
+        if (TokenUtilities::isApiRequest($token)) {
+            return TokenUtilities::hasRole($token, 'ROLE_API_WRITE')
+                || TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG'); 
+        }
+        else {
+            return true;
+        }
     }
-
 }

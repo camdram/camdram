@@ -4,25 +4,29 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Society
  *
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SocietyRepository")
  * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("society")
  */
 class Society extends Organisation
 {
-
     /**
      * @ORM\OneToMany(targetEntity="Show", mappedBy="society")
+     * @Api\Link(route="get_society_shows", params={"identifier": "object.getSlug()"})
      */
     private $shows;
 
-    /**
-     * @Serializer\Expose
-     */
-    protected $entity_type = 'society';
+    private $entity_type = 'society';
+
+    public function getEntityType()
+    {
+        return $this->entity_type;
+    }
 
     /**
      * Constructor
@@ -36,6 +40,7 @@ class Society extends Organisation
      * Add shows
      *
      * @param \Acts\CamdramBundle\Entity\Show $shows
+     *
      * @return Society
      */
     public function addShow(\Acts\CamdramBundle\Entity\Show $shows)
@@ -65,13 +70,14 @@ class Society extends Organisation
         return $this->shows;
     }
 
-    public function getEntityType()
-    {
-        return $this->entity_type;
-    }
-
     public function getIndexDate()
     {
         return null;
     }
+
+    public function getOrganisationType()
+    {
+        return 'society';
+    }
+
 }

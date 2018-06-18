@@ -1,12 +1,13 @@
 <li id="admin-link" class="dropdown-link">
     <a href="#">Administration</a>
     <ul id="admin-dropdown" class="topbar-dropdown">
-        {% if has_role('ROLE_ADMIN') %}
+        {% if is_granted('ROLE_ADMIN') %}
             <li><a href="{{ path('get_issues') }}"><i class="fa fa-warning fa-fw"></i> Issues</a></li>
             <li><a href="{{ path('acts_camdram_audit') }}"><i class="fa fa-undo fa-fw"></i> Audit Log</a></li>
         {% endif %}
-        {% if has_role('ROLE_SUPER_ADMIN') %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
             <li><a href="{{ path('get_users') }}"><i class="fa fa-user fa-fw"></i> User Admin</a></li>
+            <li><a href="{{ path('acts_camdram_mailout') }}"><i class="fa fa-envelope fa-fw"></i> Mailouts</a></li>
             <li><a href="{{ path('acts_camdram_logs') }}"><i class="fa fa-file-text fa-fw"></i> Log Viewer</a></li>
         {% endif %}
     </ul>

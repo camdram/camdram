@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -9,11 +10,11 @@ use Acts\CamdramBundle\Entity\Society;
 class SocietyFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
     public function load(ObjectManager $manager)
     {
-        for ($i=1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $society = new Society();
             $society->setName("Society $i");
             $society->setShortName("S-$i");

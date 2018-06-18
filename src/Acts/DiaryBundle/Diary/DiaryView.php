@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Event\EventInterface;
@@ -11,8 +12,6 @@ use Acts\DiaryBundle\Event\SingleDayEventInterface;
  * A view of a Diary object. This class is the base of the logic for working out how to output diaries. A DiaryView
  * contains a number of Weeks. The weeks that are shown are decided upon based upon the events that have been added
  * (so long as they are within the specified time period).
- *
- * @package Acts\DiaryBundle\Diary
  */
 class DiaryView
 {
@@ -34,6 +33,7 @@ class DiaryView
     public function getWeeks()
     {
         ksort($this->weeks);
+
         return $this->weeks;
     }
 
@@ -41,20 +41,26 @@ class DiaryView
      * Returns (and creates if necessary) the week in which a certain \DateTime belongs
      *
      * @param \DateTime $date
+     *
      * @return Week
      */
     private function getWeekForDate(\DateTime $date)
     {
         if ($this->start_date && $this->end_date) {
-            if ($date < $this->start_date || $date >= $this->end_date) return;
+            if ($date < $this->start_date || $date >= $this->end_date) {
+                return;
+            }
         }
 
         foreach ($this->weeks as $week) {
-            if ($week->contains($date)) return $week;
+            if ($week->contains($date)) {
+                return $week;
+            }
         }
 
         $week = new Week($date);
         $this->weeks[$week->getStartAt()->format('U')] = $week;
+
         return $week;
     }
 
@@ -71,7 +77,9 @@ class DiaryView
             $week_start = Week::getWeekStart($event->getStartDate());
             do {
                 $week = $this->getWeekForDate($week_start);
-                if ($week) $week->addEvent($event);
+                if ($week) {
+                    $week->addEvent($event);
+                }
                 $week_start->modify('+7 days');
             } while ($week_start < $event->getEndDate());
         } elseif ($event instanceof SingleDayEventInterface) {
@@ -82,7 +90,9 @@ class DiaryView
                         && $event->getDate()->format('N') == 6) {
                 $tomorrow = $event->getDate()->modify('+1 day');
                 $week = $this->getWeekForDate($tomorrow);
-                if ($week) $week->addEvent($event);
+                if ($week) {
+                    $week->addEvent($event);
+                }
             }
         }
     }
@@ -145,5 +155,4 @@ class DiaryView
             $date->modify('+1 week');
         }
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\TechieAdvert;
@@ -8,8 +9,6 @@ use Acts\TimeMockBundle\Service\TimeService;
  * Class VacanciesListener
  *
  * Listens for new/modified vacancies
- *
- * @package Acts\CamdramBundle\EventListener
  */
 class TechieAdvertListener
 {
@@ -41,5 +40,4 @@ class TechieAdvertListener
             $techieAdvert->setExpiry($expires);
         }
     }
-
 }

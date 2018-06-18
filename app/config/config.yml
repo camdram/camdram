@@ -1,7 +1,6 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: routing_auto.yml }
 
 framework:
     esi: { enabled: true }
@@ -17,16 +16,15 @@ framework:
     trusted_proxies: ['127.0.0.1']
     session:
         name: camdram
+        gc_maxlifetime: 1800
     fragments: { path: /_fragment }
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-    form:
-        resources:
-            - 'HoyesImageManagerBundle:Form:fields.html.twig'
-            - 'ActsCamdramBundle:Form:fields.html.twig'
+    form_themes:
+        - 'ActsCamdramBundle:Form:fields.html.twig'
     globals:
         development_warning: %development_warning%
 
@@ -39,20 +37,18 @@ assetic:
         cssrewrite:
             apply_to: '\.css$'
         scssphp:
-            import_paths: ["%kernel.root_dir%/../vendor/zurb/foundation/scss"]
-            apply_to: "\.scss$"
+            import_paths: ['%kernel.root_dir%/../vendor/zurb/foundation/scss']
+            apply_to: '\.scss$'
 
 monolog:
-    channels: ["camdram"]
+    channels: ["camdram", "mailer"]
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        # Use separate databases for the ORM and ODM
         default_connection: default
         connections:
             default:
-                # The ORM db connection, e.g. non-Infobase content
                 driver:   "%database_driver%"
                 host:     "%database_host%"
                 port:     "%database_port%"
@@ -64,19 +60,7 @@ doctrine:
                 schema_filter: ~^(?!phpcr_)~
                 mapping_types:
                     enum:       string
-            odm:
-                # ODM db connection, e.g. Infobase conent
-                driver:   "%database_driver%"
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   "%database_name%"
-                user:     "%database_user%"
-                password: "%database_pass%"
-                path:     "%kernel.root_dir%/data/odm.db"
-                charset:  UTF8
-                mapping_types:
-                    enum:       string
-   
+
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
@@ -89,36 +73,6 @@ doctrine:
                 alias: GedmoLoggable
                 is_bundle: false
 
-
-doctrine_phpcr:
-    session:
-        backend: {type: doctrinedbal, connection: odm}
-        workspace: default
-    # enable the ODM layer
-    odm:
-        auto_mapping: true
-        auto_generate_proxy_classes: %kernel.debug%
-
-sonata_block:
-    default_contexts: [cms]
-
-# Enable the DynamicRouter from the RoutingBundle
-cmf_routing:
-    chain:
-        routers_by_id:
-            cmf_routing.dynamic_router: 20
-            router.default: 100
-    dynamic:
-        enabled: true
-        persistence:
-            phpcr:
-                route_basepath: /cms/routes/page
-        controllers_by_class:
-            Acts\CamdramBundle\Document\Page: Acts\CamdramBundle\Controller\DefaultPageController::pageAction
-
-knp_menu:
-    twig: true
-
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -127,9 +81,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool  : { type: memory }
     sender_address: %mailer_sender_address%
-
-sensio_framework_extra:
-    view:    { annotations: false }
 
 fos_rest:
     view:
@@ -141,8 +92,10 @@ fos_rest:
             ics: true
         mime_types:
             ics: text/calendar
+            txt: text/plain
         templating_formats:
             html: true
+            txt: true
         force_redirects:
             html: true
         view_response_listener: force
@@ -152,9 +105,19 @@ fos_rest:
         view_handler: acts.camdram_api.view_handler
     routing_loader:
         default_format: html
-    body_listener: true
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.jsontoform
     format_listener: true
-    access_denied_listener: true
+    access_denied_listener:
+        json: true
+        xml: true
+    disable_csrf_role: ROLE_API
+
+jms_serializer:
+    visitors:
+        json:
+            options: JSON_PRETTY_PRINT
 
 acts_camdram:
     search_provider: %search_provider%
@@ -165,28 +128,6 @@ acts_camdram:
 acts_camdram_legacy:
     v1_hostname: %v1_hostname%
 
-acts_social_api:
-      http_client:
-          timeout: 30,
-          user_agent: 'Camdram.net - websupport@camdram.net'
-      apis:
-          facebook:
-              client_id: %facebook_id%
-              client_secret: %facebook_secret%
-          twitter:
-              client_id: %twitter_key%
-              client_secret: %twitter_secret%
-              access_token: %twitter_token%
-              access_token_secret: %twitter_token_secret%
-          google:
-              client_id: %google_client_id%
-              client_secret: %google_client_secret%
-          google_simple:
-              key: %google_key%
-          github:
-              client_id: %github_id%
-              client_secret: %github_secret%
-
 fos_oauth_server:
     db_driver:           orm
     client_class:        Acts\CamdramApiBundle\Entity\ExternalApp
@@ -194,10 +135,12 @@ fos_oauth_server:
     refresh_token_class: Acts\CamdramApiBundle\Entity\RefreshToken
     auth_code_class:     Acts\CamdramApiBundle\Entity\AuthCode
     service:
+        storage: acts.camdram_api.oauth2_storage.default
         options:
-            supported_scopes: write
+            supported_scopes: user_email user_shows user_orgs api_write api_write_org
 
 acts_sphinx_real_time:
+    enabled: true
     clients:
         default:
           log: /var/log/sphinxsearch/searchd.log
@@ -276,6 +219,36 @@ acts_sphinx_real_time:
                 enable_star: true
                 dict: keywords
 
+oneup_uploader:
+    mappings:
+        images:
+            frontend: dropzone
+            storage:
+                directory: '%kernel.root_dir%/data/'
+
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                data_root: %kernel.root_dir%/data/
+
+    filter_sets:
+        cache: ~
+        preview:
+            quality: 90
+            filters:
+                thumbnail: { size : [1024, 768], mode : inset }
+                strip: ~
+        thumbnail:
+            quality: 75
+            filters:
+                thumbnail: { size : [300, 200], mode : inset }
+                strip: ~
+        list:
+            quality: 75
+            filters:
+                thumbnail: { size: [88, 70], mode: inset }
+
 stof_doctrine_extensions:
     orm:
         default:
@@ -291,6 +264,5 @@ ewz_recaptcha:
     locale_key: %kernel.default_locale%
 
 parameters:
-    security.authentication.trust_resolver.class: Acts\ExternalLoginBundle\Security\Authentication\AuthenticationTrustResolver
     test.client.class: Acts\CamdramBackendBundle\Test\Client
     router.request_context.host: www.camdram.net

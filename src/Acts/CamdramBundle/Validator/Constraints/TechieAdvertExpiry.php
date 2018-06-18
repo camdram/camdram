@@ -1,10 +1,8 @@
 <?php
+
 namespace Acts\CamdramBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
-
-use Acts\CamdramBundle\Entity\MapLocation as MapLocationEntity;
-
 
 /**
  * A map distance constraint, which can be used to validate a MapLocation type against it's proximity to a certain
@@ -27,5 +25,4 @@ class TechieAdvertExpiry extends Constraint
     {
         return 'camdram.techie_advert_expiry';
     }
-
 }

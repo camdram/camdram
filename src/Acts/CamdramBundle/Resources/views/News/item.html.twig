@@ -11,12 +11,12 @@
             <strong>
                 <a href="{{ item.getLink() }}" target="_blank"><img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ item.source ~ '.png') }}" class="news-source"/></a>
 
-                {% if item.entity.entityType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
-                    {% elseif item.entity.entityType == 'society' %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
+                {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
+                    {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
                     {{ item.entity.name }}</a> posted:</strong>
             {{ item.body | detect_links }}
         </p>
-        <p><em>{{ item.getPostedAt() | date('jS F Y g:ia') }}</em></p>
+        <p><a href="{{ item.getLink() }}" target="_blank"><em>{{ item.getPostedAt() | date('jS F Y g:ia') }}</em></a></p>
         {% for link in item.links %}
             <div class="news-link">
                 <div class="row">

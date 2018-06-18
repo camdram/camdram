@@ -173,7 +173,8 @@
 
     $.fn.entitySearch = function(options) {
        var options = $.extend({
-           placeholder: 'start typing to search'
+           placeholder: 'start typing to search',
+           prefetch : true
        }, options);
         var $self = $(this);
 
@@ -188,14 +189,17 @@
             return items;
         }
 
+        var onValueSelect = function(event, datum) {
+            $self.parent().siblings('input[type=hidden]').val(datum.id);
+            $self.trigger('entitysearch:changed', [datum]);
+        };
+
         $self.typeahead({
            name: options.route,
            valueKey: 'name',
-           prefetch: {url: Routing.generate(options.route, {_format: 'json'}), filter: filter},
-           remote: {url: Routing.generate(options.route, {q: 'QUERY'}), wildcard: 'QUERY', filter: filter}
-       }).on('typeahead:autocompleted', function (object, datum) {
-            $self.parent().siblings('input[type=hidden]').val(datum.id);
-       });
+           prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
+           remote: {url: Routing.generate(options.route, {q: 'QUERY', _format: 'json', autocomplete: true}), wildcard: 'QUERY', filter: filter}
+       }).on('typeahead:autocompleted', onValueSelect).on('typeahead:selected', onValueSelect);
 
        $(this).change(function() {
            console.log($self.parent().siblings('input[type=hidden]').val())
@@ -314,5 +318,63 @@
         $(document).foundation();
         fixHtml($(document));
     });
+    
+    Dropzone.options.imageUpload = {
+    		  paramName: "file", // The name that will be used to transfer the file
+    		  maxFilesize: 2, // MB
+    		  createImageThumbnails: true,
+    		  thumbnailWidth: 120,
+    		  thumbnailHeight: 120,
+    		  resizeWidth: 1024,
+    		  maxFiles: 1,
+    		  acceptedFiles: 'image/*',
+    		  dictDefaultMessage: 'Click to upload image',
+    		  previewTemplate: '<div class="dz-preview dz-file-preview">'
+				 + '<div class="dz-details">'
+				 + '<div class="dz-filename alert-box round">Uploading <span data-dz-name></span></div>'
+				 + '<div class="dz-size" data-dz-size></div>'
+				 + '<img data-dz-thumbnail />'
+				 + '</div>'
+				 + ' <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>'
+				+ '</div>',
+    		  init: function() {
+    			  msgDiv = Dropzone.createElement('<div/>');
+    			  msgDiv.className = 'hidden'
+    			  this.element.append(msgDiv);
+    			  
+    			  this.on('error', function(file, errorMessage, blah) {
+			    	this.removeAllFiles();
+			    	
+			    	var errorText = 'Error uploading "' + file.name + '"';
+			    	
+			    	if (typeof errorMessage == 'string')
+		    		{
+			    		errorText += ':<br />' + errorMessage;
+		    		}
+			    	else if (typeof errorMessage.error == 'string')
+		    		{
+			    		errorText += ':<br />' + errorMessage.error;
+		    		}
+			    	msgDiv.innerHTML = errorText;
+			    	msgDiv.className = 'alert-box alert round';
+			      })
+			      .on('addedfile', function() {
+			    	  msgDiv.className = 'hidden';
+			    	  msgDiv.innerHTML = '';
+			      })
+			      .on('success', function(file) {
+			    	  this.destroy();
+			    	  
+			    	  msgDiv.innerHTML = '"' + file.name + '" uploaded'
+			    	  		+ '<br />Reloading page...'
+			    	  msgDiv.className = 'alert-box success round'
+			    	  
+		              location.reload();
+    		      })
+    		      .on("maxfilesexceeded", function(file) { 
+    		    	  this.removeFile(file); 
+    		      });
+    		   }
+    		};
 
 })(jQuery, window);

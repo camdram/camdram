@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class VenueType
  *
  * The form that's presented when a user adds/edits a venue
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class VenueType extends AbstractType
 {
@@ -20,7 +18,6 @@ class VenueType extends AbstractType
         $builder
             ->add('name')
             ->add('short_name')
-            ->add('image', 'image_upload', array('label' => 'Photo'))
             ->add('college')
             ->add('description')
             ->add('address')
@@ -39,6 +36,6 @@ class VenueType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_venuetype';
+        return 'venue';
     }
 }

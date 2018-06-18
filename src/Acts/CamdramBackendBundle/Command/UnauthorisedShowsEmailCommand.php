@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -9,10 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class UnauthorisedShowsEmailCommand
  *
  * This console command sends an e-mail for each show that is still unauthorised
- *
- * @package Acts\CamdramBackendBundle\Command
  */
-
 class UnauthorisedShowsEmailCommand extends ContainerAwareCommand
 {
     /**
@@ -38,5 +36,4 @@ class UnauthorisedShowsEmailCommand extends ContainerAwareCommand
             $moderation_manager->emailEntityModerators($show);
         }
     }
-
 }

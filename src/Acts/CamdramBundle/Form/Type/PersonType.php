@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class PersonType
  *
  * The form that's presented when a user adds/edits a person
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class PersonType extends AbstractType
 {
@@ -33,6 +31,6 @@ class PersonType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_persontype';
+        return 'person';
     }
 }

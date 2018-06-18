@@ -9,7 +9,7 @@ services:
 
     acts.diary.renderer.html:
         class: %acts.diary.renderer.html.class%
-        arguments: [@twig]
+        arguments: ['@twig']
 
     acts.diary.twig_extension:
         class: %acts.diary.twig_extension.class%

@@ -1,6 +1,16 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 {% block title %}Edit Admins{% endblock %}
+
 {% block body %}
+
+{% if entity.entityType == 'show' %}
+    {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: entity})) }}
+{% elseif entity.entityType == 'society' %}
+    {{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: entity})) }}
+{% elseif entity.entityType == 'venue' %}
+    {{ render(controller('ActsCamdramBundle:Venue:adminPanel', {org: entity})) }}
+{% endif %}
+
 <div class="row">
     <div class="large-12 column">
         <p>

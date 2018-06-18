@@ -2,17 +2,18 @@
 
 namespace Acts\CamdramSecurityBundle\Controller;
 
-use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
-use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
+use FOS\RestBundle\Context\Context;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
+use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
+use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class AccountController
- * @package Acts\CamdramSecurityBundle\Controller
+ *
  * @RouteResource("Account")
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
@@ -20,27 +21,47 @@ class AccountController extends FOSRestController
 {
     public function getAction()
     {
+        $context = new Context();
+        $auth = $this->get('security.authorization_checker');
+        $serializationGroups = ['all'];
+        if ($auth->isGranted('ROLE_USER_EMAIL') || $auth->isGranted('IS_AUTHENTICATED_FULLY'))
+        {
+            $serializationGroups[] = 'user_email';
+        }
+        $context->setGroups($serializationGroups);
+        
         return $this->view($this->getUser())
             ->setTemplate('ActsCamdramSecurityBundle:Account:settings.html.twig')
+            ->setContext($context)
             ;
     }
 
     public function linkedAccountsAction()
     {
-        return $this->render('ActsCamdramSecurityBundle:Account:linked_accounts.html.twig', array(
-            'services' => $this->get('external_login.service_provider')->getServices()
-        ));
+        return $this->render('ActsCamdramSecurityBundle:Account:linked_accounts.html.twig');
     }
 
+    /**
+     * @Security("has_role('ROLE_USER_SHOWS')")
+     * 
+     * @return \FOS\RestBundle\View\View
+     */
     public function getShowsAction()
     {
         $shows = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Show');
+
         return $this->view($shows);
     }
 
+    /**
+     * @Security("has_role('ROLE_USER_ORGS')")
+     *
+     * @return \FOS\RestBundle\View\View
+     */
     public function getOrganisationsAction()
     {
         $orgs = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Organisation');
+
         return $this->view($orgs);
     }
 
@@ -54,8 +75,10 @@ class AccountController extends FOSRestController
                 $user = $form->getData();
                 $user->setIsEmailVerified(false);
                 $this->getDoctrine()->getManager()->flush();
+
                 return $this->render('ActsCamdramSecurityBundle:Account:change_email_complete.html.twig');
             }
+
             return $this->render('ActsCamdramSecurityBundle:Account:change_email.html.twig', array(
                 'form' => $form->createView()
             ));
@@ -68,22 +91,28 @@ class AccountController extends FOSRestController
 
     public function changePasswordAction(Request $request)
     {
-        $form = $form = $this->createForm(new ChangePasswordType(), array());
-        if ($request->getMethod() == 'POST') {
-            $form->submit($request);
+        if (!$this->getUser()->getPassword())
+        {
+            //Adding password only allowed if account already has a password
+            return new Response('', 200);
+        }
+
+        $form = $form = $this->createForm(new ChangePasswordType(), $this->getUser());
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $user = $this->getUser();
-                $data = $form->getData();
+                $user = $form->getData();
 
                 $factory = $this->get('security.encoder_factory');
                 $encoder = $factory->getEncoder($user);
-                $password = $encoder->encodePassword($data['password'], $user->getSalt());
+                $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
                 $user->setPassword($password);
 
                 $this->getDoctrine()->getManager()->flush();
 
                 return $this->render('ActsCamdramSecurityBundle:Account:change_password_complete.html.twig');
             }
+
             return $this->render('ActsCamdramSecurityBundle:Account:change_password.html.twig', array(
                 'form' => $form->createView()
             ));
@@ -117,5 +146,4 @@ class AccountController extends FOSRestController
 
         return $this->redirect($this->generateUrl('get_account'));
     }
-
 }

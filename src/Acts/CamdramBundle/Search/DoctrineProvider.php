@@ -1,13 +1,11 @@
 <?php
+
 namespace Acts\CamdramBundle\Search;
 
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Show;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Pagerfanta\Adapter\ArrayAdapter;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
 /**
@@ -15,8 +13,6 @@ use Pagerfanta\Pagerfanta;
  *
  * An implementation of the Search\ProviderInterface that calls the Doctrine backend. It isn't very efficient (and
  * it doesn't rank the results very sensibly), but it works straight out of the box without having to install Sphinx.
- *
- * @package Acts\CamdramBundle\Service\Search
  */
 class DoctrineProvider implements ProviderInterface
 {
@@ -27,10 +23,9 @@ class DoctrineProvider implements ProviderInterface
         $this->entityManager = $entityManager;
     }
 
-
     public function executeAutocomplete($indexes, $search_query, $limit, array $filters = array(), array $orderBy = array())
     {
-        /** @var $repo \Doctrine\ORM\EntityRepository */
+        /* @var $repo \Doctrine\ORM\EntityRepository */
         $results = array();
         foreach ($indexes as $index) {
             $repo = $this->entityManager->getRepository('ActsCamdramBundle:'.ucfirst($index));
@@ -47,7 +42,6 @@ class DoctrineProvider implements ProviderInterface
 
         return array_slice($results, 0, $limit);
     }
-
 
     public function executeTextSearch($indexes, $q, $offset, $limit, array $orderBy = array())
     {
@@ -71,10 +65,10 @@ class DoctrineProvider implements ProviderInterface
             foreach ($qb->getQuery()->getResult() as $result) {
                 $entities[] = $this->createResultFromEntity($result);
             }
-
         }
 
         $adapter = new ArrayAdapter($entities);
+
         return new Pagerfanta($adapter);
     }
 
@@ -100,14 +94,15 @@ class DoctrineProvider implements ProviderInterface
         return $results;
     }
 
-    private function createResultFromEntity(SearchableInterface $entity) {
+    private function createResultFromEntity(SearchableInterface $entity)
+    {
         $result = array(
             'id' => $entity->getId(),
             'name' => $entity->getName(),
             'description' => $entity->getDescription(),
             'slug' => $entity->getSlug(),
             'short_name' => $entity->getShortName(),
-            'entity_type' => $entity->getEntityType(),
+            'entity_type' => strtolower((new \ReflectionClass($entity))->getShortName()),
         );
         if ($entity instanceof Show || $entity instanceof Person) {
             $index_date = $entity->getIndexDate();
@@ -116,6 +111,7 @@ class DoctrineProvider implements ProviderInterface
         if ($entity instanceof Person) {
             $result['show_count'] = $entity->getNumShows();
         }
+
         return $result;
     }
 }

@@ -3,7 +3,6 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-
 use Doctrine\ORM\Query\Expr;
 
 /**
@@ -20,8 +19,8 @@ class AuditionRepository extends EntityRepository
      * Find all auditions between two dates that should be shown on the
      * diary page, joined to the corresponding show.
      *
-     * @param integer $startDate start date expressed as a Unix timestamp
-     * @param integer $endDate emd date expressed as a Unix timestamp
+     * @param int $startDate start date expressed as a Unix timestamp
+     * @param int $endDate   emd date expressed as a Unix timestamp
      *
      * @return array of auditions
      */
@@ -33,7 +32,6 @@ class AuditionRepository extends EntityRepository
             ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
             ->andWhere('a.display = 0')
             ->andWhere('s.authorised_by IS NOT NULL')
-            ->andWhere('s.entered = true')
             ->orderBy('s.name, a.date, a.start_time, a.nonScheduled')
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
             ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
@@ -51,7 +49,6 @@ class AuditionRepository extends EntityRepository
             ->andWhere('a.nonScheduled = false')
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
@@ -60,7 +57,7 @@ class AuditionRepository extends EntityRepository
 
         return $qb;
     }
-    
+
     public function getUpcomingNonScheduledQuery($limit, \DateTime $now)
     {
         $qb = $this->createQueryBuilder('a');
@@ -69,12 +66,14 @@ class AuditionRepository extends EntityRepository
             ->andWhere('a.nonScheduled = true')
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->orderBy('a.date')
             ->addOrderBy('a.start_time')
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
             ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME);
-        if ($limit > 0) $qb->setMaxResults($limit);
+        if ($limit > 0) {
+            $qb->setMaxResults($limit);
+        }
+
         return $qb;
     }
 
@@ -114,5 +113,21 @@ class AuditionRepository extends EntityRepository
         return $this->getUpcomingNonScheduledQuery($limit, $now)
             ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
             ->getQuery()->getResult();
+    }
+
+    public function findOneByShowSlug($slug, \DateTime $now)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        return $qb->leftJoin('a.show', 's')
+            ->where($qb->expr()->orX('a.date > :current_date',
+                $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
+            ->andWhere('s.slug = :slug')
+            ->andWhere('s.authorised_by is not null')
+            ->setMaxResults(1)
+            ->setParameter('slug', $slug)
+            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
+            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->getQuery()->getOneOrNullResult();
     }
 }

@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Acts\CamdramSecurityBundle\Entity\User;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * Person
@@ -16,11 +17,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="people_slugs",columns={"slug"})})
  * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="PersonRepository")
+ * @Serializer\XmlRoot("person")
  */
 class Person implements SearchableInterface
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -35,6 +37,7 @@ class Person implements SearchableInterface
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Gedmo\Versioned
      * @Assert\NotBlank()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $name;
 
@@ -47,9 +50,9 @@ class Person implements SearchableInterface
     private $description;
 
     /**
-     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     * @var Image
      *
-     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
      */
     private $image;
@@ -58,20 +61,22 @@ class Person implements SearchableInterface
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=128, nullable=true)
      * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $slug;
 
     /**
-     * @var integer
+     * @var int
      *
-     * @ORM\Column(name="mapto", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\JoinColumn(name="mapto", nullable=true)
      * @Serializer\Exclude
      * @Gedmo\Versioned
      */
-    private $map_to;
+    private $mapped_to;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="norobots", type="boolean", nullable=false)
      * @Serializer\Exclude
@@ -80,7 +85,6 @@ class Person implements SearchableInterface
     private $no_robots;
 
     /**
-     *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="person")
      * @Serializer\Exclude
      */
@@ -112,6 +116,7 @@ class Person implements SearchableInterface
 
     /**
      * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     protected $entity_type = 'person';
 
@@ -131,12 +136,13 @@ class Person implements SearchableInterface
     /**
      * Set map_to
      *
-     * @param integer $mapTo
+     * @param int $mapedTo
+     *
      * @return Person
      */
-    public function setMapTo($mapTo)
+    public function setMappedTo($mapTo)
     {
-        $this->map_to = $mapTo;
+        $this->mapped_to = $mapTo;
 
         return $this;
     }
@@ -144,17 +150,18 @@ class Person implements SearchableInterface
     /**
      * Get map_to
      *
-     * @return integer
+     * @return int
      */
-    public function getMapTo()
+    public function getMappedTo()
     {
-        return $this->map_to;
+        return $this->mapped_to;
     }
 
     /**
      * Set no_robots
      *
-     * @param boolean $noRobots
+     * @param bool $noRobots
+     *
      * @return Person
      */
     public function setNoRobots($noRobots)
@@ -167,7 +174,7 @@ class Person implements SearchableInterface
     /**
      * Get no_robots
      *
-     * @return boolean
+     * @return bool
      */
     public function getNoRobots()
     {
@@ -178,6 +185,7 @@ class Person implements SearchableInterface
      * Add roles
      *
      * @param \Acts\CamdramBundle\Entity\Role $roles
+     *
      * @return Person
      */
     public function addRole(\Acts\CamdramBundle\Entity\Role $roles)
@@ -206,6 +214,7 @@ class Person implements SearchableInterface
     {
         $criteria = Criteria::create()
             ->orderBy(array('showId' => 'DESC'));
+
         return $this->roles->matching($criteria);
     }
 
@@ -213,6 +222,7 @@ class Person implements SearchableInterface
      * Add users
      *
      * @param \Acts\CamdramSecurityBundle\Entity\User $users
+     *
      * @return Person
      */
     public function addUser(User $users)
@@ -246,6 +256,7 @@ class Person implements SearchableInterface
      * Add aliases
      *
      * @param \Acts\CamdramSecurityBundle\Entity\NameAlias $aliases
+     *
      * @return Person
      */
     public function addAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
@@ -299,19 +310,19 @@ class Person implements SearchableInterface
     public function getRank()
     {
         $rank = $this->getIndexDate();
+
         return $rank ? $rank->format('Ymd') : null;
     }
 
     public function isIndexable()
     {
-        return count($this->getRoles()) > 0;
+        return !$this->isMapped() && count($this->getRoles());
     }
-
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -322,6 +333,7 @@ class Person implements SearchableInterface
      * Set name
      *
      * @param string $name
+     *
      * @return Person
      */
     public function setName($name)
@@ -345,6 +357,7 @@ class Person implements SearchableInterface
      * Set facebook_id
      *
      * @param string $facebookId
+     *
      * @return Person
      */
     public function setFacebookId($facebookId)
@@ -368,6 +381,7 @@ class Person implements SearchableInterface
      * Set twitter_id
      *
      * @param string $twitterId
+     *
      * @return Person
      */
     public function setTwitterId($twitterId)
@@ -390,10 +404,11 @@ class Person implements SearchableInterface
     /**
      * Set image
      *
-     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @param Image $image
+     *
      * @return Person
      */
-    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    public function setImage(Image $image = null)
     {
         $this->image = $image;
 
@@ -403,7 +418,7 @@ class Person implements SearchableInterface
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     * @return Image
      */
     public function getImage()
     {
@@ -414,6 +429,7 @@ class Person implements SearchableInterface
      * Set description
      *
      * @param string $description
+     *
      * @return Person
      */
     public function setDescription($description)
@@ -437,6 +453,7 @@ class Person implements SearchableInterface
      * Set slug
      *
      * @param string $slug
+     *
      * @return Person
      */
     public function setSlug($slug)
@@ -460,6 +477,7 @@ class Person implements SearchableInterface
      * Add externalUsers
      *
      * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
+     *
      * @return Person
      */
     public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
@@ -502,19 +520,26 @@ class Person implements SearchableInterface
             if ($role->getShow() && (!$show_id || $role->getShow() != $show_id)) {
                 $counter++;
                 $show_id = $role->getShow();
-            }   
+            }
         }
+
         return $counter;
     }
-    
+
     public function getIndexDate()
     {
         $latest = null;
         foreach ($this->getRoles() as $role) {
-            if ($role->getShow() && (!$latest || $role->getShow()->getStartAt() > $latest) && $role->getShow()->getStartAt()) {
-                $latest = $role->getShow()->getStartAt();
+            if ($role->getShow() && (!$latest || $role->getShow()->getEndAt() > $latest) && $role->getShow()->getEndAt()) {
+                $latest = $role->getShow()->getEndAt();
             }
         }
+
         return $latest;
+    }
+
+    public function isMapped()
+    {
+        return $this->getMappedTo() instanceof self;
     }
 }

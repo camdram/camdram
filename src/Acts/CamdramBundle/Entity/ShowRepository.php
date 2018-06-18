@@ -3,24 +3,21 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr as Expr;
 
 /**
  * ShowRepository
- *
  */
 class ShowRepository extends EntityRepository
 {
-
     public function selectAll()
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->leftJoin('s.performances', 'p')
             ->orderBy('p.end_date', 'desc')
             ->addOrderBy('p.start_date', 'desc')
             ->groupBy('s.id');
+
         return $qb;
     }
 
@@ -28,8 +25,8 @@ class ShowRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised_by is null')
-            ->andWhere('s.entered = true')
             ->join('s.performances', 'p');
+
         return $qb->getQuery()->getResult();
     }
 
@@ -37,10 +34,10 @@ class ShowRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised_by is null')
-            ->andWhere('s.entered = true')
             ->andWhere('s.society = :society')
             ->setParameter('society', $society)
             ->join('s.performances', 'p');
+
         return $qb->getQuery()->getResult();
     }
 
@@ -48,22 +45,24 @@ class ShowRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised_by is null')
-            ->andWhere('s.entered = true')
             ->andWhere('s.venue = :venue')
             ->setParameter('venue', $venue)
             ->join('s.performances', 'p');
+
         return $qb->getQuery()->getResult();
     }
 
     public function findIdsByDate($ids)
     {
-        if (count($ids) == 0) return array();
+        if (count($ids) == 0) {
+            return array();
+        }
 
         $qb = $this->createQueryBuilder('s')
             ->where('s.id IN (:ids)')
-            ->andWhere('s.entered = true')
             ->orderBy('s.start_at', 'desc')
             ->setParameter('ids', $ids);
+
         return $qb->getQuery()->getResult();
     }
 
@@ -72,12 +71,12 @@ class ShowRepository extends EntityRepository
         $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)')
             ->innerJoin('s.performances', 'p')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andWhere('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();
+
         return current($result);
     }
 
@@ -85,7 +84,6 @@ class ShowRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->join('s.performances', 'p')
             ->andWhere('p.start_date <= :end')
             ->andWhere('p.end_date >= :start')
@@ -94,6 +92,7 @@ class ShowRepository extends EntityRepository
             ->groupBy('s.id')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
+
         return $qb->getQuery()->getResult();
     }
 
@@ -105,11 +104,11 @@ class ShowRepository extends EntityRepository
             ->where('p.start_date < :end')
             ->andWhere('p.end_date > :start')
             ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->setParameter('start', $week->getStartAt())
             ->setParameter('end', $week->getEndAt())
             ->orderBy('p.end_date - p.start_date', 'DESC')
             ->setMaxResults($limit);
+
         return $qb->getQuery()->getResult();
     }
 
@@ -119,7 +118,6 @@ class ShowRepository extends EntityRepository
             ->join('s.roles', 'r')
             ->leftJoin('s.performances', 'p')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andWhere('r.person = :person')
             ->orderBy('p.start_date', 'ASC')
             ->groupBy('s.id')
@@ -127,6 +125,7 @@ class ShowRepository extends EntityRepository
             ->setParameter('person', $person)
             ->setParameter('now', $now)
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -136,13 +135,13 @@ class ShowRepository extends EntityRepository
             ->where('s.end_at >= :now')
             ->andWhere('s.start_at < :now')
             ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->join('s.roles', 'r')
             ->andWhere('r.person = :person')
             ->orderBy('s.start_at', 'ASC')
             ->setParameter('person', $person)
             ->setParameter('now', $now)
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -152,9 +151,8 @@ class ShowRepository extends EntityRepository
             ->leftJoin('s.performances', 'p')
             ->join('s.roles', 'r')
             ->andwhere('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andWhere('r.person = :person')
-            ->orderBy('p.start_date', 'DESC')
+            ->orderBy('p.end_date', 'DESC')
             ->groupBy('s.id')
             ->having('MAX(p.end_date) < :now')
             ->setParameter('person', $person)
@@ -169,12 +167,12 @@ class ShowRepository extends EntityRepository
         $query = $this->createQueryBuilder('s')
             ->select('MIN(s.start_at)')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andWhere('s.start_at IS NOT NULL')
             ->andWhere('s.start_at > :min')
             ->setMaxResults(1)
             ->setParameter('min', new \DateTime('1990-01-01'))
             ->getQuery();
+
         return new \DateTime(current($query->getOneOrNullResult()));
     }
 
@@ -183,9 +181,9 @@ class ShowRepository extends EntityRepository
         $query = $this->createQueryBuilder('s')
             ->select('MAX(s.end_at)')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->setMaxResults(1)
             ->getQuery();
+
         return new \DateTime(current($query->getOneOrNullResult()));
     }
 
@@ -197,14 +195,13 @@ class ShowRepository extends EntityRepository
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andWhere('s.society = :society');
 
-        if($from){
+        if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
         }
 
-        if($to){
+        if ($to) {
             $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
         }
 
@@ -212,6 +209,7 @@ class ShowRepository extends EntityRepository
             ->setParameter('society', $society)
             ->groupBy('s.id')
             ->getQuery();
+
         return $query->getResult();
     }
 
@@ -222,14 +220,13 @@ class ShowRepository extends EntityRepository
             ->join('s.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
-            ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true');
+            ->where('s.authorised_by is not null');
 
-        if($from){
+        if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
         }
 
-        if($to){
+        if ($to) {
             $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
         }
 
@@ -238,7 +235,7 @@ class ShowRepository extends EntityRepository
             ->setParameter('venue', $venue)
             ->groupBy('s.id')
             ->getQuery();
+
         return $query->getResult();
     }
-
 }

@@ -18,7 +18,7 @@ class AccessControlEntry
     const LEVEL_CONTENT_ADMIN = -3;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -27,14 +27,14 @@ class AccessControlEntry
     private $id;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="rid", type="integer")
      */
     private $entityId;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="type", type="string", length=20)
      */
@@ -60,7 +60,7 @@ class AccessControlEntry
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="ace_grants")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
      * })
@@ -92,17 +92,16 @@ class AccessControlEntry
     private $revokedAt;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="contact", type="boolean")
      */
     private $contact = 0;
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -113,6 +112,7 @@ class AccessControlEntry
      * Set created_at
      *
      * @param \DateTime $createdAt
+     *
      * @return AccessControlEntry
      */
     public function setCreatedAt($createdAt)
@@ -136,6 +136,7 @@ class AccessControlEntry
      * Set granted_at
      *
      * @param \DateTime $grantedAt
+     *
      * @return AccessControlEntry
      */
     public function setGrantedAt($grantedAt)
@@ -159,6 +160,7 @@ class AccessControlEntry
      * Set revoked_at
      *
      * @param \DateTime $revokedAt
+     *
      * @return AccessControlEntry
      */
     public function setRevokedAt($revokedAt)
@@ -182,6 +184,7 @@ class AccessControlEntry
      * Set user
      *
      * @param User $user
+     *
      * @return AccessControlEntry
      */
     public function setUser(User $user)
@@ -205,6 +208,7 @@ class AccessControlEntry
      * Set granted_by
      *
      * @param User $grantedBy
+     *
      * @return AccessControlEntry
      */
     public function setGrantedBy(User $grantedBy = null)
@@ -228,6 +232,7 @@ class AccessControlEntry
      * Set revoker
      *
      * @param User $revoker
+     *
      * @return AccessControlEntry
      */
     public function setRevokedBy(User $revoker = null)
@@ -250,7 +255,8 @@ class AccessControlEntry
     /**
      * Set user_id
      *
-     * @param integer $userId
+     * @param int $userId
+     *
      * @return AccessControlEntry
      */
     public function setUserId($userId)
@@ -263,7 +269,7 @@ class AccessControlEntry
     /**
      * Get user_id
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -273,7 +279,8 @@ class AccessControlEntry
     /**
      * Set type
      *
-     * @param integer $type
+     * @param int $type
+     *
      * @return AccessControlEntry
      */
     public function setType($type)
@@ -286,7 +293,7 @@ class AccessControlEntry
     /**
      * Get type
      *
-     * @return integer
+     * @return int
      */
     public function getType()
     {
@@ -296,7 +303,8 @@ class AccessControlEntry
     /**
      * Set entity_id
      *
-     * @param integer $entityId
+     * @param int $entityId
+     *
      * @return AccessControlEntry
      */
     public function setEntityId($entityId)
@@ -309,7 +317,7 @@ class AccessControlEntry
     /**
      * Get entity_id
      *
-     * @return integer
+     * @return int
      */
     public function getEntityId()
     {
@@ -319,7 +327,8 @@ class AccessControlEntry
     /**
      * Set contact
      *
-     * @param boolean $contact
+     * @param bool $contact
+     *
      * @return AccessControlEntry
      */
     public function setContact($contact)
@@ -332,7 +341,7 @@ class AccessControlEntry
     /**
      * Get contact
      *
-     * @return boolean
+     * @return bool
      */
     public function getContact()
     {

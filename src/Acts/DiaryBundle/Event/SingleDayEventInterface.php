@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\DiaryBundle\Event;
 
 interface SingleDayEventInterface extends EventInterface

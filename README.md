@@ -5,35 +5,35 @@ The portal website for student theatre in Cambridge
 
 [![Build Status](https://travis-ci.org/camdram/camdram.png?branch=master)](https://travis-ci.org/camdram/camdram)
 
-Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and Github. A brief overview of the software stack can be found [here](https://github.com/camdram/camdram/wiki/Software-Stack). [Github's help](http://help.github.com) is comprehensive and can be used to find more information about using Git in general. 
+Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute to the bugs and new features. Below are the steps required to set up a development checkout of Camdram. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub. A brief overview of the software stack can be found [here](https://github.com/camdram/camdram/wiki/Software-Stack). [GitHub's help](http://help.github.com) is comprehensive and can be used to find more information about using Git in general.
 
-If you encounter any problems with the instructions below, please [create a Github issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net. 
+If you encounter any problems with the instructions below, please [create a GitHub issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net.
 
 1) Install programs
 --------------------
 
-Use one of the following commands to install the necessary packages required to run Camdram
+Use one of the following commands to install the necessary packages required to run Camdram. Camdram currently runs on PHP 5.5.
 
-###Debian-based distributions, e.g. Ubuntu
+### Debian-based distributions, e.g. Ubuntu
 
     $ sudo apt-get install git-core php5 php5-cli curl php5-curl php5-intl php5-sqlite php-apc php5-gd php5-json
 
-###RPM-based distributions, e.g. Fedora
+### RPM-based distributions, e.g. Fedora
 
     $ sudo yum install git php php-cli curl php-intl php-pdo php-gd
 
-###OSX
-    
+### OSX
+
 Make sure you have [Macports]( https://www.macports.org/) installed and up to date.
 
-    $ sudo port install git php55 php55-curl php55-intl php55-sqlite php55-openssl php55-mysql php55-mbstring php55-gd
+    $ sudo port install git php55 php55-curl php55-intl php55-sqlite php55-openssl php55-mysql php55-mbstring php55-gd php55-iconv
 
 Additionally, make sure to replace every invocation of "php" with "php55" below.
 
 2) Get a copy of the Camdram repository
 ----------------------------------------------
 
-Camdram's development model follows the standard idioms used by FOSS projects hosted on Github. If you are interested in just experimenting with the codebase, clone the project from the project's homepage. If you'd like to contribute to the project than you will want to [fork the repository](https://help.github.com/articles/fork-a-repo).
+Camdram's development model follows the standard idioms used by FOSS projects hosted on GitHub. If you are interested in just experimenting with the codebase, clone the project from the project's homepage. If you'd like to contribute to the project then you will want to [fork the repository](https://help.github.com/articles/fork-a-repo).
 
 After obtaining a copy of the code change into the newly created 'camdram' directory before proceeding:
 
@@ -49,7 +49,7 @@ Symfony (and therefore Camdram) uses [Composer](https://getcomposer.org/) to dow
 This downloads a file named 'composer.phar'. Run this to download all the PHP libaries:
 
     php composer.phar install -n
-    
+
 If this generates an error `unable to open database file`, check if the subdirectory app/data exists.  If not, create it (`mkdir app/data`).  
 
 If app/data/orm.db and app/data/odm.db already exist, delete them or chown them to your user and try again.
@@ -60,7 +60,7 @@ If app/data/orm.db and app/data/odm.db already exist, delete them or chown them 
 Run the command below to generate a SQLite datastore which contains randomly-generated sample data
 
     php app/console camdram:database:update
-    
+
 Should this (or any other php commands) produce 'out of memory' errors ("allowed memory size exhausted" or similar), you can allow more memory for this command only like this:
 
     php -d memory_limit=512M app/console camdram:database:update
@@ -79,7 +79,7 @@ If this produces a Date/Time related error, make sure that the function "date.ti
 6) Read the Wiki
 ----------------
 
-[The Wiki][1] has various pieces of information about both the current and in-development 
+[The Wiki][1] has various pieces of information about both the current and in-development
 versions of Camdram. Reading through those pages can give insight into the more esoteric
 parts of the system.
 
@@ -101,17 +101,17 @@ At a later date, once your local repository has become out of sync with Gituhb (
     php composer.phar install
     php app/console camdram:database:update
 
-This will pull in the latest code, update any changes to the dependencies and update the database. If you have forked the project then be sure that you have followed all of the instructions in the help guide, particularly noting the need to [configure remotes](https://getcomposer.org/). The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
+This will pull in the latest code, update any changes to the dependencies and update the database. If you have forked the project then be sure that you have followed all of the instructions in the help guide, particularly noting the need to [configure remotes](https://help.github.com/articles/fork-a-repo/#step-3-configure-git-to-sync-your-fork-with-the-original-spoon-knife-repository). The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
 
 
 8) Write some code
 --------------------
 
- * The site uses the Symfony PHP framework - (read the documentation)[http://symfony.com/doc/2.3/index.html]
- * Use the Github issue tracker to get an idea what we're currently working on.
-   If you think you know how to do something, write the code, commit it, and 
+ * The site uses the Symfony PHP framework - [read the documentation](http://symfony.com/doc/2.3/index.html).
+ * Use the GitHub issue tracker to get an idea what we're currently working on.
+   If you think you know how to do something, write the code, commit it, and
    submit a pull request.
- * If you want to discuss how to implement a new feature or how to fix a bug, 
+ * If you want to discuss how to implement a new feature or how to fix a bug,
    get in touch with one of the developers. It would probably be wise to get in
    touch before starting on any significant projects to avoid wasted effort!
  * Visit http://try.github.io/ if you're not familiar with Git.
@@ -119,7 +119,7 @@ This will pull in the latest code, update any changes to the dependencies and up
    If this is far too daunting, a poorly styled but functional improvement is better than no improvement.
    You can use http://cs.sensiolabs.org/ to (mostly) clean your code up after writing it.
 
-9) Check your code 
+9) Check your code
 --------------------
 
 Depending on the type of change, make sure to check it works as a logged-in and/or non-logged in visitor.
@@ -136,8 +136,8 @@ The password for each is just 'password'.
 
  * Run `git add file1.php file2.php` for each file you wish to include in the commit
  * Run `git commit` and enter a message describing the changes you have made
- * Run `git push` to send your changes to Github
+ * Run `git push` to send your changes to GitHub
 
-It is good practice to include the relevant issue number (prefixed with a hash #) at the end of the commit message - this will cause your commit message to appear on the issue page on Github.
+It is good practice to include the relevant issue number (prefixed with a hash #) at the end of the commit message - this will cause your commit message to appear on the issue page on GitHub.
 
 [1]: http://github.com/camdram/camdram/wiki

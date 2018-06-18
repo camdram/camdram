@@ -4,5 +4,8 @@
         {% if is_granted('DELETE', person) %}
             {{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'remove_person', path: path('remove_person',{identifier:person.slug}), text: 'Delete profile', name: person.name, type: 'person'} }) }}
         {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'person_merge', path: path('get_person_merge',{identifier:person.slug}), icon: 'compress', text: 'Merge with another person'} }) }}
+        {% endif %}
     </ul>
 </div>

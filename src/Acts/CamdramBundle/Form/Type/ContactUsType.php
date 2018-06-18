@@ -2,35 +2,74 @@
 
 namespace Acts\CamdramBundle\Form\Type;
 
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True;
+use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
 
 class ContactUsType extends AbstractType
 {
-        /**
+    private $storage;
+
+    public function __construct(TokenStorageInterface $storage = null)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', array('label' => 'Your email address'))
             ->add('subject', 'text')
             ->add('message', 'textarea')
-            ->add('captcha', 'ewz_recaptcha', array(
-                'attr' => array(
-                    'options' => array(
-                        'theme' => 'clean'
-                    )
-                ),
-                'mapped'      => false,
-                'constraints' => array(
-                    new True()
-                )
-            ))
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $form = $event->getForm();
+
+            if ($this->storage && $this->storage->getToken()
+                        && $this->storage->getToken()->getUser() instanceof CamdramUserInterface) {
+                $user = $this->storage->getToken()->getUser();
+
+                $form->add('name', 'hidden', ['data' => $user->getName(), 'read_only' => true])
+                    ->add('email', 'hidden', ['data' => $user->getFullEmail(), 'read_only' => true]);
+            } else {
+                $form->add('name', 'text', [
+                          'label' => 'Your name',
+                          'constraints' => [
+                                new NotBlank(),
+                           ],
+                        ])
+                    ->add('email', 'email', [
+                          'label' => 'Your email address',
+                          'constraints' => [
+                                new NotBlank(),
+                                new Email(['checkMX' => true])
+                            ],
+                        ])
+                    ->add('captcha', 'ewz_recaptcha', [
+                        'attr' => [
+                            'options' => [
+                                'theme' => 'clean'
+                            ]
+                        ],
+                        'mapped'      => false,
+                        'constraints' => [
+                            new IsTrue()
+                        ]
+                    ]);
+            }
+
+        });
     }
 
     /**
@@ -38,8 +77,7 @@ class ContactUsType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-        ));
+        $resolver->setDefaults([]);
     }
 
     /**

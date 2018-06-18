@@ -1,29 +1,18 @@
 {% autoescape false %}
 A new show has been added to camdram.net {% if owners | length > 0 %}by {% endif %}{% for owner in owners %}{{ owner.name }} ({{ owner.email }}){% if not loop.last %}, {% endif %}{% endfor %} and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+
 * Dates
 * Venue
 * Start Time
 
-before authorizing.
+before authorising.
 
-A summary of the show is given below. You can edit, authorize or delete the show as
+A summary of the show is given below. You can edit, authorise or delete the show as
 appropriate by visiting:  {{ url('get_show', {identifier: show.slug}) }}
 
 {% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
 
 ***** Show details follow... *****
 
-{% if show.society %}{{ show.society.name }}{% else %}{{ show.societyName }}{% endif %} presents
-{{ show.name }}
-{% if show.author %}
-by {{ show.author }}
-{% endif %}
-{% for p in show.performances %}{% spaceless %}
-    {{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}{% if date(p.startdate) != date(p.enddate) %} - {{ p.enddate|date('D jS F Y') }},{% endif %}
-    {%- if p.venue %} @ {{ p.venue.name|e }}
-    {%- elseif p.venuename is not empty %} @ {{ p.venuename }}
-    {%- else %} @ Venue to be confirmed{% endif %}
-{% endspaceless %}{% endfor %}
-
-{{ show.description }}
+{{ include('ActsCamdramBundle:Email:show_details.txt.twig') }}
 {% endautoescape %}

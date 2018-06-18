@@ -4,9 +4,7 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Yaml\Yaml;
-
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Acts\CamdramBundle\Form\DataTransformer\FacebookLinkTransformer;
 
 /**
@@ -14,14 +12,16 @@ use Acts\CamdramBundle\Form\DataTransformer\FacebookLinkTransformer;
  *
  * Form type for Facebook event/page. The user just sees an input box, but some clever stuff on the backend uses
  * the Facebook API to do some validating and convert it into a Facebook ID.
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class FacebookLinkType extends AbstractType
 {
+    /**
+     * 
+     * @var \Facebook\Facebook
+     */
     private $api;
 
-    public function __construct($api)
+    public function __construct(\Facebook\Facebook $api)
     {
         $this->api = $api;
     }
@@ -31,7 +31,7 @@ class FacebookLinkType extends AbstractType
         $builder->addModelTransformer(new FacebookLinkTransformer($this->api));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'class' => 'medium',

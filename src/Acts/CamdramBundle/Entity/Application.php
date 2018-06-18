@@ -5,25 +5,35 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Application
  *
  * @ORM\Table(name="acts_applications")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ApplicationRepository")
+ * @Api\Feed(name="Camdram.net - Director/Producer and show applications", titleField="feed_title",
+ *     description="Applications to produce, direct, or put on shows in Cambridge",
+ *     template="ActsCamdramBundle:Application:rss.html.twig")
  * @Gedmo\Loggable
+ * @Serializer\ExclusionPolicy("all")
+ * @Api\Link(route="get_application",
+ *      params={"identifier": "object.getShow() ? object.getShow().getSlug() : object.getSociety.getSlug()"})
+ * @Serializer\XmlRoot("application")
  */
 class Application
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
+     * @Serializer\XmlAttribute
      */
     private $id;
-
 
     /**
      * @var \Show
@@ -33,6 +43,7 @@ class Application
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 
@@ -44,6 +55,7 @@ class Application
      *   @ORM\JoinColumn(name="socid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_society", params={"identifier": "object.getSociety().getSlug()"})
      */
     private $society;
 
@@ -53,6 +65,7 @@ class Application
      * @ORM\Column(name="text", type="text", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $text;
 
@@ -63,6 +76,8 @@ class Application
      * @Assert\NotBlank()
      * @Assert\Date()
      * @Gedmo\Versioned
+     * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $deadlineDate;
 
@@ -72,6 +87,7 @@ class Application
      * @ORM\Column(name="furtherinfo", type="text", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $furtherInfo;
 
@@ -82,25 +98,26 @@ class Application
      * @Assert\NotBlank()
      * @Assert\Time()
      * @Gedmo\Versioned
+     * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $deadlineTime;
-
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
 
-
     /**
      * Set text
      *
      * @param string $text
+     *
      * @return Application
      */
     public function setText($text)
@@ -124,6 +141,7 @@ class Application
      * Set deadline_date
      *
      * @param \DateTime $deadlineDate
+     *
      * @return Application
      */
     public function setDeadlineDate($deadlineDate)
@@ -147,6 +165,7 @@ class Application
      * Set further_info
      *
      * @param string $furtherInfo
+     *
      * @return Application
      */
     public function setFurtherInfo($furtherInfo)
@@ -170,6 +189,7 @@ class Application
      * Set deadlineTime
      *
      * @param \DateTime $deadlineTime
+     *
      * @return Application
      */
     public function setDeadlineTime($deadlineTime)
@@ -193,6 +213,7 @@ class Application
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $show
+     *
      * @return Application
      */
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
@@ -216,6 +237,7 @@ class Application
      * Set society
      *
      * @param \Acts\CamdramBundle\Entity\Organisation $society
+     *
      * @return Application
      */
     public function setSociety(Organisation $society = null)
@@ -233,5 +255,23 @@ class Application
     public function getSociety()
     {
         return $this->society;
+    }
+
+    public function getFeedTitle()
+    {
+        if ($this->getShow()) {
+            return $this->getShow()->getName();
+        } else {
+            return $this->getSociety()->getName();
+        }
+    }
+
+    public function getSlug()
+    {
+        if ($this->getShow()) {
+            return $this->getShow()->getSlug();
+        } else {
+            return $this->getSociety()->getSlug();
+        }
     }
 }

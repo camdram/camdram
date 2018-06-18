@@ -15,14 +15,12 @@ use Symfony\Component\Form\FormEvents;
  * Class EntitySearchType
  *
  * A form type that presents an autocomplete box which the user can use to search for a linked entity
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class EntitySearchType extends AbstractType
 {
     /**
-    * @var EntityManager
-    */
+     * @var EntityManager
+     */
     private $em;
 
     public function __construct(EntityManager $em)
@@ -32,7 +30,9 @@ class EntitySearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!$options['text_field']) $options['text_field'] = $builder->getName().'_name';
+        if (!$options['text_field']) {
+            $options['text_field'] = $builder->getName().'_name';
+        }
         $builder->setAttribute('text_field', $options['text_field']);
 
         $hidden_name = $builder->getName();
@@ -41,12 +41,14 @@ class EntitySearchType extends AbstractType
         $repo = $this->em->getRepository($options['class']);
 
         $builder->add($text_name, 'text', array(
-                'attr' => array('class' => 'autocomplete_input')
+                'attr' => array('class' => 'autocomplete_input'),
+                'mapped' => $options['other_allowed']
             ))
             ->add($hidden_name, 'hidden', array(
-                'data_class' => $options['class']
+                'data_class' => $options['class'],
+                'empty_data' => null,
             ))
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($repo, $hidden_name, $text_name) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($repo, $hidden_name, $text_name) {
                 $data = $event->getData();
                 $obj = null;
 
@@ -65,8 +67,7 @@ class EntitySearchType extends AbstractType
                         $hidden_name => null,
                         $text_name => $data[$text_name]
                     ));
-                }
-                else {
+                } else {
                     $event->setData(array(
                         $hidden_name => $obj,
                         $text_name => $obj->getName()
@@ -81,7 +82,7 @@ class EntitySearchType extends AbstractType
         $view->vars['route'] = $options['route'];
         $view->vars['text_id'] = $form->getConfig()->getAttribute('text_field');
         $view->vars['hidden_id'] = $form->getName();
-
+        $view->vars['prefetch'] = $options['prefetch'];
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options)
@@ -102,6 +103,8 @@ class EntitySearchType extends AbstractType
             'route' => 'get_people',
             'class' => null,
             'inherit_data' => true,
+            'other_allowed' => true,
+            'prefetch' => true
         ));
     }
 

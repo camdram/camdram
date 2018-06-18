@@ -6,8 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiry;
-use Acts\CamdramApiBundle\Annotation as Api;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * TechieAdvert
@@ -21,15 +22,20 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     template="ActsCamdramBundle:TechieAdvert:rss.html.twig")
  * @TechieAdvertExpiry()
  * @Gedmo\Loggable
+ * @Serializer\ExclusionPolicy("all")
+ * @Api\Link(route="get_techie", params={"identifier": "object.getShow().getSlug()"})
+ * @Serializer\XmlRoot("techieadvert")
  */
 class TechieAdvert
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
+     * @Serializer\XmlAttribute
      */
     private $id;
 
@@ -41,6 +47,7 @@ class TechieAdvert
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 
@@ -50,6 +57,7 @@ class TechieAdvert
      * @ORM\Column(name="positions", type="text", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $positions;
 
@@ -59,14 +67,16 @@ class TechieAdvert
      * @ORM\Column(name="contact", type="text", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $contact;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="deadline", type="boolean", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $deadline;
 
@@ -75,6 +85,7 @@ class TechieAdvert
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $deadlineTime;
 
@@ -84,11 +95,12 @@ class TechieAdvert
      * @ORM\Column(name="expiry", type="date", nullable=false)
      * @Assert\Date()
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
     private $expiry;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="display", type="boolean", nullable=false)
      * @Gedmo\Versioned
@@ -96,7 +108,7 @@ class TechieAdvert
     private $display = false;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="remindersent", type="boolean", nullable=false)
      * @Gedmo\Versioned
@@ -107,31 +119,33 @@ class TechieAdvert
      * @var string
      *
      * @ORM\Column(name="techextra", type="text", nullable=false)
-     * @Assert\Length(max=1140)
+     * @Assert\Length(max=8000)
      * @Gedmo\Versioned
+     * @Serializer\Expose
      */
-    private $tech_extra = "";
+    private $tech_extra = '';
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="lastupdated", type="datetime", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose
+     * @Serializer\XmlElement(cdata=false)
      */
     private $last_updated;
 
     public function __construct()
     {
-        $this->setUpdatedAt(new \DateTime);
+        $this->setUpdatedAt(new \DateTime());
         $this->setDeadlineTime(new \DateTime('00:00'));
         $this->setExpiry(new \DateTime('+10 days'));
     }
 
-
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -142,6 +156,7 @@ class TechieAdvert
      * Set positions
      *
      * @param string $positions
+     *
      * @return TechieAdvert
      */
     public function setPositions($positions)
@@ -163,13 +178,14 @@ class TechieAdvert
 
     public function getPositionsOneLine()
     {
-        return preg_replace('/\r?\n/',", ",$this->positions);
+        return preg_replace('/\r?\n/', ', ', $this->positions);
     }
 
     /**
      * Set contact
      *
      * @param string $contact
+     *
      * @return TechieAdvert
      */
     public function setContact($contact)
@@ -192,7 +208,8 @@ class TechieAdvert
     /**
      * Set deadline
      *
-     * @param boolean $deadline
+     * @param bool $deadline
+     *
      * @return TechieAdvert
      */
     public function setDeadline($deadline)
@@ -205,7 +222,7 @@ class TechieAdvert
     /**
      * Get deadline
      *
-     * @return boolean
+     * @return bool
      */
     public function getDeadline()
     {
@@ -216,6 +233,7 @@ class TechieAdvert
      * Set deadline_time
      *
      * @param string $deadlineTime
+     *
      * @return TechieAdvert
      */
     public function setDeadlineTime($deadlineTime)
@@ -239,6 +257,7 @@ class TechieAdvert
      * Set expiry
      *
      * @param \DateTime $expiry
+     *
      * @return TechieAdvert
      */
     public function setExpiry($expiry)
@@ -261,7 +280,8 @@ class TechieAdvert
     /**
      * Set display
      *
-     * @param boolean $display
+     * @param bool $display
+     *
      * @return TechieAdvert
      */
     public function setDisplay($display)
@@ -274,7 +294,7 @@ class TechieAdvert
     /**
      * Get display
      *
-     * @return boolean
+     * @return bool
      */
     public function getDisplay()
     {
@@ -284,7 +304,8 @@ class TechieAdvert
     /**
      * Set reminder_sent
      *
-     * @param boolean $reminderSent
+     * @param bool $reminderSent
+     *
      * @return TechieAdvert
      */
     public function setReminderSent($reminderSent)
@@ -297,7 +318,7 @@ class TechieAdvert
     /**
      * Get reminder_sent
      *
-     * @return boolean
+     * @return bool
      */
     public function getReminderSent()
     {
@@ -308,15 +329,16 @@ class TechieAdvert
      * Set tech_extra
      *
      * @param string $techExtra
+     *
      * @return TechieAdvert
      */
     public function setTechExtra($techExtra)
     {
-      if (!($techExtra)) {
-            $this->tech_extra = "";
-	} else {
+        if (!($techExtra)) {
+            $this->tech_extra = '';
+        } else {
             $this->tech_extra = $techExtra;
-	}
+        }
 
         return $this;
     }
@@ -335,6 +357,7 @@ class TechieAdvert
      * Set last_updated
      *
      * @param \DateTime $lastUpdated
+     *
      * @return TechieAdvert
      */
     public function setUpdatedAt($lastUpdated)
@@ -363,6 +386,7 @@ class TechieAdvert
      * Set show
      *
      * @param \Acts\CamdramBundle\Entity\Show $showId
+     *
      * @return TechieAdvert
      */
     public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
@@ -392,11 +416,11 @@ class TechieAdvert
         return $this->getShow()->getSlug();
     }
 
-
     /**
      * Set last_updated
      *
      * @param \DateTime $lastUpdated
+     *
      * @return TechieAdvert
      */
     public function setLastUpdated($lastUpdated)
@@ -409,7 +433,7 @@ class TechieAdvert
     /**
      * Get last_updated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastUpdated()
     {

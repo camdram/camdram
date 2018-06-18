@@ -8,6 +8,7 @@
               'about': {'text': 'About', 'path': path('acts_camdram_about')},
               'development': {'text': 'Development', 'path': path('acts_camdram_development')},
               'api': {'text': 'API', 'path': path('acts_camdram_api_homepage')},
+              'faq': {'text': 'FAQ', 'path': path('acts_camdram_faq')},
               'contact-us': {'text': 'Contact Us', 'path': path('acts_camdram_contact_us')},
           }, current_id: current_navigation_id} %}
       </ul>
@@ -53,8 +54,7 @@
           'diary': {'text': 'Diary', 'path': path('acts_camdram_diary')},
           'vacancies': {'text': 'Vacancies', 'path': path('get_auditions')},
           'societies': {'text': 'Societies', 'path': path('get_societies')},
-          'venues': {'text': 'Venues', 'path': path('get_venues')},
-          'infobase': {'text': 'Infobase', 'path': path('acts_camdram_infobase_placeholder')},
+          'venues': {'text': 'Venues', 'path': path('get_venues')}
           }, current_id: current_navigation_id} %}
         </ul>
           <ul class="right">
@@ -67,7 +67,7 @@
                     'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
                     'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
                   }} %}
-                  {% if app.user and has_role('ROLE_EDITOR') %}
+                  {% if app.user and is_granted('ROLE_EDITOR') %}
                   {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with { items: {
                     'add_venue': {text: 'Add a venue', path: path('new_venue'), icon: 'plus-circle'},
                     'add_society': {text: 'Add a society', path: path('new_society'), icon: 'plus-circle'}
@@ -106,6 +106,7 @@
             <a href="{{ path('acts_camdram_about') }}">About Camdram</a><br/>
             <a href="{{ path('acts_camdram_development') }}">Development</a><br/>
             <a href="{{ path('acts_camdram_privacy') }}">Privacy & Cookies</a><br/>
+            <a href="{{ path('acts_camdram_faq') }}">FAQ</a><br/>
             <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a><br/>
         </div>
     </div>

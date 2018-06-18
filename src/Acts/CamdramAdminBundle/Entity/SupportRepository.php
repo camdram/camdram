@@ -5,11 +5,8 @@ namespace Acts\CamdramAdminBundle\Entity;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
-use Doctrine\ORM\Query\Expr;
-
 /**
  * SupportRepository
- *
  */
 class SupportRepository extends EntityRepository
 {
@@ -24,6 +21,7 @@ class SupportRepository extends EntityRepository
             ->orderBy('s.id', 'ASC')
             ->setParameter('user', $user)
             ->getQuery();
+
         return $query->getResult();
     }
 }

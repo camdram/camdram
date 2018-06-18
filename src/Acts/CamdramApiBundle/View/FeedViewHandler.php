@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramApiBundle\View;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -7,11 +8,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Zend\Feed\Writer\Feed;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
-
 use Acts\CamdramApiBundle\Service\EntityUrlGenerator;
-use Acts\CamdramApiBundle\AnnotationReader\FeedAnnotationReader;
+use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
-use Acts\CamdramBundle\Rest\PaginatedCollection;
 
 class FeedViewHandler
 {
@@ -23,7 +22,7 @@ class FeedViewHandler
 
     private $authorAddress;
 
-    public function __construct(FeedAnnotationReader $reader, \Twig_Environment $twig, EntityUrlGenerator $urlGen, $authorAddress)
+    public function __construct(AnnotationReader $reader, \Twig_Environment $twig, EntityUrlGenerator $urlGen, $authorAddress)
     {
         $this->reader = $reader;
         $this->twig = $twig;
@@ -33,6 +32,7 @@ class FeedViewHandler
 
     /**
      * Converts the viewdata to a RSS feed. Modify to suit your datastructure.
+     *
      * @return Response
      */
     public function createResponse(ViewHandler $handler, View $view, Request $request)
@@ -41,7 +41,7 @@ class FeedViewHandler
             $content = $this->createFeed($view, $request);
             $code = Response::HTTP_OK;
         } catch (UnsupportedTypeException $e) {
-            $content = "Unsupported entity";
+            $content = 'Unsupported entity';
             $code = Response::HTTP_BAD_REQUEST;
         }
 
@@ -59,8 +59,9 @@ class FeedViewHandler
         $data = $view->getData();
         $item = current($data);
 
+        $annotationData = $this->reader->read($item);
 
-        if ($item && $feedData = $this->reader->read($item)) {
+        if ($item && $feedData = $annotationData->getFeed()) {
             $class = get_class($item);
             $feed->setTitle($feedData->getName());
             $feed->setDescription($feedData->getDescription());
@@ -69,6 +70,7 @@ class FeedViewHandler
         } else {
             $feed->setTitle('Camdram feed');
             $feed->setDescription('Camdram feed');
+            $feed->setLink($this->urlGen->getDefaultUrl());
         }
 
         $lastModified = null;
@@ -80,9 +82,11 @@ class FeedViewHandler
 
             $entry->setTitle($accessor->getValue($document, $feedData->getTitleField()));
             $entry->setLink($this->urlGen->generateUrl($document));
-            $entry->setDateCreated($accessor->getValue($document, $feedData->getCreatedAtField()));
-            $entry->setDateModified($accessor->getValue($document, $feedData->getUpdatedAtField()));
             $entry->setDescription($this->twig->render($feedData->getTemplate(), array('entity' => $document)));
+
+            if ($accessor->isReadable($document, $feedData->getUpdatedAtField())) {
+                $entry->setDateModified($accessor->getValue($document, $feedData->getUpdatedAtField()));
+            }
 
             $feed->addEntry($entry);
 

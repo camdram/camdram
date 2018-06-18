@@ -13,22 +13,27 @@ monolog:
             type:         fingers_crossed
             action_level: error
             handler:      nested
+            excluded_404s: [^/]
         nested:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
-            channels: ["!camdram"]
+            channels: ["!camdram", "!mailer"]
         actions:
             type:     stream
             path:     "%kernel.logs_dir%/%kernel.environment%.action.log"
             channels: ["camdram"]
+        mailer:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.mailer.log"
+            channels: ["mailer"]
 
 
 # Assetic Configuration
 assetic:
     filters:
         closure:
-            apply_to: "\.js$"
+            apply_to: '\.js$'
             compression_level: ADVANCED_OPTIMIZATIONS
     workers:
         cache_busting: ~

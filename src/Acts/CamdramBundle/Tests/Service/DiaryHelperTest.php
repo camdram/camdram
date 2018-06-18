@@ -6,10 +6,11 @@ use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\DiaryHelper;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
@@ -27,7 +28,7 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->router = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
+        $this->router = $this->createMock('Symfony\\Component\\Routing\\RouterInterface');
         $this->diaryHelper = new DiaryHelper($this->router);
     }
 
@@ -42,13 +43,14 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $p->setStartDate(new \DateTime('2013-02-10'));
         $p->setEndDate(new \DateTime('2013-02-15'));
         $p->setTime(new \DateTime('19:45'));
+
         return $p;
     }
 
     public function testCreateEventFromPerformance()
     {
         $performance = $this->getPerformance();
-        $performance->setVenueName('Test Venue');
+        $performance->setOtherVenue('Test Venue');
 
         $this->router->expects($this->once())
             ->method('generate')
@@ -77,8 +79,8 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $this->router->expects($this->exactly(2))
             ->method('generate')
             ->will($this->returnValueMap(array(
-                    array('get_show', array('identifier' => 'test-show'), false, '/shows/test-show'),
-                    array('get_venue', array('identifier' => 'test-venue'), false, '/venues/test-venue'),
+                    array('get_show', array('identifier' => 'test-show'), UrlGeneratorInterface::ABSOLUTE_PATH, '/shows/test-show'),
+                    array('get_venue', array('identifier' => 'test-venue'), UrlGeneratorInterface::ABSOLUTE_PATH, '/venues/test-venue'),
                 )));
 
         list($event) = $this->diaryHelper->createEventsFromPerformance($performance);
@@ -151,5 +153,4 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new \DateTime('2013-02-10'), $events[1]->getStartDate());
         $this->assertEquals(new \DateTime('2013-02-15'), $events[2]->getStartDate());
     }
-
 }

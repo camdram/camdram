@@ -1,0 +1,45 @@
+{% set currentName = null %}
+{% set showIndex = 0 %}
+{% for a in auditions %}
+{% if currentName != a.show.name %}
+    {%- if currentName is not empty -%}
+        {{- auditions[loop.index0 - 1].show.name }}
+{%- if auditions[loop.index0 - 1].show.weeks %}
+ ({{ auditions[loop.index0 - 1].show.weeks }})
+{% endif %}
+{% endif %}
+{%- set currentName = a.show.name %}
+{% endif %}
+{% endfor %}
+
+{% set currentName = null %}
+{% for a in auditions %}
+{% if a.show %}
+{% if currentName != a.show.name %}
+    {%- if currentName is not empty %}
+        {{ auditions[loop.index0 - 1].show.audextra }}
+    {% endif %}
+    {%- set currentName = a.show.name %}
+
+***************************************************
+{% include 'ActsCamdramBundle:Show:advert_header.txt.twig' with
+    {'show': a.show} %}
+
+Is holding auditions:
+{% endif %}
+{% if a.nonscheduled -%}
+    Contact {{a.location}} before {{a.starttime|date('g:ia')}} {{a.date|date('D d M')}} for more details.
+
+{{ a.show.audextra }}
+{% set currentName = null %}
+{%- else %}
+    {{- a.date|date('D jS M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}
+{% endif %}
+{% if loop.last %}
+
+{{ a.show.audextra }}
+{% endif %}
+{% endif %}
+{% else %}
+    There are currently no auditions listed - please check again later.
+{% endfor %}

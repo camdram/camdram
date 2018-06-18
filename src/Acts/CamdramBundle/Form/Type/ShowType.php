@@ -7,33 +7,29 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Acts\CamdramBundle\Form\DataTransformer\PerformanceExcludeTransformer;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * Class ShowType
  *
  * The form that's presented when a user adds/edits a show
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class ShowType extends AbstractType
 {
-    private $securityContext;
+    private $authorizationChecker;
 
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('name')
             ->add('author', null, array('required' => false))
             ->add('description')
-            ->add('image', 'image_upload', array('label' => 'Publicity image', 'required' => false))
             ->add('prices', null, array('required' => false, 'label' => 'Ticket prices', 'attr' => array(
                 'placeholder' => 'e.g. £6/5'
             )))
@@ -57,27 +53,34 @@ class ShowType extends AbstractType
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
                 'required' => false,
+                'text_field' => 'other_venue'
             ))
             ->add('online_booking_url', 'url', array(
                 'required' => false, 'label' => 'URL for purchasing tickets'
             ))
             ->add('facebook_id', null, array('required' => false))
             ->add('twitter_id', null, array('required' => false))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 //society's 'read-only' field is dependent on whether a new show is being created
                 $show = $event->getData();
                 $form = $event->getForm();
 
-                $form->add('society','entity_search', array(
+                $disabled = $show
+                    && $show->getId() !== null
+                    && $show->getSociety() !== null
+                    && !$this->authorizationChecker->isGranted('ROLE_ADMIN')
+                    ;
+
+                $form->add('society', 'entity_search', array(
                     'route' => 'get_societies',
                     'class' => 'Acts\\CamdramBundle\\Entity\\Society',
                     'required' => false,
-                    'disabled' => $show && null !== $show->getId() && !$this->securityContext->isGranted('ROLE_ADMIN')
+                    'disabled' => $disabled,
+                    'text_field' => 'other_society'
                 ));
 
             })
         ;
-
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -89,6 +92,6 @@ class ShowType extends AbstractType
 
     public function getName()
     {
-        return 'acts_camdrambundle_showtype';
+        return 'show';
     }
 }

@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * Class PerformanceType
  *
  * The sub-form representing a performance - used by ShowType, once for each range of performances
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class PerformanceType extends AbstractType
 {
@@ -27,6 +25,7 @@ class PerformanceType extends AbstractType
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
                 'required' => false,
+                'text_field' => 'other_venue'
             ))
         ;
     }

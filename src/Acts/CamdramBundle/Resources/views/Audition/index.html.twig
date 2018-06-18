@@ -7,7 +7,9 @@
 
     <ul class="inline-list right">
         <li>List view</li>
-        <li><a href="{{ path('get_auditions_diary') }}">Diary view</a></li>
+        <li><a href="{{ path('get_auditions_diary') }}"><i class="fa fa-calendar"></i> Diary View</a></li>
+        <li><a href="auditions.rss"><i class="fa fa-rss"></i> RSS Feed</a></li>
+        <li><a href="auditions.txt"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
     </ul>
 
     <h3>Auditions</h3>
@@ -17,20 +19,15 @@
     {% for a in auditions %}
         {% if a.show %}
             {% if currentName != a.show.name %}
-                {% if currentName is not empty %} 
+                {% if currentName is not empty %}
                     </ul>
                     </div>
                 {% endif %}
                 {% set currentName = a.show.name %}
                 <hr>
-                <div id="auditions-{{ a.show.id }}">
-                <h4><a href="{{ path('get_show', {identifier: a.show.slug}) }}">{{ a.show.name|e }}</a>
-                {% if a.show.society %}
-                    - <a href="{{ path('get_society', {identifier: a.show.society.slug}) }}">{{ a.show.society.shortname ?: a.show.society.name }}</a>
-                {% elseif a.show.societyname is not empty %}
-                    - {{ a.show.societyname }}
-                {% endif %}
-                </h4>
+                <div id="{{ a.show.slug }}">
+                    {% include 'ActsCamdramBundle:Show:advert_header.html.twig' with
+                        {'show': a.show} %}
                     <p>{{ a.show.audextra | camdram_markdown }}</p>
                     <ul>
             {% endif %}

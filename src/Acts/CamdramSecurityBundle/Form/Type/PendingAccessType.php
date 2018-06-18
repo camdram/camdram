@@ -2,16 +2,14 @@
 
 namespace Acts\CamdramSecurityBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType,
-    Symfony\Component\Form\FormBuilderInterface,
-    Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class AceType
  *
  * The form that's presented when an Access Control Entry (ACE) is created
- *
- * @package Acts\CamdramBundle\Form\Type
  */
 class PendingAccessType extends AbstractType
 {

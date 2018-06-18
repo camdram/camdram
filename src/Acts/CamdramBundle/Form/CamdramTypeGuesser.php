@@ -1,18 +1,16 @@
 <?php
+
 namespace Acts\CamdramBundle\Form;
 
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
-use Symfony\Component\Form\Guess\ValueGuess;
 
 /**
  * Class CamdramTypeGuesser
  *
  * A custom form type guesser, which removes the need to specify the field type if the field name. E.g. if the field
  * is called 'facebook_id', we probably intend it to be a FacebookLinkType
- *
- * @package Acts\CamdramBundle\Form
  */
 class CamdramTypeGuesser implements FormTypeGuesserInterface
 {

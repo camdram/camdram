@@ -1,4 +1,5 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Security;
 
 interface OwnableInterface

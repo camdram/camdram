@@ -37,6 +37,10 @@
             {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
             {item: {id: 'edit_admin', path: path('edit_show_admin',{identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}
         </li>
+        <li>
+            {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+            {item: {id: 'show_add_many_roles', path: path('get_show_many_roles',{identifier:show.slug}), icon: 'users', text: "Add multiple roles"} }) }}
+        </li>
     </ul>
 
     <p>
@@ -50,9 +54,9 @@
             {%- else -%}
                 {{ admin.name }}
             {%- endif -%}
-        {%- elseif admin.entityType == 'society' %}
+        {%- elseif admin.organisationType == 'society' %}
             <a href="{{ path('get_society', {identifier: admin.slug}) }}">{{ admin.name }}</a>
-        {%- elseif admin.entityType == 'venue' %}
+        {%- elseif admin.organisationType == 'venue' %}
             <a href="{{ path('get_venue', {identifier: admin.slug}) }}">{{ admin.name }}</a>
         {%- endif %}
         {{- not loop.last ? ',' }}

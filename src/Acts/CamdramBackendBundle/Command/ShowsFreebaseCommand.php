@@ -1,12 +1,10 @@
 <?php
+
 namespace Acts\CamdramBackendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Acts\CamdramBundle\Entity\Show;
 use Doctrine\ORM\EntityRepository;
 
@@ -22,7 +20,6 @@ class ShowsFreebaseCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         /** @var $repo EntityRepository */
         $repo = $em->getRepository('ActsCamdramBundle:Show');
@@ -39,7 +36,6 @@ class ShowsFreebaseCommand extends ContainerAwareCommand
                 $show->setFreebaseId($results[0]['mid']);
                 $output->writeln('Mapped show "'.$show->getName().'" to Freebase play "'
                         .$results[0]['name'].'" ('.$results[0]['mid'].')');
-
             }
             if ($i % 30 == 0) {
                 $em->flush();
@@ -48,5 +44,4 @@ class ShowsFreebaseCommand extends ContainerAwareCommand
         }
         $em->flush();
     }
-
 }

@@ -15,11 +15,15 @@ monolog:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
-            channels: ['!camdram']
+            channels: ['!camdram', '!mailer']
         actions:
             type:     stream
             path:     "%kernel.logs_dir%/%kernel.environment%.action.log"
             channels: ["camdram"]
+        mailer:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.mailer.log"
+            channels: ["mailer"]
         firephp:
             type:  firephp
             level: info
@@ -32,9 +36,6 @@ swiftmailer:
 
 fos_js_routing:
     request_context_base_url: /app_dev.php
-
-acts_external_login:
-    test: %external_login_test_mode%
 
 ewz_recaptcha:
     enabled: false

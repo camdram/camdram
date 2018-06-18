@@ -1,14 +1,14 @@
 <?php
+
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
 class SimilarNameRepository extends EntityRepository
 {
-
     public function getEquivalence($name1, $name2)
     {
-        $qb =$this->createQueryBuilder('s');
+        $qb = $this->createQueryBuilder('s');
         $query = $qb->where($qb->expr()->andX(
                 $qb->expr()->eq('s.name1', ':name1'),
                 $qb->expr()->eq('s.name2', ':name2')
@@ -23,7 +23,9 @@ class SimilarNameRepository extends EntityRepository
         $res = $query->getOneOrNullResult();
         if ($res) {
             return $res->getEquivalence() ? SimilarName::EQUIVALENT : SimilarName::NOT_EQUIVALENT;
-        } else return SimilarName::UNKNOWN;
+        } else {
+            return SimilarName::UNKNOWN;
+        }
     }
 
     public function saveEquivalence($name1, $name2, $equivalent)
@@ -35,5 +37,4 @@ class SimilarNameRepository extends EntityRepository
         $this->getEntityManager()->persist($sn);
         $this->getEntityManager()->flush();
     }
-
 }

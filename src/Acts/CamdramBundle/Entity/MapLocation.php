@@ -6,11 +6,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Map Location
- *
  */
 class MapLocation
 {
-
     /**
      * @var float
      * @Assert\Range(min=-90, max=90,
@@ -85,12 +83,11 @@ class MapLocation
         $dLat = deg2rad($location->getLatitude() - $this->getLatitude());
         $dLng = deg2rad($location->getLongitude() - $this->getLongitude());
 
-
-        $a = sin($dLat/2) * sin($dLat/2)
+        $a = sin($dLat / 2) * sin($dLat / 2)
                 + cos(deg2rad($this->getLatitude())) * cos(deg2rad($location->getLatitude()))
-                * sin($dLng/2) * sin($dLng/2);
+                * sin($dLng / 2) * sin($dLng / 2);
 
-        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
         $dist = $earthRadius * $c;
 
         // from miles
@@ -99,5 +96,4 @@ class MapLocation
 
         return $geopointDistance;
     }
-
 }

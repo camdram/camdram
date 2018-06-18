@@ -1,21 +1,27 @@
 <?php
+
 namespace Acts\CamdramAdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Controller for viewing Camdram's log files
- *
+ * 
+ * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class AuditController extends Controller
 {
-
+    /**
+     * @Route("/audit", name="acts_camdram_audit")
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request)
     {
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
-
         $repo = $this->get('doctrine.orm.entity_manager')->getRepository('Gedmo\Loggable\Entity\LogEntry');
         $qb = $repo->createQueryBuilder('e')->orderBy('e.loggedAt', 'DESC')->setMaxResults(100);
         if ($request->query->has('class')) {
@@ -31,5 +37,4 @@ class AuditController extends Controller
 
         return $this->render('ActsCamdramAdminBundle:Audit:index.html.twig', array('results' => $results));
     }
-
 }

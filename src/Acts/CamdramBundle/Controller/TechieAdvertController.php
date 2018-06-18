@@ -2,13 +2,12 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Acts\CamdramBundle\Entity\TechieAdvert;
+use Symfony\Component\HttpFoundation\Request;
 
+use Acts\CamdramBundle\Entity\TechieAdvert;
 use Doctrine\Common\Collections\Criteria;
-use Symfony\Component\BrowserKit\Request;
 
 
 /**
@@ -37,27 +36,41 @@ class TechieAdvertController extends FOSRestController
      *
      * Display technician adverts from now until the end of (camdram) time
      */
-    public function cgetAction()
+    public function cgetAction(Request $request)
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findNotExpiredOrderedByDateName(new \DateTime);
-
-        $view = $this->view($techieAdverts, 200)
-            ->setTemplate("ActsCamdramBundle:TechieAdvert:index.html.twig")
+            ->findNotExpiredOrderedByDateName(new \DateTime());
+        
+        $week_manager = $this->get('acts.camdram.week_manager');
+        $weeks = array();
+        foreach ($techieAdverts as $advert) {
+            $weeks[$advert->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($advert->getShow()->getPerformances());
+        }
+        
+        $view = $this->view($techieAdverts)
+            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig')
             ->setTemplateVar('techieadverts')
-        ;
+            ->setTemplateData(['weeks' => $weeks]);
+
         return $view;
     }
 
-    public function getAction($identifier)
+    public function getAction($identifier, Request $request)
     {
         $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findOneByShowSlug($identifier, new \DateTime);
+            ->findOneByShowSlug($identifier, $this->get('acts.time_service')->getCurrentTime());
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {
+
             throw $this->createNotFoundException('No techie advert exists with that identifier');
         }
-    }
 
+        if ($request->getRequestFormat() == 'html') {
+            return $this->redirect($this->generateUrl('get_techie').'#'.$identifier);
+        }
+        else {
+            return $this->view($data);
+        }
+    }
 }

@@ -7,10 +7,6 @@ acts_camdram_api:
     resource: "@ActsCamdramApiBundle/Resources/config/routing.yml"
     prefix:   /api
 
-acts_external_login:
-    resource: "@ActsExternalLoginBundle/Resources/config/routing.yml"
-    prefix:   /extauth
-
 acts_camdram_backend:
     resource: "@ActsCamdramBackendBundle/Resources/config/routing.yml"
     prefix:   /
@@ -33,19 +29,24 @@ acts_camdram_security:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #    prefix:   /_internal
 _security_check:
-      pattern:  /login_check
+      path:  /login_check
 _security_logout:
-      pattern:  /logout
+      path:  /logout
 
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+    schemes:  [https]
 
 fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
-
-hoyes_image_manager_bundle:
-    resource: "@HoyesImageManagerBundle/Resources/config/routing.yml"
-    prefix: /images
+    schemes:  [https]
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+oneup_uploader:
+    resource: .
+    type: uploader
+
+liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"

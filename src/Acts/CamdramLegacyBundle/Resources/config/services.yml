@@ -6,14 +6,3 @@ services:
 #        class: %acts_camdram_legacy.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
 
-
-    acts.camdram.listener.show_ref:
-        class: Acts\CamdramLegacyBundle\EventListener\ShowRefCreator
-        tags:
-            - { name: doctrine.entity_listener }
-
-    acts.camdram.redirect_handler:
-        class: Acts\CamdramLegacyBundle\EventListener\RedirectHandler
-        arguments:  [@router, @doctrine.orm.entity_manager, %v1_hostname%]
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException, priority: 200 }

@@ -3,34 +3,46 @@
 {% set current_navigation_id = 'shows' %}
 {% block title %}Show: {{ show.name }}{% endblock %}
 
+{# Facebook open graph markup #}
+{% block opengraph %}
+    <meta property="og:url" content="{{ url('get_show', {identifier: show.slug}) }}" />
+    <meta property="og:title" content="{{ show.name }}" />
+    <meta property="og:description" content="{{ show.description | strip_camdram_markdown | strip_new_lines | truncate(500) }}" />
+    {% if show.image %}
+        <meta property="og:image" content="{{ show.image.filename | imagine_filter('preview') }}" />
+    {% else %}
+        {# Maybe put a stock camdram image here? #}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 
 {% if is_granted('EDIT', show) %}
 {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
 {% endif %}
 
+{% if not is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', show) %}
 <div class="row">
+    <div class="large-12 columns text-center">
+   	   <p><a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to edit show details</a></p>        
+    </div>
+</div>
+{% endif %}
 
-    <div class="large-12 columns panel">
+<div class="row">	
+    <div class="large-12 columns panel" itemscope="" itemtype="http://schema.org/TheaterEvent">
+        <meta itemprop="name" content="{{ show.name }}"/>
         <ul class="inline-list right">
-            {% if show.onlineBookingUrl %}
-                {# If performances are listed ensure that tickets are only
-                   offered for shows in the future. #} 
-                {% set sell_tickets = true %}
-                {% if show.performances|length > 0 %}
-                    {% set sell_tickets = false %}
-                    {% for p in show.performances %}
-                        {% if date(p.enddate) >= date() %}
-                            {% set sell_tickets = true %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if sell_tickets == true %}
+            {% if show.hasFuturePerformances() %}
+                {% if show.onlineBookingUrl %}
                     <li><a href="{{ show.onlineBookingUrl }}" target="_blank"><i class="fa fa-ticket"></i> Buy tickets
-                            {% if show.prices %}({{ show.prices }}){% endif %}</a>
+                        {% if show.prices %}({{ show.prices }}){% endif %}</a>
                     </li>
+                {% elseif show.prices %}
+                    <li>Tickets: {{ show.prices }}</li>
                 {% endif %}
             {% endif %}
+
             {% if show.facebookId %}<li>
                 <a href="{{ show.getFacebookUrl() }}" target="_blank">
                     <img src="{{ asset('/bundles/actscamdramsecurity/images/facebook.png') }}" alt=""/></a>
@@ -42,49 +54,61 @@
         </ul>
 
         {% if show.society %}
-            <p class="show-society"><a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.name }}</a> presents...</p>
+            <p class="show-society" itemprop="organizer" itemscope="" itemtype="http://schema.org/TheaterGroup">
+                <a href="{{ path('get_society', {identifier: show.society.slug}) }}" itemprop="url"><span itemprop="name">{{ show.society.name }}</span></a> presents...
+            </p>
         {% elseif show.societyname is not empty %}
-            <p class="show-society">{{ show.societyname }} presents...</p>
+            <p class="show-society" itemprop="organizer" itemscope="" itemtype="http://schema.org/TheaterGroup">
+                <span itemprop="name" content="{{ show.societyname }}">{{ show.societyname }}</span> presents...
+            </p>
         {% endif %}
-        <h2>{{ show.name }}{% if show.author %}<br/><small> By {{ show.author }}</small>{% endif %}</h2>
-		
+        <div itemprop="workPerformed" itemscope="" itemtype="http://schema.org/CreativeWork">
+            <h2><span itemprop="name">{{ show.name }}</span>
+            {% if show.author %}
+                <br/><small itemprop="creator" itemscope="" itemtype="http://schema.org/Person"> By <span itemprop="name">{{ show.author }}</span></small>
+            {% endif %}
+            </h2>
+        </div>
 		{# Display show image #}
         {% if show.image %}
             <div class="row">
             <div class="large-3 columns text-center">
-                <a href="{{ image_url(show.image, 1024, 768) }}" class="fancybox">{{ render_image(show.image, 200, 300) }}</a>
-            </div>
-            <div class="large-9 columns">
-                <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
-                <p>{{ show.description | camdram_markdown }}</p>
-            </div>
-            </div>
-        {# Show prompt to upload image #}
-        {% elseif is_granted('EDIT', show) %}
-        	<div class="row">
-            <div class="large-3 columns text-center">
-            	<ul class="inline-list">
-                	{{ include('@ActsCamdram/Navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier: show.slug}), icon: 'pencil', text: 'Upload show image'} }) }}
+                <a itemprop="image" href="{{ show.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
+                <ul class="inline-list">    	
+                {% if is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
+            		{{ include('@ActsCamdram/Navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show_image',{identifier:show.slug}), text: 'Remove image', name: show.name, type: 'image'} }) }}
+            	{% endif %}
             	</ul>
             </div>
             <div class="large-9 columns">
-                <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
-                <p>{{ show.description | camdram_markdown }}</p>
+                {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
+            </div>
+            </div>
+        {# Show prompt to upload image #}
+        {% elseif is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
+        	<div class="row">
+            <div class="large-3 columns text-center">
+            	<form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
+					<input type="hidden" name="identifier" value="{{ show.slug }}"/>
+					<input type="hidden" name="type" value="show"/>
+				</form>
+            </div>
+            <div class="large-9 columns">
+                {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
             </div>
             </div>
         {# Don't show image or prompt #}
         {% else %}
-            <p>{% include 'ActsCamdramBundle:Performance:show.html.twig' with {'performances': show.performances } %}</p>
-            <p>{{ show.description | camdram_markdown }}</p>
+            {{ include('ActsCamdramBundle:Show:show-body.html.twig') }}
         {% endif %}
-    </div>
+	 </div>
 </div>
 {% if show.hasVacancies() %}
 <div class="vacancies-panel" class="row">
     <div class="large-12">
         <h5>Get involved with <em>{{ show.name }}</em>:</h5>
         {% if show.getScheduledAuditions() | length > 0 %}
-        <p>Auditions are being held at the times below - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
+        <p>Auditions are being held at the times below - <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
             <ul>
                 {% for a in show.getScheduledAuditions() %}
                 <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
@@ -93,33 +117,25 @@
 	{% endif %}
 	{% if show.getNonScheduledAuditions() | length > 0 %}
 	    {% for a in show.getNonScheduledAuditions() %}
-	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_auditions') }}#auditions-{{ show.id }}">more details</a></p>
+	    <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
 	    {% endfor %}
         {% endif %}
-        {% if show.activeTechieAdverts | length > 0 %}
+        {% if show.activeTechieAdvert %}
             <p>We are looking for:
-            {% for advert in show.activeTechieAdverts %}
-                {% for p in advert.positions|split("\n") %}
+                {% for p in show.activeTechieAdvert.positions|split("\n") %}
                     {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}
                     {{- p }}
-                {%- endfor %}
-                - <a href="{{ path('get_techie', {identifier: advert.slug}) }}">more details</a></p>
-            {% endfor %}
+                {% endfor %}
+            - <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
         {% endif %}
-        {% for advert in show.activeApplications %}
-            <p>{{ advert.text() }} -
-            <a href="{{ path('get_applications') }}#application-{{ advert.id }}">more details</a></p>
-        {% endfor %}
+        {% if show.activeApplication %}
+            <p>{{ show.activeApplication.text() }} -
+            <a href="{{ path('get_application', {identifier: show.activeApplication.show.slug}) }}">more details</a></p>
+        {% endif %}
     </div>
 </div>
 {% endif %}
-{% if is_granted('EDIT', show) %}
-<div class="vacancies-panel" class="row">
-    <div class="large-12">
-        <strong>New</strong> You can now add multiple roles at once. <a href="{{ path('get_show_many_roles', {identifier: show.slug}) }}">Click here to try</a>.
-    </div>
-</div>
-{% endif %}
+
 <div class="row">
     {% set display_band = (show.getRolesByType('band')|length > 0) or is_granted('EDIT', show) %}
     {% if display_band == true %}
@@ -142,26 +158,23 @@
             {% include 'ActsCamdramBundle:Show:showRoles.html.twig' with {show: show, type: 'prod', id: 'sortable-prod'} %}
         </div>
 </div>
-<br/>
-{% if not is_granted('EDIT', show, true) and is_granted('EDIT', show, false) %}
+<br />
+
 <div class="row">
-    <div class="large-12 columns">
-        <p><a href="{{ path('get_show_roles', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in again to edit roles on this show</a></p>
-    </div>
-</div>
-{% endif %}
-<div class="row">
-    <div class="large-12 columns">
-        <p>If you're involved in the show you may want to use our
-        <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug }) }}">sign in sheet</a>.
-        You can also download a version in <a href="{{ path('acts_camdram_signinsheet', { slug: show.slug, '_format': 'csv' }) }}">CSV format</a>.</p>
-        {% if app.user %}
-            {% if not is_granted('EDIT', show) %}
-                <p>If you'd like to change the information about this show, you can <a href="{{ path('request_show_admin', { identifier: show.slug }) }}">request to be an admin</a>.</p>
+    <div class="column large-12">
+        <ul class="inline-list">
+            {{ include('@ActsCamdram/Navigation/nav-items.html.twig', {
+                items: {
+                    show_sign_in_sheet : {path: path('acts_camdram_signinsheet',{slug:show.slug}), icon: 'print', text: 'Print sign in sheet'},
+                    show_sign_in_sheet_csv : {path: path('acts_camdram_signinsheet',{slug: show.slug, _format: 'csv'}), icon: 'table', text: 'Download sign in sheet (CSV)'}
+                }
+            }) }}
+
+            {% if app.user and not is_granted('EDIT', show) %}
+                {{ include('@ActsCamdram/Navigation/nav-item.html.twig',
+                    {item: {id: 'show_request_admin', path: path('request_show_admin',{identifier: show.slug}), icon: 'unlock-alt', text: 'Request to be an admin'} }) }}
             {% endif %}
-        {% else %}
-            <p>Log in to be able to request to be an admin for this show.</p>
-        {% endif %}
+        </ul>
     </div>
 </div>
 

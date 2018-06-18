@@ -1,35 +1,49 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!doctype html>
+<html class="no-js" lang="">
     <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-37770738-2"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		
+		gtag('config', 'UA-37770738-2');
+	</script>
+	
+	<meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
         <meta name="keywords" content="camdram,cambridge,theatre,drama,comedy,musicals,shows,society,societies,ACTS,association" />
         <meta name="description" content="Camdram is an information hub for the student performing arts community in Cambridge, England." />
 
         <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+        <link rel="manifest" href="/manifest.json">
+        
+        {# Opengraph properties for facebook posts #}
+        <meta property="og:type" content="website" />
+		<meta property="og:locale" content="en_GB" />
+		<meta property="og:site_name" content="Camdram" />
+		<meta property="fb:app_id" content="464689303574287" />
+        {% block opengraph %}{% endblock %}
+        
         <link rel='icon' href='/favicon.png' type='image/png' />
 
         <title>{% block title %}{% endblock %} - Camdram</title>
 
-        <link rel="stylesheet" type="text/css" href="https://s3-eu-west-1.amazonaws.com/assets.cookieconsent.silktide.com/current/style.min.css"/>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet"/>
         <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
         {% stylesheets output='css/main.css'
+        'bundles/actscamdram/stylesheets/h5bp/normalize.css'
         'bundles/actscamdram/stylesheets/app/*.scss'
+        'bundles/actscamdram/stylesheets/fancybox.css'
         'bundles/actsdiary/css/diary.css'
-        'bundles/hoyesimagemanager/css/fancybox.css'%}
+        %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 
         {% block stylesheets %}{% endblock %}
-        <!--[if lt IE 9]>
-        <link href="{{ asset('bundles/actscamdram/stylesheets/app/ie8.css') }}" rel="stylesheet"/>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.1.0/respond.min.js"></script>
-        <![endif]-->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
         {% javascripts output='js/deps.js'
@@ -38,11 +52,11 @@
         '@ActsCamdramBundle/Resources/public/javascripts/foundation/foundation.min.js'
         '@ActsCamdramBundle/Resources/public/javascripts/moment.js'
         '@ActsCamdramBundle/Resources/public/javascripts/typeahead.js'
+        '@ActsCamdramBundle/Resources/public/javascripts/dropzone.js'
+        '@ActsCamdramBundle/Resources/public/javascripts/fancybox.js'
         '@ActsDiaryBundle/Resources/public/js/diary.js'
         '@FOSJsRoutingBundle/Resources/public/js/router.js'
-        '@HoyesImageManagerBundle/Resources/public/js/plupload.full.min.js'
-        '@HoyesImageManagerBundle/Resources/public/js/upload_widget.js'
-        '@HoyesImageManagerBundle/Resources/public/js/jquery.fancybox.js' %}
+         %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         {% if app.environment == 'prod' %}
@@ -57,27 +71,24 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-    <script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/assets.cookieconsent.silktide.com/current/plugin.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
     <script type="text/javascript">
         // <![CDATA[
-        cc.initialise({
-            cookies: {
-                analytics: {},
-                necessary: {}
-            },
-            settings: {
-                consenttype: "implicit",
-                bannerPosition: "bottom",
-                onlyshowbanneronce: true,
-                disableallsites: true,
-                useSSL: true,
-                hideallsitesbutton: true,
-                disableallsites: true,
-                hideprivacysettingstab: true
-            },
-            strings: {
-                notificationTitleImplicit: 'Camdram uses <a href="{{ path('acts_camdram_privacy') }}#cookies">cookies</a> to ensure you get the best experience. By continuing to use our site, you agree to our <a href="{{ path('acts_camdram_privacy') }}#privacy">privacy policy</a>.'
-            }
+        window.addEventListener("load", function(){
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                         "background": "#fe5c1f",
+                         "text": "#ffffff"
+                    },
+                    "button": {
+                          "background": "#fff0c8"
+                    }
+                },
+                "content": {
+                    "href": "{{ path('acts_camdram_privacy') }}#cookies"
+                }
+            });
         });
         // ]]>
     </script>
@@ -98,17 +109,6 @@
                 </p>
             </div>
         </footer>
-
-        <script type="text/plain" class="cc-onconsent-analytics"> 
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-          ga('create', 'UA-37770738-2', 'camdram.net');
-          ga('send', 'pageview');
-        
-        </script>
     </body>
 </html>
 

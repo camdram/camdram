@@ -19,7 +19,7 @@ framework:
     router:   { resource: "%kernel.root_dir%/config/routing_test.yml" }
     test: ~
     session:
-        storage_id: session.storage.mock_file
+        storage_id: acts_camdram_backend.test.session_storage
     profiler:
         enabled: true
 
@@ -34,9 +34,6 @@ acts_camdram:
 
 acts_sphinx_real_time:
     enabled: false
-
-acts_external_login:
-    test: true
 
 acts_time_mock:
     time_override: 2000-07-03 15:30
