@@ -11,5 +11,4 @@ before_script:
 - composer install --no-interaction
 - "./install-sphinx"
 script:
-- "./runtests sphinx"
 - "./runtests"

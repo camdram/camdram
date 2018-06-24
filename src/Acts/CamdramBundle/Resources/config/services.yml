@@ -79,10 +79,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 105 }
 
-    acts.camdram.search_provider.doctrine:
-        class: Acts\CamdramBundle\Search\DoctrineProvider
-        arguments: ['@doctrine.orm.entity_manager']
-
     acts.camdram.search_provider.sphinx:
         class: Acts\CamdramBundle\Search\SphinxProvider
         arguments: ['@acts.sphinx_realtime.client.default', '@acts.sphinx_realtime.index_manager']

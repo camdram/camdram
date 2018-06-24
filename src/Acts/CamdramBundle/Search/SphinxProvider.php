@@ -16,7 +16,7 @@ use Foolz\SphinxQL\SphinxQL;
  *
  * An implementation of the Search\ProviderInterface that calls the Sphinx backend
  */
-class  SphinxProvider implements ProviderInterface
+class  SphinxProvider
 {
     private $client;
 
