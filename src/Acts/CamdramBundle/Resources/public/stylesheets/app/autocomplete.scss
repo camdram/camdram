@@ -60,15 +60,10 @@
   float:left;
 }
 
-#search_form .fulltext {
-  padding:0.5em 2em;
-  font-style:italic;
-  text-align:right;
-}
-
 #search_form .results {
     display:none;
     z-index:100;
+    margin-bottom:1em;
 
     ul {
       list-style:none;

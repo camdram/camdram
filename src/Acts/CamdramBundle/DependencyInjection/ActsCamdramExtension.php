@@ -44,8 +44,6 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
      */
     public function prepend(ContainerBuilder $container)
     {
-        if ($container->getParameter('search_provider') !== 'sphinx') {
-            $container->prependExtensionConfig('acts_sphinx_real_time', array('enabled' => false));
-        }
+        
     }
 }

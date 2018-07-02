@@ -21,7 +21,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
  */
-abstract class Organisation implements SearchableInterface, OwnableInterface
+abstract class Organisation implements OwnableInterface
 {
     /**
      * @var int

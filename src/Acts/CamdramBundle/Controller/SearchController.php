@@ -6,6 +6,10 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
+use Elastica\Query;
+use Elastica\Query\Match;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\QueryString;
 
 /**
  * Class ShowController
@@ -17,41 +21,35 @@ use Symfony\Component\HttpFoundation\Request;
 class SearchController extends FOSRestController
 {
     /**
-     * @Rest\Get("/search/autocomplete")
-     */
-    public function autocompleteAction(Request $request)
-    {
-        $search_provider = $this->get('acts.camdram.search_provider');
-
-        $limit = $request->get('limit', 10);
-
-        $data = $search_provider->executeAutocomplete(array('show', 'society', 'venue', 'person'),
-            $request->get('q'), $limit, array('rank' => 'DESC'));
-
-        $view = $this->view($data, 200)
-            ->setTemplateVar('result')
-            ->setTemplate('ActsCamdramBundle:Search:index.html.twig')
-        ;
-
-        return $view;
-    }
-
-    /**
      * @Rest\Get("/search")
      */
     public function searchAction(Request $request)
     {
-        $search_provider = $this->get('acts.camdram.search_provider');
-
         $limit = $request->get('limit', 10);
-        $page = $request->get('page', 1);
-        $offset = ($page - 1) * $limit;
+        $searchText = $request->get('q');
 
-        $data = $search_provider->executeTextSearch(array('show', 'society', 'venue', 'person'),
-            $request->get('q'), $offset, $limit, array('rank' => 'DESC'));
+        $bool = new BoolQuery;
+        $bool->addShould(new Match("name", $searchText));
+        $bool->addShould(new Match("short_name", $searchText));
+
+        $query = Query::create($bool);
+        $query->setSize($limit);
+        $query->setSort(['rank' => ['order' => 'desc', 'missing' => '_first']]);
+        
+        $search = $this->get('fos_elastica.index.autocomplete')->createSearch();
+        $resultSet = $search->search($query);
+
+        $data = [];
+        foreach ($resultSet as $result)
+        {
+            $row = $result->getSource();
+            $row['id'] = $result->getId();
+            $row['entity_type'] = $result->getType();
+            $data[] = $row;
+        }
 
         $view = $this->view($data, 200)
-            ->setTemplateVar('result')
+            ->setTemplateVar('results')
             ->setTemplate('ActsCamdramBundle:Search:index.html.twig')
         ;
 

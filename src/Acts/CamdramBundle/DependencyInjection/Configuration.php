@@ -20,7 +20,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('acts_camdram');
         $rootNode->children()
-                ->scalarNode('search_provider')->isRequired()->end()
                 ->scalarNode('techies_advert_default_days')->isRequired()->end()
                 ->scalarNode('techies_advert_max_days')->isRequired()->end()
                 ->scalarNode('data_dir')->isRequired()->end()

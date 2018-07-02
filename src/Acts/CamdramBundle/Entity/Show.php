@@ -26,7 +26,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *   template="ActsCamdramBundle:Show:rss.html.twig")
  * @Api\Link(route="get_show", params={"identifier": "object.getSlug()"})
  */
-class Show implements SearchableInterface, OwnableInterface
+class Show implements OwnableInterface
 {
     /**
      * The show's ID
@@ -965,7 +965,7 @@ class Show implements SearchableInterface, OwnableInterface
         }
     }
 
-    /**
+ /**
      * A ranking used by the autocomplete index
      * For shows, return the Unix timestamp of the show's start date
      *
@@ -973,10 +973,9 @@ class Show implements SearchableInterface, OwnableInterface
      */
     public function getRank()
     {
-        $rank = $this->getIndexDate();
-
-        return $rank ? $rank->format('Ymd') : null;
+        return $this->start_at ? $this->start_at->format('Ymd') : 0;
     }
+
 
     /**
      * Set freebase_id
@@ -1565,11 +1564,6 @@ class Show implements SearchableInterface, OwnableInterface
     public function getShortName()
     {
         return '';
-    }
-
-    public function getIndexDate()
-    {
-        return $this->getStartAt();
     }
 
     /**

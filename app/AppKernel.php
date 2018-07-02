@@ -33,7 +33,7 @@ class AppKernel extends Kernel
             new Oneup\UploaderBundle\OneupUploaderBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
-            new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
+            new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
             new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),

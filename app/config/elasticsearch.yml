@@ -1,0 +1,68 @@
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        autocomplete:
+            index_name: camdram_autocomplete_%kernel.environment%
+            settings:
+                index:
+                    analysis:
+                        tokenizer:
+                            autocomplete:
+                                type:     edge_ngram
+                                min_gram: 2
+                                max_gram: 20
+                                token_chars: [letter, digit, punctuation]
+                        analyzer:
+                            autocomplete:
+                                type:      custom
+                                tokenizer: autocomplete
+                                filter: [lowercase]
+                            whitespaceAnalyzer:
+                                type: custom
+                                tokenizer: whitespace
+                                filter: [lowercase]
+            types:
+                show:
+                    mappings:
+                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        slug: ~
+                        start_at: { type: date }
+                        rank: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Show
+                        provider: ~
+                        finder: ~
+                society:
+                    mappings:
+                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        short_name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        slug: ~
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Society
+                        provider: ~
+                        finder: ~
+                venue:
+                    mappings:
+                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        short_name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        slug: ~
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Venue
+                        provider: ~
+                        finder: ~
+                person:
+                    mappings:
+                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        slug: ~
+                        show_count: ~
+                        last_active:  { type: date }
+                        rank: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Person
+                        provider: ~
+                        finder: ~

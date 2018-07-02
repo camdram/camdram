@@ -79,10 +79,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 105 }
 
-    acts.camdram.search_provider.sphinx:
-        class: Acts\CamdramBundle\Search\SphinxProvider
-        arguments: ['@acts.sphinx_realtime.client.default', '@acts.sphinx_realtime.index_manager']
-
     acts.camdram.email_dispatcher:
         class: Acts\CamdramBundle\Service\EmailDispatcher
         arguments: ['@swiftmailer.mailer', '@twig', %mailer_sender_address%]

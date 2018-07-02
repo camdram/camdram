@@ -19,7 +19,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @ORM\Entity(repositoryClass="PersonRepository")
  * @Serializer\XmlRoot("person")
  */
-class Person implements SearchableInterface
+class Person
 {
     /**
      * @var int
@@ -301,7 +301,7 @@ class Person implements SearchableInterface
         return $this->entity_type;
     }
 
-    /**
+/**
      * A ranking used by the autocomplete index
      * For people, return the start date of the most recent show
      *
@@ -309,10 +309,11 @@ class Person implements SearchableInterface
      */
     public function getRank()
     {
-        $rank = $this->getIndexDate();
+        $activeDate = $this->getLastActive();
 
-        return $rank ? $rank->format('Ymd') : null;
+        return $activeDate ? $activeDate->format('Ymd') : 0;
     }
+
 
     public function isIndexable()
     {
@@ -507,12 +508,7 @@ class Person implements SearchableInterface
         return $this->externalUsers;
     }
 
-    public function getShortName()
-    {
-        return '';
-    }
-
-    public function getNumShows()
+    public function getShowCount()
     {
         $counter = 0;
         $show_id = null;
@@ -526,7 +522,7 @@ class Person implements SearchableInterface
         return $counter;
     }
 
-    public function getIndexDate()
+    public function getLastActive()
     {
         $latest = null;
         foreach ($this->getRoles() as $role) {

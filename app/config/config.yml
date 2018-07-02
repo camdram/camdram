@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: elasticsearch.yml }
 
 framework:
     esi: { enabled: true }
@@ -120,13 +121,9 @@ jms_serializer:
             options: JSON_PRETTY_PRINT
 
 acts_camdram:
-    search_provider: %search_provider%
     techies_advert_default_days: 15
     techies_advert_max_days: 40
     data_dir: "%kernel.root_dir%/data"
-
-acts_camdram_legacy:
-    v1_hostname: %v1_hostname%
 
 fos_oauth_server:
     db_driver:           orm
@@ -137,87 +134,7 @@ fos_oauth_server:
     service:
         storage: acts.camdram_api.oauth2_storage.default
         options:
-            supported_scopes: user_email user_shows user_orgs api_write api_write_org
-
-acts_sphinx_real_time:
-    enabled: true
-    clients:
-        default:
-          log: /var/log/sphinxsearch/searchd.log
-          query_log: /var/log/sphinxsearch/query.log
-          pid_file: /var/log/sphinxsearch/searchd.pid
-    indexes:
-        show:
-            fields: [name, short_name, description]
-            attributes: {name: string, description: string, entity_type: string, slug: string, index_date: datetime, rank: int}
-            persistence:
-                driver: orm
-                model: Acts\CamdramBundle\Entity\Show
-                listener:
-                    is_indexable_callback: isIndexable
-                provider: ~
-                finder: ~
-            config:
-                min_prefix_len: 1
-                prefix_fields: [name]
-                enable_star: true
-                dict: keywords
-        venue:
-            fields: [name, short_name, description]
-            attributes: {name: string, short_name: string, description: string, slug: string,  entity_type: string, rank: int, index_date: datetime}
-            persistence:
-                driver: orm
-                model: Acts\CamdramBundle\Entity\Venue
-                provider: ~
-                finder: ~
-                listener: ~
-            config:
-                min_prefix_len: 1
-                prefix_fields: [name, short_name]
-                enable_star: true
-                dict: keywords
-        society:
-            fields: [name, short_name, description]
-            attributes: {name: string, short_name: string, description: string, slug: string, entity_type: string, rank: int, index_date: datetime}
-            persistence:
-                driver: orm
-                model: Acts\CamdramBundle\Entity\Society
-                provider: ~
-                finder: ~
-                listener: ~
-            config:
-                min_prefix_len: 1
-                prefix_fields: [name, short_name]
-                enable_star: true
-                dict: keywords
-        person:
-            fields: [name, short_name, description]
-            attributes: {name: string, description: string, entity_type: string, slug: string, rank: int, index_date: datetime, num_shows: int}
-            persistence:
-                driver: orm
-                model: Acts\CamdramBundle\Entity\Person
-                provider: ~
-                finder: ~
-                listener:
-                    is_indexable_callback: isIndexable
-            config:
-                min_prefix_len: 1
-                prefix_fields: [name]
-                enable_star: true
-                dict: keywords
-        user:
-            fields: [name]
-            attributes: {name: string, email:string, registered_at: datetime, last_login_at: datetime}
-            persistence:
-                driver: orm
-                model: Acts\CamdramSecurityBundle\Entity\User
-                listener: ~
-                provider: ~
-                finder: ~
-            config:
-                min_prefix_len: 1
-                enable_star: true
-                dict: keywords
+            supported_scopes: user_email user_shows user_orgs api_write api_write_org                
 
 oneup_uploader:
     mappings:
@@ -256,7 +173,7 @@ stof_doctrine_extensions:
             loggable: true
 
 fos_js_routing:
-    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'autocomplete_entity' ]
+    routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'search_entity' ]
 
 ewz_recaptcha:
     public_key: %recaptcha_site_key%

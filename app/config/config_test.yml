@@ -29,9 +29,6 @@ swiftmailer:
 fos_js_routing:
     request_context_base_url: /app_test.php
 
-acts_camdram:
-    search_provider: sphinx
-
 acts_sphinx_real_time:
     enabled: true
 
