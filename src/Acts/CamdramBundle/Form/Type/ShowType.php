@@ -78,7 +78,6 @@ class ShowType extends AbstractType
                     'disabled' => $disabled,
                     'text_field' => 'other_society'
                 ));
-
             })
         ;
     }

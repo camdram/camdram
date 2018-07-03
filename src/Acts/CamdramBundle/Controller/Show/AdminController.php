@@ -41,7 +41,8 @@ class AdminController extends FOSRestController
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
 
         return $this->view($form, 200)
-            ->setData(array(
+            ->setData(
+                array(
                     'entity' => $show,
                     'admins' => $admins,
                     'requested_admins' => $requested_admins,
@@ -112,8 +113,10 @@ class AdminController extends FOSRestController
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
-                        $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::PENDING_ACCESS_CREATED,
-                            new PendingAccessEvent($pending_ace));
+                        $this->get('event_dispatcher')->dispatch(
+                            CamdramSecurityEvents::PENDING_ACCESS_CREATED,
+                            new PendingAccessEvent($pending_ace)
+                        );
                     }
                 }
             }
@@ -155,8 +158,10 @@ class AdminController extends FOSRestController
                 ->setType('request-show');
             $em->persist($ace);
             $em->flush();
-            $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::ACE_CREATED,
-                new AccessControlEntryEvent($ace));
+            $this->get('event_dispatcher')->dispatch(
+                CamdramSecurityEvents::ACE_CREATED,
+                new AccessControlEntryEvent($ace)
+            );
 
             return $this->render('ActsCamdramBundle:Show:access_requested.html.twig');
         }

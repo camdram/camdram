@@ -145,7 +145,7 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * 
+     *
      */
     public function search($query, $limit)
     {

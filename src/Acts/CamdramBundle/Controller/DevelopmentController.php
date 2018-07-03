@@ -22,14 +22,16 @@ class DevelopmentController extends Controller
     public function activityAction()
     {
         /**
-         * 
+         *
          * @var \Github\Client $api
          */
-        try
-        {
+        try {
             $github = $this->get('github.api');
-            $github->authenticate($this->getParameter('github_id'),
-                $this->getParameter('github_secret'), \Github\Client::AUTH_URL_CLIENT_ID);
+            $github->authenticate(
+                $this->getParameter('github_id'),
+                $this->getParameter('github_secret'),
+                \Github\Client::AUTH_URL_CLIENT_ID
+            );
             $owner = 'camdram';
             $repoName = 'camdram';
     
@@ -49,9 +51,7 @@ class DevelopmentController extends Controller
             $response->setSharedMaxAge(60 * 15);
     
             return $response;
-        }
-        catch (\Github\Exception\RuntimeException $ex)
-        {
+        } catch (\Github\Exception\RuntimeException $ex) {
             return $this->render('ActsCamdramBundle:Development:github-error.html.twig');
         }
     }

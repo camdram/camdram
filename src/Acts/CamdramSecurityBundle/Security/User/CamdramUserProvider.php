@@ -13,8 +13,10 @@ use HWI\Bundle\OAuthBundle\Security\Core\Exception\AccountNotLinkedException;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 
-class CamdramUserProvider implements UserProviderInterface, 
-        OAuthAwareUserProviderInterface, AccountConnectorInterface
+class CamdramUserProvider implements
+    UserProviderInterface,
+        OAuthAwareUserProviderInterface,
+    AccountConnectorInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager;
@@ -181,12 +183,9 @@ class CamdramUserProvider implements UserProviderInterface,
             'username' => $username
         ));
         
-        if ($external)
-        {
+        if ($external) {
             $external->setToken($response->getAccessToken());
-        }
-        else
-        {
+        } else {
             $external = new ExternalUser();
             $external->setService($service);
             $external->setEmail($response->getEmail());
@@ -203,14 +202,12 @@ class CamdramUserProvider implements UserProviderInterface,
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $external = $this->loadOrCreateExternalUser($response);
-        if ($user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($response->getEmail()))
-        {
+        if ($user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($response->getEmail())) {
             $external->setUser($user);
         }
         $this->em->flush();
         
-        if (!$external->getUser())
-        {
+        if (!$external->getUser()) {
             throw new AccountNotLinkedException(sprintf("User '%s' not found.", $response->getUsername()));
         }
         
@@ -219,8 +216,7 @@ class CamdramUserProvider implements UserProviderInterface,
     
     public function connect(UserInterface $user, UserResponseInterface $response)
     {
-        if (!$user instanceof User)
-        {
+        if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Expected a Camdram User, but got "%s".', get_class($user)));
         }
            

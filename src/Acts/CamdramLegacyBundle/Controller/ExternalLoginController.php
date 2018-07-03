@@ -14,23 +14,25 @@ class ExternalLoginController extends Controller
     {
         $site = null;
         
-        if ($request->query->has('redirect'))
-        {
+        if ($request->query->has('redirect')) {
             $redirectUri = $request->query->get('redirect');
             $redirect_parts = parse_url($redirectUri);
             
             $repo = $this->getDoctrine()->getRepository('ActsCamdramLegacyBundle:ExternalSite');
             $site = $repo->findOneByUrl('http://' . $redirect_parts['host']);
             
-            if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
-            {
+            if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
                 //Skip explanatory page if already fully logged in
                 return $this->forward('ActsCamdramLegacyBundle:ExternalLogin:auth', [], ['redirect' => $redirectUri]);
             }
         }
         
-        return $this->render("ActsCamdramLegacyBundle:ExternalLogin:default.html.twig",
-            ['site' => $site, 'redirect' => $request->query->get('redirect')]);
+        return $this->render(
+        
+            "ActsCamdramLegacyBundle:ExternalLogin:default.html.twig",
+            ['site' => $site, 'redirect' => $request->query->get('redirect')]
+        
+        );
     }
     
     public function authAction(Request $request)
@@ -72,23 +74,20 @@ class ExternalLoginController extends Controller
             ->setParameter('threshold', $this->get('acts.time_service')->getCurrentTime()->modify('-60sec'))
             ->getQuery()->execute();
         
-        if ($request->query->has('tokenid'))
-        {
+        if ($request->query->has('tokenid')) {
             $tokenId = $request->get('tokenid');
             
-            if ($token = $repo->findOneByToken($tokenId))
-            {
+            if ($token = $repo->findOneByToken($tokenId)) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($token);
                 $em->flush();
                 
-                if ($user = $token->getUser())
-                {
+                if ($user = $token->getUser()) {
                     return new Response("OK\n"
                         .$user->getId()."\n"
                         .$user->getName()."\n"
                         .$user->getEmail()."\n");
-                } 
+                }
             }
         }
         

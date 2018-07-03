@@ -120,8 +120,10 @@ class AuditionRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a');
 
         return $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.date > :current_date',
-                $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
+            ->where($qb->expr()->orX(
+                'a.date > :current_date',
+                $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')
+            ))
             ->andWhere('s.slug = :slug')
             ->andWhere('s.authorised_by is not null')
             ->setMaxResults(1)

@@ -36,10 +36,8 @@ class ContactEntityService
         $users = $this->findRecipientUsers($entity);
         $emails = array();
 
-        foreach ($users as $user) 
-        {
-            if ($user->getFullEmail() && $user->getIsEmailVerified())
-            {
+        foreach ($users as $user) {
+            if ($user->getFullEmail() && $user->getIsEmailVerified()) {
                 $emails[$user->getFullEmail()] = $user->getName();
             }
         }

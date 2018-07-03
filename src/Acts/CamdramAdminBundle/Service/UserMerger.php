@@ -53,28 +53,22 @@ class UserMerger
         
         $metadata = $this->entityManager->getClassMetadata('ActsCamdramSecurityBundle:User');
         $accessor = PropertyAccess::createPropertyAccessor();
-        foreach ($metadata->getAssociationMappings() as $mapping)
-        {
+        foreach ($metadata->getAssociationMappings() as $mapping) {
             $fieldName = $mapping['fieldName'];
             
             if ($accessor->isReadable($user2, $fieldName)
-                && $accessor->isWritable($user1, $fieldName))
-            {
+                && $accessor->isWritable($user1, $fieldName)) {
                 $user2Value = $accessor->getValue($user2, $fieldName);
-                if ($user2Value instanceof \Traversable)
-                {
+                if ($user2Value instanceof \Traversable) {
                     //1-to-many mapping
                     $mappedBy = $mapping['mappedBy'];
                     foreach ($user2Value as $user2Obj) {
                         $accessor->setValue($user2Obj, $mappedBy, $user1);
                     }
-                }
-                else
-                {
+                } else {
                     //1-to-1 mapping. Only set on merged object if not already set
                     $user1Value = $accessor->getValue($user1, $fieldName);
-                    if (is_null($user1Value) && !is_null($user2Value))
-                    {
+                    if (is_null($user1Value) && !is_null($user2Value)) {
                         $accessor->setValue($user1, $fieldName, $user2Value);
                     }
                 }

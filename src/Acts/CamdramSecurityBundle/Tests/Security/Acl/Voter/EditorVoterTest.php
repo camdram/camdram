@@ -40,7 +40,9 @@ class EditorVoterTest extends \PHPUnit_Framework_TestCase
         $token = new UsernamePasswordToken($user, 'password', 'public', $user->getRoles());
 
         $this->assertEquals(EditorVoter::ACCESS_GRANTED, $this->voter->vote(
-                $token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'), array('CREATE')
+                $token,
+            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'),
+            array('CREATE')
         ));
     }
 
@@ -50,7 +52,9 @@ class EditorVoterTest extends \PHPUnit_Framework_TestCase
         $token = new UsernamePasswordToken($user, 'password', 'public', $user->getRoles());
 
         $this->assertEquals(EditorVoter::ACCESS_GRANTED, $this->voter->vote(
-                $token, new Venue(), array('EDIT')
+                $token,
+            new Venue(),
+            array('EDIT')
             ));
     }
 
@@ -59,7 +63,9 @@ class EditorVoterTest extends \PHPUnit_Framework_TestCase
         $token = new UsernamePasswordToken(new User(), 'password', 'public', array());
 
         $this->assertEquals(EditorVoter::ACCESS_DENIED, $this->voter->vote(
-                $token, new Venue(), array('EDIT')
+                $token,
+            new Venue(),
+            array('EDIT')
             ));
     }
 }

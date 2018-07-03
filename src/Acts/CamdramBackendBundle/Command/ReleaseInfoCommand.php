@@ -39,8 +39,11 @@ class ReleaseInfoCommand extends ContainerAwareCommand
         $lines = explode("\n", $commits);
         $commits = array();
         $github = $this->getContainer()->get('github.api');
-        $github->authenticate($this->getContainer()->getParameter('github_id'),
-            $this->getContainer()->getParameter('github_secret'), \Github\Client::AUTH_URL_CLIENT_ID);
+        $github->authenticate(
+            $this->getContainer()->getParameter('github_id'),
+            $this->getContainer()->getParameter('github_secret'),
+            \Github\Client::AUTH_URL_CLIENT_ID
+        );
 
         foreach ($lines as $line) {
             if (!empty($line)) {

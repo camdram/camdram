@@ -24,8 +24,7 @@ class AccountController extends FOSRestController
         $context = new Context();
         $auth = $this->get('security.authorization_checker');
         $serializationGroups = ['all'];
-        if ($auth->isGranted('ROLE_USER_EMAIL') || $auth->isGranted('IS_AUTHENTICATED_FULLY'))
-        {
+        if ($auth->isGranted('ROLE_USER_EMAIL') || $auth->isGranted('IS_AUTHENTICATED_FULLY')) {
             $serializationGroups[] = 'user_email';
         }
         $context->setGroups($serializationGroups);
@@ -43,7 +42,7 @@ class AccountController extends FOSRestController
 
     /**
      * @Security("has_role('ROLE_USER_SHOWS')")
-     * 
+     *
      * @return \FOS\RestBundle\View\View
      */
     public function getShowsAction()
@@ -91,8 +90,7 @@ class AccountController extends FOSRestController
 
     public function changePasswordAction(Request $request)
     {
-        if (!$this->getUser()->getPassword())
-        {
+        if (!$this->getUser()->getPassword()) {
             //Adding password only allowed if account already has a password
             return new Response('', 200);
         }

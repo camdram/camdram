@@ -131,7 +131,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
      * @Serializer\Exclude()
-     * 
+     *
      */
     private $ace_grants;
 
@@ -483,8 +483,7 @@ class User implements UserInterface, \Serializable
 
     public function getExternalUserByService($service)
     {
-        if (is_null($this->external_users))
-        {
+        if (is_null($this->external_users)) {
             return null;
         }
         
@@ -720,7 +719,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get authorizations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAuthorizations()
     {

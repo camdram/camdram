@@ -42,8 +42,7 @@ class ApplicationController extends FOSRestController
 
         if ($request->getRequestFormat() == 'html') {
             return $this->redirect($this->generateUrl('get_applications').'#'.$identifier);
-        }
-        else {
+        } else {
             return $this->view($data);
         }
     }

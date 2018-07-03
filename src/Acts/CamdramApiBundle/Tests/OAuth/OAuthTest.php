@@ -1,7 +1,6 @@
 <?php
 namespace Acts\CamdramApiBundle\Tests\OAuth;
 
-
 use Acts\CamdramApiBundle\Entity\ExternalApp;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -157,7 +156,6 @@ class OAuthTest extends WebTestCase
 
     public function testLoginFlow()
     {
-
         $this->login('user1@camdram.net', 'password');
         $token = $this->performOAuthUserLogin('user_shows');
         $this->assertTrue(is_string($token));

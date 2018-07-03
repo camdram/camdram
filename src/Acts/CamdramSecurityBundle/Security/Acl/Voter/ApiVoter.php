@@ -30,5 +30,4 @@ class ApiVoter implements VoterInterface
         }
         return self::ACCESS_ABSTAIN;
     }
-
 }

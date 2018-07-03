@@ -44,6 +44,5 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
      */
     public function prepend(ContainerBuilder $container)
     {
-        
     }
 }

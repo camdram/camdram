@@ -27,42 +27,54 @@ class CreateVoterTest extends \PHPUnit_Framework_TestCase
     public function testCreateShow()
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Show'), array('CREATE')
+                $this->token,
+            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Show'),
+            array('CREATE')
         ));
     }
 
     public function testCreateTechieAdvert()
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\TechieAdvert'), array('CREATE')
+                $this->token,
+            new ClassIdentity('Acts\\CamdramBundle\\Entity\\TechieAdvert'),
+            array('CREATE')
             ));
     }
 
     public function testCreateAudition()
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Audition'), array('CREATE')
+                $this->token,
+            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Audition'),
+            array('CREATE')
             ));
     }
 
     public function testCreateApplication()
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Application'), array('CREATE')
+                $this->token,
+            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Application'),
+            array('CREATE')
             ));
     }
 
     public function testNotCreate()
     {
         $this->assertEquals(CreateVoter::ACCESS_ABSTAIN, $this->voter->vote(
-                $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Show'), array('EDIT')
+                $this->token,
+            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Show'),
+            array('EDIT')
             ));
     }
 
     public function testCreateVenue()
     {
         $this->assertEquals(CreateVoter::ACCESS_ABSTAIN, $this->voter->vote(
-                $this->token, new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'), array('CREATE')
+                $this->token,
+            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'),
+            array('CREATE')
             ));
     }
 }

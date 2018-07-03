@@ -101,15 +101,13 @@ class WeekManager
                  * shows at the ADC Theatre.
                  */
                 $res = $start_week->getName();
-            }
-            else {
+            } else {
                 /* Less common, perhaps a two week run. */
                 $res = $start_week->getName() . " to ";
                 if (explode(' ', $start_week->getName())[0] == explode(' ', $end_week->getName())[0]) {
                     /* Both weeks are in the same term. */
                     $res = $res . $end_week->getShortName();
-                }
-                else {
+                } else {
                     /* The show spans multiple terms. */
                     $res = $res . $end_week->getName();
                 }

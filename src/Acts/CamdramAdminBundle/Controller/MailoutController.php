@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * 
+ *
  * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class MailoutController extends Controller
@@ -28,7 +28,7 @@ For any enquiries, please contact websupport@camdram.net.";
     
     /**
      * @Route("/mailout", name="acts_camdram_mailout")
-     * 
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -45,7 +45,7 @@ For any enquiries, please contact websupport@camdram.net.";
                     "All Active Users ($numActiveUsers)" => 'active',
                     "Society and venue admins ($numAdmins)" => 'admins',
                     "Just me (1)" => 'me'
-                ], 
+                ],
                 'choices_as_values' => true,
                 'expanded' => true
             ])
@@ -54,21 +54,23 @@ For any enquiries, please contact websupport@camdram.net.";
             
         $form->handleRequest($request);
         
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             return $this->sendEmails($form->getData());
         }
         
-        return $this->render('ActsCamdramAdminBundle:Mailout:index.html.twig',
-            ['form' => $form->createView()]);
+        return $this->render(
+        
+            'ActsCamdramAdminBundle:Mailout:index.html.twig',
+            ['form' => $form->createView()]
+        
+        );
     }
     
     private function sendEmails($data)
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
         
-        switch($data['recipients'])
-        {
+        switch ($data['recipients']) {
             case 'active':
                 $users = $repo->findActiveUsersForMailOut();
                 break;
@@ -84,18 +86,12 @@ For any enquiries, please contact websupport@camdram.net.";
         $output = ['sent' => [], 'not_active' => [], 'not_verified' => []];
         $loginThreshold = new \DateTime('-2 years');
         
-        foreach ($users as $user)
-        {
-            if ($user->getLastLoginAt() < $loginThreshold)
-            {
+        foreach ($users as $user) {
+            if ($user->getLastLoginAt() < $loginThreshold) {
                 $output['not_verified'][] = $user;
-            }
-            else if (!$user->getIsEmailVerified())
-            {
+            } elseif (!$user->getIsEmailVerified()) {
                 $output['not_active'][] = $user;
-            }
-            else
-            {
+            } else {
                 $message = \Swift_Message::newInstance()
                 ->setSubject($data['subject'])
                 ->setFrom(self::FROM_EMAIL, self::FROM_NAME)
@@ -107,7 +103,11 @@ For any enquiries, please contact websupport@camdram.net.";
             }
         }
         
-        return $this->render('ActsCamdramAdminBundle:Mailout:sent.html.twig',
-                ['data' => $data, 'output' => $output]);
+        return $this->render(
+        
+            'ActsCamdramAdminBundle:Mailout:sent.html.twig',
+                ['data' => $data, 'output' => $output]
+        
+        );
     }
 }

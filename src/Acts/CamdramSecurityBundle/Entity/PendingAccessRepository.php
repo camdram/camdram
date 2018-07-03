@@ -36,14 +36,12 @@ class PendingAccessRepository extends EntityRepository
     public function findByResource($resource)
     {
         if ($resource instanceof OwnableInterface) {
-
             $qb = $this->createQueryBuilder('p')
                 ->where('p.rid = :rid')
                 ->andWhere('p.type = :type')
                 ->setParameter('rid', $resource->getId())
                 ->setParameter('type', $resource->getAceType());
             return $qb->getQuery()->getResult();
-
         } else {
             return array();
         }

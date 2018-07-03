@@ -28,15 +28,13 @@ class DefaultController extends Controller
     
     public function loginAction(Request $request)
     {
-        if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
-        {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirect($this->generateUrl('acts_camdram_homepage'));
         }
         
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError(false);
-        if ($error instanceof AccountNotLinkedException)
-        {
+        if ($error instanceof AccountNotLinkedException) {
             return $this->forward('HWIOAuthBundle:Connect:connect');
         }
         
@@ -49,8 +47,7 @@ class DefaultController extends Controller
         $last_email = $authenticationUtils->getLastUsername();
         $has_error = !is_null($authenticationUtils->getLastAuthenticationError());
         
-        if (!$last_email && $this->getUser() instanceof User)
-        {
+        if (!$last_email && $this->getUser() instanceof User) {
             $last_email = $this->getUser()->getEmail();
         }
         

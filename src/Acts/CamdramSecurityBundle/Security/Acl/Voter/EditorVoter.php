@@ -14,7 +14,9 @@ class EditorVoter extends Voter
 {
     public function supports($attribute, $subject)
     {
-        if (!in_array($attribute, ['EDIT', 'CREATE', 'APPROVE', 'DELETE'])) return false;
+        if (!in_array($attribute, ['EDIT', 'CREATE', 'APPROVE', 'DELETE'])) {
+            return false;
+        }
     
         if (!$subject instanceof ClassIdentity) {
             $subject = new ClassIdentity(get_class($subject));

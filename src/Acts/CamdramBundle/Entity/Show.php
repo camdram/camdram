@@ -459,8 +459,7 @@ class Show implements OwnableInterface
     {
         if (!$this->venue) {
             return $this->other_venue;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -502,8 +501,7 @@ class Show implements OwnableInterface
     {
         if ($this->other_society) {
             return $this->other_society;
-        }
-        elseif ($this->society) {
+        } elseif ($this->society) {
             return $this->society->getName();
         }
     }
@@ -778,10 +776,9 @@ class Show implements OwnableInterface
         $performance->setShow($this);
         if (!($performance->getOtherVenue())) {
             if ($this->getVenue()) {
-              $performance->setVenue($this->getVenue());
+                $performance->setVenue($this->getVenue());
             } else {
                 $performance->setOtherVenue($this->getOtherVenue());
-
             }
         }
 
@@ -943,14 +940,20 @@ class Show implements OwnableInterface
                 foreach ($this->getPerformances() as $performance) {
                     if ($performance->getVenue()) {
                         $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) $venue_counts[$key] = 1;
-                        else $venue_counts[$key]++;
+                        if (!isset($venue_counts[$key])) {
+                            $venue_counts[$key] = 1;
+                        } else {
+                            $venue_counts[$key]++;
+                        }
                         $venues[$key] = $performance->getVenue();
                     }
                     if ($performance->getOtherVenue()) {
                         $key = $performance->getOtherVenue();
-                        if (!isset($name_counts[$key])) $name_counts[$key] = 1;
-                        else $name_counts[$key]++;
+                        if (!isset($name_counts[$key])) {
+                            $name_counts[$key] = 1;
+                        } else {
+                            $name_counts[$key]++;
+                        }
                     }
                     //Favour a venue object over a venue name
                     if (count($venue_counts) > 0) {
@@ -965,12 +968,12 @@ class Show implements OwnableInterface
         }
     }
 
- /**
-     * A ranking used by the autocomplete index
-     * For shows, return the Unix timestamp of the show's start date
-     *
-     * @return int
-     */
+    /**
+        * A ranking used by the autocomplete index
+        * For shows, return the Unix timestamp of the show's start date
+        *
+        * @return int
+        */
     public function getRank()
     {
         return $this->start_at ? $this->start_at->format('Ymd') : 0;

@@ -17,5 +17,4 @@ class OAuthStorage extends \FOS\OAuthServerBundle\Storage\OAuthStorage
         }
         return $result;
     }
-
-} 
+}

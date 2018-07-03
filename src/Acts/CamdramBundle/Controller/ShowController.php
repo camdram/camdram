@@ -120,7 +120,7 @@ class ShowController extends AbstractRestController
         /* Try and find the person. Add a new person if they don't exist. */
         $person = $person_repo->findCanonicalPerson($person_name);
         if ($person == null) {
-            $person = New Person();
+            $person = new Person();
             $person->setName($person_name);
             $slug = Sluggable\Urlizer::urlize($person_name, '-');
             $person->setSlug($slug);

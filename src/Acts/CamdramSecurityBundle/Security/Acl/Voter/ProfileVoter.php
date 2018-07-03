@@ -9,7 +9,6 @@ use Acts\CamdramBundle\Entity\Person;
 
 class ProfileVoter extends Voter
 {
-
     public function supports($attribute, $subject)
     {
         return $attribute == 'EDIT'
@@ -21,5 +20,4 @@ class ProfileVoter extends Voter
         $user = $token->getUser();
         return $user instanceof User && $user->getPerson() == $subject;
     }
-
 }

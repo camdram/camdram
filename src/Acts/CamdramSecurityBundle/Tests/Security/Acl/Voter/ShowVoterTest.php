@@ -51,10 +51,14 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
             ->with($this->user, $society)->will($this->returnValue(true));
 
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $show, array('EDIT')
+                $this->token,
+            $show,
+            array('EDIT')
         ));
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $show, array('APPROVE')
+                $this->token,
+            $show,
+            array('APPROVE')
             ));
     }
 
@@ -69,10 +73,14 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
             ->with($this->user, $society)->will($this->returnValue(false));
 
         $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
-                $this->token, $show, array('EDIT')
+                $this->token,
+            $show,
+            array('EDIT')
             ));
         $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
-                $this->token, $show, array('APPROVE')
+                $this->token,
+            $show,
+            array('APPROVE')
             ));
     }
 
@@ -87,10 +95,14 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
             ->with($this->user, $venue)->will($this->returnValue(true));
 
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $show, array('EDIT')
+                $this->token,
+            $show,
+            array('EDIT')
             ));
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $show, array('APPROVE')
+                $this->token,
+            $show,
+            array('APPROVE')
             ));
     }
 
@@ -105,10 +117,14 @@ class ShowVoterTest extends \PHPUnit_Framework_TestCase
             ->with($this->user, $venue)->will($this->returnValue(false));
 
         $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
-                $this->token, $show, array('EDIT')
+                $this->token,
+            $show,
+            array('EDIT')
             ));
         $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
-                $this->token, $show, array('APPROVE')
+                $this->token,
+            $show,
+            array('APPROVE')
             ));
     }
 }

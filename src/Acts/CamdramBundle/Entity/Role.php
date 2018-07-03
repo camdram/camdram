@@ -257,13 +257,12 @@ class Role
 
     /**
      * Get slug of person
-     * 
+     *
      * @VirtualProperty
      * @return string
      */
-     public function getPersonSlug()
-     {
-         return $this->person->getSlug();
-     }
-
+    public function getPersonSlug()
+    {
+        return $this->person->getSlug();
+    }
 }

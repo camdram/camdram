@@ -75,12 +75,10 @@ class RavenResourceOwner implements ResourceOwnerInterface
 
     public function addPaths(array $paths)
     {
-
     }
 
     public function refreshAccessToken($refreshToken, array $extraParameters = [])
     {
-
     }
 
     public function getAuthorizationUrl($redirect_uri, array $params = array())
@@ -222,5 +220,4 @@ W7fgOEEsI4FoLOjQbJgIrgdYR2NIJh6pKKEf+9Ts2q/fuWv2xOLw7w29PIICeFIF
 hAM+a6/30F5fdkWpE1smPyrfASyXRfWE4Ccn1RVgYX9u
 -----END CERTIFICATE-----';
     }
-
 }

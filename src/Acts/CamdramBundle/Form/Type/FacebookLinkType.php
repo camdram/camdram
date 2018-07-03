@@ -16,7 +16,7 @@ use Acts\CamdramBundle\Form\DataTransformer\FacebookLinkTransformer;
 class FacebookLinkType extends AbstractType
 {
     /**
-     * 
+     *
      * @var \Facebook\Facebook
      */
     private $api;

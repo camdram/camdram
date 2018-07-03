@@ -37,8 +37,10 @@ class OAuthEventListener
     {
         $request = $this->requestStack->getMasterRequest();
 
-        $scope_str = $request->query->get('scope',
-            $request->request->get('fos_oauth_server_authorize_form' . '[scope]', '', true));
+        $scope_str = $request->query->get(
+            'scope',
+            $request->request->get('fos_oauth_server_authorize_form' . '[scope]', '', true)
+        );
         return explode(' ', $scope_str);
     }
 
@@ -56,14 +58,12 @@ class OAuthEventListener
     public function onPostAuthorizationProcess(OAuthEvent $event)
     {
         if ($event->isAuthorizedClient() && null !== $client = $event->getClient()) {
-
             $repo = $this->entityManager->getRepository('ActsCamdramApiBundle:Authorization');
 
             if ($auth = $repo->findOne($event->getUser(), $event->getClient())) {
                 $auth->addScopes($this->getScopes());
                 $this->entityManager->flush();
-            }
-            else {
+            } else {
                 /** @var User $user */
                 $auth = new Authorization();
                 $auth

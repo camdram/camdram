@@ -12,19 +12,19 @@ use Acts\CamdramSecurityBundle\Entity\User;
 class EmailLogger implements Swift_Events_SendListener
 {
     /**
-     * 
+     *
      * @var LoggerInterface
      */
     private $logger;
     
     /**
-     * 
+     *
      * @var RequestStack
      */
     private $requestStack;
 
     /**
-     * 
+     *
      * @var TokenStorageInterface
      */
     private $tokenStorage;
@@ -34,9 +34,11 @@ class EmailLogger implements Swift_Events_SendListener
      *
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger, RequestStack $requestStack,
-            TokenStorageInterface $tokenStorage)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        RequestStack $requestStack,
+            TokenStorageInterface $tokenStorage
+    ) {
         $this->logger = $logger;
         $this->requestStack = $requestStack;
         $this->tokenStorage = $tokenStorage;
@@ -44,7 +46,6 @@ class EmailLogger implements Swift_Events_SendListener
 
     public function beforeSendPerformed(Swift_Events_SendEvent $event)
     {
-        
     }
 
     public function sendPerformed(Swift_Events_SendEvent $event)
@@ -54,12 +55,9 @@ class EmailLogger implements Swift_Events_SendListener
         
         $token = $this->tokenStorage->getToken();
         $user = $token ? $token->getUser() : null;
-        if ($user instanceof User)
-        {
+        if ($user instanceof User) {
             $userInfo = ['id' => $user->getId(), 'name' => $user->getName()];
-        }
-        else
-        {
+        } else {
             $userInfo = null;
         }
         
@@ -120,10 +118,10 @@ class EmailLogger implements Swift_Events_SendListener
                 return LogLevel::INFO;
             // Sending failed
             case Swift_Events_SendEvent::RESULT_FAILED:
-                return LogLevel::CRITICAL;    
+                return LogLevel::CRITICAL;
             // Sending worked, but there were some failures
             case Swift_Events_SendEvent::RESULT_TENTATIVE:
-                return LogLevel::ERROR;    
+                return LogLevel::ERROR;
             // Sending was successful
             case Swift_Events_SendEvent::RESULT_SUCCESS:
                 return LogLevel::INFO;

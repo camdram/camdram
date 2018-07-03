@@ -16,7 +16,8 @@ namespace Acts\CamdramApiBundle\Configuration\Annotation;
  * @Annotation
  * @package Acts\CamdramApiBundle\Annotation
  */
-class Link {
+class Link
+{
 
     /**
      * @var string
@@ -91,5 +92,4 @@ class Link {
     {
         return $this->targetType;
     }
-
-} 
+}

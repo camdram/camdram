@@ -52,12 +52,10 @@ class EntitiesNewsCommand extends ContainerAwareCommand
                         $this->addNews('facebook', $item, $entity, $output);
                     }
                 }
-            } 
-            catch(\Facebook\Exceptions\FacebookResponseException $e) {
+            } catch (\Facebook\Exceptions\FacebookResponseException $e) {
                 // When Graph returns an error
                 $output->writeln('Graph returned an error: ' . $e->getMessage());
-            } 
-            catch(\Facebook\Exceptions\FacebookSDKException $e) {
+            } catch (\Facebook\Exceptions\FacebookSDKException $e) {
                 // When validation fails or other local issues
                 $output->writeln('Facebook SDK returned an error: ' . $e->getMessage());
             }
@@ -67,7 +65,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
     private function executeForTwitter(OutputInterface $output)
     {
         /**
-         * 
+         *
          * @var \Abraham\TwitterOAuth\TwitterOAuth $twitter
          */
         $twitter = $this->getContainer()->get('twitter.api');
@@ -79,10 +77,12 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         $news_repo = $em->getRepository('ActsCamdramBundle:News');
         $entities = $org_repo->findWithService('twitter');
         foreach ($entities as $entity) {
-            $response = $twitter->get('statuses/user_timeline', 
+            $response = $twitter->get(
+                'statuses/user_timeline',
                 ['user_id' => $entity->getTwitterId(), 'count' => 50,
                     'trim_user' => true, 'include_rts' => false
-                ]);
+                ]
+            );
             if ($twitter->getLastHttpCode() == 200) {
                 foreach ($response as $tweet) {
                     if (!$news_repo->itemExists('twitter', $tweet['id'])) {
@@ -92,7 +92,6 @@ class EntitiesNewsCommand extends ContainerAwareCommand
             } else {
                 $output->writeln('Twitter API error');
             }
-            
         }
     }
 
@@ -105,13 +104,9 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         
         if (isset($item['message']) && !empty($item['message'])) {
             $message = $item['message'];
-        }
-        else if (isset($item['text']) && !empty($item['text']))
-        {
+        } elseif (isset($item['text']) && !empty($item['text'])) {
             $message = $item['text'];
-        }
-        else
-        {
+        } else {
             return;
         }
 
@@ -120,12 +115,9 @@ class EntitiesNewsCommand extends ContainerAwareCommand
         $news->setEntity($entity);
         $news->setRemoteId(isset($item['id_str']) ? $item['id_str'] : $item['id']);
 
-        if (isset($item['created_at']))
-        {
+        if (isset($item['created_at'])) {
             $news->setPostedAt(new \DateTime($item['created_at']));
-        }
-        else if (isset($item['created_time']))
-        {
+        } elseif (isset($item['created_time'])) {
             $news->setPostedAt(new \DateTime($item['created_time']));
         }
         
@@ -150,8 +142,7 @@ class EntitiesNewsCommand extends ContainerAwareCommand
                 $this->addLink($news, $url['url'], $url['display_url']);
             }
         }
-        if (isset($item['message_tags']))
-        {
+        if (isset($item['message_tags'])) {
             foreach ($item['message_tags'] as $m) {
                 if (isset($m[0])) {
                     $m = $m[0];

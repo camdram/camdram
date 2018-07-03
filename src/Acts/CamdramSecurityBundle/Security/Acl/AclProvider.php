@@ -24,14 +24,15 @@ class AclProvider
      */
     private $entityManager;
 
-/**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
+    /**
+         * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+         */
     private $eventDispatcher = null;
 
-    public function __construct(EntityManager $entityManager,
-        EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->repository = $entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
@@ -124,11 +125,13 @@ class AclProvider
         $this->entityManager->persist($ace);
         $this->entityManager->flush();
 
-/* Send a Camdram-specific event that should trigger an email
-         * notification.
-         */
-        $this->eventDispatcher->dispatch(CamdramSecurityEvents::ACE_CREATED,
-            new AccessControlEntryEvent($ace));
+        /* Send a Camdram-specific event that should trigger an email
+                 * notification.
+                 */
+        $this->eventDispatcher->dispatch(
+            CamdramSecurityEvents::ACE_CREATED,
+            new AccessControlEntryEvent($ace)
+        );
     }
 
     /**
@@ -168,7 +171,7 @@ class AclProvider
         $ace_repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
         $existing_ace = $ace_repo->findAce($user, $show);
         /* Don't add a new ACE if the user is already able to access
-         * the resource. 
+         * the resource.
          */
         if ($existing_ace == null) {
             $ace = $ace_repo->findAceRequest($user, $show);
@@ -191,11 +194,13 @@ class AclProvider
             $this->entityManager->persist($ace);
             $this->entityManager->flush();
 
-/* Send a Camdram-specific event that should trigger an email
-                 * notification.
-                 */
-                $this->eventDispatcher->dispatch(CamdramSecurityEvents::ACE_CREATED,
-                    new AccessControlEntryEvent($ace));
+            /* Send a Camdram-specific event that should trigger an email
+                             * notification.
+                             */
+            $this->eventDispatcher->dispatch(
+                    CamdramSecurityEvents::ACE_CREATED,
+                    new AccessControlEntryEvent($ace)
+                );
         }
     }
 }

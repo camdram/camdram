@@ -41,8 +41,7 @@ class SearchController extends FOSRestController
         $resultSet = $search->search($query);
 
         $data = [];
-        foreach ($resultSet->getSuggests()['name'][0]['options'] as $result)
-        {
+        foreach ($resultSet->getSuggests()['name'][0]['options'] as $result) {
             $row = $result['_source'];
             $row['id'] = $result['_id'];
             $row['entity_type'] = $result['_type'];

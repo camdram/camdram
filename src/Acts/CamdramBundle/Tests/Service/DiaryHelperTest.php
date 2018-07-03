@@ -8,7 +8,6 @@ use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\DiaryHelper;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-
 class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**

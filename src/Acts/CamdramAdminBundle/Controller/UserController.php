@@ -175,11 +175,16 @@ class UserController extends FOSRestController
 
         $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
         $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
-        $url = $this->generateUrl('acts_camdram_security_reset_password',
-            array('email' => $user->getEmail(), 'token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->generateUrl(
+            'acts_camdram_security_reset_password',
+            array('email' => $user->getEmail(), 'token' => $token),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
-        return $this->render('ActsCamdramAdminBundle:User:reset-password-complete.html.twig',
-              array('user' => $user, 'url' => $url));
+        return $this->render(
+            'ActsCamdramAdminBundle:User:reset-password-complete.html.twig',
+              array('user' => $user, 'url' => $url)
+        );
     }
 
     public function getMergeAction($identifier)

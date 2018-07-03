@@ -9,8 +9,8 @@ use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManager;
 
-class AnnotationReader {
-
+class AnnotationReader
+{
     private $reader;
 
     private $em;
@@ -30,8 +30,9 @@ class AnnotationReader {
     {
         $data = new ApiData();
         
-        if (!is_object($object))
+        if (!is_object($object)) {
             return $data;
+        }
         
         $reflection = new \ReflectionObject($object);
 
@@ -56,7 +57,9 @@ class AnnotationReader {
                 $link = $this->createLinkMetadataFromAnnoation($annotation);
 
                 $link->setProperty($property->getName());
-                if (!$link->getName()) $link->setName($property->getName());
+                if (!$link->getName()) {
+                    $link->setName($property->getName());
+                }
                 if (!$link->getEntity()) {
                     $mapping = $doctrineMetadata->getAssociationMapping($property->getName());
 
@@ -72,7 +75,9 @@ class AnnotationReader {
             if ($annotation instanceof Link) {
                 $link = $this->createLinkMetadataFromAnnoation($annotation);
                 $link->setProperty($method->getName());
-                if (!$link->getName()) $link->setName($method->getName());
+                if (!$link->getName()) {
+                    $link->setName($method->getName());
+                }
 
                 $data->addLink($link);
             }
@@ -95,4 +100,4 @@ class AnnotationReader {
         $link->setEntity($annotation->getTargetType());
         return $link;
     }
-} 
+}

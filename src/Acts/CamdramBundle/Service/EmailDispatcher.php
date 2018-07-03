@@ -53,7 +53,8 @@ class EmailDispatcher
                         'owners' => $owners,
                         'show' => $show,
                     )
-                ), 'text/html'
+                ),
+                'text/html'
             )
 
 /* Plain Text */
@@ -64,7 +65,8 @@ class EmailDispatcher
                         'owners' => $owners,
                         'show' => $show,
                     )
-                ), 'text/plain'
+                ),
+                'text/plain'
             )
         ;
         $this->mailer->send($message);

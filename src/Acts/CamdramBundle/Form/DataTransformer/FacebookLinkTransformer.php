@@ -39,15 +39,12 @@ class FacebookLinkTransformer implements DataTransformerInterface
             return null;
         }
         try {
-
             $data = $this->api->sendRequest('GET', '/'.$value, ['fields' => 'username']);
             return $data->getDecodedBody()['username'];
-        }
-        catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             //Just return the id, which is valid but less user-friendly
             return "https://www.facebook.com/".$value;
-        }
-        catch(\Facebook\Exceptions\FacebookSDKException $e) {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return "https://www.facebook.com/".$value;
         }
     }
@@ -70,25 +67,19 @@ class FacebookLinkTransformer implements DataTransformerInterface
         if (preg_match('/^(?:https?\:\\/\\/)?www\.facebook\.com\\/([^\?]+)(?:\?.*)?$/i', $value, $matches)) {
             $value = $matches[1];
         }
-        if (preg_match('/^events\\/([0-9]+)\\/?/i', $value, $matches))
-        {
+        if (preg_match('/^events\\/([0-9]+)\\/?/i', $value, $matches)) {
             $value = $matches[1];
         }
 
         try {
             $data = $this->api->get('/'.urlencode($value));
             return $data->getDecodedBody()['id'];
-        } 
-        catch(\Facebook\Exceptions\FacebookResponseException $e) {
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
-        }
-        catch(\Facebook\Exceptions\FacebookSDKException $e) {
-            if (is_numeric($value))
-            {
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
+            if (is_numeric($value)) {
                 return $value;
-            }
-            else
-            {
+            } else {
                 throw new TransformationFailedException("We cannot accept Facebook pages at this time - we can't communicate with Facebook");
             }
         }

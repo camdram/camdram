@@ -90,5 +90,4 @@ class SymfonyContext extends BehatContext implements KernelAwareInterface
     {
         $this->kernel->getContainer()->get('fos_elastica.index.autocomplete')->refresh();
     }
-
 }

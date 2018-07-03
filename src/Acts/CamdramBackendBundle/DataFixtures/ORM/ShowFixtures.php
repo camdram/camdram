@@ -49,16 +49,28 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
         $total_weeks = $diff->days / 7;
 
         $this->person_repo = $manager->getRepository('ActsCamdramBundle:Person');
-        $this->people_ids = array_map(function ($val) { return $val['id']; },
-             $this->person_repo->createQueryBuilder('p')->select('p.id')->getQuery()->getArrayResult());
+        $this->people_ids = array_map(
+            function ($val) {
+                return $val['id'];
+            },
+             $this->person_repo->createQueryBuilder('p')->select('p.id')->getQuery()->getArrayResult()
+        );
 
         $this->venue_repo = $manager->getRepository('ActsCamdramBundle:Venue');
-        $this->venue_ids = array_map(function ($val) { return $val['id']; },
-            $this->venue_repo->createQueryBuilder('v')->select('v.id')->getQuery()->getArrayResult());
+        $this->venue_ids = array_map(
+            function ($val) {
+                return $val['id'];
+            },
+            $this->venue_repo->createQueryBuilder('v')->select('v.id')->getQuery()->getArrayResult()
+        );
 
         $this->society_repo = $manager->getRepository('ActsCamdramBundle:Society');
-        $this->society_ids = array_map(function ($val) { return $val['id']; },
-            $this->society_repo->createQueryBuilder('s')->select('s.id')->getQuery()->getArrayResult());
+        $this->society_ids = array_map(
+            function ($val) {
+                return $val['id'];
+            },
+            $this->society_repo->createQueryBuilder('s')->select('s.id')->getQuery()->getArrayResult()
+        );
 
         for ($i = 0; $i < 250; $i++) {
             $show = new Show();

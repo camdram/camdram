@@ -117,5 +117,4 @@ class ShowTest extends WebTestCase
         $this->assertEquals("Test Show", $data->name);
         $this->assertEquals("Test Society", $data->society->name);
     }
-    
 }

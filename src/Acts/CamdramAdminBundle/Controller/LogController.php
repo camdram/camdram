@@ -9,14 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Controller for viewing Camdram's log files
- * 
+ *
  * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class LogController extends Controller
 {
     /**
      * @Route("/logs", name="acts_camdram_logs")
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -26,7 +26,7 @@ class LogController extends Controller
 
     /**
      * @Route("/logs/get/{file}", name="acts_camdram_logs_get")
-     * 
+     *
      * @param unknown $file
      * @return \Symfony\Component\HttpFoundation\Response
      */

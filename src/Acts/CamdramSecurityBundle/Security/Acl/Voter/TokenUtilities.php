@@ -19,11 +19,15 @@ class TokenUtilities
      */
     public static function hasRole(TokenInterface $token, $role)
     {
-        if (is_string($role)) $role = new Role($role);
+        if (is_string($role)) {
+            $role = new Role($role);
+        }
 
 
         foreach ($token->getRoles() as $tokenRole) {
-            if ($role->getRole() == $tokenRole->getRole()) return true;
+            if ($role->getRole() == $tokenRole->getRole()) {
+                return true;
+            }
         }
     }
     
@@ -47,8 +51,7 @@ class TokenUtilities
      */
     public static function isInteractiveRequest(TokenInterface $token)
     {
-        return $token instanceof UsernamePasswordToken 
+        return $token instanceof UsernamePasswordToken
             || $token instanceof \HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
     }
-
 }

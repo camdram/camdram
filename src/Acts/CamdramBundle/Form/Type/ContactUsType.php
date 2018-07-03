@@ -68,7 +68,6 @@ class ContactUsType extends AbstractType
                         ]
                     ]);
             }
-
         });
     }
 

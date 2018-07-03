@@ -13,15 +13,14 @@ class ContactController extends Controller
 
     /**
      * @Route("/contact/{type}/{identifier}", name="contact_entity")
-     * 
+     *
      * @param Request $request
      * @param string $identifier
      */
     public function indexAction(Request $request, $type, $identifier)
     {
         $entity = $this->getEntity($type, $identifier);
-        if (is_null($entity))
-        {
+        if (is_null($entity)) {
             return $this->createNotFoundException();
         }
         $this->denyAccessUnlessGranted('VIEW', $entity);
@@ -29,11 +28,15 @@ class ContactController extends Controller
         $form = $this->createForm(new ContactUsType($this->get('security.token_storage')));
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $this->get('acts.camdram.contact_entity_service')->emailEntity($entity, $data['name'],
-                $data['email'], $data['subject'], $data['message']);
+            $this->get('acts.camdram.contact_entity_service')->emailEntity(
+                $entity,
+                $data['name'],
+                $data['email'],
+                $data['subject'],
+                $data['message']
+            );
             
             return $this->render('ActsCamdramBundle:Contact:sent.html.twig', [
                 'entity' => $entity,
@@ -50,8 +53,7 @@ class ContactController extends Controller
     
     private function getEntity($type, $identifier)
     {
-        switch ($type)
-        {
+        switch ($type) {
             case 'show':
                 return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')
                     ->findOneBySlug($identifier);

@@ -41,12 +41,9 @@ class TwitterLinkTransformer implements DataTransformerInterface
         }
 
         $data = $this->api->get('users/show', ['user_id' => $value]);
-        if ($this->api->getLastHttpCode() == 200)
-        {
+        if ($this->api->getLastHttpCode() == 200) {
             return $data['screen_name'];
-        }
-        else 
-        {
+        } else {
             return $value;
         }
     }
@@ -70,18 +67,14 @@ class TwitterLinkTransformer implements DataTransformerInterface
             $value = $matches[1];
         }
 
-        if (is_numeric($value))
-        {
+        if (is_numeric($value)) {
             return $value;
         }
 
         $data = $this->api->get('users/show', ['screen_name' => $value]);
-        if ($this->api->getLastHttpCode() == 200)
-        {
+        if ($this->api->getLastHttpCode() == 200) {
             return $data['id'];
-        }
-        else
-        {
+        } else {
             throw new TransformationFailedException(sprintf('%s is an invalid Twitter id', $value));
         }
     }

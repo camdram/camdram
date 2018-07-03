@@ -36,10 +36,15 @@ class ImageListener
      */
     private $logger;
     
-    public function __construct(ObjectManager $em, 
+    public function __construct(
+    
+        ObjectManager $em,
         AuthorizationCheckerInterface $authorizationChecker,
-        ImagineInterface $imagine, LoggerInterface $logger)
-    {
+        ImagineInterface $imagine,
+    
+        LoggerInterface $logger
+    
+    ) {
         $this->entityManager = $em;
         $this->authorizationChecker = $authorizationChecker;
         $this->imagine = $imagine;
@@ -48,8 +53,7 @@ class ImageListener
     
     private function getRepository($type)
     {
-        switch ($type)
-        {
+        switch ($type) {
             case 'show':
                 return $this->entityManager->getRepository('ActsCamdramBundle:Show');
             case 'society':
@@ -65,23 +69,24 @@ class ImageListener
     {
         $file = $event->getFile();
         
-        if (is_null($file))
-        {
+        if (is_null($file)) {
             $this->logger->error('ImageListener: Null file uploaded');
             throw new ValidationException('No image uploaded');
         }
         
-        if (!preg_match('/^image\/.*$/', $file->getMimeType()))
-        {
-            $this->logger->error('ImageListener: MIME type is unsupported', 
-                ['filename' => $file->getBasename(), 'type' => $file->getMimeType()]);
+        if (!preg_match('/^image\/.*$/', $file->getMimeType())) {
+            $this->logger->error(
+                'ImageListener: MIME type is unsupported',
+                ['filename' => $file->getBasename(), 'type' => $file->getMimeType()]
+            );
             throw new ValidationException('File is not a valid image');
         }
         
-        if ($event->getFile()->getSize() > 2 * 1024 * 1024)
-        {
-            $this->logger->error('ImageListener: File > 2Mb uploaded',
-                ['filename' => $file->getBasename(), 'size' => $file->getSize()]);
+        if ($event->getFile()->getSize() > 2 * 1024 * 1024) {
+            $this->logger->error(
+                'ImageListener: File > 2Mb uploaded',
+                ['filename' => $file->getBasename(), 'size' => $file->getSize()]
+            );
             throw new ValidationException('Files over 2Mb cannot be processed');
         }
         
@@ -89,28 +94,28 @@ class ImageListener
         $repo = $this->getRepository($type);
         $identifier = $event->getRequest()->request->get('identifier', '');
         
-        if (is_null($repo))
-        {
-            $this->logger->error('ImageListener: File uploaded with invalid resource type',
-                ['filename' => $file->getBasename(), 'type' => $type]);
+        if (is_null($repo)) {
+            $this->logger->error(
+                'ImageListener: File uploaded with invalid resource type',
+                ['filename' => $file->getBasename(), 'type' => $type]
+            );
             throw new ValidationException('Invalid image type');
         }
         
         $entity = $repo->findOneBySlug($identifier);
-        if (!$entity)
-        {
-            $this->logger->error('ImageListener: Identifier not found',
-                ['filename' => $file->getBasename(), 'type' => $type, 'identifier' => $identifier]);
+        if (!$entity) {
+            $this->logger->error(
+                'ImageListener: Identifier not found',
+                ['filename' => $file->getBasename(), 'type' => $type, 'identifier' => $identifier]
+            );
             throw new ValidationException('Invalid '.$type.' identifier');
         }
         
-        if (!$this->authorizationChecker->isGranted('EDIT', $entity))
-        {
+        if (!$this->authorizationChecker->isGranted('EDIT', $entity)) {
             throw new ValidationException('Not authorized to edit '.$type);
         }
         
-        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'))
-        {
+        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new ValidationException('Re-authentication required');
         }
     }
@@ -122,8 +127,7 @@ class ImageListener
         $identifier = $event->getRequest()->request->get('identifier', '');
         $entity = $repo->findOneBySlug($identifier);
         if (!$this->authorizationChecker->isGranted('EDIT', $entity)
-            || !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY'))
-        {
+            || !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return;
         }
         
@@ -134,8 +138,7 @@ class ImageListener
         
         $this->logger->debug('ImageListener: Attempting too open image', ['file' => $file->getPathname()]);
         $imageFile = $this->imagine->open($file->getPathname());
-        if ($imageFile->getSize()->getWidth() > 1024 || $imageFile->getSize()->getHeight() > 768)
-        {
+        if ($imageFile->getSize()->getWidth() > 1024 || $imageFile->getSize()->getHeight() > 768) {
             $this->logger->debug('ImageListener: Resizing uploaded image');
             //Resize file to save disk space
             $maxSize = new Box(1024, 768);

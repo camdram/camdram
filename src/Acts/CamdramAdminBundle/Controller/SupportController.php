@@ -20,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class SupportController extends Controller
 {
-
     protected function getEntity($identifier)
     {
         $entity = $this->getRepository()->findOneBy(array('id' => $identifier));
@@ -42,7 +41,7 @@ class SupportController extends Controller
      *
      * Issues are grouped into those that are assigned to the logged in user,
      * unassigned issues, and issues assigned to other users.
-     * 
+     *
      * @Route("/issues", name="get_issues")
      */
     public function indexAction(Request $request)
@@ -62,7 +61,7 @@ class SupportController extends Controller
                       ->getOtherUsersIssues($this->getUser());
 
         return $this->render('ActsCamdramAdminBundle:Support:index.html.twig', [
-                'my_issues' => $mine, 
+                'my_issues' => $mine,
                 'unassigned_issues' => $unassigned,
                 'other_peoples_issues' => $others
             ]);
@@ -90,8 +89,7 @@ class SupportController extends Controller
             
             //Temporarily write to second support table too
             $repo2 = $this->getDoctrine()->getManager()->getRepository('ActsCamdramAdminBundle:Support2');
-            if ($parent = $repo2->findOneById($identifier))
-            {
+            if ($parent = $repo2->findOneById($identifier)) {
                 $reply2 = new Support2();
                 $reply2->setFrom($from);
                 $reply2->setParent($this->getEntity2($identifier));
@@ -133,13 +131,15 @@ class SupportController extends Controller
             $this->get('mailer')->send($message);
         }
 
-        return $this->redirect($this->generateUrl('get_issue',
-                    array('identifier' => $identifier)));
+        return $this->redirect($this->generateUrl(
+            'get_issue',
+                    array('identifier' => $identifier)
+        ));
     }
 
     /**
      * Action for pages that represent a single issue.
-     * 
+     *
      * @Route("/issues/{identifier}", name="get_issue")
      */
     public function issueAction(Request $request, $identifier)
@@ -152,13 +152,16 @@ class SupportController extends Controller
         $reply = new Support();
         $reply->setTo(htmlspecialchars_decode($issue->getFrom()));
         $reply->setSubject('Re: ' . $issue->getSubject());
-        $reply->setBody("\n\n\n--\nSent by " . $this->getUser()->getName() . " on behalf of Camdram's support team.\nFor further correspondence relating to this email, contact support-" . $issue->getId() . "@camdram.net.\nFor new enquiries, contact websupport@camdram.net."
+        $reply->setBody(
+            "\n\n\n--\nSent by " . $this->getUser()->getName() . " on behalf of Camdram's support team.\nFor further correspondence relating to this email, contact support-" . $issue->getId() . "@camdram.net.\nFor new enquiries, contact websupport@camdram.net."
             );
         $form = $this->createForm(new SupportType(), $reply, array(
             'action' => $this->generateUrl('post_issue_reply', array('identifier' => $identifier))));
 
-        return $this->render('ActsCamdramAdminBundle:Support:show.html.twig',
-            ['issue' => $issue, 'form' => $form->createView()]);
+        return $this->render(
+            'ActsCamdramAdminBundle:Support:show.html.twig',
+            ['issue' => $issue, 'form' => $form->createView()]
+        );
     }
 
     /**

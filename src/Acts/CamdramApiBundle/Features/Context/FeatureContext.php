@@ -15,16 +15,14 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 
-use Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-
+use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Exception\PendingException;
 
 /**
  * Feature context.
  */
 class FeatureContext extends BehatContext
 {
-
     public function __construct(array $params)
     {
         $this->useContext('mink', new MinkContext());
@@ -32,5 +30,4 @@ class FeatureContext extends BehatContext
         $this->useContext('entity', new EntityContext());
         $this->useContext('rest', new RestContext());
     }
-
 }

@@ -37,10 +37,14 @@ class ModerationManager
 
     private $logger;
 
-    public function __construct(EntityManager $entityManager, EmailDispatcher $dispatcher,
-                                AclProvider $aclProvider, AuthorizationCheckerInterface $authorizationChecker,
-                                TokenStorageInterface $tokenStorage, LoggerInterface $logger)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        EmailDispatcher $dispatcher,
+                                AclProvider $aclProvider,
+        AuthorizationCheckerInterface $authorizationChecker,
+                                TokenStorageInterface $tokenStorage,
+        LoggerInterface $logger
+    ) {
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
         $this->aclProvider = $aclProvider;

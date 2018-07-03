@@ -16,7 +16,7 @@ use Acts\CamdramBundle\Form\DataTransformer\TwitterLinkTransformer;
 class TwitterLinkType extends AbstractType
 {
     /**
-     * 
+     *
      * @var \Abraham\TwitterOAuth\TwitterOAuth
      */
     private $api;

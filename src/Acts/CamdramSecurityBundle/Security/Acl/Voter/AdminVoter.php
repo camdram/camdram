@@ -12,7 +12,7 @@ class AdminVoter extends Voter
 {
     public function supports($attribute, $subject)
     {
-        return is_object($subject) && 
+        return is_object($subject) &&
                     strpos(get_class($subject), 'Acts\\') !== false;
     }
 

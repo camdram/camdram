@@ -12,16 +12,20 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class RegistrationFormHandler implements RegistrationFormHandlerInterface
 {
-    
     private $em;
     
     private $encoderFactory;
     
     private $formBuilder;
     
-    public function __construct(EntityManager $entityManager, EncoderFactoryInterface $encoderFactory,
-        FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+    
+        EntityManager $entityManager,
+    
+        EncoderFactoryInterface $encoderFactory,
+        FormFactoryInterface $formFactory
+    
+    ) {
         $this->em = $entityManager;
         $this->encoderFactory = $encoderFactory;
         $this->formFactory = $formFactory;
@@ -50,5 +54,4 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
         }
         return false;
     }
-    
 };

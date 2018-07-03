@@ -51,7 +51,9 @@ class PersonController extends AbstractRestController
         //If person is mapped to a different person, redirect to the canonical person
         if ($person->getMappedTo()) {
             return $this->redirectToRoute(
-                'get_person', array('identifier' => $person->getMappedTo()->getSlug()), 301
+                'get_person',
+                array('identifier' => $person->getMappedTo()->getSlug()),
+                301
             );
         }
 

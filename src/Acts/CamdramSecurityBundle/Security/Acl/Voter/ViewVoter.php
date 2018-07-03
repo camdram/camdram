@@ -14,7 +14,8 @@ class ViewVoter extends Voter
     public function supports($attribute, $subject)
     {
         return $attribute == 'VIEW'
-            && ($subject instanceof Show
+            && (
+                $subject instanceof Show
                   || $subject instanceof Venue
                   || $subject instanceof Society
                   || $subject instanceof Person
@@ -23,7 +24,6 @@ class ViewVoter extends Voter
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-
         if ($subject instanceof Show) {
             return $subject->getAuthorisedBy() !== null;
         }
