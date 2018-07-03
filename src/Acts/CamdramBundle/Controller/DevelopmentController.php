@@ -14,7 +14,16 @@ class DevelopmentController extends Controller
 {
     public function indexAction()
     {
-        $response = $this->render('ActsCamdramBundle:Development:index.html.twig');
+        $git_info = [
+            'tag' => exec('git tag --points-at HEAD'),
+            'hash' => exec('git rev-parse HEAD'),
+            'branch' => ''
+        ];
+        if (empty($git_info['tag'])) {
+            $git_info['branch'] = exec('git symbolic-ref --short HEAD');
+        }
+
+        $response = $this->render('ActsCamdramBundle:Development:index.html.twig', ['git_info' => $git_info]);
 
         return $response;
     }
