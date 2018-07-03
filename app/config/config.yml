@@ -125,9 +125,6 @@ acts_camdram:
     techies_advert_max_days: 40
     data_dir: "%kernel.root_dir%/data"
 
-acts_camdram_legacy:
-    v1_hostname: %v1_hostname%
-
 fos_oauth_server:
     db_driver:           orm
     client_class:        Acts\CamdramApiBundle\Entity\ExternalApp
