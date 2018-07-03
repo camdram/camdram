@@ -16,7 +16,7 @@ Feature: Search and autocomplete
     And I should see "Test Venue 2" in the "#content" element
 
   Scenario: I use the autocomplete callback
-    When I go to "/search/autocomplete.json?q=test"
+    When I go to "/search.json?q=test"
     Then the response status code should be 200
     And the response should contain "Test Show"
     And the response should contain "Test Show 2"
