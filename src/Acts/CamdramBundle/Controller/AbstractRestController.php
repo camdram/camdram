@@ -122,9 +122,16 @@ abstract class AbstractRestController extends FOSRestController
         $form = $this->getForm();
         $form->bind($request);
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
+            try
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($form->getData());
+                $em->flush();
+            }
+            catch(\Elastica\Exception\ExceptionInterface $ex)
+            {
+                $this->get('logger')->warning('Failed to add new entity to search index', ['type' => $this->type, 'id' => $entity->getId()]);
+            }
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         } else {
@@ -164,8 +171,14 @@ abstract class AbstractRestController extends FOSRestController
         $form->submit($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
+            try
+            {
+                $em->flush();
+            }
+            catch(\Elastica\Exception\ExceptionInterface $ex)
+            {
+                $this->get('logger')->warning('Failed to update search index', ['type' => $this->type, 'id' => $entity->getId()]);
+            }
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
         } else {
             return $this->view($form, 400)
