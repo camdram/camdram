@@ -2,10 +2,10 @@
 rm app/config/parameters.yml
 set -e
 # Install deps again, which will create a new parameters.yml with default values
-composer install -n
+./composer.phar install -n
 # Generate test fixtures with Elasticsearch stopped
 sudo service elasticsearch stop
-php app/console camdram:database:update
+php app/console camdram:database:refresh
 # Start Elasticsearch and populate index
 sudo service elasticsearch start
 sleep 10

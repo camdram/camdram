@@ -42,11 +42,11 @@ If app/data/orm.db and app/data/odm.db already exist, delete them or chown them 
 
 Run the command below to generate a SQLite datastore which contains randomly-generated sample data
 
-    php app/console camdram:database:update
+    php app/console camdram:database:refresh
 
 Should this (or any other php commands) produce 'out of memory' errors ("allowed memory size exhausted" or similar), you can allow more memory for this command only like this:
 
-    php -d memory_limit=512M app/console camdram:database:update
+    php -d memory_limit=512M app/console camdram:database:refresh
 
 This is most likely to happen with database updates and calls to `composer.phar`.  Naturally you need to consider how much memory (RAM) your system has available.
 
@@ -79,9 +79,9 @@ At a later date, once your local repository has become out of sync with Gituhb (
 
     git pull
     php composer.phar install
-    php app/console camdram:database:update
+    php app/console camdram:database:refresh
 
-This will pull in the latest code, update any changes to the dependencies and update the database. If you have forked the project then be sure that you have followed all of the instructions in the help guide, particularly noting the need to [configure remotes](https://help.github.com/articles/fork-a-repo/#step-3-configure-git-to-sync-your-fork-with-the-original-spoon-knife-repository). The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (apart from database camdram:database:update with a SQLite, which completely drops and recreates the whole database).
+This will pull in the latest code, install any changes to the dependencies and refresh the database. If you have forked the project then be sure that you have followed all of the instructions in the help guide, particularly noting the need to [configure remotes](https://help.github.com/articles/fork-a-repo/#step-3-configure-git-to-sync-your-fork-with-the-original-spoon-knife-repository). The second and third command may not be necessary if no one has recently changed the dependencies or database schema, but there's never any harm in running them (although  camdram:database:refresh will revert any data you've added).
 
 
 ## 8) Write some code
