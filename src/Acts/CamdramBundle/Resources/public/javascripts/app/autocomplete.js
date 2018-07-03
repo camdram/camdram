@@ -116,22 +116,29 @@ Camdram.autocomplete.requestOptions = function() {
         // Activate the field
         var url = Routing.generate('search_entity', {_format: 'json', q: typed, limit: 10});
         $.getJSON(url, function(data) {
-            Camdram.autocomplete.displayResults(typed, data);
+            Camdram.autocomplete.displayResults(typed, data, false);
             Camdram.autocomplete.cache[typed] = data;
+            $("#search_form .fa-spinner").fadeOut(100);
+        })
+        .fail(function()
+        {
+            Camdram.autocomplete.displayResults(typed, [], true);
             $("#search_form .fa-spinner").fadeOut(100);
         });
     }
 }
 
-Camdram.autocomplete.displayResults = function(query, items) {
+Camdram.autocomplete.displayResults = function(query, items, error) {
     // Store the results
     $("#search_form .results ul li").remove();
+    $("#search_form .noresults").hide();
+    $("#search_form .error").hide();
 
     var first_item = true;
 
     // Draw out the elements
     if (items.length > 0) {
-        $("#search_form .noresults").hide();
+
         for (var i = 0; i < items.length; i++) {
             var result = items[i];
             var item = $("<li/>");
@@ -191,6 +198,9 @@ Camdram.autocomplete.displayResults = function(query, items) {
             $("#search_form .results ul").append(item);
         }
         Camdram.autocomplete.drawControl(true, (items.length * 40));
+    } else if (error) {
+        $("#search_form .error").show();
+        Camdram.autocomplete.drawControl(true);
     } else {
         $("#search_form .noresults").show();
         $('#search_form .noresults .query').text(query);
