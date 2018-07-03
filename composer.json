@@ -35,12 +35,15 @@
         "zurb/foundation": "4.*",
         "leafo/scssphp": "0.6.*",
         "zendframework/zend-feed": "2.4.*",
+        "zendframework/zend-servicemanager": "2.4.*",
         "excelwebzone/recaptcha-bundle" : "2.6.*@dev",
-        "hwi/oauth-bundle": "dev-0.5.3-camdram",
+        "hwi/oauth-bundle": "^0.6",
         "oneup/uploader-bundle": "^1.9",
         "facebook/graph-sdk": "^5.6",
         "abraham/twitteroauth": "^0.5.4",
-        "knplabs/github-api": "^1.7"
+        "knplabs/github-api": "^1.7",
+        "php-http/guzzle6-adapter": "^1.1",
+        "php-http/httplug-bundle": "^1.10"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
@@ -51,12 +54,6 @@
         "behat/symfony2-extension": "1.1.*",
         "phpunit/phpunit": "5.7.*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/camdram/HWIOAuthBundle"
-        }
-    ],
     "scripts": {
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
@@ -90,7 +87,7 @@
     "config": {
         "bin-dir": "bin/",
         "platform": {
-            "php": "5.6.33"
+            "php": "5.6.36"
         }
     }
 }

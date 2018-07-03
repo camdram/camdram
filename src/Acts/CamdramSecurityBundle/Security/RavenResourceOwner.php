@@ -4,7 +4,7 @@ namespace Acts\CamdramSecurityBundle\Security;
 use HWI\Bundle\OAuthBundle\Security\Http\ResourceOwnerMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Buzz\Client\ClientInterface as HttpClientInterface;
+use Http\Client\Common\HttpMethodsClient;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwnerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse;
 use OAuth2\Model\OAuth2Token;
@@ -16,7 +16,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
     
     private $httpClient;
     
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(HttpMethodsClient $httpClient)
     {
         $this->httpClient = $httpClient;
     }
@@ -73,6 +73,16 @@ class RavenResourceOwner implements ResourceOwnerInterface
         }
     }
 
+    public function addPaths(array $paths)
+    {
+
+    }
+
+    public function refreshAccessToken($refreshToken, array $extraParameters = [])
+    {
+
+    }
+
     public function getAuthorizationUrl($redirect_uri, array $params = array())
     {
         $params['ver'] = 3;
@@ -101,7 +111,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
     public function getUserInformation(array $token, array $extraParameters = array())
     {
         $response = new PathUserResponse;
-        $response->setResponse([
+        $response->setData([
             'identifier' => $token['principal'],
             'name' => null,
             'email' => $token['principal'].'@cam.ac.uk',
