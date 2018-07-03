@@ -4,7 +4,6 @@ namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Form\Type\PersonType;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -15,7 +14,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
  *
  * Controller for REST actions for people. Inherits from AbstractRestController.
  *
- * @RouteResource("Person")
+ * @Rest\RouteResource("Person")
  */
 class PersonController extends AbstractRestController
 {
@@ -58,6 +57,24 @@ class PersonController extends AbstractRestController
         }
 
         return parent::getAction($identifier);
+    }
+
+    /**
+     * Action that allows querying by id. Redirects to slug URL
+     * 
+     * @Rest\Get("/people/by-id/{id}")
+     */
+    public function getByIdAction(Request $request, $id)
+    {
+        $this->checkAuthenticated();
+        $person = $this->getRepository()->findOneById($id);
+        
+        if (!$person)
+        {
+            throw $this->createNotFoundException('That person id does not exist');
+        }
+
+        return $this->redirectToRoute('get_person', ['identifier' => $person->getSlug(), '_format' => $request->getRequestFormat()]);
     }
 
     /**

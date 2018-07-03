@@ -78,6 +78,24 @@ class ShowController extends AbstractRestController
         ;
         return $view;
     }
+    
+    /**
+     * Action that allows querying by id. Redirects to slug URL
+     * 
+     * @Rest\Get("/shows/by-id/{id}")
+     */
+    public function getByIdAction(Request $request, $id)
+    {
+        $this->checkAuthenticated();
+        $show = $this->getRepository()->findOneById($id);
+        
+        if (!$show)
+        {
+            throw $this->createNotFoundException('That show id does not exist');
+        }
+
+        return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug(), '_format' => $request->getRequestFormat()]);
+    }
 
     public function postAction(Request $request)
     {

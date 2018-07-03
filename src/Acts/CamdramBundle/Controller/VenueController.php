@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
 use Ivory\GoogleMap\Events\MouseEvent;
@@ -15,7 +15,7 @@ use Ivory\GoogleMap\Overlays\InfoWindow;
  *
  * Controller for REST actions for venues. Inherits from AbstractRestController.
  *
- * @RouteResource("Venue")
+ * @Rest\RouteResource("Venue")
  */
 class VenueController extends OrganisationController
 {
@@ -51,6 +51,24 @@ class VenueController extends OrganisationController
         ;
         
         return $view;
+    }
+
+    /**
+     * Action that allows querying by id. Redirects to slug URL
+     * 
+     * @Rest\Get("/venues/by-id/{id}")
+     */
+    public function getByIdAction(Request $request, $id)
+    {
+        $this->checkAuthenticated();
+        $venue = $this->getRepository()->findOneById($id);
+        
+        if (!$venue)
+        {
+            throw $this->createNotFoundException('That venue id does not exist');
+        }
+
+        return $this->redirectToRoute('get_venue', ['identifier' => $venue->getSlug(), '_format' => $request->getRequestFormat()]);
     }
 
     /**

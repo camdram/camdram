@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\SocietyType;
 
@@ -12,7 +12,7 @@ use Acts\CamdramBundle\Form\Type\SocietyType;
  *
  * Controller for REST actions for societies. Inherits from AbstractRestController.
  *
- * @RouteResource("Society")
+ * @Rest\RouteResource("Society")
  */
 class SocietyController extends OrganisationController
 {
@@ -48,6 +48,24 @@ class SocietyController extends OrganisationController
         ;
         
         return $view;
+    }
+
+    /**
+     * Action that allows querying by id. Redirects to slug URL
+     * 
+     * @Rest\Get("/societies/by-id/{id}")
+     */
+    public function getByIdAction(Request $request, $id)
+    {
+        $this->checkAuthenticated();
+        $society = $this->getRepository()->findOneById($id);
+        
+        if (!$society)
+        {
+            throw $this->createNotFoundException('That society id does not exist');
+        }
+
+        return $this->redirectToRoute('get_society', ['identifier' => $society->getSlug(), '_format' => $request->getRequestFormat()]);
     }
     
     public function cgetAction(Request $request)
