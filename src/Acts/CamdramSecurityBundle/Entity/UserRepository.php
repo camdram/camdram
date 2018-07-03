@@ -143,4 +143,19 @@ class UserRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    /**
+     * 
+     */
+    public function search($query, $limit)
+    {
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb
+            ->where($qb->expr()->orX($qb->expr()->like('u.name', ':query'), $qb->expr()->like('u.email', ':query')))
+            ->setParameter('query', '%' . $query . '%')
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

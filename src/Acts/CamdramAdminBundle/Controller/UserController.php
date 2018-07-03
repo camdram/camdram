@@ -55,12 +55,12 @@ class UserController extends FOSRestController
      */
     public function cgetAction(Request $request)
     {
+        $repo = $this->getRepository();
+
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
-            $search_provider = $this->get('acts.camdram.search_provider');
-            $data = $search_provider->executeUserSearch($request->get('q'), 10);
+            $data = $repo->search($request->get('q'), 10);
         } else {
-            $repo = $this->getRepository();
             $qb = $repo->createQueryBuilder('e');
             $adapter = new DoctrineORMAdapter($qb);
             $data = new Pagerfanta($adapter);
