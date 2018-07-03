@@ -26,14 +26,14 @@ class SearchController extends FOSRestController
     public function searchAction(Request $request)
     {
         $limit = $request->get('limit', 10);
+        $page = $request->get('page', 1);
         $searchText = $request->get('q');
 
-        $bool = new BoolQuery;
-        $bool->addShould(new Match("name", $searchText));
-        $bool->addShould(new Match("short_name", $searchText));
+        $term = new \Elastica\Suggest\Completion("name", "name");
+        $term->setText($searchText);
 
-        $query = Query::create($bool);
-        $query->setSize($limit);
+        $query = Query::create($term);
+        $query->setFrom(($page-1)*$limit)->setSize($limit);
         //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
         $query->setSort(['rank' => ['order' => 'desc', 'missing' => PHP_INT_MAX-1]]);
         
@@ -41,11 +41,11 @@ class SearchController extends FOSRestController
         $resultSet = $search->search($query);
 
         $data = [];
-        foreach ($resultSet as $result)
+        foreach ($resultSet->getSuggests()['name'][0]['options'] as $result)
         {
-            $row = $result->getSource();
-            $row['id'] = $result->getId();
-            $row['entity_type'] = $result->getType();
+            $row = $result['_source'];
+            $row['id'] = $result['_id'];
+            $row['entity_type'] = $result['_type'];
             $data[] = $row;
         }
 

@@ -317,7 +317,7 @@ class Person
 
     public function isIndexable()
     {
-        return !$this->isMapped() && count($this->getRoles());
+        return !empty($this->getName()) & !$this->isMapped() && count($this->getRoles());
     }
 
     /**

@@ -8,24 +8,23 @@ fos_elastica:
                 index:
                     analysis:
                         tokenizer:
-                            autocomplete:
-                                type:     edge_ngram
-                                min_gram: 2
-                                max_gram: 20
-                                token_chars: [letter, digit, punctuation]
+                            reverse_words:
+                                type: path_hierarchy
+                                delimiter: ' '
+                                reverse: true
                         analyzer:
                             autocomplete:
                                 type:      custom
-                                tokenizer: autocomplete
-                                filter: [lowercase]
-                            whitespaceAnalyzer:
+                                tokenizer: reverse_words
+                                filter: [trim, lowercase]
+                            search:
                                 type: custom
-                                tokenizer: whitespace
-                                filter: [lowercase]
+                                tokenizer: keyword
+                                filter: [trim, lowercase]
             types:
                 show:
                     mappings:
-                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search }
                         slug: ~
                         start_at: { type: date }
                         rank: { type: integer }
@@ -34,10 +33,10 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Show
                         provider: ~
                         finder: ~
+                    indexable_callback: isIndexable
                 society:
                     mappings:
-                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
-                        short_name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
                         slug: ~
                     persistence:
                         driver: orm
@@ -46,8 +45,7 @@ fos_elastica:
                         finder: ~
                 venue:
                     mappings:
-                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
-                        short_name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
                         slug: ~
                     persistence:
                         driver: orm
@@ -56,7 +54,7 @@ fos_elastica:
                         finder: ~
                 person:
                     mappings:
-                        name: { analyzer: autocomplete, search_analyzer: whitespaceAnalyzer }
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search }
                         slug: ~
                         show_count: ~
                         last_active:  { type: date }
@@ -66,3 +64,4 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Person
                         provider: ~
                         finder: ~
+                    indexable_callback: isIndexable
