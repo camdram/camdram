@@ -3,6 +3,7 @@ Feature: Search and autocomplete
   Background:
     Given the show "Test Show" with society "Test Society" and venue "Test Venue"
     And the show "Test Show 2" with society "Test Society 2" and venue "Test Venue 2"
+    And I refresh the search index
 
   Scenario: I perform a full text search
     Given I am on the homepage

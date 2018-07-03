@@ -79,12 +79,16 @@ class SymfonyContext extends BehatContext implements KernelAwareInterface
      */
     public function resetSphinx()
     {
-        if ($this->kernel->getContainer()->has('acts.sphinx_realtime.resetter')) {
-            $resetter = $this->kernel->getContainer()->get('acts.sphinx_realtime.resetter');
-            $indexManager = $this->kernel->getContainer()->get('acts.sphinx_realtime.index_manager');
-            foreach ($indexManager->getIndexes() as $index) {
-                $resetter->resetIndex($index->getId());
-            }
-        }
+        $resetter = $this->kernel->getContainer()->get('fos_elastica.resetter');
+        $resetter->resetAllIndexes();
     }
+
+    /**
+     * @Given /^I refresh the search index$/
+     */
+    public function refreshSearchIndex()
+    {
+        $this->kernel->getContainer()->get('fos_elastica.index.autocomplete')->refresh();
+    }
+
 }
