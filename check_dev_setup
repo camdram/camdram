@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+sudo service elasticsearch stop
+php app/console camdram:database:update
+sudo service elasticsearch start
+sleep 10
+php app/console fos:elastica:populate
