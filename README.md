@@ -1,5 +1,4 @@
 # Camdram
-========================
 
 The portal website for student theatre in Cambridge
 
@@ -70,7 +69,7 @@ The following wiki pages detail how to create a server set-up that's more simila
  * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
  * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
  * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
- * [Sphinx setup guide](https://github.com/camdram/camdram/wiki/Sphinx%20setup%20guide)
+ * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch%20setup%20guide)
 
 You can also [read information about Camdram's suite of tests](https://github.com/camdram/camdram/wiki/Running-and-creating-tests)
 
