@@ -41,7 +41,7 @@ services:
 
     acts.camdram.type.map_location:
         class: Acts\CamdramBundle\Form\Type\MapLocationType
-        arguments: ['@ivory_google_map.map=', %map_center%]
+        arguments: ['@ivory_google_map.map=', [52.20531,0.12179]]
         tags:
             - { name: form.type, alias: map_location }
 
