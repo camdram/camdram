@@ -1,0 +1,71 @@
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        autocomplete:
+            index_name: %search_namespace%_autocomplete
+            settings:
+                index:
+                    analysis:
+                        tokenizer:
+                            reverse_words:
+                                type: path_hierarchy
+                                delimiter: ' '
+                                reverse: true
+                        analyzer:
+                            autocomplete:
+                                type:      custom
+                                tokenizer: reverse_words
+                                filter: [trim, lowercase]
+                            search:
+                                type: custom
+                                tokenizer: keyword
+                                filter: [trim, lowercase]
+            types:
+                show:
+                    mappings:
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search }
+                        slug: ~
+                        start_at: { type: date }
+                        rank: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Show
+                        provider: ~
+                        finder: ~
+                        listener: { enabled: %search_enable_listeners% }
+                    indexable_callback: isIndexable
+                society:
+                    mappings:
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
+                        slug: ~
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Society
+                        provider: ~
+                        finder: ~
+                        listener: { enabled: %search_enable_listeners% }
+                venue:
+                    mappings:
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
+                        slug: ~
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Venue
+                        provider: ~
+                        finder: ~
+                        listener: { enabled: %search_enable_listeners% }
+                person:
+                    mappings:
+                        name: { type: completion, analyzer: autocomplete, search_analyzer: search }
+                        slug: ~
+                        show_count: ~
+                        last_active:  { type: date }
+                        rank: { type: integer }
+                    persistence:
+                        driver: orm
+                        model: Acts\CamdramBundle\Entity\Person
+                        provider: ~
+                        finder: ~
+                        listener: { enabled: %search_enable_listeners% }
+                    indexable_callback: isIndexable

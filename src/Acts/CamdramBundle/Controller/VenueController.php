@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
 use Ivory\GoogleMap\Events\MouseEvent;
@@ -15,7 +15,7 @@ use Ivory\GoogleMap\Overlays\InfoWindow;
  *
  * Controller for REST actions for venues. Inherits from AbstractRestController.
  *
- * @RouteResource("Venue")
+ * @Rest\RouteResource("Venue")
  */
 class VenueController extends OrganisationController
 {
@@ -35,6 +35,40 @@ class VenueController extends OrganisationController
     protected function getForm($venue = null)
     {
         return $this->createForm(new VenueType(), $venue);
+    }
+    
+    public function getAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $venue);
+        
+        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($venue) > 0;
+        
+        $view = $this->view($venue, 200)
+            ->setTemplate('ActsCamdramBundle:Venue:show.html.twig')
+            ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
+        ;
+        
+        return $view;
+    }
+
+    /**
+     * Action that allows querying by id. Redirects to slug URL
+     * 
+     * @Rest\Get("/venues/by-id/{id}")
+     */
+    public function getByIdAction(Request $request, $id)
+    {
+        $this->checkAuthenticated();
+        $venue = $this->getRepository()->findOneById($id);
+        
+        if (!$venue)
+        {
+            throw $this->createNotFoundException('That venue id does not exist');
+        }
+
+        return $this->redirectToRoute('get_venue', ['identifier' => $venue->getSlug(), '_format' => $request->getRequestFormat()]);
     }
 
     /**
@@ -203,5 +237,18 @@ class VenueController extends OrganisationController
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
 
         return $show_repo->getByVenue($this->getEntity($slug), $from, $to);
+    }
+
+    public function removeImageAction($identifier)
+    {
+        $venue = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $venue);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($venue->getImage());
+        $venue->setImage(null);
+        $em->flush();
+        
+        return $this->redirectToRoute('get_venue', ['identifier' => $identifier]);
     }
 }

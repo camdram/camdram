@@ -31,7 +31,6 @@ class PerformanceRepository extends EntityRepository
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andWhere('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
@@ -47,7 +46,6 @@ class PerformanceRepository extends EntityRepository
         $qb->join('p.show', 's')
             ->where('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
-            ->andWhere('s.entered = true')
             ->andWhere('s.authorised_by is not null')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
@@ -83,7 +81,6 @@ class PerformanceRepository extends EntityRepository
         $qb = $this->createQueryBuilder('p')->select('COUNT(DISTINCT p.other_venue)')
             ->innerJoin('p.show', 's')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andwhere('p.venue IS NULL')
             ->andWhere('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
@@ -102,7 +99,6 @@ class PerformanceRepository extends EntityRepository
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true')
             ->andWhere('s.society = :society');
 
         if ($from) {
@@ -127,8 +123,7 @@ class PerformanceRepository extends EntityRepository
             ->join('p.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
-            ->where('s.authorised_by is not null')
-            ->andWhere('s.entered = true');
+            ->where('s.authorised_by is not null');
 
         if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);

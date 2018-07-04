@@ -107,10 +107,14 @@ class TextServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertMarkdown_StripTags()
     {
-        $this->assertEquals('<b>Hello</b> <i>world</i>',
-            $this->textService->convertMarkdown('<b>Hello</b> <i>world</i>'));
-        $this->assertEquals('Hello world',
-            $this->textService->convertMarkdown('<script>Hello</script> <html>world</html>'));
+        $this->assertEquals(
+            '<b>Hello</b> <i>world</i>',
+            $this->textService->convertMarkdown('<b>Hello</b> <i>world</i>')
+        );
+        $this->assertEquals(
+            'Hello world',
+            $this->textService->convertMarkdown('<script>Hello</script> <html>world</html>')
+        );
     }
 
     public function testStripMarkDown_Tags()

@@ -5,7 +5,6 @@ Feature: Logging in with 'remember me' option
     And I go to "/auth/login"
     And I fill in "Email" with "user1@camdram.net"
     And I fill in "Password" with "password1"
-    And I check "form_remember_me"
     And I press "Log in"
 
   Scenario: Logging in with 'remember me' option

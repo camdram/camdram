@@ -26,5 +26,4 @@ class AuthorizationRepository extends EntityRepository
             ->setParameter('app', $app)
             ->getQuery()->getOneOrNullResult();
     }
-
 }

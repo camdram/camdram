@@ -8,7 +8,6 @@
 
 namespace Acts\CamdramApiBundle\Serializer;
 
-
 use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Configuration\LinkMetadata;
 use JMS\Serializer\EventDispatcher\Events;
@@ -21,7 +20,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 
-class JsonEventSubscriber  implements EventSubscriberInterface
+class JsonEventSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -70,12 +69,14 @@ class JsonEventSubscriber  implements EventSubscriberInterface
         }
         if ($metadata->getLinks()) {
             foreach ($metadata->getLinks() as $link) {
-                $child = $accessor->getValue($event->getObject(), $link->getProperty());
-                if ($child === null) continue;
-
-                $linkJson[$link->getName()] = $this->createLinkUrl($link, $object);
-
                 if ($link->getEmbed()) {
+                    $child = $accessor->getValue($event->getObject(), $link->getProperty());
+                    if ($child === null) {
+                        continue;
+                    }
+
+                    $linkJson[$link->getName()] = $this->createLinkUrl($link, $object);
+                    
                     $childData = array();
                     foreach (array('id', 'name', 'slug') as $property) {
                         if ($accessor->isReadable($child, $property)) {
@@ -88,7 +89,9 @@ class JsonEventSubscriber  implements EventSubscriberInterface
             }
         }
 
-        if (count($linkJson) > 0) $visitor->addData('_links', $linkJson);
+        if (count($linkJson) > 0) {
+            $visitor->addData('_links', $linkJson);
+        }
 
         $class = new \ReflectionClass($object);
         $visitor->addData('_type', strtolower($class->getShortName()));
@@ -103,5 +106,4 @@ class JsonEventSubscriber  implements EventSubscriberInterface
         }
         return $this->router->generate($link->getRoute(), $compiledParams, true);
     }
-
-} 
+}

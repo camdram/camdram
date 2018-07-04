@@ -33,7 +33,8 @@ parameters:
     recaptcha_secret_key:       s3cr3t
 
     map_center: [52.20531,0.12179]
-    search_provider: doctrine
-    external_login_test_mode: true
     development_warning: false
-    v1_hostname: www.camdram.net
+    show_site_notice: false
+    site_notice_content: "Camdram will be unavailable for scheduled maintenance from 00:00:00 on 1 January 1970 for approximately 1 hour."
+    search_namespace: camdram
+    search_enable_listeners: false

@@ -6,7 +6,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class IdentityNotFoundException extends AuthenticationException
 {
-    private $token, $name;
+    private $token;
+    private $name;
 
     public function setToken($token)
     {

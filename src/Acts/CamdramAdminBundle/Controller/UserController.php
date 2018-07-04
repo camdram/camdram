@@ -12,22 +12,18 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @RouteResource("User")
+ * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class UserController extends FOSRestController
 {
     protected function getRouteParams($user)
     {
         return array('identifier' => $user->getId());
-    }
-
-    protected function checkAuthenticated()
-    {
-        $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
-        $this->get('camdram.security.utils')->ensureRole('ROLE_SUPER_ADMIN');
     }
 
     protected function getEntity($identifier)
@@ -54,18 +50,17 @@ class UserController extends FOSRestController
     /**
      * Action which returns a list of entities.
      *
-     * If a search term 'q' is provided, then a text search is performed against Sphinx. Otherwise, a paginated
+     * If a search term 'q' is provided, then a text search is performed. Otherwise, a paginated
      * collection of all entities is returned.
      */
     public function cgetAction(Request $request)
     {
-        $this->checkAuthenticated();
+        $repo = $this->getRepository();
+
         if ($request->get('q')) {
             /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
-            $search_provider = $this->get('acts.camdram.search_provider');
-            $data = $search_provider->executeUserSearch($request->get('q'), 10);
+            $data = $repo->search($request->get('q'), 10);
         } else {
-            $repo = $this->getRepository();
             $qb = $repo->createQueryBuilder('e');
             $adapter = new DoctrineORMAdapter($qb);
             $data = new Pagerfanta($adapter);
@@ -80,9 +75,8 @@ class UserController extends FOSRestController
 
     public function getAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
         $ids = $this->get('camdram.security.acl.provider')->getOrganisationIdsByUser($entity);
         $orgs = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
         $ids = $this->get('camdram.security.acl.provider')->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
@@ -101,9 +95,8 @@ class UserController extends FOSRestController
 
     public function editAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
 
@@ -114,9 +107,8 @@ class UserController extends FOSRestController
 
     public function putAction(Request $request, $identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
+        $this->denyAccessUnlessGranted('EDIT', $entity);
 
         $form = $this->getForm($entity);
 
@@ -135,9 +127,8 @@ class UserController extends FOSRestController
 
     public function removeAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
+        $this->denyAccessUnlessGranted('DELETE', $entity);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
@@ -180,21 +171,24 @@ class UserController extends FOSRestController
      */
     public function resetPasswordAction($identifier)
     {
-        $this->checkAuthenticated();
         $user = $this->getEntity($identifier);
 
         $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
         $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
-        $url = $this->generateUrl('acts_camdram_security_reset_password',
-            array('email' => $user->getEmail(), 'token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->generateUrl(
+            'acts_camdram_security_reset_password',
+            array('email' => $user->getEmail(), 'token' => $token),
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
-        return $this->render('ActsCamdramAdminBundle:User:reset-password-complete.html.twig',
-              array('user' => $user, 'url' => $url));
+        return $this->render(
+            'ActsCamdramAdminBundle:User:reset-password-complete.html.twig',
+              array('user' => $user, 'url' => $url)
+        );
     }
 
     public function getMergeAction($identifier)
     {
-        $this->checkAuthenticated();
         $user = $this->getEntity($identifier);
 
         return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
@@ -211,8 +205,6 @@ class UserController extends FOSRestController
      */
     public function mergeAction($identifier, Request $request)
     {
-        $this->checkAuthenticated();
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
         $user = $this->getEntity($identifier);
         $merger = $this->get('acts_camdram_admin.user_merger');
 

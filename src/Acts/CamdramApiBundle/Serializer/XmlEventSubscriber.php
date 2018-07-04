@@ -8,7 +8,6 @@
 
 namespace Acts\CamdramApiBundle\Serializer;
 
-
 use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Configuration\LinkMetadata;
 use JMS\Serializer\EventDispatcher\Events;
@@ -21,7 +20,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\RouterInterface;
 
-class XmlEventSubscriber  implements EventSubscriberInterface
+class XmlEventSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -67,7 +66,9 @@ class XmlEventSubscriber  implements EventSubscriberInterface
         if ($metadata->getLinks()) {
             foreach ($metadata->getLinks() as $link) {
                 $child = $accessor->getValue($event->getObject(), $link->getProperty());
-                if (!is_object($child)) continue;
+                if (!is_object($child)) {
+                    continue;
+                }
 
                 $visitor->getCurrentNode()->appendChild($this->createLinkNode($link, $visitor, $object));
 
@@ -92,7 +93,6 @@ class XmlEventSubscriber  implements EventSubscriberInterface
                     }
 
                     $visitor->revertCurrentNode();
-
                 }
             }
         }
@@ -118,5 +118,4 @@ class XmlEventSubscriber  implements EventSubscriberInterface
 
         return $linkNode;
     }
-
-} 
+}

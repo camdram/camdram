@@ -1,7 +1,8 @@
 <?php
 namespace Acts\CamdramApiBundle\Configuration;
 
-class LinkMetadata {
+class LinkMetadata
+{
 
     /**
      * @var string
@@ -128,5 +129,4 @@ class LinkMetadata {
     {
         $this->params = $params;
     }
-
-} 
+}

@@ -1,6 +1,6 @@
 {% spaceless %}
 {% set roles = show.getRolesByType(type) %}
-{% set editable = is_granted('EDIT', show, true) %}
+{% set editable = is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
 {% set current_role = null %}
 <div id="{{ id }}">
 {%- for role in roles -%}
@@ -30,7 +30,7 @@
         <a itemprop="url" href="{{ path('get_person', {identifier: role.person.slug}) }}"><span itemprop="name">{{ role.person.name }}</span></a>
     </span>
     {%- if editable -%}
-    </div><div class-"small-1 columns"><i class="fa fa-arrows-v"></i>&nbsp;<span data-tooltip class="has-tip" title="Remove this role."><a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a></span>
+    </div><div class-"small-1 columns"><i class="fa fa-arrows-v"></i>&nbsp;<a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a>
     {%- endif -%}
     {{ loop.last ? '</div></div>' }}
 {%- endfor -%}

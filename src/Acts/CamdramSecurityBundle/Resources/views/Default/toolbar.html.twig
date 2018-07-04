@@ -1,10 +1,10 @@
 {% if app.user %}
-    {%- if has_role('ROLE_PREVIOUS_ADMIN') -%}
+    {%- if is_granted('ROLE_PREVIOUS_ADMIN') -%}
         <li data-alert class="alert-box alert">
             <strong>You are impersonating this user.</strong><a href="{{ path('acts_camdram_homepage', {_switch_to_user: '_exit'}) }}">Revert</a>
         </li>
     {%- endif -%}
-    {% if has_role('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN') %}
         {{ include('ActsCamdramSecurityBundle:Default:toolbar_admin.html.twig') }}
     {% endif %}
     <li id="account-link" class="dropdown-link">
@@ -19,12 +19,11 @@
         </a>
         <ul id="account-dropdown" class="topbar-dropdown">
             {% if main_user.person %}<li><a href="{{ path('get_person', {identifier: main_user.person.slug }) }}"><i class="fa fa-user fa-fw"></i> My profile</a></li>{% endif %}
-            {% if app.user.type == 'external' and app.user.user is null %}<li><a href="{{ path('acts_camdram_security_create_password') }}"><i class="fa fa-key fa-fw"></i> Create Camdram password</a></li>{% endif %}
 
             {% if main_user.type == 'native' %}
                 {% for service in ['facebook'] %}
                     {% if not main_user.getExternalUserByService(service) %}
-                    <li><a href="{{ path('acts_external_login_entry', {service: service}) }}" class="icon-link">
+                    <li><a href="{{ hwi_oauth_login_url(service) }}" class="icon-link">
                         <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service ~ '.png') }}" alt="{{ service | capitalize }}" title="{{ service | capitalize }}" width="19" height="19" />
                         Link account to {{ service | capitalize }}
                     </a></li>
@@ -36,15 +35,12 @@
         </ul>
     </li>
 {% else %}
-    <li>
-        <a href="{{ path('acts_camdram_security_create_account') }}">Create an account</a>
-    </li>
     <li id="login-link">
 
         <a href="{{ path('acts_camdram_security_login') }}">Log in </a>
-            {% for service in services %}
-               <a href="{{ path('acts_external_login_entry', {service: service.name}) }}" class="icon-link">
-                    <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ service.name ~ '.png') }}" alt="{{ service.name | capitalize }}" title="{{ service.name | capitalize }}" width="19" height="19" />
+            {% for owner in hwi_oauth_resource_owners() %}
+               <a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link">
+                    <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
                </a>
             {% endfor %}
     </li>

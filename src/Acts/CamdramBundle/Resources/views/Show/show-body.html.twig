@@ -4,8 +4,8 @@
 {% endif %}
 </p>
 <p>{{ show.description | camdram_markdown }}</p>
-{% if not show.isArchived() %}
-<p><a href="{{ path('get_show_contact', {identifier: show.slug}) }}">
+{% if not show.isArchived() and can_contact %}
+<p><a href="{{ path('contact_entity', {type: 'show', identifier: show.slug}) }}">
     <i class="fa fa-envelope-o"></i> Contact organizers</a>
 </p>
 {% endif %}

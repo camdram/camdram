@@ -41,7 +41,9 @@ class OwnerVoter extends \PHPUnit_Framework_TestCase
             ->with($this->token, $show)->will($this->returnValue(true));
 
         $this->assertEquals(OwnerVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $show, array('EDIT')
+                $this->token,
+            $show,
+            array('EDIT')
         ));
     }
 
@@ -53,7 +55,9 @@ class OwnerVoter extends \PHPUnit_Framework_TestCase
             ->with($this->token, $show)->will($this->returnValue(false));
 
         $this->assertEquals(OwnerVoter::ACCESS_ABSTAIN, $this->voter->vote(
-                $this->token, $show, array('EDIT')
+                $this->token,
+            $show,
+            array('EDIT')
             ));
     }
 
@@ -65,7 +69,9 @@ class OwnerVoter extends \PHPUnit_Framework_TestCase
             ->with($this->token, $show)->will($this->returnValue(true));
 
         $this->assertEquals(OwnerVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $show, array('VIEW')
+                $this->token,
+            $show,
+            array('VIEW')
             ));
     }
 
@@ -77,8 +83,9 @@ class OwnerVoter extends \PHPUnit_Framework_TestCase
             ->with($this->token, $show)->will($this->returnValue(false));
 
         $this->assertEquals(OwnerVoter::ACCESS_ABSTAIN, $this->voter->vote(
-                $this->token, $show, array('VIEW')
+                $this->token,
+            $show,
+            array('VIEW')
             ));
     }
-
 }

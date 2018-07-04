@@ -6,12 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Acts\CamdramBundle\Form\Type\EntitySearchType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Hoyes\ImageManagerBundle\Form\Type\ImageType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * Class ShowType
@@ -33,7 +30,6 @@ class ShowType extends AbstractType
             ->add('name')
             ->add('author', null, array('required' => false))
             ->add('description')
-            ->add('image', ImageType::class, array('label' => 'Publicity image', 'required' => false))
             ->add('prices', null, array('required' => false, 'label' => 'Ticket prices', 'attr' => array(
                 'placeholder' => 'e.g. £6/5'
             )))
@@ -82,7 +78,6 @@ class ShowType extends AbstractType
                     'disabled' => $disabled,
                     'text_field' => 'other_society'
                 ));
-
             })
         ;
     }

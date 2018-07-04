@@ -109,7 +109,7 @@ class Authorization
     /**
      * Get scopes
      *
-     * @return array 
+     * @return array
      */
     public function getScopes()
     {
@@ -132,7 +132,9 @@ class Authorization
     public function hasScopes(array $scopes)
     {
         foreach ($scopes as $scope) {
-            if (!in_array($scope, $this->scopes)) return false;
+            if (!in_array($scope, $this->scopes)) {
+                return false;
+            }
         }
         return true;
     }
@@ -155,7 +157,9 @@ class Authorization
      */
     public function addScopes(array $scopes)
     {
-        foreach ($scopes as $scope) $this->addScope($scope);
+        foreach ($scopes as $scope) {
+            $this->addScope($scope);
+        }
 
         return $this;
     }

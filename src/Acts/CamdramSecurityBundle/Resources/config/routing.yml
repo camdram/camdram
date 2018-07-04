@@ -1,20 +1,16 @@
 acts_camdram_security_login:
     path:   /login
     defaults:  {  _controller: ActsCamdramSecurityBundle:Default:login }
+
+acts_camdram_security_login_password:
+    path:   /login/password
+    defaults:  {  _controller: ActsCamdramSecurityBundle:Default:passwordLogin }
+
 acts_camdram_security_login_check:
     path:   /login_check
 acts_camdram_security_link_user:
     path:   /link-user
     defaults: { _controller: ActsCamdramSecurityBundle:Default:linkUser }
-acts_camdram_security_create_account:
-    path:   /create-account
-    defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccount }
-acts_camdram_security_create_account_complete:
-    path:   /create-account-complete
-    defaults: { _controller: ActsCamdramSecurityBundle:Default:createAccountComplete }
-acts_camdram_security_create_password:
-    path:   /create-password
-    defaults: { _controller: ActsCamdramSecurityBundle:Default:createPassword }
 acts_camdram_security_confirm_email:
     path:   /confirm-email/{email}/{token}
     defaults: { _controller: ActsCamdramSecurityBundle:Default:confirmEmail }
@@ -32,3 +28,27 @@ acts_camdram_security_account:
 acts_camdram_security_settings_res:
     prefix: /settings
     resource: routing/settings.yml
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /oauth/connect
+    
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /oauth/connect
+
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /oauth/login
+ 
+facebook_login:
+    path: /oauth/check-facebook
+
+google_login:
+    path: /oauth/check-google
+
+twitter_login:
+    path: /oauth/check-twitter
+
+raven_login:
+    path: /check-raven

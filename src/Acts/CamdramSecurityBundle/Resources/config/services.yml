@@ -13,22 +13,17 @@ services:
         class: Acts\CamdramSecurityBundle\Security\NameUtils
         arguments: ['@doctrine.orm.entity_manager']
 
-    camdram.security.twig.extension:
-        class: Acts\CamdramSecurityBundle\Twig\Extension\CamdramSecurityExtension
-        arguments: ['@camdram.security.utils']
-        tags: [{ name: twig.extension }]
-
-    camdram.security.authentication_success_handler:
-        class: Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler
-        arguments: ['@security.token_storage', '@camdram.security.name_utils', '@camdram.security.user.provider', '@camdram.security.external_user.provider', '@camdram.security.user_linker', '@security.http_utils', 'public']
-
-    camdram.security.entry_point:
-        class: Acts\CamdramSecurityBundle\Security\EntryPoint\CamdramLoginEntryPoint
-        arguments: ['@security.authentication.form_entry_point.public', '@security.token_storage']
-
     camdram.security.user_linker:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
         arguments: ['@doctrine.orm.entity_manager']
+
+    camdram.security.registration.handler:
+        class: Acts\CamdramSecurityBundle\Form\RegistrationFormHandler
+        arguments: ['@doctrine.orm.entity_manager', '@security.encoder_factory', '@form.factory']
+
+    camdram.security.registration.form:
+        class: 'Symfony\Component\Form\Form'
+        factory: 'camdram.security.registration.handler:createForm'
 
     camdram.security.type.graduation_year:
         class: Acts\CamdramSecurityBundle\Form\Type\GraduationYearType
@@ -52,10 +47,6 @@ services:
 
     camdram.security.user.provider:
         class: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
-        arguments: ['@doctrine.orm.entity_manager']
-
-    camdram.security.external_user.provider:
-        class: Acts\CamdramSecurityBundle\Security\User\ExternalLoginUserProvider
         arguments: ['@doctrine.orm.entity_manager']
 
     camdram.security.token_generator:
@@ -142,3 +133,7 @@ services:
         class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ApiVoter
         tags:
             - { name: security.voter }
+
+    camdram.security.raven.resource_owner:
+        class: Acts\CamdramSecurityBundle\Security\RavenResourceOwner
+        arguments: ['@hwi_oauth.http_client']

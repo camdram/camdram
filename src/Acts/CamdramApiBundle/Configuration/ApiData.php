@@ -1,7 +1,8 @@
 <?php
 namespace Acts\CamdramApiBundle\Configuration;
 
-class ApiData {
+class ApiData
+{
 
     /**
      * @var \Acts\CamdramApiBundle\Configuration\Annotation\Feed
@@ -70,5 +71,4 @@ class ApiData {
     {
         $this->links[] = $link;
     }
-
-} 
+}

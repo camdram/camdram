@@ -28,14 +28,6 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setDefinition('acts.camdram.search_provider',
-            new DefinitionDecorator('acts.camdram.search_provider.'.$config['search_provider'])
-        );
-        if ($config['search_provider'] == 'sphinx') {
-            $container->getDefinition('acts.camdram.listener.role_search_index')
-                ->replaceArgument(0, new Reference('acts.sphinx_realtime.object_persister.person'));
-        }
-
         $container->getDefinition('acts.camdram.listener.techie_advert')->addArgument($config['techies_advert_default_days']);
         $container->getDefinition('acts.camdram.techie_advert_expiry_validator')->addArgument($config['techies_advert_max_days']);
 
@@ -52,8 +44,5 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
      */
     public function prepend(ContainerBuilder $container)
     {
-        if ($container->getParameter('search_provider') !== 'sphinx') {
-            $container->prependExtensionConfig('acts_sphinx_real_time', array('enabled' => false));
-        }
     }
 }

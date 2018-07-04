@@ -8,7 +8,6 @@
 
 namespace Acts\CamdramApiBundle\Service;
 
-
 use Nelmio\ApiDocBundle\Formatter\AbstractFormatter;
 
 class ApiDocFormatter extends AbstractFormatter
@@ -47,5 +46,4 @@ class ApiDocFormatter extends AbstractFormatter
             'resources' => $collection
         ));
     }
-
 }

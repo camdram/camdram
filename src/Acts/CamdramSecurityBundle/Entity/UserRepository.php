@@ -5,6 +5,7 @@ namespace Acts\CamdramSecurityBundle\Entity;
 use Acts\CamdramBundle\Entity\Show;
 use Doctrine\ORM\EntityRepository;
 use Acts\CamdramBundle\Entity\Organisation;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
 class UserRepository extends EntityRepository
 {
@@ -71,25 +72,58 @@ class UserRepository extends EntityRepository
 
         return $query->getResult();
     }
-
-    public function getEntityOwners($entity)
+    
+    public function findOrganisationAdmins()
     {
-        if ($entity instanceof Show) {
-            $type = 'show';
-        } elseif ($entity instanceof Organisation) {
-            $type = 'society';
-        } else {
-            return array();
-        }
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->innerJoin('u.aces', 'e')
+            ->where('e.type IN (:types)')
+            ->andWhere('e.revokedBy IS NULL')
+            ->setParameter('types', ['society', 'venue', 'security'])
+            ->getQuery();
+        
+        return $query->getResult();
+    }
+    
+    public function findActiveUsersForMailOut()
+    {
+        $loginThreshold = new \DateTime('-2 years');
+        
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->where('u.is_email_verified = true')
+        ->andWhere('u.last_login_at >= :loginThreshold')
+        ->setParameter('loginThreshold', $loginThreshold)
+        ->getQuery();
+        
+        return $query->getResult();
+    }
+
+    public function getEntityOwners(OwnableInterface $entity)
+    {
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
             ->andWhere('e.entityId = :id')
             ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $entity->getId())
-            ->setParameter('type', $type)
+            ->setParameter('type', $entity->getAceType())
             ->getQuery();
 
+        return $query->getResult();
+    }
+    
+    public function getContactableEntityOwners(OwnableInterface $entity)
+    {
+        $query = $this->createQueryBuilder('u')
+        ->innerJoin('u.aces', 'e')
+        ->where('e.type = :type')
+        ->andWhere('e.entityId = :id')
+        ->andWhere('e.revokedBy IS NULL')
+        ->andWhere('u.is_email_verified = true')
+        ->setParameter('id', $entity->getId())
+        ->setParameter('type', $entity->getAceType())
+        ->getQuery();
+        
         return $query->getResult();
     }
 
@@ -105,6 +139,21 @@ class UserRepository extends EntityRepository
             ->andWhere('e.grantedBy IS NULL')
             ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $show->getId())
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     *
+     */
+    public function search($query, $limit)
+    {
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb
+            ->where($qb->expr()->orX($qb->expr()->like('u.name', ':query'), $qb->expr()->like('u.email', ':query')))
+            ->setParameter('query', '%' . $query . '%')
+            ->setMaxResults($limit)
             ->getQuery();
 
         return $query->getResult();

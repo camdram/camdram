@@ -37,7 +37,9 @@ class ProfileVoterTest extends \PHPUnit_Framework_TestCase
         $person = new Person();
         $this->user->setPerson($person);
         $this->assertEquals(ProfileVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $person, array('EDIT')
+                $this->token,
+            $person,
+            array('EDIT')
         ));
     }
 
@@ -49,7 +51,9 @@ class ProfileVoterTest extends \PHPUnit_Framework_TestCase
         $person2->setName('Joe Bloggs');
         $this->user->setPerson($person2);
         $this->assertEquals(ProfileVoter::ACCESS_DENIED, $this->voter->vote(
-                $this->token, $person1, array('EDIT')
+                $this->token,
+            $person1,
+            array('EDIT')
             ));
     }
 
@@ -58,7 +62,9 @@ class ProfileVoterTest extends \PHPUnit_Framework_TestCase
         $person = new Person();
         $this->user->setPerson($person);
         $this->assertEquals(ProfileVoter::ACCESS_ABSTAIN, $this->voter->vote(
-                $this->token, $person, array('DELETE')
+                $this->token,
+            $person,
+            array('DELETE')
             ));
     }
 }

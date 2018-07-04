@@ -27,7 +27,7 @@ class ReleaseInfoCommand extends ContainerAwareCommand
 
         $data['start_tag'] = $start;
         $data['end_tag'] = $end;
-        var_dump($data);
+        
         $text = $this->getContainer()->get('twig')->render('ActsCamdramBackendBundle:Email:commit-email.txt.twig', $data);
         $output->write($text);
     }
@@ -38,12 +38,17 @@ class ReleaseInfoCommand extends ContainerAwareCommand
         $commits = `git log $start..$end --format=oneline --date-order --reverse`;
         $lines = explode("\n", $commits);
         $commits = array();
-        $client = $this->getContainer()->get('acts.social_api.apis.github');
+        $github = $this->getContainer()->get('github.api');
+        $github->authenticate(
+            $this->getContainer()->getParameter('github_id'),
+            $this->getContainer()->getParameter('github_secret'),
+            \Github\Client::AUTH_URL_CLIENT_ID
+        );
 
         foreach ($lines as $line) {
             if (!empty($line)) {
                 list($hash, $message) = explode(' ', $line, 2);
-                $data = $client->doCommit('camdram', 'camdram', $hash);
+                $data = $github->api('repo')->commits()->show('camdram', 'camdram', $hash);
                 $commits[$hash] = array(
                     'message' => $message,
                     'author' => $data['author']['login'],
@@ -60,7 +65,7 @@ class ReleaseInfoCommand extends ContainerAwareCommand
                 if (isset($issues[$number])) {
                     $issues[$number]['commits'][$hash] = $commit_data;
                 } else {
-                    $data = $client->doIssue('camdram', 'camdram', $number);
+                    $data = $github->api('issue')->show('camdram', 'camdram', $number);
                     $issues[$number] = array(
                         'name' => $data['title'],
                         'state' => $data['state'],

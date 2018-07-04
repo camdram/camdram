@@ -21,7 +21,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
  */
-abstract class Organisation implements SearchableInterface, OwnableInterface
+abstract class Organisation implements OwnableInterface
 {
     /**
      * @var int
@@ -55,9 +55,9 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     private $description;
 
     /**
-     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     * @var Image
      *
-     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
      */
     private $image;
@@ -412,11 +412,11 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Set image
      *
-     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @param Image $image
      *
      * @return Organisation
      */
-    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    public function setImage(Image $image = null)
     {
         $this->image = $image;
 
@@ -426,7 +426,7 @@ abstract class Organisation implements SearchableInterface, OwnableInterface
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     * @return Image
      */
     public function getImage()
     {

@@ -35,19 +35,19 @@ services:
 
     acts.camdram.type.facebook_link:
         class: Acts\CamdramBundle\Form\Type\FacebookLinkType
-        arguments: ['@acts.social_api.apis.facebook']
+        arguments: ['@facebook.api']
         tags:
             - { name: form.type, alias: facebook_link }
 
     acts.camdram.type.twitter_link:
         class: Acts\CamdramBundle\Form\Type\TwitterLinkType
-        arguments: ['@acts.social_api.apis.twitter']
+        arguments: ['@twitter.api']
         tags:
             - { name: form.type, alias: twitter_link }
 
     acts.camdram.type.map_location:
         class: Acts\CamdramBundle\Form\Type\MapLocationType
-        arguments: [%map_center%]
+        arguments: [[52.20531,0.12179]]
         tags:
             - { name: form.type, alias: map_location }
 
@@ -85,14 +85,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 105 }
 
-    acts.camdram.search_provider.doctrine:
-        class: Acts\CamdramBundle\Search\DoctrineProvider
-        arguments: ['@doctrine.orm.entity_manager']
-
-    acts.camdram.search_provider.sphinx:
-        class: Acts\CamdramBundle\Search\SphinxProvider
-        arguments: ['@acts.sphinx_realtime.client.default', '@acts.sphinx_realtime.index_manager']
-
     acts.camdram.email_dispatcher:
         class: Acts\CamdramBundle\Service\EmailDispatcher
         arguments: ['@swiftmailer.mailer', '@twig', %mailer_sender_address%]
@@ -119,12 +111,6 @@ services:
         tags:
             - { name: doctrine.entity_listener }
 
-    acts.camdram.listener.role_search_index:
-        class: Acts\CamdramBundle\EventListener\RoleSearchIndexListener
-        arguments: [~]
-        tags:
-            - { name: doctrine.entity_listener }
-
     acts.camdram.listener.techie_advert:
         class: Acts\CamdramBundle\EventListener\TechieAdvertListener
         arguments: ['@acts.time_service']
@@ -144,3 +130,24 @@ services:
     acts.camdram.contact_entity_service:
         class: Acts\CamdramBundle\Service\ContactEntityService
         arguments: ['@mailer', '@camdram.security.acl.provider']
+
+    acts.camdram.image_listener:
+        class: Acts\CamdramBundle\EventListener\ImageListener
+        arguments: 
+            - '@doctrine.orm.entity_manager'
+            - '@security.authorization_checker'
+            - '@liip_imagine'
+            - '@monolog.logger.camdram'
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.validation, method: validate }
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+            
+    acts.camdram.email_logger:
+        class: Acts\CamdramBundle\EventListener\EmailLogger
+        arguments:
+            - '@logger'
+            - '@request_stack'
+            - '@security.token_storage'
+        tags:
+          - { name: monolog.logger, channel: mailer }
+          - { name: "swiftmailer.default.plugin" }

@@ -19,7 +19,6 @@ use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
  */
 abstract class OrganisationController extends AbstractRestController
 {
-    use ContactTrait;
 
     /**
      * Render the Admin Panel
@@ -246,7 +245,8 @@ abstract class OrganisationController extends AbstractRestController
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($org);
 
         return $this->view($form, 200)
-            ->setData(array(
+            ->setData(
+                array(
                 'entity' => $org,
                 'admins' => $admins,
                 'pending_admins' => $pending_admins,
@@ -315,8 +315,10 @@ abstract class OrganisationController extends AbstractRestController
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
-                        $this->get('event_dispatcher')->dispatch(CamdramSecurityEvents::PENDING_ACCESS_CREATED,
-                            new PendingAccessEvent($pending_ace));
+                        $this->get('event_dispatcher')->dispatch(
+                            CamdramSecurityEvents::PENDING_ACCESS_CREATED,
+                            new PendingAccessEvent($pending_ace)
+                        );
                     }
                 }
             }

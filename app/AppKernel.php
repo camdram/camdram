@@ -22,25 +22,25 @@ class AppKernel extends Kernel
             new Acts\CamdramSecurityBundle\ActsCamdramSecurityBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
-            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
             new Acts\CamdramBackendBundle\ActsCamdramBackendBundle(),
-            new Acts\SocialApiBundle\ActsSocialApiBundle(),
             new Acts\DiaryBundle\ActsDiaryBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new \EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
-            new Hoyes\ImageManagerBundle\HoyesImageManagerBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Http\HttplugBundle\HttplugBundle(),
+            new Oneup\UploaderBundle\OneupUploaderBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
             new Acts\TimeMockBundle\ActsTimeMockBundle(),
-            new Acts\SphinxRealTimeBundle\ActsSphinxRealTimeBundle(),
-            new Acts\ExternalLoginBundle\ActsExternalLoginBundle(),
+            new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
             new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

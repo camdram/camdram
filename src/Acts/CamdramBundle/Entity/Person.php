@@ -19,7 +19,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @ORM\Entity(repositoryClass="PersonRepository")
  * @Serializer\XmlRoot("person")
  */
-class Person implements SearchableInterface
+class Person
 {
     /**
      * @var int
@@ -50,9 +50,9 @@ class Person implements SearchableInterface
     private $description;
 
     /**
-     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     * @var Image
      *
-     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
      */
     private $image;
@@ -302,21 +302,22 @@ class Person implements SearchableInterface
     }
 
     /**
-     * A ranking used by the autocomplete index
-     * For people, return the start date of the most recent show
-     *
-     * @return int
-     */
+         * A ranking used by the autocomplete index
+         * For people, return the start date of the most recent show
+         *
+         * @return int
+         */
     public function getRank()
     {
-        $rank = $this->getIndexDate();
+        $activeDate = $this->getLastActive();
 
-        return $rank ? $rank->format('Ymd') : null;
+        return $activeDate ? $activeDate->format('Ymd') : 0;
     }
+
 
     public function isIndexable()
     {
-        return !$this->isMapped() && count($this->getRoles());
+        return !empty($this->getName()) & !$this->isMapped() && count($this->getRoles());
     }
 
     /**
@@ -404,11 +405,11 @@ class Person implements SearchableInterface
     /**
      * Set image
      *
-     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @param Image $image
      *
      * @return Person
      */
-    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    public function setImage(Image $image = null)
     {
         $this->image = $image;
 
@@ -418,7 +419,7 @@ class Person implements SearchableInterface
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     * @return Image
      */
     public function getImage()
     {
@@ -507,12 +508,7 @@ class Person implements SearchableInterface
         return $this->externalUsers;
     }
 
-    public function getShortName()
-    {
-        return '';
-    }
-
-    public function getNumShows()
+    public function getShowCount()
     {
         $counter = 0;
         $show_id = null;
@@ -526,7 +522,7 @@ class Person implements SearchableInterface
         return $counter;
     }
 
-    public function getIndexDate()
+    public function getLastActive()
     {
         $latest = null;
         foreach ($this->getRoles() as $role) {

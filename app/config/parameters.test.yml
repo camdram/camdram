@@ -31,4 +31,5 @@ parameters:
     github_secret:              s3cr3t
 
     map_center: [52.20531,0.12179]
-    search_provider: doctrine
+    search_namespace: camdram
+    search_enable_listeners: true

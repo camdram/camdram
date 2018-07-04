@@ -1,0 +1,15 @@
+{
+  "short_name": "Camdram",
+  "name": "Camdram",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "display": "standalone",
+  "background_color": "#fe5c1f",
+  "theme_color": "#fe5c1f"
+}

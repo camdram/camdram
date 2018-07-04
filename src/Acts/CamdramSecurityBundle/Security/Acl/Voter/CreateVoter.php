@@ -12,10 +12,11 @@ use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
  */
 class CreateVoter extends Voter
 {
-
     public function supports($attribute, $subject)
     {
-        if ($attribute != "CREATE") return false;
+        if ($attribute != "CREATE") {
+            return false;
+        }
     
         if (!$subject instanceof ClassIdentity) {
             $subject = new ClassIdentity(get_class($subject));
@@ -36,9 +37,8 @@ class CreateVoter extends Voter
     {
         if (TokenUtilities::isApiRequest($token)) {
             return TokenUtilities::hasRole($token, 'ROLE_API_WRITE')
-                || TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG'); 
-        }
-        else {
+                || TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG');
+        } else {
             return true;
         }
     }

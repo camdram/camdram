@@ -16,6 +16,6 @@ namespace Acts\CamdramApiBundle\Configuration\Annotation;
  * @Annotation
  * @package Acts\CamdramApiBundle\Annotation
  */
-class VisibleInEmbedded {
-
-} 
+class VisibleInEmbedded
+{
+}

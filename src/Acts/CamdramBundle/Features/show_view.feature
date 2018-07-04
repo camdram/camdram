@@ -23,13 +23,6 @@ Background:
     Then I should see "Test Show"
     And I should see "Edit this show"
 
-  Scenario: View show page as show owner when logged in as an external user
-    Given "user1@camdram.net" is the owner of the show "Test Show"
-    When I log in using "Raven" as "fs123"
-    And I am on "/shows/test-show"
-    Then I should see "Test Show"
-    And I should see "Edit this show"
-
   Scenario: View show page as show owner when logged as an admin
     Given the administrator "Admin User" with the email "admin@camdram.net" and the password "password"
     When I am logged in as "admin@camdram.net" with "password"
@@ -41,15 +34,5 @@ Background:
     Given "user1@camdram.net" is the owner of the show "Test Show"
     When I am logged in as "user1@camdram.net" with "password"
     And I am on "/shows/test-show/edit"
-    Then I should see "Edit Show"
-    And the "Name" field should contain "Test Show"
-
-  Scenario: Edit show as show owner logged in using external user
-    Given "user1@camdram.net" is the owner of the show "Test Show"
-    When I log in using "Raven" as "fs123"
-    And I am on "/shows/test-show/edit"
-    Then I should see "Log in to camdram"
-    When I fill in "Password" with "password"
-    And I press "Log in"
     Then I should see "Edit Show"
     And the "Name" field should contain "Test Show"

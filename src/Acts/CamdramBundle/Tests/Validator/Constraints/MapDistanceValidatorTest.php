@@ -25,7 +25,7 @@ class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
+        $this->context = $this->createMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
         $this->validator = new MapDistanceValidator();
         $this->validator->initialize($this->context);
 

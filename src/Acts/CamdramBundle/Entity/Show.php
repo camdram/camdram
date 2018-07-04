@@ -17,7 +17,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *
  * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="show_slugs",columns={"slug"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
- * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener","Acts\CamdramLegacyBundle\EventListener\ShowRefCreator" })
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener"})
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("show")
  * @Gedmo\Loggable
@@ -26,7 +26,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *   template="ActsCamdramBundle:Show:rss.html.twig")
  * @Api\Link(route="get_show", params={"identifier": "object.getSlug()"})
  */
-class Show implements SearchableInterface, OwnableInterface
+class Show implements OwnableInterface
 {
     /**
      * The show's ID
@@ -69,9 +69,9 @@ class Show implements SearchableInterface, OwnableInterface
     private $description;
 
     /**
-     * @var \Hoyes\ImageManagerBundle\Entity\Image
+     * @var Image
      *
-     * @ORM\ManyToOne(targetEntity="\Hoyes\ImageManagerBundle\Entity\Image")
+     * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
      */
     private $image;
@@ -161,13 +161,6 @@ class Show implements SearchableInterface, OwnableInterface
     private $other_venue = '';
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="excludedate", type="date", length=255, nullable=true)
-     */
-    private $exclude_date;
-
-    /**
      * The show's society, if it is not linked to a venue resource
      *
      * @var string
@@ -232,13 +225,6 @@ class Show implements SearchableInterface, OwnableInterface
     private $authorised_by;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="entered", type="boolean", nullable=false)
-     */
-    private $entered = 1;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="entryexpiry", type="date", nullable=false)
@@ -257,21 +243,6 @@ class Show implements SearchableInterface, OwnableInterface
      * @Serializer\XmlElement(cdata=false)
      */
     private $category;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="bookingcode", type="string", length=255, nullable=true)
-     */
-    private $booking_code;
-
-    /**
-     * @var int
-     *
-     * @ORM\OneToOne(targetEntity="Acts\CamdramLegacyBundle\Entity\ShowRef", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="primaryref", nullable=true, referencedColumnName="refid", onDelete="CASCADE")
-     */
-    private $primary_ref;
 
     /**
      * @var \DateTime
@@ -488,8 +459,7 @@ class Show implements SearchableInterface, OwnableInterface
     {
         if (!$this->venue) {
             return $this->other_venue;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -506,30 +476,6 @@ class Show implements SearchableInterface, OwnableInterface
         } elseif ($this->venue) {
             return $this->venue->getName();
         }
-    }
-
-    /**
-     * Set exclude_date
-     *
-     * @param \DateTime $excludeDate
-     *
-     * @return Show
-     */
-    public function setExcludeDate($excludeDate)
-    {
-        $this->exclude_date = $excludeDate;
-
-        return $this;
-    }
-
-    /**
-     * Get exclude_date
-     *
-     * @return \DateTime
-     */
-    public function getExcludeDate()
-    {
-        return $this->exclude_date;
     }
 
     public function getOtherSociety()
@@ -555,8 +501,7 @@ class Show implements SearchableInterface, OwnableInterface
     {
         if ($this->other_society) {
             return $this->other_society;
-        }
-        elseif ($this->society) {
+        } elseif ($this->society) {
             return $this->society->getName();
         }
     }
@@ -634,30 +579,6 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-     * Set entered
-     *
-     * @param bool $entered
-     *
-     * @return Show
-     */
-    public function setEntered($entered)
-    {
-        $this->entered = $entered;
-
-        return $this;
-    }
-
-    /**
-     * Get entered
-     *
-     * @return bool
-     */
-    public function getEntered()
-    {
-        return $this->entered;
-    }
-
-    /**
      * Set entry_expiry
      *
      * @param \DateTime $entryExpiry
@@ -703,54 +624,6 @@ class Show implements SearchableInterface, OwnableInterface
     public function getCategory()
     {
         return $this->category;
-    }
-
-    /**
-     * Set booking_code
-     *
-     * @param string $bookingCode
-     *
-     * @return Show
-     */
-    public function setBookingCode($bookingCode)
-    {
-        $this->booking_code = $bookingCode;
-
-        return $this;
-    }
-
-    /**
-     * Get booking_code - for Doctrine compatibility only
-     *
-     * @return string
-     */
-    public function getBookingCode()
-    {
-        return $this->booking_code;
-    }
-
-    /**
-     * Set primary_ref
-     *
-     * @param int $primaryRef
-     *
-     * @return Show
-     */
-    public function setPrimaryRef($primaryRef)
-    {
-        $this->primary_ref = $primaryRef;
-
-        return $this;
-    }
-
-    /**
-     * Get primary_ref
-     *
-     * @return int
-     */
-    public function getPrimaryRef()
-    {
-        return $this->primary_ref;
     }
 
     /**
@@ -903,10 +776,9 @@ class Show implements SearchableInterface, OwnableInterface
         $performance->setShow($this);
         if (!($performance->getOtherVenue())) {
             if ($this->getVenue()) {
-              $performance->setVenue($this->getVenue());
+                $performance->setVenue($this->getVenue());
             } else {
                 $performance->setOtherVenue($this->getOtherVenue());
-
             }
         }
 
@@ -1068,14 +940,20 @@ class Show implements SearchableInterface, OwnableInterface
                 foreach ($this->getPerformances() as $performance) {
                     if ($performance->getVenue()) {
                         $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) $venue_counts[$key] = 1;
-                        else $venue_counts[$key]++;
+                        if (!isset($venue_counts[$key])) {
+                            $venue_counts[$key] = 1;
+                        } else {
+                            $venue_counts[$key]++;
+                        }
                         $venues[$key] = $performance->getVenue();
                     }
                     if ($performance->getOtherVenue()) {
                         $key = $performance->getOtherVenue();
-                        if (!isset($name_counts[$key])) $name_counts[$key] = 1;
-                        else $name_counts[$key]++;
+                        if (!isset($name_counts[$key])) {
+                            $name_counts[$key] = 1;
+                        } else {
+                            $name_counts[$key]++;
+                        }
                     }
                     //Favour a venue object over a venue name
                     if (count($venue_counts) > 0) {
@@ -1091,17 +969,16 @@ class Show implements SearchableInterface, OwnableInterface
     }
 
     /**
-     * A ranking used by the autocomplete index
-     * For shows, return the Unix timestamp of the show's start date
-     *
-     * @return int
-     */
+        * A ranking used by the autocomplete index
+        * For shows, return the Unix timestamp of the show's start date
+        *
+        * @return int
+        */
     public function getRank()
     {
-        $rank = $this->getIndexDate();
-
-        return $rank ? $rank->format('Ymd') : null;
+        return $this->start_at ? $this->start_at->format('Ymd') : 0;
     }
+
 
     /**
      * Set freebase_id
@@ -1513,11 +1390,11 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Set image
      *
-     * @param \Hoyes\ImageManagerBundle\Entity\Image $image
+     * @param Image $image
      *
      * @return Show
      */
-    public function setImage(\Hoyes\ImageManagerBundle\Entity\Image $image = null)
+    public function setImage(Image $image = null)
     {
         $this->image = $image;
 
@@ -1527,7 +1404,7 @@ class Show implements SearchableInterface, OwnableInterface
     /**
      * Get image
      *
-     * @return \Hoyes\ImageManagerBundle\Entity\Image
+     * @return Image
      */
     public function getImage()
     {
@@ -1690,11 +1567,6 @@ class Show implements SearchableInterface, OwnableInterface
     public function getShortName()
     {
         return '';
-    }
-
-    public function getIndexDate()
-    {
-        return $this->getStartAt();
     }
 
     /**

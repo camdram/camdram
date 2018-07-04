@@ -6,14 +6,12 @@
     <div class="row">
     <h3>Search camdram.net</h3>
 
-    {% include 'ActsCamdramBundle::paginator.html.twig' %}
-    <hr/>
-    {% if result.data|length == 0 %}
+    {% if results|length == 0 %}
         <div class="panel">
             <h5>No results found.</h5>
         </div>
     {% endif %}
-    {% for entity in result.data %}
+    {% for entity in results %}
         {% if entity.entity_type == 'show' %}
             {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : entity.slug})) }}
         {% else %}
@@ -25,12 +23,9 @@
     {%- endif %}">{{ entity.name }}</a>
 
             </h5>
-            <p>{{ entity.description | striptags | strip_new_lines | camdram_markdown }}</p>
         </div>
         {% endif %}
     {% endfor %}
-    <hr/>
-    {% include 'ActsCamdramBundle::paginator.html.twig' %}
 
     </div>
 

@@ -2,7 +2,6 @@
 
 namespace Acts\CamdramSecurityBundle\Entity;
 
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,6 +9,8 @@ use Doctrine\Common\Collections\Criteria;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramBundle\Entity\Person;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * User
@@ -18,10 +19,10 @@ use Acts\CamdramBundle\Entity\Person;
  * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\EntityListeners({"Acts\CamdramSecurityBundle\EventListener\UserListener" })
  * @UniqueEntity(fields="email", message="An account already exists with that email address")
- * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("user")
+ * @Api\Link(route="get_account")
  */
-class User implements \Serializable, CamdramUserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -29,7 +30,7 @@ class User implements \Serializable, CamdramUserInterface
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Serializer\Expose
+     * @Serializer\Groups({"all"})
      * @Serializer\XmlAttribute
      */
     private $id;
@@ -39,7 +40,7 @@ class User implements \Serializable, CamdramUserInterface
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
-     * @Serializer\Expose
+     * @Serializer\Groups({"all"})
      */
     private $name;
 
@@ -48,6 +49,7 @@ class User implements \Serializable, CamdramUserInterface
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
      * @Assert\Email(checkMX = true)
+     * @Serializer\Groups({"user_email"})
      */
     private $email;
 
@@ -72,100 +74,6 @@ class User implements \Serializable, CamdramUserInterface
      * @ORM\Column(name="login", type="date", nullable=false)
      */
     private $last_login_at;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="contact", type="boolean", nullable=false)
-     */
-    private $contact;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="alumni", type="boolean", nullable=false)
-     */
-    private $alumni;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="publishemail", type="boolean", nullable=false)
-     */
-    private $publish_email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="hearabout", type="text", nullable=false)
-     */
-    private $hear_about;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="occupation", type="string", length=255, nullable=true)
-     * @Serializer\Expose
-     */
-    private $occupation;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="graduation", type="string", length=255, nullable=true)
-     * @Serializer\Expose
-     */
-    private $graduation;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="tel", type="string", length=50, nullable=true)
-     * @Serializer\Exclude()
-     */
-    private $tel;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="dbemail", type="boolean", nullable=true)
-     */
-    private $db_email;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="dbphone", type="boolean", nullable=true)
-     */
-    private $db_phone;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="forumnotify", type="boolean", nullable=true)
-     */
-    private $forum_notify;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="threadmessages", type="boolean", nullable=true)
-     */
-    private $thread_messages;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="reversetime", type="boolean", nullable=false)
-     */
-    private $reverse_time;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="resetcode", type="string", length=32, nullable=true)
-     */
-    private $reset_code;
 
     /**
      * @var Person
@@ -207,54 +115,25 @@ class User implements \Serializable, CamdramUserInterface
      * @Serializer\Exclude()
      */
     private $aces;
-
+    
     /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision", mappedBy="user")
-     * @Serializer\Exclude()
+     * @Api\Link(route="get_account_shows", targetType="Acts\\CamdramBundle\\Entity\\Show")
      */
-    private $knowledge_base_revisions;
+    private $shows;
+    
+    /**
+     * @Api\Link(route="get_account_organisations", targetType="Acts\\CamdramBundle\\Entity\\Organisation")
+     */
+    private $organisations;
 
     /**
      * @var array
      *
      * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
      * @Serializer\Exclude()
+     *
      */
     private $ace_grants;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\Email", mappedBy="user")
-     * @Serializer\Exclude()
-     */
-    private $email_builders;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\EmailAlias", mappedBy="user")
-     * @Serializer\Exclude()
-     */
-    private $email_aliases;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramLegacyBundle\Entity\EmailSig", mappedBy="user")
-     * @Serializer\Exclude()
-     */
-    private $email_sigs;
-
-    /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramAdminBundle\Entity\Support", mappedBy="owner")
-     * @Serializer\Exclude()
-     */
-    private $owned_issues;
 
     /**
      * @ORM\OneToMany(targetEntity="Acts\CamdramApiBundle\Entity\Authorization", mappedBy="user")
@@ -400,319 +279,7 @@ class User implements \Serializable, CamdramUserInterface
     {
         return $this->last_login_at;
     }
-
-    /**
-     * Set contact
-     *
-     * @param bool $contact
-     *
-     * @return User
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-
-        return $this;
-    }
-
-    /**
-     * Get contact
-     *
-     * @return bool
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
-     * Set alumni
-     *
-     * @param bool $alumni
-     *
-     * @return User
-     */
-    public function setAlumni($alumni)
-    {
-        $this->alumni = $alumni;
-
-        return $this;
-    }
-
-    /**
-     * Get alumni
-     *
-     * @return bool
-     */
-    public function getAlumni()
-    {
-        return $this->alumni;
-    }
-
-    /**
-     * Set publish_email
-     *
-     * @param bool $publishEmail
-     *
-     * @return User
-     */
-    public function setPublishEmail($publishEmail)
-    {
-        $this->publish_email = $publishEmail;
-
-        return $this;
-    }
-
-    /**
-     * Get publish_email
-     *
-     * @return bool
-     */
-    public function getPublishEmail()
-    {
-        return $this->publish_email;
-    }
-
-    /**
-     * Set forum_notify
-     *
-     * @param bool $forumNotify
-     *
-     * @return User
-     */
-    public function setForumNotify($forumNotify)
-    {
-        $this->forum_notify = $forumNotify;
-
-        return $this;
-    }
-
-    /**
-     * Get forum_notify
-     *
-     * @return bool
-     */
-    public function getForumNotify()
-    {
-        return $this->forum_notify;
-    }
-
-    /**
-     * Set hear_about
-     *
-     * @param string $hearAbout
-     *
-     * @return User
-     */
-    public function setHearAbout($hearAbout)
-    {
-        $this->hear_about = $hearAbout;
-
-        return $this;
-    }
-
-    /**
-     * Get hear_about
-     *
-     * @return string
-     */
-    public function getHearAbout()
-    {
-        return $this->hear_about;
-    }
-
-    /**
-     * Set occupation
-     *
-     * @param string $occupation
-     *
-     * @return User
-     */
-    public function setOccupation($occupation)
-    {
-        $this->occupation = $occupation;
-
-        return $this;
-    }
-
-    /**
-     * Get occupation
-     *
-     * @return string
-     */
-    public function getOccupation()
-    {
-        return $this->occupation;
-    }
-
-    /**
-     * Set graduation
-     *
-     * @param string $graduation
-     *
-     * @return User
-     */
-    public function setGraduation($graduation)
-    {
-        $this->graduation = $graduation;
-
-        return $this;
-    }
-
-    /**
-     * Get graduation
-     *
-     * @return string
-     */
-    public function getGraduation()
-    {
-        return $this->graduation;
-    }
-
-    /**
-     * Set tel
-     *
-     * @param string $tel
-     *
-     * @return User
-     */
-    public function setTel($tel)
-    {
-        $this->tel = $tel;
-
-        return $this;
-    }
-
-    /**
-     * Get tel
-     *
-     * @return string
-     */
-    public function getTel()
-    {
-        return $this->tel;
-    }
-
-    /**
-     * Set db_email
-     *
-     * @param bool $dbEmail
-     *
-     * @return User
-     */
-    public function setDbEmail($dbEmail)
-    {
-        $this->db_email = $dbEmail;
-
-        return $this;
-    }
-
-    /**
-     * Get db_email
-     *
-     * @return bool
-     */
-    public function getDbEmail()
-    {
-        return $this->db_email;
-    }
-
-    /**
-     * Set db_phone
-     *
-     * @param bool $dbPhone
-     *
-     * @return User
-     */
-    public function setDbPhone($dbPhone)
-    {
-        $this->db_phone = $dbPhone;
-
-        return $this;
-    }
-
-    /**
-     * Get db_phone
-     *
-     * @return bool
-     */
-    public function getDbPhone()
-    {
-        return $this->db_phone;
-    }
-
-    /**
-     * Set thread_messages
-     *
-     * @param bool $threadMessages
-     *
-     * @return User
-     */
-    public function setThreadMessages($threadMessages)
-    {
-        $this->thread_messages = $threadMessages;
-
-        return $this;
-    }
-
-    /**
-     * Get thread_messages
-     *
-     * @return bool
-     */
-    public function getThreadMessages()
-    {
-        return $this->thread_messages;
-    }
-
-    /**
-     * Set reverse_time
-     *
-     * @param bool $reverseTime
-     *
-     * @return User
-     */
-    public function setReverseTime($reverseTime)
-    {
-        $this->reverse_time = $reverseTime;
-
-        return $this;
-    }
-
-    /**
-     * Get reverse_time
-     *
-     * @return bool
-     */
-    public function getReverseTime()
-    {
-        return $this->reverse_time;
-    }
-
-    /**
-     * Set reset_code
-     *
-     * @param string $resetCode
-     *
-     * @return User
-     */
-    public function setResetCode($resetCode)
-    {
-        $this->reset_code = $resetCode;
-
-        return $this;
-    }
-
-    /**
-     * Get reset_code
-     *
-     * @return string
-     */
-    public function getResetCode()
-    {
-        return $this->reset_code;
-    }
-
+    
     /**
      * Set password
      *
@@ -797,17 +364,6 @@ class User implements \Serializable, CamdramUserInterface
      */
     public function __construct()
     {
-        $this->contact = false;
-        $this->alumni = false;
-        $this->publish_email = false;
-        $this->forum_notify = false;
-        $this->hear_about = '';
-        $this->tel = '';
-        $this->db_email = false;
-        $this->db_phone = false;
-        $this->thread_messages = false;
-        $this->reverse_time = true;
-
         $this->registered_at = new \DateTime();
         $this->last_login_at = new \DateTime();
 
@@ -818,15 +374,12 @@ class User implements \Serializable, CamdramUserInterface
     public function serialize()
     {
         return serialize(array(
-                $this->id, $this->name, $this->email, $this->password, $this->registered_at,
-                $this->last_login_at, $this->occupation, $this->graduation, $this->is_email_verified
+                $this->id, $this->name, $this->email, $this->password
         ));
     }
     public function unserialize($serialized)
     {
-        list($this->id, $this->name, $this->email, $this->password, $this->registered_at,
-            $this->last_login_at, $this->occupation, $this->graduation,
-            $this->is_email_verified) = unserialize($serialized);
+        list($this->id, $this->name, $this->email, $this->password) = unserialize($serialized);
     }
 
     /**
@@ -922,8 +475,12 @@ class User implements \Serializable, CamdramUserInterface
 
     public function getExternalUserByService($service)
     {
+        if (is_null($this->external_users)) {
+            return null;
+        }
+        
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('service', $service));
+        ->where(Criteria::expr()->eq('service', $service));
         $res = $this->external_users->matching($criteria);
         if (count($res) > 0) {
             return $res->first();
@@ -1060,41 +617,7 @@ class User implements \Serializable, CamdramUserInterface
     {
         return $this->apps;
     }
-
-    /**
-     * Add knowledge_base_revisions
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions
-     *
-     * @return User
-     */
-    public function addKnowledgeBaseRevision(\Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions)
-    {
-        $this->knowledge_base_revisions[] = $knowledgeBaseRevisions;
-
-        return $this;
-    }
-
-    /**
-     * Remove knowledge_base_revisions
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions
-     */
-    public function removeKnowledgeBaseRevision(\Acts\CamdramLegacyBundle\Entity\KnowledgeBaseRevision $knowledgeBaseRevisions)
-    {
-        $this->knowledge_base_revisions->removeElement($knowledgeBaseRevisions);
-    }
-
-    /**
-     * Get knowledge_base_revisions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getKnowledgeBaseRevisions()
-    {
-        return $this->knowledge_base_revisions;
-    }
-
+    
     /**
      * Add ace_grants
      *
@@ -1130,142 +653,6 @@ class User implements \Serializable, CamdramUserInterface
     }
 
     /**
-     * Add email_builders
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\Email $emailBuilders
-     *
-     * @return User
-     */
-    public function addEmailBuilder(\Acts\CamdramLegacyBundle\Entity\Email $emailBuilders)
-    {
-        $this->email_builders[] = $emailBuilders;
-
-        return $this;
-    }
-
-    /**
-     * Remove email_builders
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\Email $emailBuilders
-     */
-    public function removeEmailBuilder(\Acts\CamdramLegacyBundle\Entity\Email $emailBuilders)
-    {
-        $this->email_builders->removeElement($emailBuilders);
-    }
-
-    /**
-     * Get email_builders
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmailBuilders()
-    {
-        return $this->email_builders;
-    }
-
-    /**
-     * Add owned_issues
-     *
-     * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
-     *
-     * @return User
-     */
-    public function addOwnedIssue(\Acts\CamdramAdminBundle\Entity\Support $ownedIssues)
-    {
-        $this->owned_issues[] = $ownedIssues;
-
-        return $this;
-    }
-
-    /**
-     * Remove owned_issues
-     *
-     * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
-     */
-    public function removeOwnedIssue(\Acts\CamdramAdminBundle\Entity\Support $ownedIssues)
-    {
-        $this->owned_issues->removeElement($ownedIssues);
-    }
-
-    /**
-     * Get owned_issues
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOwnedIssues()
-    {
-        return $this->owned_issues;
-    }
-
-    /**
-     * Add email_aliases
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases
-     *
-     * @return User
-     */
-    public function addEmailAlias(\Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases)
-    {
-        $this->email_aliases[] = $emailAliases;
-
-        return $this;
-    }
-
-    /**
-     * Remove email_aliases
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases
-     */
-    public function removeEmailAlias(\Acts\CamdramLegacyBundle\Entity\EmailAlias $emailAliases)
-    {
-        $this->email_aliases->removeElement($emailAliases);
-    }
-
-    /**
-     * Get email_aliases
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmailAliases()
-    {
-        return $this->email_aliases;
-    }
-
-    /**
-     * Add email_sigs
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs
-     *
-     * @return User
-     */
-    public function addEmailSig(\Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs)
-    {
-        $this->email_sigs[] = $emailSigs;
-
-        return $this;
-    }
-
-    /**
-     * Remove email_sigs
-     *
-     * @param \Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs
-     */
-    public function removeEmailSig(\Acts\CamdramLegacyBundle\Entity\EmailSig $emailSigs)
-    {
-        $this->email_sigs->removeElement($emailSigs);
-    }
-
-    /**
-     * Get email_sigs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmailSigs()
-    {
-        return $this->email_sigs;
-    }
-
-    /**
      * Add authorizations
      *
      * @param \Acts\CamdramApiBundle\Entity\Authorization $authorizations
@@ -1290,7 +677,7 @@ class User implements \Serializable, CamdramUserInterface
     /**
      * Get authorizations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAuthorizations()
     {

@@ -79,5 +79,4 @@ class Society extends Organisation
     {
         return 'society';
     }
-
 }

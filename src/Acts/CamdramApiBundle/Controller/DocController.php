@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DocController extends Controller
 {
-
     public function indexAction()
     {
         return $this->render('ActsCamdramApiBundle:Doc:index.html.twig');
@@ -18,5 +17,4 @@ class DocController extends Controller
         $formatter = $this->get('acts.camdram_api.service.api_doc_formatter');
         return new Response($formatter->format($data));
     }
-
 }

@@ -1,19 +1,19 @@
 language: php
-sudo: required
 matrix:
   include:
     - php: 5.6
     - php: 7.0
+    - php: 7.2
   fast_finish: true
+cache:
+  directories:
+  - $HOME/.composer
+services:
+  - elasticsearch
 before_script:
 - cp app/config/parameters.test.yml app/config/parameters.yml
-- composer config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
 - composer selfupdate
 - composer install --no-interaction
-- "./install-sphinx"
 script:
-- "./runtests sphinx"
 - "./runtests"
-env:
-  global:
-    secure: VEvSdOl9GqKl1whPUk253hOYEiPCiN64AiG6/qec8jTsCC0qANaXKKVH5Gy+Zqoiqbd5nLykbIUW2l9bSn160f8wHO6cD7nrCOwsCPfO8HCm+IZ5T5Vt5Qvz3Rs6IRm2UgZcFEdk+2zCGjuZnew56wWs8anRCdUDEFeASXSlte0=
+- "./check_dev_setup"

@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ShowController extends AbstractRestController
 {
-    use ContactTrait;
-
     protected $class = 'Acts\\CamdramBundle\\Entity\\Show';
 
     protected $type = 'show';
@@ -68,17 +66,35 @@ class ShowController extends AbstractRestController
 
     public function getAction($identifier)
     {
-        $this->checkAuthenticated();
-        $entity = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
+        $show = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $show);
 
-        $view = $this->view($entity, 200)
+        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($show) > 0;
+        
+        $view = $this->view($show, 200)
             ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
-            ->setTemplateVar($this->type)
+            ->setTemplateData(['show' => $show, 'can_contact' => $can_contact]);
         ;
         return $view;
+    }
+    
+    /**
+     * Action that allows querying by id. Redirects to slug URL
+     * 
+     * @Rest\Get("/shows/by-id/{id}")
+     */
+    public function getByIdAction(Request $request, $id)
+    {
+        $this->checkAuthenticated();
+        $show = $this->getRepository()->findOneById($id);
+        
+        if (!$show)
+        {
+            throw $this->createNotFoundException('That show id does not exist');
+        }
 
-        return $view;
+        return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug(), '_format' => $request->getRequestFormat()]);
     }
 
     public function postAction(Request $request)
@@ -122,7 +138,7 @@ class ShowController extends AbstractRestController
         /* Try and find the person. Add a new person if they don't exist. */
         $person = $person_repo->findCanonicalPerson($person_name);
         if ($person == null) {
-            $person = New Person();
+            $person = new Person();
             $person->setName($person_name);
             $slug = Sluggable\Urlizer::urlize($person_name, '-');
             $person->setSlug($slug);
@@ -181,20 +197,38 @@ class ShowController extends AbstractRestController
             );
     }
 
-    public function getRolesAction($identifier)
+    public function editInlineAction($identifier)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
-        return $this->getAction($identifier);
+        return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
+    }
+    
+    public function removeImageAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($show->getImage());
+        $show->setImage(null);
+        $em->flush();
+        
+        return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
-    public function getPeopleAction($identifier)
+    public function getRolesAction($identifier)
     {
         $show = $this->getEntity($identifier);
         $role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
         $roles = $role_repo->findByShow($show);
 
         return $this->view($roles);
+    }
+
+    public function getPeopleAction($identifier)
+    {
+        return $this->getRolesAction($identifier);
     }
 }

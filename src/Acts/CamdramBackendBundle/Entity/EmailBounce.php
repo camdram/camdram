@@ -71,13 +71,13 @@ class EmailBounce
         return $this->id;
     }
 
-/**
-     * Set fromHeader
-     *
-     * @param string $fromHeader
-     *
-     * @return EmailBounce
-     */
+    /**
+         * Set fromHeader
+         *
+         * @param string $fromHeader
+         *
+         * @return EmailBounce
+         */
     public function setFromHeader($fromHeader)
     {
         $this->fromHeader = $fromHeader;

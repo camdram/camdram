@@ -75,4 +75,9 @@ class EntityUrlGenerator
     {
         return $this->router->generate($this->getCollectionRoute($class), array('_format' => $format), true);
     }
+    
+    public function getDefaultUrl()
+    {
+        return $this->router->generate('acts_camdram_homepage');
+    }
 }

@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Rest;
 use Pagerfanta\Pagerfanta;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Class PaginatedCollection
  *

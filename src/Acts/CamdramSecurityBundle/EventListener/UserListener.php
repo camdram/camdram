@@ -19,7 +19,7 @@ class UserListener
     private $emailDispatcher;
     private $tokenGenerator;
 
-    public function __construct(EntityManager $em, EmailDispatcher $emailDispatcher,  TokenGenerator $tokenGenerator)
+    public function __construct(EntityManager $em, EmailDispatcher $emailDispatcher, TokenGenerator $tokenGenerator)
     {
         $this->entityManager = $em;
         $this->emailDispatcher = $emailDispatcher;

@@ -76,11 +76,11 @@ class UserContext extends AbstractContext
 
         foreach ($table->getRowsHash() as $field => $value) {
             switch ($field) {
-                case 'name' : $external_user->setName($value); break;
-                case 'id'   : $external_user->setRemoteId($value); break;
-                case 'email' : $external_user->setEmail($value); break;
-                case 'username' : $external_user->setUsername($value); break;
-                case 'picture' : $external_user->setProfilePictureUrl($value); break;
+                case 'name': $external_user->setName($value); break;
+                case 'id': $external_user->setRemoteId($value); break;
+                case 'email': $external_user->setEmail($value); break;
+                case 'username': $external_user->setUsername($value); break;
+                case 'picture': $external_user->setProfilePictureUrl($value); break;
                 case 'user':
                     $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($value);
                     $external_user->setUser($user);

@@ -19,8 +19,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 
-use Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
+use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Exception\PendingException;
 
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
@@ -139,7 +139,7 @@ class RestContext extends AbstractContext
         $uri .= '?access_token=' . $this->access_token;
         $server = array('CONTENT_TYPE' => "application/json");
 
-        $this->getClient()->request($method, $uri,array(),array(),$server,$formData);
+        $this->getClient()->request($method, $uri, array(), array(), $server, $formData);
         $this->response = $this->getClient()->getResponse();
     }
 
@@ -159,5 +159,4 @@ class RestContext extends AbstractContext
         $data = json_decode($this->response->getContent(), true);
         assertEquals($data[$key], $value);
     }
-
 }

@@ -424,8 +424,8 @@ class News
     public function getLink()
     {
         switch ($this->getSource()) {
-            case 'facebook' : return 'http://www.facebook.com/'.$this->getRemoteId(); break;
-            case 'twitter' : return 'http://www.twitter.com/redirect/status/'.$this->getRemoteId(); break;
+            case 'facebook': return 'http://www.facebook.com/'.$this->getRemoteId(); break;
+            case 'twitter': return 'http://www.twitter.com/redirect/status/'.$this->getRemoteId(); break;
         }
     }
 }

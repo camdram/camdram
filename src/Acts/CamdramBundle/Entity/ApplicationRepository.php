@@ -17,11 +17,13 @@ class ApplicationRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a');
         $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.deadlineDate > :current_date',
-                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')))
+            ->where($qb->expr()->orX(
+                'a.deadlineDate > :current_date',
+                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')
+            ))
             ->andWhere($qb->expr()->orX(
                 'a.show IS NULL',
-                $qb->expr()->andX('s.authorised_by is not null', 's.entered != false')
+                $qb->expr()->andX('s.authorised_by is not null')
             ))
             ->orderBy('a.deadlineDate', 'DESC')
             ->addOrderBy('a.deadlineTime', 'DESC')
@@ -41,11 +43,12 @@ class ApplicationRepository extends EntityRepository
         return $qb
             ->join('a.show', 's')
             ->where('s.slug = :slug')
-            ->andWhere($qb->expr()->orX('a.deadlineDate > :current_date',
-                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')))
+            ->andWhere($qb->expr()->orX(
+                'a.deadlineDate > :current_date',
+                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')
+            ))
             ->andWhere('s.slug = :slug')
             ->andWhere('s.authorised_by is not null')
-            ->andWhere('s.entered = 1')
             ->setParameter('slug', $slug)
 
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
@@ -81,12 +84,14 @@ class ApplicationRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a');
 
-        return $qb->where($qb->expr()->orX('a.deadlineDate > :current_date',
-                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')))
+        return $qb->where($qb->expr()->orX(
+            'a.deadlineDate > :current_date',
+                $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')
+        ))
             ->leftJoin('a.show', 's')
             ->leftJoin('a.society', 'o')
             ->andWhere($qb->expr()->orX(
-                $qb->expr()->andX('s.id IS NOT NULL', 's.slug = :slug', 's.authorised_by is not null', 's.entered = 1'),
+                $qb->expr()->andX('s.id IS NOT NULL', 's.slug = :slug', 's.authorised_by is not null'),
                 $qb->expr()->andX('o.id IS NOT NULL', 'o.slug = :slug')
             ))
             ->setParameter('slug', $slug)

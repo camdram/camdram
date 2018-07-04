@@ -13,7 +13,6 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *
  * @ORM\Table(name="acts_shows_people_link")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\RoleRepository")
- * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\RoleSearchIndexListener"})
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable
  * @Serializer\XmlRoot("role")
@@ -255,4 +254,14 @@ class Role
         return $this->person->getName();
     }
 
+    /**
+     * Get slug of person
+     *
+     * @VirtualProperty
+     * @return string
+     */
+    public function getPersonSlug()
+    {
+        return $this->person->getSlug();
+    }
 }

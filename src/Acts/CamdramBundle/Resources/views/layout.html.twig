@@ -33,7 +33,7 @@
               <div class="results">
                   <ul></ul>
                   <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
-                  <div class="fulltext"><a href="#">...perform a search for &quot;<span class="query"></span>&quot;</a></div>
+                  <div class="error">Search is not availble at the moment</div>
               </div>
               <i class="fa fa-spinner fa-spin"></i>
               <input type="submit" value="Search"/>
@@ -54,8 +54,7 @@
           'diary': {'text': 'Diary', 'path': path('acts_camdram_diary')},
           'vacancies': {'text': 'Vacancies', 'path': path('get_auditions')},
           'societies': {'text': 'Societies', 'path': path('get_societies')},
-          'venues': {'text': 'Venues', 'path': path('get_venues')},
-          'infobase': {'text': 'Infobase', 'path': path('acts_camdram_infobase_placeholder')},
+          'venues': {'text': 'Venues', 'path': path('get_venues')}
           }, current_id: current_navigation_id} %}
         </ul>
           <ul class="right">
@@ -68,7 +67,7 @@
                     'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
                     'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
                   }} %}
-                  {% if app.user and has_role('ROLE_EDITOR') %}
+                  {% if app.user and is_granted('ROLE_EDITOR') %}
                   {% include 'ActsCamdramBundle:Navigation:nav-items.html.twig' with { items: {
                     'add_venue': {text: 'Add a venue', path: path('new_venue'), icon: 'plus-circle'},
                     'add_society': {text: 'Add a society', path: path('new_society'), icon: 'plus-circle'}

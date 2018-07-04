@@ -10,8 +10,6 @@ security:
             entity:
                 class: Acts\CamdramSecurityBundle\Entity\User
                 property: email
-        external_login:
-            id: camdram.security.external_user.provider
 
     firewalls:
         oauth_token:
@@ -22,7 +20,6 @@ security:
             pattern: ^/.*
             anonymous: true
             switch_user: { role: ROLE_ADMIN, parameter: _switch_to_user }
-            entry_point: camdram.security.entry_point
             fos_oauth: true
             logout:
                 path: /logout
@@ -32,15 +29,25 @@ security:
                 login_path: /auth/login
                 username_parameter: email
                 password_parameter: password
-                success_handler:  camdram.security.authentication_success_handler
-            external_login:
-                services: [raven, facebook, google]
-                success_handler:  camdram.security.authentication_success_handler
+            oauth:
+                resource_owners:
+                    raven:              "/auth/check-raven"
+                    facebook:           "/auth/oauth/check-facebook"
+                    google:             "/auth/oauth/check-google"
+                    twitter:            "/auth/oauth/check-twitter"
+                login_path:        /auth/login
+                use_forward:       false
+                failure_path:      /auth/login
+                oauth_user_provider:
+                    service: camdram.security.user.provider
+            
+                login_path: "/auth/login"
             remember_me:
                 secret:      %secret%
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~
+                always_remember_me: true
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -53,18 +60,35 @@ security:
         Acts\CamdramSecurityBundle\Entity\User:
             id: camdram.security.encoder.legacy_md5
 
-acts_external_login:
-    user_provider_id: camdram.security.external_user.provider
-    services:
+hwi_oauth:
+    firewall_names: [public]
+    grant_rule: 'IS_AUTHENTICATED_FULLY'
+    target_path_parameter: _destination
+    connect:
+        account_connector: camdram.security.user.provider
+        registration_form: camdram.security.registration.form
+        registration_form_handler: camdram.security.registration.handler
+    resource_owners:
         facebook:
-            class: social_api
-            settings:
-                api: facebook
+            type: facebook
+            client_id: %facebook_id%
+            client_secret: %facebook_secret%
+            scope: "email user_friends"
+            options:
+                csrf: true
         google:
-            class: social_api
-            settings:
-                api: google
+            type: google
+            client_id: %google_client_id%
+            client_secret: %google_client_secret%
+            scope: "email profile"
+            options:
+                csrf: true
+        twitter:
+            type: twitter
+            client_id: %twitter_key%
+            client_secret: %twitter_secret%
+            options:
+                csrf: true
+                include_email: true
         raven:
-            class: raven
-            settings:
-                description: "camdram.net"
+            service: "camdram.security.raven.resource_owner"

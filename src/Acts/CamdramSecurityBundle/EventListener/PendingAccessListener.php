@@ -27,10 +27,12 @@ class PendingAccessListener
      */
     public function postPersist(PendingAccess $pending_ace, LifecycleEventArgs $event)
     {
-        $this->logger->info(sprintf('%s has granted access for %s to edit %s %d.',
+        $this->logger->info(sprintf(
+            '%s has granted access for %s to edit %s %d.',
             $pending_ace->getIssuer()->getName(),
             $pending_ace->getEmail(),
             $pending_ace->getType(),
-            $pending_ace->getRid()));
+            $pending_ace->getRid()
+        ));
     }
 }

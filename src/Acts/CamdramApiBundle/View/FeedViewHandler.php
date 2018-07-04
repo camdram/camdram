@@ -70,6 +70,7 @@ class FeedViewHandler
         } else {
             $feed->setTitle('Camdram feed');
             $feed->setDescription('Camdram feed');
+            $feed->setLink($this->urlGen->getDefaultUrl());
         }
 
         $lastModified = null;

@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\SocietyType;
 
@@ -12,7 +12,7 @@ use Acts\CamdramBundle\Form\Type\SocietyType;
  *
  * Controller for REST actions for societies. Inherits from AbstractRestController.
  *
- * @RouteResource("Society")
+ * @Rest\RouteResource("Society")
  */
 class SocietyController extends OrganisationController
 {
@@ -34,6 +34,40 @@ class SocietyController extends OrganisationController
         return $this->createForm(new SocietyType(), $society);
     }
 
+    public function getAction($identifier)
+    {
+        $society = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $society);
+        
+        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($society) > 0;
+        
+        $view = $this->view($society, 200)
+            ->setTemplate('ActsCamdramBundle:Society:show.html.twig')
+            ->setTemplateData(['society' => $society, 'can_contact' => $can_contact])
+        ;
+        
+        return $view;
+    }
+
+    /**
+     * Action that allows querying by id. Redirects to slug URL
+     * 
+     * @Rest\Get("/societies/by-id/{id}")
+     */
+    public function getByIdAction(Request $request, $id)
+    {
+        $this->checkAuthenticated();
+        $society = $this->getRepository()->findOneById($id);
+        
+        if (!$society)
+        {
+            throw $this->createNotFoundException('That society id does not exist');
+        }
+
+        return $this->redirectToRoute('get_society', ['identifier' => $society->getSlug(), '_format' => $request->getRequestFormat()]);
+    }
+    
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
@@ -102,5 +136,18 @@ class SocietyController extends OrganisationController
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
 
         return $show_repo->getBySociety($this->getEntity($slug), $from, $to);
+    }
+
+    public function removeImageAction($identifier)
+    {
+        $society = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $society);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($society->getImage());
+        $society->setImage(null);
+        $em->flush();
+        
+        return $this->redirectToRoute('get_society', ['identifier' => $identifier]);
     }
 }

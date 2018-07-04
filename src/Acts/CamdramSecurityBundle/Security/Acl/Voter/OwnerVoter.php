@@ -34,10 +34,13 @@ class OwnerVoter extends Voter
     {
         if (TokenUtilities::isApiRequest($token)) {
             if ($subject instanceof Society || $object instanceof Venue) {
-                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG')) return false;
-            }
-            else {
-                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE')) return false;
+                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG')) {
+                    return false;
+                }
+            } else {
+                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE')) {
+                    return false;
+                }
             }
         }
         return $this->aclProvider->isOwner($token->getUser(), $subject);

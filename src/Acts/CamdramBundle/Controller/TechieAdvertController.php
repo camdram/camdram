@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Doctrine\Common\Collections\Criteria;
 
-
 /**
  * @RouteResource("Techie")
  */
@@ -46,11 +45,11 @@ class TechieAdvertController extends FOSRestController
         foreach ($techieAdverts as $advert) {
             $weeks[$advert->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($advert->getShow()->getPerformances());
         }
-        $view = $this->render(
-            'ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig',
-            array('techieadverts' => $techieAdverts,
-                  'weeks' => $weeks)
-            );
+        
+        $view = $this->view($techieAdverts)
+            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig')
+            ->setTemplateVar('techieadverts')
+            ->setTemplateData(['weeks' => $weeks]);
 
         return $view;
     }
@@ -62,14 +61,12 @@ class TechieAdvertController extends FOSRestController
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {
-
             throw $this->createNotFoundException('No techie advert exists with that identifier');
         }
 
         if ($request->getRequestFormat() == 'html') {
             return $this->redirect($this->generateUrl('get_techie').'#'.$identifier);
-        }
-        else {
+        } else {
             return $this->view($data);
         }
     }

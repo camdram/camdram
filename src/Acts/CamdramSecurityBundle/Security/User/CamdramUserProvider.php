@@ -7,8 +7,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Exception\IdentityNotFoundException;
+use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
+use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
+use HWI\Bundle\OAuthBundle\Security\Core\Exception\AccountNotLinkedException;
+use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
+use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 
-class CamdramUserProvider implements UserProviderInterface
+class CamdramUserProvider implements
+    UserProviderInterface,
+        OAuthAwareUserProviderInterface,
+    AccountConnectorInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager;
@@ -163,6 +171,57 @@ class CamdramUserProvider implements UserProviderInterface
         }
 
         $this->em->remove($user2);
+        $this->em->flush();
+    }
+    
+    private function loadOrCreateExternalUser(UserResponseInterface $response)
+    {
+        $service = $response->getResourceOwner()->getName();
+        $username = $response->getUsername();
+        $external = $this->em->getRepository('ActsCamdramSecurityBundle:ExternalUser')->findOneBy(array(
+            'service' => $service,
+            'username' => $username
+        ));
+        
+        if ($external) {
+            $external->setToken($response->getAccessToken());
+        } else {
+            $external = new ExternalUser();
+            $external->setService($service);
+            $external->setEmail($response->getEmail());
+            $external->setUsername($username);
+            $external->setName($response->getRealName());
+            $external->setProfilePictureUrl($response->getProfilePicture());
+            $external->setToken($response->getAccessToken());
+            $this->em->persist($external);
+        }
+        
+        return $external;
+    }
+    
+    public function loadUserByOAuthUserResponse(UserResponseInterface $response)
+    {
+        $external = $this->loadOrCreateExternalUser($response);
+        if ($user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($response->getEmail())) {
+            $external->setUser($user);
+        }
+        $this->em->flush();
+        
+        if (!$external->getUser()) {
+            throw new AccountNotLinkedException(sprintf("User '%s' not found.", $response->getUsername()));
+        }
+        
+        return $external->getUser();
+    }
+    
+    public function connect(UserInterface $user, UserResponseInterface $response)
+    {
+        if (!$user instanceof User) {
+            throw new UnsupportedUserException(sprintf('Expected a Camdram User, but got "%s".', get_class($user)));
+        }
+           
+        $external = $this->loadOrCreateExternalUser($response);
+        $external->setUser($user);
         $this->em->flush();
     }
 }

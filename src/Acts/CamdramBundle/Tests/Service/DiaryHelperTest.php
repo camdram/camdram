@@ -8,7 +8,6 @@ use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\DiaryHelper;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-
 class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -28,7 +27,7 @@ class DiaryHelperTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->router = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
+        $this->router = $this->createMock('Symfony\\Component\\Routing\\RouterInterface');
         $this->diaryHelper = new DiaryHelper($this->router);
     }
 

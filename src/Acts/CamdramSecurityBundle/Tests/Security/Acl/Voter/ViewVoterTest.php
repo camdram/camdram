@@ -29,7 +29,9 @@ class ViewVoterTest extends \PHPUnit_Framework_TestCase
     public function testViewNewShow()
     {
         $this->assertEquals(ViewVoter::ACCESS_DENIED, $this->voter->vote(
-                $this->token, new Show(), array('VIEW')
+                $this->token,
+            new Show(),
+            array('VIEW')
         ));
     }
 
@@ -38,21 +40,27 @@ class ViewVoterTest extends \PHPUnit_Framework_TestCase
         $show = new Show();
         $show->setAuthorisedBy(new User());
         $this->assertEquals(ViewVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, $show, array('VIEW')
+                $this->token,
+            $show,
+            array('VIEW')
             ));
     }
 
     public function testViewVenue()
     {
         $this->assertEquals(ViewVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token, new Venue(), array('VIEW')
+                $this->token,
+            new Venue(),
+            array('VIEW')
             ));
     }
 
     public function testNotView()
     {
         $this->assertEquals(ViewVoter::ACCESS_ABSTAIN, $this->voter->vote(
-                $this->token, new Venue(), array('EDIT')
+                $this->token,
+            new Venue(),
+            array('EDIT')
             ));
     }
 }
