@@ -87,7 +87,7 @@ services:
 
     acts.camdram.email_dispatcher:
         class: Acts\CamdramBundle\Service\EmailDispatcher
-        arguments: ['@swiftmailer.mailer', '@twig', %mailer_sender_address%]
+        arguments: ['@swiftmailer.mailer', '@twig', '%mailer_sender_address%']
 
     acts.camdram.moderation_manager:
         class: Acts\CamdramBundle\Service\ModerationManager

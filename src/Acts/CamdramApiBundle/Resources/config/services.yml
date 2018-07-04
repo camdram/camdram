@@ -28,7 +28,7 @@ services:
             - '@acts.camdram_api.annotation_reader'
             - '@twig'
             - '@acts.camdram_api.entity_url_generator'
-            - %mailer_sender_address%
+            - '%mailer_sender_address%'
 
     acts.camdram_api.ical_view_handler:
         class: Acts\CamdramApiBundle\View\ICalViewHandler

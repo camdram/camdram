@@ -3,7 +3,7 @@ fos_elastica:
         default: { host: localhost, port: 9200 }
     indexes:
         autocomplete:
-            index_name: %search_namespace%_autocomplete
+            index_name: '%search_namespace%_autocomplete'
             settings:
                 index:
                     analysis:
@@ -33,7 +33,7 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Show
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                     indexable_callback: isIndexable
                 society:
                     properties:
@@ -44,7 +44,7 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Society
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                 venue:
                     properties:
                         name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
@@ -54,7 +54,7 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Venue
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                 person:
                     properties:
                         name: { type: completion, analyzer: autocomplete, search_analyzer: search }
@@ -67,5 +67,5 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Person
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                     indexable_callback: isIndexable

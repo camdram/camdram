@@ -1,10 +1,9 @@
 parameters:
-    acts_camdram_backend.database_tools.class: Acts\CamdramBackendBundle\Service\DatabaseTools
     assetic.filter.scssphp.class: Acts\CamdramBackendBundle\Service\ScssphpFilter
 
 services:
     acts_camdram_backend.database_tools:
-        class: %acts_camdram_backend.database_tools.class%
+        class: Acts\CamdramBackendBundle\Service\DatabaseTools
         arguments: ['@doctrine.orm.entity_manager']
 
     acts_camdram_backend.log_procesor:
@@ -25,18 +24,18 @@ services:
         class: Facebook\Facebook
         lazy: true
         arguments:
-          - app_id: %facebook_id%
-            app_secret: %facebook_secret%
+          - app_id: "%facebook_id%"
+            app_secret: "%facebook_secret%"
             default_access_token: "%facebook_id%|%facebook_secret%"
             
     twitter.api:
         class: Abraham\TwitterOAuth\TwitterOAuth
         lazy: true
         arguments:
-          - %twitter_key%
-          - %twitter_secret%
-          - %twitter_token%
-          - %twitter_token_secret%
+          - "%twitter_key%"
+          - "%twitter_secret%"
+          - "%twitter_token%"
+          - "%twitter_token_secret%"
           
     github.api:
         class: \Github\Client

@@ -51,7 +51,7 @@ services:
 
     camdram.security.token_generator:
         class: Acts\CamdramSecurityBundle\Service\TokenGenerator
-        arguments: [%secret%]
+        arguments: ["%secret%"]
 
     camdram.security.email_send_listener:
         class: Acts\CamdramSecurityBundle\EventListener\EmailSendListener
@@ -81,7 +81,7 @@ services:
 
     camdram.security.email_dispatcher:
         class: Acts\CamdramSecurityBundle\Service\EmailDispatcher
-        arguments: ['@doctrine.orm.entity_manager', '@swiftmailer.mailer', '@twig', %mailer_sender_address%]
+        arguments: ['@doctrine.orm.entity_manager', '@swiftmailer.mailer', '@twig', '%mailer_sender_address%']
 
     camdram.security.last_login_time_listener:
         class: Acts\CamdramSecurityBundle\EventListener\LastLoginTimeListener

@@ -1,17 +1,12 @@
-parameters:
-    acts.diary.factory.class: Acts\DiaryBundle\Diary\DiaryFactory
-    acts.diary.renderer.html.class: Acts\DiaryBundle\Diary\Renderer\HtmlRenderer
-    acts.diary.twig_extension.class: Acts\DiaryBundle\Twig\DiaryExtension
-
 services:
     acts.diary.factory:
-        class: %acts.diary.factory.class%
+        class: Acts\DiaryBundle\Diary\DiaryFactory
 
     acts.diary.renderer.html:
-        class: %acts.diary.renderer.html.class%
+        class: Acts\DiaryBundle\Diary\Renderer\HtmlRenderer
         arguments: ['@twig']
 
     acts.diary.twig_extension:
-        class: %acts.diary.twig_extension.class%
+        class: Acts\DiaryBundle\Twig\DiaryExtension
         tags:
             - { name: twig.extension }
