@@ -35,6 +35,6 @@ parameters:
     map_center: [52.20531,0.12179]
     development_warning: false
     show_site_notice: false
-    site_notice_content: "Camdram will be unavailable for scheduled maintenence from 00:00:00 on 1 January 1970 for approximately 1 hour."
+    site_notice_content: "Camdram will be unavailable for scheduled maintenance from 00:00:00 on 1 January 1970 for approximately 1 hour."
     search_namespace: camdram
     search_enable_listeners: false
