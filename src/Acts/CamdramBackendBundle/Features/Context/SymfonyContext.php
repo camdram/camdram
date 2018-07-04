@@ -77,7 +77,7 @@ class SymfonyContext extends BehatContext implements KernelAwareInterface
     /**
      * @BeforeScenario
      */
-    public function resetSphinx()
+    public function resetElasticsearch()
     {
         $resetter = $this->kernel->getContainer()->get('fos_elastica.resetter');
         $resetter->resetAllIndexes();

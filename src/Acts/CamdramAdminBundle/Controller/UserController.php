@@ -50,7 +50,7 @@ class UserController extends FOSRestController
     /**
      * Action which returns a list of entities.
      *
-     * If a search term 'q' is provided, then a text search is performed against Sphinx. Otherwise, a paginated
+     * If a search term 'q' is provided, then a text search is performed. Otherwise, a paginated
      * collection of all entities is returned.
      */
     public function cgetAction(Request $request)

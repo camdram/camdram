@@ -9,14 +9,3 @@ default:
             show_cmd: 'google-chrome %s'
     filters:
          tags: "~@ignore"
-sphinx:
-    extensions:
-        Behat\Symfony2Extension\Extension:
-            mink_driver: true
-            kernel:
-                env: test_sphinx
-        Behat\MinkExtension\Extension:
-            default_session: 'symfony2'
-            show_cmd: 'google-chrome %s'
-    filters:
-         tags: "~@ignore"

@@ -28,9 +28,6 @@ abstract class AbstractRestController extends FOSRestController
     /** @var string the plural form of the English word for the entity represented by the class  */
     protected $type_plural;
 
-    /** @var string the Sphinx index that contins that should be searched for this sort of entity  */
-    protected $search_index = 'entity';
-
     /**
      * @return string used to populate the namespace of the templates for this class
      */
@@ -222,7 +219,7 @@ abstract class AbstractRestController extends FOSRestController
     /**
      * Action which returns a list of entities.
      *
-     * If a search term 'q' is provided, then a text search is performed against Sphinx. Otherwise, a paginated
+     * If a search term 'q' is provided, then a text search is performed against Elasticsearch. Otherwise, a paginated
      * collection of all entities is returned.
      */
     public function cgetAction(Request $request)
@@ -236,27 +233,10 @@ abstract class AbstractRestController extends FOSRestController
             $request->query->set('limit', 10);
         }
 
-        if ($request->get('q')) {
-            /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
-            $search_provider = $this->get('acts.camdram.search_provider');
-
-            //Hack to add to allow filtering by, e.g. show within the entity Sphinx index
-            $filters = $this->search_index == 'entity' && $this->type
-                    ? array('entity_type' => $this->type) : array();
-
-            //If the additional 'autocomplete' parameter is set, then we only return a few results, and prefixes are
-            //matched instead of whole words. Used by the global search bar.
-            if ($request->query->has('autocomplete')) {
-                $data = $search_provider->executeAutocomplete($this->search_index, $request->get('q'), $request->get('limit'), $filters);
-            } else {
-                $data = $search_provider->executeTextSearch($this->search_index, $request->get('q'), 0, 10);
-            }
-        } else {
-            $repo = $this->getRepository();
-            $qb = $repo->selectAll()->getQuery();
-            $adapter = new DoctrineORMAdapter($qb);
-            $data = new Pagerfanta($adapter);
-        }
+        $repo = $this->getRepository();
+        $qb = $repo->selectAll()->getQuery();
+        $adapter = new DoctrineORMAdapter($qb);
+        $data = new Pagerfanta($adapter);
 
         $view = $this->view($data, 200)
             ->setTemplateVar('result')

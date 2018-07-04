@@ -105,12 +105,6 @@ services:
         tags:
             - { name: doctrine.entity_listener }
 
-    acts.camdram.listener.role_search_index:
-        class: Acts\CamdramBundle\EventListener\RoleSearchIndexListener
-        arguments: [~]
-        tags:
-            - { name: doctrine.entity_listener }
-
     acts.camdram.listener.techie_advert:
         class: Acts\CamdramBundle\EventListener\TechieAdvertListener
         arguments: ['@acts.time_service']
