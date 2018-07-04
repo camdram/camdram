@@ -3,12 +3,13 @@
 namespace Acts\CamdramSecurityBundle\Tests\Security\Acl;
 
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
+use PHPUnit\Framework\TestCase;
 
 class ClassIdentityTestClass
 {
 }
 
-class ClassIdentityTest extends \PHPUnit_Framework_TestCase
+class ClassIdentityTest extends TestCase
 {
     private $class_name;
 

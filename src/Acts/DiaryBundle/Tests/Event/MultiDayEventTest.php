@@ -3,8 +3,9 @@
 namespace Acts\DiaryBundle\Tests\Event;
 
 use Acts\DiaryBundle\Event\MultiDayEvent;
+use PHPUnit\Framework\TestCase;
 
-class MultiDayEventTest extends \PHPUnit_Framework_TestCase
+class MultiDayEventTest extends TestCase
 {
     public function testMultiDayEvent()
     {

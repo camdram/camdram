@@ -5,16 +5,18 @@ namespace Acts\CamdramBundle\Tests\Service;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Service\EmailDispatcher;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class EmailDispatcherTest extends \PHPUnit_Framework_TestCase
+class EmailDispatcherTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $mailer;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $twig;
 

@@ -5,8 +5,9 @@ namespace Acts\CamdramSecurityBundle\Tests\Security\Acl\Voter;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use PHPUnit\Framework\TestCase;
 
-class CreateVoterTest extends \PHPUnit_Framework_TestCase
+class CreateVoterTest extends TestCase
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter

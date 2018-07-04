@@ -4,8 +4,9 @@ namespace Acts\DiaryBundle\Tests\Diary;
 
 use Acts\DiaryBundle\Diary\DiaryItem;
 use Acts\DiaryBundle\Event\SingleDayEvent;
+use PHPUnit\Framework\TestCase;
 
-class DiaryItemTest extends \PHPUnit_Framework_TestCase
+class DiaryItemTest extends TestCase
 {
     public function testDiaryItem()
     {

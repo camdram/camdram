@@ -4,8 +4,9 @@ namespace Acts\DiaryBundle\Tests\Diary;
 
 use Acts\DiaryBundle\Diary\Week;
 use Acts\DiaryBundle\Event\SingleDayEvent;
+use PHPUnit\Framework\TestCase;
 
-class DiaryWeekTest extends \PHPUnit_Framework_TestCase
+class DiaryWeekTest extends TestCase
 {
     private $week;
 

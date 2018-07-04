@@ -5,11 +5,13 @@ namespace Acts\CamdramBundle\Tests\Validator\Constraints;
 use Acts\CamdramBundle\Entity\MapLocation;
 use Acts\CamdramBundle\Validator\Constraints\MapDistance;
 use Acts\CamdramBundle\Validator\Constraints\MapDistanceValidator;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class MapDistanceValidatorTest extends \PHPUnit_Framework_TestCase
+class MapDistanceValidatorTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $context;
 

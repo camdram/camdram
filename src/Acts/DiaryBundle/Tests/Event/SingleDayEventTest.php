@@ -3,8 +3,9 @@
 namespace Acts\DiaryBundle\Tests\Event;
 
 use Acts\DiaryBundle\Event\SingleDayEvent;
+use PHPUnit\Framework\TestCase;
 
-class SingleDayEventTest extends \PHPUnit_Framework_TestCase
+class SingleDayEventTest extends TestCase
 {
     public function testSingleDayEvent()
     {

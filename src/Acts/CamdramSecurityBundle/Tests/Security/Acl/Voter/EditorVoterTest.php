@@ -8,8 +8,10 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class EditorVoterTest extends \PHPUnit_Framework_TestCase
+class EditorVoterTest extends TestCase
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter

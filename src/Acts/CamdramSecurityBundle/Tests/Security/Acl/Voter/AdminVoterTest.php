@@ -6,8 +6,9 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use PHPUnit\Framework\TestCase;
 
-class AdminVoterTest extends \PHPUnit_Framework_TestCase
+class AdminVoterTest extends TestCase
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\AdminVoter

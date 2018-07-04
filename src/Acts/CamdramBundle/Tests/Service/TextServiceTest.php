@@ -3,8 +3,9 @@
 namespace Acts\CamdramBundle\Tests\Controller;
 
 use Acts\CamdramBundle\Service\TextService;
+use PHPUnit\Framework\TestCase;
 
-class TextServiceTest extends \PHPUnit_Framework_TestCase
+class TextServiceTest extends TestCase
 {
     /**
      * @var \Acts\CamdramBundle\Service\TextService

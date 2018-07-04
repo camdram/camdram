@@ -8,11 +8,13 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class ShowVoterTest extends \PHPUnit_Framework_TestCase
+class ShowVoterTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $aclProvider;
 

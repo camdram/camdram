@@ -5,16 +5,17 @@ namespace Acts\CamdramBundle\Tests\Form\Type;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\EntitySearchType;
 use Symfony\Component\Form\Test\TypeTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class EntitySearchTypeTest extends TypeTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $repo;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $em;
 

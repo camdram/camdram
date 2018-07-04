@@ -6,8 +6,9 @@ use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use PHPUnit\Framework\TestCase;
 
-class ProfileVoterTest extends \PHPUnit_Framework_TestCase
+class ProfileVoterTest extends TestCase
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter

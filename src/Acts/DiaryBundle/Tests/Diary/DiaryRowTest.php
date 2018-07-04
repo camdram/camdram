@@ -6,8 +6,9 @@ use Acts\DiaryBundle\Diary\DiaryItem;
 use Acts\DiaryBundle\Diary\DiaryRow;
 use Acts\DiaryBundle\Event\MultiDayEvent;
 use Acts\DiaryBundle\Event\SingleDayEvent;
+use PHPUnit\Framework\TestCase;
 
-class DiaryRowTest extends \PHPUnit_Framework_TestCase
+class DiaryRowTest extends TestCase
 {
     private $row;
 

@@ -2,7 +2,9 @@
 
 namespace Acts\DiaryBundle\Tests\Event;
 
-class AbstractEventTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AbstractEventTest extends TestCase
 {
     public function testAbstractEvent()
     {

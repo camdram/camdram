@@ -9,16 +9,18 @@ use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class AclProviderTest extends \PHPUnit_Framework_TestCase
+class AclProviderTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $em;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var MockObject
      */
     private $repository;
 

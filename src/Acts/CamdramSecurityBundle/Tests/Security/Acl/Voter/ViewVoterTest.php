@@ -7,8 +7,9 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use PHPUnit\Framework\TestCase;
 
-class ViewVoterTest extends \PHPUnit_Framework_TestCase
+class ViewVoterTest extends TestCase
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter

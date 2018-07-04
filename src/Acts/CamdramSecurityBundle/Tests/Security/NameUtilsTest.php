@@ -1,8 +1,9 @@
 <?php
 
 namespace Acts\CamdramSecurityBundle\Tests\Security;
+use PHPUnit\Framework\TestCase;
 
-class NameUtilsTest extends \PHPUnit_Framework_TestCase
+class NameUtilsTest extends TestCase
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\NamesUtils;

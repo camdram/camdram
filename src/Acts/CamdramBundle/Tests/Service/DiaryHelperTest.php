@@ -7,8 +7,9 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\DiaryHelper;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use PHPUnit\Framework\TestCase;
 
-class DiaryHelperTest extends \PHPUnit_Framework_TestCase
+class DiaryHelperTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
