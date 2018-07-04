@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Acts\CamdramSecurityBundle\Form\Type\ExternalRegistrationType;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class RegistrationFormHandler implements RegistrationFormHandlerInterface
@@ -16,7 +17,7 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
     
     private $encoderFactory;
     
-    private $formBuilder;
+    private $formFactory;
     
     public function __construct(
     
@@ -33,7 +34,7 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
     
     public function createForm()
     {
-        return $this->formFactory->create(new ExternalRegistrationType());
+        return $this->formFactory->create(new ExternalRegistrationType(), new User());
     }
     
     public function process(Request $request, Form $form, UserResponseInterface $userInformation)
