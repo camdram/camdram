@@ -60,7 +60,10 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         {% if app.environment == 'prod' %}
-            <script src="{{ asset('js/fos_js_routes.js') }}"></script>
+            {% javascripts output='js/js_routing.js'
+            'js/fos_js_routes.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
         {% else %}
             <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         {% endif %}
