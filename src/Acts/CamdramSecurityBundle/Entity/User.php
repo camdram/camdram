@@ -136,14 +136,6 @@ class User implements UserInterface, \Serializable
     private $ace_grants;
 
     /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramAdminBundle\Entity\Support", mappedBy="owner")
-     * @Serializer\Exclude()
-     */
-    private $owned_issues;
-
-    /**
      * @ORM\OneToMany(targetEntity="Acts\CamdramApiBundle\Entity\Authorization", mappedBy="user")
      * @Serializer\Exclude()
      */
@@ -658,40 +650,6 @@ class User implements UserInterface, \Serializable
     public function getAceGrants()
     {
         return $this->ace_grants;
-    }
-
-    /**
-     * Add owned_issues
-     *
-     * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
-     *
-     * @return User
-     */
-    public function addOwnedIssue(\Acts\CamdramAdminBundle\Entity\Support $ownedIssues)
-    {
-        $this->owned_issues[] = $ownedIssues;
-
-        return $this;
-    }
-
-    /**
-     * Remove owned_issues
-     *
-     * @param \Acts\CamdramAdminBundle\Entity\Support $ownedIssues
-     */
-    public function removeOwnedIssue(\Acts\CamdramAdminBundle\Entity\Support $ownedIssues)
-    {
-        $this->owned_issues->removeElement($ownedIssues);
-    }
-
-    /**
-     * Get owned_issues
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOwnedIssues()
-    {
-        return $this->owned_issues;
     }
 
     /**
