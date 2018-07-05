@@ -7,10 +7,6 @@ acts_camdram_api:
     resource: "@ActsCamdramApiBundle/Resources/config/routing.yml"
     prefix:   /api
 
-acts_camdram_backend:
-    resource: "@ActsCamdramBackendBundle/Resources/config/routing.yml"
-    prefix:   /
-
 acts_camdram:
     resource: "@ActsCamdramBundle/Resources/config/routing.yml"
     prefix:   /

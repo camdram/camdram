@@ -2,9 +2,9 @@
 
 namespace Acts\CamdramSecurityBundle\Features\Context;
 
-use Acts\CamdramBackendBundle\Features\Context\EntityContext;
-use Acts\CamdramBackendBundle\Features\Context\SymfonyContext;
-use Acts\CamdramBackendBundle\Features\Context\UserContext;
+use Acts\CamdramBundle\Features\Context\EntityContext;
+use Acts\CamdramBundle\Features\Context\SymfonyContext;
+use Acts\CamdramBundle\Features\Context\UserContext;
 use Behat\Behat\Context\BehatContext;
 use Behat\MinkExtension\Context\MinkContext;
 

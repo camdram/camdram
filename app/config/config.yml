@@ -67,7 +67,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-        entity_listener_resolver: acts_camdram_backend.doctrine.entity_listener_resolver
+        entity_listener_resolver: acts_camdram.doctrine.entity_listener_resolver
         mappings:
             gedmo_loggable:
                 type: annotation
@@ -183,5 +183,5 @@ ewz_recaptcha:
     locale_key: %kernel.default_locale%
 
 parameters:
-    test.client.class: Acts\CamdramBackendBundle\Test\Client
+    test.client.class: Acts\CamdramAdminBundle\Tests\Client
     router.request_context.host: www.camdram.net
