@@ -12,10 +12,6 @@ services:
         tags:
             - { name: monolog.processor, method: processRecord, channel: camdram }
 
-    acts_camdram_backend.doctrine.entity_listener_resolver:
-        class: Acts\CamdramBackendBundle\Doctrine\EntityListenerResolver
-        arguments: ['@service_container']
-
     acts_camdram_backend.test.session_storage:
         class: Acts\CamdramBackendBundle\Test\SessionStorage
         parent: session.storage.mock_file

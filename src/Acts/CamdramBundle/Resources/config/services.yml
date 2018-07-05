@@ -109,12 +109,12 @@ services:
         class: Acts\CamdramBundle\EventListener\ShowListener
         arguments: ['@acts.camdram.moderation_manager', '@acts.camdram.week_manager']
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
     acts.camdram.listener.techie_advert:
         class: Acts\CamdramBundle\EventListener\TechieAdvertListener
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
     acts.camdram.techie_advert_expiry_validator:
         class: Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiryValidator

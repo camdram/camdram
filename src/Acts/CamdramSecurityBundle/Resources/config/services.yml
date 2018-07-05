@@ -65,19 +65,19 @@ services:
         class: Acts\CamdramSecurityBundle\EventListener\AccessControlEntryListener
         arguments: ['@monolog.logger.camdram']
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
     camdram.security.listener.pending_access:
         class: Acts\CamdramSecurityBundle\EventListener\PendingAccessListener
         arguments: ['@monolog.logger.camdram']
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
     camdram.security.listener.user:
         class: Acts\CamdramSecurityBundle\EventListener\UserListener
         arguments: ['@doctrine.orm.entity_manager', '@camdram.security.email_dispatcher', '@camdram.security.token_generator']
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
     camdram.security.email_dispatcher:
         class: Acts\CamdramSecurityBundle\Service\EmailDispatcher
