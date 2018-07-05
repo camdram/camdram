@@ -126,7 +126,7 @@ class ApplicationController extends FOSRestController
         $application = $show->getApplications()->first();
         $em = $this->getDoctrine()->getManager();
 
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
         $application->setDeadlineDate($now)->setDeadlineTime($now);
         $em->flush();
 

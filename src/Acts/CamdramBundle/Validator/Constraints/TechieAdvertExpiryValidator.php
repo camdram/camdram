@@ -3,7 +3,6 @@
 namespace Acts\CamdramBundle\Validator\Constraints;
 
 use Acts\CamdramBundle\Entity\TechieAdvert;
-use Acts\TimeMockBundle\Service\TimeService;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Acts\CamdramBundle\Entity\MapLocation;
@@ -15,12 +14,10 @@ use Acts\CamdramBundle\Entity\MapLocation;
  */
 class TechieAdvertExpiryValidator extends ConstraintValidator
 {
-    private $timeService;
     private $expiry_max_days;
 
-    public function __construct(TimeService $timeService, $expiry_max_days)
+    public function __construct($expiry_max_days)
     {
-        $this->timeService = $timeService;
         $this->expiry_max_days = $expiry_max_days;
     }
 
@@ -32,7 +29,7 @@ class TechieAdvertExpiryValidator extends ConstraintValidator
         }
 
         if ($value->getDeadline()) {
-            $max_expires = $this->timeService->getCurrentTime();
+            $max_expires = new \DateTime;
             $max_expires->modify('+'.$this->expiry_max_days.' days');
 
             $expiry_date = new \DateTime($value->getExpiry()->format('Y-m-d').' '.$value->getDeadlineTime()->format('H:i:s'));

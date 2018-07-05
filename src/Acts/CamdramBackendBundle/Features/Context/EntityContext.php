@@ -9,6 +9,7 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramBundle\Service\Time;
 
 /**
  * Feature context.
@@ -141,7 +142,7 @@ class EntityContext extends AbstractContext
     {
         $show = $this->createShow($show_name);
 
-        $start_date = $this->getCurrentTime();
+        $start_date = Time::now();
         $day_of_week = $start_date->format('N');
         if ($day_of_week < 7) {
             $start_date->modify('-'.$day_of_week.' days');

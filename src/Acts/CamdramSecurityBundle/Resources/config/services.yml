@@ -85,7 +85,7 @@ services:
 
     camdram.security.last_login_time_listener:
         class: Acts\CamdramSecurityBundle\EventListener\LastLoginTimeListener
-        arguments: ['@acts.time_service', '@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
 

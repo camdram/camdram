@@ -31,7 +31,6 @@
         "friendsofsymfony/elastica-bundle": "^4.1",
         "incenteev/composer-parameter-handler": "~2.1",
         "liip/imagine-bundle": "~1.9",
-        "acts/time-mock-bundle": "*@dev",
         "zurb/foundation": "4.*",
         "leafo/scssphp": "0.6.*",
         "zendframework/zend-feed": "2.4.*",

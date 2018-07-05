@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9867bbad6535459271e668aaf57f2b92",
+    "content-hash": "b18d4af3286c74050296cff5b5239e83",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -59,50 +59,6 @@
                 "twitter"
             ],
             "time": "2015-08-18T15:56:04+00:00"
-        },
-        {
-            "name": "acts/time-mock-bundle",
-            "version": "dev-master",
-            "target-dir": "Acts/TimeMockBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/camdram/time-mock-bundle.git",
-                "reference": "70973415f3932f2fff65795bf044fa965dbabcc4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/camdram/time-mock-bundle/zipball/70973415f3932f2fff65795bf044fa965dbabcc4",
-                "reference": "70973415f3932f2fff65795bf044fa965dbabcc4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "symfony/symfony": ">=2.1"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Acts\\TimeMockBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Peter Hoyes",
-                    "email": "pahoyes@gmail.com"
-                }
-            ],
-            "description": "A simple bundle for Symfony2 which enables the current time to be mocked.",
-            "keywords": [
-                "date",
-                "mock",
-                "testing",
-                "time"
-            ],
-            "time": "2013-11-16T14:48:25+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -3505,16 +3461,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.15",
+            "version": "v2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/10bcb46e8f3d365170f6de9d05245aa066b81f09",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
                 "shasum": ""
             },
             "require": {
@@ -3550,7 +3506,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-06-08T15:26:40+00:00"
+            "time": "2018-07-04T16:31:37+00:00"
         },
         {
             "name": "php-http/cache-plugin",
@@ -8099,7 +8055,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "acts/time-mock-bundle": 20,
         "excelwebzone/recaptcha-bundle": 20,
         "behat/behat": 0,
         "behat/mink": 0

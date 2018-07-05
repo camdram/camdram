@@ -136,7 +136,7 @@ class TechieAdvertController extends FOSRestController
         $techie_advert = $show->getTechieAdverts()->first();
         $em = $this->getDoctrine()->getManager();
 
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
         $techie_advert->setDeadline(true);
         $techie_advert->setExpiry($now)->setDeadlineTime($now);
         $em->flush();

@@ -90,7 +90,7 @@ class SocietyController extends OrganisationController
         $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
         $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
 
         $data = array(
             'society' => $society,

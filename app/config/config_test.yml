@@ -29,9 +29,6 @@ swiftmailer:
 fos_js_routing:
     request_context_base_url: /app_test.php
 
-acts_time_mock:
-    time_override: 2000-07-03 15:30
-
 assetic:
     debug: false
     use_controller: false

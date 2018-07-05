@@ -53,7 +53,7 @@ class ShowController extends AbstractRestController
     public function cgetAction(Request $request)
     {
         if ($request->getRequestFormat() == 'rss') {
-            $now = $this->get('acts.time_service')->getCurrentTime();
+            $now = new \DateTime;
             $next_week = clone $now;
             $next_week->modify('+10 days');
             $shows = $this->getRepository()->findInDateRange($now, $next_week);

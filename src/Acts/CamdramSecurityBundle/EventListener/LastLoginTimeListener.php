@@ -4,7 +4,6 @@ namespace Acts\CamdramSecurityBundle\EventListener;
 
 use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Acts\TimeMockBundle\Service\TimeService;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -14,13 +13,10 @@ use Doctrine\ORM\EntityManager;
  */
 class LastLoginTimeListener
 {
-    private $timeService;
-
     private $entityManager;
 
-    public function __construct(TimeService $timeService, EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->timeService = $timeService;
         $this->entityManager = $entityManager;
     }
 
@@ -31,7 +27,7 @@ class LastLoginTimeListener
     {
         $user = $event->getAuthenticationToken()->getUser();
         if ($user instanceof CamdramUserInterface) {
-            $user->setLastLoginAt($this->timeService->getCurrentTime());
+            $user->setLastLoginAt(new \DateTime);
             $this->entityManager->flush($user);
         }
     }
