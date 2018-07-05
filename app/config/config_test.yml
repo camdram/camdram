@@ -16,7 +16,6 @@ monolog:
     handlers: ~
 
 framework:
-    router:   { resource: "%kernel.root_dir%/config/routing_test.yml" }
     test: ~
     session:
         storage_id: acts_camdram_admin.test.session_storage
