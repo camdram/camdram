@@ -55,7 +55,7 @@ class ContactUsType extends AbstractType
 
             if ($user instanceof User) {
 
-                $event->setData(['name' => $user->getName(), 'email' => $user->getFullEmail()]);
+                $event->setData(['name' => $user->getName(), 'email' => $user->getEmail()]);
             }
         });
     }

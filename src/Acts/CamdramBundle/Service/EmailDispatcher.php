@@ -21,7 +21,7 @@ class EmailDispatcher
     {
         $emails = array();
         foreach ($users as $user) {
-            $emails[$user->getFullEmail()] = $user->getName();
+            $emails[$user->getEmail()] = $user->getName();
         }
 
         return $emails;
@@ -76,7 +76,7 @@ class EmailDispatcher
     {
         $emails = array();
         foreach ($owners as $user) {
-            $emails[$user->getFullEmail()] = $user->getName();
+            $emails[$user->getEmail()] = $user->getName();
         }
 
         $message = \Swift_Message::newInstance()

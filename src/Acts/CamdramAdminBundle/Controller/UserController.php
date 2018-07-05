@@ -213,7 +213,7 @@ class UserController extends FOSRestController
         if ($form->isValid()) {
             $data = $form->getData();
             $otherUser = $this->get('doctrine.orm.entity_manager')->getRepository('ActsCamdramSecurityBundle:User')
-                ->findOneByFullEmail($data['email']);
+                ->findOneByEmail($data['email']);
             if ($otherUser) {
                 if ($otherUser == $user) {
                     $form->addError(new FormError('You cannot merge a user with itself'));
