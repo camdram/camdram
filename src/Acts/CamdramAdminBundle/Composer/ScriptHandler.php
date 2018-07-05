@@ -32,12 +32,13 @@ class ScriptHandler extends SensioScriptHandler
 
     public static function welcomeMessage(Event $event)
     {
-        static::writeHeader($event, "Complete");
+        static::writeHeader($event, "Complete!");
         
         $event->getIO()->write(<<<'EOF'
 Welcome to your Camdram checkout!
 
 Run <options=bold;fg=yellow>php app/console server:run</> to start Camdram on PHP's built-in web server.
+The homepage can then be viewed at <options=bold;fg=yellow>http://localhost:8000/app_dev.php</>
 
 <options=bold;fg=yellow>Database</>
 In order to set you up quickly, a local SQLite database has been created automatically.
