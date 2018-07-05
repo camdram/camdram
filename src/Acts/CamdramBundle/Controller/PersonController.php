@@ -33,7 +33,7 @@ class PersonController extends AbstractRestController
 
     protected function getForm($person = null)
     {
-        return $this->createForm(new PersonType(), $person);
+        return $this->createForm(PersonType::class, $person);
     }
 
     public function removeAction($identifier)

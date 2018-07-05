@@ -4,7 +4,11 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class ApplicationType extends AbstractType
 {
@@ -15,29 +19,21 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text', 'text', array('label' => 'Brief Description',
+            ->add('text', TextType::class, array('label' => 'Brief Description',
                 'attr' => array('placeholder' => 'e.g. "Applications to Direct" (your show name will be included automatically)')))
-            ->add('furtherInfo', 'textarea', array('label' => 'Further Information'))
-            ->add('deadlineDate', 'date', array('widget' => 'single_text', 'error_bubbling' => false))
-            ->add('deadlineTime', 'time', array('widget' => 'single_text'))
+            ->add('furtherInfo', TextareaType::class, array('label' => 'Further Information'))
+            ->add('deadlineDate', DateType::class, array('widget' => 'single_text', 'error_bubbling' => false))
+            ->add('deadlineTime', TimeType::class, array('widget' => 'single_text'))
         ;
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Application'
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'acts_camdrambundle_application';
     }
 }

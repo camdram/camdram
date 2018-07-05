@@ -59,7 +59,7 @@ class AppController extends FOSRestController
 
     private function getForm($app = null)
     {
-        return $this->createForm(new ExternalAppType(), $app);
+        return $this->createForm(ExternalAppType::class, $app);
     }
 
     public function newAction()

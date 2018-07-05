@@ -79,7 +79,7 @@ class DefaultController extends Controller
     public function forgottenPasswordAction()
     {
         $email = $this->getUser() ? $this->getUser()->getEmail() : null;
-        $form = $this->createForm(new ForgottenPasswordType(), array('email' => $email));
+        $form = $this->createForm(ForgottenPasswordType::class, ['email' => $email]);
 
         if ($this->getRequest()->getMethod() == 'POST') {
             $form->submit($this->getRequest());
@@ -109,7 +109,7 @@ class DefaultController extends Controller
         if ($user) {
             $expected_token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
             if ($token == $expected_token) {
-                $form = $this->createForm(new ResetPasswordType(), array());
+                $form = $this->createForm(ResetPasswordType::class, array());
                 if ($this->getRequest()->getMethod() == 'POST') {
                     $form->submit($this->getRequest());
                     if ($form->isValid()) {

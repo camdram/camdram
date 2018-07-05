@@ -6,9 +6,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 /**
  * Class ShowType
@@ -41,25 +44,25 @@ class ShowType extends AbstractType
                     'multi' => 'The performances are at a number of different venues (e.g. a tour)',
                 ),
             ))
-            ->add('performances', 'collection', array(
-                'type' => new PerformanceType(),
+            ->add('performances', CollectionType::class, array(
+                'entry_type' => PerformanceType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => 'Dates and times'
             ))
-            ->add('category', 'show_category')
-            ->add('venue', 'entity_search', array(
+            ->add('category', ShowCategoryType::class)
+            ->add('venue', EntitySearchType::class, array(
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
                 'required' => false,
                 'text_field' => 'other_venue'
             ))
-            ->add('online_booking_url', 'url', array(
+            ->add('online_booking_url', UrlType::class, array(
                 'required' => false, 'label' => 'URL for purchasing tickets'
             ))
-            ->add('facebook_id', null, array('required' => false))
-            ->add('twitter_id', null, array('required' => false))
+            ->add('facebook_id', FacebookLinkType::class, array('required' => false))
+            ->add('twitter_id', TwitterLinkType::class, array('required' => false))
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 //society's 'read-only' field is dependent on whether a new show is being created
                 $show = $event->getData();
@@ -71,7 +74,7 @@ class ShowType extends AbstractType
                     && !$this->authorizationChecker->isGranted('ROLE_ADMIN')
                     ;
 
-                $form->add('society', 'entity_search', array(
+                $form->add('society', EntitySearchType::class, array(
                     'route' => 'get_societies',
                     'class' => 'Acts\\CamdramBundle\\Entity\\Society',
                     'required' => false,
@@ -82,15 +85,10 @@ class ShowType extends AbstractType
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Show'
         ));
-    }
-
-    public function getName()
-    {
-        return 'show';
     }
 }

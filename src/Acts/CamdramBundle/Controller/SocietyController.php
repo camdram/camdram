@@ -31,7 +31,7 @@ class SocietyController extends OrganisationController
 
     protected function getForm($society = null)
     {
-        return $this->createForm(new SocietyType(), $society);
+        return $this->createForm(SocietyType::class, $society);
     }
 
     public function getAction($identifier)

@@ -4,7 +4,7 @@ namespace Acts\CamdramAdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Acts\CamdramBundle\Form\Type\EntitySearchType;
 
 /**
  * Class AddAclType
@@ -17,19 +17,7 @@ class AddAclType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('entity', 'entity_search', array('class' => 'Acts\\CamdramBundle\\Entity\\Entity'))
+            ->add('entity', EntitySearchType::class, array('class' => 'Acts\\CamdramBundle\\Entity\\Entity'))
         ;
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-
-        ));
-    }
-
-    public function getName()
-    {
-        return 'acts_camdrambundle_addacltype';
     }
 }

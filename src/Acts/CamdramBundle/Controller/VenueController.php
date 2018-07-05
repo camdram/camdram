@@ -34,7 +34,7 @@ class VenueController extends OrganisationController
 
     protected function getForm($venue = null)
     {
-        return $this->createForm(new VenueType(), $venue);
+        return $this->createForm(VenueType::class, $venue);
     }
     
     public function getAction($identifier)

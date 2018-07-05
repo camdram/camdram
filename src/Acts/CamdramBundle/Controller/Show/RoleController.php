@@ -30,7 +30,7 @@ class RoleController extends FOSRestController
 
         $role = new Role();
         $role->setType($request->query->get('type'));
-        $form = $this->createForm(new RoleType(), $role, array(
+        $form = $this->createForm(RoleType::class, $role, array(
             'action' => $this->generateUrl('post_show_role', array('identifier' => $identifier))));
 
         return $this->view($form, 200)
@@ -51,7 +51,7 @@ class RoleController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $base_role = new Role();
-        $form = $this->createForm(new RoleType(), $base_role);
+        $form = $this->createForm(RoleType::class, $base_role);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -145,7 +145,7 @@ class RoleController extends FOSRestController
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
 
-        $form = $this->createForm(new RolesType(), array(
+        $form = $this->createForm(RolesType::class, array(
             array('identifier' => $identifier)));
 
         return $this->view($form, 200)
@@ -169,7 +169,7 @@ class RoleController extends FOSRestController
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
 
-        $form = $this->createForm(new RolesType(), array(
+        $form = $this->createForm(RolesType::class, array(
             array('identifier' => $identifier)));
         $form->handleRequest($request);
         if ($form->isValid()) {

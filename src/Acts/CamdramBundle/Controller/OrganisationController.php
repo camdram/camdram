@@ -121,7 +121,7 @@ abstract class OrganisationController extends AbstractRestController
             $obj = new Application();
             $obj->setSociety($org);
         }
-        $form = $this->createForm(new OrganisationApplicationType(), $obj);
+        $form = $this->createForm(OrganisationApplicationType::class, $obj);
 
         return $form;
     }
@@ -237,7 +237,7 @@ abstract class OrganisationController extends AbstractRestController
         $ace->setRid($org->getId());
         $ace->setType($org->getEntityType());
         $ace->setIssuer($this->getUser());
-        $form = $this->createForm(new PendingAccessType(), $ace, array(
+        $form = $this->createForm(PendingAccessType::class, $ace, array(
             'action' => $this->generateUrl($route, array('identifier' => $identifier))));
 
         $em = $this->getDoctrine()->getManager();
@@ -274,7 +274,7 @@ abstract class OrganisationController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
         $pending_ace = new PendingAccess();
-        $form = $this->createForm(new PendingAccessType(), $pending_ace);
+        $form = $this->createForm(PendingAccessType::class, $pending_ace);
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* Check if the ACE doesn't need to be created for various reasons. */

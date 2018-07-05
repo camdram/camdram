@@ -4,7 +4,9 @@ namespace Acts\CamdramAdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramBundle\Form\Type\EntitySearchType;
 
 /**
  * Class UserType
@@ -18,22 +20,15 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
-            ->add('person', 'entity_search', array('other_allowed' => false, 'prefetch' => false,
+            ->add('person', EntitySearchType::class, array('other_allowed' => false, 'prefetch' => false,
                 'required' => false, 'route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
-            ->add('occupation', 'occupation')
-            ->add('graduation', 'graduation_year', array('required' => false))
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Acts\CamdramSecurityBundle\Entity\User'
+            'data_class' => User::class
         ));
-    }
-
-    public function getName()
-    {
-        return 'acts_camdramadminbundle_usertype';
     }
 }

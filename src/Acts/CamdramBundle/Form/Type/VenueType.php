@@ -4,7 +4,7 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class VenueType
@@ -18,24 +18,19 @@ class VenueType extends AbstractType
         $builder
             ->add('name')
             ->add('short_name')
-            ->add('college')
+            ->add('college', CollegeType::class)
             ->add('description')
             ->add('address')
-            ->add('location', 'map_location')
-            ->add('facebook_id')
-            ->add('twitter_id')
+            ->add('location', MapLocationType::class)
+            ->add('facebook_id', FacebookLinkType::class)
+            ->add('twitter_id', TwitterLinkType::class)
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Venue'
         ));
-    }
-
-    public function getName()
-    {
-        return 'venue';
     }
 }

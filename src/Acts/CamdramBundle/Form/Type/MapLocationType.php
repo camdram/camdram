@@ -4,9 +4,11 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Ivory\GoogleMap\Map;
 
 /**
  * Class MapLocationType
@@ -29,8 +31,8 @@ class MapLocationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('latitude', 'text', array('error_bubbling' => true))
-            ->add('longitude', 'text', array('error_bubbling' => true));
+        $builder->add('latitude', TextType::class, array('error_bubbling' => true))
+            ->add('longitude', TextType::class, array('error_bubbling' => true));
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -40,7 +42,7 @@ class MapLocationType extends AbstractType
         $this->map->setHtmlContainerId($view->vars['id'].'_map');
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\MapLocation',
@@ -49,15 +51,5 @@ class MapLocationType extends AbstractType
             'required' => false,
             'error_bubbling' => false,
         ));
-    }
-
-    public function getParent()
-    {
-        return 'form';
-    }
-
-    public function getName()
-    {
-        return 'map_location';
     }
 }

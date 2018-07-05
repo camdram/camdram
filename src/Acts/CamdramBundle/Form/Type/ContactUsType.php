@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
@@ -40,8 +40,8 @@ class ContactUsType extends AbstractType
                         && $this->storage->getToken()->getUser() instanceof CamdramUserInterface) {
                 $user = $this->storage->getToken()->getUser();
 
-                $form->add('name', 'hidden', ['data' => $user->getName(), 'read_only' => true])
-                    ->add('email', 'hidden', ['data' => $user->getFullEmail(), 'read_only' => true]);
+                $form->add('name', HiddenType::class, ['data' => $user->getName(), 'read_only' => true])
+                    ->add('email', HiddenType::class, ['data' => $user->getFullEmail(), 'read_only' => true]);
             } else {
                 $form->add('name', 'text', [
                           'label' => 'Your name',
@@ -72,18 +72,10 @@ class ContactUsType extends AbstractType
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'acts_camdrambundle_contact_us';
     }
 }

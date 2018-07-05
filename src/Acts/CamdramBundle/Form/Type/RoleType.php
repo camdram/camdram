@@ -4,7 +4,10 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class RoleType
@@ -16,22 +19,17 @@ class RoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array('mapped' => false))
-            ->add('role', 'text')
-            ->add('type', 'hidden')
-            ->add('send', 'submit')
+            ->add('name', TextType::class, array('mapped' => false))
+            ->add('role', TextType::class)
+            ->add('type', HiddenType::class)
+            ->add('send', SubmitType::class)
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Role'
         ));
-    }
-
-    public function getName()
-    {
-        return 'acts_camdrambundle_roletype';
     }
 }
