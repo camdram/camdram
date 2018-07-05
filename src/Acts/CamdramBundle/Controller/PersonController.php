@@ -103,7 +103,7 @@ class PersonController extends AbstractRestController
      */
     public function getPastRolesAction($identifier)
     {
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
         $person = $this->getEntity($identifier);
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getPastByPerson($now, $person);
 
@@ -122,7 +122,7 @@ class PersonController extends AbstractRestController
      */
     public function getUpcomingRolesAction($identifier)
     {
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
         $person = $this->getEntity($identifier);
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getUpcomingByPerson($now, $person);
 
@@ -141,7 +141,7 @@ class PersonController extends AbstractRestController
      */
     public function getCurrentRolesAction($identifier)
     {
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
         $person = $this->getEntity($identifier);
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getCurrentByPerson($now, $person);
 

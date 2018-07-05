@@ -5,6 +5,7 @@ namespace Acts\CamdramBackendBundle\Features\Context;
 use Behat\Behat\Context\BehatContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Acts\CamdramBundle\Service\Time;
 
 /**
  * Feature context.
@@ -46,10 +47,10 @@ abstract class AbstractContext extends BehatContext implements KernelAwareInterf
     }
 
     /**
-     * @return \DateTime
+     * @BeforeScenario
      */
-    protected function getCurrentTime()
+    public function mockTime()
     {
-        return $this->kernel->getContainer()->get('acts.time_service')->getCurrentTime();
+        Time::mockDateTime(new \DateTime('2000-07-03 15:30:00'));
     }
 }

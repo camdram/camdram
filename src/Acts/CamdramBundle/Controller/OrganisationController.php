@@ -64,7 +64,7 @@ abstract class OrganisationController extends AbstractRestController
         if ($request->query->has('from')) {
             $from = new \DateTime($request->query->get('from'));
         } else {
-            $from = $this->get('acts.time_service')->getCurrentTime();
+            $from = new \DateTime;
         }
 
         if ($request->query->has('to')) {
@@ -93,7 +93,7 @@ abstract class OrganisationController extends AbstractRestController
         if ($request->query->has('from')) {
             $from = new \DateTime($request->query->get('from'));
         } else {
-            $from = $this->get('acts.time_service')->getCurrentTime();
+            $from = new \DateTime;
         }
 
         if ($request->query->has('to')) {

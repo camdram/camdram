@@ -113,13 +113,11 @@ services:
 
     acts.camdram.listener.techie_advert:
         class: Acts\CamdramBundle\EventListener\TechieAdvertListener
-        arguments: ['@acts.time_service']
         tags:
             - { name: doctrine.entity_listener }
 
     acts.camdram.techie_advert_expiry_validator:
         class: Acts\CamdramBundle\Validator\Constraints\TechieAdvertExpiryValidator
-        arguments: ['@acts.time_service']
         tags:
             - { name: validator.constraint_validator, alias: camdram.techie_advert_expiry }
 

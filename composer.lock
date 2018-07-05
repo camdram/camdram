@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "728bbbe605f1abc418b0a5da05d10d3f",
+    "content-hash": "a4430564e47cdecfdcdcda1222e501c6",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -59,50 +59,6 @@
                 "twitter"
             ],
             "time": "2018-07-04T01:28:41+00:00"
-        },
-        {
-            "name": "acts/time-mock-bundle",
-            "version": "dev-master",
-            "target-dir": "Acts/TimeMockBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/camdram/time-mock-bundle.git",
-                "reference": "70973415f3932f2fff65795bf044fa965dbabcc4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/camdram/time-mock-bundle/zipball/70973415f3932f2fff65795bf044fa965dbabcc4",
-                "reference": "70973415f3932f2fff65795bf044fa965dbabcc4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "symfony/symfony": ">=2.1"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Acts\\TimeMockBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Peter Hoyes",
-                    "email": "pahoyes@gmail.com"
-                }
-            ],
-            "description": "A simple bundle for Symfony2 which enables the current time to be mocked.",
-            "keywords": [
-                "date",
-                "mock",
-                "testing",
-                "time"
-            ],
-            "time": "2013-11-16T14:48:25+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -7272,9 +7228,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "acts/time-mock-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

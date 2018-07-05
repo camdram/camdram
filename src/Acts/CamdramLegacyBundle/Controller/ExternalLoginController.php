@@ -51,7 +51,7 @@ class ExternalLoginController extends Controller
         $token->setUser($this->getUser())
         ->setSite($site)
         ->setToken($tokenId)
-        ->setIssued($this->get('acts.time_service')->getCurrentTime());
+        ->setIssued(new \DateTime);
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($token);
         $em->flush();
@@ -71,7 +71,7 @@ class ExternalLoginController extends Controller
         $repo = $this->getDoctrine()->getRepository('ActsCamdramLegacyBundle:AuthToken');
         $qb = $repo->createQueryBuilder('t');
         $qb->delete()->where('t.issued < :threshold')
-            ->setParameter('threshold', $this->get('acts.time_service')->getCurrentTime()->modify('-60sec'))
+            ->setParameter('threshold', new \DateTime('-60sec'))
             ->getQuery()->execute();
         
         if ($request->query->has('tokenid')) {

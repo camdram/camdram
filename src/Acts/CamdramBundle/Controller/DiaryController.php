@@ -6,6 +6,7 @@ use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Label;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Acts\CamdramBundle\Service\Time;
 
 /**
  * Class DiaryController
@@ -21,7 +22,7 @@ class DiaryController extends FOSRestController
      */
     public function indexAction(Request $request)
     {
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = Time::now();
         $week_start = $this->get('acts.camdram.week_manager')->previousSunday($now);
 
         return $this->dateAction($request, $week_start);
@@ -35,7 +36,7 @@ class DiaryController extends FOSRestController
     public function toolbarAction($start_date = null)
     {
         if (!$start_date) {
-            $start_date = $this->get('acts.time_service')->getCurrentTime();
+            $start_date = Time::now();
         }
         $current_year = $start_date->format('Y');
 

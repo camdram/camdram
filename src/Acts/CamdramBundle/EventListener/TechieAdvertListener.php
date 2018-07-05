@@ -3,7 +3,6 @@
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\TechieAdvert;
-use Acts\TimeMockBundle\Service\TimeService;
 
 /**
  * Class VacanciesListener
@@ -12,11 +11,8 @@ use Acts\TimeMockBundle\Service\TimeService;
  */
 class TechieAdvertListener
 {
-    private $timeService;
-
-    public function __construct(TimeService $timeService, $default_expiry_days)
+    public function __construct($default_expiry_days)
     {
-        $this->timeService = $timeService;
         $this->default_expiry_days = $default_expiry_days;
     }
 
@@ -34,7 +30,7 @@ class TechieAdvertListener
     private function updateExpiryDate(TechieAdvert $techieAdvert)
     {
         if (!$techieAdvert->getDeadline()) {
-            $expires = $this->timeService->getCurrentTime();
+            $expires = \DateTime::createFromFormat('U', time());
             $expires->modify('+'.$this->default_expiry_days.' days');
             $techieAdvert->setDeadlineTime(new \DateTime('00:00'));
             $techieAdvert->setExpiry($expires);

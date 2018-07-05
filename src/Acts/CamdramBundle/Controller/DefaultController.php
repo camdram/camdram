@@ -25,7 +25,7 @@ class DefaultController extends Controller
         $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
         $news = $news_repo->getRecent(20);
 
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
         $start = clone $now;
         $start->modify('-4 weeks');
         $end = clone $now;
@@ -48,7 +48,7 @@ class DefaultController extends Controller
      */
     public function statisticsAction()
     {
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \Datetime;
         $day = $now->format('N');
         if ($day == 7) {
             $day = 0;
@@ -108,7 +108,7 @@ class DefaultController extends Controller
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
         $data = array();
-        $now = $this->get('acts.time_service')->getCurrentTime();
+        $now = new \DateTime;
 
         foreach (array(1, 2, 5) as $years) {
             $date = clone $now;
