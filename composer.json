@@ -57,6 +57,10 @@
         "post-root-package-install": [
             "SymfonyStandard\\Composer::hookRootPackageInstall"
         ],
+        "post-create-project-cmd": [
+            "Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::refreshDatabase",
+            "Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::welcomeMessage"
+        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
