@@ -12,8 +12,9 @@ services:
         class: Acts\CamdramBundle\Service\TextService
 
     acts.camdram.diary_helper:
-            class: Acts\CamdramBundle\Service\DiaryHelper
-            arguments: ['@router']
+        class: Acts\CamdramBundle\Service\DiaryHelper
+        arguments: ['@router']
+        public: true
 
     acts.camdram.type.show:
         class: Acts\CamdramBundle\Form\Type\ShowType
@@ -124,6 +125,7 @@ services:
     acts.camdram.week_manager:
         class: Acts\CamdramBundle\Service\WeekManager
         arguments: ['@doctrine.orm.entity_manager']
+        public: true
 
     acts.camdram.contact_entity_service:
         class: Acts\CamdramBundle\Service\ContactEntityService

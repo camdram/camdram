@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\CamdramBundle\Form\Type\ContactUsType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ContactController extends Controller
@@ -25,7 +25,7 @@ class ContactController extends Controller
         }
         $this->denyAccessUnlessGranted('VIEW', $entity);
         
-        $form = $this->createForm(new ContactUsType($this->get('security.token_storage')));
+        $form = $this->createForm(ContactUsType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -1,6 +1,7 @@
 services:
     acts.diary.factory:
         class: Acts\DiaryBundle\Diary\DiaryFactory
+        public: true
 
     acts.diary.renderer.html:
         class: Acts\DiaryBundle\Diary\Renderer\HtmlRenderer

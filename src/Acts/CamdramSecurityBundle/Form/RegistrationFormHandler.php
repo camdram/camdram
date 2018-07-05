@@ -34,7 +34,7 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
     
     public function createForm()
     {
-        return $this->formFactory->create(new ExternalRegistrationType(), new User());
+        return $this->formFactory->create(ExternalRegistrationType::class, new User());
     }
     
     public function process(Request $request, Form $form, UserResponseInterface $userInformation)

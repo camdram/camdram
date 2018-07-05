@@ -15,7 +15,7 @@ class ContactUsController extends Controller
 {
     public function indexAction()
     {
-        $form = $this->createForm(new ContactUsType($this->get('security.token_storage')));
+        $form = $this->createForm(ContactUsType::class);
 
         return $this->render('ActsCamdramBundle:ContactUs:index.html.twig', array(
             'form' => $form->createView()
@@ -24,7 +24,7 @@ class ContactUsController extends Controller
 
     public function sendAction(Request $request)
     {
-        $form = $this->createForm(new ContactUsType($this->get('security.token_storage')));
+        $form = $this->createForm(ContactUsType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();

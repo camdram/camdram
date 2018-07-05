@@ -28,7 +28,7 @@
             </ul>
             <p>
                 <strong>
-                    {% if form.vars.value.expiry < current_time() and form.vars.value.deadlineTime < current_time() %}
+                    {% if form.vars.value.expiry < date() and form.vars.value.deadlineTime < date() %}
                         This advert expired on
                     {% else %}
                         This advert will expire on
