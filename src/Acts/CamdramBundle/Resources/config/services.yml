@@ -33,6 +33,12 @@ services:
         tags:
             - { name: form.type }
 
+    acts.camdram.type.contact_us:
+        class: Acts\CamdramBundle\Form\Type\ContactUsType
+        arguments: ['@security.token_storage']
+        tags:
+            - { name: form.type }
+
     acts.camdram.type.map_location:
         class: Acts\CamdramBundle\Form\Type\MapLocationType
         arguments: ['@ivory_google_map.map=', [52.20531,0.12179]]
