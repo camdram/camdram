@@ -73,7 +73,7 @@ class News
      *
      * @ORM\Column(name="public", type="boolean", nullable=false)
      */
-    private $public;
+    private $public = true;
 
     /** @var array
      * @ORM\OneToMany(targetEntity="NewsLink", mappedBy="news", cascade={"all"})
