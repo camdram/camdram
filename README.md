@@ -1,6 +1,6 @@
 # Camdram
 
-[![Build Status](https://travis-ci.org/camdram/camdram.png?branch=master)](https://travis-ci.org/camdram/camdram)
+[![Build Status](https://travis-ci.org/camdram/camdram.svg?branch=master)](https://travis-ci.org/camdram/camdram)
 [![Join the chat at https://gitter.im/camdram/development](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/camdram/development)
 
 Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute bugs and new features. The steps required to set up a development checkout of Camdram are detailed below. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub.
