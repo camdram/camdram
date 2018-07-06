@@ -5,19 +5,19 @@
 
 Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute bugs and new features. The steps required to set up a development checkout of Camdram are detailed below. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub.
 
-New releases are tagged on the `master` branch every so often and pushed to https://www.camdram.net/. https://development.camdram.net/ always reflects the latest changes.
+New releases are tagged on the `master` branch every so often and pushed to https://www.camdram.net/. The latest changes can always be seen at https://development.camdram.net/.
 
 If you encounter any problems with the instructions below, please [create a GitHub issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net. We also have a [live chat hosted on Gitter](https://gitter.im/camdram/development) which you can use to quickly and informally get in touch with the development team.
 
 ## 1) Install programs
 
-Install the necessary packages required to run Camdram. Camdram currently requires PHP version 5.6 or greater.
+Install the necessary packages required to run Camdram. PHP version 5.6 or greater is requied.
 
-The command below can be run on recent Debian-based distros (including Ubuntu) - installation methods on other distros and operating systems will vary.
+The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)) - installation methods on other distros and operating systems will vary.
 
     $ sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json
 
-The steps below assume that the Composer package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/
+The steps below assume that the Composer PHP package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/
 
 ## 2) Create a local version of Camdram
 
@@ -25,11 +25,12 @@ The command below will download and set up a Camdram checkout in a new folder ca
 
     composer create-project camdram/camdram camdram dev-master --no-interaction --keep-vcs
 
-After obtaining a copy of the code, change into the newly created 'camdram' directory before proceeding:
+After obtaining a copy of the code, change into the newly created directory and start a local web server:
 
     cd camdram
+    php app/console server:run
 
-Run `php app/console server:run` to start a web server. You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your web browser to see your personal version of Camdram's homepage.
+You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your web browser to see your personal version of Camdram's homepage.
 
 ## 3) Run test suite
 
@@ -37,7 +38,7 @@ Camdram has a limited but growing [automated test suite](https://github.com/camd
 
     $ ./runtests --tags ~@search
 
-The arguments above cause the search-related tests to be skipped - if Elasticsearch is installed and configured then this can be omitted.
+The additional parameter above causes the search-related tests to be skipped - if Elasticsearch is installed and configured (see below) then this can be omitted.
 
 ## 4) Create a fork
 
@@ -46,7 +47,7 @@ Camdram's development model follows the standard idioms used by FOSS projects ho
 After creating a personal fork, you can repoint your checkout using the commands below.
 
     $ git remote rename origin upstream
-    $ git remote add origin git@github.com:username/camdram.git
+    $ git remote add origin git@github.com:your-github-username/camdram.git
 
 ## 5) Write some code
 
@@ -63,7 +64,7 @@ Some useful tips:
  * Visit http://try.github.io/ if you're not familiar with Git.
  * Code should ideally conform to the style guide here: http://www.php-fig.org/psr/psr-2/. If this is far too daunting, a poorly styled but functional improvement is better than no improvement. You can use http://cs.sensiolabs.org/ to (mostly) clean your code up after writing it.
 
-Depending on the type of change, make sure to check it works as a logged-in and/or non-logged in visitor. You can log in to your local instance of Camdram with one of three default accounts (the password for each is just 'password'):
+Depending on the type of change, ensure it works as a logged-in and/or non-logged in visitor. You can log in to your local instance of Camdram with one of three default accounts (the password for each is just 'password'). These credentials can also be used at https://development.camdram.net/
  * user1@camdram.net
  * user2@camdram.net
  * admin@camdram.net (this is an admin user) 
@@ -92,13 +93,11 @@ The following commands may need to be run after the above, if the dependencies o
 
 ## 8) Read the Wiki
 
-[The Wiki](http://github.com/camdram/camdram/wiki) has various pieces of information about both the current and in-development
-versions of Camdram. Reading through those pages can give insight into the more esoteric
-parts of the system.
+[The Wiki](http://github.com/camdram/camdram/wiki) has various pieces of information about both the current and in-development versions of Camdram. Reading through those pages can give insight into the more esoteric parts of the system. You can suggest ideas for new articles using the contact details above.
 
-The following wiki pages detail how to create a server set-up that's more similar to the live version of Camdram:
+The following wiki pages detail how to create a server set-up that's more similar to the version of Camdram at https://www.camdram.net/:
 
- * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
  * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
- * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
  * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide)
+ * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
+ * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
