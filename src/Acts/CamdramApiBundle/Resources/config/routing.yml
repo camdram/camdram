@@ -9,3 +9,7 @@ acts_camdram_api_test_console:
 acts_camdram_api_apps:
     type: rest
     resource: Acts\CamdramApiBundle\Controller\AppController
+
+acts_camdram_api_annotation:
+    resource: '@ActsCamdramApiBundle/Controller/'
+    type: annotation

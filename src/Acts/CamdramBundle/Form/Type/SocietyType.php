@@ -4,7 +4,7 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class SocietyType
@@ -20,21 +20,16 @@ class SocietyType extends AbstractType
             ->add('name')
             ->add('short_name', null, array('required' => true))
             ->add('description')
-            ->add('college', 'college')
-            ->add('facebook_id')
-            ->add('twitter_id')
+            ->add('college', CollegeType::class)
+            ->add('facebook_id', FacebookLinkType::class)
+            ->add('twitter_id', TwitterLinkType::class)
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Society'
         ));
-    }
-
-    public function getName()
-    {
-        return 'society';
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Tests\Entity;
 
-use Acts\CamdramBackendBundle\Test\RepositoryTestCase;
+use Acts\CamdramBundle\Tests\RepositoryTestCase;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 class UserRepositoryTest extends RepositoryTestCase

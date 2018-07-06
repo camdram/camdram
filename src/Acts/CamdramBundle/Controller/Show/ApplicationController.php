@@ -22,7 +22,7 @@ class ApplicationController extends FOSRestController
             $obj = new Application();
             $obj->setShow($show);
         }
-        $form = $this->createForm(new ApplicationType(), $obj);
+        $form = $this->createForm(ApplicationType::class, $obj);
 
         return $form;
     }

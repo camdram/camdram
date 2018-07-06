@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBundle\Tests\Service;
 
-use Acts\CamdramBackendBundle\Test\RepositoryTestCase;
+use Acts\CamdramBundle\Tests\RepositoryTestCase;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramSecurityBundle\Entity\User;

@@ -4,7 +4,11 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class OrganisationApplicationType extends AbstractType
 {
@@ -15,29 +19,18 @@ class OrganisationApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text', 'text', array('label' => 'Brief Description',
+            ->add('text', TextType::class, array('label' => 'Brief Description',
                 'attr' => array('placeholder' => 'e.g. "Michaelmas show applications"')))
-            ->add('further_info', 'textarea', array('label' => 'Further Information'))
-            ->add('deadline_date', 'date', array('widget' => 'single_text'))
-            ->add('deadline_time', 'time', array('widget' => 'single_text'))
+            ->add('further_info', TextareaType::class, array('label' => 'Further Information'))
+            ->add('deadline_date', DateType::class, array('widget' => 'single_text'))
+            ->add('deadline_time', TimeType::class, array('widget' => 'single_text'))
         ;
     }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Application'
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'acts_camdrambundle_application';
     }
 }

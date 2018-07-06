@@ -1,15 +1,10 @@
 acts_camdram_admin:
     resource: "@ActsCamdramAdminBundle/Resources/config/routing.yml"
     prefix:   /admin
-    schemes:  [https]
 
 acts_camdram_api:
     resource: "@ActsCamdramApiBundle/Resources/config/routing.yml"
     prefix:   /api
-
-acts_camdram_backend:
-    resource: "@ActsCamdramBackendBundle/Resources/config/routing.yml"
-    prefix:   /
 
 acts_camdram:
     resource: "@ActsCamdramBundle/Resources/config/routing.yml"
@@ -22,7 +17,6 @@ acts_camdram_legacy:
 acts_camdram_security:
     resource: "@ActsCamdramSecurityBundle/Resources/config/routing.yml"
     prefix:   /auth
-    schemes:  [https]
 
 # Internal routing configuration to handle ESI
 #_internal:
@@ -35,11 +29,9 @@ _security_logout:
 
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
-    schemes:  [https]
 
 fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
-    schemes:  [https]
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

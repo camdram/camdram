@@ -22,7 +22,7 @@ class TechieAdvertController extends FOSRestController
             $obj = new TechieAdvert();
             $obj->setShow($show);
         }
-        $form = $this->createForm(new TechieAdvertType(), $obj);
+        $form = $this->createForm(TechieAdvertType::class, $obj);
 
         return $form;
     }

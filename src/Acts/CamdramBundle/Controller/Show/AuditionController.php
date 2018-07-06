@@ -17,7 +17,7 @@ class AuditionController extends FOSRestController
 
     private function getAuditionsForm(Show $show)
     {
-        return $this->createForm(new ShowAuditionsType(), $show);
+        return $this->createForm(ShowAuditionsType::class, $show);
     }
 
     /**

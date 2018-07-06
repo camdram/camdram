@@ -24,12 +24,12 @@ class OAuthTest extends WebTestCase
     private $app;
 
     /**
-     * @var \Acts\CamdramBackendBundle\Test\Client
+     * @var \Acts\CamdramAdminBundle\Tests\Client
      */
     private $client;
 
     /**
-     * @var \Acts\CamdramBackendBundle\Test\Client
+     * @var \Acts\CamdramAdminBundle\Tests\Client
      */
     private $userClient;
 
@@ -62,7 +62,7 @@ class OAuthTest extends WebTestCase
         $this->client->getContainer()->set('doctrine.dbal.default_connection', self::$db);
         $this->userClient->getContainer()->set('doctrine.dbal.default_connection', self::$db);
 
-        $this->client->getKernel()->getContainer()->get('acts_camdram_backend.database_tools')->resetDatabase();
+        $this->client->getKernel()->getContainer()->get('acts_camdram_admin.database_tools')->resetDatabase();
         $this->createApiApp();
     }
 

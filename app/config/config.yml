@@ -181,5 +181,5 @@ ewz_recaptcha:
     locale_key: "%kernel.default_locale%"
 
 parameters:
-    test.client.class: Acts\CamdramBackendBundle\Test\Client
+    test.client.class: Acts\CamdramAdminBundle\Tests\Client
     router.request_context.host: www.camdram.net

@@ -1,7 +1,7 @@
 <?php
 namespace Acts\CamdramAdminBundle\Tests\Service;
 
-use Acts\CamdramBackendBundle\Test\RepositoryTestCase;
+use Acts\CamdramBundle\Tests\RepositoryTestCase;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;

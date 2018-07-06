@@ -22,15 +22,10 @@ class PersonType extends AbstractType
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Person'
         ));
-    }
-
-    public function getName()
-    {
-        return 'person';
     }
 }

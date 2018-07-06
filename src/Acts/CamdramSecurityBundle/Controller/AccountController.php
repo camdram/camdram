@@ -66,7 +66,7 @@ class AccountController extends FOSRestController
 
     public function changeEmailAction(Request $request)
     {
-        $form = $form = $this->createForm(new ChangeEmailType(), $this->getUser());
+        $form = $form = $this->createForm(ChangeEmailType::class, $this->getUser());
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -95,7 +95,7 @@ class AccountController extends FOSRestController
             return new Response('', 200);
         }
 
-        $form = $form = $this->createForm(new ChangePasswordType(), $this->getUser());
+        $form = $form = $this->createForm(ChangePasswordType::class, $this->getUser());
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if ($form->isValid()) {

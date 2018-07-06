@@ -35,7 +35,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Welcome to Camdram')
             ->setFrom($this->from_address)
-            ->setTo($user->getFullEmail())
+            ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:create_account.txt.twig',
@@ -54,7 +54,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Verify your email address')
             ->setFrom($this->from_address)
-            ->setTo($user->getFullEmail())
+            ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:resend_email_verification.txt.twig',
@@ -73,7 +73,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Verify your new email address')
             ->setFrom($this->from_address)
-            ->setTo($user->getFullEmail())
+            ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:change_email.txt.twig',
@@ -92,7 +92,7 @@ class EmailDispatcher
         $message = \Swift_Message::newInstance()
             ->setSubject('Password reset')
             ->setFrom($this->from_address)
-            ->setTo($user->getFullEmail())
+            ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
                     'ActsCamdramBundle:Email:password_reset.txt.twig',
@@ -114,7 +114,7 @@ class EmailDispatcher
     {
         $message = \Swift_Message::newInstance()
             ->setFrom($this->from_address)
-            ->setTo($ace->getUser()->getFullEmail());
+            ->setTo($ace->getUser()->getEmail());
         /* Get the resource and pass it to the template. */
         if ($ace->getType() == 'show') {
             $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
@@ -178,7 +178,7 @@ class EmailDispatcher
                     ->getEntityOwners($show);
         $emails = array();
         foreach ($owners as $user) {
-            $emails[$user->getFullEmail()] = $user->getName();
+            $emails[$user->getEmail()] = $user->getName();
         }
 
         $message = \Swift_Message::newInstance()

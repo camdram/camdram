@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Acts\CamdramBundle\Form\DataTransformer\TwitterLinkTransformer;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Class TwitterLinkType
@@ -43,11 +44,6 @@ class TwitterLinkType extends AbstractType
 
     public function getParent()
     {
-        return 'text';
-    }
-
-    public function getName()
-    {
-        return 'twitter_link';
+        return TextType::class;
     }
 }

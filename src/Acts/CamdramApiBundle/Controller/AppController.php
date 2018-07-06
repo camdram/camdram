@@ -8,6 +8,8 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\OAuthServerBundle\Util\Random;
 
 /**
  * Class AppController
@@ -59,7 +61,7 @@ class AppController extends FOSRestController
 
     private function getForm($app = null)
     {
-        return $this->createForm(new ExternalAppType(), $app);
+        return $this->createForm(ExternalAppType::class, $app);
     }
 
     public function newAction()
@@ -115,5 +117,18 @@ class AppController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         return $this->redirect($this->generateUrl('get_apps'));
+    }
+
+    /**
+     * @Route("/apps/{app_id}/regenerate-secret", name="api_app_regenerate_secret")
+     */
+    public function regenerateSecretAction($app_id)
+    {
+        $this->checkAuthenticated();
+        $app = $this->getApp($app_id);
+        $app->setSecret(Random::generateToken());
+        $this->getDoctrine()->getManager()->flush();
+        
+        return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
     }
 }

@@ -4,7 +4,10 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class AuditionNonScheduledType extends AbstractType
 {
@@ -15,27 +18,19 @@ class AuditionNonScheduledType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', 'date', array('label' => 'Advert expiry date', 'widget' => 'single_text'))
-            ->add('start_time', 'time', array('label' => 'Advert expiry time', 'widget' => 'single_text'))
-            ->add('location', 'text', array('label' => 'Contact details'))
+            ->add('date', DateType::class, array('label' => 'Advert expiry date', 'widget' => 'single_text'))
+            ->add('start_time', TimeType::class, array('label' => 'Advert expiry time', 'widget' => 'single_text'))
+            ->add('location', TextType::class, array('label' => 'Contact details'))
         ;
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Audition'
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'acts_camdrambundle_audition_non_scheduled';
     }
 }

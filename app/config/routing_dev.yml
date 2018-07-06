@@ -9,13 +9,3 @@ _profiler:
 _main:
     resource: routing.yml
 
-acts_camdram_admin:
-    resource: "@ActsCamdramAdminBundle/Resources/config/routing.yml"
-    prefix:   /admin
-    schemes:  ~
-
-acts_camdram_security:
-    resource: "@ActsCamdramSecurityBundle/Resources/config/routing.yml"
-    prefix:   /auth
-    schemes:  ~
-

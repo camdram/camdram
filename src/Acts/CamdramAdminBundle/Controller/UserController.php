@@ -44,7 +44,7 @@ class UserController extends FOSRestController
 
     protected function getForm($society = null)
     {
-        return $this->createForm(new UserType(), $society);
+        return $this->createForm(UserType::class, $society);
     }
 
     /**
@@ -139,7 +139,7 @@ class UserController extends FOSRestController
 
     public function newAceAction(Request $request, $identifier)
     {
-        $form = $this->createForm(new AddAclType(), array('identifier' => $identifier));
+        $form = $this->createForm(AddAclType::class, array('identifier' => $identifier));
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
@@ -148,7 +148,7 @@ class UserController extends FOSRestController
 
     public function postAceAction(Request $request, $identifier)
     {
-        $form = $this->createForm(new AddAclType(), array('identifier' => $identifier));
+        $form = $this->createForm(AddAclType::class, array('identifier' => $identifier));
         $form->bind($request);
         if ($form->isValid()) {
             $user = $this->getEntity($identifier);
@@ -213,7 +213,7 @@ class UserController extends FOSRestController
         if ($form->isValid()) {
             $data = $form->getData();
             $otherUser = $this->get('doctrine.orm.entity_manager')->getRepository('ActsCamdramSecurityBundle:User')
-                ->findOneByFullEmail($data['email']);
+                ->findOneByEmail($data['email']);
             if ($otherUser) {
                 if ($otherUser == $user) {
                     $form->addError(new FormError('You cannot merge a user with itself'));

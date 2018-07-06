@@ -4,12 +4,14 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * Class EntitySearchType
@@ -40,11 +42,11 @@ class EntitySearchType extends AbstractType
 
         $repo = $this->em->getRepository($options['class']);
 
-        $builder->add($text_name, 'text', array(
+        $builder->add($text_name, TextType::class, array(
                 'attr' => array('class' => 'autocomplete_input'),
                 'mapped' => $options['other_allowed']
             ))
-            ->add($hidden_name, 'hidden', array(
+            ->add($hidden_name, HiddenType::class, array(
                 'data_class' => $options['class'],
                 'empty_data' => null,
             ))
@@ -96,7 +98,7 @@ class EntitySearchType extends AbstractType
         }
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'text_field' => null,
@@ -106,10 +108,5 @@ class EntitySearchType extends AbstractType
             'other_allowed' => true,
             'prefetch' => true
         ));
-    }
-
-    public function getName()
-    {
-        return 'entity_search';
     }
 }

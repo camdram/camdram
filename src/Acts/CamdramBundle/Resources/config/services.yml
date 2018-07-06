@@ -22,58 +22,46 @@ services:
         tags:
             - { name: form.type, alias: show }
 
-    acts.camdram.type.college:
-        class: Acts\CamdramBundle\Form\Type\CollegeType
-        arguments: ~
-        tags:
-            - { name: form.type, alias: college }
-
-    acts.camdram.type.show_category:
-        class: Acts\CamdramBundle\Form\Type\ShowCategoryType
-        arguments: ~
-        tags:
-            - { name: form.type, alias: show_category }
-
     acts.camdram.type.facebook_link:
         class: Acts\CamdramBundle\Form\Type\FacebookLinkType
         arguments: ['@facebook.api']
         tags:
-            - { name: form.type, alias: facebook_link }
+            - { name: form.type }
 
     acts.camdram.type.twitter_link:
         class: Acts\CamdramBundle\Form\Type\TwitterLinkType
         arguments: ['@twitter.api']
         tags:
-            - { name: form.type, alias: twitter_link }
+            - { name: form.type }
+
+    acts.camdram.type.show:
+        class: Acts\CamdramBundle\Form\Type\ShowType
+        arguments: ['@security.authorization_checker']
+        tags:
+            - { name: form.type }
+
+    acts.camdram.type.contact_us:
+        class: Acts\CamdramBundle\Form\Type\ContactUsType
+        arguments: ['@security.token_storage']
+        tags:
+            - { name: form.type }
 
     acts.camdram.type.map_location:
         class: Acts\CamdramBundle\Form\Type\MapLocationType
         arguments: [[52.20531,0.12179]]
         tags:
-            - { name: form.type, alias: map_location }
+            - { name: form.type }
 
     acts.camdram.type.entity_search:
         class: Acts\CamdramBundle\Form\Type\EntitySearchType
         arguments: ['@doctrine.orm.entity_manager']
         tags:
-            - { name: form.type, alias: entity_search }
-
-    acts.camdram.type.entity_collection:
-        class: Acts\CamdramBundle\Form\Type\EntityCollectionType
-        arguments: ['@doctrine.orm.entity_manager']
-        tags:
-            - { name: form.type, alias: entity_collection }
+            - { name: form.type }
 
     acts.camdram.type.grant_type:
         class: Acts\CamdramBundle\Form\Type\GrantType
         tags:
-            - { name: form.type, alias: grant_type }
-
-    acts.camdarm.type.guesser:
-        class: Acts\CamdramBundle\Form\CamdramTypeGuesser
-        arguments: ~
-        tags:
-            - { name: form.type_guesser }
+            - { name: form.type }
 
     acts.camdram.type.form_extension:
         class: Acts\CamdramBundle\Form\CamdramFormTypeExtension
@@ -151,3 +139,34 @@ services:
         tags:
           - { name: monolog.logger, channel: mailer }
           - { name: "swiftmailer.default.plugin" }
+
+    acts_camdram.log_procesor:
+        class: Acts\CamdramBundle\Service\LogProcessor
+        arguments:  ['@security.token_storage']
+        tags:
+            - { name: monolog.processor, method: processRecord, channel: camdram }
+
+    acts_camdram.doctrine.entity_listener_resolver:
+        class: Acts\CamdramBundle\Service\EntityListenerResolver
+        arguments: ['@service_container']
+
+    facebook.api:
+        class: Facebook\Facebook
+        lazy: true
+        arguments:
+          - app_id: %facebook_id%
+            app_secret: %facebook_secret%
+            default_access_token: "%facebook_id%|%facebook_secret%"
+            
+    twitter.api:
+        class: Abraham\TwitterOAuth\TwitterOAuth
+        lazy: true
+        arguments:
+          - %twitter_key%
+          - %twitter_secret%
+          - %twitter_token%
+          - %twitter_token_secret%
+          
+    github.api:
+        class: \Github\Client
+        lazy: true

@@ -37,8 +37,8 @@ class ContactEntityService
         $emails = array();
 
         foreach ($users as $user) {
-            if ($user->getFullEmail() && $user->getIsEmailVerified()) {
-                $emails[$user->getFullEmail()] = $user->getName();
+            if ($user->getEmail() && $user->getIsEmailVerified()) {
+                $emails[$user->getEmail()] = $user->getName();
             }
         }
 

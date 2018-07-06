@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4430564e47cdecfdcdcda1222e501c6",
+    "content-hash": "33b0095d7af739bd79b92e21983c9538",
     "packages": [
         {
             "name": "abraham/twitteroauth",

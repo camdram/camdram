@@ -96,7 +96,7 @@ For any enquiries, please contact websupport@camdram.net.";
                 ->setSubject($data['subject'])
                 ->setFrom(self::FROM_EMAIL, self::FROM_NAME)
                 ->setReturnPath(self::RETURN_EMAIL)
-                ->setTo($user->getFullEmail(), $user->getName())
+                ->setTo($user->getEmail(), $user->getName())
                 ->setBody($data['message']);
                 $mailer->send($message);
                 $output['sent'][] = $user;

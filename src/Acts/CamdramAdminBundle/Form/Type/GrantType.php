@@ -4,7 +4,8 @@ namespace Acts\CamdramAdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class GrantType
@@ -18,7 +19,7 @@ class GrantType extends AbstractType
     {
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $choices = array(
             'OWNER' => 'Owner',
@@ -37,11 +38,6 @@ class GrantType extends AbstractType
 
     public function getParent()
     {
-        return 'choice';
-    }
-
-    public function getName()
-    {
-        return 'grant_type';
+        return ChoiceType::class;
     }
 }

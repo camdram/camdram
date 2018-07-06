@@ -32,7 +32,7 @@ class AdminController extends FOSRestController
         $ace->setRid($show->getId());
         $ace->setType('show');
         $ace->setIssuer($this->getUser());
-        $form = $this->createForm(new PendingAccessType(), $ace, array(
+        $form = $this->createForm(PendingAccessType::class, $ace, array(
             'action' => $this->generateUrl('post_show_admin', array('identifier' => $identifier))));
 
         $em = $this->getDoctrine()->getManager();
@@ -72,7 +72,7 @@ class AdminController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $pending_ace = new PendingAccess();
-        $form = $this->createForm(new PendingAccessType(), $pending_ace);
+        $form = $this->createForm(PendingAccessType::class, $pending_ace);
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* Check if the ACE doesn't need to be created for various reasons. */

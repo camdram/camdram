@@ -7,3 +7,11 @@ services:
     acts_camdram_admin.user_merger:
         class: Acts\CamdramAdminBundle\Service\UserMerger
         arguments: ['@doctrine.orm.entity_manager', '@form.factory']
+
+    acts_camdram_admin.database_tools:
+        class: Acts\CamdramAdminBundle\Service\DatabaseTools
+        arguments: ['@doctrine.orm.entity_manager']
+    
+    acts_camdram_admin.test.session_storage:
+        class: Acts\CamdramAdminBundle\Tests\SessionStorage
+        parent: session.storage.mock_file

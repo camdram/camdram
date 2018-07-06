@@ -4,7 +4,10 @@ namespace Acts\CamdramSecurityBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class AceType
@@ -16,22 +19,17 @@ class PendingAccessType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('rid', 'hidden')
-            ->add('type', 'hidden')
-            ->add('email', 'email')
-            ->add('send', 'submit')
+            ->add('rid', HiddenType::class)
+            ->add('type', HiddenType::class)
+            ->add('email', EmailType::class)
+            ->add('send', SubmitType::class)
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramSecurityBundle\Entity\PendingAccess'
         ));
-    }
-
-    public function getName()
-    {
-        return 'acts_camdramsecuirtybundle_pendingaccesstype';
     }
 }

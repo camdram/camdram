@@ -4,7 +4,10 @@ namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class RoleType
@@ -17,23 +20,23 @@ class RolesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('ordering', 'choice', array(
+            ->add('ordering', ChoiceType::class, array(
                 'choices' => array(
                     'role_first' => 'Name of role followed by the person (e.g. Sound Designer: James Dooley)',
                     'name_first' => 'Name of person followed by their role (e.g. James Dooley: Sound Designer)'),
                 'expanded' => true,
                 'data' => 'role_first'
                 ))
-            ->add('separator', 'text', array(
+            ->add('separator', TextType::class, array(
                 'attr' => array('placeholder' => ':')
                 ))
-            ->add('list', 'textarea', array(
+            ->add('list', TextareaType::class, array(
                 'attr' => array(
                     'placeholder' => 'Sound Designer: James Dooley',
                     'rows' => '10',
                     )
                 ))
-            ->add('type', 'choice', array(
+            ->add('type', ChoiceType::class, array(
                 'choices' => array(
                     'cast' => 'Cast',
                     'prod' => 'Production Team',
@@ -44,13 +47,8 @@ class RolesType extends AbstractType
         ;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array('data_class' => null));
-    }
-
-    public function getName()
-    {
-        return 'acts_camdrambundle_roletype';
     }
 }
