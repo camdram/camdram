@@ -52,7 +52,7 @@ dedicated search index.
 Visit https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide to find out more.
 
 <options=bold;fg=yellow>Useful resources</>
- * https://gitter.im/camdram/camdram - Chat with a developer
+ * https://gitter.im/camdram/development - Chat with a developer
  * https://github.com/camdram/camdram/wiki - Information about the codebase
  * https://symfony.com/doc/2.8/ - Find out more about the Symfony web framework
 

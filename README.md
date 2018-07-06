@@ -13,7 +13,7 @@ If you encounter any problems with the instructions below, please [create a GitH
 
 Install the necessary packages required to run Camdram. Camdram currently requires PHP version 5.6 or greater.
 
-The command below can be run on recent Debian-based distros (including Ubuntu). Installation methods on other distros and operating systems will vary.
+The command below can be run on recent Debian-based distros (including Ubuntu) - installation methods on other distros and operating systems will vary.
 
     $ sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json
 
