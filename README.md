@@ -23,17 +23,21 @@ The steps below assume that the Composer package manager is installed globally o
 
 The command below will download and set up a Camdram checkout in a new folder called `camdram`:
 
-    composer create-project camdram/camdram camdram dev-master --no-interaction
+    composer create-project camdram/camdram camdram dev-master --no-interaction --keep-vcs
 
 After obtaining a copy of the code, change into the newly created 'camdram' directory before proceeding:
 
     cd camdram
 
-## 3) Run the web server
+Run `php app/console server:run` to start a web server. You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your web browser to see your personal version of Camdram's homepage.
 
-Run `php app/console server:run` to start a web server. You should then be able to visit [http://localhost:8000/app_dev.php](http://localhost:8000/app_dev.php) in your web browser to see your personal version of Camdram's homepage.
+## 3) Run test suite
 
-The 'app_dev.php' in the URL launches Camdram in the 'development' environment, which is optimized for the frequent code changes that occur when doing development work. It also contains a useful toolbar at the foot of the page which contains, amongst other information, useful information about load times, memory usage and the number of SQL queries run. [Read more about Symfony's environments here](https://github.com/camdram/camdram/wiki/The-Symfony-environments).
+Camdram has a limited but growing [automated test suite](https://github.com/camdram/camdram/wiki/Running-and-creating-tests), which can be used to ensure your checkout is working and check for certain regressions after making changes. It can be executed by running:
+
+    $ ./runtests --tags ~@search
+
+The arguments above cause the search-related tests to be skipped - if Elasticsearch is installed and configured then this can be omitted.
 
 ## 4) Create a fork
 
@@ -98,5 +102,3 @@ The following wiki pages detail how to create a server set-up that's more simila
  * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
  * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
  * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide)
-
-You can also [read information about Camdram's suite of tests](https://github.com/camdram/camdram/wiki/Running-and-creating-tests)

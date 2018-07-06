@@ -38,7 +38,7 @@ class ScriptHandler extends SensioScriptHandler
 Welcome to your Camdram checkout!
 
 Run <options=bold;fg=yellow>php app/console server:run</> to start Camdram on PHP's built-in web server.
-The homepage can then be viewed at <options=bold;fg=yellow>http://localhost:8000/app_dev.php</>
+The homepage can then be viewed at <options=bold;fg=yellow>http://127.0.0.1:8000/</>
 
 <options=bold;fg=yellow>Database</>
 In order to set you up quickly, a local SQLite database has been created automatically.
@@ -51,12 +51,17 @@ Camdram's search functionality is currently disabled - additional steps are requ
 dedicated search index.
 Visit https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide to find out more.
 
+<options=bold;fg=yellow>Tests</>
+You can execute <options=bold;fg=yellow>./runtests --tags ~@search</> to run the automated test suite.
+The arguments can be ommitted if Elasticsearch is installed and configured.
+
 <options=bold;fg=yellow>Useful resources</>
  * https://gitter.im/camdram/development - Chat with a developer
  * https://github.com/camdram/camdram/wiki - Information about the codebase
  * https://symfony.com/doc/2.8/ - Find out more about the Symfony web framework
 
 Break a leg!
+
 EOF
         );
     }

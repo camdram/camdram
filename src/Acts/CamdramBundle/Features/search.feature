@@ -1,3 +1,4 @@
+@search
 Feature: Search and autocomplete
 
   Background:

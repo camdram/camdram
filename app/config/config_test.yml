@@ -34,3 +34,8 @@ assetic:
 
 ewz_recaptcha:
     enabled: false
+
+fos_elastica:
+    indexes:
+        autocomplete:
+            index_name: %search_namespace%_autocomplete_test
