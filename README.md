@@ -64,7 +64,7 @@ Depending on the type of change, make sure to check it works as a logged-in and/
  * user2@camdram.net
  * admin@camdram.net (this is an admin user) 
 
-## 10) Submit your changes
+## 6) Submit your changes
 
  * Run `git add file1.php file2.php` for each file you wish to include in the commit
  * Run `git commit` and enter a message describing the changes you have made
@@ -86,7 +86,7 @@ The following commands may need to be run after the above, if the dependencies o
     $ composer install
     $ php app/console camdram:database:refresh
 
-## 5) Read the Wiki
+## 8) Read the Wiki
 
 [The Wiki](http://github.com/camdram/camdram/wiki) has various pieces of information about both the current and in-development
 versions of Camdram. Reading through those pages can give insight into the more esoteric
