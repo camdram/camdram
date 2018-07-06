@@ -3,7 +3,8 @@ set -e
 # Perform initial installaion with Elasticsearch stopped
 sudo service elasticsearch stop
 # Install deps again, which will create a new parameters.yml with default values
-composer create-project camdram/camdram camdram-dev $TRAVIS_COMMIT --no-interaction
+composer create-project camdram/camdram camdramdev dev-master#$TRAVIS_COMMIT --no-interaction
+cd camdramdev
 # Start Elasticsearch and populate index
 sudo service elasticsearch start
 sleep 10
