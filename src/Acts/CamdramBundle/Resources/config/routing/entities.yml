@@ -1,5 +1,5 @@
 acts_camdram_venues_map:
-    pattern: /venues/map/{identifier}
+    path: /venues/map/{identifier}
     defaults: { _controller: ActsCamdramBundle:Venue:map, identifier: ~ }
 
 acts_camdram_shows:
@@ -63,9 +63,9 @@ acts_camdram_timeperiods:
     resource: Acts\CamdramBundle\Controller\TimePeriodController
 
 acts_camdram_show_admin:
-    pattern: /show-admin
+    path: /show-admin
     defaults: { _controller: ActsCamdramBundle:ShowAdmin:cget }
 
 acts_camdram_show_unauthorised:
-    pattern: /show-admin/unauthorised
+    path: /show-admin/unauthorised
     defaults: { _controller: ActsCamdramBundle:ShowAdmin:cgetUnauthorised }
