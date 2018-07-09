@@ -36,6 +36,7 @@ For any enquiries, please contact websupport@camdram.net.";
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
         $numActiveUsers = count($repo->findActiveUsersForMailOut());
+        $numPasswordOnly = count($repo->findActiveUsersWithoutExternalUser());
         $numAdmins = count($repo->findOrganisationAdmins());
         
         $form = $this->createFormBuilder()
@@ -43,6 +44,7 @@ For any enquiries, please contact websupport@camdram.net.";
             ->add('recipients', 'choice', [
                 'choices' => [
                     "All Active Users ($numActiveUsers)" => 'active',
+                    "Active users without an external login ($numPasswordOnly)" => 'password_only',
                     "Society and venue admins ($numAdmins)" => 'admins',
                     "Just me (1)" => 'me'
                 ],
@@ -74,6 +76,9 @@ For any enquiries, please contact websupport@camdram.net.";
             case 'active':
                 $users = $repo->findActiveUsersForMailOut();
                 break;
+            case 'password_only':
+                $users = $repo->findActiveUsersWithoutExternalUser();
+                break;
             case 'admins':
                 $users = $repo->findOrganisationAdmins();
                 break;
@@ -87,10 +92,10 @@ For any enquiries, please contact websupport@camdram.net.";
         $loginThreshold = new \DateTime('-2 years');
         
         foreach ($users as $user) {
-            if ($user->getLastLoginAt() < $loginThreshold) {
-                $output['not_verified'][] = $user;
-            } elseif (!$user->getIsEmailVerified()) {
+            if ($user->getLastLoginAt() < $loginThreshold && $user->getRegisteredAt() < $loginThreshold) {
                 $output['not_active'][] = $user;
+            } elseif (!$user->getIsEmailVerified()) {
+                $output['not_verified'][] = $user;
             } else {
                 $message = \Swift_Message::newInstance()
                 ->setSubject($data['subject'])

@@ -77,6 +77,27 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findActiveUsersWithoutExternalUser()
+    {
+        $loginThreshold = new \DateTime('-2 years');
+
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->leftJoin('u.external_users', 'e')
+        ->groupBy('u')
+        ->having('COUNT(e) = 0')
+        ->andWhere($qb->expr()->orX('u.last_login_at >= :loginThreshold', 'u.registered_at >= :loginThreshold'))
+        ->andWhere('u.email NOT LIKE :domain1')
+        ->andWhere('u.email NOT LIKE :domain2')
+        ->andWhere('u.email NOT LIKE :domain3')
+        ->setParameter('loginThreshold', $loginThreshold)
+        ->setParameteR('domain1', "%@cam.ac.uk")
+        ->setParameteR('domain2', "%@gmail.com")
+        ->setParameteR('domain3', "%@googlemail.com")
+        ->getQuery();
+        
+        return $query->getResult();
+    }
+
     public function getEntityOwners(OwnableInterface $entity)
     {
         $query = $this->createQueryBuilder('u')
