@@ -64,14 +64,14 @@ class User implements UserInterface, \Serializable
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registered", type="date", nullable=false)
+     * @ORM\Column(name="registered_at", type="datetime", nullable=true)
      */
     private $registered_at;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="login", type="date", nullable=false)
+     * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
      */
     private $last_login_at;
 

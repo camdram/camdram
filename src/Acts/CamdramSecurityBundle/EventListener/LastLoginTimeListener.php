@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\EventListener;
 
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Doctrine\ORM\EntityManager;
 
@@ -26,7 +26,7 @@ class LastLoginTimeListener
     public function onAuthenticationSuccess(InteractiveLoginEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
-        if ($user instanceof CamdramUserInterface) {
+        if ($user instanceof User) {
             $user->setLastLoginAt(new \DateTime);
             $this->entityManager->flush($user);
         }
