@@ -76,6 +76,13 @@ class User implements UserInterface, \Serializable
     private $last_login_at;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_password_login_at", type="datetime", nullable=true)
+     */
+    private $last_password_login_at;
+
+    /**
      * @var Person
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="users")
@@ -660,5 +667,63 @@ class User implements UserInterface, \Serializable
     public function getAuthorizations()
     {
         return $this->authorizations;
+    }
+
+    /**
+     * Set lastPasswordLoginAt
+     *
+     * @param \DateTime $lastPasswordLoginAt
+     *
+     * @return User
+     */
+    public function setLastPasswordLoginAt($lastPasswordLoginAt)
+    {
+        $this->last_password_login_at = $lastPasswordLoginAt;
+
+        return $this;
+    }
+
+    /**
+     * Get lastPasswordLoginAt
+     *
+     * @return \DateTime
+     */
+    public function getLastPasswordLoginAt()
+    {
+        return $this->last_password_login_at;
+    }
+
+    /**
+     * Add authorisedShow
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
+     *
+     * @return User
+     */
+    public function addAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    {
+        $this->authorised_shows[] = $authorisedShow;
+
+        return $this;
+    }
+
+    /**
+     * Remove authorisedShow
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
+     */
+    public function removeAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    {
+        $this->authorised_shows->removeElement($authorisedShow);
+    }
+
+    /**
+     * Get authorisedShows
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAuthorisedShows()
+    {
+        return $this->authorised_shows;
     }
 }
