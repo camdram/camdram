@@ -109,13 +109,19 @@ class RavenResourceOwner implements ResourceOwnerInterface
     public function getUserInformation(array $token, array $extraParameters = array())
     {
         $response = new PathUserResponse;
-        $response->setData([
+        $data = [
             'identifier' => $token['principal'],
-            'name' => null,
-            'email' => $token['principal'].'@cam.ac.uk',
-        ]);
+            'name' => null
+        ];
+        if ($token['ptags'] == 'current')
+        {
+            //We can only infer an e-mail address for current students
+            $data['email'] = $token['principal'].'@cam.ac.uk';
+        }
+
+        $response->setData($data);
         $response->setResourceOwner($this);
-        $response->setOAuthToken(new OAuthToken($token));
+        $response->setOAuthToken(new OAuthToken($token['ptags']));
         $response->setPaths(['identifier' => 'identifier', 'email' => 'email']);
         
         return $response;

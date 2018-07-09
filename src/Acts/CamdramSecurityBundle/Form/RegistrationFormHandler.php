@@ -44,8 +44,7 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
             if ($form->isValid()) {
                 /** @var \Acts\CamdramSecurityBundle\Entity\User $user */
                 $user = $form->getData();
-                $user->setEmail($userInformation->getEmail());
-                $user->setIsEmailVerified(true);
+                $user->setIsEmailVerified($user->getEmail() == $userInformation->getEmail());
                 $user->setProfilePictureUrl($userInformation->getProfilePicture());
                 $this->em->persist($user);
                 $this->em->flush();

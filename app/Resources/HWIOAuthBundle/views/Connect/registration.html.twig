@@ -10,6 +10,7 @@
     {{ form_start(form, {'action': path('hwi_oauth_connect_registration', {'key': key}), 'attr': {'class': 'hwi_oauth_registration_register'}}) }}
         {{ form_errors(form) }}
         {{ form_row(form.name, {value: userInformation.realName}) }}
+        {{ form_row(form.email, {value: userInformation.email}) }}
 
         <div class="row">
             <div class="large-12 text-right"><input type="submit" value="Register" class="button"/></div>
