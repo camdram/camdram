@@ -90,13 +90,6 @@ class User implements UserInterface, \Serializable
     private $person;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="upgraded_at", type="datetime", nullable=true)
-     */
-    private $upgraded_at;
-
-    /**
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user", cascade={"remove"})
      * @Serializer\Exclude()
      */
@@ -366,55 +359,7 @@ class User implements UserInterface, \Serializable
     {
         list($this->id, $this->name, $this->email, $this->password) = unserialize($serialized);
     }
-
-    /**
-     * Set upgraded
-     *
-     * @param bool $upgraded
-     *
-     * @return User
-     */
-    public function setUpgraded($upgraded)
-    {
-        $this->upgraded = $upgraded;
-
-        return $this;
-    }
-
-    /**
-     * Get upgraded
-     *
-     * @return bool
-     */
-    public function getUpgraded()
-    {
-        return $this->upgraded;
-    }
-
-    /**
-     * Set upgraded_at
-     *
-     * @param \DateTime $upgradedAt
-     *
-     * @return User
-     */
-    public function setUpgradedAt($upgradedAt)
-    {
-        $this->upgraded_at = $upgradedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get upgraded_at
-     *
-     * @return \DateTime
-     */
-    public function getUpgradedAt()
-    {
-        return $this->upgraded_at;
-    }
-
+    
     public function __toString()
     {
         return $this->getName().' ('.$this->getEmail().')';
