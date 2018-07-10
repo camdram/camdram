@@ -77,6 +77,57 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function findActiveUsersWithoutExternalUser()
+    {
+        $loginThreshold = new \DateTime('-2 years');
+
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->leftJoin('u.external_users', 'e')
+        ->groupBy('u')
+        ->having('COUNT(e) = 0')
+        ->andWhere($qb->expr()->orX('u.last_login_at >= :loginThreshold', 'u.registered_at >= :loginThreshold'))
+        ->andWhere('u.email NOT LIKE :domain')
+        ->setParameter('loginThreshold', $loginThreshold)
+        ->setParameter('domain', "%@cam.ac.uk")
+        ->getQuery();
+        
+        return $query->getResult();
+    }
+
+    public function findActiveCamUsersWithoutExternalUser()
+    {
+        $loginThreshold = new \DateTime('-2 years');
+
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->leftJoin('u.external_users', 'e')
+        ->groupBy('u')
+        ->having('COUNT(e) = 0')
+        ->andWhere($qb->expr()->orX('u.last_login_at >= :loginThreshold', 'u.registered_at >= :loginThreshold'))
+        ->andWhere('u.email LIKE :domain')
+        ->setParameter('loginThreshold', $loginThreshold)
+        ->setParameter('domain', "%@cam.ac.uk")
+        ->getQuery();
+        
+        return $query->getResult();
+    }
+
+    public function findActiveNonCamUsersWithoutExternalUser()
+    {
+        $loginThreshold = new \DateTime('-2 years');
+
+        $qb = $this->createQueryBuilder('u');
+        $query = $qb->leftJoin('u.external_users', 'e')
+        ->groupBy('u')
+        ->having('COUNT(e) = 0')
+        ->andWhere($qb->expr()->orX('u.last_login_at >= :loginThreshold', 'u.registered_at >= :loginThreshold'))
+        ->andWhere('u.email NOT LIKE :domain')
+        ->setParameter('loginThreshold', $loginThreshold)
+        ->setParameter('domain', "%@cam.ac.uk")
+        ->getQuery();
+        
+        return $query->getResult();
+    }
+
     public function getEntityOwners(OwnableInterface $entity)
     {
         $query = $this->createQueryBuilder('u')

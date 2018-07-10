@@ -2,9 +2,11 @@
 
 namespace Acts\CamdramSecurityBundle\EventListener;
 
-use Acts\CamdramSecurityBundle\Security\User\CamdramUserInterface;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 
 /**
  * LastLoginTimeListener
@@ -25,10 +27,25 @@ class LastLoginTimeListener
      */
     public function onAuthenticationSuccess(InteractiveLoginEvent $event)
     {
-        $user = $event->getAuthenticationToken()->getUser();
-        if ($user instanceof CamdramUserInterface) {
-            $user->setLastLoginAt(new \DateTime);
-            $this->entityManager->flush($user);
+        $now = new \DateTime;
+        $token = $event->getAuthenticationToken();
+        $user = $token->getUser();
+        if ($user instanceof User) {
+            $user->setLastLoginAt($now);
+
+            if ($token instanceof UsernamePasswordToken)
+            {
+                $user->setLastPasswordLoginAt($now);
+            }
+            else if ($token instanceof OAuthToken)
+            {
+                if ($externalUser = $user->getExternalUserByService($token->getResourceOwnerName()))
+                {
+                    $externalUser->setLastLoginAt($now);
+                }
+            }
+
+            $this->entityManager->flush();
         }
     }
 }

@@ -14,16 +14,32 @@
 
         {% if error is defined and error %}
             <div class="error_panel">
-                <p>Either the username or password is invalid - please try again</p>
+                <p>
+                {{ error.messageKey | trans(error.messageData, 'security') }}</p>
             </div>
         {% endif %}
 
         {{ render(path('hwi_oauth_connect')) }}
         
-        {% if not app.user or (app.user and app.user.password) %}
-        <p>Or, use your e-mail address and password:</p>
+        {% if not app.user or app.user.externalUsers | length == 0 %}
+        <div class="panel">
+            <h5>Soon, you will no longer be able to use your Camdram password.</h5>
+            <p>Please complete one of the steps below if you wish to continue using your Camdram account:</p>
+            <ul>
+                <li>If you are registered with a <em>&commat;cam.ac.uk</em> e-mail address, please log in using <strong>Raven</strong> above 
+                    and your Camdram account will be automatically detected.</li>
+                <li>If you use the same e-mail address for Camdram as your primary e-mail address for a <strong>Google</strong>, 
+                    <strong>Facebook</strong> or <strong>Twitter</strong> account, please use the corresponding link above and your existing 
+                    Camdram account will be automatically detected.</li>
+                <li>Otherwise, please log in using your e-mail address and password below to go to the Account Settings page, where you can 
+                    manually link an account using a different e-mail address.</li>
+            </ul>
 
-        {{ render(path('acts_camdram_security_login_password')) }}
+            {{ render(path('acts_camdram_security_login_password')) }}
+            
+            <p>Please contact <a href="mailto:websupport@camdram.net">websupport@camdram.net</a> if you require any assistance with the above.</p>
+
+        </div>
 
         {% endif %}
     </div>

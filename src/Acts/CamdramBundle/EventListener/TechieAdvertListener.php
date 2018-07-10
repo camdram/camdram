@@ -23,7 +23,7 @@ class TechieAdvertListener
 
     public function preUpdate(TechieAdvert $techieAdvert)
     {
-        $techieAdvert->setUpdatedAt($this->timeService->getCurrentTime());
+        $techieAdvert->setUpdatedAt(new \DateTime);
         $this->updateExpiryDate($techieAdvert);
     }
 

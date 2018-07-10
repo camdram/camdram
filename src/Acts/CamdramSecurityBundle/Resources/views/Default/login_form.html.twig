@@ -23,13 +23,11 @@
         </div>
     </div>
 
-    {% if target_path is defined %}
-    <input type="hidden" name="_target_path" value="{{ target_path }}" />
-    {% endif %}
+    <input type="hidden" name="_target_path" value="{{ path('get_account') }}" />
 
     <div class="row">
         <div class="large-6 columns">
-            <a href="{{ path('acts_camdram_security_forgotten_password') }}">Forgotten password?</a>
+            <p><a href="{{ path('acts_camdram_security_forgotten_password') }}">Forgotten password?</a></p>
         </div>
         <div class="large-6 columns text-right">
             <input type="submit" value="Log in" id="login_button" class="button"/>

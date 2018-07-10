@@ -9,7 +9,10 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Acts\CamdramSecurityBundle\Form\Type\ExternalRegistrationType;
 use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Event\UserEvent;
+use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationFormHandler implements RegistrationFormHandlerInterface
 {
@@ -18,18 +21,20 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
     private $encoderFactory;
     
     private $formFactory;
+
+    private $eventDispatcher;
     
     public function __construct(
     
         EntityManager $entityManager,
-    
         EncoderFactoryInterface $encoderFactory,
-        FormFactoryInterface $formFactory
-    
+        FormFactoryInterface $formFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->em = $entityManager;
         $this->encoderFactory = $encoderFactory;
         $this->formFactory = $formFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
     
     public function createForm()
@@ -44,12 +49,11 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
             if ($form->isValid()) {
                 /** @var \Acts\CamdramSecurityBundle\Entity\User $user */
                 $user = $form->getData();
-                $user->setEmail($userInformation->getEmail());
-                $user->setIsEmailVerified(true);
+                $user->setIsEmailVerified($user->getEmail() == $userInformation->getEmail());
                 $user->setProfilePictureUrl($userInformation->getProfilePicture());
                 $this->em->persist($user);
                 $this->em->flush();
-                
+
                 return true;
             }
         }

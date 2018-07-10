@@ -11,7 +11,7 @@
             <div class="panel" style="max-height: 300px; overflow-y:auto;">
             <ul>
             {% for user in output.sent %}
-            <li>{{ user.name }} ({{ user.fullEmail }})</li>
+            <li>{{ user.name }} ({{ user.email }})</li>
             {% endfor %}
             </ul>
             </div>
@@ -21,7 +21,7 @@
             <div class="panel" style="max-height: 200px; overflow-y:auto;">
             <ul>
             {% for user in output.not_verified %}
-            <li>{{ user.name }} ({{ user.fullEmail }})</li>
+            <li>{{ user.name }} ({{ user.email }})</li>
             {% endfor %}
             </ul>
             </div>
@@ -32,7 +32,7 @@
             <div class="panel" style="max-height: 200px; overflow-y:auto;">
             <ul>
             {% for user in output.not_active %}
-            <li>{{ user.name }} ({{ user.fullEmail }})</li>
+            <li>{{ user.name }} ({{ user.email }})</li>
             {% endfor %}
             </ul>
             </div>

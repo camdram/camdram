@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * Performance
@@ -83,6 +84,7 @@ class Performance
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="performances")
      * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
      */
     private $venue;
 

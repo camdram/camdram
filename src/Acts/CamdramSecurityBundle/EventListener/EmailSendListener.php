@@ -7,6 +7,7 @@ use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
+use HWI\Bundle\OAuthBundle\Event\FilterUserResponseEvent;
 
 /**
  * EmailSendListener
@@ -25,12 +26,14 @@ class EmailSendListener
         $this->generator = $generator;
     }
 
-    public function onRegistrationEvent(UserEvent $event)
+    public function onRegistrationEvent(FilterUserResponseEvent $event)
     {
         $user = $event->getUser();
-        $token = $user->getIsEmailVerified() ? null : $this->generator->generateEmailConfirmationToken($user);
-
-        $this->dispatcher->sendRegistrationEmail($user, $token);
+        if (!$user->getIsEmailVerified())
+        {
+            $token = $this->generator->generateEmailConfirmationToken($user);
+            $this->dispatcher->sendRegistrationEmail($user, $token);
+        }
     }
 
     public function onEmailChangeEvent(UserEvent $event)

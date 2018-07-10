@@ -29,12 +29,12 @@ class TechieAdvertExpiryValidator extends ConstraintValidator
         }
 
         if ($value->getDeadline()) {
-            $max_expires = new \DateTime;
-            $max_expires->modify('+'.$this->expiry_max_days.' days');
+            $now = new \Datetime;
+            $max_expires = new \Datetime('+'.$this->expiry_max_days.' days');
 
             $expiry_date = new \DateTime($value->getExpiry()->format('Y-m-d').' '.$value->getDeadlineTime()->format('H:i:s'));
-
-            if ($expiry_date < $this->timeService->getCurrentTime()) {
+            
+            if ($expiry_date < $now) {
                 $this->context->addViolation($constraint->too_early_message, array(), $value);
             } elseif ($expiry_date  > $max_expires) {
                 $this->context->addViolation($constraint->too_late_message, array('%days%' => $this->expiry_max_days), $value);

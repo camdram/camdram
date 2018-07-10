@@ -6,10 +6,11 @@
 <div class="row">
     <div class="large-12 columns">
     <h4>Register with Camdram</h4>
-    <p>Please enter your name to create a Camdram account.</p>
+    <p>Please enter your name and e-mail address to create a Camdram account.</p>
     {{ form_start(form, {'action': path('hwi_oauth_connect_registration', {'key': key}), 'attr': {'class': 'hwi_oauth_registration_register'}}) }}
         {{ form_errors(form) }}
         {{ form_row(form.name, {value: userInformation.realName}) }}
+        {{ form_row(form.email, {value: userInformation.email}) }}
 
         <div class="row">
             <div class="large-12 text-right"><input type="submit" value="Register" class="button"/></div>

@@ -11,9 +11,9 @@
     <div class="twelve columns">
 
         <p><strong>ID:</strong> {{ user.id }}</p>
-        <p><strong>Email:</strong> {{ user.fullEmail }}</p>
-        <p><strong>Registered:</strong> {% if user.registeredAt > date('0000-00-00') %}{{ user.registeredAt | date('Y-m-d') }}{% endif %}</td>
-        <p><strong>Last login:</strong> {% if user.lastLoginAt > date('0000-00-00') %}{{ user.lastLoginAt | date('Y-m-d') }}{% endif %}</td>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Registered:</strong> {% if user.registeredAt is not null %}{{ user.registeredAt | date('Y-m-d H:i:s') }}{% endif %}</td>
+        <p><strong>Last login:</strong> {% if user.lastLoginAt is not null %}{{ user.lastLoginAt | date('Y-m-d H:i:s') }}{% endif %}</td>
 
         {% if user.person %}
             <p>Linked to person <a href="{{ path('get_person', {identifier: user.person.slug}) }}">{{ user.person.name }}</a></p>

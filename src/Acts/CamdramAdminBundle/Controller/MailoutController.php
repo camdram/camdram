@@ -36,6 +36,8 @@ For any enquiries, please contact websupport@camdram.net.";
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
         $numActiveUsers = count($repo->findActiveUsersForMailOut());
+        $numPasswordOnlyCam = count($repo->findActiveCamUsersWithoutExternalUser());
+        $numPasswordOnlyOther = count($repo->findActiveNonCamUsersWithoutExternalUser());
         $numAdmins = count($repo->findOrganisationAdmins());
         
         $form = $this->createFormBuilder()
@@ -43,6 +45,8 @@ For any enquiries, please contact websupport@camdram.net.";
             ->add('recipients', 'choice', [
                 'choices' => [
                     "All Active Users ($numActiveUsers)" => 'active',
+                    "Active cam.ac.uk users without an external login ($numPasswordOnlyCam)" => 'password_only_cam',
+                    "Other active users without an external login ($numPasswordOnlyOther)" => 'password_only_other',
                     "Society and venue admins ($numAdmins)" => 'admins',
                     "Just me (1)" => 'me'
                 ],
@@ -74,6 +78,12 @@ For any enquiries, please contact websupport@camdram.net.";
             case 'active':
                 $users = $repo->findActiveUsersForMailOut();
                 break;
+            case 'password_only_cam':
+                $users = $repo->findActiveCamUsersWithoutExternalUser();
+                break;
+            case 'password_only_other':
+                $users = $repo->findActiveNonCamUsersWithoutExternalUser();
+                break;
             case 'admins':
                 $users = $repo->findOrganisationAdmins();
                 break;
@@ -87,10 +97,10 @@ For any enquiries, please contact websupport@camdram.net.";
         $loginThreshold = new \DateTime('-2 years');
         
         foreach ($users as $user) {
-            if ($user->getLastLoginAt() < $loginThreshold) {
-                $output['not_verified'][] = $user;
-            } elseif (!$user->getIsEmailVerified()) {
+            if ($user->getLastLoginAt() < $loginThreshold && $user->getRegisteredAt() < $loginThreshold) {
                 $output['not_active'][] = $user;
+            } elseif (!$user->getIsEmailVerified()) {
+                $output['not_verified'][] = $user;
             } else {
                 $message = \Swift_Message::newInstance()
                 ->setSubject($data['subject'])

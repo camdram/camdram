@@ -64,16 +64,23 @@ class User implements UserInterface, \Serializable
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registered", type="date", nullable=false)
+     * @ORM\Column(name="registered_at", type="datetime", nullable=true)
      */
     private $registered_at;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="login", type="date", nullable=false)
+     * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
      */
     private $last_login_at;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_password_login_at", type="datetime", nullable=true)
+     */
+    private $last_password_login_at;
 
     /**
      * @var Person
@@ -81,13 +88,6 @@ class User implements UserInterface, \Serializable
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="users")
      */
     private $person;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="upgraded_at", type="datetime", nullable=true)
-     */
-    private $upgraded_at;
 
     /**
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user", cascade={"remove"})
@@ -359,55 +359,7 @@ class User implements UserInterface, \Serializable
     {
         list($this->id, $this->name, $this->email, $this->password) = unserialize($serialized);
     }
-
-    /**
-     * Set upgraded
-     *
-     * @param bool $upgraded
-     *
-     * @return User
-     */
-    public function setUpgraded($upgraded)
-    {
-        $this->upgraded = $upgraded;
-
-        return $this;
-    }
-
-    /**
-     * Get upgraded
-     *
-     * @return bool
-     */
-    public function getUpgraded()
-    {
-        return $this->upgraded;
-    }
-
-    /**
-     * Set upgraded_at
-     *
-     * @param \DateTime $upgradedAt
-     *
-     * @return User
-     */
-    public function setUpgradedAt($upgradedAt)
-    {
-        $this->upgraded_at = $upgradedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get upgraded_at
-     *
-     * @return \DateTime
-     */
-    public function getUpgradedAt()
-    {
-        return $this->upgraded_at;
-    }
-
+    
     public function __toString()
     {
         return $this->getName().' ('.$this->getEmail().')';
@@ -660,5 +612,63 @@ class User implements UserInterface, \Serializable
     public function getAuthorizations()
     {
         return $this->authorizations;
+    }
+
+    /**
+     * Set lastPasswordLoginAt
+     *
+     * @param \DateTime $lastPasswordLoginAt
+     *
+     * @return User
+     */
+    public function setLastPasswordLoginAt($lastPasswordLoginAt)
+    {
+        $this->last_password_login_at = $lastPasswordLoginAt;
+
+        return $this;
+    }
+
+    /**
+     * Get lastPasswordLoginAt
+     *
+     * @return \DateTime
+     */
+    public function getLastPasswordLoginAt()
+    {
+        return $this->last_password_login_at;
+    }
+
+    /**
+     * Add authorisedShow
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
+     *
+     * @return User
+     */
+    public function addAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    {
+        $this->authorised_shows[] = $authorisedShow;
+
+        return $this;
+    }
+
+    /**
+     * Remove authorisedShow
+     *
+     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
+     */
+    public function removeAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
+    {
+        $this->authorised_shows->removeElement($authorisedShow);
+    }
+
+    /**
+     * Get authorisedShows
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAuthorisedShows()
+    {
+        return $this->authorised_shows;
     }
 }

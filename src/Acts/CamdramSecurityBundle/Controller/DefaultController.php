@@ -4,7 +4,6 @@ namespace Acts\CamdramSecurityBundle\Controller;
 
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
-use Acts\CamdramSecurityBundle\Event\UserEvent;
 use Acts\CamdramSecurityBundle\Form\Type\CreatePasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ForgottenPasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ResetPasswordType;
@@ -66,14 +65,11 @@ class DefaultController extends Controller
                 $user->setIsEmailVerified(true);
                 $this->getDoctrine()->getManager()->flush();
 
-                return $this->render('ActsCamdramSecurityBundle:Default:confirm_email.html.twig', array(
-                    'confirm_user' => $user,
-                    'services'      => $this->get('external_login.service_provider')->getServices(),
-                ));
+                return $this->render('ActsCamdramSecurityBundle:Default:confirm_email.html.twig');
             }
         }
 
-        return $this->render('ActsCamdramSecurityBundle:Default:confirm_email_error.html.twig', array());
+        return $this->render('ActsCamdramSecurityBundle:Default:confirm_email_error.html.twig');
     }
 
     public function forgottenPasswordAction(Request $request)
