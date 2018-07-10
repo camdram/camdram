@@ -10,7 +10,6 @@ default:
                     entityManager: '@doctrine.orm.entity_manager'
                     encoderFactory: '@security.encoder_factory'
                 - SymfonyContext:
-                    databaseTools: '@acts_camdram_admin.database_tools'
                     elasticaResetter: '@fos_elastica.resetter'
                     elasticaIndex: '@fos_elastica.index.autocomplete'
     extensions:

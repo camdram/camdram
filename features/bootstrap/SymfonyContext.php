@@ -22,16 +22,12 @@ use FOS\ElasticaBundle\Elastica\Index;
  */
 class SymfonyContext extends RawMinkContext
 {
-
-    private $databaseTools;
-
     private $elasticaResetter;
 
     private $elasticaIndex;
 
-    public function __construct(DatabaseTools $databaseTools, Resetter $elasticaResetter, Index $elasticaIndex)
+    public function __construct(Resetter $elasticaResetter, Index $elasticaIndex)
     {
-        $this->databaseTools = $databaseTools;
         $this->elasticaResetter = $elasticaResetter;
         $this->elasticaIndex = $elasticaIndex;
     }
@@ -72,7 +68,6 @@ class SymfonyContext extends RawMinkContext
     {
         Time::mockDateTime(new \DateTime('2000-07-03 15:30:00'));
         StaticDriver::beginTransaction();
-        $this->databaseTools->resetDatabase();
         try
         {
             $this->elasticaResetter->resetAllIndexes();

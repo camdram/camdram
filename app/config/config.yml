@@ -19,6 +19,10 @@ framework:
         gc_maxlifetime: 1800
     fragments: { path: /_fragment }
 
+sensio_framework_extra:
+    router:
+        annotations: false
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"

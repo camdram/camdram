@@ -8,10 +8,6 @@ services:
         class: Acts\CamdramAdminBundle\Service\UserMerger
         arguments: ['@doctrine.orm.entity_manager', '@form.factory']
         public: true
-
-    acts_camdram_admin.database_tools:
-        class: Acts\CamdramAdminBundle\Service\DatabaseTools
-        arguments: ['@doctrine.orm.entity_manager']
     
     acts_camdram_admin.test.session_storage:
         class: Acts\CamdramAdminBundle\Tests\SessionStorage

@@ -9,8 +9,7 @@ doctrine:
             default:
                 dbname: camdram
                 driver: pdo_sqlite
-                path: ~
-                memory: true
+                path: "%kernel.cache_dir%/test.db"
 
 monolog:
     handlers: ~
@@ -38,4 +37,4 @@ ewz_recaptcha:
 fos_elastica:
     indexes:
         autocomplete:
-            index_name: %search_namespace%_autocomplete_test
+            index_name: "%search_namespace%_autocomplete_test"

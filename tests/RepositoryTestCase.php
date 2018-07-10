@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 abstract class RepositoryTestCase extends KernelTestCase
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     protected $em;
 
@@ -18,10 +18,8 @@ abstract class RepositoryTestCase extends KernelTestCase
      */
     public function setUp()
     {
-        static::$kernel = static::createKernel();
-        static::$kernel->boot();
-        $this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
-        static::$kernel->getContainer()->get('acts_camdram_admin.database_tools')->resetDatabase();
+        $kernel = self::bootKernel();
+        $this->em = $kernel->getContainer()->get('doctrine')->getManager();
     }
 
     /**
@@ -30,6 +28,8 @@ abstract class RepositoryTestCase extends KernelTestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->em->clear();
+
+        $this->em->close();
+        $this->em = null;
     }
 }

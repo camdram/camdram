@@ -51,7 +51,6 @@ class OAuthTest extends WebTestCase
         $this->userClient = static::createClient();
 
         $this->client = static::createClient();
-        $this->client->getKernel()->getContainer()->get('acts_camdram_admin.database_tools')->resetDatabase();
         $this->createApiApp();
     }
 
@@ -181,9 +180,7 @@ class OAuthTest extends WebTestCase
         );
 
         $this->client->request('POST', '/shows.json?access_token='.$token, $data);
-//        var_dump($this->client->getResponse());
         $data = json_decode($this->client->getResponse()->getContent(), true);
-        //var_dump($data);die();
         $this->assertEquals(403, $data['error']['code']);
     }
 

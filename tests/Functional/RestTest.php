@@ -28,10 +28,6 @@ class RestTest extends WebTestCase
     public function setUp()
     {
         $this->client = self::createClient(array('environment' => 'test'));
-        
-        //Generates database schema using in-memory SQLite database
-        $this->client->getKernel()->getContainer()->get('acts_camdram_admin.database_tools')->resetDatabase();
-
         $this->em = $this->client->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
     }
 
