@@ -49,7 +49,7 @@ class DiaryController extends FOSRestController
         $periods = $repo->findByYearBefore($current_year, $last_date);
         $current_period = $repo->findAt($start_date);
 
-        return $this->render('ActsCamdramBundle:Diary:toolbar.html.twig', array(
+        return $this->render('diary/toolbar.html.twig', array(
             'years' => $years,
             'current_year' => $current_year,
             'periods' => $periods,
@@ -62,9 +62,9 @@ class DiaryController extends FOSRestController
         $view = $this->view($diary)
             ->setTemplateVar('diary');
         if ($request->get('fragment') || $request->isXmlHttpRequest()) {
-            $view->setTemplate('ActsCamdramBundle:Diary:fragment.html.twig');
+            $view->setTemplate('diary/fragment.html.twig');
         } else {
-            $view->setTemplate('ActsCamdramBundle:Diary:index.html.twig');
+            $view->setTemplate('diary/index.html.twig');
         }
 
         return $view;

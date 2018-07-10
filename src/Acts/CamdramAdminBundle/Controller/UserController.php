@@ -69,7 +69,7 @@ class UserController extends FOSRestController
 
         return $this->view($data, 200)
             ->setTemplateVar('result')
-            ->setTemplate('ActsCamdramAdminBundle:User:index.html.twig')
+            ->setTemplate('admin/user/index.html.twig')
         ;
     }
 
@@ -86,7 +86,7 @@ class UserController extends FOSRestController
             'organisations' => $orgs,
             'shows' => $shows
             ), 200)
-            ->setTemplate('ActsCamdramAdminBundle:User:show.html.twig')
+            ->setTemplate('admin/user/show.html.twig')
             ->setTemplateVar('user')
         ;
 
@@ -102,7 +102,7 @@ class UserController extends FOSRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
+            ->setTemplate('admin/user/edit.html.twig');
     }
 
     public function putAction(Request $request, $identifier)
@@ -121,7 +121,7 @@ class UserController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
+                ->setTemplate('admin/user/edit.html.twig');
         }
     }
 
@@ -143,7 +143,7 @@ class UserController extends FOSRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramAdminBundle:User:ace-new-form.html.twig');
+            ->setTemplate('admin/user/ace-new-form.html.twig');
     }
 
     public function postAceAction(Request $request, $identifier)
@@ -159,7 +159,7 @@ class UserController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('user')
-                ->setTemplate('ActsCamdramAdminBundle:User:ace-new.html.twig');
+                ->setTemplate('admin/user/ace-new.html.twig');
         }
     }
 
@@ -191,7 +191,7 @@ class UserController extends FOSRestController
     {
         $user = $this->getEntity($identifier);
 
-        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+        return $this->render('admin/user/merge.html.twig', array(
             'user' => $user,
             'form' => $this->get('acts_camdram_admin.user_merger')->createForm()->createView()
         ));
@@ -227,7 +227,7 @@ class UserController extends FOSRestController
             }
         }
 
-        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+        return $this->render('admin/user/merge.html.twig', array(
             'user' => $user,
             'form' => $form->createView()
         ));

@@ -23,7 +23,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Gedmo\Loggable
  * @Api\Feed(name="Camdram - Shows", titleField="name",
  *   description="Shows produced by students in Cambridge",
- *   template="ActsCamdramBundle:Show:rss.html.twig")
+ *   template="show/rss.html.twig")
  * @Api\Link(route="get_show", params={"identifier": "object.getSlug()"})
  */
 class Show implements OwnableInterface

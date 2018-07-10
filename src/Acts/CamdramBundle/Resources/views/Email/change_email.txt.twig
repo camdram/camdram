@@ -1,7 +1,0 @@
-{% autoescape false %}
-Please click the link below to confirm your new email address.
-
-{{ url('acts_camdram_security_confirm_email', {email: user.email, token: email_confirmation_token}) }}
-
-{% include 'ActsCamdramBundle:Email:signature.txt.twig' %}
-{% endautoescape %}

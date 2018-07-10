@@ -111,7 +111,7 @@ class PersonController extends AbstractRestController
 
         return $this->view($data, 200)
             ->setTemplateVar('data')
-            ->setTemplate('ActsCamdramBundle:Person:past-shows.html.twig');
+            ->setTemplate('person/past-shows.html.twig');
     }
 
     /**
@@ -130,7 +130,7 @@ class PersonController extends AbstractRestController
 
         return $this->view($data, 200)
             ->setTemplateVar('data')
-            ->setTemplate('ActsCamdramBundle:Person:upcoming-shows.html.twig');
+            ->setTemplate('person/upcoming-shows.html.twig');
     }
 
     /**
@@ -149,7 +149,7 @@ class PersonController extends AbstractRestController
 
         return $this->view($data, 200)
             ->setTemplateVar('data')
-            ->setTemplate('ActsCamdramBundle:Person:current-shows.html.twig');
+            ->setTemplate('person/current-shows.html.twig');
     }
 
     public function getMergeAction($identifier)
@@ -157,7 +157,7 @@ class PersonController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
         $person = $this->getEntity($identifier);
 
-        return $this->render('ActsCamdramBundle:Person:merge.html.twig', array(
+        return $this->render('person/merge.html.twig', array(
             'person' => $person,
             'form' => $this->get('acts_camdram_admin.people_merger')->createForm()->createView()
         ));
@@ -193,7 +193,7 @@ class PersonController extends AbstractRestController
             }
         }
 
-        return $this->render('ActsCamdramBundle:Person:merge.html.twig', array(
+        return $this->render('person/merge.html.twig', array(
             'person' => $person,
             'form' => $form->createView()
         ));

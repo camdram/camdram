@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Account Settings{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <h3>Change Email</h3>
+
+        {{ include('account/change_email_form.html.twig') }}
+
+    </div>
+{% endblock %}

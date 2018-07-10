@@ -23,7 +23,7 @@ class DevelopmentController extends Controller
             $git_info['branch'] = exec('git symbolic-ref --short HEAD');
         }
 
-        $response = $this->render('ActsCamdramBundle:Development:index.html.twig', ['git_info' => $git_info]);
+        $response = $this->render('development/index.html.twig', ['git_info' => $git_info]);
 
         return $response;
     }
@@ -56,12 +56,12 @@ class DevelopmentController extends Controller
                 'fixed' => array_slice($fixed, 0, 10),
             );
     
-            $response = $this->render('ActsCamdramBundle:Development:activity.html.twig', $data);
+            $response = $this->render('development/activity.html.twig', $data);
             $response->setSharedMaxAge(60 * 15);
     
             return $response;
         } catch (\Github\Exception\RuntimeException $ex) {
-            return $this->render('ActsCamdramBundle:Development:github-error.html.twig');
+            return $this->render('development/github-error.html.twig');
         }
     }
 }

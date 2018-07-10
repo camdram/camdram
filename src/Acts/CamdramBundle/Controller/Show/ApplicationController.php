@@ -40,7 +40,7 @@ class ApplicationController extends FOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:Show:application-new.html.twig');
+            ->setTemplate('show/application-new.html.twig');
     }
 
     /**
@@ -63,7 +63,7 @@ class ApplicationController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:Show:application-new.html.twig');
+                ->setTemplate('show/application-new.html.twig');
         }
     }
 
@@ -81,7 +81,7 @@ class ApplicationController extends FOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
+            ->setTemplate('show/application-edit.html.twig');
     }
 
     /**
@@ -105,7 +105,7 @@ class ApplicationController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:Show:application-edit.html.twig');
+                ->setTemplate('show/application-edit.html.twig');
         }
     }
 

@@ -49,7 +49,7 @@ class VenueController extends OrganisationController
             ->getContactableEntityOwners($venue) > 0;
         
         $view = $this->view($venue, 200)
-            ->setTemplate('ActsCamdramBundle:Venue:show.html.twig')
+            ->setTemplate('venue/show.html.twig')
             ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
         ;
         
@@ -88,7 +88,7 @@ class VenueController extends OrganisationController
 
         $view = $this->view($venues, 200)
             ->setTemplateVar('venues')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+            ->setTemplate('venue/index.html.twig')
         ;
 
         return $view;
@@ -112,7 +112,7 @@ class VenueController extends OrganisationController
 
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')
-            ->setTemplate('ActsCamdramBundle:Venue:vacancies.html.twig')
+            ->setTemplate('venue/vacancies.html.twig')
         ;
     }
 
@@ -152,7 +152,7 @@ class VenueController extends OrganisationController
 
         foreach ($venues as $venue) {
             if ($venue->getLatitude() && $venue->getLongitude()) {
-                $content = $this->render('ActsCamdramBundle:Venue:infobox.html.twig', array(
+                $content = $this->render('venue/infobox.html.twig', array(
                     'venue' => $venue,
                     'one_venue' => $one_venue,
                 ))->getContent();
@@ -190,7 +190,7 @@ class VenueController extends OrganisationController
             }
         }
 
-        return $this->render('ActsCamdramBundle:Venue:map.html.twig', array('map' => $map, 'info_boxes' => $info_boxes));
+        return $this->render('venue/map.html.twig', array('map' => $map, 'info_boxes' => $info_boxes));
     }
 
     /**

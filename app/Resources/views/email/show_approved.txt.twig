@@ -1,0 +1,7 @@
+{% autoescape false %}
+Your show "{{ show.name }}" has been authorised by {{ show.authorisedBy.name }} and is now visible to the public on Camdram. Any auditions and/or production team adverts you have created are now live too.
+
+Thank you for your patience - this process ensures that all shows are checked over by the producing society or venue before being advertised.
+
+{% include 'email/signature.txt.twig' %}
+{% endautoescape %}

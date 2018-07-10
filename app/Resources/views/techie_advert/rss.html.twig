@@ -1,0 +1,17 @@
+<p>{{ entity.show.name }}</p>
+<p>{% include 'performance/show.html.twig' with {'disable_links': true, 'performances' : entity.show.performances} %}</p>
+<p><strong>Looking for</strong></p>
+<ul>
+    {% for p in entity.positions|split("\n") %}
+        <li>{{ p }}</li>
+    {% endfor %}
+</ul>
+{% if entity.techextra %}
+    <p>{{ entity.techextra|nl2br }}</p>
+{% endif %}
+<p><strong>Contact:</strong> {{ entity.contact|camdram_markdown }}</strong><br/>
+    <strong>Deadline for applications:</strong> {{ entity.expiry|date('l jS F') }}
+    {% if entity.deadlinetime and entity.deadlinetime | date('H:i') != '00:00' %}
+        {{ entity.deadlinetime | date('H:i') }}
+    {% endif %}
+</p>

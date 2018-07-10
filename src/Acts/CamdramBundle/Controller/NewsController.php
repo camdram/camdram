@@ -11,6 +11,6 @@ class NewsController extends Controller
         $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
         $news = $news_repo->getRecent(50);
 
-        return $this->render('ActsCamdramBundle:News:index.html.twig', array('news' => $news));
+        return $this->render('news/index.html.twig', array('news' => $news));
     }
 }

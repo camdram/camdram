@@ -1,0 +1,33 @@
+<div class="admin-panel">
+
+    <div class="right">
+        <a href="{{ path('get_users') }}" class="button small">Back to user list</a>
+    </div>
+
+    <h3><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.name }}</a></h3>
+
+    <ul class="inline-list">
+        {{ include('navigation/nav-item.html.twig', {
+            item: {id: 'edit_user', path: path('edit_user',{identifier:user.id}), icon: 'pencil',
+            text: 'Edit this user'} })
+        }}
+        {{ include('navigation/delete-item.html.twig', {
+            item: {id: 'remove_user', path: path('remove_user',{identifier:user.id}), text: 'Delete this user',
+                type: 'user', name: user.name ~ ' (' ~ user.email ~ ')'} })
+        }}
+        {{ include('navigation/nav-item.html.twig', {
+            item: {id: 'reset_user_password', path: path('reset_user_password',{identifier:user.id}), icon: 'key',
+            text: 'Reset password'} })
+        }}
+        {% if not is_granted('ROLE_PREVIOUS_ADMIN') %}
+            {{ include('navigation/nav-item.html.twig', {
+                item: {id: 'impersonate_user', path: path('acts_camdram_homepage', {_switch_to_user: user.email}),
+                icon: 'male', text: 'Impersonate this user'} })
+            }}
+        {% endif %}
+        {{ include('navigation/nav-item.html.twig', {
+            item: {id: 'user_merge', path: path('get_user_merge',{identifier:user.id}), icon: 'compress',
+                text: 'Merge user'} })
+        }}
+    </ul>
+</div>

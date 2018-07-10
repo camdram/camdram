@@ -48,7 +48,7 @@ class EmailDispatcher
             /* HTML */
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:show_created.html.twig',
+                    'email/show_created.html.twig',
                     array(
                         'owners' => $owners,
                         'show' => $show,
@@ -60,7 +60,7 @@ class EmailDispatcher
 /* Plain Text */
             ->addPart(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:show_created.txt.twig',
+                    'email/show_created.txt.twig',
                     array(
                         'owners' => $owners,
                         'show' => $show,
@@ -85,7 +85,7 @@ class EmailDispatcher
             ->setTo($emails)
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:show_approved.txt.twig',
+                    'email/show_approved.txt.twig',
                     array(
                         'show' => $show,
                     )
@@ -117,7 +117,7 @@ class EmailDispatcher
             ->setTo($toEmails)
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:show_society_changed.txt.twig',
+                    'email/show_society_changed.txt.twig',
                     array(
                         'owners' => $owners,
                         'show' => $show,
@@ -138,7 +138,7 @@ class EmailDispatcher
             ->setTo($toEmails)
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:show_venue_changed.txt.twig',
+                    'email/show_venue_changed.txt.twig',
                     array(
                         'owners' => $owners,
                         'show' => $show,

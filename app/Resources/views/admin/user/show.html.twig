@@ -1,0 +1,67 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}User - {{ user.name }}{% endblock %}
+
+{% block body %}
+
+{{ include("ActsCamdramAdminBundle:User:admin-panel.html.twig") }}
+
+<div class="row">
+
+    <div class="twelve columns">
+
+        <p><strong>ID:</strong> {{ user.id }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Registered:</strong> {% if user.registeredAt is not null %}{{ user.registeredAt | date('Y-m-d H:i:s') }}{% endif %}</td>
+        <p><strong>Last login:</strong> {% if user.lastLoginAt is not null %}{{ user.lastLoginAt | date('Y-m-d H:i:s') }}{% endif %}</td>
+
+        {% if user.person %}
+            <p>Linked to person <a href="{{ path('get_person', {identifier: user.person.slug}) }}">{{ user.person.name }}</a></p>
+        {% endif %}
+
+        {% if user.roles | length > 0 %}
+        <h4>Roles</h4>
+        <ul>
+        {% for role in user.roles %}
+            <li>{{ role }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        <p>The lists below show the societies and venues that the user has administrative access to.</p>
+        {% set seen_society = false %}
+        <h4>Societies</h4>
+        <ul>
+        {% for org in organisations if org.organisationType == 'society' %}
+            <li><a href="{{ path('get_society', {identifier: org.slug}) }}">{{ org.name }}</a></li>
+            {% set seen_society = true %}
+        {% endfor %}
+        </ul>
+        {% if not seen_society %}
+            <p>This user is not an admin for any societies.</p>
+        {% endif %}
+        {% set seen_venue = false %}
+        <h4>Venues</h4>
+        <ul>
+        {% for org in organisations if org.organisationType == 'venue' %}
+            <li><a href="{{ path('get_venue', {identifier: org.slug}) }}">{{ org.name }}</a></li>
+            {% set seen_venue = true %}
+        {% endfor %}
+        {% if not seen_venue %}
+            <p>This user is not an admin for any venues.</p>
+        {% endif %}
+        </ul>
+        <h4>Shows</h4>
+        {% if shows %}
+        <ul>
+            {% for show in shows %}
+                <li><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p>This user is not an admin for any shows.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

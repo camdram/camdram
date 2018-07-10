@@ -59,7 +59,7 @@ class SetupController extends Controller
             return $this->redirect($this->generateUrl('camdram_security_setup'));
         }
 
-        return $this->render('ActsCamdramSecurityBundle:Setup:link_person.html.twig', array(
+        return $this->render('account/link_person.html.twig', array(
             'people' => $people
         ));
     }

@@ -21,7 +21,7 @@ class LogController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('ActsCamdramAdminBundle:Log:index.html.twig');
+        return $this->render('admin/log/index.html.twig');
     }
 
     /**

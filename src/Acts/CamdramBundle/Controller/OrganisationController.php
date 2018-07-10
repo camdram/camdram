@@ -30,7 +30,7 @@ abstract class OrganisationController extends AbstractRestController
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($org);
 
         return $this->render(
-            'ActsCamdramBundle:'.$this->getController().':admin-panel.html.twig',
+            $this->type.'/admin-panel.html.twig',
             array('org' => $org,
                 'admins' => $admins,
                 'pending_admins' => $pending_admins)
@@ -44,7 +44,7 @@ abstract class OrganisationController extends AbstractRestController
 
         return $this->view($news_repo->getRecentByOrganisation($org, 30), 200)
             ->setTemplateVar('news')
-            ->setTemplate('ActsCamdramBundle:Organisation:news.html.twig')
+            ->setTemplate('organisation/news.html.twig')
             ;
     }
 
@@ -109,7 +109,7 @@ abstract class OrganisationController extends AbstractRestController
 
         $view = $this->view($diary, 200)
             ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
+            ->setTemplate('organisation/shows.html.twig')
         ;
 
         return $view;
@@ -138,7 +138,7 @@ abstract class OrganisationController extends AbstractRestController
 
         return $this->view($form, 200)
             ->setData(array('org' => $org, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-new.html.twig');
+            ->setTemplate('application/application-new.html.twig');
     }
 
     /**
@@ -160,7 +160,7 @@ abstract class OrganisationController extends AbstractRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-new.html.twig');
+                ->setTemplate('application/application-new.html.twig');
         }
     }
 
@@ -177,7 +177,7 @@ abstract class OrganisationController extends AbstractRestController
 
         return $this->view($form, 200)
             ->setData(array('org' => $org, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-edit.html.twig');
+            ->setTemplate('application/application-edit.html.twig');
     }
 
     /**
@@ -200,7 +200,7 @@ abstract class OrganisationController extends AbstractRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-edit.html.twig');
+                ->setTemplate('application/application-edit.html.twig');
         }
     }
 
@@ -252,7 +252,7 @@ abstract class OrganisationController extends AbstractRestController
                 'pending_admins' => $pending_admins,
                 'form' => $form->createView())
             )
-            ->setTemplate('ActsCamdramSecurityBundle:PendingAccess:edit.html.twig');
+            ->setTemplate('pending_access/edit.html.twig');
     }
 
     /**

@@ -105,7 +105,7 @@ abstract class AbstractRestController extends FOSRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':new.html.twig');
+            ->setTemplate($this->type.'/:new.html.twig');
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class AbstractRestController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':new.html.twig');
+                ->setTemplate($this->type.'/new.html.twig');
         }
     }
 
@@ -148,7 +148,7 @@ abstract class AbstractRestController extends FOSRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
+            ->setTemplate($this->type.'/edit.html.twig');
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class AbstractRestController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
+                ->setTemplate($this->type.'/edit.html.twig');
         }
     }
 
@@ -240,7 +240,7 @@ abstract class AbstractRestController extends FOSRestController
 
         $view = $this->view($data, 200)
             ->setTemplateVar('result')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+            ->setTemplate($this->type.'/index.html.twig')
         ;
 
         return $view;
@@ -255,7 +255,7 @@ abstract class AbstractRestController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
         $view = $this->view($entity, 200)
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
+            ->setTemplate($this->type.'/show.html.twig')
             ->setTemplateVar($this->type)
         ;
 

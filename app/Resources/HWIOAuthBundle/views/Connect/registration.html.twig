@@ -1,4 +1,4 @@
-{% extends 'ActsCamdramBundle::layout.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
@@ -22,7 +22,7 @@
         directly to your account settings. From there, you can manually connect your {{ userInformation.resourceOwner.name | capitalize }}
         and Camdram accounts.</p>
 
-        {{ include('ActsCamdramSecurityBundle:Default:login_form.html.twig', {last_email: userInformation.email, error: false,
+        {{ include('account/login_form.html.twig', {last_email: userInformation.email, error: false,
             target_path: 'get_account'}) }}
     </div>
 </div>

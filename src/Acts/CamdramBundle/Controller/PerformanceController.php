@@ -28,7 +28,7 @@ class PerformanceController extends FOSRestController
         $performances = $repo->findAuthorizedJoinedToShow($startDate, $endDate);
 
         $view = $this->view(array('startDate' => $startDate, 'endDate' => $endDate, 'performances' => $performances), 200)
-            ->setTemplate('ActsCamdramBundle:Performance:index.html.twig')
+            ->setTemplate('performance/index.html.twig')
             ->setTemplateVar('performances')
         ;
 

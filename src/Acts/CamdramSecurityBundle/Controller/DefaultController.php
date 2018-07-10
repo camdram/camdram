@@ -22,7 +22,7 @@ class DefaultController extends Controller
 {
     public function toolbarAction()
     {
-        return $this->render('ActsCamdramSecurityBundle:Default:toolbar.html.twig');
+        return $this->render('account/toolbar.html.twig');
     }
     
     public function loginAction(Request $request)
@@ -37,7 +37,7 @@ class DefaultController extends Controller
             return $this->forward('HWIOAuthBundle:Connect:connect');
         }
         
-        return $this->render('ActsCamdramSecurityBundle:Default:login.html.twig', ['error' => $error]);
+        return $this->render('account/login.html.twig', ['error' => $error]);
     }
 
     public function passwordLoginAction(Request $request)
@@ -51,7 +51,7 @@ class DefaultController extends Controller
         }
         
         return $this->render(
-            'ActsCamdramSecurityBundle:Default:login_form.html.twig',
+            'account/login_form.html.twig',
             ['last_email' => $last_email, 'error' => $has_error]
         );
     }
@@ -65,11 +65,11 @@ class DefaultController extends Controller
                 $user->setIsEmailVerified(true);
                 $this->getDoctrine()->getManager()->flush();
 
-                return $this->render('ActsCamdramSecurityBundle:Default:confirm_email.html.twig');
+                return $this->render('account/confirm_email.html.twig');
             }
         }
 
-        return $this->render('ActsCamdramSecurityBundle:Default:confirm_email_error.html.twig');
+        return $this->render('account/confirm_email_error.html.twig');
     }
 
     public function forgottenPasswordAction(Request $request)
@@ -88,13 +88,13 @@ class DefaultController extends Controller
                 }
 
                 //Always return the same response whether or not we find a user match
-                return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password_complete.html.twig', array(
+                return $this->render('account/forgotten_password_complete.html.twig', array(
                     'email' => $data['email']
                 ));
             }
         }
 
-        return $this->render('ActsCamdramSecurityBundle:Default:forgotten_password.html.twig', array(
+        return $this->render('account/forgotten_password.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -116,14 +116,14 @@ class DefaultController extends Controller
                         $user->setPassword($password);
                         $this->getDoctrine()->getManager()->flush();
 
-                        return $this->render('ActsCamdramSecurityBundle:Default:reset_password_complete.html.twig', array(
+                        return $this->render('account/reset_password_complete.html.twig', array(
                             'email'     => $email,
                             'services'  => $this->get('external_login.service_provider')->getServices(),
                         ));
                     }
                 }
 
-                return $this->render('ActsCamdramSecurityBundle:Default:reset_password.html.twig', array(
+                return $this->render('account/reset_password.html.twig', array(
                     'email' => $email,
                     'token' => $token,
                     'form' => $form->createView()
@@ -131,6 +131,6 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('ActsCamdramSecurityBundle:Default:reset_password_error.html.twig', array());
+        return $this->render('account/reset_password_error.html.twig', array());
     }
 }

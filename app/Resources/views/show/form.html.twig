@@ -1,0 +1,134 @@
+{{ form_errors(form) }}
+
+{{ form_row(form.name) }}
+{{ form_row(form.author) }}
+
+<div class="row">
+    <div class="large-3 columns">
+        {{ form_label(form.category) }}
+    </div>
+    <div class="large-9 columns">
+        {{ form_widget(form.category) }}
+        {{ form_errors(form.category) }}
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="large-3 columns">
+        {{ form_label(form.performances) }}
+    </div>
+    <div class="large-9 columns">
+        {{ form_widget(form.multi_venue) }}
+        {{ form_errors(form.multi_venue) }}
+
+        <div class="performances entity_collection" data-prototype="{% filter escape('html') %}{% include 'show/performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endfilter %}">
+            {% for performance in form.performances %}
+                {% include 'show/performance-form.html.twig' %}
+            {% endfor %}
+        </div>
+        <ul class="inline-list right performance-links">
+           <li> <a href="#" class="add_link">Add date range</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="row main-venue-row">
+    <div class="large-3 columns">
+        {{ form_label(form.venue) }}
+    </div>
+    <div class="large-9 columns">
+        {{ form_widget(form.venue) }}
+        {{ form_errors(form.venue) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="large-3 columns">
+        {{ form_label(form.society) }}
+    </div>
+    <div class="large-9 columns">
+        {{ form_widget(form.society) }}
+        {{ form_errors(form.society) }}
+        {% if form.society.vars.disabled %}
+        <p>Please <a href="{{ path('acts_camdram_contact_us') }}">contact us</a> if you would like to change this show's society</p>
+        {% endif %}
+    </div>
+</div>
+
+{{ form_row(form.description) }}
+
+<div class="row">
+    <div class="large-3 columns">
+        {{ form_label(form.online_booking_url) }}
+    </div>
+    <div class="large-5 columns">
+        {{ form_widget(form.online_booking_url) }}
+        {{ form_errors(form.online_booking_url) }}
+    </div>
+    <div class="large-2 columns">
+        {{ form_label(form.prices) }}
+    </div>
+    <div class="large-2 columns">
+        {{ form_widget(form.prices) }}
+        {{ form_errors(form.prices) }}
+    </div>
+</div>
+
+<div class="row">
+    <div class="large-3 columns">
+        {{ form_label(form.facebook_id) }}
+    </div>
+    <div class="large-3 columns">
+        {{ form_widget(form.facebook_id) }}
+        {{ form_errors(form.facebook_id) }}
+    </div>
+    <div class="large-3 columns">
+        {{ form_label(form.twitter_id) }}
+    </div>
+    <div class="large-3 columns">
+        {{ form_widget(form.twitter_id) }}
+        {{ form_errors(form.twitter_id) }}
+    </div>
+</div>
+
+{{ form_rest(form) }}
+
+<script>
+$(function() {
+
+    var update_date_fields = function() {
+        var val = $('#show_multi_venue input:checked').val();
+        switch (val) {
+            case 'single':
+                $('.performances .venue-row').hide();
+                $('.main-venue-row').show();
+                break;
+            case 'multi':
+                $('.performances .venue-row').show();
+                $('.main-venue-row').hide();
+                break;
+        }
+    };
+
+    $('input[type=date]').live('change', function() {
+        var $self = $(this);
+        $self.parents('.performance').find('input[type=date]').each(function(key, input) {
+            if (!$(input).val()) {
+                $(input).val($self.val());
+            }
+        })
+    })
+
+    $('#show_multi_venue input').change(update_date_fields)
+    $('.main-venue-row select').change(function() {
+        $('.performances .venue-row select').val($(this).val());
+    })
+
+    update_date_fields();
+    $('.performances').entityCollection({
+        initialiseRow: update_date_fields
+    });
+});
+</script>

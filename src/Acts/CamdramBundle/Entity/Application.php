@@ -15,7 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ApplicationRepository")
  * @Api\Feed(name="Camdram.net - Director/Producer and show applications", titleField="feed_title",
  *     description="Applications to produce, direct, or put on shows in Cambridge",
- *     template="ActsCamdramBundle:Application:rss.html.twig")
+ *     template="application/rss.html.twig")
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
  * @Api\Link(route="get_application",

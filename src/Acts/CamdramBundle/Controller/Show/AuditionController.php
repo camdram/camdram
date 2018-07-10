@@ -33,7 +33,7 @@ class AuditionController extends FOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
+            ->setTemplate('show/auditions-edit.html.twig');
     }
 
     /**
@@ -56,7 +56,7 @@ class AuditionController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:Show:auditions-edit.html.twig');
+                ->setTemplate('show/auditions-edit.html.twig');
         }
     }
 }

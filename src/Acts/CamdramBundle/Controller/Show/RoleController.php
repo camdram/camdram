@@ -35,7 +35,7 @@ class RoleController extends FOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:Show:role-new.html.twig');
+            ->setTemplate('show/role-new.html.twig');
     }
 
     /**
@@ -150,7 +150,7 @@ class RoleController extends FOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:Show:roles-new.html.twig');
+            ->setTemplate('show/roles-new.html.twig');
     }
 
     /**

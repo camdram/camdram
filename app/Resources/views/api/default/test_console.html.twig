@@ -1,0 +1,123 @@
+{% extends 'api/layout.html.twig' %}
+{% set current_api_nav_id = 'console' %}
+
+{% block title %}API{% endblock %}
+
+{% block api_body %}
+
+    <h4>Test Console</h4>
+
+    <form id="test_console_form">
+        <div class="row">
+            <div class="large-8 columns">
+                <input type="text" id="url"/>
+            </div>
+            <div class="large-2 columns">
+                <select id="method">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+            </div>
+            <div class="large-2 columns">
+                <input type="submit" class="button small" value="Submit"/>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="large-3 columns">
+            <h5>Example queries</h5>
+            <ul id="example_queries">
+                <li>
+                    <a href="{{ url('search_entity', {_format: 'json', q: 'Fitzwilliam'}) }}">
+                        Search for the term &quot;Fitzwilliam&quot; (JSON)</a>
+                </li>
+                <li>
+                    <a href="{{ url('search_entity', {_format: 'xml', q: 'Fitzwilliam'}) }}">
+                        Search for the term &quot;Fitzwilliam&quot; (XML)</a>
+                </li>
+                <li>
+                    <a href="{{ url('get_show', {_format: 'json', identifier: '2007-return-to-the-forbidden-planet'}) }}">
+                        Fetch details about the show &quot;Return to the Forbidden Planet&quot; (JSON)</a>
+                </li>
+                <li>
+                    <a href="{{ url('get_show', {_format: 'xml', identifier: '2007-return-to-the-forbidden-planet'}) }}">
+                        Fetch details about the show &quot;Return to the Forbidden Planet&quot; (XML)</a>
+                </li>
+                <li>
+                    <a href="{{ url('get_venue', {_format: 'json', identifier: 'adc-theatre'}) }}">
+                        Fetch details about the venue &quot;Venue&quot; (JSON)</a>
+                </li>
+                <li>
+                    <a  href="{{ url('get_venue', {_format: 'xml', identifier: 'adc-theatre'}) }}">
+                        Fetch details about the venue &quot;ADC Theatre&quot; (XML)</a>
+                </li>
+            </ul>
+
+        </div>
+        <div class="large-9 columns" id="results">
+
+        </div>
+    </div>
+
+    <script>
+        $('#test_console_form').submit(function(e) {
+            e.preventDefault();
+            var method = $('#method').val();
+            var url = $('#url').val();
+
+            var parts = url.split('?');
+            var dataType = parts[0].substr(-4) == 'json' ? 'json' : 'xml';
+            $('#results').html('<i class="fa fa-spinner fa-spin"></i>')
+            $.ajax({
+                'type': method,
+                'url': url,
+                'dataType' : dataType,
+                'success': function(data) {
+                    var res = $('<pre><code></code></pre>');
+                    if (dataType == 'json') {
+                        data = JSON.stringify(data, undefined, 2);
+                    }
+                    else {
+                        data = (new XMLSerializer()).serializeToString(data);
+                    }
+                    res.children().text(data);
+                    $('#results').html(res);
+                },
+                error: function(req, status, message) {
+                    var data = $('<p/>').addClass('error');
+                    data.text(req.status + ' Error: ' + message)
+                    $('#results').html(data)
+                }
+            })
+        })
+        $('#example_queries a').click(function(e) {
+            e.preventDefault();
+            $('#url').val($(this).attr('href'));
+            $('#test_console_form').submit();
+        })
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    #results {
+        overflow:scroll;
+        line-height:1em;
+        padding:10px;
+        height:450px;
+        font-size:0.8em;
+        color:#000;
+        background:#f7f7f7;
+        border:1px solid #888;
+    }
+    #results i {
+        font-size:2em;
+    }
+    #results p.error {
+        color:red;
+    }
+</style>
+{% endblock %}

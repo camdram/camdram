@@ -1,0 +1,11 @@
+<p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}
+{% if show.weeks is not empty %}
+<em>{{ show.weeks }}</em>
+{% endif %}
+</p>
+<p>{{ show.description | camdram_markdown }}</p>
+{% if not show.isArchived() and can_contact %}
+<p><a href="{{ path('contact_entity', {type: 'show', identifier: show.slug}) }}">
+    <i class="fa fa-envelope-o"></i> Contact organizers</a>
+</p>
+{% endif %}

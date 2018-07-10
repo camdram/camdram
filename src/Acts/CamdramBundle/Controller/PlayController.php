@@ -22,6 +22,6 @@ class PlayController extends Controller
 
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findBy(array('freebase_id' => $topic['id']));
 
-        return $this->render('ActsCamdramBundle:Play:display.html.twig', array('play' => $play, 'shows' => $shows));
+        return $this->render('play/display.html.twig', array('play' => $play, 'shows' => $shows));
     }
 }

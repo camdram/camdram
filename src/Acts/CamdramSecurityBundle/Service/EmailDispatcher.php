@@ -121,7 +121,7 @@ class EmailDispatcher
             $message->setSubject('Access to show '.$show->getName().' on Camdram granted')
                 ->setBody(
                     $this->twig->render(
-                        'ActsCamdramBundle:Email:ace.txt.twig',
+                        'email/ace.txt.twig',
                         array(
                             'is_pending' => false, //$is_pending,
                             'ace' => $ace,
@@ -157,7 +157,7 @@ class EmailDispatcher
         $message->setSubject('Access to '.$ace->getType().' '.$entity->getName().' on Camdram granted')
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:ace.txt.twig',
+                    'email/ace.txt.twig',
                     array(
                         'is_pending' => true,
                         'ace' => $ace,

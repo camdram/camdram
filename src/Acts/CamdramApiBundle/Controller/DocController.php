@@ -8,7 +8,7 @@ class DocController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('ActsCamdramApiBundle:Doc:index.html.twig');
+        return $this->render('api/doc/index.html.twig');
     }
 
     public function docAction()

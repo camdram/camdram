@@ -35,6 +35,6 @@ class AuditController extends Controller
 
         $results = $qb->getQuery()->getResult();
 
-        return $this->render('ActsCamdramAdminBundle:Audit:index.html.twig', array('results' => $results));
+        return $this->render('admin/audit/index.html.twig', array('results' => $results));
     }
 }

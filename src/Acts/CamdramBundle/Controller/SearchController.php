@@ -50,7 +50,7 @@ class SearchController extends FOSRestController
 
         $view = $this->view($data, 200)
             ->setTemplateVar('results')
-            ->setTemplate('ActsCamdramBundle:Search:index.html.twig')
+            ->setTemplate('search/index.html.twig')
         ;
 
         return $view;

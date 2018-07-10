@@ -1,0 +1,11 @@
+<div class="admin-panel">
+    <ul class="inline-list">
+        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_person', path: path('edit_person',{identifier:person.slug}), icon: 'pencil', text: 'Edit profile'} }) }}
+        {% if is_granted('DELETE', person) %}
+            {{ include('navigation/delete-item.html.twig', {item: {id: 'remove_person', path: path('remove_person',{identifier:person.slug}), text: 'Delete profile', name: person.name, type: 'person'} }) }}
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ include('navigation/nav-item.html.twig', {item: {id: 'person_merge', path: path('get_person_merge',{identifier:person.slug}), icon: 'compress', text: 'Merge with another person'} }) }}
+        {% endif %}
+    </ul>
+</div>

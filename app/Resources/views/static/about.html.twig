@@ -1,0 +1,54 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}About Camdram{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="twelve columns">
+        <h2>About Camdram</h2>
+
+        <p>
+        Camdram supports the student performing arts community in the 
+        historic city of Cambridge, England.
+        </p>
+
+        <h3>How?</h3>
+
+        <ul>
+            <li>
+            Our <a href="{{ path('acts_camdram_diary') }}">event diary</a> makes it easy to see what’s happening 
+            now, in the future, and for more than a decade past.
+            </li>
+
+            <li>
+            You can easily <a href="{{ path('get_auditions') }}">get involved</a>, thanks to our listings of 
+            auditions, production team vacancies, and society funding opportunities.
+            </li>
+
+            <li>
+            We have information about the city's many <a href="{{ path('get_societies') }}">societies</a> and 
+            <a href="{{ path('get_venues') }}">performance spaces</a>.
+            </li>
+        </ul>
+
+        <p>Camdram has been 100% free since it began in 2004.  We're here for 
+        students and staff - from either University and from other schools/colleges.
+        </p>
+
+        <p>
+        All information comes from users like you, spanning drama, dance, comedy, 
+        musicals, and music.  To use Camdram, your event doesn't have to be 
+        <em>just</em> for students, so long as they're welcome.
+        </p>
+
+        <p>
+        The site itself is maintained by volunteers in their spare time.  If you have a question or problem, or you’re 
+        interested in helping, 
+        <a href="{{ path('acts_camdram_contact_us') }}">contact us</a>.
+        </p>
+
+        <br />
+    </div>
+</div>
+{% endblock %}
+

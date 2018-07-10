@@ -28,7 +28,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-        - 'ActsCamdramBundle:Form:fields.html.twig'
+        - 'form/fields.html.twig'
     globals:
         development_warning: "%development_warning%"
         show_site_notice: "%show_site_notice%"

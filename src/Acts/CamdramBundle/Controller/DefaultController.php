@@ -34,7 +34,7 @@ class DefaultController extends Controller
         $weeks = $week_manager->findBetween($start, $end);
         $current_week = $week_manager->findAt($now);
 
-        return $this->render('ActsCamdramBundle:Default:index.html.twig', array(
+        return $this->render('home/index.html.twig', array(
             'news' => $news,
             'weeks' => $weeks,
             'current_week' => $current_week,
@@ -65,7 +65,7 @@ class DefaultController extends Controller
         $v_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Venue')->getNumberInDateRange($start, $end)
             + $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance')->getNumberOfVenueNamesInDateRange($start, $end);
 
-        $response = $this->render('ActsCamdramBundle:Default:statistics.html.twig', array(
+        $response = $this->render('home/statistics.html.twig', array(
             'show_num' => $s_num,
             'performance_num' => $perf_num,
             'people_num' => $people_num,
@@ -88,7 +88,7 @@ class DefaultController extends Controller
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
         $now = new \DateTime();
 
-        $response = $this->render('ActsCamdramBundle:Default:vacancies.html.twig', array(
+        $response = $this->render('home/vacancies.html.twig', array(
             'auditions' => $auditions_repo->findUpcoming(3, $now),
             'techie_ads' => $techie_repo->findLatest(3, $now),
             'app_ads' => $applications_repo->findLatest(3, $now),
@@ -122,7 +122,7 @@ class DefaultController extends Controller
             }
         }
 
-        $response = $this->render('ActsCamdramBundle:Default:historic-data.html.twig', array('data' => $data));
+        $response = $this->render('home/historic-data.html.twig', array('data' => $data));
         $response->setSharedMaxAge(3600);
 
         return $response;

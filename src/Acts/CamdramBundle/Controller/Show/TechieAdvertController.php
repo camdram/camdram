@@ -40,7 +40,7 @@ class TechieAdvertController extends FOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:Show:techie-advert-new.html.twig');
+            ->setTemplate('show/techie-advert-new.html.twig');
     }
 
     public function approveAction($identifier)
@@ -73,7 +73,7 @@ class TechieAdvertController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:Show:techie-advert-new.html.twig');
+                ->setTemplate('show/techie-advert-new.html.twig');
         }
     }
 
@@ -91,7 +91,7 @@ class TechieAdvertController extends FOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:Show:techie-advert-edit.html.twig');
+            ->setTemplate('show/techie-advert-edit.html.twig');
     }
 
     /**
@@ -115,7 +115,7 @@ class TechieAdvertController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:Show:techie-advert-edit.html.twig');
+                ->setTemplate('show/techie-advert-edit.html.twig');
         }
     }
 

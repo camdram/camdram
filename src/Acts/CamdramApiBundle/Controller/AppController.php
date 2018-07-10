@@ -32,7 +32,7 @@ class AppController extends FOSRestController
         $repo = $this->getDoctrine()->getRepository('ActsCamdramApiBundle:ExternalApp');
         $user_apps = $repo->findByUser($this->getUser());
 
-        return $this->render('ActsCamdramApiBundle:App:index.html.twig', array(
+        return $this->render('api/app/index.html.twig', array(
             'user_apps' => $user_apps
         ));
     }
@@ -53,7 +53,7 @@ class AppController extends FOSRestController
         $app = $this->getApp($app_id);
         $form = $this->getForm($app);
 
-        return $this->render('ActsCamdramApiBundle:App:view.html.twig', array(
+        return $this->render('api/app/view.html.twig', array(
                 'ex_app' => $app,
                 'form' => $form->createView(),
             ));
@@ -68,7 +68,7 @@ class AppController extends FOSRestController
     {
         $this->checkAuthenticated();
 
-        return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
+        return $this->render('api/app/new.html.twig', array(
             'form' => $this->getForm()->createView()
         ));
     }
@@ -86,7 +86,7 @@ class AppController extends FOSRestController
 
             return $this->redirect($this->generateUrl('get_apps'));
         } else {
-            return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
+            return $this->render('api/app/new.html.twig', array(
                 'form' => $this->getForm()->createView()
             ));
         }
@@ -103,7 +103,7 @@ class AppController extends FOSRestController
 
             return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
         } else {
-            return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
+            return $this->render('api/app/new.html.twig', array(
                     'form' => $this->getForm()->createView()
                 ));
         }

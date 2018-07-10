@@ -73,7 +73,7 @@ class ShowController extends AbstractRestController
             ->getContactableEntityOwners($show) > 0;
         
         $view = $this->view($show, 200)
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
+            ->setTemplate('show/show.html.twig')
             ->setTemplateData(['show' => $show, 'can_contact' => $can_contact]);
         ;
         return $view;
@@ -175,7 +175,7 @@ class ShowController extends AbstractRestController
         }
 
         return $this->render(
-            'ActsCamdramBundle:Show:admin-panel.html.twig',
+            'show/admin-panel.html.twig',
             array('show' => $show,
                   'admins' => $admins,
                   'requested_admins' => $requested_admins,
@@ -192,7 +192,7 @@ class ShowController extends AbstractRestController
         $show = $this->getRepository()->findOneBySlug($slug);
 
         return $this->render(
-            'ActsCamdramBundle:Show:search-result-panel.html.twig',
+            'show/search-result-panel.html.twig',
             array('show' => $show)
             );
     }

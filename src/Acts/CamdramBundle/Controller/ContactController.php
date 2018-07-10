@@ -38,13 +38,13 @@ class ContactController extends Controller
                 $data['message']
             );
             
-            return $this->render('ActsCamdramBundle:Contact:sent.html.twig', [
+            return $this->render('contact/sent.html.twig', [
                 'entity' => $entity,
                 'type' => $type
             ]);
         }
         
-        return $this->render('ActsCamdramBundle:Contact:index.html.twig', [
+        return $this->render('contact/index.html.twig', [
             'entity' => $entity,
             'type' => $type,
             'form' => $form->createView()

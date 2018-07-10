@@ -14,7 +14,7 @@ class TermDateController extends FOSRestController
         $term = $this->getDoctrine()->getRepository('ActsCamdramBundle:TermDate')
                       ->find($id);
         $view = $this->view($term, 200)
-            ->setTemplate('ActsCamdramBundle:TermDate:index.html.twig')
+            ->setTemplate('term_date/index.html.twig')
             ->setTemplateVar('term')
         ;
 

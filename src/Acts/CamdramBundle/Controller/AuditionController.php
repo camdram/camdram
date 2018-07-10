@@ -18,7 +18,7 @@ class AuditionController extends FOSRestController
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(new \DateTime());
 
         $view = $this->view($auditions, 200)
-                  ->setTemplate('ActsCamdramBundle:Audition:index.'.$request->getRequestFormat().'.twig')
+                  ->setTemplate('audition/index.'.$request->getRequestFormat().'.twig')
                    ->setTemplateVar('auditions')
                ;
 
@@ -36,7 +36,7 @@ class AuditionController extends FOSRestController
 
         $view = $this->view($diary)
             ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:Audition:diary.html.twig');
+            ->setTemplate('audition/diary.html.twig');
 
         return $view;
     }
