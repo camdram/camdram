@@ -10,6 +10,11 @@
 			"app/AppCache.php"
 		]
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"Camdram\\Tests\\": "tests/"
+		}
+	},
 	"license" : "GPL-2.0",
 	"require" : {
 		"php" : ">=7.0.0",

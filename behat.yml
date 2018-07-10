@@ -14,9 +14,7 @@ default:
                     elasticaResetter: '@fos_elastica.resetter'
                     elasticaIndex: '@fos_elastica.index.autocomplete'
     extensions:
-        Behat\Symfony2Extension:
-            kernel:
-                env: test
+        Behat\Symfony2Extension: ~
         Behat\MinkExtension:
             sessions:
                 default:
