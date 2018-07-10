@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 export SYMFONY_DEPRECATIONS_HELPER=weak_vendors
-app/console cache:clear --env=test
+export SYMFONY_ENV=test
+
+php app/console doctrine:schema:update --force
 bin/simple-phpunit
 bin/behat $@
