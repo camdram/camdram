@@ -4,6 +4,7 @@ namespace Camdram\Tests\Functional;
 use Acts\CamdramApiBundle\Entity\ExternalApp;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramSecurityBundle\Security\Encoder\LegacyMd5Encoder;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -66,9 +67,8 @@ class OAuthTest extends WebTestCase
         $this->appUser = new User();
         $this->appUser->setEmail('user1@camdram.net')
             ->setName('Test User');
-
-        $factory = $this->client->getKernel()->getContainer()->get('security.encoder_factory');
-        $encoder = $factory->getEncoder($this->appUser);
+        
+        $encoder = new LegacyMd5Encoder();
         $hashed_password = $encoder->encodePassword('password', $this->appUser->getSalt());
         $this->appUser->setPassword($hashed_password);
 
@@ -93,9 +93,7 @@ class OAuthTest extends WebTestCase
         $this->loginUser->setEmail('user2@camdram.net')
             ->setName('Test User 2');
 
-        $factory = $this->client->getKernel()->getContainer()->get('security.encoder_factory');
-        $encoder = $factory->getEncoder($this->loginUser);
-
+        $encoder = new LegacyMd5Encoder();
         $hashed_password = $encoder->encodePassword('password', $this->loginUser->getSalt());
         $this->loginUser->setPassword($hashed_password);
 

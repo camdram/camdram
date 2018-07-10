@@ -16,12 +16,6 @@ services:
         arguments: ['@router']
         public: true
 
-    acts.camdram.type.show:
-        class: Acts\CamdramBundle\Form\Type\ShowType
-        arguments: ['@security.authorization_checker']
-        tags:
-            - { name: form.type, alias: show }
-
     acts.camdram.type.facebook_link:
         class: Acts\CamdramBundle\Form\Type\FacebookLinkType
         arguments: ['@facebook.api']
@@ -154,18 +148,18 @@ services:
         class: Facebook\Facebook
         lazy: true
         arguments:
-          - app_id: %facebook_id%
-            app_secret: %facebook_secret%
+          - app_id: "%facebook_id%"
+            app_secret: "%facebook_secret%"
             default_access_token: "%facebook_id%|%facebook_secret%"
             
     twitter.api:
         class: Abraham\TwitterOAuth\TwitterOAuth
         lazy: true
         arguments:
-          - %twitter_key%
-          - %twitter_secret%
-          - %twitter_token%
-          - %twitter_token_secret%
+          - "%twitter_key%"
+          - "%twitter_secret%"
+          - "%twitter_token%"
+          - "%twitter_token_secret%"
           
     github.api:
         class: \Github\Client

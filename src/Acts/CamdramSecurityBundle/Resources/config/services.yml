@@ -40,10 +40,12 @@ services:
     camdram.security.acl.provider:
         class: Acts\CamdramSecurityBundle\Security\Acl\AclProvider
         arguments: ['@doctrine.orm.entity_manager', '@event_dispatcher']
+        public: true
 
     camdram.security.acl.helper:
         class: Acts\CamdramSecurityBundle\Security\Acl\Helper
         arguments: ['@security.authorization_checker', '@camdram.security.acl.provider']
+        public: true
 
     camdram.security.user.provider:
         class: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
