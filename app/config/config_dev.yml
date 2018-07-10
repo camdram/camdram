@@ -32,7 +32,7 @@ assetic:
     use_controller: true
 
 swiftmailer:
-    delivery_address: %mailer_delivery_address%
+    delivery_address: "%mailer_delivery_address%"
 
 fos_js_routing:
     request_context_base_url: /app_dev.php
