@@ -19,7 +19,7 @@ services:
 
     camdram.security.registration.handler:
         class: Acts\CamdramSecurityBundle\Form\RegistrationFormHandler
-        arguments: ['@doctrine.orm.entity_manager', '@security.encoder_factory', '@form.factory']
+        arguments: ['@doctrine.orm.entity_manager', '@security.encoder_factory', '@form.factory', '@event_dispatcher']
 
     camdram.security.registration.form:
         class: 'Symfony\Component\Form\Form'
@@ -57,7 +57,7 @@ services:
         class: Acts\CamdramSecurityBundle\EventListener\EmailSendListener
         arguments: ['@camdram.security.email_dispatcher', '@camdram.security.token_generator']
         tags:
-            - { name: kernel.event_listener, event: camdram_security.registration_complete, method: onRegistrationEvent }
+            - { name: kernel.event_listener, event: hwi_oauth.registration.completed, method: onRegistrationEvent }
             - { name: kernel.event_listener, event: camdram_security.ace_created, method: onAceCreatedEvent }
             - { name: kernel.event_listener, event: camdram_security.pending_access_created, method: onPendingAccessCreatedEvent }
 

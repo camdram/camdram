@@ -1,5 +1,7 @@
 {% extends 'ActsCamdramBundle::layout.html.twig' %}
 
+{% block title %}Confirm e-mail address{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="large-12 columns">
@@ -8,7 +10,7 @@
             <a class="button small" href="{{ path('acts_camdram_homepage') }}">Go to the home page</a>
         {% else %}
             <p>You can log back in to Camdram below</p>
-            {{  include('ActsCamdramSecurityBundle:Default:login_form.html.twig', {error:false, last_email: confirm_user.email}) }}
+            {{ render(path('hwi_oauth_connect')) }}
         {% endif %}
     </div>
 </div>
