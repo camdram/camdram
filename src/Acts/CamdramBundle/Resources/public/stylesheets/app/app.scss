@@ -34,9 +34,13 @@ $footer-height-mobile: emCalc(350);
   max-width:$row-width;
   margin:auto;
 
-  ul li.active > a:hover {
-    background:inherit;
-    cursor:default;
+  ul {
+    padding-left:0;
+
+    li.active > a:hover {
+      background:inherit;
+      cursor:default;
+    }
   }
 }
 
@@ -220,6 +224,7 @@ ul.topbar-dropdown {
 
     > ul {
       margin:0;
+      padding-left:0;
 
       > li {
         color: white;
@@ -323,4 +328,8 @@ $panel-font-color-alt: #000;
   h3 {
     color:#000000;
   }
+}
+
+ul {
+  padding-left:20px;
 }
