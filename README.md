@@ -15,7 +15,15 @@ Install the necessary packages required to run Camdram. PHP version 7.0 or great
 
 The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)) - installation methods on other distros and operating systems will vary.
 
+Ubuntu 18.04 package list:
+
     $ sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json
+    
+Debian Stretch requires a few more:
+
+    $ sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json php-mbstring php-xml php-zip
+    
+Newer/older distributions may vary.
 
 The steps below assume that the Composer PHP package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/
 
