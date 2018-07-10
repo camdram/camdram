@@ -6,9 +6,12 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
-use Ivory\GoogleMap\Events\MouseEvent;
-use Ivory\GoogleMap\Overlays\Marker;
-use Ivory\GoogleMap\Overlays\InfoWindow;
+use Ivory\GoogleMap\Event\MouseEvent;
+use Ivory\GoogleMap\Overlay\Marker;
+use Ivory\GoogleMap\Overlay\Icon;
+use Ivory\GoogleMap\Overlay\InfoWindow;
+use Ivory\GoogleMap\Map;
+use Ivory\GoogleMap\Base\Coordinate;
 
 /**
  * Class VenueController
@@ -129,20 +132,19 @@ class VenueController extends OrganisationController
         } else {
             $venues = $repo->findAllOrderedByName();
         }
-        $map = $this->get('ivory_google_map.map');
+        $map = new Map;
 
-        $map->setPrefixJavascriptVariable('map_');
-        $map->setHtmlContainerId('map_canvas');
+        $map->setHtmlId('map_canvas');
         $map->setStylesheetOptions(array('width' => '100%', 'height' => '100%'));
 
         $one_venue = count($venues) == 1;
 
         if ($one_venue) {
             $map->setMapOption('zoom', 16);
-            $map->setCenter($venues[0]->getLatitude(), $venues[0]->getLongitude(), true);
+            $map->setCenter(new Coordinate($venues[0]->getLatitude(), $venues[0]->getLongitude()));
         } else {
             $map->setMapOption('zoom', 14);
-            $map->setCenter(52.20531, 0.12179, true);
+            $map->setCenter(new Coordinate(52.20531, 0.12179));
         }
 
         $letter = ord('A');
@@ -155,33 +157,29 @@ class VenueController extends OrganisationController
                     'one_venue' => $one_venue,
                 ))->getContent();
 
-                $infoWindow = new InfoWindow();
-                $infoWindow->setPrefixJavascriptVariable('info_window_');
-                $infoWindow->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
-                $infoWindow->setContent($content);
+                $infoWindow = new InfoWindow($content);
+                $infoWindow->setPosition(new Coordinate($venue->getLatitude(), $venue->getLongitude()));
                 $infoWindow->setAutoOpen(true);
                 $infoWindow->setOpenEvent(MouseEvent::CLICK);
                 $infoWindow->setAutoClose(true);
                 $infoWindow->setOption('zIndex', 10);
-                $map->addInfoWindow($infoWindow);
+                $map->getOverlayManager()->addInfoWindow($infoWindow);
 
-                $marker = new Marker();
-                $marker->setPrefixJavascriptVariable('marker_');
-                $marker->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
+                $marker = new Marker(new Coordinate($venue->getLatitude(), $venue->getLongitude()));
                 if ($one_venue) {
-                    $marker->setIcon($this->getMarkerUrl(''));
+                    $marker->setIcon(new Icon($this->getMarkerUrl('')));
                 } else {
-                    $marker->setIcon($this->getMarkerUrl(chr($letter)));
+                    $marker->setIcon(new Icon($this->getMarkerUrl(chr($letter))));
                 }
                 $marker->setInfoWindow($infoWindow);
                 $marker->setOption('clickable', true);
-                $map->addMarker($marker);
+                $map->getOverlayManager()->addMarker($marker);
 
                 $info_boxes[] = array(
                     'image' => $this->getMarkerUrl(chr($letter)),
-                    'box_id' => $infoWindow->getJavascriptVariable(),
-                    'marker_id' => $marker->getJavascriptVariable(),
-                    'map_id' => $map->getJavascriptVariable(),
+                    'box_id' => $infoWindow->getVariable(),
+                    'marker_id' => $marker->getVariable(),
+                    'map_id' => $map->getVariable(),
                     'slug' => $venue->getSlug(),
                 );
 
