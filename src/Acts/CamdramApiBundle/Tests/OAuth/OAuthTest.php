@@ -47,21 +47,9 @@ class OAuthTest extends WebTestCase
 
     public function setUp()
     {
-        $serverKernel = static::createKernel();
-        $serverKernel->boot();
-        $this->client = $serverKernel->getContainer()->get('test.client');
+        $this->userClient = static::createClient();
 
-        if (self::$db == null) {
-            self::$db = $this->client->getContainer()->get('doctrine.dbal.default_connection');
-        }
-
-        $userKernel = static::createKernel();
-        $userKernel->boot();
-        $this->userClient = $userKernel->getContainer()->get('test.client');
-
-        $this->client->getContainer()->set('doctrine.dbal.default_connection', self::$db);
-        $this->userClient->getContainer()->set('doctrine.dbal.default_connection', self::$db);
-
+        $this->client = static::createClient();
         $this->client->getKernel()->getContainer()->get('acts_camdram_admin.database_tools')->resetDatabase();
         $this->createApiApp();
     }
@@ -252,14 +240,5 @@ class OAuthTest extends WebTestCase
         );
         $this->client->request('PATCH', '/societies/test-society.json?access_token='.$token, $params);
         $this->assertEquals(201, $this->client->getResponse()->getStatusCode());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function tearDown()
-    {
-        $this->client->getKernel()->shutdown();
-        $this->userClient->getKernel()->shutdown();
     }
 }

@@ -40,7 +40,7 @@ class OwnerVoterTest extends TestCase
         $show = new Show();
 
         $this->aclProvider->expects($this->once())->method('isOwner')
-            ->with($this->token, $show)->will($this->returnValue(true));
+            ->with('testuser', $show)->will($this->returnValue(true));
 
         $this->assertEquals(OwnerVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
@@ -54,9 +54,9 @@ class OwnerVoterTest extends TestCase
         $show = new Show();
 
         $this->aclProvider->expects($this->once())->method('isOwner')
-            ->with($this->token, $show)->will($this->returnValue(false));
+            ->with('testuser', $show)->will($this->returnValue(false));
 
-        $this->assertEquals(OwnerVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(OwnerVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,
             $show,
             array('EDIT')
@@ -68,7 +68,7 @@ class OwnerVoterTest extends TestCase
         $show = new Show();
 
         $this->aclProvider->expects($this->once())->method('isOwner')
-            ->with($this->token, $show)->will($this->returnValue(true));
+            ->with('testuser', $show)->will($this->returnValue(true));
 
         $this->assertEquals(OwnerVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
@@ -82,9 +82,9 @@ class OwnerVoterTest extends TestCase
         $show = new Show();
 
         $this->aclProvider->expects($this->once())->method('isOwner')
-            ->with($this->token, $show)->will($this->returnValue(false));
+            ->with('testuser', $show)->will($this->returnValue(false));
 
-        $this->assertEquals(OwnerVoter::ACCESS_ABSTAIN, $this->voter->vote(
+        $this->assertEquals(OwnerVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,
             $show,
             array('VIEW')

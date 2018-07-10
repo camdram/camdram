@@ -38,7 +38,7 @@
         </div>
         <p>Click 'Allow' to authorize {{ client.name }} to access data from Camdram on your behalf. 
         Otherwise, click 'Cancel' and you will taken back to where you came from.</p>
-        <form action="{{ path('fos_oauth_server_authorize') }}" method="POST" class="fos_oauth_server_authorize" {{ form_enctype(form) }}>
+        {{ form_start(form, {'method': 'POST', 'action': path('fos_oauth_server_authorize'), 'label_attr': {'class': 'fos_oauth_server_authorize'} }) }}
             <input type="submit" name="accepted" value="Allow" class="button" />
             <input type="submit" name="rejected" value="Cancel" class="button secondary" />
 

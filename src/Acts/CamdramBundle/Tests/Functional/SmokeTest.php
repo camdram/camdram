@@ -45,7 +45,7 @@ class SmokeTest extends WebTestCase
         foreach ($this->HTML_URLS as $url) {
             $this->client->request('GET', $url);
             $response = $this->client->getResponse();
-            
+
             $this->assertEquals(200, $response->getStatusCode(), "URL: $url");
             $this->assertContains('text/html', $response->headers->get('Content-Type'), "URL: $url");
             $this->assertContains('<body>', $response->getContent(), "URL: $url");

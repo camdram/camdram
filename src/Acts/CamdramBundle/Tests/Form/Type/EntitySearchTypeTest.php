@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Tests\Form\Type;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\EntitySearchType;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Form\PreloadedExtension;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class EntitySearchTypeTest extends TypeTestCase
@@ -21,8 +22,6 @@ class EntitySearchTypeTest extends TypeTestCase
 
     public function setUp()
     {
-        parent::setUp();
-
         $this->repo = $this->getMockBuilder('Acts\\CamdramBundle\\Entity\\SocietyRepository')
             ->disableOriginalConstructor()
             ->setMethods(array('findOneByName', 'findOneBy'))
@@ -34,13 +33,24 @@ class EntitySearchTypeTest extends TypeTestCase
         $this->em->expects($this->any())
             ->method('getRepository')
             ->will($this->returnValue($this->repo));
+
+        parent::setUp();
+    }
+
+    protected function getExtensions()
+    {
+        // create a type instance with the mocked dependencies
+        $type = new EntitySearchType($this->em);
+
+        return array(
+            // register the type instances with the PreloadedExtension
+            new PreloadedExtension([$type], []),
+        );
     }
 
     private function createForm()
     {
-        $type = new EntitySearchType($this->em);
-
-        return  $this->factory->createNamed('test', $type, null, array('inherit_data' => false));
+        return $this->factory->createNamed('test', EntitySearchType::class, null, array('inherit_data' => false));
     }
 
     public function testSubmitValidData()

@@ -83,27 +83,33 @@ class AclProviderTest extends TestCase
         $this->assertFalse($this->aclProvider->isOwner(null, $show));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testInvalidClassName()
     {
-        $this->setExpectedException('\InvalidArgumentException');
         new ClassIdentity('\AnInvalidClassName');
     }
 
+    /**
+     * @expectedException \ReflectionException
+     */
     public function testGetEntityIdsByUser_InvalidClass()
     {
         $user = new User();
         $user->setEmail('testuser@camdram.net');
 
-        $this->setExpectedException('\ReflectionException');
         $this->aclProvider->getEntityIdsByUser($user, '\AnInvalidClassName');
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testGetEntityIdsByUser_NonOwnableClass()
     {
         $user = new User();
         $user->setEmail('testuser@camdram.net');
-
-        $this->setExpectedException('\InvalidArgumentException');
+        
         $this->aclProvider->getEntityIdsByUser($user, '\\Acts\\CamdramBundle\\Entity\\News');
     }
 

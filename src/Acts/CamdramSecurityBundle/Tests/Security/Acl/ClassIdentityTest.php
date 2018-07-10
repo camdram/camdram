@@ -24,9 +24,11 @@ class ClassIdentityTest extends TestCase
         $this->assertEquals($this->class_name, $classIdentity->getClassName());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testInvalidClassName()
     {
-        $this->setExpectedException('\InvalidArgumentException');
         new ClassIdentity('\AnInvalidClassName');
     }
 }
