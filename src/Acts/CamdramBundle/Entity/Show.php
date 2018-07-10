@@ -811,6 +811,9 @@ class Show implements OwnableInterface
     {
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->techie_adverts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->auditions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->entry_expiry = new \DateTime();
         $this->timestamp = new \DateTime();
     }

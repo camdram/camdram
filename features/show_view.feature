@@ -1,3 +1,4 @@
+@shows
 Feature: Editing shows
   In order for users to be able to edit shows on Camdram
   I need to be able to create a user account

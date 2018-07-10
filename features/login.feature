@@ -1,3 +1,4 @@
+@login
 Feature: Logging in
   In order to customise Camdram's content
   I need to be able to log in

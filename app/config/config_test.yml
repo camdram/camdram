@@ -18,9 +18,9 @@ monolog:
 framework:
     test: ~
     session:
-        storage_id: acts_camdram_admin.test.session_storage
+        storage_id: session.storage.mock_file
     profiler:
-        enabled: true
+        collect: false
 
 swiftmailer:
     disable_delivery: true

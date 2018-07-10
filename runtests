@@ -2,5 +2,4 @@
 set -e
 app/console cache:clear --env=test
 bin/simple-phpunit
-bin/behat $@ @ActsCamdramBundle
-bin/behat $@ @ActsCamdramSecurityBundle
+bin/behat $@

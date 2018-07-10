@@ -1,6 +1,10 @@
 <?php
 
-namespace Acts\CamdramBundle\Features\Context;
+use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
+
+use Doctrine\ORM\EntityManagerInterface;
 
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Person;
@@ -10,22 +14,35 @@ use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Service\Time;
+use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 
 /**
  * Feature context.
  */
-class EntityContext extends AbstractContext
+class EntityContext implements Context
 {
     private $authorise_user;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    private $aclProvider;
+
+    public function __construct(EntityManagerInterface $entityManager, AclProvider $aclProvider)
+    {
+        $this->entityManager = $entityManager;
+        $this->aclProvider = $aclProvider;
+    }
 
     public function getAuthoriseUser()
     {
         if (!$this->authorise_user) {
             $user = new User();
             $user->setName('Authorise User')->setEmail('authoriser@camdram.net');
-            $em = $this->getEntityManager();
-            $em->persist($user);
-            $em->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
             $this->authorise_user = $user;
         }
 
@@ -43,7 +60,7 @@ class EntityContext extends AbstractContext
 
         $show->setSociety($society);
         $show->setVenue($venue);
-        $this->getEntityManager()->flush();
+        $this->entityManager->flush();
     }
 
     public function createShow($show_name)
@@ -52,9 +69,8 @@ class EntityContext extends AbstractContext
         $show->setName($show_name)
             ->setCategory('drama')
             ->setAuthorisedBy($this->getAuthoriseUser());
-        $em = $this->getEntityManager();
-        $em->persist($show);
-        $em->flush();
+        $this->entityManager->persist($show);
+        $this->entityManager->flush();
 
         return $show;
     }
@@ -66,9 +82,8 @@ class EntityContext extends AbstractContext
     {
         $society = new Society();
         $society->setName($soc_name)->setShortName($soc_name);
-        $em = $this->getEntityManager();
-        $em->persist($society);
-        $em->flush();
+        $this->entityManager->persist($society);
+        $this->entityManager->flush();
 
         return $society;
     }
@@ -80,9 +95,8 @@ class EntityContext extends AbstractContext
     {
         $venue = new Venue();
         $venue->setName($venue_name)->setShortName($venue_name);
-        $em = $this->getEntityManager();
-        $em->persist($venue);
-        $em->flush();
+        $this->entityManager->persist($venue);
+        $this->entityManager->flush();
 
         return $venue;
     }
@@ -94,9 +108,8 @@ class EntityContext extends AbstractContext
     {
         $person = new Person();
         $person->setName($person_name);
-        $em = $this->getEntityManager();
-        $em->persist($person);
-        $em->flush();
+        $this->entityManager->persist($person);
+        $this->entityManager->flush();
         return $person;
     }
 
@@ -105,10 +118,9 @@ class EntityContext extends AbstractContext
      */
     public function showOwner($email, $show_name)
     {
-        $em = $this->getEntityManager();
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
-        $show = $em->getRepository('ActsCamdramBundle:Show')->findOneByName($show_name);
-        $this->kernel->getContainer()->get('camdram.security.acl.provider')->grantAccess($show, $user, $this->getAuthoriseUser());
+        $user = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
+        $show = $this->entityManager->getRepository('ActsCamdramBundle:Show')->findOneByName($show_name);
+        $this->aclProvider->grantAccess($show, $user, $this->getAuthoriseUser());
     }
 
     /**
@@ -116,10 +128,9 @@ class EntityContext extends AbstractContext
      */
     public function organisationOwner($email, $org_name)
     {
-        $em = $this->getEntityManager();
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
-        $org = $em->getRepository('ActsCamdramBundle:Organisation')->findOneByName($org_name);
-        $this->kernel->getContainer()->get('camdram.security.acl.provider')->grantAccess($org, $user, $this->getAuthoriseUser());
+        $user = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
+        $org = $this->entityManager->getRepository('ActsCamdramBundle:Organisation')->findOneByName($org_name);
+        $this->aclProvider->grantAccess($org, $user, $this->getAuthoriseUser());
     }
 
     /**
@@ -127,11 +138,10 @@ class EntityContext extends AbstractContext
      */
     public function isLinkedToThePerson($email, $person_name)
     {
-        $em = $this->getEntityManager();
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
-        $person = $em->getRepository('ActsCamdramBundle:Person')->findOneByName($person_name);
+        $user = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
+        $person = $this->entityManager->getRepository('ActsCamdramBundle:Person')->findOneByName($person_name);
         $user->setPerson($person);
-        $em->flush();
+        $this->entityManager->flush();
     }
 
 
@@ -158,7 +168,7 @@ class EntityContext extends AbstractContext
         $performance->setShow($show);
         $show->addPerformance($performance);
 
-        $this->getEntityManager()->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -172,8 +182,7 @@ class EntityContext extends AbstractContext
         $period->setShortName($name);
         $period->setStartAt(new \DateTime($from));
         $period->setEndAt(new \DateTime($to));
-        $em = $this->getEntityManager();
-        $em->persist($period);
-        $em->flush();
+        $this->entityManager->persist($period);
+        $this->entityManager->flush();
     }
 }

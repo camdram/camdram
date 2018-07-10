@@ -1,3 +1,4 @@
+@diary
 Feature: Diary page
     To get an overview of events happening now, in the future and in the past
     For any user

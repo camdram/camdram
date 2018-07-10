@@ -1,11 +1,27 @@
 default:
+    suites:
+        default:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - EntityContext:
+                    entityManager: '@doctrine.orm.entity_manager'
+                    aclProvider: '@camdram.security.acl.provider'
+                - UserContext:
+                    entityManager: '@doctrine.orm.entity_manager'
+                    encoderFactory: '@security.encoder_factory'
+                - SymfonyContext:
+                    databaseTools: '@acts_camdram_admin.database_tools'
+                    elasticaResetter: '@fos_elastica.resetter'
+                    elasticaIndex: '@fos_elastica.index.autocomplete'
     extensions:
-        Behat\Symfony2Extension\Extension:
-            mink_driver: true
+        Behat\Symfony2Extension:
             kernel:
                 env: test
-        Behat\MinkExtension\Extension:
-            default_session: 'symfony2'
+        Behat\MinkExtension:
+            sessions:
+                default:
+                    symfony2: ~
             show_cmd: 'google-chrome %s'
-    filters:
-         tags: "~@ignore"
+    gherkin:
+        filters:
+            tags: "~@ignore"
