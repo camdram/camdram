@@ -9,8 +9,9 @@ cache:
   - $HOME/.composer
 services:
   - elasticsearch
+  - mysql
 before_script:
-- cp app/config/parameters.test.yml app/config/parameters.yml
+- cp app/config/parameters.travis.yml app/config/parameters.yml
 - composer selfupdate
 - composer install --no-interaction
 script:

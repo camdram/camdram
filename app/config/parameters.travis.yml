@@ -1,0 +1,10 @@
+parameters:
+    database_driver:   pdo_sqlite
+    database_host:     localhost
+    database_port:     ~
+    database_name:     ~
+    database_user:     ~
+    database_pass:     ~
+    
+    search_namespace: camdram
+    search_enable_listeners: true
