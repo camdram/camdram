@@ -14,7 +14,8 @@
 
         {% if error is defined and error %}
             <div class="error_panel">
-                <p>Either the username or password is invalid - please try again</p>
+                <p>
+                {{ error.messageKey | trans(error.messageData, 'security') }}</p>
             </div>
         {% endif %}
 

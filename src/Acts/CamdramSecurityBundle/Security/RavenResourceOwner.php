@@ -9,6 +9,8 @@ use HWI\Bundle\OAuthBundle\OAuth\ResourceOwnerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse;
 use OAuth2\Model\OAuth2Token;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class RavenResourceOwner implements ResourceOwnerInterface
 {
@@ -38,39 +40,76 @@ class RavenResourceOwner implements ResourceOwnerInterface
     
     public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())
     {
-        if ($request->query->has('WLS-Response')) {
-            $wlsResponse = $request->query->get('WLS-Response');
-            $request->query->remove('WLS-Response');
+        if (!$request->query->has('WLS-Response')) {
+            throw new AuthenticationException('Raven: No WLS_Response in request');
+        }
 
-            list($ver, $status, $msg, $issue, $id, $url, $principal, $ptags, $auth, $sso, $life, $params, $kid, $sig) = explode(
-                '!',
-                $wlsResponse
-            );
-
-            $token = array(
-                'principal' => $principal,
-                'ver' => (int) $ver,
-                'status' => (int) $status,
-                'msg' => $msg != '' ? (string) $msg : null,
-                'issue' => new \DateTime($issue),
-                'id' => (string) $id,
-                'ptags' => (string) $ptags,
-                'url' => (string) $url,
-                'auth' => $auth != '' ? (string) $auth : null,
-                'sso' => (string) $sso,
-                'life' => $life != '' ? (int) $life : null,
-                'params' => $params != '' ? (string) $params : null,
-                'kid' => (int) $kid,
-                'sig' => (string) $sig,
-                'access_token' => ''
-            );
-            if ((time() - $token['issue']->getTimestamp() > 30)) {
-                //TODO: throw new LoginTimedOutException();
+        $wlsResponse = $request->query->get('WLS-Response');
+        $request->query->remove('WLS-Response');
+        
+        $parts = explode('!', $wlsResponse);
+        $ver = array_shift($parts);
+        if ($ver == 3) {
+            if (count($parts) != 13) {
+                throw new AuthenticationException('Raven: Invalid number of parts in WLS-Response');
             }
-            if ($this->validateToken($token)) {
-                return $token;
+            list($status, $msg, $issue, $id, $url, $principal, $ptags, $auth, $sso, $life, $params, $kid, $sig) = $parts;
+        }
+        else {
+            if (count($parts) != 12) {
+                throw new AuthenticationException('Raven: Invalid number of parts in WLS-Response');
+            }
+            list($status, $msg, $issue, $id, $url, $principal, $auth, $sso, $life, $params, $kid, $sig) = $parts;
+        }
+
+        if ($status == 410) {
+            throw new CustomUserMessageAuthenticationException('Raven login cancelled.');
+        }
+        else if ($status != 200) {
+            switch ($status) {
+                case 510:
+                    throw new AuthenticationException('Raven error: No mutually acceptable authentication types available');
+                case 520:
+                    throw new AuthenticationException('Raven error: Unsupported protocol version');
+                case 530:
+                    throw new AuthenticationException('Raven error: General request parameter error');
+                case 540:
+                    throw new AuthenticationException('Raven error: Interaction would be required');
+                case 560:
+                    throw new AuthenticationException('Raven error: WAA not authorised');
+                case 570:
+                    throw new AuthenticationException('Raven error: Authentication declined');
+                default:
+                    throw new AuthenticationException('Raven error: Unknown '.$status);
             }
         }
+        
+        $token = array(
+            'principal' => $principal,
+            'ver' => (int) $ver,
+            'status' => (int) $status,
+            'msg' => $msg != '' ? (string) $msg : null,
+            'issue' => new \DateTime($issue),
+            'id' => (string) $id,
+            'ptags' => (string) $ptags,
+            'url' => (string) $url,
+            'auth' => $auth != '' ? (string) $auth : null,
+            'sso' => (string) $sso,
+            'life' => $life != '' ? (int) $life : null,
+            'params' => $params != '' ? (string) $params : null,
+            'kid' => (int) $kid,
+            'sig' => (string) $sig,
+            'access_token' => ''
+        );
+        
+        if (abs(time() - $token['issue']->getTimestamp()) > 30) {
+            throw new AuthenticationException('Raven: log in timed out');
+        }
+        if (!$this->validateToken($token)) {
+            throw new AuthenticationException('Raven: token validation failed');
+        }
+
+        return $token;
     }
 
     public function addPaths(array $paths)
