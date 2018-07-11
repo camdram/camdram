@@ -4,7 +4,8 @@ namespace Acts\CamdramApiBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class AppType
@@ -15,7 +16,7 @@ class AppType extends AbstractType
     {
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $choices = array(
             'website' => 'Website',
@@ -33,11 +34,6 @@ class AppType extends AbstractType
 
     public function getParent()
     {
-        return 'choice';
-    }
-
-    public function getName()
-    {
-        return 'app_type';
+        return ChoiceType::class;
     }
 }
