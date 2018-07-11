@@ -21,6 +21,7 @@ security:
             anonymous: true
             switch_user: { role: ROLE_ADMIN, parameter: _switch_to_user }
             fos_oauth: true
+            logout_on_user_change: true
             logout:
                 path: /logout
                 target: /
@@ -39,11 +40,10 @@ security:
                 use_forward:       false
                 failure_path:      /auth/login
                 oauth_user_provider:
-                    service: camdram.security.user.provider
-            
-                login_path: "/auth/login"
+                    service: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
+
             remember_me:
-                secret:      %secret%
+                secret: "%secret%"
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~
@@ -58,37 +58,37 @@ security:
 
     encoders:
         Acts\CamdramSecurityBundle\Entity\User:
-            id: camdram.security.encoder.legacy_md5
+            id: Acts\CamdramSecurityBundle\Security\Encoder\LegacyMd5Encoder
 
 hwi_oauth:
     firewall_names: [public]
     grant_rule: 'IS_AUTHENTICATED_FULLY'
     target_path_parameter: _destination
     connect:
-        account_connector: camdram.security.user.provider
+        account_connector: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
         registration_form: camdram.security.registration.form
-        registration_form_handler: camdram.security.registration.handler
+        registration_form_handler: Acts\CamdramSecurityBundle\Form\RegistrationFormHandler
     resource_owners:
         facebook:
             type: facebook
-            client_id: %facebook_id%
-            client_secret: %facebook_secret%
+            client_id: "%facebook_id%"
+            client_secret: "%facebook_secret%"
             scope: "email user_friends"
             options:
                 csrf: true
         google:
             type: google
-            client_id: %google_client_id%
-            client_secret: %google_client_secret%
+            client_id: "%google_client_id%"
+            client_secret: "%google_client_secret%"
             scope: "email profile"
             options:
                 csrf: true
         twitter:
             type: twitter
-            client_id: %twitter_key%
-            client_secret: %twitter_secret%
+            client_id: "%twitter_key%"
+            client_secret: "%twitter_secret%"
             options:
                 csrf: true
                 include_email: true
         raven:
-            service: "camdram.security.raven.resource_owner"
+            service: Acts\CamdramSecurityBundle\Security\RavenResourceOwner

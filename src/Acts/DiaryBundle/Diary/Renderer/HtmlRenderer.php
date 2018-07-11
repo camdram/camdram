@@ -33,6 +33,6 @@ class HtmlRenderer
     {
         $view = $diary->createView();
 
-        return $this->twig->render('ActsDiaryBundle:Diary:index.html.twig', array('diary' => $view));
+        return $this->twig->render('diary/index.html.twig', array('diary' => $view));
     }
 }

@@ -1,0 +1,20 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'venues' %}
+{% block title %}Venue - {{ form.vars.value.name }} - Edit{% endblock %}
+
+{% block body %}
+
+{{ render(controller('ActsCamdramBundle:Venue:adminPanel', {org: form.vars.value})) }}
+
+<div class="row">
+    <h3>Edit Venue</h3>
+    <form action="{{ path("put_venue", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post">
+        {{ form_widget(form) }}
+        <div class="text-right">
+            <input type="submit" value="Save" class="button"/>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

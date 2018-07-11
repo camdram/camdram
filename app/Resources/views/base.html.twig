@@ -100,8 +100,8 @@
     </head>
     <body>
         <div id="wrapper">
-            {% if development_warning %}{% include '::dev-warning.html.twig' %}{% endif %}
-            {% if show_site_notice %}{% include '::site-notice.html.twig' %}{% endif %}
+            {% if development_warning %}{% include 'dev-warning.html.twig' %}{% endif %}
+            {% if show_site_notice %}{% include 'site-notice.html.twig' %}{% endif %}
             {% block main %}{% endblock %}
         </div>
 

@@ -1,0 +1,7 @@
+<h5><a href="{{ url('get_show', {identifier : show.slug}) }}">{{ show.name }}</a> -
+    {% for role in show.rolesByPerson(person) %}
+        {{ role.role -}}
+        {% if not loop.last %},{% endif %}
+    {% endfor %}
+</h5>
+<p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}</p>

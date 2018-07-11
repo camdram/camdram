@@ -28,7 +28,7 @@ class ReleaseInfoCommand extends ContainerAwareCommand
         $data['start_tag'] = $start;
         $data['end_tag'] = $end;
         
-        $text = $this->getContainer()->get('twig')->render('ActsCamdramAdminBundle:Email:commit-email.txt.twig', $data);
+        $text = $this->getContainer()->get('twig')->render('email/commit-email.txt.twig', $data);
         $output->write($text);
     }
 

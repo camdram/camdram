@@ -15,18 +15,14 @@ acts_camdram_development:
 acts_camdram_homepage:
     path:  /
     defaults: { _controller: ActsCamdramBundle:Default:index }
-acts_camdram_play:
-    path: /plays/{mid}
-    defaults: { _controller: ActsCamdramBundle:Play:display }
-    requirements:
-        mid: .*
+
 acts_camdram_contact:
     resource: "routing/contact_us.yml"
 acts_camdram_privacy:
     path: /privacy
     defaults:
         _controller: FrameworkBundle:Template:template
-        template: 'ActsCamdramBundle:Static:privacy.html.twig'
+        template: 'static/privacy.html.twig'
 acts_camdram_roles:
     type:     rest
     prefix:   /
@@ -40,12 +36,12 @@ acts_camdram_about:
     path: /about
     defaults:
         _controller: FrameworkBundle:Template:template
-        template: 'ActsCamdramBundle:Static:about.html.twig'
+        template: 'static/about.html.twig'
 acts_camdram_faq:
     path: /faq
     defaults:
         _controller: FrameworkBundle:Template:template
-        template: 'ActsCamdramBundle:Static:faq.html.twig'
+        template: 'static/faq.html.twig'
         
 camdram_annotation:
     resource: "@ActsCamdramBundle/Controller/"

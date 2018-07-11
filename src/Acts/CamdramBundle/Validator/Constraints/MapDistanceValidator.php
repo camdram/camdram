@@ -27,7 +27,9 @@ class MapDistanceValidator extends ConstraintValidator
         $loc = new MapLocation($constraint->nearTo[0], $constraint->nearTo[1]);
 
         if ($value->getDistanceTo($loc) > $constraint->radius) {
-            $this->context->addViolation($constraint->message, array(), $value);
+            $this->context->buildViolation($constraint->message)
+                ->setInvalidValue($value)
+                ->addViolation();
         }
     }
 }

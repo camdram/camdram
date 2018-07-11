@@ -1,5 +1,6 @@
 imports:
     - { resource: parameters.yml }
+    - { resource: services.yml }
     - { resource: security.yml }
     - { resource: elasticsearch.yml }
 
@@ -14,22 +15,25 @@ framework:
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] }
     default_locale:  "%locale%"
-    trusted_proxies: ['127.0.0.1']
     session:
         name: camdram
         gc_maxlifetime: 1800
     fragments: { path: /_fragment }
+
+sensio_framework_extra:
+    router:
+        annotations: false
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-        - 'ActsCamdramBundle:Form:fields.html.twig'
+        - 'form/fields.html.twig'
     globals:
-        development_warning: %development_warning%
-        show_site_notice: %show_site_notice%
-        site_notice_content: %site_notice_content%
+        development_warning: "%development_warning%"
+        show_site_notice: "%show_site_notice%"
+        site_notice_content: "%site_notice_content%"
 
 # Assetic Configuration
 assetic:
@@ -67,7 +71,6 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-        entity_listener_resolver: acts_camdram.doctrine.entity_listener_resolver
         mappings:
             gedmo_loggable:
                 type: annotation
@@ -83,7 +86,7 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool  : { type: memory }
-    sender_address: %mailer_sender_address%
+    sender_address: "%mailer_sender_address%"
 
 fos_rest:
     view:
@@ -149,7 +152,7 @@ liip_imagine:
     loaders:
         default:
             filesystem:
-                data_root: %kernel.root_dir%/data/
+                data_root: '%kernel.root_dir%/data/'
 
     filter_sets:
         cache: ~
@@ -178,10 +181,14 @@ fos_js_routing:
     routes_to_expose: [ "get_[a-z]+", 'acts_camdram_diary.*', 'search_entity' ]
 
 ewz_recaptcha:
-    public_key: %recaptcha_site_key%
-    private_key: %recaptcha_secret_key%
-    locale_key: %kernel.default_locale%
+    public_key: "%recaptcha_site_key%"
+    private_key: "%recaptcha_secret_key%"
+    locale_key: "%kernel.default_locale%"
+
+ivory_google_map:
+    map:
+        debug: "%kernel.debug%"
+        api_key: "%google_key%"
 
 parameters:
-    test.client.class: Acts\CamdramAdminBundle\Tests\Client
     router.request_context.host: www.camdram.net

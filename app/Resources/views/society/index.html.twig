@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'societies' %}
+{% block title %}Societies{% endblock %}
+
+{% block body %}
+  <div class="row">
+      <div class="large-12 columns">
+          <h3>Societies</h3>
+
+{% if societies | length > 0 %}
+<ul class="large-block-grid-2">
+    {% set seen_college = false %}
+    {% for society in societies %}
+        {% if (society.college is not empty) and not seen_college %}
+            {% set seen_college = true %}
+            <hr>
+            </ul><ul class="large-block-grid-2">
+            <h3>College Societies</h3>
+        {% endif %}
+        <li>
+            <h5>
+                <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
+                {% if society.shortname is not empty %}
+                <small>- {{ society.shortname }}</small>
+                {% endif %}
+            </h5>
+            {% if society.college is not empty %}
+                <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
+            {% endif %}
+
+            {% if society.image %}
+                <div class="row">
+                    <div class="small-3 columns">
+                        <a href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('list') }}" /></a>
+                    </div>
+                    <div class="small-9 columns">
+                        <p>{{ society.description | strip_camdram_markdown | truncate(200) }}</p>
+                        <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
+                    </div>
+                </div>
+            {% else %}
+                <p>{{ society.description | strip_camdram_markdown | truncate(200) }}</p>
+                <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+{% endif %}
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% if entity.society %}
+    <p><a href="{{ url('get_society', {identifier: entity.society.slug}) }}">{{ entity.society.name }}</a> presents...</p>
+{% elseif entity.societyname is not empty %}
+    <p>{{ entity.societyname }} presents...</p>
+{% endif %}
+<h2>{{ entity.name }}{% if entity.author %}<br/><small> by {{ entity.author }}</small>{% endif %}</h2>
+<p>{% include 'performance/show.html.twig' with {performances: entity.performances, full_urls: true} %}</p>
+{% if entity.bookingUrl %}
+    <p>
+        <a href="{{ entity.bookingUrl }}">Buy tickets {% if entity.prices %}({{ entity.prices }}){% endif %}</a>
+    </p>
+{% endif %}
+<p>{{ entity.description | camdram_markdown }}</p>

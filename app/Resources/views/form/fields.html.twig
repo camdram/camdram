@@ -1,0 +1,137 @@
+{% block map_location_widget %}
+    {% spaceless %}
+        <div id="{{ id }}_container" class="form_map_container">
+            {{ form_widget(form) }}
+            <small>Click to create a marker, drag/drop to move it</small>
+            <div class="form_map">
+                {{ ivory_google_map(location_map) }}
+                {{ ivory_google_api([location_map]) }}
+                <script>$(function(){ $('#{{ id }}_container').formMap("{{ location_map.getVariable() }}")});</script>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block entity_collection_widget %}
+    <div  id="{{ id }}" class="entity_collection_container">
+        <div class="row">
+            <div class="large-6 columns large-offset-3">
+                <ul class="entity_collection_list">
+                {% for child in data %}
+                    {% if child.name is defined %}
+                    <li>
+                        <span class="collection_name">{{ child.name }}</span> <a href="#" class="entity_collection_remove">Remove</a>
+                        <input name="{{ full_name }}[]" type="hidden" class="collection_id" value="{{ child.id }}"/>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                    <li class="template">
+                        <span class="collection_name"></span> <a href="#" class="entity_collection_remove">Remove</a>
+                        <input name="{{ full_name }}[]" class="collection_id" type="hidden" value="" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-3 columns">
+                <label for="{{ full_name }}_new_entry" class="right inline">{{ new_label }}</label>
+            </div>
+            <div class="large-9 columns">
+                <input type="text" id="{{ full_name }}_new_entry" class="autocomplete_input"/>
+            </div>
+        </div>
+    </div>
+    <script>$(function(){ $('#{{ id }}').entityCollection({ route: '{{ route }}' }); })</script>
+{% endblock %}
+
+{% block entity_search_widget %}
+    {% spaceless %}
+        {% set text = attribute(form.children, text_id) %}
+        {% set hidden = attribute(form.children, hidden_id) %}
+        {{ form_widget(text) }}
+        {{ form_widget(hidden) }}
+
+        <script>
+            $(function(){
+                $('#{{ text.vars.id }}').entitySearch({
+                    route: '{{ route }}',
+                    prefetch: {% if prefetch %}true{% else %}false{% endif %}
+                });
+            })
+        </script>
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block form_option_box %}
+    {% if not compound %} {% set label_attr = {for: id} %}{% endif %}
+    {% if not label %} {% set label = name|humanize %}{% endif %}
+    <label{% for k,v in label_attr %} {{ k }}={{ v }}{% endfor %}>
+        {{ form_widget(form) }}
+        {{ label | trans({}, translation_domain) }}
+        {{ form_errors(form) }}
+    </label>
+{% endblock %}
+
+{% block choice_widget_expanded %}
+<div {{ block('widget_container_attributes') }}>
+{% for child in form %}
+    <label for="{{ child.vars.id }}">
+        {{ form_widget(child) }}
+        {{ child.vars.label }}
+    </label>
+{% endfor %}
+</div>
+{% endblock %}
+
+{% block form_row %}
+    <div class="row">
+    {% if 'checkbox' in form.vars.block_prefixes %}
+        <div class="large-9 columns large-offset-3">
+            {{ block('form_option_box') }}
+        </div>
+    {% else %}
+        <div class="large-3 columns">
+        {{ form_label(form) }}
+        </div>
+        <div class="large-9 columns">
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block form_errors %}
+    {% if errors %}
+            {% for error in errors %}
+            <small class="error">{% if error.getMessagePluralization() is null %}
+                    {{ error.getMessageTemplate() | trans(error.getMessageParameters(), 'validators') }},
+                {% else %}
+                    {{ error.getMessageTemplate() | transchoice(error.getMessagePluralization(), error.getMessageParameters(), 'validators') }},
+                {% endif %}
+                </small>
+            {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block form_widget_compound %}
+    {% if not form.parent and errors is defined %}
+        <div class="row">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <div {{ block('widget_container_attributes') }}>
+    {{ block('form_rows') }}
+    {{ form_rest(form) }}
+    </div>
+{% endblock %}
+
+{% block form_rows %}
+    {% for child in form %}
+        <div class="{% if child_class is defined %}{{ child_class }}{% endif %}">
+         {{ form_row(child) }}
+        </div>
+    {% endfor %}
+{% endblock %}

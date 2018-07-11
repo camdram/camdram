@@ -49,7 +49,7 @@ class AdminController extends FOSRestController
                     'pending_admins' => $pending_admins,
                     'form' => $form->createView())
             )
-            ->setTemplate('ActsCamdramSecurityBundle:PendingAccess:edit.html.twig');
+            ->setTemplate('pending_access/edit.html.twig');
     }
 
     /**
@@ -163,7 +163,7 @@ class AdminController extends FOSRestController
                 new AccessControlEntryEvent($ace)
             );
 
-            return $this->render('ActsCamdramBundle:Show:access_requested.html.twig');
+            return $this->render('show/access_requested.html.twig');
         }
     }
 

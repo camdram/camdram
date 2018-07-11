@@ -1,0 +1,42 @@
+{% spaceless %}
+{% set roles = show.getRolesByType(type) %}
+{% set editable = is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
+{% set current_role = null %}
+<div id="{{ id }}">
+{%- for role in roles -%}
+    {%- if editable or  (role.role != current_role) or (role.role == null) %}
+        {{ not loop.first ? '</div></div>' }}
+        <div class="row" {% if editable %}id="role_{{ role.id }}"{% endif %}>
+        <div class="small-11 columns">
+        {# Pretify name-less roles held by people. #}
+        {% if role.role %}
+            {%- if type == 'cast' -%}
+                <span itemprop="character" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">{{ role.role }}</span></span> -
+            {%- else -%}
+                {{ role.role }} -
+            {%- endif -%}
+            {% set current_role = role.role %}
+        {% endif %}
+    {%- else -%}
+        ,
+    {% endif %}
+    <span itemprop="
+    {%- if type == 'cast' or type == 'band' -%}
+        performer
+    {%- else -%}
+        contributor
+    {%- endif -%}
+    " itemscope="" itemtype="http://schema.org/Person">
+        <a itemprop="url" href="{{ path('get_person', {identifier: role.person.slug}) }}"><span itemprop="name">{{ role.person.name }}</span></a>
+    </span>
+    {%- if editable -%}
+    </div><div class-"small-1 columns"><i class="fa fa-arrows-v"></i>&nbsp;<a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a>
+    {%- endif -%}
+    {{ loop.last ? '</div></div>' }}
+{%- endfor -%}
+</div>
+{% if editable %}
+    <br/>
+    {{ render(path('new_show_role', {identifier: show.slug, type: type})) }}
+{% endif %}
+{% endspaceless %}

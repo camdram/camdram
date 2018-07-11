@@ -1,0 +1,18 @@
+{% autoescape false %}
+A new show has been added to camdram.net {% if owners | length > 0 %}by {% endif %}{% for owner in owners %}{{ owner.name }} ({{ owner.email }}){% if not loop.last %}, {% endif %}{% endfor %} and must be manually authorized before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+
+* Dates
+* Venue
+* Start Time
+
+before authorising.
+
+A summary of the show is given below. You can edit, authorise or delete the show as
+appropriate by visiting:  {{ url('get_show', {identifier: show.slug}) }}
+
+{% include 'email/signature.txt.twig' %}
+
+***** Show details follow... *****
+
+{{ include('email/show_details.txt.twig') }}
+{% endautoescape %}

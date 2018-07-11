@@ -51,9 +51,9 @@ abstract class AbstractRestController extends FOSRestController
      *
      * @return array the parameters to pass to the router
      */
-    protected function getRouteParams($entity)
+    protected function getRouteParams($entity, Request $request)
     {
-        return array('identifier' => $entity->getSlug(), '_format' => $this->getRequest()->getRequestFormat());
+        return array('identifier' => $entity->getSlug(), '_format' => $request->getRequestFormat());
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class AbstractRestController extends FOSRestController
      *
      * @return Symfony\Component\Form\AbstractType
      */
-    abstract protected function getForm($entity = null);
+    abstract protected function getForm($entity = null, $method = 'POST');
 
     /**
      * Action for URL e.g. /shows/new
@@ -105,7 +105,7 @@ abstract class AbstractRestController extends FOSRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':new.html.twig');
+            ->setTemplate($this->type.'/new.html.twig');
     }
 
     /**
@@ -117,7 +117,7 @@ abstract class AbstractRestController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', new ClassIdentity($this->class));
 
         $form = $this->getForm();
-        $form->bind($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             try {
                 $em = $this->getDoctrine()->getManager();
@@ -127,11 +127,11 @@ abstract class AbstractRestController extends FOSRestController
                 $this->get('logger')->warning('Failed to add new entity to search index', ['type' => $this->type, 'id' => $entity->getId()]);
             }
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
-            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
+            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':new.html.twig');
+                ->setTemplate($this->type.'/new.html.twig');
         }
     }
 
@@ -144,11 +144,11 @@ abstract class AbstractRestController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->getForm($entity, 'PUT');
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
+            ->setTemplate($this->type.'/edit.html.twig');
     }
 
     /**
@@ -160,9 +160,9 @@ abstract class AbstractRestController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->getForm($entity, 'PUT');
 
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             try {
@@ -170,11 +170,11 @@ abstract class AbstractRestController extends FOSRestController
             } catch (\Elastica\Exception\ExceptionInterface $ex) {
                 $this->get('logger')->warning('Failed to update search index', ['type' => $this->type, 'id' => $entity->getId()]);
             }
-            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
+            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':edit.html.twig');
+                ->setTemplate($this->type.'/edit.html.twig');
         }
     }
 
@@ -189,11 +189,11 @@ abstract class AbstractRestController extends FOSRestController
 
         $form = $this->getForm($entity);
 
-        $form->submit($request, false);
+        $form->submit($request->request->get($form->getName()), true);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData()));
+            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form');
@@ -240,7 +240,7 @@ abstract class AbstractRestController extends FOSRestController
 
         $view = $this->view($data, 200)
             ->setTemplateVar('result')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+            ->setTemplate($this->type.'/index.html.twig')
         ;
 
         return $view;
@@ -255,7 +255,7 @@ abstract class AbstractRestController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
         $view = $this->view($entity, 200)
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':show.html.twig')
+            ->setTemplate($this->type.'/show.html.twig')
             ->setTemplateVar($this->type)
         ;
 

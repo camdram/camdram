@@ -23,7 +23,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Gedmo\Loggable
  * @Api\Feed(name="Camdram - Shows", titleField="name",
  *   description="Shows produced by students in Cambridge",
- *   template="ActsCamdramBundle:Show:rss.html.twig")
+ *   template="show/rss.html.twig")
  * @Api\Link(route="get_show", params={"identifier": "object.getSlug()"})
  */
 class Show implements OwnableInterface
@@ -811,6 +811,9 @@ class Show implements OwnableInterface
     {
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->techie_adverts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->auditions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->entry_expiry = new \DateTime();
         $this->timestamp = new \DateTime();
     }

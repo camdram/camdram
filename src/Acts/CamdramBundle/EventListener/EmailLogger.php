@@ -3,7 +3,7 @@ namespace Acts\CamdramBundle\EventListener;
 
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Swift_Events_SendEvent;
 use Swift_Events_SendListener;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

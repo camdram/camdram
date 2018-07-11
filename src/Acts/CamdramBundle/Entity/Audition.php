@@ -14,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\AuditionRepository")
  * @Api\Feed(name="Camdram.net - Auditions", titleField="feed_title",
  *     description="Auditions advertised for shows in Cambridge",
- *     template="ActsCamdramBundle:Audition:rss.html.twig")
+ *     template="audition/rss.html.twig")
  * @Gedmo\Loggable
  */
 class Audition

@@ -17,7 +17,7 @@ class ContactUsController extends Controller
     {
         $form = $this->createForm(ContactUsType::class);
 
-        return $this->render('ActsCamdramBundle:ContactUs:index.html.twig', array(
+        return $this->render('contact_us/index.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -32,7 +32,7 @@ class ContactUsController extends Controller
 
             return $this->redirect($this->generateUrl('acts_camdram_contact_us_sent'));
         } else {
-            return $this->render('ActsCamdramBundle:ContactUs:index.html.twig', array(
+            return $this->render('contact_us/index.html.twig', array(
                 'form' => $form->createView()
             ));
         }
@@ -40,6 +40,6 @@ class ContactUsController extends Controller
 
     public function sentAction()
     {
-        return $this->render('ActsCamdramBundle:ContactUs:sent.html.twig');
+        return $this->render('contact_us/sent.html.twig');
     }
 }

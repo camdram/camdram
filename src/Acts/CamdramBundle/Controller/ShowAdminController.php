@@ -24,7 +24,7 @@ class ShowAdminController extends Controller
         $ids = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), '\\Acts\\CamdramBundle\\Entity\\Show');
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
 
-        return $this->render('ActsCamdramBundle:ShowAdmin:index.html.twig', array('shows' => $shows));
+        return $this->render('show_admin/index.html.twig', array('shows' => $shows));
     }
 
     public function cgetUnauthorisedAction(Request $request)
@@ -32,6 +32,6 @@ class ShowAdminController extends Controller
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_USER');
         $shows = $this->get('acts.camdram.moderation_manager')->getEntitiesToModerate();
 
-        return $this->render('ActsCamdramBundle:ShowAdmin:unauthorised.html.twig', array('shows' => $shows));
+        return $this->render('show_admin/unauthorised.html.twig', array('shows' => $shows));
     }
 }

@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 class ContactUsType extends AbstractType
@@ -37,7 +38,7 @@ class ContactUsType extends AbstractType
             ->add('email', EmailType::class, ['constraints' => [new NotBlank(), new Email(['checkMX' => true])]])
             ->add('subject', TextType::class)
             ->add('message', TextareaType::class)
-            ->add('captcha', 'ewz_recaptcha', [
+            ->add('captcha', EWZRecaptchaType::class, [
                 'attr' => [
                     'options' => [
                         'theme' => 'clean'

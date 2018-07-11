@@ -3,7 +3,7 @@ fos_elastica:
         default: { host: localhost, port: 9200 }
     indexes:
         autocomplete:
-            index_name: %search_namespace%_autocomplete
+            index_name: '%search_namespace%_autocomplete'
             settings:
                 index:
                     analysis:
@@ -23,7 +23,7 @@ fos_elastica:
                                 filter: [trim, lowercase]
             types:
                 show:
-                    mappings:
+                    properties:
                         name: { type: completion, analyzer: autocomplete, search_analyzer: search }
                         slug: ~
                         start_at: { type: date }
@@ -33,10 +33,10 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Show
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                     indexable_callback: isIndexable
                 society:
-                    mappings:
+                    properties:
                         name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
                         slug: ~
                     persistence:
@@ -44,9 +44,9 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Society
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                 venue:
-                    mappings:
+                    properties:
                         name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
                         slug: ~
                     persistence:
@@ -54,9 +54,9 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Venue
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                 person:
-                    mappings:
+                    properties:
                         name: { type: completion, analyzer: autocomplete, search_analyzer: search }
                         slug: ~
                         show_count: ~
@@ -67,5 +67,5 @@ fos_elastica:
                         model: Acts\CamdramBundle\Entity\Person
                         provider: ~
                         finder: ~
-                        listener: { enabled: %search_enable_listeners% }
+                        listener: { enabled: '%search_enable_listeners%' }
                     indexable_callback: isIndexable

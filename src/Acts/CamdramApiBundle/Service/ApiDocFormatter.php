@@ -42,7 +42,7 @@ class ApiDocFormatter extends AbstractFormatter
      */
     protected function render(array $collection)
     {
-        return $this->twig->render('ActsCamdramApiBundle:Doc:resources.html.twig', array(
+        return $this->twig->render('api/doc/resources.html.twig', array(
             'resources' => $collection
         ));
     }

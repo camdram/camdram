@@ -5,7 +5,7 @@ namespace Acts\CamdramAdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Controller for viewing Camdram's log files
@@ -21,7 +21,7 @@ class LogController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('ActsCamdramAdminBundle:Log:index.html.twig');
+        return $this->render('admin/log/index.html.twig');
     }
 
     /**

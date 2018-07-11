@@ -6,9 +6,12 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
-use Ivory\GoogleMap\Events\MouseEvent;
-use Ivory\GoogleMap\Overlays\Marker;
-use Ivory\GoogleMap\Overlays\InfoWindow;
+use Ivory\GoogleMap\Event\MouseEvent;
+use Ivory\GoogleMap\Overlay\Marker;
+use Ivory\GoogleMap\Overlay\Icon;
+use Ivory\GoogleMap\Overlay\InfoWindow;
+use Ivory\GoogleMap\Map;
+use Ivory\GoogleMap\Base\Coordinate;
 
 /**
  * Class VenueController
@@ -32,9 +35,9 @@ class VenueController extends OrganisationController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
     }
 
-    protected function getForm($venue = null)
+    protected function getForm($venue = null, $method = 'POST')
     {
-        return $this->createForm(VenueType::class, $venue);
+        return $this->createForm(VenueType::class, $venue, ['method' => $method]);
     }
     
     public function getAction($identifier)
@@ -46,7 +49,7 @@ class VenueController extends OrganisationController
             ->getContactableEntityOwners($venue) > 0;
         
         $view = $this->view($venue, 200)
-            ->setTemplate('ActsCamdramBundle:Venue:show.html.twig')
+            ->setTemplate('venue/show.html.twig')
             ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
         ;
         
@@ -85,7 +88,7 @@ class VenueController extends OrganisationController
 
         $view = $this->view($venues, 200)
             ->setTemplateVar('venues')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+            ->setTemplate('venue/index.html.twig')
         ;
 
         return $view;
@@ -109,7 +112,7 @@ class VenueController extends OrganisationController
 
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')
-            ->setTemplate('ActsCamdramBundle:Venue:vacancies.html.twig')
+            ->setTemplate('venue/vacancies.html.twig')
         ;
     }
 
@@ -129,20 +132,19 @@ class VenueController extends OrganisationController
         } else {
             $venues = $repo->findAllOrderedByName();
         }
-        $map = $this->get('ivory_google_map.map');
+        $map = new Map;
 
-        $map->setPrefixJavascriptVariable('map_');
-        $map->setHtmlContainerId('map_canvas');
+        $map->setHtmlId('map_canvas');
         $map->setStylesheetOptions(array('width' => '100%', 'height' => '100%'));
 
         $one_venue = count($venues) == 1;
 
         if ($one_venue) {
             $map->setMapOption('zoom', 16);
-            $map->setCenter($venues[0]->getLatitude(), $venues[0]->getLongitude(), true);
+            $map->setCenter(new Coordinate($venues[0]->getLatitude(), $venues[0]->getLongitude()));
         } else {
             $map->setMapOption('zoom', 14);
-            $map->setCenter(52.20531, 0.12179, true);
+            $map->setCenter(new Coordinate(52.20531, 0.12179));
         }
 
         $letter = ord('A');
@@ -150,38 +152,34 @@ class VenueController extends OrganisationController
 
         foreach ($venues as $venue) {
             if ($venue->getLatitude() && $venue->getLongitude()) {
-                $content = $this->render('ActsCamdramBundle:Venue:infobox.html.twig', array(
+                $content = $this->render('venue/infobox.html.twig', array(
                     'venue' => $venue,
                     'one_venue' => $one_venue,
                 ))->getContent();
 
-                $infoWindow = new InfoWindow();
-                $infoWindow->setPrefixJavascriptVariable('info_window_');
-                $infoWindow->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
-                $infoWindow->setContent($content);
+                $infoWindow = new InfoWindow($content);
+                $infoWindow->setPosition(new Coordinate($venue->getLatitude(), $venue->getLongitude()));
                 $infoWindow->setAutoOpen(true);
                 $infoWindow->setOpenEvent(MouseEvent::CLICK);
                 $infoWindow->setAutoClose(true);
                 $infoWindow->setOption('zIndex', 10);
-                $map->addInfoWindow($infoWindow);
+                $map->getOverlayManager()->addInfoWindow($infoWindow);
 
-                $marker = new Marker();
-                $marker->setPrefixJavascriptVariable('marker_');
-                $marker->setPosition($venue->getLatitude(), $venue->getLongitude(), true);
+                $marker = new Marker(new Coordinate($venue->getLatitude(), $venue->getLongitude()));
                 if ($one_venue) {
-                    $marker->setIcon($this->getMarkerUrl(''));
+                    $marker->setIcon(new Icon($this->getMarkerUrl('')));
                 } else {
-                    $marker->setIcon($this->getMarkerUrl(chr($letter)));
+                    $marker->setIcon(new Icon($this->getMarkerUrl(chr($letter))));
                 }
                 $marker->setInfoWindow($infoWindow);
                 $marker->setOption('clickable', true);
-                $map->addMarker($marker);
+                $map->getOverlayManager()->addMarker($marker);
 
                 $info_boxes[] = array(
                     'image' => $this->getMarkerUrl(chr($letter)),
-                    'box_id' => $infoWindow->getJavascriptVariable(),
-                    'marker_id' => $marker->getJavascriptVariable(),
-                    'map_id' => $map->getJavascriptVariable(),
+                    'box_id' => $infoWindow->getVariable(),
+                    'marker_id' => $marker->getVariable(),
+                    'map_id' => $map->getVariable(),
                     'slug' => $venue->getSlug(),
                 );
 
@@ -192,7 +190,7 @@ class VenueController extends OrganisationController
             }
         }
 
-        return $this->render('ActsCamdramBundle:Venue:map.html.twig', array('map' => $map, 'info_boxes' => $info_boxes));
+        return $this->render('venue/map.html.twig', array('map' => $map, 'info_boxes' => $info_boxes));
     }
 
     /**

@@ -1,0 +1,5 @@
+{{ ivory_google_map(map) }}
+{{ ivory_google_api([map]) }}
+<script>
+    var venue_info_boxes = {{ info_boxes | json_encode() | raw}}
+</script>

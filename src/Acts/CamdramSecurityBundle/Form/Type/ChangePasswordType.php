@@ -24,7 +24,7 @@ class ChangePasswordType extends AbstractType
                'second_name' => 'confirm',
                'first_options' => array('label' => 'New password'),
                'second_options' => array('label' => 'Confirm password'),
-               'type'        => 'password',
+               'type'        => PasswordType::class,
             ]);
     }
 }

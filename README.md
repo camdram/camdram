@@ -15,7 +15,7 @@ Install the necessary packages required to run Camdram. PHP version 7.0 or great
 
 The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)) - installation methods on other distros and operating systems will vary.
 
-    $ sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json
+    $ sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json php-mbstring php-xml php-zip
 
 The steps below assume that the Composer PHP package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/
 
@@ -56,7 +56,7 @@ It is a good idea to create a "feature branch" before starting development, so t
     $ git checkout -b my-cool-feature
 
 Some useful tips:
- * The site uses the Symfony PHP framework - [read the documentation](http://symfony.com/doc/2.8/index.html).
+ * The site uses the Symfony PHP framework - [read the documentation](http://symfony.com/doc/3.4/index.html).
  * Use the GitHub issue tracker to discover and discuss issues to work on. If you think you know how to do something, write the code, commit it, and
    submit a pull request.
  * If you want to discuss how to implement a new feature or how to fix a bug, get in touch with one of the developers. It would probably be wise to get in

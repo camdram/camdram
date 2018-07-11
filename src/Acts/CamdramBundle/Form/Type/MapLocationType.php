@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Ivory\GoogleMap\Map;
+use Ivory\GoogleMap\Base\Coordinate;
 
 /**
  * Class MapLocationType
@@ -20,9 +21,10 @@ class MapLocationType extends AbstractType
 {
     private $map;
 
-    public function __construct(\Ivory\GoogleMap\Map $map, array $center)
+    public function __construct(array $mapCenter)
     {
-        $map->setCenter($center[0], $center[1], true);
+        $map = new Map;
+        $map->setCenter(new Coordinate($mapCenter[0], $mapCenter[1]));
         $map->setMapOption('zoom', 14);
         $map->setStylesheetOptions(array('width' => '100%', 'height' => '100%'));
 
@@ -39,7 +41,7 @@ class MapLocationType extends AbstractType
     {
         $view->vars['location_map'] = $this->map;
         $view->vars['child_class'] = 'six columns';
-        $this->map->setHtmlContainerId($view->vars['id'].'_map');
+        $this->map->setHtmlId($view->vars['id'].'_map');
     }
 
     public function configureOptions(OptionsResolver $resolver)

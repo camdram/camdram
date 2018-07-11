@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}User - {{ form.vars.value.name }} - Edit{% endblock %}
+
+{% block body %}
+
+{{ include("ActsCamdramAdminBundle:User:admin-panel.html.twig", {user: form.vars.value}) }}
+
+<div class="row">
+
+    <h3>Edit User</h3>
+
+    {{ form_start(form, {'action': path("put_user", {identifier: form.vars.value.id})}) }}
+    {{ form_widget(form) }}
+    
+    <div class="text-right">
+        <input type="submit" value="Save" class="button"/>
+    </div>
+    
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

@@ -30,14 +30,14 @@ class AccountController extends FOSRestController
         $context->setGroups($serializationGroups);
         
         return $this->view($this->getUser())
-            ->setTemplate('ActsCamdramSecurityBundle:Account:settings.html.twig')
+            ->setTemplate('account/settings.html.twig')
             ->setContext($context)
             ;
     }
 
     public function linkedAccountsAction()
     {
-        return $this->render('ActsCamdramSecurityBundle:Account:linked_accounts.html.twig');
+        return $this->render('account/linked_accounts.html.twig');
     }
 
     /**
@@ -69,21 +69,21 @@ class AccountController extends FOSRestController
         $form = $form = $this->createForm(ChangeEmailType::class, $this->getUser());
 
         if ($request->getMethod() == 'POST') {
-            $form->submit($request);
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $user = $form->getData();
                 $user->setIsEmailVerified(false);
                 $this->getDoctrine()->getManager()->flush();
 
-                return $this->render('ActsCamdramSecurityBundle:Account:change_email_complete.html.twig');
+                return $this->render('account/change_email_complete.html.twig');
             }
 
-            return $this->render('ActsCamdramSecurityBundle:Account:change_email.html.twig', array(
+            return $this->render('account/change_email.html.twig', array(
                 'form' => $form->createView()
             ));
         }
 
-        return $this->render('ActsCamdramSecurityBundle:Account:change_email_form.html.twig', array(
+        return $this->render('account/change_email_form.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -108,15 +108,15 @@ class AccountController extends FOSRestController
 
                 $this->getDoctrine()->getManager()->flush();
 
-                return $this->render('ActsCamdramSecurityBundle:Account:change_password_complete.html.twig');
+                return $this->render('account/change_password_complete.html.twig');
             }
 
-            return $this->render('ActsCamdramSecurityBundle:Account:change_password.html.twig', array(
+            return $this->render('account/change_password.html.twig', array(
                 'form' => $form->createView()
             ));
         }
 
-        return $this->render('ActsCamdramSecurityBundle:Account:change_password_form.html.twig', array(
+        return $this->render('account/change_password_form.html.twig', array(
             'form' => $form->createView()
         ));
     }

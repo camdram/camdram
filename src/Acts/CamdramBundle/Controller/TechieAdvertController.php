@@ -47,7 +47,7 @@ class TechieAdvertController extends FOSRestController
         }
         
         $view = $this->view($techieAdverts)
-            ->setTemplate('ActsCamdramBundle:TechieAdvert:index.'.$request->getRequestFormat().'.twig')
+            ->setTemplate('techie_advert/index.'.$request->getRequestFormat().'.twig')
             ->setTemplateVar('techieadverts')
             ->setTemplateData(['weeks' => $weeks]);
 

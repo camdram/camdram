@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Producer/Director Advert - New{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'new_application' %}
+{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: org})) }}
+
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Add show applications advertisement</h3>
+
+        <div class="panel">
+            <p>Use the form below to create an advertisement for show applications. The advert will be displayed until
+                the deadline date.</p>
+        </div>
+
+        {{ form_start(form, {'action': path("post_society_application", {identifier: org.slug} )}) }}
+        {{ include('Organisation/application-form.html.twig') }}
+        
+        <div class="row">
+            <div class="large-12 text-right">
+                <input type="submit" value="Create" class="button"/>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

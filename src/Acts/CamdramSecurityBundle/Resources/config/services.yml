@@ -2,9 +2,6 @@ parameters:
 #    acts_camdram.example.class: Acts\CamdramBundle\Example
 
 services:
-    camdram.security.encoder.legacy_md5:
-        class:  Acts\CamdramSecurityBundle\Security\Encoder\LegacyMd5Encoder
-
     camdram.security.utils:
         class: Acts\CamdramSecurityBundle\Security\SecurityUtils
         arguments: ['@service_container']
@@ -17,45 +14,23 @@ services:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
         arguments: ['@doctrine.orm.entity_manager']
 
-    camdram.security.registration.handler:
-        class: Acts\CamdramSecurityBundle\Form\RegistrationFormHandler
-        arguments: ['@doctrine.orm.entity_manager', '@security.encoder_factory', '@form.factory', '@event_dispatcher']
-
     camdram.security.registration.form:
         class: 'Symfony\Component\Form\Form'
-        factory: 'camdram.security.registration.handler:createForm'
-
-    camdram.security.type.graduation_year:
-        class: Acts\CamdramSecurityBundle\Form\Type\GraduationYearType
-        arguments: ~
-        tags:
-            - { name: form.type, alias: graduation_year }
-
-    camdram.security.type.occupation:
-        class: Acts\CamdramSecurityBundle\Form\Type\OccupationType
-        arguments: ~
-        tags:
-            - { name: form.type, alias: occupation }
+        factory: 'Acts\CamdramSecurityBundle\Form\RegistrationFormHandler:createForm'
 
     camdram.security.acl.provider:
         class: Acts\CamdramSecurityBundle\Security\Acl\AclProvider
         arguments: ['@doctrine.orm.entity_manager', '@event_dispatcher']
+        public: true
 
     camdram.security.acl.helper:
         class: Acts\CamdramSecurityBundle\Security\Acl\Helper
         arguments: ['@security.authorization_checker', '@camdram.security.acl.provider']
+        public: true
 
-    camdram.security.user.provider:
-        class: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
-        arguments: ['@doctrine.orm.entity_manager']
+    camdram.security.token_generator: '@Acts\CamdramSecurityBundle\Service\TokenGenerator'
 
-    camdram.security.token_generator:
-        class: Acts\CamdramSecurityBundle\Service\TokenGenerator
-        arguments: [%secret%]
-
-    camdram.security.email_send_listener:
-        class: Acts\CamdramSecurityBundle\EventListener\EmailSendListener
-        arguments: ['@camdram.security.email_dispatcher', '@camdram.security.token_generator']
+    Acts\CamdramSecurityBundle\EventListener\EmailSendListener:
         tags:
             - { name: kernel.event_listener, event: hwi_oauth.registration.completed, method: onRegistrationEvent }
             - { name: kernel.event_listener, event: camdram_security.ace_created, method: onAceCreatedEvent }
@@ -65,75 +40,20 @@ services:
         class: Acts\CamdramSecurityBundle\EventListener\AccessControlEntryListener
         arguments: ['@monolog.logger.camdram']
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
     camdram.security.listener.pending_access:
         class: Acts\CamdramSecurityBundle\EventListener\PendingAccessListener
         arguments: ['@monolog.logger.camdram']
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
     camdram.security.listener.user:
         class: Acts\CamdramSecurityBundle\EventListener\UserListener
-        arguments: ['@doctrine.orm.entity_manager', '@camdram.security.email_dispatcher', '@camdram.security.token_generator']
+        arguments: ['@doctrine.orm.entity_manager', '@Acts\CamdramSecurityBundle\Service\EmailDispatcher', '@camdram.security.token_generator']
         tags:
-            - { name: doctrine.entity_listener }
+            - { name: doctrine.orm.entity_listener }
 
-    camdram.security.email_dispatcher:
-        class: Acts\CamdramSecurityBundle\Service\EmailDispatcher
-        arguments: ['@doctrine.orm.entity_manager', '@swiftmailer.mailer', '@twig', %mailer_sender_address%]
-
-    camdram.security.last_login_time_listener:
-        class: Acts\CamdramSecurityBundle\EventListener\LastLoginTimeListener
-        arguments: ['@doctrine.orm.entity_manager']
+    Acts\CamdramSecurityBundle\EventListener\LastLoginTimeListener:
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onAuthenticationSuccess }
-
-    ### Authorization voters
-
-    camdram.security.voter.create:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter
-        tags:
-            - { name: security.voter }
-
-    camdram.security.voter.admin:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\AdminVoter
-        tags:
-            - { name: security.voter }
-
-    camdram.security.voter.editor:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter
-        tags:
-            - { name: security.voter }
-
-    camdram.security.voter.owner:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\OwnerVoter
-        arguments: ['@camdram.security.acl.provider']
-        tags:
-            - { name: security.voter }
-
-    camdram.security.voter.show:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter
-        arguments: ['@camdram.security.acl.provider']
-        tags:
-            - { name: security.voter }
-
-    camdram.security.voter.profile:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter
-        tags:
-            - { name: security.voter }
-
-    camdram.security.voter.view:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter
-        tags:
-            - { name: security.voter }
-
-
-    camdram.security.voter.api:
-        class: Acts\CamdramSecurityBundle\Security\Acl\Voter\ApiVoter
-        tags:
-            - { name: security.voter }
-
-    camdram.security.raven.resource_owner:
-        class: Acts\CamdramSecurityBundle\Security\RavenResourceOwner
-        arguments: ['@hwi_oauth.http_client']

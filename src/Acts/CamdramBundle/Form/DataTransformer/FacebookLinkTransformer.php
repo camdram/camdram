@@ -47,6 +47,10 @@ class FacebookLinkTransformer implements DataTransformerInterface
         } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             return "https://www.facebook.com/".$value;
         }
+        catch (\Exception $e)
+        {
+            die('sdf');
+        }
     }
 
     /**
@@ -73,9 +77,14 @@ class FacebookLinkTransformer implements DataTransformerInterface
 
         try {
             $data = $this->api->get('/'.urlencode($value));
+            
             return $data->getDecodedBody()['id'];
         } catch (\Facebook\Exceptions\FacebookResponseException $e) {
-            throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
+            if (is_numeric($value)) {
+                return $value;
+            } else {
+                throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
+            }
         } catch (\Facebook\Exceptions\FacebookSDKException $e) {
             if (is_numeric($value)) {
                 return $value;

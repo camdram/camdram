@@ -1,0 +1,57 @@
+<html>
+<body>
+
+<!-- Gmail one click action code -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "EmailMessage",
+  "action": {
+    "@type": "ViewAction",
+    "url": "{{ url('get_show', {identifier: show.slug}) }}",
+    "name": "Authorise on camdram.net"
+  },
+  "description": "Authorise show on camdram.net",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Camdram",
+	"url": "http://www.camdram.net/"
+  }
+
+}
+</script>
+
+<!-- Email text -->
+<p>A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {% if owners | length > 0 %}by {% endif %}{% for owner in owners %}{{ owner.name }} (<a href="mailto:{{ owner.email }}">{{ owner.email }}</a>){% if not loop.last %}, {% endif %}{% endfor %} and must be manually authorised before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+<ul>
+	<li>Dates</li>
+	<li>Venue</li>
+	<li>Start Time</li>
+</ul>
+
+before authorizing.</p>
+
+<p>A summary of the show is given below. You can edit, authorise or delete the show as appropriate by visiting:  <a href = '{{ url('get_show', {identifier: show.slug}) }}'>{{ url('get_show', {identifier: show.slug}) }}</a></p>
+
+{% include 'email/signature.html.twig' %}
+
+<h3>Show details follow</h3	>
+
+<p>
+{% if show.society %}{{ show.society.name }} presents <br>{% endif %} 
+<b>{{ show.name }}</b><br>
+{% if show.author %} by {{ show.author }}<br> {% endif %}
+{% for p in show.performances %}
+    {{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}{% if date(p.startdate) != date(p.enddate) %} - {{ p.enddate|date('D jS F Y') }},{% endif %}
+    {%- if p.venue %} @ {{ p.venue.name|e }}
+    {%- elseif p.venuename is not empty %} @ {{ p.venuename }}
+    {%- else %} @ Venue to be confirmed{% endif %}
+    <br>
+{% endfor %}
+</p>
+
+<p>
+	{{ show.description }}
+</p>
+</body>
+</html>

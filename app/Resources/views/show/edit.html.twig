@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Show - {{ form.vars.value.name }} - Edit{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'edit_show' %}
+{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: form.vars.value})) }}
+
+<div class="row">
+    <h3>Edit Show</h3>
+    {{ form_start(form, {'action': path("put_show", {identifier: form.vars.value.slug} )}) }}
+
+    {% include 'show/form.html.twig' %}
+
+    <div class="text-right">
+        <input type="submit" value="Save" class="button"/>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

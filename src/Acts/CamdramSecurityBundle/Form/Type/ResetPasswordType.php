@@ -5,6 +5,7 @@ namespace Acts\CamdramSecurityBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class ResetPasswordType extends AbstractType
 {
@@ -16,7 +17,7 @@ class ResetPasswordType extends AbstractType
                'second_name' => 'confirm',
                'first_options' => array('label' => 'New password'),
                'second_options' => array('label' => 'Confirm password'),
-               'type'        => 'password',
+               'type'        => PasswordType::class,
             ))
         ;
     }

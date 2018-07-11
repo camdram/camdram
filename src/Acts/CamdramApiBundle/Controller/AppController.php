@@ -8,31 +8,25 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use FOS\OAuthServerBundle\Util\Random;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class AppController
  *
  * @RouteResource("App")
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class AppController extends FOSRestController
 {
-    private function checkAuthenticated()
-    {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            throw new AuthenticationException();
-        }
-    }
 
     public function cgetAction()
     {
-        $this->checkAuthenticated();
-
         $repo = $this->getDoctrine()->getRepository('ActsCamdramApiBundle:ExternalApp');
         $user_apps = $repo->findByUser($this->getUser());
 
-        return $this->render('ActsCamdramApiBundle:App:index.html.twig', array(
+        return $this->render('api/app/index.html.twig', array(
             'user_apps' => $user_apps
         ));
     }
@@ -51,33 +45,27 @@ class AppController extends FOSRestController
     public function getAction($app_id)
     {
         $app = $this->getApp($app_id);
-        $form = $this->getForm($app);
+        $form = $this->createForm(ExternalAppType::class, $app, ['method' => 'put']);
 
-        return $this->render('ActsCamdramApiBundle:App:view.html.twig', array(
+        return $this->render('api/app/view.html.twig', array(
                 'ex_app' => $app,
                 'form' => $form->createView(),
             ));
     }
 
-    private function getForm($app = null)
-    {
-        return $this->createForm(ExternalAppType::class, $app);
-    }
-
     public function newAction()
     {
-        $this->checkAuthenticated();
+        $form = $this->createForm(ExternalAppType::class);
 
-        return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
-            'form' => $this->getForm()->createView()
+        return $this->render('api/app/new.html.twig', array(
+            'form' => $form->createView()
         ));
     }
 
     public function postAction(Request $request)
     {
-        $this->checkAuthenticated();
-        $form = $this->getForm(new ExternalApp());
-        $form->submit($request);
+        $form = $form = $this->createForm(ExternalAppType::class);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $app = $form->getData();
             $app->setUser($this->getUser());
@@ -86,32 +74,33 @@ class AppController extends FOSRestController
 
             return $this->redirect($this->generateUrl('get_apps'));
         } else {
-            return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
-                'form' => $this->getForm()->createView()
+            return $this->render('api/app/new.html.twig', array(
+                'form' => $form->createView()
             ));
         }
     }
 
     public function putAction(Request $request, $app_id)
     {
-        $this->checkAuthenticated();
         $app = $this->getApp($app_id);
-        $form = $this->getForm($app);
-        $form->submit($request);
+        $form = $this->createForm(ExternalAppType::class, $app, ['method' => 'put']);
+
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
-        } else {
-            return $this->render('ActsCamdramApiBundle:App:new.html.twig', array(
-                    'form' => $this->getForm()->createView()
-                ));
+        } 
+        else {
+            return $this->render('api/app/view.html.twig', array(
+                'ex_app' => $app,
+                'form' => $form->createView()
+            ));
         }
     }
 
     public function removeAction($app_id)
     {
-        $this->checkAuthenticated();
         $app = $this->getApp($app_id);
         $this->getDoctrine()->getManager()->remove($app);
         $this->getDoctrine()->getManager()->flush();
@@ -124,7 +113,6 @@ class AppController extends FOSRestController
      */
     public function regenerateSecretAction($app_id)
     {
-        $this->checkAuthenticated();
         $app = $this->getApp($app_id);
         $app->setSecret(Random::generateToken());
         $this->getDoctrine()->getManager()->flush();

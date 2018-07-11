@@ -40,7 +40,7 @@ class SigninsheetController extends Controller
         }
 
         $response = $this->render(
-            'ActsCamdramBundle:Show:signinsheet.'.$_format.'.twig',
+            'show/signinsheet.'.$_format.'.twig',
             array('show' => $show, 'events' => $events, 'date_format' => $date_format)
             );
         if ($_format == 'csv') {

@@ -25,7 +25,7 @@ class ApplicationController extends FOSRestController
             ->findLatest(-1, new \DateTime()));
         
         $view = $this->view($applications, 200)
-                  ->setTemplate('ActsCamdramBundle:Application:index.'.$request->getRequestFormat().'.twig')
+                  ->setTemplate('application/index.'.$request->getRequestFormat().'.twig')
                    ->setTemplateVar('applications')
                ;
         return $view;
@@ -66,7 +66,7 @@ class ApplicationController extends FOSRestController
         $applications = $repo->findScheduledOrderedByDeadline($startDate, $endDate);
 
         $view = $this->view(array('startDate' => $startDate, 'endDate' => $endDate, 'applications' => $applications), 200)
-            ->setTemplate('ActsCamdramBundle:Application:diary.html.twig')
+            ->setTemplate('application/diary.html.twig')
             ->setTemplateVar('applications')
         ;
 

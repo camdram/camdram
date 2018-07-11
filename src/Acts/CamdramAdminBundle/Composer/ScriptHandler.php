@@ -58,7 +58,7 @@ The arguments can be ommitted if Elasticsearch is installed and configured.
 <options=bold;fg=yellow>Useful resources</>
  * https://gitter.im/camdram/development - Chat with a developer
  * https://github.com/camdram/camdram/wiki - Information about the codebase
- * https://symfony.com/doc/2.8/ - Find out more about the Symfony web framework
+ * https://symfony.com/doc/3.4/ - Find out more about the Symfony web framework
 
 Break a leg!
 

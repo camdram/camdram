@@ -5,7 +5,7 @@ use HWI\Bundle\OAuthBundle\Form\RegistrationFormHandlerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Acts\CamdramSecurityBundle\Form\Type\ExternalRegistrationType;
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -26,7 +26,7 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
     
     public function __construct(
     
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         EncoderFactoryInterface $encoderFactory,
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher
@@ -39,13 +39,13 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
     
     public function createForm()
     {
-        return $this->formFactory->create(new ExternalRegistrationType(), new User());
+        return $this->formFactory->create(ExternalRegistrationType::class, new User());
     }
     
     public function process(Request $request, Form $form, UserResponseInterface $userInformation)
     {
         if ($request->getMethod() == 'POST') {
-            $form->submit($request);
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 /** @var \Acts\CamdramSecurityBundle\Entity\User $user */
                 $user = $form->getData();

@@ -42,11 +42,6 @@ class UserController extends FOSRestController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User');
     }
 
-    protected function getForm($society = null)
-    {
-        return $this->createForm(UserType::class, $society);
-    }
-
     /**
      * Action which returns a list of entities.
      *
@@ -69,7 +64,7 @@ class UserController extends FOSRestController
 
         return $this->view($data, 200)
             ->setTemplateVar('result')
-            ->setTemplate('ActsCamdramAdminBundle:User:index.html.twig')
+            ->setTemplate('admin/user/index.html.twig')
         ;
     }
 
@@ -86,7 +81,7 @@ class UserController extends FOSRestController
             'organisations' => $orgs,
             'shows' => $shows
             ), 200)
-            ->setTemplate('ActsCamdramAdminBundle:User:show.html.twig')
+            ->setTemplate('admin/user/show.html.twig')
             ->setTemplateVar('user')
         ;
 
@@ -98,11 +93,11 @@ class UserController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->createForm(UserType::class, $entity, ['method' => 'PUT']);
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
+            ->setTemplate('admin/user/edit.html.twig');
     }
 
     public function putAction(Request $request, $identifier)
@@ -110,7 +105,7 @@ class UserController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->createForm(UserType::class, $entity, ['method' => 'PUT']);
 
         $form->bind($request);
         if ($form->isValid()) {
@@ -121,7 +116,7 @@ class UserController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramAdminBundle:User:edit.html.twig');
+                ->setTemplate('admin/user/edit.html.twig');
         }
     }
 
@@ -143,7 +138,7 @@ class UserController extends FOSRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate('ActsCamdramAdminBundle:User:ace-new-form.html.twig');
+            ->setTemplate('admin/user/ace-new-form.html.twig');
     }
 
     public function postAceAction(Request $request, $identifier)
@@ -159,7 +154,7 @@ class UserController extends FOSRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('user')
-                ->setTemplate('ActsCamdramAdminBundle:User:ace-new.html.twig');
+                ->setTemplate('admin/user/ace-new.html.twig');
         }
     }
 
@@ -191,7 +186,7 @@ class UserController extends FOSRestController
     {
         $user = $this->getEntity($identifier);
 
-        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+        return $this->render('admin/user/merge.html.twig', array(
             'user' => $user,
             'form' => $this->get('acts_camdram_admin.user_merger')->createForm()->createView()
         ));
@@ -209,7 +204,7 @@ class UserController extends FOSRestController
         $merger = $this->get('acts_camdram_admin.user_merger');
 
         $form = $merger->createForm();
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
             $otherUser = $this->get('doctrine.orm.entity_manager')->getRepository('ActsCamdramSecurityBundle:User')
@@ -227,7 +222,7 @@ class UserController extends FOSRestController
             }
         }
 
-        return $this->render('ActsCamdramAdminBundle:User:merge.html.twig', array(
+        return $this->render('admin/user/merge.html.twig', array(
             'user' => $user,
             'form' => $form->createView()
         ));

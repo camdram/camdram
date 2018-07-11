@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Contact: {{ entity.name }}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Contact: {{ entity.name }}</h3>
+
+        <p>
+      		<a class="button small" href="{{ path('get_' ~ type, {identifier: entity.slug}) }}">
+            	Return to {{ entity.name }}
+            </a>
+        </p>
+
+        <div class="panel">
+        {% if type == 'show' %}
+            <p>
+                You can use this form to get in touch with the people who administrate this show
+                (in most cases, the show's producers). Use this to ask questions about ticketing, getting
+                involved and other show-specific queries.
+            </p>
+        {% elseif type == 'society' %}
+        	<p>
+                You can use this form to get in touch with the people who administrate this society on Camdram
+                (usually members of the society's committee).
+            </p>
+        {% elseif type == 'venue' %}
+        	<p>
+                You can use this form to get in touch with the people who administrate this venue on Camdram.
+            </p>
+        {% endif %}
+            <p>
+                If you are an administrator for the show and require technical support, please visit our
+                <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a> page instead, where you can get in
+                touch with one of the Camdram admins.
+            </p>
+        </div>
+
+        {{ form_start(form) }}
+            {{ include('contact_us/form.html.twig') }}
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

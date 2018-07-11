@@ -36,7 +36,7 @@ class ShowType extends AbstractType
             ->add('prices', null, array('required' => false, 'label' => 'Ticket prices', 'attr' => array(
                 'placeholder' => 'e.g. £6/5'
             )))
-            ->add('multi_venue', 'choice', array(
+            ->add('multi_venue', ChoiceType::class, array(
                 'expanded' => true,
                 'by_reference' => false,
                 'choices' => array(

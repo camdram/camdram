@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Service;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
@@ -22,12 +22,12 @@ class EmailDispatcher
     private $twig;
     private $from_address;
 
-    public function __construct(EntityManager $em, \Swift_Mailer $mailer, \Twig_Environment $twig, $from_address)
+    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, \Twig_Environment $twig, $adminEmail)
     {
         $this->em = $em;
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->from_address = $from_address;
+        $this->from_address = $adminEmail;
     }
 
     public function sendRegistrationEmail(User $user, $token)
@@ -121,7 +121,7 @@ class EmailDispatcher
             $message->setSubject('Access to show '.$show->getName().' on Camdram granted')
                 ->setBody(
                     $this->twig->render(
-                        'ActsCamdramBundle:Email:ace.txt.twig',
+                        'email/ace.txt.twig',
                         array(
                             'is_pending' => false, //$is_pending,
                             'ace' => $ace,
@@ -157,7 +157,7 @@ class EmailDispatcher
         $message->setSubject('Access to '.$ace->getType().' '.$entity->getName().' on Camdram granted')
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:ace.txt.twig',
+                    'email/ace.txt.twig',
                     array(
                         'is_pending' => true,
                         'ace' => $ace,

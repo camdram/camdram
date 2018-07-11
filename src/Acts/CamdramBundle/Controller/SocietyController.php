@@ -29,9 +29,9 @@ class SocietyController extends OrganisationController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Society');
     }
 
-    protected function getForm($society = null)
+    protected function getForm($society = null, $method = 'POST')
     {
-        return $this->createForm(SocietyType::class, $society);
+        return $this->createForm(SocietyType::class, $society, ['method' => $method]);
     }
 
     public function getAction($identifier)
@@ -43,7 +43,7 @@ class SocietyController extends OrganisationController
             ->getContactableEntityOwners($society) > 0;
         
         $view = $this->view($society, 200)
-            ->setTemplate('ActsCamdramBundle:Society:show.html.twig')
+            ->setTemplate('society/show.html.twig')
             ->setTemplateData(['society' => $society, 'can_contact' => $can_contact])
         ;
         
@@ -78,7 +78,7 @@ class SocietyController extends OrganisationController
 
         $view = $this->view($societies, 200)
             ->setTemplateVar('societies')
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':index.html.twig')
+            ->setTemplate('society/index.html.twig')
         ;
 
         return $view;
@@ -102,7 +102,7 @@ class SocietyController extends OrganisationController
 
         return $this->view($data, 200)
             ->setTemplateVar('vacancies')
-            ->setTemplate('ActsCamdramBundle:Society:vacancies.html.twig')
+            ->setTemplate('society/vacancies.html.twig')
             ;
     }
 

@@ -1,0 +1,21 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Contact: {{ entity.name }}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Contact: {{ entity.name }}</h3>
+
+        <p>Your message has been sent to the {{ type }} administrators.</p>
+
+        <p>
+      		<a class="button small" href="{{ path('get_' ~ type, {identifier: entity.slug}) }}">
+            	Return to {{ entity.name }}
+            </a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

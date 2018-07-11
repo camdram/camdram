@@ -11,6 +11,7 @@ use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
+use Acts\DiaryBundle\Diary\Diary;
 
 /**
  * Class OrganisationController
@@ -30,7 +31,7 @@ abstract class OrganisationController extends AbstractRestController
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($org);
 
         return $this->render(
-            'ActsCamdramBundle:'.$this->getController().':admin-panel.html.twig',
+            $this->type.'/admin-panel.html.twig',
             array('org' => $org,
                 'admins' => $admins,
                 'pending_admins' => $pending_admins)
@@ -44,7 +45,7 @@ abstract class OrganisationController extends AbstractRestController
 
         return $this->view($news_repo->getRecentByOrganisation($org, 30), 200)
             ->setTemplateVar('news')
-            ->setTemplate('ActsCamdramBundle:Organisation:news.html.twig')
+            ->setTemplate('organisation/news.html.twig')
             ;
     }
 
@@ -88,7 +89,7 @@ abstract class OrganisationController extends AbstractRestController
      */
     public function getEventsAction(Request $request, $identifier)
     {
-        $diary = $this->get('acts.diary.factory')->createDiary();
+        $diary = new Diary;
 
         if ($request->query->has('from')) {
             $from = new \DateTime($request->query->get('from'));
@@ -109,19 +110,19 @@ abstract class OrganisationController extends AbstractRestController
 
         $view = $this->view($diary, 200)
             ->setTemplateVar('diary')
-            ->setTemplate('ActsCamdramBundle:Organisation:shows.html.twig')
+            ->setTemplate('organisation/shows.html.twig')
         ;
 
         return $view;
     }
 
-    private function getApplicationForm(Organisation $org, $obj = null)
+    private function getApplicationForm(Organisation $org, $obj = null, $method = 'POST')
     {
         if (!$obj) {
             $obj = new Application();
             $obj->setSociety($org);
         }
-        $form = $this->createForm(OrganisationApplicationType::class, $obj);
+        $form = $this->createForm(OrganisationApplicationType::class, $obj, ['method' => $method]);
 
         return $form;
     }
@@ -138,7 +139,7 @@ abstract class OrganisationController extends AbstractRestController
 
         return $this->view($form, 200)
             ->setData(array('org' => $org, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-new.html.twig');
+            ->setTemplate($this->type.'/application-new.html.twig');
     }
 
     /**
@@ -150,7 +151,7 @@ abstract class OrganisationController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
         $form = $this->getApplicationForm($org);
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
@@ -160,7 +161,7 @@ abstract class OrganisationController extends AbstractRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-new.html.twig');
+                ->setTemplate($this->type.'/application-new.html.twig');
         }
     }
 
@@ -173,11 +174,11 @@ abstract class OrganisationController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
         $application = $org->getApplications()->first();
-        $form = $this->getApplicationForm($org, $application);
+        $form = $this->getApplicationForm($org, $application, 'PUT');
 
         return $this->view($form, 200)
             ->setData(array('org' => $org, 'form' => $form->createView()))
-            ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-edit.html.twig');
+            ->setTemplate($this->type.'/application-edit.html.twig');
     }
 
     /**
@@ -189,8 +190,8 @@ abstract class OrganisationController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
         $application = $org->getApplications()->first();
-        $form = $this->getApplicationForm($org, $application);
-        $form->submit($request);
+        $form = $this->getApplicationForm($org, $application, 'PUT');
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
@@ -200,7 +201,7 @@ abstract class OrganisationController extends AbstractRestController
         } else {
             return $this->view($form, 400)
                 ->setTemplateVar('form')
-                ->setTemplate('ActsCamdramBundle:'.$this->getController().':application-edit.html.twig');
+                ->setTemplate($this->type.'/application-edit.html.twig');
         }
     }
 
@@ -252,7 +253,7 @@ abstract class OrganisationController extends AbstractRestController
                 'pending_admins' => $pending_admins,
                 'form' => $form->createView())
             )
-            ->setTemplate('ActsCamdramSecurityBundle:PendingAccess:edit.html.twig');
+            ->setTemplate('pending_access/edit.html.twig');
     }
 
     /**

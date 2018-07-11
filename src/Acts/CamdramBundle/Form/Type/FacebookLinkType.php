@@ -38,7 +38,8 @@ class FacebookLinkType extends AbstractType
             'class' => 'medium',
             'service' => 'facebook',
             'label' => 'Facebook event/page',
-            'attr' => array('placeholder' => 'URL, username or ID')
+            'attr' => array('placeholder' => 'URL, username or ID'),
+            'required' => false,
         ));
     }
 

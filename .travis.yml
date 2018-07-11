@@ -6,11 +6,13 @@ matrix:
   fast_finish: true
 cache:
   directories:
-  - $HOME/.composer
+  - $HOME/.composer/cache/files
 services:
   - elasticsearch
+  - mysql
 before_script:
-- cp app/config/parameters.test.yml app/config/parameters.yml
+- cp app/config/parameters.travis.yml app/config/parameters.yml
+- phpenv config-rm xdebug.ini
 - composer selfupdate
 - composer install --no-interaction
 script:
