@@ -5,6 +5,7 @@ namespace Acts\CamdramSecurityBundle\Security\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Exception\IdentityNotFoundException;
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
@@ -19,11 +20,11 @@ class CamdramUserProvider implements
     AccountConnectorInterface
 {
     /**
-     * @var \Doctrine\ORM\EntityManager;
+     * @var EntityManagerInterface;
      */
     protected $em;
 
-    public function __construct($em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

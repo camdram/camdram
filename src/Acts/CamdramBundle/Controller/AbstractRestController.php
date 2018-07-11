@@ -105,7 +105,7 @@ abstract class AbstractRestController extends FOSRestController
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
-            ->setTemplate($this->type.'/:new.html.twig');
+            ->setTemplate($this->type.'/new.html.twig');
     }
 
     /**

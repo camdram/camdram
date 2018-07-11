@@ -11,6 +11,7 @@ use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
+use Acts\DiaryBundle\Diary\Diary;
 
 /**
  * Class OrganisationController
@@ -88,7 +89,7 @@ abstract class OrganisationController extends AbstractRestController
      */
     public function getEventsAction(Request $request, $identifier)
     {
-        $diary = $this->get('acts.diary.factory')->createDiary();
+        $diary = new Diary;
 
         if ($request->query->has('from')) {
             $from = new \DateTime($request->query->get('from'));

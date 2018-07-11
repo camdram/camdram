@@ -4,9 +4,9 @@
             {{ form_widget(form) }}
             <small>Click to create a marker, drag/drop to move it</small>
             <div class="form_map">
-                {{ ivory_google_map_container(location_map) }}
-                {{ ivory_google_map_js(location_map) }}
-                <script>$(function(){ $('#{{ id }}_container').formMap({{ location_map.getJavascriptVariable() }})});</script>
+                {{ ivory_google_map(location_map) }}
+                {{ ivory_google_api([location_map]) }}
+                <script>$(function(){ $('#{{ id }}_container').formMap({{ location_map.getVariable() }})});</script>
             </div>
         </div>
     {% endspaceless %}

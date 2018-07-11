@@ -117,7 +117,7 @@ class DiaryController extends FOSRestController
         $start_date = $week_manager->previousSunday(new \DateTime($date));
         $end_date = clone $start_date;
         $end_date->modify('+1 week');
-        $diary = $this->get('acts.diary.factory')->createDiary();
+        $diary = new Diary;
         $diary->setDateRange($start_date, $end_date);
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
@@ -145,7 +145,7 @@ class DiaryController extends FOSRestController
             $end->modify('+8 weeks');
         }
 
-        $diary = $this->get('acts.diary.factory')->createDiary();
+        $diary = new Diary;
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
         $performances = $repo->findInDateRange($start, $end);

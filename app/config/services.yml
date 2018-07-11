@@ -9,8 +9,42 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
+        bind:
+            # pass this value to any $supportEmail argument for any service
+            # that's defined in this file (including controller arguments)
+            $adminEmail: "%mailer_sender_address%"
+            $appSecret: "%secret%"
+            $mapCenter: "%map_center%"
+
     Acts\CamdramBundle\:
         resource: '../../src/Acts/CamdramBundle/*'
     
     Acts\CamdramSecurityBundle\:
         resource: '../../src/Acts/CamdramSecurityBundle/*'
+
+    Acts\CamdramAdminBundle\:
+        resource: '../../src/Acts/CamdramAdminBundle/*'
+
+    Acts\CamdramApiBundle\:
+        resource: '../../src/Acts/CamdramApiBundle/*'
+
+    Acts\DiaryBundle\:
+        resource: '../../src/Acts/DiaryBundle/*'
+
+    Facebook\Facebook:
+        lazy: true
+        arguments:
+          - app_id: "%facebook_id%"
+            app_secret: "%facebook_secret%"
+            default_access_token: "%facebook_id%|%facebook_secret%"
+            
+    Abraham\TwitterOAuth\TwitterOAuth:
+        lazy: true
+        arguments:
+          - "%twitter_key%"
+          - "%twitter_secret%"
+          - "%twitter_token%"
+          - "%twitter_token_secret%"
+          
+    Github\Client:
+        lazy: true

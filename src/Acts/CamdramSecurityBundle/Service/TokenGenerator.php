@@ -8,9 +8,9 @@ class TokenGenerator
 {
     private $secret;
 
-    public function __construct($secret)
+    public function __construct($appSecret)
     {
-        $this->secret = $secret;
+        $this->secret = $appSecret;
     }
 
     public function generateEmailConfirmationToken(User $user)

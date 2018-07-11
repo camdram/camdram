@@ -1,77 +1,25 @@
-parameters:
-#    acts_camdram.example.class: Acts\CamdramBundle\Example
-
 services:
-
-    acts.camdram.service.text:
-        class: Acts\CamdramBundle\Service\TextService
 
     acts.camdram.diary_helper:
         class: Acts\CamdramBundle\Service\DiaryHelper
         arguments: ['@router']
         public: true
 
-    acts.camdram.type.facebook_link:
-        class: Acts\CamdramBundle\Form\Type\FacebookLinkType
-        arguments: ['@facebook.api']
-        tags:
-            - { name: form.type }
-
-    acts.camdram.type.twitter_link:
-        class: Acts\CamdramBundle\Form\Type\TwitterLinkType
-        arguments: ['@twitter.api']
-        tags:
-            - { name: form.type }
-
-    acts.camdram.type.show:
-        class: Acts\CamdramBundle\Form\Type\ShowType
-        arguments: ['@security.authorization_checker']
-        tags:
-            - { name: form.type }
-
-    acts.camdram.type.contact_us:
-        class: Acts\CamdramBundle\Form\Type\ContactUsType
-        arguments: ['@security.token_storage']
-        tags:
-            - { name: form.type }
-
-    acts.camdram.type.map_location:
-        class: Acts\CamdramBundle\Form\Type\MapLocationType
-        arguments: [[52.20531,0.12179]]
-        tags:
-            - { name: form.type }
-
-    acts.camdram.type.entity_search:
-        class: Acts\CamdramBundle\Form\Type\EntitySearchType
-        arguments: ['@doctrine.orm.entity_manager']
-        tags:
-            - { name: form.type }
-
-    acts.camdram.type.grant_type:
-        class: Acts\CamdramBundle\Form\Type\GrantType
-        tags:
-            - { name: form.type }
-
     acts.camdram.type.form_extension:
         class: Acts\CamdramBundle\Form\CamdramFormTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
-    acts.camdram.paginator_response_listener:
-        class: Acts\CamdramBundle\Rest\EventListener\ViewPaginatorListener
+    Acts\CamdramBundle\Rest\EventListener\ViewPaginatorListener:
         arguments: ['@router', '@acts.diary.renderer.html']
         tags:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 105 }
 
-    acts.camdram.email_dispatcher:
-        class: Acts\CamdramBundle\Service\EmailDispatcher
-        arguments: ['@swiftmailer.mailer', '@twig', '%mailer_sender_address%']
-
-    acts.camdram.moderation_manager:
+    acts.camdram.moderation_manager: 
         class: Acts\CamdramBundle\Service\ModerationManager
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@acts.camdram.email_dispatcher'
+            - '@Acts\CamdramBundle\Service\EmailDispatcher'
             - '@camdram.security.acl.provider'
             - '@security.authorization_checker'
             - '@security.token_storage'
@@ -104,9 +52,7 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         public: true
 
-    acts.camdram.contact_entity_service:
-        class: Acts\CamdramBundle\Service\ContactEntityService
-        arguments: ['@mailer', '@camdram.security.acl.provider']
+    acts.camdram.contact_entity_service: '@Acts\CamdramBundle\Service\ContactEntityService'
 
     acts.camdram.image_listener:
         class: Acts\CamdramBundle\EventListener\ImageListener
@@ -134,28 +80,3 @@ services:
         arguments:  ['@security.token_storage']
         tags:
             - { name: monolog.processor, method: processRecord, channel: camdram }
-
-    acts_camdram.doctrine.entity_listener_resolver:
-        class: Acts\CamdramBundle\Service\EntityListenerResolver
-        arguments: ['@service_container']
-
-    facebook.api:
-        class: Facebook\Facebook
-        lazy: true
-        arguments:
-          - app_id: "%facebook_id%"
-            app_secret: "%facebook_secret%"
-            default_access_token: "%facebook_id%|%facebook_secret%"
-            
-    twitter.api:
-        class: Abraham\TwitterOAuth\TwitterOAuth
-        lazy: true
-        arguments:
-          - "%twitter_key%"
-          - "%twitter_secret%"
-          - "%twitter_token%"
-          - "%twitter_token_secret%"
-          
-    github.api:
-        class: \Github\Client
-        lazy: true

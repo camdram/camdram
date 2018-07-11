@@ -10,11 +10,11 @@ class EmailDispatcher
     private $twig;
     private $from_address;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, $from_address)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, $adminEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->from_address = $from_address;
+        $this->from_address = $adminEmail;
     }
 
     private function emailArrayFromUsers(array $users)

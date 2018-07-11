@@ -7,7 +7,7 @@ use Acts\CamdramApiBundle\Configuration\ApiData;
 use Acts\CamdramApiBundle\Configuration\LinkMetadata;
 use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AnnotationReader
 {
@@ -15,7 +15,7 @@ class AnnotationReader
 
     private $em;
 
-    public function __construct(Reader $reader, EntityManager $em)
+    public function __construct(Reader $reader, EntityManagerInterface $em)
     {
         $this->reader = $reader;
         $this->em = $em;

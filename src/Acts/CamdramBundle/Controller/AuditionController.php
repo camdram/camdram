@@ -7,6 +7,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
 use Acts\CamdramBundle\Entity\Audition;
+use Acts\DiaryBundle\Diary\Diary;
 
 /**
  * @RouteResource("Audition")
@@ -27,7 +28,7 @@ class AuditionController extends FOSRestController
 
     public function cgetDiaryAction()
     {
-        $diary = $this->get('acts.diary.factory')->createDiary();
+        $diary = new Diary;
 
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findUpcoming(null, new \DateTime());
 

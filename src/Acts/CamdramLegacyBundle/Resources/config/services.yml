@@ -1,8 +1,0 @@
-parameters:
-#    acts_camdram_legacy.example.class: Acts\CamdramLegacyBundle\Example
-
-services:
-#    acts_camdram_legacy.example:
-#        class: %acts_camdram_legacy.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
-
