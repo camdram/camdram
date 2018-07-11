@@ -1,0 +1,10 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     localhost
+    database_port:     ~
+    database_name:     camdram_test
+    database_user:     travis
+    database_pass:     ~
+
+    search_namespace: camdram_mysql
+    search_enable_listeners: true

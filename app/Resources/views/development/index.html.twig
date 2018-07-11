@@ -21,37 +21,38 @@
             </p>
         </div>
 
-        <p>Camdram is an <a href="http://opensource.org/docs/osd" target="_blank" rel="ext">open source</a> project developed by a team of volunteers
-            for the benefit of the Cambridge student theatre community.</p>
-        <p>We use <a href="https://github.com/" target="_blank" rel="ext">GitHub</a> to co-ordinate our work. On our
-            <a href="https://github.com/camdram/camdram" target="_blank" rel="ext">project page</a>
-        you can find a copy of the code that runs this site, as well details about bugs that have been submitted and our future roadmap for
-        the site.</p>
+        <p>
+        Camdram is an <a href="http://opensource.org/docs/osd" target="_blank" rel="ext">open source</a> project developed by a team of volunteers
+        for the benefit of the Cambridge student theatre community. We use our
+        <a href="https://github.com/camdram/camdram" target="_blank" rel="ext">project page</a> on
+        <a href="https://github.com/about" target="_blank" rel="ext">GitHub</a> to co-ordinate our work and host a copy of the code that runs this site,
+        as well details about bugs that have been submitted and our future roadmap for the site.
+        </p>
 
-        <p>If you're a programmer and would like to contribute to camdram, we invite you to 'fork' the
-            <a href="https://github.com/camdram/camdram" target="_blank" rel="ext">camdram</a> repository on github. You can then fix any open issue (see
-            the list of <a href="https://github.com/camdram/camdram/issues?state=open" target="_blank" rel="ext">open issues</a>), or create a new one.
-            Once you've fixed a bug or created some new functionality, you can then submit a 'pull request' to be
-            reviewed by the development team.</p>
+        <p>
+        If you don't have programming skills but think you've found a bug, or you just have a cool idea for a new feature on Camdram, you can still
+        <a href="https://github.com/camdram/camdram/issues/new" target="_blank" rel="ext">create a new issue</a> on GitHub, and one of our developers
+        will get back to you.
+        </p>
+
+        <p>
+        If you're a programmer and would like to contribute to Camdram, we invite you to
+        <a href="https://github.com/camdram/camdram/fork" target="_blank" rel="ext">fork our repository</a>. You can then fix any
+        <a href="https://github.com/camdram/camdram/issues?state=open" target="_blank" rel="ext">open issue</a> or create a new one. Once you've fixed a
+        bug or created some new functionality, you can then submit a pull request to be reviewed by the development team.
+        </p>
             
-        <p>In order to avoid wasting effort, we recommend you discuss your ideas before carrying out any
-        significant development work.  If there's a relevant <a href="https://github.com/camdram/camdram/issues" target="_blank" rel="ext">issue</a> 
-        then you can use that.  We also have a <a href="https://groups.google.com/forum/#!forum/camdram-dev" target="_blank">Google Group</a>
-        for developer discussions and questions - feel free to start a thread there or email <a href="mailto:camdram-dev@googlegroups.com">camdram-dev@googlegroups.com</a>.
+        <p>
+        In order to avoid wasting effort, we recommend you discuss your ideas before carrying out any significant development work. If there's a relevant
+        issue then you can use that, otherwise we have a <a href="https://gitter.im/camdram/development" target="_blank">Gitter chatroom</a> for
+        developer discussions and questions - feel free to send a message there. You can also use this group if you're having problems getting your
+        development environment set up, or if you're not sure whether something is a bug or a problem with your set-up. We run Camdram as a meritocracy:
+        anyone who has a reasonable number of pull requests accepted will be given access rights to commit straight to the Camdram repository.
         </p>
         
-        <p>You can also use this group if you're having problems getting your development environment set up, or if you're not sure whether something
-          is a bug or a problem with your set-up.
+        <p>
+        Below is a summary of recent development activity on Camdram.
         </p>
-        
-        <p>We run camdram as a meritocracy: anyone who has a reasonable number of pull requests accepted will be
-        given access rights to commit straight to the camdram repository.</p>
-
-        <p>If you don't have programming skills, but you think you've found a bug or have an idea for a cool new feature for camdram,
-        you can still <a href="https://github.com/camdram/camdram/issues/new" target="_blank" rel="ext">create a new issue</a> on
-        GitHub, and one of our developers will get back to you.</p>
-
-        <p>Below is a summary of recent development activity on camdram.</p>
 
         {{ render(controller('ActsCamdramBundle:Development:activity'), {'strategy': 'esi'}) }}
     </div>
