@@ -4,7 +4,7 @@ namespace Acts\CamdramSecurityBundle\Security;
 use HWI\Bundle\OAuthBundle\Security\Http\ResourceOwnerMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Http\Client\Common\HttpMethodsClient;
+use Http\Client\HttpClient;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwnerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse;
 use OAuth2\Model\OAuth2Token;
@@ -18,7 +18,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
     
     private $httpClient;
     
-    public function __construct(HttpMethodsClient $httpClient)
+    public function __construct(HttpClient $httpClient)
     {
         $this->httpClient = $httpClient;
     }

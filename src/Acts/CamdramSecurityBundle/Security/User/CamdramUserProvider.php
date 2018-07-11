@@ -43,25 +43,6 @@ class CamdramUserProvider implements
         return $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($id);
     }
 
-    public function loadUserByServiceAndUser($service, $info)
-    {
-        if ($service == 'local') {
-            return $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($info['id']);
-        }
-
-        $res = $this->em->createQuery('SELECT u FROM ActsCamdramSecurityBundle:User u JOIN u.identities i WHERE i.service = :service AND (i.remote_id = :id OR i.remote_user = :username)')
-                ->setParameter('service', $service)
-                ->setParameter('id', $info['id'])
-                ->setParameter('username', $info['username'])
-                ->getResult();
-
-        if (count($res) > 0) {
-            return $res[0];
-        } else {
-            throw new IdentityNotFoundException(sprintf('An identity cannot be found for "%s" and credentials %i/%s', $service, $info['id'], $info['username']));
-        }
-    }
-
     public function updateAccessToken(User $user, $service, $access_token)
     {
         $s = $user->getIdentityByServiceName($service);

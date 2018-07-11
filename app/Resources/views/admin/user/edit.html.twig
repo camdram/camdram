@@ -10,7 +10,7 @@
 
     <h3>Edit User</h3>
 
-    {{ form_start(form, {'action': path("put_user", {identifier: form.vars.value.id}) }}
+    {{ form_start(form, {'action': path("put_user", {identifier: form.vars.value.id})}) }}
     {{ form_widget(form) }}
     
     <div class="text-right">
