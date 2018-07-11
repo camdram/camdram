@@ -41,7 +41,7 @@
 		"friendsofsymfony/elastica-bundle": "^5.0",
         "incenteev/composer-parameter-handler" : "^2.1",
         "liip/imagine-bundle": "~1.9",
-		"zurb/foundation" : "4.*",
+		"zurb/foundation" : "6.*",
 		"leafo/scssphp" : "0.6.*",
         "zendframework/zend-feed": "2.4.*",
         "zendframework/zend-servicemanager": "2.4.*",

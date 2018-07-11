@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3acaa5951ac248a74e5217b7621771cc",
+    "content-hash": "be6a024ee89fbfb917b9edf51fbe7846",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -6237,7 +6237,7 @@
             ],
             "authors": [
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com",
                     "homepage": "http://www.willdurand.fr"
                 }
@@ -6616,16 +6616,16 @@
         },
         {
             "name": "zurb/foundation",
-            "version": "v4.3.2",
+            "version": "v6.4.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zurb/foundation.git",
-                "reference": "a2a39011003b6ade6cb522a206449070b8b8ccd3"
+                "url": "https://github.com/zurb/foundation-sites.git",
+                "reference": "4e21634356da296edd2f1c3e65d91140f991008b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zurb/foundation/zipball/a2a39011003b6ade6cb522a206449070b8b8ccd3",
-                "reference": "a2a39011003b6ade6cb522a206449070b8b8ccd3",
+                "url": "https://api.github.com/repos/zurb/foundation-sites/zipball/4e21634356da296edd2f1c3e65d91140f991008b",
+                "reference": "4e21634356da296edd2f1c3e65d91140f991008b",
                 "shasum": ""
             },
             "type": "library",
@@ -6633,13 +6633,25 @@
             "license": [
                 "MIT"
             ],
+            "authors": [
+                {
+                    "name": "ZURB, Inc.",
+                    "email": "foundation@zurb.com",
+                    "homepage": "http://zurb.com"
+                }
+            ],
             "description": "The most advanced responsive front-end framework in the world.",
             "homepage": "http://foundation.zurb.com",
             "keywords": [
-                "foundation",
+                "JS",
+                "css",
+                "framework",
+                "mobile-first",
+                "responsive",
+                "sass",
                 "scss"
             ],
-            "time": "2013-09-23T18:37:31+00:00"
+            "time": "2017-08-18T15:32:36+00:00"
         }
     ],
     "packages-dev": [
