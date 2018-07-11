@@ -2,11 +2,6 @@ parameters:
 #    acts_camdram.example.class: Acts\CamdramBundle\Example
 
 services:
-    acts.camdram.twig.camdram_extension:
-        class: Acts\CamdramBundle\Twig\CamdramExtension
-        arguments: ['@acts.camdram.service.text']
-        tags:
-            - { name: twig.extension }
 
     acts.camdram.service.text:
         class: Acts\CamdramBundle\Service\TextService

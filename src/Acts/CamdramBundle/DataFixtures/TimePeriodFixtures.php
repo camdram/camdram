@@ -1,14 +1,14 @@
 <?php
-namespace Acts\CamdramBundle\DataFixtures\ORM;
+namespace Acts\CamdramBundle\DataFixtures;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
 
-class TimePeriodFixtures extends AbstractFixture
+class TimePeriodFixtures extends Fixture
 {
     /**
      * {@inheritDoc}

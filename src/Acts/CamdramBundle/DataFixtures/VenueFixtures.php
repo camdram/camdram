@@ -1,21 +1,20 @@
 <?php
 
-namespace Acts\CamdramBundle\DataFixtures\ORM;
+namespace Acts\CamdramBundle\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Yaml\Yaml;
 use Acts\CamdramBundle\Entity\Venue;
 
-class VenueFixtures extends AbstractFixture implements OrderedFixtureInterface
+class VenueFixtures extends Fixture
 {
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-        $file = __DIR__.'/../../Resources/data/venues.yml';
+        $file = __DIR__.'/../Resources/data/venues.yml';
         $data = Yaml::parse(file_get_contents($file));
         mt_srand(microtime(true));
 
@@ -40,13 +39,5 @@ class VenueFixtures extends AbstractFixture implements OrderedFixtureInterface
             $manager->persist($venue);
         }
         $manager->flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOrder()
-    {
-        return 1;
     }
 }

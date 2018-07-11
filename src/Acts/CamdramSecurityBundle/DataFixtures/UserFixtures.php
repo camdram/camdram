@@ -1,13 +1,12 @@
 <?php
 
-namespace Acts\CamdramSecurityBundle\DataFixtures\ORM;
+namespace Acts\CamdramSecurityBundle\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Acts\CamdramSecurityBundle\Entity\User;
 
-class UserFixtures extends AbstractFixture implements OrderedFixtureInterface
+class UserFixtures extends Fixture
 {
     /**
      * {@inheritDoc}
@@ -43,13 +42,5 @@ class UserFixtures extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('society1adminuser', $u);
 
         $manager->flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOrder()
-    {
-        return 1;
     }
 }

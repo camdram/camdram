@@ -1,21 +1,20 @@
 <?php
 
-namespace Acts\CamdramBundle\DataFixtures\ORM;
+namespace Acts\CamdramBundle\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Yaml\Yaml;
 use Acts\CamdramBundle\Entity\Person;
 
-class PeopleFixtures extends AbstractFixture implements OrderedFixtureInterface
+class PeopleFixtures extends Fixture
 {
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-        $file = __DIR__.'/../../Resources/data/people.yml';
+        $file = __DIR__.'/../Resources/data/people.yml';
         $data = Yaml::parse(file_get_contents($file));
         foreach ($data as $item) {
             $person = new Person();
@@ -24,13 +23,5 @@ class PeopleFixtures extends AbstractFixture implements OrderedFixtureInterface
             $manager->persist($person);
         }
         $manager->flush();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOrder()
-    {
-        return 1;
     }
 }

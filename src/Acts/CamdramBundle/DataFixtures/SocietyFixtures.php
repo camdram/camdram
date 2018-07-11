@@ -1,13 +1,12 @@
 <?php
 
-namespace Acts\CamdramBundle\DataFixtures\ORM;
+namespace Acts\CamdramBundle\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Acts\CamdramBundle\Entity\Society;
 
-class SocietyFixtures extends AbstractFixture implements OrderedFixtureInterface
+class SocietyFixtures extends Fixture
 {
     /**
      * {@inheritDoc}

@@ -1,14 +1,15 @@
 <?php
 
-namespace Acts\CamdramSecurityBundle\DataFixtures\ORM;
+namespace Acts\CamdramSecurityBundle\DataFixtures;
 
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Acts\CamdramSecurityBundle\Entity\User;
+use Acts\CamdramBundle\DataFixtures\ShowFixtures;
 
-class AccessControlEntryFixtures extends AbstractFixture implements OrderedFixtureInterface
+class AccessControlEntryFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -42,8 +43,11 @@ class AccessControlEntryFixtures extends AbstractFixture implements OrderedFixtu
     /**
      * {@inheritDoc}
      */
-    public function getOrder()
+    public function getDependencies()
     {
-        return 3;
+        return [
+            UserFixtures::class,
+            ShowFixtures::class
+        ];
     }
 }

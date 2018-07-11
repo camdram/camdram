@@ -5,7 +5,7 @@ namespace Acts\CamdramSecurityBundle\Security\Acl;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
@@ -20,7 +20,7 @@ class AclProvider
     private $repository;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var \Doctrine\ORM\EntityManagerInterface
      */
     private $entityManager;
 
@@ -30,7 +30,7 @@ class AclProvider
     private $eventDispatcher = null;
 
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->entityManager = $entityManager;

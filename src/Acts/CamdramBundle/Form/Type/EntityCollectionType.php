@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Acts\CamdramBundle\Form\DataTransformer\EntityCollectionTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -23,7 +23,7 @@ class EntityCollectionType extends AbstractType
      */
     private $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

@@ -1,19 +1,20 @@
 <?php
 
-namespace Acts\CamdramBundle\DataFixtures\ORM;
+namespace Acts\CamdramBundle\DataFixtures;
 
 use Acts\CamdramBundle\Entity\Role;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Yaml\Yaml;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Application;
+use Acts\CamdramSecurityBundle\DataFixtures\UserFixtures;
 
-class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
+class ShowFixtures extends Fixture implements DependentFixtureInterface
 {
     private $roles = array();
 
@@ -26,10 +27,10 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
 
     public function __construct()
     {
-        $file = __DIR__.'/../../Resources/data/roles.yml';
+        $file = __DIR__.'/../Resources/data/roles.yml';
         $this->roles = Yaml::parse(file_get_contents($file));
 
-        $file = __DIR__.'/../../Resources/data/musicians.yml';
+        $file = __DIR__.'/../Resources/data/musicians.yml';
         $this->musicians = Yaml::parse(file_get_contents($file));
     }
 
@@ -38,7 +39,7 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $file = __DIR__.'/../../Resources/data/shows.yml';
+        $file = __DIR__.'/../Resources/data/shows.yml';
         $plays = Yaml::parse(file_get_contents($file));
         $max = count($plays) - 1;
         mt_srand(microtime(true));
@@ -260,9 +261,13 @@ class ShowFixtures extends AbstractFixture implements OrderedFixtureInterface
     /**
      * {@inheritDoc}
      */
-    public function getOrder()
+    public function getDependencies()
     {
-        return 2;
+        return [
+            VenueFixtures::class,
+            SocietyFixtures::class,
+            UserFixtures::class,
+        ];
     }
 
     private function addApplications(ObjectManager $manager, Show $show)

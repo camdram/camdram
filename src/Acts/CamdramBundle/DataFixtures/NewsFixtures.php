@@ -1,14 +1,14 @@
 <?php
 
-namespace Acts\CamdramBundle\DataFixtures\ORM;
+namespace Acts\CamdramBundle\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Entity\News;
 
-class NewsFixtures extends AbstractFixture implements OrderedFixtureInterface
+class NewsFixtures extends Fixture implements DependentFixtureInterface
 {
 
     /**
@@ -65,8 +65,11 @@ class NewsFixtures extends AbstractFixture implements OrderedFixtureInterface
     /**
      * {@inheritDoc}
      */
-    public function getOrder()
+    public function getDependencies()
     {
-        return 2;
+        return [
+            VenueFixtures::class,
+            SocietyFixtures::class
+        ];
     }
 }
