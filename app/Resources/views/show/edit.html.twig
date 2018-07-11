@@ -9,14 +9,15 @@
 
 <div class="row">
     <h3>Edit Show</h3>
-    <form action="{{ path("put_show", {identifier: form.vars.value.slug, _method: 'put'}) }}" id="show_form" method="post">
+    {{ form_start(form, {'action': path("put_show", {identifier: form.vars.value.slug} )}) }}
 
-        {% include 'show/form.html.twig' %}
+    {% include 'show/form.html.twig' %}
 
-        <div class="text-right">
-            <input type="submit" value="Save" class="button"/>
-        </div>
-    </form>
+    <div class="text-right">
+        <input type="submit" value="Save" class="button"/>
+    </div>
+
+    {{ form_end(form) }}
 </div>
 
 {% endblock %}

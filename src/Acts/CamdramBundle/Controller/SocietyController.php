@@ -29,9 +29,9 @@ class SocietyController extends OrganisationController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Society');
     }
 
-    protected function getForm($society = null)
+    protected function getForm($society = null, $method = 'POST')
     {
-        return $this->createForm(SocietyType::class, $society);
+        return $this->createForm(SocietyType::class, $society, ['method' => $method]);
     }
 
     public function getAction($identifier)

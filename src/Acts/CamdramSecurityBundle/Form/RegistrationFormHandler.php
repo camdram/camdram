@@ -45,7 +45,7 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
     public function process(Request $request, Form $form, UserResponseInterface $userInformation)
     {
         if ($request->getMethod() == 'POST') {
-            $form->submit($request);
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 /** @var \Acts\CamdramSecurityBundle\Entity\User $user */
                 $user = $form->getData();

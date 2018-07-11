@@ -32,12 +32,14 @@
             <p>The CUADC Directors' and Producers' Reps aim to send out the Production mailing list with all the current directing and producing adverts on Camdram once a week during full term. For more information they can be contacted on <a href=mailto:director@cuadc.org> director@cuadc.org </a> and <a href=mailto:producer@cuadc.org> producer@cuadc.org </a> </p>
         </div>
 
-        <form action="{{ path("put_show_application", {identifier: form.vars.value.show.slug, _method: 'put'}) }}" method="post">
-            {{ include('show/application-form.html.twig') }}
-            <div class="text-right">
-                <input type="submit" value="Edit" class="button"/>
-            </div>
-        </form>
+        {{ form_start(form, {'action': path("put_show_application", {identifier: form.vars.value.show.slug} )}) }}
+        {{ include('show/application-form.html.twig') }}
+        
+        <div class="text-right">
+            <input type="submit" value="Edit" class="button"/>
+        </div>
+        
+        {{ form_end(form) }}
     </div>
 </div>
 

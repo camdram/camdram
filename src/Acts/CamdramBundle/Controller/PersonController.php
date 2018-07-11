@@ -31,9 +31,9 @@ class PersonController extends AbstractRestController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Person');
     }
 
-    protected function getForm($person = null)
+    protected function getForm($person = null, $method = 'POST')
     {
-        return $this->createForm(PersonType::class, $person);
+        return $this->createForm(PersonType::class, $person, ['method' => $method]);
     }
 
     public function removeAction($identifier)
@@ -177,7 +177,7 @@ class PersonController extends AbstractRestController
         $merger = $this->get('acts_camdram_admin.people_merger');
 
         $form = $merger->createForm();
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
             if (($otherPerson = $merger->getPersonFromFormData($data))) {

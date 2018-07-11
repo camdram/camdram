@@ -17,14 +17,16 @@
                 the deadline date.</p>
         </div>
 
-        <form action="{{ path("post_society_application", {identifier: org.slug}) }}" method="post">
-            {{ include('Organisation/application-form.html.twig') }}
-            <div class="row">
-                <div class="large-12 text-right">
-                    <input type="submit" value="Create" class="button"/>
-                </div>
+        {{ form_start(form, {'action': path("post_society_application", {identifier: org.slug} )}) }}
+        {{ include('Organisation/application-form.html.twig') }}
+        
+        <div class="row">
+            <div class="large-12 text-right">
+                <input type="submit" value="Create" class="button"/>
             </div>
-        </form>
+        </div>
+
+        {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}

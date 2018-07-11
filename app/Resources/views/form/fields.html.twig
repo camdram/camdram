@@ -6,7 +6,7 @@
             <div class="form_map">
                 {{ ivory_google_map(location_map) }}
                 {{ ivory_google_api([location_map]) }}
-                <script>$(function(){ $('#{{ id }}_container').formMap({{ location_map.getVariable() }})});</script>
+                <script>$(function(){ $('#{{ id }}_container').formMap("{{ location_map.getVariable() }}")});</script>
             </div>
         </div>
     {% endspaceless %}

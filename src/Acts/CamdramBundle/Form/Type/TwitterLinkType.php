@@ -38,7 +38,8 @@ class TwitterLinkType extends AbstractType
             'class' => 'medium',
             'service' => 'twitter',
             'label' => 'Twitter account',
-            'attr' => array('placeholder' => 'URL or username')
+            'attr' => array('placeholder' => 'URL or username'),
+            'required' => false,
         ));
     }
 

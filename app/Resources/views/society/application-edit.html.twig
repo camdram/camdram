@@ -17,13 +17,15 @@
             until the deadline date.</p>
         </div>
 
-        <form action="{{ path("put_society_application", {identifier: form.vars.value.society.slug, _method: 'put'}) }}" method="post">
-            {{ include('organisation/application-form.html.twig') }}
-            <div class="text-right">
-                <a href="{{ path('remove_society_application', {identifier: form.vars.value.society.slug}) }}" class="button">Delete</a>
-                <input type="submit" value="Edit" class="button"/>
-            </div>
-        </form>
+        {{ form_start(form, {'action': path("put_society_application", {identifier: form.vars.value.society.slug} )}) }}
+        {{ include('organisation/application-form.html.twig') }}
+        
+        <div class="text-right">
+            <a href="{{ path('remove_society_application', {identifier: form.vars.value.society.slug}) }}" class="button">Delete</a>
+            <input type="submit" value="Edit" class="button"/>
+        </div>
+
+        {{ form_end(form) }}
     </div>
 </div>
 

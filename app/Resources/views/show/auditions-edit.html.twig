@@ -18,50 +18,47 @@
             <p>The CUADC Actors' Reps aim to send out the Actors' mailing list with all the current auditions on Camdram twice a week during full term. For more information they can be contacted on <a href=mailto:actor@cuadc.org> actor@cuadc.org </a> </p>
         </div>
 
-        <form action="{{ path("put_show_auditions", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post">
-            {{ form_row(form.aud_extra) }}
+        {{ form_start(form, {'action': path("put_show_auditions", {identifier: form.vars.value.slug} )}) }}
+        {{ form_row(form.aud_extra) }}
 
-
-
-            <div class="row">
-                <div class="large-3 columns">
-                    {{ form_label(form.scheduled_auditions) }}
-                </div>
-                <div class="large-9 columns">
-                    <div class="scheduled_auditions entity_collection" data-prototype="{% filter escape('html') %}{% include 'show/auditions-form.html.twig' with {audition: form.scheduled_auditions.vars.prototype} %}{% endfilter %}">
-                        {% for audition in form.scheduled_auditions %}
-                            {% include 'show/auditions-form.html.twig' %}
-                        {% endfor %}
-                    </div>
-                    <ul class="inline-list">
-                        <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add an audition session</a></li>
-                    </ul>
-                </div>
-                {% do form.scheduled_auditions.setRendered() %}
+        <div class="row">
+            <div class="large-3 columns">
+                {{ form_label(form.scheduled_auditions) }}
             </div>
-
-            <div class="row">
-                <div class="large-3 columns">
-                    {{ form_label(form.non_scheduled_auditions) }}
+            <div class="large-9 columns">
+                <div class="scheduled_auditions entity_collection" data-prototype="{% filter escape('html') %}{% include 'show/auditions-form.html.twig' with {audition: form.scheduled_auditions.vars.prototype} %}{% endfilter %}">
+                    {% for audition in form.scheduled_auditions %}
+                        {% include 'show/auditions-form.html.twig' %}
+                    {% endfor %}
                 </div>
-                <div class="large-9 columns">
-                    <div class="non_scheduled_auditions" data-prototype="{% filter escape('html') %}{% include 'show/auditions-non-scheduled-form.html.twig' with {audition: form.non_scheduled_auditions.vars.prototype} %}{% endfilter %}">
-                        {% for audition in form.non_scheduled_auditions %}
-                            {% include 'show/auditions-non-scheduled-form.html.twig' %}
-                        {% endfor %}
-                    </div>
-                    <ul class="inline-list">
-                        <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add contact details</a></li>
-                    </ul>
-                </div>
-                {% do form.non_scheduled_auditions.setRendered() %}
+                <ul class="inline-list">
+                    <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add an audition session</a></li>
+                </ul>
             </div>
+            {% do form.scheduled_auditions.setRendered() %}
+        </div>
 
-            {{ form_rest(form) }}
-            <div class="text-right">
-                <input type="submit" value="Save" class="button"/>
+        <div class="row">
+            <div class="large-3 columns">
+                {{ form_label(form.non_scheduled_auditions) }}
             </div>
-        </form>
+            <div class="large-9 columns">
+                <div class="non_scheduled_auditions" data-prototype="{% filter escape('html') %}{% include 'show/auditions-non-scheduled-form.html.twig' with {audition: form.non_scheduled_auditions.vars.prototype} %}{% endfilter %}">
+                    {% for audition in form.non_scheduled_auditions %}
+                        {% include 'show/auditions-non-scheduled-form.html.twig' %}
+                    {% endfor %}
+                </div>
+                <ul class="inline-list">
+                    <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add contact details</a></li>
+                </ul>
+            </div>
+            {% do form.non_scheduled_auditions.setRendered() %}
+        </div>
+
+        <div class="text-right">
+            <input type="submit" value="Save" class="button"/>
+        </div>
+        {{ form_end(form) }}
     </div>
 </div>
 

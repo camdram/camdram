@@ -40,14 +40,14 @@ class ShowController extends AbstractRestController
         return $show;
     }
 
-    protected function getForm($show = null)
+    protected function getForm($show = null, $method = 'POST')
     {
         if (is_null($show)) {
             $show = new Show();
             $show->addPerformance(new Performance());
         }
 
-        return $this->createForm(ShowType::class, $show);
+        return $this->createForm(ShowType::class, $show, ['method' => $method]);
     }
 
     public function cgetAction(Request $request)

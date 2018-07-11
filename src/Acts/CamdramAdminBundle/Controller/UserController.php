@@ -42,11 +42,6 @@ class UserController extends FOSRestController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User');
     }
 
-    protected function getForm($society = null)
-    {
-        return $this->createForm(UserType::class, $society);
-    }
-
     /**
      * Action which returns a list of entities.
      *
@@ -98,7 +93,7 @@ class UserController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->createForm(UserType::class, $entity, ['method' => 'PUT']);
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
@@ -110,7 +105,7 @@ class UserController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->createForm(UserType::class, $entity, ['method' => 'PUT']);
 
         $form->bind($request);
         if ($form->isValid()) {
@@ -209,7 +204,7 @@ class UserController extends FOSRestController
         $merger = $this->get('acts_camdram_admin.user_merger');
 
         $form = $merger->createForm();
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
             $otherUser = $this->get('doctrine.orm.entity_manager')->getRepository('ActsCamdramSecurityBundle:User')

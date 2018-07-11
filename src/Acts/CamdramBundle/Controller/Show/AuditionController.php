@@ -17,7 +17,7 @@ class AuditionController extends FOSRestController
 
     private function getAuditionsForm(Show $show)
     {
-        return $this->createForm(ShowAuditionsType::class, $show);
+        return $this->createForm(ShowAuditionsType::class, $show, ['method' => 'PUT']);
     }
 
     /**
@@ -46,7 +46,7 @@ class AuditionController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $form = $this->getAuditionsForm($show);
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());

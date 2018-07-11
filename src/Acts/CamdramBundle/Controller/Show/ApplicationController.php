@@ -16,13 +16,13 @@ class ApplicationController extends FOSRestController
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
     }
 
-    private function getApplicationForm(Show $show, $obj = null)
+    private function getApplicationForm(Show $show, $obj = null, $method = 'POST')
     {
         if (!$obj) {
             $obj = new Application();
             $obj->setShow($show);
         }
-        $form = $this->createForm(ApplicationType::class, $obj);
+        $form = $this->createForm(ApplicationType::class, $obj, ['method' => $method]);
 
         return $form;
     }
@@ -53,7 +53,7 @@ class ApplicationController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $form = $this->getApplicationForm($show);
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
@@ -77,7 +77,7 @@ class ApplicationController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $application = $show->getApplications()->first();
-        $form = $this->getApplicationForm($show, $application);
+        $form = $this->getApplicationForm($show, $application, 'PUT');
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
@@ -94,8 +94,8 @@ class ApplicationController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $application = $show->getApplications()->first();
-        $form = $this->getApplicationForm($show, $application);
-        $form->submit($request);
+        $form = $this->getApplicationForm($show, $application, 'PUT');
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());

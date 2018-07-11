@@ -69,7 +69,7 @@ class AccountController extends FOSRestController
         $form = $form = $this->createForm(ChangeEmailType::class, $this->getUser());
 
         if ($request->getMethod() == 'POST') {
-            $form->submit($request);
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $user = $form->getData();
                 $user->setIsEmailVerified(false);

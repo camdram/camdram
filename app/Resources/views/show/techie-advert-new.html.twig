@@ -19,17 +19,19 @@
             <p>The CUADC Technical Director, Technicians' Rep and Stage Managers' Rep aim to send out the Techies' mailing list with all the current technical vacancies on Camdram once a week during full term. The Designers' Rep aims to send the Designers' mailing list with all the current design vacancies on Camdram on a similar timetable. For more information they can be contacted on <a href=mailto:td@cuadc.org> td@cuadc.org </a>, <a href=mailto:technician@cuadc.org> technician@cuadc.org </a>, <a href=mailto:sm@cuadc.org> sm@cuadc.org </a> or <a href=mailto:designer@cuadc.org> desginer@cuadc.org </a> </p>
         </div>
 
-        <form action="{{ path("post_show_techie_advert", {identifier: form.vars.value.show.slug}) }}" method="post">
-            {{ include('show/techie-advert-form.html.twig') }}
-            <div class="row">
-                <div class="large-6">
+        {{ form_start(form, {'action': path("post_show_techie_advert", {identifier: form.vars.value.show.slug} )}) }}
+        {{ include('show/techie-advert-form.html.twig') }}
+        
+        <div class="row">
+            <div class="large-6">
 
-                </div>
-                <div class="large-6 text-right">
-                    <input type="submit" value="Create" class="button"/>
-                </div>
             </div>
-        </form>
+            <div class="large-6 text-right">
+                <input type="submit" value="Create" class="button"/>
+            </div>
+        </div>
+        
+        {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}

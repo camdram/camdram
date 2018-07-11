@@ -78,7 +78,7 @@ class DefaultController extends Controller
         $form = $this->createForm(ForgottenPasswordType::class, ['email' => $email]);
 
         if ($request->getMethod() == 'POST') {
-            $form->submit($this->getRequest());
+            $form->handleRequest($this->getRequest());
             if ($form->isValid()) {
                 $data = $form->getData();
                 $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($data['email']);
@@ -107,7 +107,7 @@ class DefaultController extends Controller
             if ($token == $expected_token) {
                 $form = $this->createForm(ResetPasswordType::class, array());
                 if ($this->getRequest()->getMethod() == 'POST') {
-                    $form->submit($this->getRequest());
+                    $form->handleRequest($this->getRequest());
                     if ($form->isValid()) {
                         $data = $form->getData();
                         $factory = $this->get('security.encoder_factory');

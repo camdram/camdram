@@ -91,7 +91,7 @@ abstract class AbstractRestController extends FOSRestController
      *
      * @return Symfony\Component\Form\AbstractType
      */
-    abstract protected function getForm($entity = null);
+    abstract protected function getForm($entity = null, $method = 'POST');
 
     /**
      * Action for URL e.g. /shows/new
@@ -144,7 +144,7 @@ abstract class AbstractRestController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->getForm($entity, 'PUT');
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
@@ -160,9 +160,9 @@ abstract class AbstractRestController extends FOSRestController
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
-        $form = $this->getForm($entity);
+        $form = $this->getForm($entity, 'PUT');
 
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             try {
@@ -189,7 +189,7 @@ abstract class AbstractRestController extends FOSRestController
 
         $form = $this->getForm($entity);
 
-        $form->submit($request->request->get($form->getName()));
+        $form->submit($request->request->get($form->getName()), true);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();

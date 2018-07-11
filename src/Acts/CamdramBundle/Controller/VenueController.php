@@ -35,9 +35,9 @@ class VenueController extends OrganisationController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
     }
 
-    protected function getForm($venue = null)
+    protected function getForm($venue = null, $method = 'POST')
     {
-        return $this->createForm(VenueType::class, $venue);
+        return $this->createForm(VenueType::class, $venue, ['method' => $method]);
     }
     
     public function getAction($identifier)

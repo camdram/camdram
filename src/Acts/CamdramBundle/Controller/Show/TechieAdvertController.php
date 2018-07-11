@@ -16,13 +16,13 @@ class TechieAdvertController extends FOSRestController
         return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
     }
 
-    private function getTechieAdvertForm(Show $show, $obj = null)
+    private function getTechieAdvertForm(Show $show, $obj = null, $method = 'POST')
     {
         if (!$obj) {
             $obj = new TechieAdvert();
             $obj->setShow($show);
         }
-        $form = $this->createForm(TechieAdvertType::class, $obj);
+        $form = $this->createForm(TechieAdvertType::class, $obj, ['method' => $method]);
 
         return $form;
     }
@@ -63,7 +63,7 @@ class TechieAdvertController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $form = $this->getTechieAdvertForm($show);
-        $form->submit($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
@@ -87,7 +87,7 @@ class TechieAdvertController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $techie_advert = $show->getTechieAdverts()->first();
-        $form = $this->getTechieAdvertForm($show, $techie_advert);
+        $form = $this->getTechieAdvertForm($show, $techie_advert, 'PUT');
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
@@ -104,8 +104,8 @@ class TechieAdvertController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
 
         $techie_advert = $show->getTechieAdverts()->first();
-        $form = $this->getTechieAdvertForm($show, $techie_advert);
-        $form->submit($request);
+        $form = $this->getTechieAdvertForm($show, $techie_advert, 'PUT');
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
