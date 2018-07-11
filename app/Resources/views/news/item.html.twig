@@ -9,7 +9,7 @@
     {% endif %}
         <p>
             <strong>
-                <a href="{{ item.getLink() }}" target="_blank"><img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ item.source ~ '.png') }}" class="news-source"/></a>
+                <a href="{{ item.getLink() }}" target="_blank"><img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" class="news-source"/></a>
 
                 {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
                     {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}

@@ -56,7 +56,7 @@ It is a good idea to create a "feature branch" before starting development, so t
     $ git checkout -b my-cool-feature
 
 Some useful tips:
- * The site uses the Symfony PHP framework - [read the documentation](http://symfony.com/doc/2.8/index.html).
+ * The site uses the Symfony PHP framework - [read the documentation](http://symfony.com/doc/3.4/index.html).
  * Use the GitHub issue tracker to discover and discuss issues to work on. If you think you know how to do something, write the code, commit it, and
    submit a pull request.
  * If you want to discuss how to implement a new feature or how to fix a bug, get in touch with one of the developers. It would probably be wise to get in

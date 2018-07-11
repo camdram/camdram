@@ -1,0 +1,24 @@
+.map-small {
+  height:270px;
+  width:270px;
+}
+
+.map-large {
+  height:300px;
+  margin-bottom:15px;
+}
+
+@media only screen and (max-width: 767px) {
+  .map-large {
+    height: 250px;
+  }
+}
+
+#venues_list .marker_column {
+  text-align: center;
+  margin-top:15px;
+}
+
+#venues_list .marker_img {
+  cursor: pointer;
+}

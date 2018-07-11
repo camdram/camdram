@@ -1,0 +1,48 @@
+@import "~foundation-sites/scss/foundation";
+
+#entity-header {
+  @include callout();
+}
+
+/* Use the new feature panel to highlight new features on the site itself. */
+.new-feature-panel, .vacancies-panel {
+  @include callout(rgb(255,240,153));
+  @include callout-size(1em);
+  border-radius:10px;
+}
+
+.admin-panel {
+  @include callout(rgb(255,240,200));
+  @include callout-size(1em);
+
+  li a.active {
+    color: black;
+    cursor: default;
+  }
+}
+
+.approve-panel {
+  @include callout(rgb(255,255,100));
+  @include callout-size(1em);
+
+  button {
+    margin-top:-0.6em;
+  }
+}
+
+.news-link {
+  @include callout(rgb(230,230,230));
+  @include callout-size(1em);
+  margin-bottom:10px;
+  font-size:0.8em;
+
+  h6 {
+    margin:0;
+  }
+}
+
+.show-society {
+  font-style:italic;
+  margin-bottom:0.7em;
+}
+

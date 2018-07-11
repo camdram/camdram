@@ -1,0 +1,143 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+#search_form {
+  border: 1px solid black;
+  border-radius: 20px;
+  box-shadow: 0px 0px 4px #888;
+  background:#fff;
+  z-index:50;
+  position:relative;
+
+  > i {
+    position:absolute;
+    font-size:25px;
+    top:6px;
+
+    &.fa-search {
+      left:10px;
+    }
+    &.fa-spinner {
+      right:10px;
+      display:none;
+    }
+  }
+
+  input[type="submit"] {
+    display:none;
+  }
+}
+
+#searchfield {
+  border:none;
+  padding:0 38px 0 42px;
+  margin:3px 0 3px 0;
+  outline:none;
+  background:rgba(255,255,255,0);
+
+  box-shadow:none;
+  -webkit-box-shadow:none;
+  -moz-box-shadow:none;
+
+  &:focus {
+    outline:none;
+    border:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+  }
+}
+
+#search_form .noresults {
+  padding:0.5em 2em;
+  font-style:italic;
+}
+
+#search_form .error {
+  padding:0.5em 2em;
+  font-style:italic;
+  color: #900;
+}
+
+#search_form .results {
+    display:none;
+    z-index:100;
+    margin-bottom:1em;
+
+    ul {
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+
+    ul li {
+      a {
+        display:block;
+        border-top:1px solid #CCC;
+        @include clearfix;
+        color:#666;
+        padding-left: 35px;
+
+        i {
+          float:left;
+          color:#666;
+          margin:4px 0;
+          margin-left:-24px;
+        }
+      }
+      &:nth-child(even) {
+        background-color:#FAFAFA;
+      }
+
+      &.active {
+        background-color:#ffa;
+      }
+    }
+  }
+
+.twitter-typeahead {
+  width:100%;
+}
+
+.tt-dropdown-menu {
+  background:#eee;
+  width:100%;
+  border:1px solid #777;
+  border-radius:0 0 10px 10px;
+  margin-top:-1em;
+  box-shadow: 0px 2px 10px #888;
+  -webkit-box-shadow:0px 2px 10px #888;
+  -moz-box-shadow:0px 2px 10px #888;
+  padding-bottom:10px;
+}
+.tt-suggestion {
+  display:block;
+  border-bottom:1px solid #CCC;
+  color:#666;
+  padding: 4px 35px;
+  background-color:#FFF;
+
+  p {
+    margin:0;
+  }
+
+  i {
+    float:left;
+    color:#666;
+    margin:4px 0;
+    margin-left:-24px;
+  }
+
+  &:nth-child(even) {
+    background-color:#F3F3F3;
+  }
+
+  &.tt-is-under-cursor {
+    background-color:#ffa;
+  }
+}

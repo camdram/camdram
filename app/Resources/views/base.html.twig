@@ -34,45 +34,14 @@
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet"/>
         <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
-        {% stylesheets output='css/main.css'
-        'bundles/actscamdram/stylesheets/h5bp/normalize.css'
-        'bundles/actscamdram/stylesheets/app/*.scss'
-        'bundles/actscamdram/stylesheets/fancybox.css'
-        'bundles/actsdiary/css/diary.css'
-        %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
+
+        <script src="{{ asset('build/app.js') }}"></script>
+        <link href="{{ asset('build/app.css') }}" rel="stylesheet" />
+
 
         {% block stylesheets %}{% endblock %}
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-        {% javascripts output='js/deps.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/jquery/jquery-ui.touchpunch.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/foundation/custom.modernizr.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/foundation/foundation.min.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/moment.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/typeahead.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/dropzone.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/fancybox.js'
-        '@ActsDiaryBundle/Resources/public/js/diary.js'
-        '@FOSJsRoutingBundle/Resources/public/js/router.js'
-         %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-        {% if app.environment == 'prod' %}
-            {% javascripts output='js/js_routing.js'
-            'js/fos_js_routes.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-        {% else %}
-            <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        {% endif %}
-        {% javascripts output='js/main.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/app/camdram.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/app/autocomplete.js'
-        '@ActsCamdramBundle/Resources/public/javascripts/app/home.js'%}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
+
+       
     <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
     <script type="text/javascript">
