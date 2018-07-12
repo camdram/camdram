@@ -4,6 +4,7 @@ app/config/parameters.yml
 app/logs/*
 app/data/*
 build/
+web/media
 vendor
 composer.phar
 *~

@@ -65,8 +65,9 @@
 	},
 	"scripts" : {
 		"post-create-project-cmd": [
-            "Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::refreshDatabase",
-            "Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::welcomeMessage"
+			"Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::refreshDatabase",
+			"Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::downloadAssets",
+			"Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::welcomeMessage"
         ],
 		 "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
