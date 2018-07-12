@@ -6,6 +6,7 @@
   "devDependencies": {
     "@fancyapps/fancybox": "^3.3.0",
     "@symfony/webpack-encore": "^0.20.1",
+    "cookieconsent": "^3.0.6",
     "dropzone": "^5.5.1",
     "moment": "2.8.4",
     "node-sass": "^4.9.2",

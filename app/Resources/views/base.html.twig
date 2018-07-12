@@ -43,30 +43,6 @@
         <script src="{{ asset('build/app.js') }}"></script>
         {% block javascripts %}{% endblock %}
         
-    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-    <script type="text/javascript">
-        // <![CDATA[
-        window.addEventListener("load", function(){
-            window.cookieconsent.initialise({
-                "palette": {
-                    "popup": {
-                         "background": "#fe5c1f",
-                         "text": "#ffffff"
-                    },
-                    "button": {
-                          "background": "#fff0c8"
-                    }
-                },
-                "content": {
-                    "href": "{{ path('acts_camdram_privacy') }}#cookies"
-                }
-            });
-        });
-        // ]]>
-    </script>
-    <!-- End Cookie Consent plugin -->
-        
     </head>
     <body>
         <div id="wrapper">

@@ -9,6 +9,23 @@ import Routing from 'router';
         return str;
     }
 
+    var doCookieConsent = function() {
+        window.cookieconsent.initialise({
+            "palette": {
+                "popup": {
+                     "background": "#fe5c1f",
+                     "text": "#ffffff"
+                },
+                "button": {
+                      "background": "#fff0c8"
+                }
+            },
+            "content": {
+                "href": Routing.generate('acts_camdram_privacy') + "#cookies"
+            }
+        });
+    }
+
     // This function is called on the document later, but also
     // on extra elements as they are added to the page.
     var fixHtml = function(elementsToFix){
@@ -282,6 +299,7 @@ import Routing from 'router';
     $(function() {
         //$(document).foundation();
         fixHtml($(document));
+        doCookieConsent();
     });
     
     Dropzone.options.imageUpload = {

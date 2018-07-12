@@ -35,6 +35,7 @@ Encore
         'dropzone',
         'foundationjs',
         '@fancyapps/fancybox',
+        'cookieconsent',
         'router'
     ])
 
