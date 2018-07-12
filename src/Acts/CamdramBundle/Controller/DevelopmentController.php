@@ -28,14 +28,9 @@ class DevelopmentController extends Controller
         return $response;
     }
 
-    public function activityAction()
+    public function activityAction(\Github\Client $github)
     {
-        /**
-         *
-         * @var \Github\Client $api
-         */
         try {
-            $github = $this->get('github.api');
             $github->authenticate(
                 $this->getParameter('github_id'),
                 $this->getParameter('github_secret'),
