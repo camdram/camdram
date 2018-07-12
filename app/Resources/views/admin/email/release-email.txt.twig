@@ -5,7 +5,8 @@ The tag is {{ end_tag }} and a full diff can be seen at: https://github.com/camd
 Changes in this release:
 
 {% for number,issue in issues %}
-{{ number }}: {{ issue.name }}{% if issue.state == 'closed' %} (fixed){% endif %}
+{{ number }}: {{ issue.name }}{% if issue.state == 'closed' %} (fixed) {% endif %}
+
 {{ issue.url }}
 ------------------------------------------------------------------------------------------------------------------
 {% for hash,commit in issue.commits %}
