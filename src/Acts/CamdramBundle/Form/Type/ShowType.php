@@ -40,8 +40,8 @@ class ShowType extends AbstractType
                 'expanded' => true,
                 'by_reference' => false,
                 'choices' => array(
-                    'single' => 'All the performances are at the same venue (e.g. an ADC mainshow/lateshow)',
-                    'multi' => 'The performances are at a number of different venues (e.g. a tour)',
+                    'All the performances are at the same venue (e.g. an ADC mainshow/lateshow)' => 'single',
+                    'The performances are at a number of different venues (e.g. a tour)' => 'multi',
                 ),
             ))
             ->add('performances', CollectionType::class, array(
