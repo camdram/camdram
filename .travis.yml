@@ -17,7 +17,7 @@ before_script:
 - composer selfupdate
 - composer install --no-interaction
 - yarn install
+- yarn build
 script:
 - "./runtests"
-- "yarn build"
 - "./check_dev_setup"

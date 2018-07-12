@@ -14,7 +14,8 @@
     "webpack-notifier": "^1.6.0"
   },
   "scripts": {
-    "build": "encore production",
-    "dev": "encore dev"
+    "js-routing": "php app/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json",
+    "build": "SYMFONY_ENV=prod yarn js-routing && yarn encore production",
+    "dev": "SYMFONY_ENV=dev yarn js-routing && yarn encore dev"
   }
 }

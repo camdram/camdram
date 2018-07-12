@@ -1,19 +1,7 @@
-// Output js-routing information in JSON format
-const { spawn } = require('child_process');
-const path = require('path');
-
-const js_routes_path = path.resolve(__dirname, 'assets/js/fos_js_routes.json');
-const ls = spawn('php', ['app/console', 'fos:js-routing:dump', '--format=json', `--target=${js_routes_path}`]);
-ls.stdout.on('data', (data) => {
-    console.log(`${data}`);
-  });
-ls.stderr.on('data', (data) => {
-    console.log(`error: ${data}`);
-});
-
 //Bundle assets
-var Encore = require('@symfony/webpack-encore');
-var webpack = require('webpack');
+const Encore = require('@symfony/webpack-encore');
+const webpack = require('webpack');
+const path = require('path');
 
 Encore
     // the project directory where all compiled assets will be stored
