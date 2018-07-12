@@ -12,5 +12,9 @@
     "sass-loader": "^7.0.3",
     "typeahead.js": "^0.11.1",
     "webpack-notifier": "^1.6.0"
+  },
+  "scripts": {
+    "build": "encore production",
+    "dev": "encore dev"
   }
 }

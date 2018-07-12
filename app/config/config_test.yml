@@ -23,9 +23,7 @@ framework:
 
 swiftmailer:
     disable_delivery: true
-assetic:
-    debug: false
-    use_controller: false
+
 fos_js_routing:
     request_context_base_url: /app_test.php
 
