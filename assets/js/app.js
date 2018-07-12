@@ -14,3 +14,5 @@ import '../scss/forms.scss';
 import '../scss/home.scss';
 import '../scss/news.scss';
 import '../scss/venues.scss';
+
+import "@fancyapps/fancybox/dist/jquery.fancybox.css";

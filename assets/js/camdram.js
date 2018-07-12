@@ -30,7 +30,6 @@ import Routing from 'router';
     // on extra elements as they are added to the page.
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
-        $('a.fancybox', elementsToFix).fancybox();
         $('a.delete-link').deleteLink();
 
         $('.dropdown-link', elementsToFix).each(function() {

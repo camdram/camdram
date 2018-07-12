@@ -15,7 +15,7 @@
         	{% if society.image %}
         	    {# Display the society's logo beside the name #} 
         	    <div class="large-3 columns" itemprop="image">
-        	        <a href="{{ society.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
+        	        <a href="{{ society.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
         	        {% if is_granted('EDIT', society) and is_granted("IS_AUTHENTICATED_FULLY") %}
                         <ul class="inline-list">   
                         {{ include('navigation/delete-item.html.twig', 
