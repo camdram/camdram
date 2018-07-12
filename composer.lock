@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "efbe6ec12c95c4808191f49f6c122248",
+    "content-hash": "a61d3b7685a2ac1f23ecb3e7d210cca6",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -6412,6 +6412,33 @@
                 "zf2"
             ],
             "time": "2015-07-21T13:55:46+00:00"
+        },
+        {
+            "name": "zurb/foundation",
+            "version": "v4.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zurb/foundation.git",
+                "reference": "a2a39011003b6ade6cb522a206449070b8b8ccd3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zurb/foundation/zipball/a2a39011003b6ade6cb522a206449070b8b8ccd3",
+                "reference": "a2a39011003b6ade6cb522a206449070b8b8ccd3",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The most advanced responsive front-end framework in the world.",
+            "homepage": "http://foundation.zurb.com",
+            "keywords": [
+                "foundation",
+                "scss"
+            ],
+            "time": "2013-09-23T18:37:31+00:00"
         }
     ],
     "packages-dev": [

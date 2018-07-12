@@ -26,11 +26,28 @@ Encore
     // create hashed filenames (e.g. app.abc123.css)
     .enableVersioning()
 
+    .createSharedEntry('vendor', [
+        'moment',
+        'typeahead.js',
+        'dropzone',
+        'foundationjs',
+        '@fancyapps/fancybox',
+    ])
+
     // allow sass/scss files to be processed
-    .enableSassLoader()
+    .enableSassLoader(function(options) {
+        options.includePaths = ['./vendor/zurb/foundation/scss'];
+    })
 
     .addPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
 ;
 
 // export the final configuration
-module.exports = Encore.getWebpackConfig();
+var config = Encore.getWebpackConfig();
+var path = require('path');
+
+config.resolve.alias = {
+    'foundationjs': path.resolve(__dirname, 'vendor/zurb/foundation/js/foundation')
+};
+
+module.exports = config;

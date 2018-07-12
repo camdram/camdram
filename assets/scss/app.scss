@@ -1,16 +1,11 @@
-$body-background: #fff9e3;
+$background-color: #fff9e3;
 $white: #fff;
 $orange: #fe5c1f;
 $dark-grey: #3a393a;
 $light-grey: #666;
 
-$foundation-palette: (
-  primary: $orange,
-  secondary: #999,
-  success: #3adb76,
-  warning: #ffae00,
-  alert: #cc4b37,
-);
+$primary-color: $orange;
+$secondary-color: #999;
 
 $topbar-height: 40px;
 $topbar-bg: $dark-grey;
@@ -22,12 +17,7 @@ $topbar-breakpoint: 500px;
 
 $section-border-color: #e6e6e6;
 
-$xy-grid: false;
-$global-flexbox: false;
-
-@import "~foundation-sites/scss/foundation";
-
-@include foundation-everything;
+@import "foundation";
 
 $footer-height: emCalc(160);
 $footer-height-mobile: emCalc(350);
@@ -41,7 +31,7 @@ $footer-height-mobile: emCalc(350);
 }
 
 .top-bar-section {
-  max-width:$global-width;
+  max-width:$row-width;
   margin:auto;
 
   ul li.active > a:hover {
@@ -61,7 +51,7 @@ html, body {
     content: "";
     position:absolute;
     display:block;
-    max-width:$global-width;
+    max-width:$row-width;
     background:$white;
     width:100%;
     padding: 0 emCalc(15);
@@ -71,9 +61,9 @@ html, body {
     top:120px;
     z-index:-5;
 
-    @media only screen and (min-width: $global-width) {
+    @media only screen and (min-width: $row-width) {
       left:50%;
-      margin-left: $global-width * -0.5;
+      margin-left: $row-width * -0.5;
     }
   }
 
@@ -84,13 +74,17 @@ html, body {
   }
 }
 
+body {
+  background:$background-color;
+}
+
 header {
   background:$orange;
   clear:both;
 }
 
 #wrapper > section {
-  max-width:$global-width;
+  max-width:$row-width;
   margin:auto;
   padding: emCalc(10) emCalc(15) emCalc(20) emCalc(15);
   min-height:100%;
@@ -119,7 +113,7 @@ footer {
   background:$dark-grey;
   color: $white;
   height:$footer-height-mobile;
-  @include breakpoint(medium down) {
+  @media #{$small} {
     height: $footer-height;
   }
    h5 {
@@ -136,7 +130,7 @@ footer {
 
 header .logo {
   text-align: center;
-  @include breakpoint(medium down) {
+  @media #{$small} {
     height:80px;
     background:url('../../images/header_separator.png') center right no-repeat;
   }
@@ -150,7 +144,7 @@ header .logo {
 header .search {
   background: #fff;
   padding-top: 20px;
-  @include breakpoint(medium) {
+  @media #{$small} {
     height:80px;
     padding-left:30px;
     padding-right:30px;
@@ -177,7 +171,7 @@ header .search {
 
 ul.topbar-dropdown {
   $default-float: right;
-  @include dropdown-container;
+  @include dropdown-container(list, true, 300px);
   margin:0;
   width:auto;
   list-style:none;
@@ -213,7 +207,7 @@ ul.topbar-dropdown {
   background:#3a393a;
 
   section {
-    max-width:$global-width;
+    max-width:$row-width;
     margin:auto;
 
     &:after {
@@ -278,19 +272,19 @@ table {
 }
 $panel-font-color-alt: #f00;
 .error_panel {
-  @include callout(rgba(198, 15, 19, 0.1));
+  @include panel(rgba(198, 15, 19, 0.1));
 }
 
 $panel-font-color-alt: #000;
 .warning_panel {
-  @include callout(rgba(198, 198, 0, 0.1));
+  @include panel(rgba(198, 198, 0, 0.1));
 }
 
 .button-neutral
 {
 @include button(
     // $padding - Used to build padding for buttons Default: $button-med or rem-calc(12)
-    false,
+    $button-med,
     // Background color. We can set $bg:false for a transparent background. Default: $primary-color.
     rgba(200, 200, 200, 1),
     // If true, set to button radius which is $global-radius or explicitly set radius amount in px (ex. $radius:10px). Default:false.
@@ -303,7 +297,7 @@ $panel-font-color-alt: #000;
 }
 
 .dropzone {
-    @include callout(#ddd);
+    @include panel(#ddd);
     border: 4px dashed black;
     min-height: 150px;
     cursor: pointer;

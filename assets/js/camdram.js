@@ -1,4 +1,4 @@
-import Foundation from 'foundation-sites';
+import Foundation from 'foundationjs';
 import Dropzone from 'dropzone';
 import Fancybox from '@fancyapps/fancybox';
 
@@ -283,7 +283,7 @@ import Fancybox from '@fancyapps/fancybox';
     }
 
     $(function() {
-        $(document).foundation();
+        //$(document).foundation();
         fixHtml($(document));
     });
     
