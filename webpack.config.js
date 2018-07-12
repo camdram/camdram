@@ -33,10 +33,14 @@ Encore
         'moment',
         'typeahead.js',
         'dropzone',
-        'foundationjs',
         '@fancyapps/fancybox',
         'cookieconsent',
-        'router'
+        'router',
+        'foundationjs/foundation',
+        'foundationjs/foundation.dropdown',
+        'foundationjs/foundation.forms',
+        'foundationjs/foundation.topbar',
+        'foundationjs/foundation.placeholder',
     ])
 
     // allow sass/scss files to be processed
@@ -52,10 +56,17 @@ var config = Encore.getWebpackConfig();
 
 //Alias js dependencies inside PHP deps folder
 config.resolve.alias['foundationjs'] = path.resolve(__dirname, 'vendor/zurb/foundation/js/foundation');
+//config.resolve.alias['foundation-dropdown$'] = path.resolve(__dirname, 'vendor/zurb/foundation/js/foundation/foundation.dropdown.js');
 config.resolve.alias['router$'] = path.resolve(__dirname, 'vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js');
 
 //Allow jQuery from CDN to be used inside js modules
 config.externals['jquery'] = 'jQuery';
+
+//Hack to make this == window for current version of Foundation
+config.module.rules.push({
+    test: /foundation\.js$/,
+    use: "imports-loader?this=>window"
+})
 
 //export config
 module.exports = config;

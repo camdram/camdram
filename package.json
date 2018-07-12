@@ -8,6 +8,7 @@
     "@symfony/webpack-encore": "^0.20.1",
     "cookieconsent": "^3.0.6",
     "dropzone": "^5.5.1",
+    "imports-loader": "^0.8.0",
     "moment": "2.8.4",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",

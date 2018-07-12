@@ -169,8 +169,9 @@ header .search {
   margin-bottom:-4px;
 }
 
+$default-float: right;
+
 ul.topbar-dropdown {
-  $default-float: right;
   @include dropdown-container(list, true, 300px);
   margin:0;
   width:auto;

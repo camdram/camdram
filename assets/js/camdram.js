@@ -297,7 +297,7 @@ import Routing from 'router';
     }
 
     $(function() {
-        //$(document).foundation();
+        $(document).foundation();
         fixHtml($(document));
         doCookieConsent();
     });
