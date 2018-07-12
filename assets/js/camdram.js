@@ -69,7 +69,7 @@ import Fancybox from '@fancyapps/fancybox';
         }
 
         $.each(info_boxes, function(key, box) {
-            $img = $('<img/>')
+            var $img = $('<img/>')
                 .addClass('marker_img')
                 .attr('src', box.image)
                 .click(function() {
