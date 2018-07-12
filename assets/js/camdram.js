@@ -1,6 +1,5 @@
-import Foundation from 'foundationjs';
 import Dropzone from 'dropzone';
-import Fancybox from '@fancyapps/fancybox';
+import Routing from 'router';
 
 ;(function($, window) {
     String.prototype.truncate = function(length) {
@@ -9,8 +8,6 @@ import Fancybox from '@fancyapps/fancybox';
         if (this.length > length) str += '...';
         return str;
     }
-
-    var short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     // This function is called on the document later, but also
     // on extra elements as they are added to the page.
@@ -208,7 +205,7 @@ import Fancybox from '@fancyapps/fancybox';
             $add_link.click(function(e) {
                 e.preventDefault();
                 var html = $self.attr('data-prototype').replace(/__name__/g, index);
-                $row = $(html);
+                var $row = $(html);
                 $self.append($row);
                 fixHtml($row);
                 update_links();

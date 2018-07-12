@@ -1,4 +1,5 @@
 import Routing from 'router';
+//Regenerate fos_js_routes.js by running `yarn js-routing`
 Routing.setRoutingData(require('./fos_js_routes.json'));
 
 import './camdram.js';

@@ -1,3 +1,6 @@
+import Routing from 'router';
+import moment from 'moment';
+
 // Register the autocomplete system
 var Camdram = Camdram || {};
 Camdram.autocomplete = {};
@@ -77,7 +80,7 @@ Camdram.autocomplete.shiftOption = function(field, down) {
 }
 
 Camdram.autocomplete.drawControl = function(show) {
-    $results = $("#search_form .results");
+    var $results = $("#search_form .results");
 
     if(show) {
         $results.show().stop();
