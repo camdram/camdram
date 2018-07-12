@@ -22,10 +22,10 @@ class GrantType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $choices = array(
-            'OWNER' => 'Owner',
-            'OPERATOR' => 'Operator (edit, delete)',
-            'EDIT' => 'Edit',
-            'DELETE' => 'Delete',
+            'Owner' => 'OWNER',
+            'Operator (edit, delete)' => 'OPERATOR',
+            'Edit' => 'EDIT',
+            'Delete' => 'DELETE',
         );
 
         $resolver->setDefaults(array(
