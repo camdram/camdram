@@ -1,7 +1,9 @@
+import Routing from 'router';
+Routing.setRoutingData(require('./fos_js_routes.json'));
+
 import './camdram.js';
 import './autocomplete.js';
 import './diary.js';
-import './diarypage.js';
 import './home.js';
 
 import '../scss/app.scss';

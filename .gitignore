@@ -1,7 +1,3 @@
-web/bundles/
-web/css
-web/js
-web/media
 app/bootstrap.php.cache
 app/cache/*
 app/config/parameters.yml
@@ -14,3 +10,4 @@ composer.phar
 bin
 .web-server-pid
 node_modules
+assets/js/fos_js_routes.json

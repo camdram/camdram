@@ -7,8 +7,6 @@
     "@fancyapps/fancybox": "^3.3.0",
     "@symfony/webpack-encore": "^0.20.1",
     "dropzone": "^5.5.1",
-    "jquery": "1.11.*",
-    "jquery-ui": "1.10.*",
     "moment": "2.8.4",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",

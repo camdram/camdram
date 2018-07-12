@@ -132,7 +132,7 @@ header .logo {
   text-align: center;
   @media #{$small} {
     height:80px;
-    background:url('../../images/header_separator.png') center right no-repeat;
+    background:url('../images/header_separator.png') center right no-repeat;
   }
   h1 {
     font-size:1em;
@@ -148,7 +148,7 @@ header .search {
     height:80px;
     padding-left:30px;
     padding-right:30px;
-    background:url('../../images/header_separator2.png') center right no-repeat #fff;
+    background:url('../images/header_separator2.png') center right no-repeat #fff;
   }
 }
 

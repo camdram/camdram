@@ -306,7 +306,7 @@ import Fancybox from '@fancyapps/fancybox';
 				 + ' <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>'
 				+ '</div>',
     		  init: function() {
-    			  msgDiv = Dropzone.createElement('<div/>');
+    			  var msgDiv = Dropzone.createElement('<div/>');
     			  msgDiv.className = 'hidden'
     			  this.element.append(msgDiv);
     			  

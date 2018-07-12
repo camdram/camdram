@@ -1,3 +1,17 @@
+// Output js-routing information in JSON format
+const { spawn } = require('child_process');
+const path = require('path');
+
+const js_routes_path = path.resolve(__dirname, 'assets/js/fos_js_routes.json');
+const ls = spawn('php', ['app/console', 'fos:js-routing:dump', '--format=json', `--target=${js_routes_path}`]);
+ls.stdout.on('data', (data) => {
+    console.log(`${data}`);
+  });
+ls.stderr.on('data', (data) => {
+    console.log(`error: ${data}`);
+});
+
+//Bundle assets
 var Encore = require('@symfony/webpack-encore');
 var webpack = require('webpack');
 
@@ -10,6 +24,7 @@ Encore
 
     // will create web/build/app.js and web/build/app.css
     .addEntry('app', './assets/js/app.js')
+    .addEntry('diarypage', './assets/js/diarypage.js')
 
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvidejQuery()
@@ -32,6 +47,7 @@ Encore
         'dropzone',
         'foundationjs',
         '@fancyapps/fancybox',
+        'router'
     ])
 
     // allow sass/scss files to be processed
@@ -42,12 +58,15 @@ Encore
     .addPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
 ;
 
-// export the final configuration
+// generate the onfiguration
 var config = Encore.getWebpackConfig();
-var path = require('path');
 
-config.resolve.alias = {
-    'foundationjs': path.resolve(__dirname, 'vendor/zurb/foundation/js/foundation')
-};
+//Alias js dependencies inside PHP deps folder
+config.resolve.alias['foundationjs'] = path.resolve(__dirname, 'vendor/zurb/foundation/js/foundation');
+config.resolve.alias['router$'] = path.resolve(__dirname, 'vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js');
 
+//Allow jQuery from CDN to be used inside js modules
+config.externals['jquery'] = 'jQuery';
+
+//export config
 module.exports = config;

@@ -36,6 +36,7 @@ twig:
         development_warning: "%development_warning%"
         show_site_notice: "%show_site_notice%"
         site_notice_content: "%site_notice_content%"
+        facebook_id: "%facebook_id%"
 
 monolog:
     channels: ["camdram", "mailer"]

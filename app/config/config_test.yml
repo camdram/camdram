@@ -23,13 +23,11 @@ framework:
 
 swiftmailer:
     disable_delivery: true
-
-fos_js_routing:
-    request_context_base_url: /app_test.php
-
 assetic:
     debug: false
     use_controller: false
+fos_js_routing:
+    request_context_base_url: /app_test.php
 
 ewz_recaptcha:
     enabled: false
