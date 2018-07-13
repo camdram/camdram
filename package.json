@@ -1,7 +1,7 @@
 {
   "name": "camdram",
   "version": "1.0.0",
-  "repository": "git@github.com:hoyes/camdram.git",
+  "repository": "git@github.com:camdram/camdram.git",
   "license": "GPL-2.0",
   "devDependencies": {
     "@fancyapps/fancybox": "^3.3.0",
