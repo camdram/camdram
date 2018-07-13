@@ -252,24 +252,28 @@ import Routing from 'router';
             $self.click(function(e) {
                 e.preventDefault();
 
-
                 var $dialog = $('<div/>').attr('title', 'Delete ' + type + '?')
-                    .html(
-                        $('<p/>').text('Are you sure you want to delete the ' + type + ' "' + name + '"?')
-                    )
-                    .dialog({
-                        resizable: false,
-                        modal: true,
-                        buttons: {
-                            'Yes': function() {
-                                document.location = href;
-                                $(this).dialog('close');
-                            },
-                            'No': function() {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
+                    .attr('role', 'dialog')
+                    .addClass('reveal-modal tiny')
+                    .appendTo('body');
+                
+                $dialog.append($('<h5/>').text('Are you sure you want to delete the ' + type + ' "' + name + '"?'))
+                    .append($('<a/>').attr('aria-label', 'Close').addClass('close-reveal-modal').html('&#215;'))
+                    .append($('</p>')
+                        .append($('<a/>').addClass('button').text('Yes').click(function() {
+                            document.location = href;
+                            $(this).foundation('reveal', 'close');
+                        }))
+                        .append(' ')
+                        .append($('<a/>').addClass('button').text('No').click(function() {
+                            $(this).foundation('reveal', 'close');
+                        }))
+                    );
+                
+                $dialog.foundation('reveal', 'open')
+                .on('closed', function() {
+                    $dialog.remove();
+                });
             })
         });
     }

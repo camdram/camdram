@@ -304,6 +304,10 @@ $panel-font-color-alt: #000;
     cursor: pointer;
 }
 
+.reveal-modal {
+  position: fixed;
+}
+
 #dev-warning {
   background:#ffdddd;
   text-align:center;
