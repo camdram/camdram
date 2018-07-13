@@ -11,7 +11,7 @@
 
     <h4>Merge {{ user.name }} (<em>{{ user.email }}</em>) with</h4>
 
-    <form action="{{ path("merge_user", {identifier: user.id, _method : 'patch'}) }}" method="post">
+    {{ form_start(form, {'action' : path("merge_user", {identifier: user.id})}) }}
 
         {{ form_errors(form) }}
 
@@ -29,7 +29,7 @@
             <input type="submit" value="Merge" class="button" />
         </div>
 
-    </form>
+    {{ form_end(form) }}
 
     </div>
 </div>

@@ -78,7 +78,7 @@ class DefaultController extends Controller
         $form = $this->createForm(ForgottenPasswordType::class, ['email' => $email]);
 
         if ($request->getMethod() == 'POST') {
-            $form->handleRequest($this->getRequest());
+            $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
                 $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($data['email']);
@@ -99,15 +99,15 @@ class DefaultController extends Controller
         ));
     }
 
-    public function resetPasswordAction($email, $token)
+    public function resetPasswordAction($email, $token, Request $request)
     {
         $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
         if ($user) {
             $expected_token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
             if ($token == $expected_token) {
                 $form = $this->createForm(ResetPasswordType::class, array());
-                if ($this->getRequest()->getMethod() == 'POST') {
-                    $form->handleRequest($this->getRequest());
+                if ($request->getMethod() == 'POST') {
+                    $form->handleRequest($request);
                     if ($form->isValid()) {
                         $data = $form->getData();
                         $factory = $this->get('security.encoder_factory');
@@ -118,7 +118,6 @@ class DefaultController extends Controller
 
                         return $this->render('account/reset_password_complete.html.twig', array(
                             'email'     => $email,
-                            'services'  => $this->get('external_login.service_provider')->getServices(),
                         ));
                     }
                 }

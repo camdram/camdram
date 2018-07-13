@@ -12,6 +12,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
+use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -107,7 +108,7 @@ class UserController extends FOSRestController
 
         $form = $this->createForm(UserType::class, $entity, ['method' => 'PUT']);
 
-        $form->bind($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -144,7 +145,7 @@ class UserController extends FOSRestController
     public function postAceAction(Request $request, $identifier)
     {
         $form = $this->createForm(AddAclType::class, array('identifier' => $identifier));
-        $form->bind($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $user = $this->getEntity($identifier);
             $data = $form->getData();
@@ -164,12 +165,12 @@ class UserController extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resetPasswordAction($identifier)
+    public function resetPasswordAction($identifier, EmailDispatcher $emailDispatcher)
     {
         $user = $this->getEntity($identifier);
 
         $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
-        $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
+        $emailDispatcher->sendPasswordResetEmail($user, $token);
         $url = $this->generateUrl(
             'acts_camdram_security_reset_password',
             array('email' => $user->getEmail(), 'token' => $token),
@@ -177,7 +178,7 @@ class UserController extends FOSRestController
         );
 
         return $this->render(
-            'ActsCamdramAdminBundle:User:reset-password-complete.html.twig',
+            'admin/user/reset-password-complete.html.twig',
               array('user' => $user, 'url' => $url)
         );
     }
