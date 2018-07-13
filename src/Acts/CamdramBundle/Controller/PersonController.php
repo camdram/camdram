@@ -168,7 +168,7 @@ class PersonController extends AbstractRestController
      * @param $request Request
      *
      * @return $this
-     * @Rest\Link("/people/{identifier}/merge")
+     * @Rest\Post("/people/{identifier}/merge")
      */
     public function mergeAction($identifier, Request $request)
     {
