@@ -13,7 +13,5 @@
     {{ render_diary(diary) }}
 </div>
 
-{% javascripts output='js/diary.js' '@ActsCamdramBundle/Resources/public/javascripts/app/diary.js' %}
-<script src="{{ asset_url }}"></script>
-{% endjavascripts %}
+<script src="{{ asset('build/diarypage.js') }}"></script>
 {% endblock %}

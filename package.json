@@ -1,0 +1,23 @@
+{
+  "name": "camdram",
+  "version": "1.0.0",
+  "repository": "git@github.com:hoyes/camdram.git",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "@fancyapps/fancybox": "^3.3.0",
+    "@symfony/webpack-encore": "^0.20.1",
+    "cookieconsent": "^3.0.6",
+    "dropzone": "^5.5.1",
+    "imports-loader": "^0.8.0",
+    "moment": "2.8.4",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.0.3",
+    "typeahead.js": "^0.11.1",
+    "webpack-notifier": "^1.6.0"
+  },
+  "scripts": {
+    "js-routing": "php app/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json",
+    "build": "SYMFONY_ENV=prod yarn js-routing && yarn encore production",
+    "dev": "SYMFONY_ENV=dev yarn js-routing && yarn encore dev"
+  }
+}

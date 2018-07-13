@@ -27,10 +27,6 @@ swiftmailer:
 fos_js_routing:
     request_context_base_url: /app_test.php
 
-assetic:
-    debug: false
-    use_controller: false
-
 ewz_recaptcha:
     enabled: false
 

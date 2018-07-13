@@ -45,11 +45,11 @@
 
             {% if show.facebookId %}<li>
                 <a href="{{ show.getFacebookUrl() }}" target="_blank">
-                    <img src="{{ asset('/bundles/actscamdramsecurity/images/facebook.png') }}" alt=""/></a>
+                    <img src="{{ asset('images/service/facebook.png') }}" alt=""/></a>
                 </li>{% endif %}
             {% if show.twitterId %}<li>
                 <a href="{{ show.getTwitterUrl() }}" target="_blank">
-                    <img src="{{ asset('/bundles/actscamdramsecurity/images/twitter.png') }}" alt=""/></a>
+                    <img src="{{ asset('images/service/twitter.png') }}" alt=""/></a>
                 </li>{% endif %}
         </ul>
 
@@ -73,7 +73,7 @@
         {% if show.image %}
             <div class="row">
             <div class="large-3 columns text-center">
-                <a itemprop="image" href="{{ show.image.filename | imagine_filter('preview') }}" class="fancybox"><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
+                <a itemprop="image" href="{{ show.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
                 <ul class="inline-list">    	
                 {% if is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
             		{{ include('navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show_image',{identifier:show.slug}), text: 'Remove image', name: show.name, type: 'image'} }) }}

@@ -30,6 +30,29 @@ class ScriptHandler extends SensioScriptHandler
         static::executeCommand($event, $consoleDir, 'camdram:database:refresh', $options['process-timeout']);
     }
 
+    /**
+     * Download the development assets
+     *
+     * @param Event $event
+     */
+    public static function downloadAssets(Event $event)
+    {
+        if (!$event->isDevMode()){
+            return;
+        }
+
+        $options = self::getOptions($event);
+        $consoleDir = self::getConsoleDir($event, 'download assets');
+
+        if (null === $consoleDir) {
+            return;
+        }
+
+        static::writeHeader($event, "Downloading compiled JS/CSS assets");
+
+        static::executeCommand($event, $consoleDir, 'camdram:assets:download', $options['process-timeout']);
+    }
+
     public static function welcomeMessage(Event $event)
     {
         static::writeHeader($event, "Complete!");
@@ -41,14 +64,18 @@ Run <options=bold;fg=yellow>php app/console server:run</> to start Camdram on PH
 The homepage can then be viewed at <options=bold;fg=yellow>http://127.0.0.1:8000/</>
 
 <options=bold;fg=yellow>Database</>
-In order to set you up quickly, a local SQLite database has been created automatically.
+A local SQLite database has been created automatically.
 If you are planning on making changes to Camdram's data model however, it is recommended to set up a 
 dedicated MySQL database instead.
 Visit https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database to find out more
 
+<options=bold;fg=yellow>Javascript/CSS</>
+Minified assets have been downloaded from https://development.camdram.net/.
+If you are planning on doing frontend development you will need to configure the Webpack toolchain.
+Visit https://github.com/camdram/camdram/wiki/Webpack-setup-guide to find out more
+
 <options=bold;fg=yellow>Search</>
-Camdram's search functionality is currently disabled - additional steps are required to set up a
-dedicated search index.
+Search functionality is currently disabled - additional steps are required to set up a search index.
 Visit https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide to find out more.
 
 <options=bold;fg=yellow>Tests</>

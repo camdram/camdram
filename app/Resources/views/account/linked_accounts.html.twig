@@ -1,7 +1,7 @@
 <h5>Linked Accounts</h5>
 {% for u in app.user.externalUsers %}
     <p>
-    <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ u.service ~ '.png') }}" alt="{{ u.service | capitalize }}" title="{{ u.service | capitalize }}" width="19" height="19" />
+    <img src="{{ asset('images/service/' ~ u.service ~ '.png') }}" alt="{{ u.service | capitalize }}" title="{{ u.service | capitalize }}" width="19" height="19" />
     Your Camdram account is linked to the {{ u.service | capitalize }} account {{ u.email }}
     <a href="{{ path('acts_camdram_security_unlink_account', {service: u.service}) }}">(unlink)</a>
     </p>
@@ -10,7 +10,7 @@
 {% for owner in hwi_oauth_resource_owners() %}
     {% if app.user.getExternalUserByService(owner) is null %}
       <p><a href="{{ hwi_oauth_login_url(owner, {_destination: path('get_account')}) }}" class="icon-link">
-              <img src="{{ asset('/bundles/actscamdramsecurity/images/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+              <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
               Link your Camdram account to your {{ owner | capitalize }} account
           </a></p>
     {% endif %}
