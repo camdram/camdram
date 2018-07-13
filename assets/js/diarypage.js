@@ -132,14 +132,15 @@ Camdram.diary.prototype.goto_period = function(year, period) {
     Camdram.diary_server.get_content_by_period(year, period, null, function(data) {
         self.insert_content(data);
         self.is_loading = false;
+        self.change_state({year: year, period: period}, false);
     })
-    this.change_state({year: year, period: period}, false);
+    self.change_state({}, false);
 }
 Camdram.diary.prototype.load_previous_weeks = function(num_weeks) {
     var self = this;
     if (self.is_loading) return;
     self.is_loading = true;
-    var start = this.get_first_date().subtract('days', 7*num_weeks);
+    var start = this.get_first_date().subtract(7*num_weeks, 'days');
     var end = this.get_first_date();
     Camdram.diary_server.get_content_by_dates(start, end, function(data) {
         self.insert_content(data, function() {
@@ -156,7 +157,7 @@ Camdram.diary.prototype.load_next_weeks = function(num_weeks) {
     if (self.is_loading) return;
     self.is_loading = true;
     var start = this.get_last_date();
-    var end = this.get_last_date().add('days', 7*num_weeks);
+    var end = this.get_last_date().add(7*num_weeks, 'days');
     Camdram.diary_server.get_content_by_dates(start, end, function(data) {
         self.is_loading = false;
         self.insert_content(data);
@@ -210,30 +211,32 @@ $(function() {
     var diary = new Camdram.diary();
     var selector = new Camdram.diary_selector(diary);
 
-        diary.on_state_change = function(data, replace) {
-        if (history.pushState) {
-            if (data.year && data.period) {
-                var url = Routing.generate('acts_camdram_diary_period',data);
+    diary.on_state_change = function(data, replace) {
+        if (this.$diary.children('.diary-week').length > 0) {
+            if (history.pushState) {
+                if (data.year && data.period) {
+                    var url = Routing.generate('acts_camdram_diary_period',data);
+                }
+                else if (data.start) {
+                    var url = Routing.generate('acts_camdram_diary_date', data);
+                }
+                else {
+                    var url = Routing.generate('acts_camdram_diary', data);
+                }
+                if (replace === true) {
+                    history.replaceState(data, document.title, url);
+                }
+                else {
+                    history.pushState(data, document.title, url);
+                }
+    
             }
-            else if (data.start) {
-                var url = Routing.generate('acts_camdram_diary_date', data);
-            }
-            else {
-                var url = Routing.generate('acts_camdram_diary', data);
-            }
-            if (replace === true) {
-                history.replaceState(data, document.title, url);
-            }
-            else {
-                history.pushState(data, document.title, url);
-            }
-
+    
+            history.replaceState(
+                {start: diary.get_first_date().format(Camdram.diary_date_format)},
+                document.title, document.location
+            );
         }
-
-        history.replaceState(
-            {start: diary.get_first_date().format(Camdram.diary_date_format)},
-            document.title, document.location
-        );
     }
 
 
