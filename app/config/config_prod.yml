@@ -27,13 +27,3 @@ monolog:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.mailer.log"
             channels: ["mailer"]
-
-
-# Assetic Configuration
-assetic:
-    filters:
-        closure:
-            apply_to: '\.js$'
-            compression_level: ADVANCED_OPTIMIZATIONS
-    workers:
-        cache_busting: ~

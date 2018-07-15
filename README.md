@@ -86,10 +86,11 @@ At a later date, once your local repository has become out of sync with Github (
     $ git fetch upstream
     $ git merge upstream/master
 
-The following commands may need to be run after the above, if the dependencies or database schema have changed.
+The following commands may need to be run after the above, if the dependencies, database schema or JS/CSS assets have changed.
 
     $ composer install
     $ php app/console camdram:database:refresh
+    $ php app/console camdram:assets:download
 
 ## 8) Read the Wiki
 
@@ -97,7 +98,16 @@ The following commands may need to be run after the above, if the dependencies o
 
 The following wiki pages detail how to create a server set-up that's more similar to the version of Camdram at https://www.camdram.net/:
 
+ * [Setting up for JS/CSS development](https://github.com/camdram/camdram/wiki/Webpack-setup-guide)
  * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
  * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide)
  * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
  * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
+
+---
+
+### Copyright
+
+Camdram is released under version two of the [GNU General Public License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html#SEC1).
+
+Copyright (C) 2014 *The Association of Cambridge Theatre Societies* and contributing groups.

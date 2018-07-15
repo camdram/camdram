@@ -7,6 +7,8 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserMerger
 {
@@ -23,16 +25,17 @@ class UserMerger
     public function createForm()
     {
         return $this->formFactory->createBuilder()
-            ->add('email', 'text', array('label' => "Other user's email", 'required' => true))
-            ->add('keep_user', 'choice', array(
+            ->add('email', TextType::class, array('label' => "Other user's email", 'required' => true))
+            ->add('keep_user', ChoiceType::class, array(
                 'label' => 'Keep which user?',
                 'expanded' => true,
                 'choices' => array(
-                    'this' => 'This user',
-                    'other' => 'The other user'
+                    'This user' => 'this',
+                    'The other user' => 'other'
                 ),
                 'data' => 'this'
             ))
+            ->setMethod('PATCH')
             ->getForm();
     }
 

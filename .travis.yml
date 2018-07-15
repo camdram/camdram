@@ -5,6 +5,7 @@ matrix:
     - php: 7.2
   fast_finish: true
 cache:
+  yarn: true
   directories:
   - $HOME/.composer/cache/files
 services:
@@ -15,6 +16,8 @@ before_script:
 - phpenv config-rm xdebug.ini
 - composer selfupdate
 - composer install --no-interaction
+- yarn install
+- yarn build
 script:
 - "./runtests"
 - "./check_dev_setup"

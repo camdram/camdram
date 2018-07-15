@@ -202,7 +202,7 @@ class VenueController extends OrganisationController
      */
     private function getMarkerUrl($letter)
     {
-        return 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='.$letter.'|4499DD|000000';
+        return 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='.$letter.'|4499DD|000000';
     }
 
     /**

@@ -5,6 +5,9 @@ namespace Acts\CamdramAdminBundle\Service;
 use Acts\CamdramBundle\Entity\Person;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactory;
+use Acts\CamdramBundle\Form\Type\EntitySearchType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PeopleMerger
 {
@@ -21,23 +24,23 @@ class PeopleMerger
     public function createForm()
     {
         return $this->formFactory->createBuilder()
-            ->add('search_by', 'choice', array(
+            ->add('search_by', ChoiceType::class, array(
                 'choices' => array(
-                    'person' => 'Search for person',
-                    'slug' => 'Enter slug or URL'
+                    'Search for person' => 'person',
+                    'Enter slug or URL' => 'slug'
                 ),
                 'expanded' => true,
                 'data' => 'person'
             ))
-            ->add('person', 'entity_search', array('other_allowed' => false, 'prefetch' => false,
+            ->add('person', EntitySearchType::class, array('other_allowed' => false, 'prefetch' => false,
                 'required' => false, 'route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
-            ->add('slug', 'text', array('label' => 'Slug or URL', 'required' => false))
-            ->add('keep_person', 'choice', array(
+            ->add('slug', TextType::class, array('label' => 'Slug or URL', 'required' => false))
+            ->add('keep_person', ChoiceType::class, array(
                 'label' => 'Keep which name?',
                 'expanded' => true,
                 'choices' => array(
-                    'this' => 'This name',
-                    'other' => "The other person's name"
+                    'This name' => 'this',
+                    "The other person's name" => 'other'
                 ),
                 'data' => 'this'
             ))

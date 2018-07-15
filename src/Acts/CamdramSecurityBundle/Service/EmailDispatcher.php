@@ -95,7 +95,7 @@ class EmailDispatcher
             ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:password_reset.txt.twig',
+                    'email/password_reset.txt.twig',
                     array(
                         'user' => $user,
                         'token' => $token

@@ -19,7 +19,7 @@
     </div>
 
 
-    <form action="{{ path("merge_person", {identifier: person.slug, _method : 'link'}) }}" method="post">
+    <form action="{{ path("merge_person", {identifier: person.slug}) }}" method="post">
         <p>Please either search for the other person, or enter the slug/URL for the other person:</p>
         {{ form_errors(form) }}
 

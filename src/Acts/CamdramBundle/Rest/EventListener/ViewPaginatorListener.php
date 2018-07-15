@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Rest\EventListener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\Routing\RouterInterface;
@@ -18,7 +20,7 @@ use Acts\DiaryBundle\Diary\Renderer\HtmlRenderer;
  * It catches certain sorts of responses returned by controllers (for convenience) and converts them into a format
  * that the browser can render
  */
-class ViewPaginatorListener
+class ViewPaginatorListener implements EventSubscriberInterface
 {
     /**
      * @var \Symfony\Component\Routing\RouterInterface
@@ -36,6 +38,15 @@ class ViewPaginatorListener
         $this->diary_renderer = $diary_renderer;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+           KernelEvents::VIEW => [
+               ['onKernelView', 105],
+           ]
+        ];
+    }
+
     /**
      * Detects a paginator returned by a Rest view and converts it into a PaginatorCollection. Also detects in a
      * Diary object is returned and sends it the DiaryBundle to be rendered.
@@ -45,10 +56,11 @@ class ViewPaginatorListener
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
         $request = $event->getRequest();
-
+        
         /** @var $view \FOS\RestBundle\View\View  */
         $view = $event->getControllerResult();
         if ($view instanceof View) {
+            
             if ($view->getData() instanceof Pagerfanta) {
                 $paginator = $view->getData();
 

@@ -26,7 +26,7 @@
                       {% endif %}
                       {% if venue.image %}
                             <p>
-                                <a href="{{ venue.image.filename | imagine_filter('preview') }}" class="fancybox">
+                                <a href="{{ venue.image.filename | imagine_filter('preview') }}" data-fancybox>
                                     <img src="{{ venue.image.filename | imagine_filter('thumbnail') }}" />
                                 </a>
                                 <ul class="inline-list">    	
@@ -63,11 +63,11 @@
             <ul class="inline-list right">
                 {% if venue.facebookId %}<li>
                     <a href="{{ venue.getFacebookUrl() }}" target="_blank">
-                        <img src="{{ asset('/bundles/actscamdramsecurity/images/facebook.png') }}" alt=""/> Facebook</a>
+                        <img src="{{ asset('images/service/facebook.png') }}" alt=""/> Facebook</a>
                     </li>{% endif %}
                 {% if venue.twitterId %}<li>
                     <a href="{{ venue.getTwitterUrl() }}" target="_blank">
-                        <img src="{{ asset('/bundles/actscamdramsecurity/images/twitter.png') }}" alt=""/> Twitter</a>
+                        <img src="{{ asset('images/service/twitter.png') }}" alt=""/> Twitter</a>
                     </li>{% endif %}
             </ul>
             <h5>News</h5>

@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  *
@@ -41,8 +44,8 @@ For any enquiries, please contact websupport@camdram.net.";
         $numAdmins = count($repo->findOrganisationAdmins());
         
         $form = $this->createFormBuilder()
-            ->add('subject', 'text')
-            ->add('recipients', 'choice', [
+            ->add('subject', TextType::class)
+            ->add('recipients', ChoiceType::class, [
                 'choices' => [
                     "All Active Users ($numActiveUsers)" => 'active',
                     "Active cam.ac.uk users without an external login ($numPasswordOnlyCam)" => 'password_only_cam',
@@ -50,10 +53,9 @@ For any enquiries, please contact websupport@camdram.net.";
                     "Society and venue admins ($numAdmins)" => 'admins',
                     "Just me (1)" => 'me'
                 ],
-                'choices_as_values' => true,
                 'expanded' => true
             ])
-            ->add('message', 'textarea', ['data' => self::SIGNATURE])
+            ->add('message', TextareaType::class, ['data' => self::SIGNATURE])
             ->getForm();
             
         $form->handleRequest($request);
@@ -62,11 +64,8 @@ For any enquiries, please contact websupport@camdram.net.";
             return $this->sendEmails($form->getData());
         }
         
-        return $this->render(
-        
-            'ActsCamdramAdminBundle:Mailout:index.html.twig',
+        return $this->render('admin/mailout/index.html.twig',
             ['form' => $form->createView()]
-        
         );
     }
     
@@ -113,11 +112,8 @@ For any enquiries, please contact websupport@camdram.net.";
             }
         }
         
-        return $this->render(
-        
-            'ActsCamdramAdminBundle:Mailout:sent.html.twig',
+        return $this->render('admin/mailout/sent.html.twig',
                 ['data' => $data, 'output' => $output]
-        
         );
     }
 }

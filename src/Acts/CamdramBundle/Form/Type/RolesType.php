@@ -23,8 +23,8 @@ class RolesType extends AbstractType
         $builder
             ->add('ordering', ChoiceType::class, array(
                 'choices' => array(
-                    'role_first' => 'Name of role followed by the person (e.g. Sound Designer: James Dooley)',
-                    'name_first' => 'Name of person followed by their role (e.g. James Dooley: Sound Designer)'),
+                    'Name of role followed by the person (e.g. Sound Designer: James Dooley)' => 'role_first',
+                    'Name of person followed by their role (e.g. James Dooley: Sound Designer)' => 'name_first'),
                 'expanded' => true,
                 'data' => 'role_first'
                 ))
@@ -39,9 +39,9 @@ class RolesType extends AbstractType
                 ))
             ->add('type', ChoiceType::class, array(
                 'choices' => array(
-                    'cast' => 'Cast',
-                    'prod' => 'Production Team',
-                    'band' => 'Band/Orchestra'
+                    'Cast' => 'cast',
+                    'Production Team' => 'prod',
+                    'Band/Orchestra' => 'band'
                     )
                 ))
             ->add('Add roles', SubmitType::class)

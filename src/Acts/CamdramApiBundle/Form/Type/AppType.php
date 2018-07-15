@@ -19,9 +19,9 @@ class AppType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $choices = array(
-            'website' => 'Website',
-            'server' => 'Server-based app',
-            'other' => 'Other'
+            'Website' => 'website',
+            'Server-based app' => 'server',
+            'Other' => 'other',
         );
 
         $resolver->setDefaults(array(
