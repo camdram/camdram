@@ -19,7 +19,7 @@
         <div id="{{ a.show.slug }}">
             {%- include 'show/advert_header.html.twig' with
                 {'show': a.show} -%}
-        <p><strong>Looking for</strong>
+        <p><strong>Looking for:</strong>
         <ul>
         {% for p in a.positions|split("\n") %}
             {% if p is not empty %}
