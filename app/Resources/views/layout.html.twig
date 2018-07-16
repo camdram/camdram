@@ -24,7 +24,7 @@
   <header>
     <div class="row">
       <div class="large-3 columns logo">
-        <h1><a href="{{ path('acts_camdram_homepage') }}"><img src="{{ asset('images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
+        <h1><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo.png') }}, {{ asset('images/logo-1.5x.png') }} 1.5, {{ asset('images/logo-2x.png') }} 2x, {{ asset('images/logo-4x.png') }} 4x" src="{{ asset('images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
       </div>
       <div class="large-9 columns search">
           <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
