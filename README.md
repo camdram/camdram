@@ -4,19 +4,23 @@
 [![Deployment Pipeline](https://app.buddy.works/pahoyes/camdram/pipelines/pipeline/144463/badge.svg?token=a793d019566e652178a2b8fb6b590b025de793a9a858bfcc4bb487c57101f994)](https://app.buddy.works/pahoyes/camdram/pipelines/pipeline/144463)
 [![Join the chat at https://gitter.im/camdram/development](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/camdram/development)
 
-Camdram is an open source project developed for the benefit of the Cambridge student theatre community. Anyone can contribute bugs and new features. The steps required to set up a development checkout of Camdram are detailed below. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub.
+Camdram is an [open source](http://opensource.org/docs/osd) project developed by a team of volunteers for the benefit of the Cambridge student theatre community. We use this repository to host the code that runs Camdram and to co-ordinate our work, however we welcome anyone to contribute bugs and suggest new features.
 
-New releases are tagged on the `master` branch every so often and pushed to https://www.camdram.net/. The latest changes can always be seen at https://development.camdram.net/.
+The steps required to set up a development checkout of Camdram are detailed below. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub.
+
+New releases are made on the `master` branch every so often using the GitHub interface. This automatically generates a changelog and pushes the new release into production at https://www.camdram.net/. The latest changes can be seen at https://development.camdram.net/ which always reflects the `HEAD` state of this repository.
 
 If you encounter any problems with the instructions below, please [create a GitHub issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to websupport@camdram.net. We also have a [live chat hosted on Gitter](https://gitter.im/camdram/development) which you can use to quickly and informally get in touch with the development team.
 
 ## 1) Install programs
 
-Install the necessary packages required to run Camdram. PHP version 7.0 or greater is requied.
+You will need to install the necessary package dependencies required to run Camdram. **PHP version 7.0 or greater is requied**.
 
-The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)) - installation methods on other distros and operating systems will vary.
+The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)). Installation methods on other distros and operating systems will vary.
 
-    $ sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json php-mbstring php-xml php-zip
+```
+sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json php-mbstring php-xml php-zip
+```
 
 The steps below assume that the Composer PHP package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/
 
@@ -24,12 +28,16 @@ The steps below assume that the Composer PHP package manager is installed global
 
 The command below will download and set up a Camdram checkout in a new folder called `camdram`:
 
-    composer create-project camdram/camdram camdram dev-master --no-interaction --keep-vcs
+```
+composer create-project camdram/camdram camdram dev-master --no-interaction --keep-vcs
+```
 
 After obtaining a copy of the code, change into the newly created directory and start a local web server:
 
-    cd camdram
-    php app/console server:run
+```
+cd camdram
+php app/console server:run
+```
 
 You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your web browser to see your personal version of Camdram's homepage.
 
@@ -37,7 +45,9 @@ You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/
 
 Camdram has a limited but growing [automated test suite](https://github.com/camdram/camdram/wiki/Running-and-creating-tests), which can be used to ensure your checkout is working and check for certain regressions after making changes. It can be executed by running:
 
-    $ ./runtests --tags ~@search
+```
+./runtests --tags ~@search
+```
 
 The additional parameter above causes the search-related tests to be skipped - if Elasticsearch is installed and configured (see below) then this can be omitted.
 
@@ -47,14 +57,20 @@ Camdram's development model follows the standard idioms used by FOSS projects ho
 
 After creating a personal fork, you can repoint your checkout using the commands below.
 
-    $ git remote rename origin upstream
-    $ git remote add origin git@github.com:your-github-username/camdram.git
+```
+git remote rename origin upstream
+git remote add origin git@github.com:your-github-username/camdram.git
+```
+
+We run Camdram as a meritocracy: anyone who has a reasonable number of pull requests accepted will be given access rights to commit straight to the Camdram repository
 
 ## 5) Write some code
 
 It is a good idea to create a "feature branch" before starting development, so that the pull request will be named appropriately:
 
-    $ git checkout -b my-cool-feature
+```
+git checkout -b my-cool-feature
+```
 
 Some useful tips:
  * The site uses the Symfony PHP framework - [read the documentation](http://symfony.com/doc/3.4/index.html).
@@ -84,14 +100,18 @@ Once your changes are pushed to your Camdram fork on GitHub, you can [submit a p
 
 At a later date, once your local repository has become out of sync with Github (because other people have make changes), you can run the following commands to pull in other people's changes and update your checkout:
 
-    $ git fetch upstream
-    $ git merge upstream/master
+```
+git fetch upstream
+git merge upstream/master
+```
 
 The following commands may need to be run after the above, if the dependencies, database schema or JS/CSS assets have changed.
 
-    $ composer install
-    $ php app/console camdram:database:refresh
-    $ php app/console camdram:assets:download
+```
+composer install
+php app/console camdram:database:refresh
+php app/console camdram:assets:download
+```
 
 ## 8) Read the Wiki
 
