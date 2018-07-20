@@ -66,7 +66,18 @@ class ShowController extends AbstractRestController
 
     public function getAction($identifier)
     {
-        $show = $this->getEntity($identifier);
+        $show = $this->getRepository()->findOneBySlug($identifier);
+        if (!$show) {
+            $slugEntity = $this->getDoctrine()->getRepository('ActsCamdramBundle:ShowSlug')
+                ->findOneBySlug($identifier);
+            if (!$slugEntity) {
+                throw $this->createNotFoundException('That '.$this->type.' does not exist');
+            } else {
+                $show = $this->getRepository()->findOneById($slugEntity->getShowId());
+                return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug()]);
+            }
+        }
+
         $this->denyAccessUnlessGranted('VIEW', $show);
 
         $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
