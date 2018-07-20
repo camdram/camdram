@@ -12,19 +12,42 @@ fos_elastica:
                                 type: path_hierarchy
                                 delimiter: ' '
                                 reverse: true
+                        filter:
+                            start_ngram:
+                                type: edgeNGram
+                                token_chars: [letter, digit, whitespace]
+                                min_gram: 2
+                                max_gram: 255
+                            ascii: #Index both é and e
+                                type: asciifolding
+                                preserve_original: true
+                        char_filter:
+                            strip_punctuation:
+                                type: pattern_replace
+                                #Strip all ASCII chars that aren't alphanumeric or a space. Leave unicode intact
+                                pattern: "((?![A-Za-z0-9 ])[\x00-\x7F])"
+                                replacement: ""
                         analyzer:
                             autocomplete:
+                                # Used for updating indexing
                                 type:      custom
-                                tokenizer: reverse_words
-                                filter: [trim, lowercase]
+                                char_filter: strip_punctuation # "L'Hôtel du libre échange" -> "LHôtel du libre échange"
+                                tokenizer: reverse_words # "LHôtel du libre échange", "du libre échange", "libre échange", "échange"
+                                filter:
+                                    - trim # remove whitespace at start or end
+                                    - lowercase # "lhôtel du libre échange", "du libre échange", "libre échange", "échange"
+                                    - start_ngram # lh, lhô, lhôt, ..., du, "du ", du l..., li, lib, ..., éc, éch, ...
+                                    - ascii # the above, plus: lho, lhot, ..., ec, ech, echa...
                             search:
+                                # Used for querying index
                                 type: custom
-                                tokenizer: keyword
+                                char_filter: strip_punctuation
+                                tokenizer: keyword # look up search term verbatim (don't tokenize)
                                 filter: [trim, lowercase]
             types:
                 show:
                     properties:
-                        name: { type: completion, analyzer: autocomplete, search_analyzer: search }
+                        name: { analyzer: autocomplete, search_analyzer: search }
                         slug: ~
                         start_at: { type: date }
                         rank: { type: integer }
@@ -37,7 +60,8 @@ fos_elastica:
                     indexable_callback: isIndexable
                 society:
                     properties:
-                        name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
+                        name: { analyzer: autocomplete, search_analyzer: search  }
+                        short_name: { analyzer: autocomplete, search_analyzer: search  }
                         slug: ~
                     persistence:
                         driver: orm
@@ -47,7 +71,7 @@ fos_elastica:
                         listener: { enabled: '%search_enable_listeners%' }
                 venue:
                     properties:
-                        name: { type: completion, analyzer: autocomplete, search_analyzer: search  }
+                        name: { analyzer: autocomplete, search_analyzer: search }
                         slug: ~
                     persistence:
                         driver: orm
@@ -57,7 +81,7 @@ fos_elastica:
                         listener: { enabled: '%search_enable_listeners%' }
                 person:
                     properties:
-                        name: { type: completion, analyzer: autocomplete, search_analyzer: search }
+                        name: { analyzer: autocomplete, search_analyzer: search }
                         slug: ~
                         show_count: ~
                         last_active:  { type: date }

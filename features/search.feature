@@ -15,7 +15,7 @@ Feature: Search and autocomplete
     And I should see "Test Society" in the "#content" element
     And I should see "Test Society 2" in the "#content" element
     And I should see "Test Venue" in the "#content" element
-    #And I should see "Test Venue 2" in the "#content" element
+    And I should see "Test Venue 2" in the "#content" element
 
   Scenario: I use the autocomplete callback
     When I go to "/search.json?q=test"
@@ -25,4 +25,4 @@ Feature: Search and autocomplete
     And the response should contain "Test Society"
     And the response should contain "Test Society 2"
     And the response should contain "Test Venue"
-    #And the response should contain "Test Venue 2"
+    And the response should contain "Test Venue 2"
