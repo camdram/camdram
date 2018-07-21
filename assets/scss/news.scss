@@ -3,16 +3,10 @@
   overflow-y:scroll;
   border:1px solid #ccc;
   font-size:0.9em;
-  padding:0.5em;
+  padding:1em;
   clear:both;
-
-  .row {
-    margin:0;
-  }
 }
 
-#content .news-item img.news-source {
-  float:left;
-  margin-right:0.5em;
-  margin-bottom:0em;
+.news-body {
+  margin:0;
 }

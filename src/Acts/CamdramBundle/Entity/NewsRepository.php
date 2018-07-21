@@ -28,7 +28,6 @@ class NewsRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('n')
             ->orderBy('n.posted_at', 'DESC')
-            ->where('n.public = true')
             ->setMaxResults($count)
             ->getQuery();
 
@@ -39,7 +38,6 @@ class NewsRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('n')
             ->orderBy('n.posted_at', 'DESC')
-            ->where('n.public = true')
             ->andWhere('n.entity = :org')
             ->setParameter('org', $org)
             ->setMaxResults($count)
