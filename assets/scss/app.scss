@@ -80,6 +80,9 @@ html, body {
 
 body {
   background:$background-color;
+  -webkit-text-size-adjust:100%; /* Don't mess with our font sizes! */
+  -moz-text-size-adjust:100%;    /* https://github.com/camdram/camdram/issues/442 */
+  -ms-text-size-adjust:100%;
 }
 
 header {
