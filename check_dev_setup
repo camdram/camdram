@@ -2,11 +2,11 @@
 set -e
 export SYMFONY_ENV=dev
 
-# Perform initial installaion with Elasticsearch stopped
-sudo service elasticsearch stop
 # Install deps again, which will create a new parameters.yml with default values
-composer create-project camdram/camdram $HOME/camdramdev dev-master#$TRAVIS_COMMIT --no-interaction --keep-vcs
-cd $HOME/camdramdev
+cp app/config/parameters.yml.dist app/config/parameters.yml
+# Perform database initialisation with Elasticsearch stopped
+sudo service elasticsearch stop
+php app/console camdram:database:refresh
 # Start Elasticsearch and populate index
 sudo service elasticsearch start
 sleep 10
