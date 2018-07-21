@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * API Access Tokens
  *
- * @ORM\Table(name="acts_api_refresh_tokens")
+ * @ORM\Table(name="acts_api_refresh_tokens", options={"collate"="utf8_unicode_ci", "charset"="utf8"})
  * @ORM\Entity
  */
 class RefreshToken extends BaseRefreshToken

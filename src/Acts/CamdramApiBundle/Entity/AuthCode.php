@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * API Access Tokens
  *
- * @ORM\Table(name="acts_api_auth_codes")
+ * @ORM\Table(name="acts_api_auth_codes", options={"collate"="utf8_unicode_ci", "charset"="utf8"})
  * @ORM\Entity
  */
 class AuthCode extends BaseAuthCode
