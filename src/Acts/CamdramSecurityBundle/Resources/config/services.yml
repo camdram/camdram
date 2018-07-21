@@ -6,10 +6,6 @@ services:
         class: Acts\CamdramSecurityBundle\Security\SecurityUtils
         arguments: ['@service_container']
 
-    camdram.security.name_utils:
-        class: Acts\CamdramSecurityBundle\Security\NameUtils
-        arguments: ['@doctrine.orm.entity_manager']
-
     camdram.security.user_linker:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
         arguments: ['@doctrine.orm.entity_manager']

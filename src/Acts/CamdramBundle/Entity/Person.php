@@ -107,14 +107,6 @@ class Person
     private $externalUsers;
 
     /**
-     * @var array
-     *
-     * @ORM\OneToMany(targetEntity="NameAlias", mappedBy="person")
-     * @Serializer\Exclude
-     */
-    private $aliases;
-
-    /**
      * @Serializer\Expose
      * @Serializer\XmlElement(cdata=false)
      */
@@ -250,50 +242,6 @@ class Person
     public function getUsers()
     {
         return $this->users;
-    }
-
-    /**
-     * Add aliases
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\NameAlias $aliases
-     *
-     * @return Person
-     */
-    public function addAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        $this->aliases[] = $aliases;
-
-        return $this;
-    }
-
-    /**
-     * Remove aliases
-     *
-     * @param \Acts\CamdramBundle\Entity\NameAlias $aliases
-     */
-    public function removeAlias(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        $this->aliases->removeElement($aliases);
-    }
-
-    /**
-     * Get aliases
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAliases()
-    {
-        return $this->aliases;
-    }
-
-    public function addAliase(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        //Required by Doctrine as it can't handle irregular plurals...
-    }
-
-    public function removeAliase(\Acts\CamdramBundle\Entity\NameAlias $aliases)
-    {
-        //Required by Doctrine as it can't handle irregular plurals...
     }
 
     public function getEntityType()

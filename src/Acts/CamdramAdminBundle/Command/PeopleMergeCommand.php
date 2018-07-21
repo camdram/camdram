@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Acts\CamdramBundle\Entity\Person;
-use Acts\CamdramBundle\Entity\NameAlias;
 
 class PeopleMergeCommand extends ContainerAwareCommand
 {
@@ -152,11 +151,6 @@ class PeopleMergeCommand extends ContainerAwareCommand
             $u->setPerson($p1);
         }
         $output->writeln('Merged person '.$p2->getName().' into '.$p1->getName());
-
-        $alias = new NameAlias();
-        $p1->addAlias($alias);
-        $alias->setName($p2->getName());
-        $em->persist($alias);
 
         $em->remove($p2);
         $em->flush();
