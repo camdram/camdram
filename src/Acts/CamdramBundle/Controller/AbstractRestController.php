@@ -10,6 +10,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\FOSRestController;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
+use Elastica\Query;
+use Elastica\Query\MultiMatch;
 
 /**
  * Class AbstractRestController
@@ -233,10 +235,38 @@ abstract class AbstractRestController extends FOSRestController
             $request->query->set('limit', 10);
         }
 
-        $repo = $this->getRepository();
-        $qb = $repo->selectAll()->getQuery();
-        $adapter = new DoctrineORMAdapter($qb);
-        $data = new Pagerfanta($adapter);
+        if ($request->get('q')) {
+            $match = new MultiMatch;
+            $match->setQuery($request->get('q'));
+            $match->setFields(['name', 'short_name']);
+
+            $page = $request->get('page');
+            $limit = $request->get('limit');
+            $query = new Query($match);
+            $query->setFrom(($page-1)*$limit)->setSize($limit);
+            //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
+            $query->setSort([
+                'rank' => ['order' => 'desc', 'missing' => PHP_INT_MAX-1]
+            ]);
+
+            $search = $this->get('fos_elastica.index.autocomplete')->createSearch();
+            $search->addType($this->type);
+            $resultSet = $search->search($query);
+
+            $data = [];
+            foreach ($resultSet as $result) {
+                $row = $result->getSource();
+                $row['id'] = $result->getId();
+                $row['entity_type'] = $result->getType();
+                $data[] = $row;
+            }
+        }
+        else {
+            $repo = $this->getRepository();
+            $qb = $repo->selectAll()->getQuery();
+            $adapter = new DoctrineORMAdapter($qb);
+            $data = new Pagerfanta($adapter);
+        }
 
         $view = $this->view($data, 200)
             ->setTemplateVar('result')

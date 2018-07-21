@@ -41,7 +41,7 @@ class RestTest extends WebTestCase
 
         return $user;
     }
-    
+
     public function testSimpleShow()
     {
         $user = $this->createUser();

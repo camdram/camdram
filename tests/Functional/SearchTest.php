@@ -35,6 +35,9 @@ class SearchTest extends WebTestCase
         $this->client = self::createClient(array('environment' => 'test'));
 
         $container = $this->client->getKernel()->getContainer();
+        if (!$container->getParameter('search_enable_listeners')) {
+            $this->markTestSkipped('search_enable_listeners is disabled');
+        }
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
         $container->get('fos_elastica.resetter')->resetAllIndexes();
 
@@ -123,16 +126,25 @@ class SearchTest extends WebTestCase
         $this->entityManager->flush();
     }
 
-    private function doSearch($query, $limit = 10, $page = 1)
+    private function doJsonRequest($url, $params)
     {
-        $this->client->request('GET', '/search.json', 
-                ['q' => $query, 'limit' => $limit, 'page' => $page]);
+        $this->client->request('GET', $url, $params);
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('application/json', $response->headers->get('Content-Type'));
 
         return json_decode($response->getContent(), true);
+    }
+
+    private function doSearch($query)
+    {
+        return $this->doJsonRequest('/search.json', ['q' => $query]);
+    }
+
+    private function doPaginatedSearch($query, $limit, $page)
+    {
+        return $this->doJsonRequest('/search.json', ['q' => $query, 'limit' => $limit, 'page' => $page]);
     }
 
     public function testAutocomplete()
@@ -177,6 +189,10 @@ class SearchTest extends WebTestCase
         $this->assertEquals([], $this->doSearch('tesf'));
         $this->assertEquals([], $this->doSearch('test x'));
         $this->assertEquals([], $this->doSearch('tests'));
+
+        //Test shows-only search
+        $results = $this->doJsonRequest('/shows.json', ['q' => 'test']);
+        $this->assertEquals('Test Show', $results[0]['name']);
     }
 
     public function testPunctuation()
@@ -276,33 +292,33 @@ class SearchTest extends WebTestCase
         $this->entityManager->flush();
         $this->refreshIndex();
 
-        $results = $this->doSearch('test', 1, 1);
+        $results = $this->doPaginatedSearch('test', 1, 1);
         $this->assertEquals(1, count($results));
         $this->assertEquals('Test Show 100', $results[0]['name']);
 
-        $results = $this->doSearch('test', 100, 1);
+        $results = $this->doPaginatedSearch('test', 100, 1);
         $this->assertEquals(100, count($results));
         for ($i = 0; $i < 100; $i++) {
             $this->assertEquals('Test Show '.(100 - $i), $results[$i]['name']);
         }
 
         for ($page = 1; $page <= 10; $page++) {
-            $results = $this->doSearch('test', 10, $page);
+            $results = $this->doPaginatedSearch('test', 10, $page);
             $this->assertEquals(10, count($results));
             for ($i = 0; $i < 10; $i++) {
                $this->assertEquals('Test Show '.(100 - (($page-1) * 10) - $i), $results[$i]['name']);
             }
         }
 
-        $results = $this->doSearch('test', 101, 1);
+        $results = $this->doPaginatedSearch('test', 101, 1);
         $this->assertEquals(100, count($results));
         for ($i = 0; $i < 100; $i++) {
             $this->assertEquals('Test Show '.(100 - $i), $results[$i]['name']);
         }
 
-        $this->assertEquals([], $this->doSearch('test', 0, 1));
-        $this->assertEquals([], $this->doSearch('test', 10, 11));
-        $this->assertEquals([], $this->doSearch('test', 10, 99));
+        $this->assertEquals([], $this->doPaginatedSearch('test', 0, 1));
+        $this->assertEquals([], $this->doPaginatedSearch('test', 10, 11));
+        $this->assertEquals([], $this->doPaginatedSearch('test', 10, 99));
     }
 
     public function testPerson()
@@ -317,6 +333,9 @@ class SearchTest extends WebTestCase
         $this->assertEquals('John Smith', $results[0]['name']);
 
         $results = $this->doSearch('john smith');
+        $this->assertEquals('John Smith', $results[0]['name']);
+
+        $results = $this->doJsonRequest('/people.json', ['q' => 'joh']);
         $this->assertEquals('John Smith', $results[0]['name']);
     }
 
@@ -341,6 +360,9 @@ class SearchTest extends WebTestCase
 
         $results = $this->doSearch('cua');
         $this->assertEquals($name, $results[0]['name']);
+
+        $results = $this->doJsonRequest('/societies.json', ['q' => 'cua']);
+        $this->assertEquals($name, $results[0]['name']);
     }
 
     public function testVenue()
@@ -358,6 +380,9 @@ class SearchTest extends WebTestCase
         $this->assertEquals('ADC Theatre', $results[0]['name']);
 
         $results = $this->doSearch('theat');
+        $this->assertEquals('ADC Theatre', $results[0]['name']);
+
+        $results = $this->doJsonRequest('/venues.json', ['q' => 'adc']);
         $this->assertEquals('ADC Theatre', $results[0]['name']);
     }
 }
