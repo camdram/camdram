@@ -110,6 +110,7 @@ class RoleController extends FOSRestController
             $show->removeRole($role);
             $role_repo->removeRoleFromOrder($role);
             $person->removeRole($role);
+            $em->remove($role);
             
             // Ensure the person is not an orphan.
             if ($person->getRoles()->isEmpty()) {
