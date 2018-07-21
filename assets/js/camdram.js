@@ -1,5 +1,6 @@
 import Dropzone from 'dropzone';
 import Routing from 'router';
+import Bloodhound from 'typeahead.js'
 
 ;(function($, window) {
     String.prototype.truncate = function(length) {
@@ -175,11 +176,25 @@ import Routing from 'router';
             $self.trigger('entitysearch:changed', [datum]);
         };
 
-        $self.typeahead({
+        console.log(Routing.generate(options.route, {q: '%QUERY', _format: 'json'}))
+
+        var engine = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
+            remote: {
+                url: Routing.generate(options.route, {q: 'QUERY', _format: 'json'}),
+                wildcard: 'QUERY',
+                filter: filter
+            }
+        });
+        engine.initialize();
+
+        $self.typeahead(null, {
            name: options.route,
            valueKey: 'name',
-           prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
-           remote: {url: Routing.generate(options.route, {q: 'QUERY', _format: 'json', autocomplete: true}), wildcard: 'QUERY', filter: filter}
+           source: engine,
+           display: 'name'
        }).on('typeahead:autocompleted', onValueSelect).on('typeahead:selected', onValueSelect);
 
        $(this).change(function() {

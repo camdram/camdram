@@ -39,7 +39,7 @@ $(function() {
     }).on('paste', function() {
             Camdram.autocomplete.suggest(this);
     });
-    $('#search_form .results li').on('mousemove', function() {
+    $('#search_form .results').on('mousemove', 'li', function() {
         if (!$(this).hasClass('active')) {
             $("#search_form .results ul li").removeClass('active');
             $(this).addClass('active');
@@ -66,15 +66,16 @@ Camdram.autocomplete.shiftOption = function(field, down) {
     if($results.length == 0) return;
     // Find currently selected one
     var current = $results.filter('.active');
-    current.removeClass('active');
 
     if (down && current.length == 0) {
         $results.first().addClass('active');
     }
     else if (down && current.next().length > 0) {
+        current.removeClass('active');
         current.next().addClass('active');
     }
     else if (!down && current.prev().length > 0) {
+        current.removeClass('active');
         current.prev().addClass('active');
     }
 }

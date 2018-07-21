@@ -109,6 +109,11 @@ header {
 
   ul {
     list-style-position: inside;
+    padding-left:20px;
+  }
+
+  .inline-list {
+    padding-left:0;
   }
 
   img {
@@ -377,8 +382,4 @@ $panel-font-color-alt: #000;
   h3 {
     color:#000000;
   }
-}
-
-ul {
-  padding-left:20px;
 }
