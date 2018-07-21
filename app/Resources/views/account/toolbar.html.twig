@@ -18,17 +18,9 @@
             {{ main_user.displayName }}
         </a>
         <ul id="account-dropdown" class="topbar-dropdown">
-            {% if main_user.person %}<li><a href="{{ path('get_person', {identifier: main_user.person.slug }) }}"><i class="fa fa-user fa-fw"></i> My profile</a></li>{% endif %}
+            {% if main_user.person %}<li><a href="{{ path('get_person', {identifier: main_user.person.slug }) }}"><i class="fa fa-user fa-fw"></i> My public profile</a></li>{% endif %}
 
             {% if main_user.type == 'native' %}
-                {% for service in ['facebook'] %}
-                    {% if not main_user.getExternalUserByService(service) %}
-                    <li><a href="{{ hwi_oauth_login_url(service) }}" class="icon-link">
-                        <img src="{{ asset('images/service/' ~ service ~ '.png') }}" srcset="{{ asset('images/service/' ~ service ~ '.png') }}, {{ asset('images/service/' ~ service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ service ~ '-76.png') }} 4x" alt="{{ service | capitalize }}" title="{{ service | capitalize }}" width="19" height="19" />
-                        Link account to {{ service | capitalize }}
-                    </a></li>
-                    {% endif %}
-                {% endfor %}
                 <li><a href="{{ path('get_account') }}"><i class="fa fa-cogs fa-fw"></i> Account Settings</a></li>
             {% endif %}
             <li><a href="{{ path('_security_logout') }}"><i class="fa fa-sign-out fa-fw"></i> Log out</a></li>

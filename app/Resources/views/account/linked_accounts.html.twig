@@ -15,7 +15,7 @@
     {% if app.user.getExternalUserByService(owner) is null %}
       <li><a href="{{ hwi_oauth_login_url(owner, {_destination: path('get_account')}) }}" class="icon-link icon-link-textual">
               <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
-              Connect with {{ owner | capitalize }}
+              Link account with {{ owner | capitalize }}
           </a></li>
     {% endif %}
 {% endfor %}
