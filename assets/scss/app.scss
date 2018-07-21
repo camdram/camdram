@@ -237,22 +237,18 @@ ul.topbar-dropdown {
           color: white;
           display:inline-block;
           padding: 7px 15px;
-          font-size:0.8em;
-          font-weight:bold;
+          font-size: 0.8em;
+          font-weight: bold;
 
           &.icon-link {
-            padding:7px 3px;
-
-            &:hover {
-              @include brighten(1.5);
-            }
+            padding: 0;
           }
         }
 
         &#login-link {
           padding-right:5px;
 
-          > a {
+          > a:first-child {
             padding-right:5px;
           }
         }
@@ -263,6 +259,51 @@ ul.topbar-dropdown {
         display:block;
         float:left;
       }
+    }
+  }
+}
+
+a.icon-link {
+  &.icon-link-textual {
+    padding-right: 0.5em;
+    border-radius: 4px;
+    background-color: $dark-grey;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin: 1px 0;
+
+    &:hover {
+      background: $light-grey;
+    }
+  }
+
+  > img {
+    padding: 4px;
+    border-radius: 2px;
+    box-sizing: content-box;
+    margin-bottom: 0 !important;
+
+    &[src*=facebook] {
+      background-color: #4267B2;
+    }
+
+    &[src*=google] {
+      background-color: #fff;
+    }
+
+    &[src*=raven] {
+      background-color: #d3d3d3;
+    }
+
+    &[src*=twitter] {
+      background-color: #1DA1F2;
+    }
+  }
+
+  &:not(.icon-link-textual):hover {
+    > img {
+      @include brighten(1.5);
     }
   }
 }

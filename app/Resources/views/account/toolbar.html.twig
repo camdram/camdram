@@ -24,7 +24,7 @@
                 {% for service in ['facebook'] %}
                     {% if not main_user.getExternalUserByService(service) %}
                     <li><a href="{{ hwi_oauth_login_url(service) }}" class="icon-link">
-                        <img src="{{ asset('images/service/' ~ service ~ '.png') }}" alt="{{ service | capitalize }}" title="{{ service | capitalize }}" width="19" height="19" />
+                        <img src="{{ asset('images/service/' ~ service ~ '.png') }}" srcset="{{ asset('images/service/' ~ service ~ '.png') }}, {{ asset('images/service/' ~ service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ service ~ '-76.png') }} 4x" alt="{{ service | capitalize }}" title="{{ service | capitalize }}" width="19" height="19" />
                         Link account to {{ service | capitalize }}
                     </a></li>
                     {% endif %}
@@ -37,10 +37,10 @@
 {% else %}
     <li id="login-link">
 
-        <a href="{{ path('acts_camdram_security_login') }}">Log in </a>
+        <a href="{{ path('acts_camdram_security_login') }}">Log in with </a>
             {% for owner in hwi_oauth_resource_owners() %}
                <a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link">
-                    <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+                    <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
                </a>
             {% endfor %}
     </li>

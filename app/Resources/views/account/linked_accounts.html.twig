@@ -1,4 +1,7 @@
 <h5>Linked Accounts</h5>
+
+<p>Linked accounts can be used to log into your Camdram account.</p>
+
 {% for u in app.user.externalUsers %}
     <p>
     <img src="{{ asset('images/service/' ~ u.service ~ '.png') }}" alt="{{ u.service | capitalize }}" title="{{ u.service | capitalize }}" width="19" height="19" />
@@ -7,11 +10,13 @@
     </p>
 {% endfor %}
 
+<ul class="inline-list">
 {% for owner in hwi_oauth_resource_owners() %}
     {% if app.user.getExternalUserByService(owner) is null %}
-      <p><a href="{{ hwi_oauth_login_url(owner, {_destination: path('get_account')}) }}" class="icon-link">
-              <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
-              Link your Camdram account to your {{ owner | capitalize }} account
-          </a></p>
+      <li><a href="{{ hwi_oauth_login_url(owner, {_destination: path('get_account')}) }}" class="icon-link icon-link-textual">
+              <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+              Connect with {{ owner | capitalize }}
+          </a></li>
     {% endif %}
 {% endfor %}
+</ul>
