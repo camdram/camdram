@@ -46,10 +46,10 @@ You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/
 Camdram has a limited but growing [automated test suite](https://github.com/camdram/camdram/wiki/Running-and-creating-tests), which can be used to ensure your checkout is working and check for certain regressions after making changes. It can be executed by running:
 
 ```
-./runtests --tags ~@search
+./runtests --exclude-search
 ```
 
-The additional parameter above causes the search-related tests to be skipped - if Elasticsearch is installed and configured (see below) then this can be omitted.
+The additional parameter above can be omitted if Elasticsearch is installed and configured (see below).
 
 ## 4) Create a fork
 
