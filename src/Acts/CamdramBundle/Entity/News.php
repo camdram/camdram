@@ -54,37 +54,6 @@ class News
      */
     private $body;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="num_comments", type="integer", nullable=true)
-     */
-    private $num_comments;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="num_likes", type="integer", nullable=true)
-     */
-    private $num_likes;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="public", type="boolean", nullable=false)
-     */
-    private $public = true;
-
-    /** @var array
-     * @ORM\OneToMany(targetEntity="NewsLink", mappedBy="news", cascade={"all"})
-     */
-    private $links;
-
-    /** @var array
-     * @ORM\OneToMany(targetEntity="NewsMention", mappedBy="news", cascade={"all"})
-     */
-    private $mentions;
-
     /** @var \DateTime
      * @ORM\Column(name="posted_at", type="datetime", nullable=false)
      */
@@ -178,54 +147,6 @@ class News
     }
 
     /**
-     * Set num_comments
-     *
-     * @param int $numComments
-     *
-     * @return News
-     */
-    public function setNumComments($numComments)
-    {
-        $this->num_comments = $numComments;
-
-        return $this;
-    }
-
-    /**
-     * Get num_comments
-     *
-     * @return int
-     */
-    public function getNumComments()
-    {
-        return $this->num_comments;
-    }
-
-    /**
-     * Set num_likes
-     *
-     * @param int $numLikes
-     *
-     * @return News
-     */
-    public function setNumLikes($numLikes)
-    {
-        $this->num_likes = $numLikes;
-
-        return $this;
-    }
-
-    /**
-     * Get num_likes
-     *
-     * @return int
-     */
-    public function getNumLikes()
-    {
-        return $this->num_likes;
-    }
-
-    /**
      * Set entity
      *
      * @param \Acts\CamdramBundle\Entity\Organisation $entity
@@ -248,71 +169,13 @@ class News
     {
         return $this->entity;
     }
-
-    /**
-     * Set public
-     *
-     * @param bool $public
-     *
-     * @return News
-     */
-    public function setPublic($public)
-    {
-        $this->public = $public;
-
-        return $this;
-    }
-
-    /**
-     * Get public
-     *
-     * @return bool
-     */
-    public function getPublic()
-    {
-        return $this->public;
-    }
+  
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->links = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_at = new \DateTime();
-    }
-
-    /**
-     * Add links
-     *
-     * @param \Acts\CamdramBundle\Entity\NewsLink $links
-     *
-     * @return News
-     */
-    public function addLink(\Acts\CamdramBundle\Entity\NewsLink $links)
-    {
-        $this->links[] = $links;
-
-        return $this;
-    }
-
-    /**
-     * Remove links
-     *
-     * @param \Acts\CamdramBundle\Entity\NewsLink $links
-     */
-    public function removeLink(\Acts\CamdramBundle\Entity\NewsLink $links)
-    {
-        $this->links->removeElement($links);
-    }
-
-    /**
-     * Get links
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLinks()
-    {
-        return $this->links;
     }
 
     /**
@@ -361,40 +224,6 @@ class News
     public function getCreatedAt()
     {
         return $this->created_at;
-    }
-
-    /**
-     * Add mentions
-     *
-     * @param \Acts\CamdramBundle\Entity\NewsMention $mentions
-     *
-     * @return News
-     */
-    public function addMention(\Acts\CamdramBundle\Entity\NewsMention $mentions)
-    {
-        $this->mentions[] = $mentions;
-
-        return $this;
-    }
-
-    /**
-     * Remove mentions
-     *
-     * @param \Acts\CamdramBundle\Entity\NewsMention $mentions
-     */
-    public function removeMention(\Acts\CamdramBundle\Entity\NewsMention $mentions)
-    {
-        $this->mentions->removeElement($mentions);
-    }
-
-    /**
-     * Get mentions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMentions()
-    {
-        return $this->mentions;
     }
 
     /**

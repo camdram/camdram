@@ -54,8 +54,7 @@ doctrine:
                 user:     "%database_user%"
                 password: "%database_pass%"
                 path:     "%kernel.root_dir%/data/orm.db"
-                charset:  UTF8
-                schema_filter: ~^(?!phpcr_)~
+                charset:  utf8mb4
                 mapping_types:
                     enum:       string
 

@@ -1,48 +1,37 @@
 <div class="row news-item">
-    {% if item.picture and item.links|length == 0 %}
-    <div class="small-2 columns">
-            <img src="{{ item.picture }}"/>
-    </div>
-    <div class="small-10 columns">
-    {% else %}
     <div class="large-12 columns">
-    {% endif %}
+        <a href="{{ item.getLink() }}" class="right icon-link" target="_blank">
+            <img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" class="news-source"/>
+        </a>
         <p>
-            <strong>
-                <a href="{{ item.getLink() }}" target="_blank" class="icon-link"><img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" class="news-source"/></a>
-
-                {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
-                    {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
-                    {{ item.entity.name }}</a> posted:</strong>
-            {{ item.body | detect_links }}
+            {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
+            {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
+            <strong>{{ item.entity.name }}</strong></a> 
+            
+            <em>at {{ item.getPostedAt() | date('H:i \\o\\n jS F') }}</em>
         </p>
-        <p><a href="{{ item.getLink() }}" target="_blank"><em>{{ item.getPostedAt() | date('jS F Y g:ia') }}</em></a></p>
-        {% for link in item.links %}
-            <div class="news-link">
-                <div class="row">
 
-                {% if link.picture %}
-                <div class="small-3 columns">
-                    <a href="{{ link.link }}" target="_blank"><img src="{{ link.picture }}"/></a>
-                </div>
-                <div class="small-9 columns">
-                {% else %}
-                <div class="small-12 columns">
-                {% endif %}
-                        <h6><a href="{{ link.link }}" target="_blank">{{ link.name ?: 'Find out more.' }}</a></h6>
-                        {% if link.description %}
-                            <p>{{ link.description | detect_links }}</p>
-                            {% if link.source and link.mediaType == 'video' %}
-                                <div class="flex-video news_media">
-                                    <embed type="application/x-shockwave-flash" src="{{ link.source }}" width="400" height="350" style="display: block;" bgcolor="#FFFFFF" quality="high" scale="scale" allowfullscreen="true" allowscriptaccess="never" salign="tl" wmode="opaque" flashvars="width=400&amp;height=350">
-                                </div>
-                            {% endif %}
-                        {% endif %}
-                </div>
-                </div>
+        
+        {% if item.picture %}
+        <div class="row">
+            <div class="large-3 small-4 columns">
+                <a href="{{ item.getLink() }}" class="right" target="_blank">
+                    <img src="{{ item.picture }}"/>
+                </a>
             </div>
-        {% endfor %}
+            <div class="large-9 small-8 columns">
+        {% endif %}
+        
+        <p class="news-body">
+            {{ item.body | raw }}
+        </p>
+    
+        {% if item.picture %}
+            </div>
+        </div>
+        {% endif %}
+
+        <hr />
     </div>
-    <hr />
 </div>
 
