@@ -118,47 +118,6 @@ class ShowController extends AbstractRestController
     }
 
     /**
-     * Utility function for adding a person to this show. A new person
-     * record is created if they don't already exist.
-     *
-     * @param Show $show This show.
-     * @param string $role_type The type of role ('cast', 'band', 'prod')
-     * @param string $role_name Director, Producer, Macbeth..
-     * @param string $person_name The person's name
-     */
-    private function addRoleToShow(Show $show, $role_type, $role_name, $person_name)
-    {
-        $role = new Role();
-        $role->setType($role_type);
-        $role->setRole($role_name);
-
-        $em = $this->getDoctrine()->getManager();
-        $person_repo = $em->getRepository('ActsCamdramBundle:Person');
-
-        /* Try and find the person. Add a new person if they don't exist. */
-        $person = $person_repo->findCanonicalPerson($person_name);
-        if ($person == null) {
-            $person = new Person();
-            $person->setName($person_name);
-            $slug = Sluggable\Urlizer::urlize($person_name, '-');
-            $person->setSlug($slug);
-            $em->persist($person);
-        }
-        $role->setPerson($person);
-        /* Append this role to the list of roles of this type. */
-        $order = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')
-            ->getMaxOrderByShowType($show, $role->getType());
-        $role->setOrder(++$order);
-        $role->setShow($show);
-        $em->persist($role);
-
-        $person->addRole($role);
-        $show->addRole($role);
-        $em->flush();
-    }
-
-
-    /**
      * Render the Admin Panel
      */
     public function adminPanelAction(Show $show)
