@@ -10,6 +10,7 @@ use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\Behat\Context\Step;
+use Behat\Behat\Tester\Exception\PendingException;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Acts\CamdramAdminBundle\Service\DatabaseTools;
@@ -22,12 +23,16 @@ use FOS\ElasticaBundle\Elastica\Index;
  */
 class SymfonyContext extends RawMinkContext
 {
+    private $listenersEnabled;
+
+
     private $elasticaResetter;
 
     private $elasticaIndex;
 
-    public function __construct(Resetter $elasticaResetter, Index $elasticaIndex)
+    public function __construct($listenersEnabled, Resetter $elasticaResetter, Index $elasticaIndex)
     {
+        $this->listenersEnabled = $listenersEnabled;
         $this->elasticaResetter = $elasticaResetter;
         $this->elasticaIndex = $elasticaIndex;
     }
@@ -68,11 +73,13 @@ class SymfonyContext extends RawMinkContext
     {
         Time::mockDateTime(new \DateTime('2000-07-03 15:30:00'));
         StaticDriver::beginTransaction();
-        try
-        {
+
+        if ($this->listenersEnabled) {
             $this->elasticaResetter->resetAllIndexes();
         } 
-        catch (\Elastica\Exception\ExceptionInterface $ex) {
+        elseif ($scope->getScenario()->hasTag('search')
+                || $scope->getFeature()->hasTag('search')) {
+            throw new PendingException('Elasticsearch not configured');
         }
     }
 

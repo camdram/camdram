@@ -79,8 +79,7 @@ Search functionality is currently disabled - additional steps are required to se
 Visit https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide to find out more.
 
 <options=bold;fg=yellow>Tests</>
-You can execute <options=bold;fg=yellow>./runtests --exclude-search</> to run the automated test suite.
-The argument can be omitted if Elasticsearch is installed and configured.
+You can execute <options=bold;fg=yellow>./runtests</> to run the automated test suite.
 
 <options=bold;fg=yellow>Useful resources</>
  * https://gitter.im/camdram/development - Chat with a developer
