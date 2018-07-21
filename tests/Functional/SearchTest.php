@@ -321,6 +321,17 @@ class SearchTest extends WebTestCase
         $this->assertEquals([], $this->doPaginatedSearch('test', 10, 99));
     }
 
+    public function testLongName()
+    {
+        $longName = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra euismod justo sed malesuada. '
+            . 'Fusce facilisis, neque nec faucibus blandit, sem orci auctor metus, ac luctus diam elit eget sapien.';
+        $this->createShow($longName, '2000-01-01');
+        $this->refreshIndex();
+
+        $results = $this->doSearch($longName);
+        $this->assertEquals($longName, $results[0]['name']);
+    }
+
     public function testPerson()
     {
         $this->createPerson('John Smith');
