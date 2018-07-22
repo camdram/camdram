@@ -62,15 +62,6 @@ class Performance
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="excludedate", type="date", nullable=true)
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     */
-    private $exclude_date;
-
-    /**
-     * @var \DateTime
-     *
      * @ORM\Column(name="time", type="time", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
@@ -127,8 +118,6 @@ class Performance
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Get show_id
      *
      * @return int
@@ -139,7 +128,6 @@ class Performance
     }
 
     /**
->>>>>>> master
      * Set start_date
      *
      * @param \DateTime $startDate
@@ -185,30 +173,6 @@ class Performance
     public function getEndDate()
     {
         return $this->end_date;
-    }
-
-    /**
-     * Set exclude_date
-     *
-     * @param \DateTime $excludeDate
-     *
-     * @return Performance
-     */
-    public function setExcludeDate($excludeDate)
-    {
-        $this->exclude_date = $excludeDate;
-
-        return $this;
-    }
-
-    /**
-     * Get exclude_date
-     *
-     * @return \DateTime
-     */
-    public function getExcludeDate()
-    {
-        return $this->exclude_date;
     }
 
     /**
@@ -325,36 +289,18 @@ class Performance
      * Generate a more useful view of the performance dates, making it easier
      * to render the diary page.
      *
-     * @return
+     * @return An array of diary entries (currently just one).
      */
     public function getDiaryEntries()
     {
         $entries = array();
         $entry = array();
 
-        if (($this->exclude_date > $this->start_date) &&
-            ($this->exclude_date < $this->end_date)) {
-            /* If there's a valid exclude date then they'll be two entries */
-            $entry['startdate'] = $this->start_date;
-            $entry['enddate'] = $this->exclude_date->modify('-1 day');
-            /* Dates are inclusive */
-            $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
+        $entry['startdate'] = $this->start_date;
+        $entry['enddate'] = $this->end_date;
+        $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
 
-            $entries[] = $entry;
-
-            $entry['startdate'] = $this->exclude_date->modify('+1 day');
-            $entry['enddate'] = $this->end_date;
-            $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
-
-            $entries[] = $entry;
-        } else {
-            /* Just one simple entry */
-            $entry['startdate'] = $this->start_date;
-            $entry['enddate'] = $this->end_date;
-            $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
-
-            $entries[] = $entry;
-        }
+        $entries[] = $entry;
 
         return $entries;
     }

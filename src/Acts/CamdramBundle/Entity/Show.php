@@ -866,30 +866,6 @@ class Show implements OwnableInterface
         return $this->end_at;
     }
 
-    public function fixPerformanceExcludes()
-    {
-        foreach ($this->getPerformances() as $performance) {
-            /** @var $performance \Acts\CamdramBundle\Entity\Performance */
-            if ($performance->getExcludeDate()) {
-                if ($performance->getStartDate() > $performance->getExcludeDate() || $performance->getEndDate() < $performance->getExcludeDate()) {
-                    $performance->setExcludeDate(null);
-                } else {
-                    $p2 = clone $performance;
-                    $start = clone $p2->getExcludeDate();
-                    $start->add(new \DateInterval('P1D'));
-                    $p2->setStartDate($start);
-                    $p2->setExcludeDate(null);
-                    $this->performances[] = $p2;
-
-                    $end = clone $performance->getExcludeDate();
-                    $end->sub(new \DateInterval('P1D'));
-                    $performance->setEndDate($end);
-                    $performance->setExcludeDate(null);
-                }
-            }
-        }
-    }
-
     public function getMultiVenue()
     {
         if ($this->multi_venue) {
@@ -1519,7 +1495,6 @@ class Show implements OwnableInterface
         foreach ($this->getPerformances() as $performance) {
             $current_day = clone $performance->getStartDate(); //ate'] . " " . $perf['time']);
             $end_day = $performance->getEndDate(); //ate'] . " " . $perf['time']);
-            $exclude = $performance->getExcludeDate();
             $time = $performance->getTime();
             if ($performance->getVenue() != null) {
                 $venue = $performance->getVenue()->getName();
@@ -1527,12 +1502,10 @@ class Show implements OwnableInterface
                 $venue = $performance->getOtherVenue();
             }
             while ($current_day <= $end_day) {
-                if ($current_day != $exclude) {
-                    $datetime = clone $current_day;
+                $datetime = clone $current_day;
 
-                    $datetime->setTime($time->format('G'), $time->format('i'), $time->format('s')); //  Eugh. PHP doesn't seem to give a better way
-                    array_push($ret, array('date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue));
-                }
+                $datetime->setTime($time->format('G'), $time->format('i'), $time->format('s')); //  Eugh. PHP doesn't seem to give a better way
+                array_push($ret, array('date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue));
                 $current_day = clone $current_day;
                 $current_day->modify('+1 day');
             }
