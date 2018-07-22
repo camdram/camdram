@@ -30,16 +30,6 @@ class ShowController extends AbstractRestController
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
     }
 
-    protected function getEntity($identifier)
-    {
-        $show = parent::getEntity($identifier);
-        //In order to simplify the interface, phasing out the 'excluding' field in performance date ranges. The method
-        //below replaces any performance range with an 'excluding' field with two performance ranges.
-        $show->fixPerformanceExcludes();
-
-        return $show;
-    }
-
     protected function getForm($show = null, $method = 'POST')
     {
         if (is_null($show)) {

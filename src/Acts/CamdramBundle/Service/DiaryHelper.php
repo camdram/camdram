@@ -51,26 +51,10 @@ class DiaryHelper
             $event->setVenueLink($this->router->generate('get_venue', array('identifier' => $performance->getVenue()->getSlug())));
         }
 
-        if ($performance->getStartDate() < $performance->getExcludeDate() && $performance->getExcludeDate() < $performance->getEndDate()) {
-            $end1 = clone $performance->getExcludeDate();
-            $end1->modify('-1 day');
-            $start2 = clone $performance->getExcludeDate();
-            $start2->modify('+1 day');
+        $event->setStartDate($performance->getStartDate());
+        $event->setEndDate($performance->getEndDate());
 
-            $event2 = clone $event;
-            $event->setStartDate($performance->getStartDate());
-            $event->setEndDate($end1);
-            $event2->setStartDate($start2);
-            $event2->setEndDate($performance->getEndDate());
-            $event2->setUid($performance->getId().'_2@camdram.net');
-
-            return array($event, $event2);
-        } else {
-            $event->setStartDate($performance->getStartDate());
-            $event->setEndDate($performance->getEndDate());
-
-            return array($event);
-        }
+        return array($event);
     }
 
     /**

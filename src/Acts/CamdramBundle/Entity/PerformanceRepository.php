@@ -66,10 +66,6 @@ class PerformanceRepository extends EntityRepository
                 }
 
                 $count += $end_at->diff($start_at)->d + 1;
-                if ($p->getExcludeDate() && $p->getExcludeDate()->format('u') > 0
-                    && $p->getExcludeDate() > $start_at && $p->getExcludeDate() < $end_at) {
-                    $count--;
-                }
             }
         }
 

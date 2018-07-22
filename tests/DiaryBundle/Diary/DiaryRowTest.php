@@ -88,25 +88,6 @@ class DiaryRowTest extends TestCase
         $this->assertEquals(2, $item->getNumberOfDays());
     }
 
-    public function testAddMultiDayEvent_ExcludeDate()
-    {
-        $event = new MultiDayEvent();
-        $event->setStartDate(new \DateTime('2014-02-03'));
-        $event->setExcludeDate(new \DateTime('2014-02-05'));
-        $event->setEndDate(new \DateTime('2014-02-10'));
-        $event->setStartTime(new \DateTime('14:00'));
-        $event->setEndTime(new \DateTime('15:00'));
-        $this->row->addEvent($event);
-
-        $items = $this->row->getItems();
-        $this->assertEquals(2, $items[2]->getStartIndex());
-        $this->assertEquals(3, $items[2]->getEndIndex());
-        $this->assertEquals(2, $items[2]->getNumberOfDays());
-        $this->assertEquals(5, $items[5]->getStartIndex());
-        $this->assertEquals(6, $items[5]->getEndIndex());
-        $this->assertEquals(2, $items[5]->getNumberOfDays());
-    }
-
     public function testCanAccept_WithinTimeThreshold()
     {
         $event = new SingleDayEvent();

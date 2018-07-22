@@ -119,30 +119,14 @@ class DiaryRow
             $item->setStartIndex($this->calculateIndex($event->getDate()));
             $this->addItem($item);
         } elseif ($event instanceof MultiDayEventInterface) {
-            if (($event->getStartDate() < $event->getExcludeDate()) &&
-                ($event->getExcludeDate() < $event->getEndDate())) {
-                $start_index = $this->calculateIndex($event->getStartDate());
-                $end_index = $this->calculateIndex($event->getExcludeDate());
-                $item->setStartIndex($start_index);
-                $item->setNumberOfDays($end_index - $start_index);
-                $this->addItem($item);
-
-                $item2 = clone $item;
-                $start_index = $this->calculateIndex($event->getExcludeDate());
-                $end_index = $this->calculateIndex($event->getEndDate());
-                $item2->setStartIndex($start_index + 1);
-                $item2->setNumberOfDays($end_index - $start_index);
-                $this->addItem($item2);
-            } else {
-                $start_index = $this->calculateIndex($event->getStartDate());
-                $end_index = $this->calculateIndex($event->getEndDate());
-                $numberOfDays = $end_index - $start_index + 1;
-                if ($numberOfDays > 0) {
-                    $item->setStartIndex($start_index);
-                    $item->setNumberOfDays($end_index - $start_index + 1);
-                    $this->addItem($item);
-                }
-            }
+           $start_index = $this->calculateIndex($event->getStartDate());
+           $end_index = $this->calculateIndex($event->getEndDate());
+           $numberOfDays = $end_index - $start_index + 1;
+           if ($numberOfDays > 0) {
+               $item->setStartIndex($start_index);
+               $item->setNumberOfDays($end_index - $start_index + 1);
+               $this->addItem($item);
+           }
         }
     }
 

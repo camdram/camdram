@@ -17,9 +17,6 @@
         {%- if date(p.startdate) != date(p.enddate) -%}
             {# Show the duration #}
              - {{ p.enddate|date('D jS F Y') }},
-            {% if (p.excludedate > p.startdate) and (p.excludedate < p.enddate) %}
-                (except {{ p.excludedate|date('jS') }})
-            {% endif %}
         {% endif %}
         {% if p.venue %}
             at {% if disable_links is defined -%}
