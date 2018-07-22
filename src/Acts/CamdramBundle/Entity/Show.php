@@ -1629,41 +1629,4 @@ class Show implements OwnableInterface
     {
         $this->weeks = $weeks;
     }
-
-    /**
-     * Saves the old and new slugs after renaming.
-     */
-    public function manageSlugChange($event) {
-        $em = $event->getEntityManager();
-        $slugRepo = $em->getRepository('ActsCamdramBundle:ShowSlug');
-        $oldSlug = $slugRepo->findOneBySlug($event->getOldValue("slug"));
-        if (!$oldSlug) {
-            // Make new slug for outgoing URL.
-            $oldSlug = new ShowSlug();
-            $oldSlug->setShow($this);
-            $oldSlug->setSlug($event->getOldValue("slug"));
-            $oldSlug->setCreatedDate(new \DateTime());
-            $em->persist($oldSlug);
-            $em->flush();
-        }
-
-        $newSlug = $slugRepo->findOneBySlug($event->getNewValue("slug"));
-        if (!$newSlug) {
-            // Make new slug for new URL.
-            $newSlug = new ShowSlug();
-            $newSlug->setShow($this);
-            $newSlug->setSlug($event->getNewValue("slug"));
-            $newSlug->setCreatedDate(new \DateTime());
-            $em->persist($newSlug);
-            $em->flush();
-        } else if ($newSlug->getShowId() != $this->getId()) {
-            // Allow slugs to be repurposed, e.g. if a show is deleted and recreated.
-            // So for permanent links /shows/by-id/ remains the correct approach.
-            // Checks should already have been done for a live duplicate slug, i.e. in
-            // acts_shows.
-            $newSlug->setShowId($this->getId());
-            $newSlug->setCreatedDate(new \DateTime());
-            $em->flush();
-        }
-    }
 }

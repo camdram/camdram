@@ -4,7 +4,6 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\VirtualProperty;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
@@ -13,7 +12,6 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *
  * @ORM\Table(name="acts_show_slugs")
  * @ORM\Entity
- * @Gedmo\Loggable
  * @Serializer\XmlRoot("role")
  * @Serializer\ExclusionPolicy("all")
  */
@@ -41,7 +39,6 @@ class ShowSlug
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=128, nullable=false)
-     * @Gedmo\Versioned
      * @Serializer\Expose()
      * @Serializer\XmlElement(cdata=false)
      */
@@ -52,14 +49,12 @@ class ShowSlug
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
      * })
-     * @Gedmo\Versioned
      */
     private $show;
 
     /**
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
      * @ORM\Column(name="create_date", type="datetime")
-     * @Gedmo\Versioned
      */
     private $createdDate;
 

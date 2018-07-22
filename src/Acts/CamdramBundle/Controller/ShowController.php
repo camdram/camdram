@@ -73,8 +73,7 @@ class ShowController extends AbstractRestController
             if (!$slugEntity) {
                 throw $this->createNotFoundException('That '.$this->type.' does not exist');
             } else {
-                $show = $this->getRepository()->findOneById($slugEntity->getShowId());
-                return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug()]);
+                return $this->redirectToRoute('get_show', ['identifier' => $slugEntity->getShow()->getSlug()]);
             }
         }
 

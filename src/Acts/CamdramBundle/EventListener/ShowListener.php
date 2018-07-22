@@ -67,7 +67,7 @@ class ShowListener
         $this->sendChangeEmails($show, $event);
 
         if ($event->hasChangedField('slug')) {
-            $show->manageSlugChange($event);
+            $this->manageSlugChange($show, $event);
         }
     }
 
@@ -153,5 +153,42 @@ class ShowListener
         }
         $show->setStartAt($min);
         $show->setEndAt($max);
+    }
+
+    /**
+     * Saves the old and new slugs after renaming.
+     */
+    private function manageSlugChange($show, $event) {
+        $em = $event->getEntityManager();
+        $slugRepo = $em->getRepository('ActsCamdramBundle:ShowSlug');
+        $oldSlug = $slugRepo->findOneBySlug($event->getOldValue("slug"));
+        if (!$oldSlug) {
+            // Make new slug for outgoing URL.
+            $oldSlug = new ShowSlug();
+            $oldSlug->setShow($show);
+            $oldSlug->setSlug($event->getOldValue("slug"));
+            $oldSlug->setCreatedDate(new \DateTime());
+            $em->persist($oldSlug);
+            $em->flush();
+        }
+
+        $newSlug = $slugRepo->findOneBySlug($event->getNewValue("slug"));
+        if (!$newSlug) {
+            // Make new slug for new URL.
+            $newSlug = new ShowSlug();
+            $newSlug->setShow($show);
+            $newSlug->setSlug($event->getNewValue("slug"));
+            $newSlug->setCreatedDate(new \DateTime());
+            $em->persist($newSlug);
+            $em->flush();
+        } else if ($newSlug->getShowId() != $show->getId()) {
+            // Allow slugs to be repurposed, e.g. if a show is deleted and recreated.
+            // So for permanent links /shows/by-id/ remains the correct approach.
+            // Checks should already have been done for a live duplicate slug, i.e. in
+            // acts_shows.
+            $newSlug->setShowId($show->getId());
+            $newSlug->setCreatedDate(new \DateTime());
+            $em->flush();
+        }
     }
 }
