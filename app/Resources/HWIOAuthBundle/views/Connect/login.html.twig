@@ -4,7 +4,7 @@
         <li>Log in using</li>
         {% for ext in app.user.externalUsers %}
             <li><a href="{{ hwi_oauth_login_url(ext.service) }}" class="icon-link icon-link-textual">
-                    <img src="{{ asset('images/service/' ~ ext.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ service ~ '.png') }}, {{ asset('images/service/' ~ service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ service ~ '-76.png') }} 4x" alt="{{ ext.service | capitalize }}" title="{{ ext.service | capitalize }}" width="19" height="19" />
+                    <img src="{{ asset('images/service/' ~ ext.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ ext.service ~ '.png') }}, {{ asset('images/service/' ~ ext.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ ext.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ ext.service ~ '-76.png') }} 4x" alt="{{ ext.service | capitalize }}" title="{{ ext.service | capitalize }}" width="19" height="19" />
                     {{ ext.service | capitalize }}
                 </a></li>
         {% endfor %}
