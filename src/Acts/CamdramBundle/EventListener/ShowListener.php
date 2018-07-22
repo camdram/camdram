@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\ShowSlug;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\WeekManager;
@@ -64,6 +65,10 @@ class ShowListener
         }
 
         $this->sendChangeEmails($show, $event);
+
+        if ($event->hasChangedField('slug')) {
+            $show->manageSlugChange($event);
+        }
     }
 
     private function sendChangeEmails(Show $show, PreUpdateEventArgs $event)

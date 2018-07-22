@@ -13,7 +13,6 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *
  * @ORM\Table(name="acts_show_slugs")
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable
  * @Serializer\XmlRoot("role")
  * @Serializer\ExclusionPolicy("all")
@@ -34,7 +33,7 @@ class ShowSlug
     /**
      * @var int
      *
-     * @ORM\Column(name="sid", type="integer", nullable=true)
+     * @ORM\Column(name="sid", type="integer", nullable=false)
      */
     private $showId;
 
@@ -51,11 +50,18 @@ class ShowSlug
     /**
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
      * })
      * @Gedmo\Versioned
      */
     private $show;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
+     * @ORM\Column(name="create_date", type="datetime")
+     * @Gedmo\Versioned
+     */
+    private $createdDate;
 
     /**
      * Get id
@@ -137,5 +143,29 @@ class ShowSlug
     public function getShow()
     {
         return $this->show;
+    }
+
+    /**
+     * Set creation timestamp
+     *
+     * @param \DateTime $date
+     *
+     * @return ShowSlug
+     */
+    public function setCreatedDate(\DateTime $date = null)
+    {
+        $this->createdDate = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get creation timestamp
+     *
+     * @return \DateTime
+     */
+    public function getCreatedDate()
+    {
+        return $this->createdDate;
     }
 }
