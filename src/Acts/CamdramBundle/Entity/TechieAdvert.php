@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @UniqueEntity("show")
  * @Api\Feed(name="Camdram.net - Production Team Vacancies", titleField="feed_title",
  *     description="Production Team Vacancies advertised for shows in Cambridge",
- *     template="ActsCamdramBundle:TechieAdvert:rss.html.twig")
+ *     template="techie_advert/rss.html.twig")
  * @TechieAdvertExpiry()
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")

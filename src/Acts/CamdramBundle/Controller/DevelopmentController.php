@@ -14,17 +14,22 @@ class DevelopmentController extends Controller
 {
     public function indexAction()
     {
+        return $this->render('development/index.html.twig');
+    }
+
+    public function gitInfoAction()
+    {
         $git_info = [
             'tag' => exec('git tag --points-at HEAD'),
             'hash' => exec('git rev-parse HEAD'),
-            'branch' => ''
         ];
+
         if (empty($git_info['tag'])) {
-            $git_info['branch'] = exec('git symbolic-ref --short HEAD');
+            $git_info['branch'] = exec('git name-rev --name-only HEAD');
         }
 
-        $response = $this->render('development/index.html.twig', ['git_info' => $git_info]);
-
+        $response = $this->render('development/git-info.html.twig', ['git_info' => $git_info]);
+        $response->setSharedMaxAge(3600 * 24);
         return $response;
     }
 

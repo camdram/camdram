@@ -1,0 +1,12 @@
+<div class="panel">
+    <p>
+    {%if git_info.tag %}
+    You are viewing Camdram release
+    <a href="https://github.com/camdram/camdram/releases/tag/{{ git_info.tag }}" target="_blank">{{ git_info.tag }}</a>.
+    {% else %}
+    You are viewing commit <a href="https://github.com/camdram/camdram/commit/{{ git_info.hash }}" target="_blank">
+    {{ git_info.hash | truncate(8) }}</a> on branch
+    <a href="https://github.com/camdram/camdram/tree/{{ git_info.branch }}" target="_blank">{{ git_info.branch }}</a>.
+    {% endif %}
+    </p>
+</div>

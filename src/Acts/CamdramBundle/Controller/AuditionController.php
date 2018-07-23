@@ -6,6 +6,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
+use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\DiaryBundle\Diary\Diary;
 
@@ -16,7 +17,7 @@ class AuditionController extends FOSRestController
 {
     public function cgetAction(Request $request)
     {
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(new \DateTime());
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(Time::now());
 
         $view = $this->view($auditions, 200)
                   ->setTemplate('audition/index.'.$request->getRequestFormat().'.twig')
@@ -30,7 +31,7 @@ class AuditionController extends FOSRestController
     {
         $diary = new Diary;
 
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findUpcoming(null, new \DateTime());
+        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findUpcoming(null, Time::now());
 
         $events = $this->get('acts.camdram.diary_helper')->createEventsFromAuditions($auditions);
         $diary->addEvents($events);
@@ -45,7 +46,7 @@ class AuditionController extends FOSRestController
     public function getAction($identifier)
     {
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')
-            ->findOneByShowSlug($identifier, new \DateTime());
+            ->findOneByShowSlug($identifier, Time::now());
         if ($auditions) {
             return $this->redirect($this->generateUrl('get_auditions').'#'.$auditions->getShow()->getSlug());
         } else {

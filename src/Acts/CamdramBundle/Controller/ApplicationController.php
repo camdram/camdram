@@ -6,6 +6,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
+use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Entity\Application;
 use Doctrine\Common\Collections\Criteria;
 
@@ -22,7 +23,7 @@ class ApplicationController extends FOSRestController
     public function cgetAction(Request $request)
     {
         $applications = array_reverse($this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
-            ->findLatest(-1, new \DateTime()));
+            ->findLatest(-1, Time::now()));
         
         $view = $this->view($applications, 200)
                   ->setTemplate('application/index.'.$request->getRequestFormat().'.twig')
@@ -34,7 +35,7 @@ class ApplicationController extends FOSRestController
     public function getAction($identifier, Request $request)
     {
         $data = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
-            ->findOneBySlug($identifier, new \DateTime);
+            ->findOneBySlug($identifier, Time::now());
             
         if (!$data) {
             throw $this->createNotFoundException('No application exists with that identifier');
