@@ -6,6 +6,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
+use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Doctrine\Common\Collections\Criteria;
 
@@ -38,7 +39,7 @@ class TechieAdvertController extends FOSRestController
     public function cgetAction(Request $request)
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findNotExpiredOrderedByDateName(new \DateTime());
+            ->findNotExpiredOrderedByDateName(Time::now());
         
         $week_manager = $this->get('acts.camdram.week_manager');
         $weeks = array();
@@ -57,7 +58,7 @@ class TechieAdvertController extends FOSRestController
     public function getAction($identifier, Request $request)
     {
         $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
-            ->findOneByShowSlug($identifier, new \DateTime);
+            ->findOneByShowSlug($identifier, Time::now());
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());
         } else {
