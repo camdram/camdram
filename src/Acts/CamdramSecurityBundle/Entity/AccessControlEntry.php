@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="acts_access")
  * @ORM\Entity(repositoryClass="AccessControlEntryRepository")
- * @ORM\EntityListeners({"\Acts\CamdramSecurityBundle\EventListener\AccessControlEntryListener"})
  */
 class AccessControlEntry
 {
