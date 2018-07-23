@@ -42,7 +42,6 @@
 		"liip/imagine-bundle": "~1.9",
 		"zurb/foundation" : "4.*",
         "zendframework/zend-feed": "2.10.*",
-        "zendframework/zend-servicemanager": "2.4.*",
         "excelwebzone/recaptcha-bundle" : "^1.5",
         "hwi/oauth-bundle": "^0.6",
         "oneup/uploader-bundle": "^1.9",
