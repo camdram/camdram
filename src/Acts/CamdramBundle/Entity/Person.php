@@ -54,6 +54,7 @@ class Person
      *
      * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
+     * @Serializer\Expose()
      */
     private $image;
 
