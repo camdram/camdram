@@ -42,6 +42,7 @@ Encore
         'foundationjs/foundation.topbar',
         'foundationjs/foundation.placeholder',
         'foundationjs/foundation.reveal',
+        'foundationjs/foundation.section',
     ])
 
     // allow sass/scss files to be processed
