@@ -2,10 +2,6 @@ parameters:
 #    acts_camdram.example.class: Acts\CamdramBundle\Example
 
 services:
-    camdram.security.utils:
-        class: Acts\CamdramSecurityBundle\Security\SecurityUtils
-        arguments: ['@service_container']
-
     camdram.security.user_linker:
         class: Acts\CamdramSecurityBundle\Security\UserLinker
         arguments: ['@doctrine.orm.entity_manager']

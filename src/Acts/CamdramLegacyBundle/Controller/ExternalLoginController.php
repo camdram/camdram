@@ -37,7 +37,7 @@ class ExternalLoginController extends Controller
     
     public function authAction(Request $request)
     {
-        $this->get('camdram.security.utils')->ensureRole('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         
         $redirectUri = $request->query->get('redirect');
         $redirect_parts = parse_url($redirectUri);
