@@ -44,7 +44,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $max = count($plays) - 1;
         mt_srand(microtime(true));
 
-        $start_date = new \DateTime('-6 months');
+        $start_date = new \DateTime('-18 months');
         $end_date = new \DateTime('+18 months');
         $diff = $end_date->diff($start_date, true);
         $total_weeks = $diff->days / 7;
