@@ -56,11 +56,6 @@ class AclProvider
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($entity);
     }
 
-    public function hasOwners(OwnableInterface $entity)
-    {
-        return $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->countAces($entity);
-    }
-
     public function getAdmins($min_level = AccessControlEntry::LEVEL_FULL_ADMIN)
     {
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findAdmins($min_level);

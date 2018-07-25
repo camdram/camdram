@@ -26,22 +26,6 @@ class AccessControlEntryRepository extends EntityRepository
         return $res['c'] > 0;
     }
 
-    public function countAces(OwnableInterface $entity)
-    {
-        $qb = $this->createQueryBuilder('e');
-        $query = $qb->select('COUNT(e.id) AS c')
-            ->andWhere('e.entityId = :entityId')
-            ->andWhere('e.revokedBy IS NULL')
-            ->andWhere('e.type = :type')
-            ->setParameter('entityId', $entity->getId())
-            ->setParameter('type', $entity->getAceType())
-        ;
-
-        $res = $query->getQuery()->getOneOrNullResult();
-
-        return $res['c'];
-    }
-
     /**
      * find an ACE for this User accessing the specified resource.
      */
