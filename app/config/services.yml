@@ -15,8 +15,6 @@ services:
             $adminEmail: "%mailer_sender_address%"
             $appSecret: "%secret%"
             $mapCenter: "%map_center%"
-            $githubId: "%github_id%"
-            $githubSecret: "%github_secret%"
 
     Acts\CamdramBundle\:
         resource: '../../src/Acts/CamdramBundle/*'
