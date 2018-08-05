@@ -38,7 +38,7 @@ class EmailDispatcher
             ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:create_account.txt.twig',
+                    'email/create_account.txt.twig',
                     array(
                         'user' => $user,
                         'email_confirmation_token' => $token
@@ -57,7 +57,7 @@ class EmailDispatcher
             ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:resend_email_verification.txt.twig',
+                    'email/resend_email_verification.txt.twig',
                     array(
                         'user'                     => $user,
                         'email_confirmation_token' => $token
@@ -76,7 +76,7 @@ class EmailDispatcher
             ->setTo($user->getEmail())
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:change_email.txt.twig',
+                    'email/change_email.txt.twig',
                     array(
                         'user' => $user,
                         'email_confirmation_token' => $token
@@ -187,7 +187,7 @@ class EmailDispatcher
             ->setTo($emails)
             ->setBody(
                 $this->twig->render(
-                    'ActsCamdramBundle:Email:show_access_requested.txt.twig',
+                    'email/show_access_requested.txt.twig',
                     array(
                         'ace' => $ace,
                         'show' => $show

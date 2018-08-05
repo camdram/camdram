@@ -20,8 +20,6 @@ services:
         arguments: ['@security.authorization_checker', '@camdram.security.acl.provider']
         public: true
 
-    camdram.security.token_generator: '@Acts\CamdramSecurityBundle\Service\TokenGenerator'
-
     Acts\CamdramSecurityBundle\EventListener\EmailSendListener:
         tags:
             - { name: kernel.event_listener, event: hwi_oauth.registration.completed, method: onRegistrationEvent }
@@ -36,7 +34,10 @@ services:
 
     camdram.security.listener.user:
         class: Acts\CamdramSecurityBundle\EventListener\UserListener
-        arguments: ['@doctrine.orm.entity_manager', '@Acts\CamdramSecurityBundle\Service\EmailDispatcher', '@camdram.security.token_generator']
+        arguments: 
+            - '@doctrine.orm.entity_manager'
+            - '@Acts\CamdramSecurityBundle\Service\EmailDispatcher'
+            - '@Acts\CamdramSecurityBundle\Service\TokenGenerator'
         tags:
             - { name: doctrine.orm.entity_listener }
 

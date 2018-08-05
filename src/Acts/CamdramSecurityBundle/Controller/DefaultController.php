@@ -7,6 +7,8 @@ use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Form\Type\CreatePasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ForgottenPasswordType;
 use Acts\CamdramSecurityBundle\Form\Type\ResetPasswordType;
+use Acts\CamdramSecurityBundle\Service\TokenGenerator;
+use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -56,11 +58,11 @@ class DefaultController extends Controller
         );
     }
 
-    public function confirmEmailAction($email, $token)
+    public function confirmEmailAction($email, $token, TokenGenerator $tokenGenerator)
     {
         $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
         if ($user && !$user->getIsEmailVerified()) {
-            $expected_token = $this->get('camdram.security.token_generator')->generateEmailConfirmationToken($user);
+            $expected_token = $tokenGenerator->generateEmailConfirmationToken($user);
             if ($token == $expected_token) {
                 $user->setIsEmailVerified(true);
                 $this->getDoctrine()->getManager()->flush();
@@ -72,7 +74,7 @@ class DefaultController extends Controller
         return $this->render('account/confirm_email_error.html.twig');
     }
 
-    public function forgottenPasswordAction(Request $request)
+    public function forgottenPasswordAction(Request $request, TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
     {
         $email = $this->getUser() ? $this->getUser()->getEmail() : null;
         $form = $this->createForm(ForgottenPasswordType::class, ['email' => $email]);
@@ -83,8 +85,8 @@ class DefaultController extends Controller
                 $data = $form->getData();
                 $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($data['email']);
                 if ($user) {
-                    $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
-                    $this->get('camdram.security.email_dispatcher')->sendPasswordResetEmail($user, $token);
+                    $token = $tokenGenerator->generatePasswordResetToken($user);
+                    $emailDispatcher->sendPasswordResetEmail($user, $token);
                 }
 
                 //Always return the same response whether or not we find a user match
@@ -99,11 +101,11 @@ class DefaultController extends Controller
         ));
     }
 
-    public function resetPasswordAction($email, $token, Request $request)
+    public function resetPasswordAction($email, $token, Request $request, TokenGenerator $tokenGenerator)
     {
         $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
         if ($user) {
-            $expected_token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
+            $expected_token = $tokenGenerator->generatePasswordResetToken($user);
             if ($token == $expected_token) {
                 $form = $this->createForm(ResetPasswordType::class, array());
                 if ($request->getMethod() == 'POST') {

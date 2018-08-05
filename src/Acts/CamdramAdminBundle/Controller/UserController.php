@@ -13,6 +13,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
+use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -165,11 +166,11 @@ class UserController extends FOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resetPasswordAction($identifier, EmailDispatcher $emailDispatcher)
+    public function resetPasswordAction($identifier, TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
     {
         $user = $this->getEntity($identifier);
 
-        $token = $this->get('camdram.security.token_generator')->generatePasswordResetToken($user);
+        $token = $tokenGenerator->generatePasswordResetToken($user);
         $emailDispatcher->sendPasswordResetEmail($user, $token);
         $url = $this->generateUrl(
             'acts_camdram_security_reset_password',

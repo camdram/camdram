@@ -10,6 +10,8 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
 use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Acts\CamdramSecurityBundle\Service\TokenGenerator;
+use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 
 /**
  * Class AccountController
@@ -121,11 +123,11 @@ class AccountController extends FOSRestController
         ));
     }
 
-    public function resendVerificationAction()
+    public function resendVerificationAction(TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
     {
         $user = $this->getUser();
-        $token = $this->get('camdram.security.token_generator')->generateEmailConfirmationToken($user);
-        $this->get('camdram.security.email_dispatcher')->resendEmailVerifyEmail($user, $token);
+        $token = $tokenGenerator->generateEmailConfirmationToken($user);
+        $emailDispatcher->resendEmailVerifyEmail($user, $token);
 
         return $this->redirect($this->generateUrl('get_account'));
     }
