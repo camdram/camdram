@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
  */
 class PersonController extends AbstractRestController
 {
-    protected $class = 'Acts\\CamdramBundle\\Entity\\Person';
+    protected $class = Person::class;
 
     protected $type = 'person';
 

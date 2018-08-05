@@ -7,7 +7,6 @@ use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -81,14 +80,6 @@ class AclProviderTest extends TestCase
     {
         $show = new Show();
         $this->assertFalse($this->aclProvider->isOwner(null, $show));
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testInvalidClassName()
-    {
-        new ClassIdentity('\AnInvalidClassName');
     }
 
     /**

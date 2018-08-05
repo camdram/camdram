@@ -5,7 +5,6 @@ namespace Camdram\Tests\CamdramSecurityBundle\Security\Acl\Voter;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +42,7 @@ class EditorVoterTest extends TestCase
 
         $this->assertEquals(EditorVoter::ACCESS_GRANTED, $this->voter->vote(
                 $token,
-            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'),
+            \Acts\CamdramBundle\Entity\Venue::class,
             array('CREATE')
         ));
     }

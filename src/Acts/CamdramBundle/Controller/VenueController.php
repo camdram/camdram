@@ -22,7 +22,7 @@ use Ivory\GoogleMap\Base\Coordinate;
  */
 class VenueController extends OrganisationController
 {
-    protected $class = 'Acts\\CamdramBundle\\Entity\\Venue';
+    protected $class = Venue::class;
 
     protected $type = 'venue';
 

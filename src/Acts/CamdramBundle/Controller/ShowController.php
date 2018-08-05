@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ShowController extends AbstractRestController
 {
-    protected $class = 'Acts\\CamdramBundle\\Entity\\Show';
+    protected $class = Show::class;
 
     protected $type = 'show';
 

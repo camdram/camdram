@@ -2,7 +2,6 @@
 
 namespace Camdram\Tests\CamdramSecurityBundle\Security\Acl\Voter;
 
-use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +28,7 @@ class CreateVoterTest extends TestCase
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
-            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Show'),
+            \Acts\CamdramBundle\Entity\Show::class,
             array('CREATE')
         ));
     }
@@ -38,7 +37,7 @@ class CreateVoterTest extends TestCase
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
-            new ClassIdentity('Acts\\CamdramBundle\\Entity\\TechieAdvert'),
+            \Acts\CamdramBundle\Entity\TechieAdvert::class,
             array('CREATE')
             ));
     }
@@ -47,7 +46,7 @@ class CreateVoterTest extends TestCase
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
-            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Audition'),
+            \Acts\CamdramBundle\Entity\Audition::class,
             array('CREATE')
             ));
     }
@@ -56,7 +55,7 @@ class CreateVoterTest extends TestCase
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
-            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Application'),
+            \Acts\CamdramBundle\Entity\Application::class,
             array('CREATE')
             ));
     }
@@ -65,7 +64,7 @@ class CreateVoterTest extends TestCase
     {
         $this->assertEquals(CreateVoter::ACCESS_ABSTAIN, $this->voter->vote(
                 $this->token,
-            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Show'),
+            \Acts\CamdramBundle\Entity\Show::Class,
             array('EDIT')
             ));
     }
@@ -74,7 +73,7 @@ class CreateVoterTest extends TestCase
     {
         $this->assertEquals(CreateVoter::ACCESS_ABSTAIN, $this->voter->vote(
                 $this->token,
-            new ClassIdentity('Acts\\CamdramBundle\\Entity\\Venue'),
+            \Acts\CamdramBundle\Entity\Venue::class,
             array('CREATE')
             ));
     }

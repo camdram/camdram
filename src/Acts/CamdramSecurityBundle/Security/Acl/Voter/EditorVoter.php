@@ -5,7 +5,6 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Acts\CamdramSecurityBundle\Security\Acl\ClassIdentity;
 
 /**
  * Grants access if user is an editor/'content admin'
@@ -18,20 +17,20 @@ class EditorVoter extends Voter
             return false;
         }
     
-        if (!$subject instanceof ClassIdentity) {
-            $subject = new ClassIdentity(get_class($subject));
+        if (is_object($subject)) {
+            $subject = get_class($subject);
         }
 
         return in_array(
-            $subject->getClassName(),
+            $subject,
             [
-                'Acts\\CamdramBundle\\Entity\\Show',
-                'Acts\\CamdramBundle\\Entity\\Society',
-                'Acts\\CamdramBundle\\Entity\\Venue',
-                'Acts\\CamdramBundle\\Entity\\Person',
-                'Acts\\CamdramBundle\\Entity\\TechieAdvert',
-                'Acts\\CamdramBundle\\Entity\\Audition',
-                'Acts\\CamdramBundle\\Entity\\Application',
+                \Acts\CamdramBundle\Entity\Show::class,
+                \Acts\CamdramBundle\Entity\Society::class,
+                \Acts\CamdramBundle\Entity\Venue::class,
+                \Acts\CamdramBundle\Entity\Person::class,
+                \Acts\CamdramBundle\Entity\TechieAdvert::class,
+                \Acts\CamdramBundle\Entity\Audition::class,
+                \Acts\CamdramBundle\Entity\Application::class,
             ]
         );
     }

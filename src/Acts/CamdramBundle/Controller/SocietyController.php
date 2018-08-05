@@ -16,7 +16,7 @@ use Acts\CamdramBundle\Form\Type\SocietyType;
  */
 class SocietyController extends OrganisationController
 {
-    protected $class = 'Acts\\CamdramBundle\\Entity\\Society';
+    protected $class = Society::class;
 
     protected $type = 'society';
 
