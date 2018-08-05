@@ -2,10 +2,6 @@ parameters:
 #    acts_camdram.example.class: Acts\CamdramBundle\Example
 
 services:
-    camdram.security.user_linker:
-        class: Acts\CamdramSecurityBundle\Security\UserLinker
-        arguments: ['@doctrine.orm.entity_manager']
-
     camdram.security.registration.form:
         class: 'Symfony\Component\Form\Form'
         factory: 'Acts\CamdramSecurityBundle\Form\RegistrationFormHandler:createForm'
