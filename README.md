@@ -79,10 +79,10 @@ Some useful tips:
  * Visit http://try.github.io/ if you're not familiar with Git.
  * Code should ideally conform to the style guide here: http://www.php-fig.org/psr/psr-2/. If this is far too daunting, a poorly styled but functional improvement is better than no improvement. You can use http://cs.sensiolabs.org/ to (mostly) clean your code up after writing it.
 
-Depending on the type of change, ensure it works as a logged-in and/or non-logged in visitor. You can log in to your local instance of Camdram with one of three default accounts (the password for each is just 'password'). These credentials can also be used at https://development.camdram.net/
- * user1@camdram.net
- * user2@camdram.net
- * admin@camdram.net (this is an admin user) 
+Depending on the type of change, ensure it works as a logged-in and/or non-logged in visitor. You can grant administration rights to your user account (which allows you to create and modify any Camdram content) by running
+```
+php app/console camdram:admins --grant=youremail@domain.com
+```
 
 ## 6) Submit your changes
 
