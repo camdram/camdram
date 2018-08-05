@@ -62,7 +62,9 @@ class EntitiesNewsCommand extends Command
                     'count' => 50,
                     'trim_user' => true, 
                     'include_rts' => false,
-                    'tweet_mode' => 'extended'
+                    'tweet_mode' => 'extended',
+                    'exclude_replies' => true,
+                    'include_rts' => false,
                 ]
             );
             if ($this->twitter->getLastHttpCode() == 200) {
