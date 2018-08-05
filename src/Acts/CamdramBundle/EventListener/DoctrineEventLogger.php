@@ -28,16 +28,12 @@ class DoctrineEventLogger implements EventSubscriber
 
     private function getContext($object)
     {
-        if ($object instanceof SearchableInterface) {
-            return array(
-                'id' => $object->getId(),
-                'name' => $object->getName()
-            );
-        } elseif ($object instanceof AccessControlEntry) {
+        if ($object instanceof AccessControlEntry) {
             return array(
                 'type' => $object->getType(),
                 'id' => $object->getEntityId(),
-                'user' => $object->getUser()->getId().'/'.$object->getUser()->getEmail()
+                'user' => $object->getUser()->getId().'/'.$object->getUser()->getEmail(),
+                'script_user' => get_current_user(),
             );
         } else {
             $accessor = PropertyAccess::createPropertyAccessor();

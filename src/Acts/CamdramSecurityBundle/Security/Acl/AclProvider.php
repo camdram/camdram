@@ -3,7 +3,6 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -40,10 +39,6 @@ class AclProvider
 
     public function isOwner($user, OwnableInterface $entity)
     {
-        if ($user instanceof ExternalUser) {
-            $user = $user->getUser();
-        }
-
         if (is_null($user) || !$user instanceof User) {
             return false;
         }
@@ -151,6 +146,54 @@ class AclProvider
                 $this->entityManager->flush();
             }
         }
+    }
+
+    public function grantAdmin(User $user, $level = AccessControlEntry::LEVEL_FULL_ADMIN)
+    {
+        $aceRepo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $qb = $aceRepo->createQueryBuilder('a');
+        $aces = $qb->where('a.type = :type')
+            ->andWhere('a.user = :user')
+            ->setParameter('type', 'security')
+            ->setParameter('user', $user)
+            ->getQuery()->getResult();
+        foreach ($aces as $ace) {
+            if ($ace->getEntityId() == $level) {
+                return;
+            }
+            else {
+                $this->entityManager->remove($ace);
+                $this->entityManager->flush();
+            }
+        }
+
+        $ace = new AccessControlEntry();
+        $ace->setUser($user);
+
+        $ace->setEntityId($level)
+            ->setCreatedAt(new \DateTime())
+            ->setGrantedAt(new \DateTime())
+            ->setType('security');
+
+        $this->entityManager->persist($ace);
+        $this->entityManager->flush();
+    }
+
+    public function revokeAdmin(User $user)
+    {
+        $aceRepo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $qb = $aceRepo->createQueryBuilder('a');
+        $aces = $qb->where('a.type = :type')
+            ->andWhere('a.user = :user')
+            ->setParameter('type', 'security')
+            ->setParameter('user', $user)
+            ->getQuery()->getResult();
+
+        foreach ($aces as $ace) {
+            $this->entityManager->remove($ace);
+        }
+
+        $this->entityManager->flush();
     }
 
     /**

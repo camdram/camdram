@@ -508,8 +508,7 @@ class User implements UserInterface, \Serializable
     {
         $criteria = Criteria::create();
         $criteria->where(Criteria::expr()->eq('type', 'security'))
-            ->andWhere(Criteria::expr()->isNull('revokedBy'))
-            ->andWhere(Criteria::expr()->neq('grantedBy', null));
+            ->andWhere(Criteria::expr()->isNull('revokedBy'));
 
         return $this->getAces()->matching($criteria);
     }
