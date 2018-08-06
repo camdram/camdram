@@ -1,7 +1,7 @@
 <div class="row news-item">
     <div class="large-12 columns">
         <a href="{{ item.getLink() }}" class="right icon-link" target="_blank">
-            <img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" srcset="{{ asset('images/service/' ~ item.source ~ '.png') }}, {{ asset('images/service/' ~ item.source ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ item.source ~ '-38.png') }} 2x, {{ asset('images/service/' ~ item.source ~ '-76.png') }} 4x" class="news-source"/>
+            <img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" srcset="{{ asset('images/service/' ~ item.source ~ '.png') }}, {{ asset('images/service/' ~ item.source ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ item.source ~ '-38.png') }} 2x, {{ asset('images/service/' ~ item.source ~ '-76.png') }} 4x" class="news-source" alt="{{ item.source | capitalize }}"/>
         </a>
         <p>
             {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
