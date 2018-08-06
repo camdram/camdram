@@ -62,12 +62,12 @@
         <div class="large-6 columns">
             <ul class="inline-list right">
                 {% if venue.facebookId %}<li>
-                    <a href="{{ venue.getFacebookUrl() }}" target="_blank">
-                        <img src="{{ asset('images/service/facebook.png') }}" alt=""/> Facebook</a>
+                    <a href="{{ venue.getFacebookUrl() }}" target="_blank" class="icon-link">
+                        <img src="{{ asset('images/service/facebook.png') }}" srcset="{{ asset('images/service/facebook.png') }}, {{ asset('images/service/facebook-29.png') }} 1.5x, {{ asset('images/service/facebook-38.png') }} 2x, {{ asset('images/service/facebook-76.png') }} 4x" alt=""/> Facebook</a>
                     </li>{% endif %}
                 {% if venue.twitterId %}<li>
-                    <a href="{{ venue.getTwitterUrl() }}" target="_blank">
-                        <img src="{{ asset('images/service/twitter.png') }}" alt=""/> Twitter</a>
+                    <a href="{{ venue.getTwitterUrl() }}" target="_blank" class="icon-link">
+                        <img src="{{ asset('images/service/twitter.png') }}" srcset="{{ asset('images/service/twitter.png') }}, {{ asset('images/service/twitter-29.png') }} 1.5x, {{ asset('images/service/twitter-38.png') }} 2x, {{ asset('images/service/twitter-76.png') }} 4x" alt=""/> Twitter</a>
                     </li>{% endif %}
             </ul>
             <h5>News</h5>

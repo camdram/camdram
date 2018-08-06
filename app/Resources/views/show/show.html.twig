@@ -44,12 +44,12 @@
             {% endif %}
 
             {% if show.facebookId %}<li>
-                <a href="{{ show.getFacebookUrl() }}" target="_blank">
-                    <img src="{{ asset('images/service/facebook.png') }}" alt=""/></a>
+                <a href="{{ show.getFacebookUrl() }}" target="_blank" class="icon-link">
+                    <img src="{{ asset('images/service/facebook.png') }}" srcset="{{ asset('images/service/facebook.png') }}, {{ asset('images/service/facebook-29.png') }} 1.5x, {{ asset('images/service/facebook-38.png') }} 2x, {{ asset('images/service/facebook-76.png') }} 4x" alt="This show's Facebook page" /></a>
                 </li>{% endif %}
             {% if show.twitterId %}<li>
-                <a href="{{ show.getTwitterUrl() }}" target="_blank">
-                    <img src="{{ asset('images/service/twitter.png') }}" alt=""/></a>
+                <a href="{{ show.getTwitterUrl() }}" target="_blank" class="icon-link">
+                    <img src="{{ asset('images/service/twitter.png') }}" srcset="{{ asset('images/service/twitter.png') }}, {{ asset('images/service/twitter-29.png') }} 1.5x, {{ asset('images/service/twitter-38.png') }} 2x, {{ asset('images/service/twitter-76.png') }} 4x" alt="This show's Twitter page"/></a>
                 </li>{% endif %}
         </ul>
 

@@ -3,6 +3,8 @@ $white: #fff;
 $orange: #fe5c1f;
 $dark-grey: #3a393a;
 $light-grey: #666;
+$destructive: #B71C1C;
+$destructive-light: #D32F2F;
 
 $primary-color: $orange;
 $secondary-color: #999;
@@ -275,9 +277,25 @@ a.icon-link {
     font-weight: bold;
     font-size: 0.8rem;
     margin: 1px 0;
+    display: inline-block;
 
     &:hover {
       background: $light-grey;
+    }
+  }
+
+  &.icon-link-destructive {
+    padding-right: 0.5em;
+    border-radius: 4px;
+    background-color: $destructive;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin: 1px 0;
+    display: inline-block;
+
+    &:hover {
+      background: $destructive-light;
     }
   }
 
@@ -287,24 +305,24 @@ a.icon-link {
     box-sizing: content-box;
     margin-bottom: 0 !important;
 
-    &[src*=facebook] {
+    &[src*="facebook"] {
       background-color: #4267B2;
     }
 
-    &[src*=google] {
+    &[src*="google"] {
       background-color: #fff;
     }
 
-    &[src*=raven] {
+    &[src*="raven"] {
       background-color: #d3d3d3;
     }
 
-    &[src*=twitter] {
+    &[src*="twitter"] {
       background-color: #1DA1F2;
     }
   }
 
-  &:not(.icon-link-textual):hover {
+  &:not(.icon-link-textual):not(.icon-link-destructive):hover {
     > img {
       @include brighten(1.5);
     }
