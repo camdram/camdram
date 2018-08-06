@@ -6,7 +6,7 @@
     <p>
     <a href="{{ path('acts_camdram_security_unlink_account', {service: u.service}) }}" class="icon-link icon-link-destructive">
     <img src="{{ asset('images/service/' ~ u.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ u.service ~ '.png') }}, {{ asset('images/service/' ~ u.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ u.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ u.service ~ '-76.png') }} 4x" alt="{{ u.service | capitalize }}" title="{{ u.service | capitalize }}" width="19" height="19" />
-    (unlink)</a>
+    Unlink</a>
     Your Camdram account is linked to the {{ u.service | capitalize }} account {{ u.email }}.
     </p>
 {% endfor %}
