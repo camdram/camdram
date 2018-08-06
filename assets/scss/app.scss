@@ -47,7 +47,7 @@ html, body {
   height: 100%;
 }
 #wrapper {
-  min-height: 100%;
+  flex-grow: 1;
 
   &:before {
     content: "";
@@ -75,6 +75,8 @@ body {
   -webkit-text-size-adjust:100%; /* Don't mess with our font sizes! */
   -moz-text-size-adjust:100%;    /* https://github.com/camdram/camdram/issues/442 */
   -ms-text-size-adjust:100%;
+  display: flex;                 /* Force page to fill all vertical space. */
+  flex-flow: column;
 }
 
 header {
