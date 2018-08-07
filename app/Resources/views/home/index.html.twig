@@ -43,27 +43,28 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="large-5 columns">
+<div class="row" id="home_news_container">
+    <div class="large-6 columns">
         <div id="home_statistics">
             {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
         </div>
+        <hr />
 
         <div id="home_vacancies">
             {{ render(controller('ActsCamdramBundle:Default:vacancies'), {'strategy': 'esi'}) }}
         </div>
+        <hr />
 
         <div id="home_historic">
             {{ render(controller('ActsCamdramBundle:Default:historicData'), {'strategy': 'esi'}) }}
         </div>
-    </div>
-    <div class="large-7 columns">
-        <h4>News</h4>
         <hr />
-        {% for item in news %}
-            {% include 'news/item.html.twig' %}
-        {% endfor %}
     </div>
+
+    <h4>News</h4>
+    {% for item in news %}
+        {% include 'news/item.html.twig' %}
+    {% endfor %}
 </div>
 
 

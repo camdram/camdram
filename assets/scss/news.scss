@@ -1,12 +1,39 @@
 #organisation-news {
   max-height:400px;
-  overflow-y:scroll;
+  overflow-y: auto;
   border:1px solid #ccc;
   font-size:0.9em;
   padding:1em;
   clear:both;
 }
 
+@media (min-width: 768px) {
+  /* Make newsfeed flow around other content on desktop */
+  #home_news_container .news-item {
+    width: 49%;
+    margin: 0 !important;
+    vertical-align: middle;
+    display: inline-block;
+  }
+}
+
 .news-body {
-  margin:0;
+  margin: 0;
+}
+
+.news-item {
+  padding: 0 2em;
+  .icon-link:not(:hover) {
+    color: #000;
+  }
+  > .news-image {
+    display: block;
+    width: 25%;
+    &.left {
+      padding-right: 1em;
+    }
+    &.right {
+      padding-left: 1em;
+    }
+  }
 }

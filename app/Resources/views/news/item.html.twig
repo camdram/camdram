@@ -1,37 +1,26 @@
 <div class="row news-item">
-    <div class="large-12 columns">
-        <a href="{{ item.getLink() }}" class="right icon-link" target="_blank">
-            <img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" srcset="{{ asset('images/service/' ~ item.source ~ '.png') }}, {{ asset('images/service/' ~ item.source ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ item.source ~ '-38.png') }} 2x, {{ asset('images/service/' ~ item.source ~ '-76.png') }} 4x" class="news-source" alt="{{ item.source | capitalize }}"/>
-        </a>
-        <p>
-            {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
-            {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
-            <strong>{{ item.entity.name }}</strong></a> 
-            
-            <em>at {{ item.getPostedAt() | date('H:i \\o\\n jS F') }}</em>
-        </p>
+    <p>
+    <a href="{{ item.getLink() }}" class="right icon-link" target="_blank">
+        <em>{{ item.getPostedAt() | date('H:i \\o\\n jS F') }}</em>
+        <img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" srcset="{{ asset('images/service/' ~ item.source ~ '.png') }}, {{ asset('images/service/' ~ item.source ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ item.source ~ '-38.png') }} 2x, {{ asset('images/service/' ~ item.source ~ '-76.png') }} 4x" class="news-source" alt="{{ item.source | capitalize }}"/>
+    </a>
+        {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
+        {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
+        <strong>{{ item.entity.name }}</strong></a>
+    </p>
 
-        
-        {% if item.picture %}
-        <div class="row">
-            <div class="large-3 small-4 columns">
-                <a href="{{ item.getLink() }}" class="right" target="_blank">
-                    <img src="{{ item.picture }}"/>
-                </a>
-            </div>
-            <div class="large-9 small-8 columns">
-        {% endif %}
-        
-        <p class="news-body">
-            {{ item.body | raw }}
-        </p>
-    
-        {% if item.picture %}
-            </div>
-        </div>
-        {% endif %}
 
-        <hr />
-    </div>
+    {% if item.picture %}
+    <a href="{{ item.getLink() }}" target="_blank" class="news-image {{
+            ['left', 'right'][item.getPostedAt().timestamp % 2] }}{# Deterministic pseudo-random choice #}">
+            <img src="{{ item.picture }}"/>
+    </a>
+    {% endif %}
+
+    <p class="news-body">
+        {{ item.body | raw }}
+    </p>
+
+    <hr />
 </div>
 
