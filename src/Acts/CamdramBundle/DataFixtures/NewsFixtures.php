@@ -49,12 +49,23 @@ class NewsFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < $count; $i++)
         {
-            $postedAt->modify('-' . mt_rand(6, 144). ' hours');
+            $postedAt->modify('-' . mt_rand(6*3600, 144*3600). ' seconds');
 
             $news = new News;
+            // Tries to give a fairly comprehensive mix of lengths, links and images.
+            $body = ['', 'Hi <a href="https://twitter.com/camdram">@Camdram</a>! '][mt_rand(0, 1)].
+                $org->getName() .
+                [' is excited to announce ', ' has some great news! We\'re performing ',
+                ' has a really very long post. Rehersals are well underway for our very exciting new show.'.
+                ' We\'re sure you\'ll want to hear all about it, and maybe come see it! So anyway our latest show is ',
+                ' wants you to buy tickets for '][mt_rand(0, 3)] .
+                [ 'The Merchant of ', 'Three Men in ', 'The End of ', 'Surviving '][mt_rand(0, 3)] .
+                [ 'Oxford.', 'the Van of Life.', ' Philosophy.', ' Amsterdam.'][mt_rand(0, 3)];
+            $picture = ['https://placekitten.com/'.mt_rand(195, 210).'/200', null][mt_rand(0, 1)];
             $news->setEntity($org)
                 ->setSource($source)
-                ->setBody($org->getName().' news entry #'.($i + 1))
+                ->setBody($body)
+                ->setPicture($picture)
                 ->setPostedAt(clone $postedAt)
                 ;
             
