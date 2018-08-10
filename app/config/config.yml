@@ -185,3 +185,6 @@ ivory_google_map:
 
 parameters:
     router.request_context.host: www.camdram.net
+
+sentry:
+    dsn: "%sentry_dsn%"
