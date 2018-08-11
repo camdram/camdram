@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Sentry\SentryBundle\SentryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
