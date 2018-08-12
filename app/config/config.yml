@@ -143,7 +143,6 @@ oneup_uploader:
                 directory: '%kernel.root_dir%/data/'
 
 liip_imagine:
-    data_loader: url_data_loader
     loaders:
         default:
             filesystem:
@@ -165,6 +164,11 @@ liip_imagine:
             quality: 75
             filters:
                 thumbnail: { size: [88, 70], mode: inset }
+        social:
+            quality: 75
+            filters:
+                thumbnail: { size : [200, 200], mode : inset }
+            data_loader: url_data_loader
 
 stof_doctrine_extensions:
     orm:

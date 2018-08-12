@@ -13,7 +13,7 @@
     {% if item.picture %}
     <a href="{{ item.getLink() }}" target="_blank" class="news-image {{
             ['left', 'right'][item.getPostedAt().timestamp % 2] }}{# Deterministic pseudo-random choice #}">
-            <img src="{{ item.picture | imagine_filter('thumbnail') }}"/>
+            <img src="{{ item.picture | imagine_filter('social') }}"/>
     </a>
     {% endif %}
 
