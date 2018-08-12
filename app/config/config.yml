@@ -143,6 +143,7 @@ oneup_uploader:
                 directory: '%kernel.root_dir%/data/'
 
 liip_imagine:
+    data_loader: url_data_loader
     loaders:
         default:
             filesystem:

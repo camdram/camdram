@@ -48,3 +48,9 @@ services:
           
     Github\Client:
         lazy: true
+
+    camdram.imagine.url_data_loader:
+        class: Liip\ImagineBundle\Binary\Loader\StreamLoader
+        arguments: ['']
+        tags:
+            - { name: 'liip_imagine.binary.loader', loader: 'url_data_loader' }
