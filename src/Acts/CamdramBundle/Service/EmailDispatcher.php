@@ -40,8 +40,7 @@ class EmailDispatcher
             }
         }
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('New show needs authorization on Camdram: '.$show->getName())
+        $message =  (new \Swift_Message('New show needs authorization on Camdram: '.$show->getName()))
             ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($toEmails)
             ->setBcc($bccEmails)
@@ -79,8 +78,7 @@ class EmailDispatcher
             $emails[$user->getEmail()] = $user->getName();
         }
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Show authorised on Camdram: '.$show->getName())
+        $message = (new \Swift_Message('Show authorised on Camdram: '.$show->getName()))
             ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($emails)
             ->setBody(
@@ -97,8 +95,7 @@ class EmailDispatcher
 
     public function sendContactUsEmail($from, $subject, $message)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
+        $message = (new \Swift_Message($subject))
             ->setFrom($from)
             ->setReplyTo($from)
             ->setTo($this->from_address)
@@ -111,8 +108,7 @@ class EmailDispatcher
     {
         $toEmails = $this->emailArrayFromUsers($moderators);
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Society changed to '. $show->getSociety()->getName() .': '.$show->getName())
+        $message = (new \Swift_Message('Society changed to '. $show->getSociety()->getName() .': '.$show->getName()))
             ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($toEmails)
             ->setBody(
@@ -132,8 +128,7 @@ class EmailDispatcher
     {
         $toEmails = $this->emailArrayFromUsers($moderators);
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Venue changed to '. $show->getVenue()->getName() .': '.$show->getName())
+        $message = (new \Swift_Message('Venue changed to '. $show->getVenue()->getName() .': '.$show->getName()))
             ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($toEmails)
             ->setBody(

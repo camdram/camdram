@@ -101,8 +101,7 @@ For any enquiries, please contact websupport@camdram.net.";
             } elseif (!$user->getIsEmailVerified()) {
                 $output['not_verified'][] = $user;
             } else {
-                $message = \Swift_Message::newInstance()
-                ->setSubject($data['subject'])
+                $message = (new \Swift_Message($data['subject']))
                 ->setFrom(self::FROM_EMAIL, self::FROM_NAME)
                 ->setReturnPath(self::RETURN_EMAIL)
                 ->setTo($user->getEmail(), $user->getName())
