@@ -53,7 +53,7 @@
 		"zurb/foundation": "4.*"
 	},
 	"require-dev" : {
-		"behat/behat": "3.4.*",
+		"behat/behat": "3.5.*",
 		"behat/mink": "^1.7",
 		"behat/mink-extension": "^2.3",
 		"behat/mink-goutte-driver": "*",
