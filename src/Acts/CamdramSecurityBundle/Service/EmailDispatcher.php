@@ -32,8 +32,7 @@ class EmailDispatcher
 
     public function sendRegistrationEmail(User $user, $token)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Welcome to Camdram')
+        $message = (new \Swift_Message('Welcome to Camdram'))
             ->setFrom($this->from_address)
             ->setTo($user->getEmail())
             ->setBody(
@@ -51,8 +50,7 @@ class EmailDispatcher
 
     public function resendEmailVerifyEmail(User $user, $token)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Verify your email address')
+        $message = (new \Swift_Message('Verify your email address'))
             ->setFrom($this->from_address)
             ->setTo($user->getEmail())
             ->setBody(
@@ -70,8 +68,7 @@ class EmailDispatcher
 
     public function sendEmailVerifyEmail(User $user, $token)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Verify your new email address')
+        $message = (new \Swift_Message('Verify your new email address'))
             ->setFrom($this->from_address)
             ->setTo($user->getEmail())
             ->setBody(
@@ -89,8 +86,7 @@ class EmailDispatcher
 
     public function sendPasswordResetEmail(User $user, $token)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Password reset')
+        $message = (new \Swift_Message('Password reset'))
             ->setFrom($this->from_address)
             ->setTo($user->getEmail())
             ->setBody(
@@ -112,7 +108,7 @@ class EmailDispatcher
      */
     public function sendAceEmail(AccessControlEntry $ace)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message)
             ->setFrom($this->from_address)
             ->setTo($ace->getUser()->getEmail());
         /* Get the resource and pass it to the template. */
@@ -139,7 +135,7 @@ class EmailDispatcher
      */
     public function sendPendingAceEmail(PendingAccess $ace)
     {
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message)
             ->setFrom($this->from_address)
             ->setTo($ace->getEmail());
         /* Get the resource and pass it to the template. */
@@ -181,8 +177,7 @@ class EmailDispatcher
             $emails[$user->getEmail()] = $user->getName();
         }
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Show access request on Camdram: '.$show->getName())
+        $message = (new \Swift_Message('Show access request on Camdram: '.$show->getName()))
             ->setFrom($this->from_address)
             ->setTo($emails)
             ->setBody(

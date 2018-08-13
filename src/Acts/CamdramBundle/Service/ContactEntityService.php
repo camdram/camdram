@@ -21,10 +21,9 @@ class ContactEntityService
     {
         $recipients = $this->findRecipients($entity);
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message('[Camdram] ' . $subject))
             ->setFrom($from_email, $from_name)
             ->setTo($recipients)
-            ->setSubject('[Camdram] ' . $subject)
             ->setBody($message)
             ;
 
