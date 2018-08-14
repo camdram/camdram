@@ -36,7 +36,7 @@
 		"knplabs/github-api": "^2.8",
 		"liip/imagine-bundle": "~1.9",
 		"oneup/uploader-bundle": "^1.9",
-		"pagerfanta/pagerfanta": "1.0.*",
+		"pagerfanta/pagerfanta": "1.1.*",
 		"php-http/guzzle6-adapter": "^1.1",
 		"php-http/httplug-bundle": "^1.10",
 		"sabre/vobject": "~4.1",

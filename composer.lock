@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf80dc626e34f2ced3030da412160848",
+    "content-hash": "0319e405ce21b07478a50aac1cc577cc",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -3487,16 +3487,16 @@
         },
         {
             "name": "pagerfanta/pagerfanta",
-            "version": "v1.0.5",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/whiteoctober/Pagerfanta.git",
-                "reference": "29aade64addfdfb12c05aabf160f09d1aea6b143"
+                "reference": "8400ab498e500018cff9a099ac22555e7949aa9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/29aade64addfdfb12c05aabf160f09d1aea6b143",
-                "reference": "29aade64addfdfb12c05aabf160f09d1aea6b143",
+                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/8400ab498e500018cff9a099ac22555e7949aa9a",
+                "reference": "8400ab498e500018cff9a099ac22555e7949aa9a",
                 "shasum": ""
             },
             "require": {
@@ -3509,7 +3509,7 @@
                 "jmikola/geojson": "~1.0",
                 "mandango/mandango": "~1.0@dev",
                 "mandango/mondator": "~1.0@dev",
-                "phpunit/phpunit": "~4 | ~5",
+                "phpunit/phpunit": "^4.8.35 | ^5.7",
                 "propel/propel": "~2.0@dev",
                 "propel/propel1": "~1.6",
                 "ruflin/elastica": "~1.3",
@@ -3552,7 +3552,7 @@
                 "paginator",
                 "paging"
             ],
-            "time": "2017-03-20T13:46:15+00:00"
+            "time": "2018-05-01T10:49:10+00:00"
         },
         {
             "name": "paragonie/random_compat",
