@@ -111,21 +111,27 @@ class EmailDispatcher
         $message = (new \Swift_Message)
             ->setFrom($this->from_address)
             ->setTo($ace->getUser()->getEmail());
-        /* Get the resource and pass it to the template. */
-        if ($ace->getType() == 'show') {
-            $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
-            $message->setSubject('Access to show '.$show->getName().' on Camdram granted')
-                ->setBody(
-                    $this->twig->render(
-                        'email/ace.txt.twig',
-                        array(
-                            'is_pending' => false, //$is_pending,
-                            'ace' => $ace,
-                            'entity' => $show
-                        )
-                    )
-                );
+
+        switch ($ace->getType()) {
+            case 'show':
+                $entity = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
+                break;
+            case 'society':
+                $entity = $this->em->getRepository('ActsCamdramBundle:Organisation')->findOneById($ace->getEntityId());
+                break;
         }
+
+        $message->setSubject('Access to '.$entity->getName().' on Camdram granted')
+            ->setBody(
+                $this->twig->render(
+                    'email/ace.txt.twig',
+                    array(
+                        'is_pending' => false,
+                        'ace' => $ace,
+                        'entity' => $entity
+                    )
+                )
+            );
         $this->mailer->send($message);
     }
 
@@ -144,13 +150,10 @@ class EmailDispatcher
                 $entity = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
                 break;
             case 'society':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Society')->findOneById($ace->getRid());
-                break;
-            case 'venue':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Venue')->findOneById($ace->getRid());
+                $entity = $this->em->getRepository('ActsCamdramBundle:Organisation')->findOneById($ace->getRid());
                 break;
         }
-        $message->setSubject('Access to '.$ace->getType().' '.$entity->getName().' on Camdram granted')
+        $message->setSubject('Access to '.$entity->getName().' on Camdram granted')
             ->setBody(
                 $this->twig->render(
                     'email/ace.txt.twig',
