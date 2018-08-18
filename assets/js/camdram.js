@@ -27,13 +27,23 @@ import Bloodhound from 'typeahead.js'
         });
     }
 
+    var supportsDateInput = function() {
+        const input = document.createElement(`input`);
+        input.setAttribute(`type`, `date`);
+
+        const notADateValue = `not-a-date`;
+        input.setAttribute(`value`, notADateValue);
+
+        return !(input.value === notADateValue);
+      }
+
     // This function is called on the document later, but also
     // on extra elements as they are added to the page.
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
         $('a.delete-link').deleteLink();
 
-        if (!("orientation" in window)) {
+        if (!supportsDateInput()) {
             // Inject custom datepicker on desktops
             // (Use on native datepicker on mobile)
             $('input[type=date]', elementsToFix).datepicker({
