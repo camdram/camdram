@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Form\Type\ContactUsType;
+use Acts\CamdramBundle\Service\EmailDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,13 +23,13 @@ class ContactUsController extends Controller
         ));
     }
 
-    public function sendAction(Request $request)
+    public function sendAction(Request $request, EmailDispatcher $emailDispatcher)
     {
         $form = $this->createForm(ContactUsType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
-            $this->get('acts.camdram.email_dispatcher')->sendContactUsEmail($data['email'], $data['subject'], $data['message']);
+            $emailDispatcher->sendContactUsEmail($data['email'], $data['subject'], $data['message']);
 
             return $this->redirect($this->generateUrl('acts_camdram_contact_us_sent'));
         } else {
