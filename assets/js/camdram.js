@@ -33,6 +33,15 @@ import Bloodhound from 'typeahead.js'
         $('.news_media', elementsToFix).newsFeedMedia();
         $('a.delete-link').deleteLink();
 
+        if (!("orientation" in window)) {
+            // Inject custom datepicker on desktops
+            // (Use on native datepicker on mobile)
+            $('input[type=date]', elementsToFix).datepicker({
+                dateFormat: 'yy-mm-dd',
+                constrainInput: true
+            });
+        }
+
         $('.dropdown-link', elementsToFix).each(function() {
             var $link = $(this);
             var $dropdown = $('.topbar-dropdown', $link);

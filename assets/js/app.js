@@ -16,3 +16,4 @@ import '../scss/news.scss';
 import '../scss/venues.scss';
 
 import "@fancyapps/fancybox/dist/jquery.fancybox.css";
+import "../scss/jquery-ui.custom.css"
