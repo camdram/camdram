@@ -96,7 +96,7 @@ class EmailDispatcher
     public function sendContactUsEmail($from, $subject, $message)
     {
         $message = (new \Swift_Message($subject))
-            ->setFrom($from)
+            ->setFrom([$this->from_address => 'camdram.net Contact Form'])
             ->setReplyTo($from)
             ->setTo($this->from_address)
             ->setBody($message)
