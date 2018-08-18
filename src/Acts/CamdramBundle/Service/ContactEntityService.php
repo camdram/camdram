@@ -42,7 +42,7 @@ class ContactEntityService
         }
 
         if (count($emails) == 0) {
-            $emails = array('websupport@camdram.net');
+            $emails = array('support@camdram.net');
         }
 
         return $emails;

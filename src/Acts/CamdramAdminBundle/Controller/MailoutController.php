@@ -21,11 +21,11 @@ class MailoutController extends Controller
 
 --
 Sent by the Camdram administration team.
-For any enquiries, please contact websupport@camdram.net.";
+For any enquiries, please contact support@camdram.net.";
     
     const FROM_NAME = "Camdram";
     
-    const FROM_EMAIL = "websupport@camdram.net";
+    const FROM_EMAIL = "support@camdram.net";
     
     const RETURN_EMAIL = "support-bounces@camdram.net";
     
