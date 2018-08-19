@@ -264,8 +264,7 @@ ul.topbar-dropdown {
     }
 
     @media only screen and (max-width: 500px) {
-      li a, ul.right li.has-dropdown > a {
-        /* second selector is redundant but needed to gain precedence over an existing !important. */
+      ul li.has-dropdown > a {
         padding-left: 8px !important;
         padding-right: 8px !important;
         i.fa {
@@ -280,6 +279,7 @@ ul.topbar-dropdown {
     > ul {
       margin:0;
       padding-left:0;
+      background: none;
 
       > li {
         color: white;
@@ -289,6 +289,7 @@ ul.topbar-dropdown {
           display:inline-block;
           font-size: 0.8em;
           font-weight: bold;
+          width: auto;
 
           &.icon-link {
             padding: 0;
