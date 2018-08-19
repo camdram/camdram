@@ -4,11 +4,24 @@
 
 {% block body %}
     <div class="row">
-        {{ render(url('acts_camdram_entity_toolbar', {type: 'person'})) }}
+        <h1>People</h1>
+
+        <aside id="home_statistics" class="right" style="padding-left: 1em">
+            {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
+        </aside>
+
+        <p>The Cambridge amateur dramatics community has produced numerous household names. However, the community wouldn't hold together without the dedication of the hundreds of people who act, design, direct and organise to keep our very many shows on the road. Camdram isn't exclusive to Cambridge University, or even to student theatre at all: we're open to all amateur dramatics in Cambridge.</p>
+
+        <p>Below are a selection of the people performing this week:</p>
     </div>
 
     <div class="row">
-
+        <ul class="large-block-grid-2">
+        {%- for person in selectedPeople -%}
+            <li><h5><a href="{{ path('get_person', {identifier: person.person.slug}) }}">{{ person.personName }}</a></h5>
+                {{person.role}} in <a href="{{ path('get_show', {identifier: person.show.slug}) }}">{{person.show.name}}</a>
+        {%- endfor -%}
+        </ul>
     </div>
 
 {% endblock %}

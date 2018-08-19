@@ -78,6 +78,40 @@ class PersonController extends AbstractRestController
     }
 
     /**
+     * We don't want the default behaviour of paginated results - output an
+     * interesting selection unless there's a query parameter specified.
+     */
+    public function cgetAction(Request $request)
+    {
+        if ($request->query->has('q')) {
+            return parent::cgetAction($request);
+        }
+
+        $now = new \Datetime;
+        $day = $now->format('N');
+        if ($day == 7) {
+            $day = 0;
+        }
+        $interval = new \DateInterval('P'.$day.'DT'.$now->format('H\\Hi\\Ms\\S'));
+        $start = $now->sub($interval);
+        $end = clone $start;
+        $end->add(new \DateInterval('P7D'));
+
+        $selectedPeople = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Role')->getRolesInDateRange($start, $end);
+        usort($selectedPeople, function($a, $b) { // Prioritise people with low show counts.
+            return $a->getPerson()->getShowCount() - $b->getPerson()->getShowCount();
+        });
+        $selectedPeople = array_slice($selectedPeople, 0, 14);
+
+        $view = $this->view($selectedPeople, 200)
+            ->setTemplateVar('selectedPeople')
+            ->setTemplate('person/index.html.twig')
+        ;
+
+        return $view;
+    }
+
+    /**
      * * @Rest\Get("/people/{identifier}/link")
      */
     /*public function linkAction($identifier)
