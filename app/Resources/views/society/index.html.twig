@@ -22,7 +22,7 @@
             <h5>
                 <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
                 {% if society.shortname is not empty %}
-                <small>- {{ society.shortname }}</small>
+                &emsp;<small>{{ society.shortname }}</small>
                 {% endif %}
             </h5>
             {% if society.college is not empty %}
