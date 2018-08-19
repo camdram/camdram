@@ -147,6 +147,11 @@ class SearchTest extends WebTestCase
         return $this->doJsonRequest('/search.json', ['q' => $query, 'limit' => $limit, 'page' => $page]);
     }
 
+    public function testNoQuery()
+    {
+        $this->assertEquals([], $this->doJsonRequest("/search.json", []));
+    }
+
     public function testAutocomplete()
     {
         $this->createShow('Test Show', '2000-01-01');
