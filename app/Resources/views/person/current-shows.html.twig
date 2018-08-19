@@ -1,7 +1,7 @@
 {% if shows | length > 0 %}
     <h4>{{ person.name }} is currently involved with</h4>
     {% for show in shows %}
-        <div>
+        <div itemscope itemtype="http://schema.org/TheaterEvent">
             {{ include('person/show-header.html.twig') }}
             <p>{{ show.description | camdram_markdown }}</p>
         </div>
