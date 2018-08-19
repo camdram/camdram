@@ -1,39 +1,29 @@
 <div class="performance">
     <div class="row">
-        <div class="large-1 column">
-            {{ form_label(performance.start_date) }}
+        <div class="right">
+            <a href="#" class="remove_link"><i class="fa fa-times"></i></a>
         </div>
-        <div class="large-3 columns">
-            {{ form_widget(performance.start_date) }}
+        <div class="form-small-widget">
+            {{ form_label(performance.start_date) -}}
+            {{- form_widget(performance.start_date) }}
             {{ form_errors(performance.start_date) }}
         </div>
-        <div class="large-1 column end-date">
-            {{ form_label(performance.end_date) }}
-        </div>
-        <div class="large-3 columns end-date">
-            {{ form_widget(performance.end_date) }}
+        <div class="end-date form-small-widget">
+            {{ form_label(performance.end_date) -}}
+            {{- form_widget(performance.end_date) }}
             {{ form_errors(performance.end_date) }}
         </div>
-        <div class="large-1 column">
-            {{ form_label(performance.time) }}
-        </div>
-        <div class="large-3 columns">
-            <div class="right">
-                <a href="#" class="remove_link"><i class="fa fa-times"></i></a>
-            </div>
-            {{ form_widget(performance.time) }}
+        <div class="form-small-widget">
+            {{ form_label(performance.time) -}}
+            {{- form_widget(performance.time) }}
             {{ form_errors(performance.time) }}
         </div>
     </div>
     <div class="row venue-row">
-        <div class="large-3 columns">
-            {{ form_label(performance.venue) }}
-        </div>
-        <div class="large-9 columns">
-            <div class="row">
-                {{ form_widget(performance.venue) }}
-                {{ form_errors(performance.venue) }}
-            </div>
+        <div class="form-medium-widget">
+            {{ form_label(performance.venue) -}}
+            {{- form_widget(performance.venue) }}
+            {{ form_errors(performance.venue) }}
         </div>
     </div>
 {{ form_rest(performance) }}
