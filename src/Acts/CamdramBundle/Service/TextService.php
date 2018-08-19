@@ -109,7 +109,7 @@ class TextService
         if (strlen($text) <= $length) {
             return $text;
         } else {
-            return substr($text, 0, $length).'&hellip;';
+            return mb_substr($text, 0, $length, "UTF-8").'&hellip;';
         }
     }
 
