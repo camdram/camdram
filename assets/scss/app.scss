@@ -29,7 +29,7 @@ $section-border-color: #e6e6e6;
   -ms-filter: brightness($factor);
 }
 
-.top-bar-section {
+#second-top-bar > .top-bar-section {
   max-width:$row-width;
   margin:auto;
 
@@ -263,6 +263,19 @@ ul.topbar-dropdown {
       display:block;
     }
 
+    @media only screen and (max-width: 500px) {
+      li a, ul.right li.has-dropdown > a {
+        /* second selector is redundant but needed to gain precedence over an existing !important. */
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        i.fa {
+          padding: 0 5px;
+        }
+      }
+      li.has-dropdown > a::after {
+        content: none;
+      }
+    }
 
     > ul {
       margin:0;
@@ -274,7 +287,6 @@ ul.topbar-dropdown {
         > a {
           color: white;
           display:inline-block;
-          padding: 7px 15px;
           font-size: 0.8em;
           font-weight: bold;
 

@@ -1,6 +1,6 @@
-<li id="admin-link" class="dropdown-link">
+<li id="admin-link" class="has-dropdown">
     <a href="#">Administration</a>
-    <ul id="admin-dropdown" class="topbar-dropdown">
+    <ul id="admin-dropdown" class="dropdown">
         {% if is_granted('ROLE_ADMIN') %}
             <li><a href="https://support.camdram.net/"><i class="fa fa-warning fa-fw"></i> Issues</a></li>
             <li><a href="{{ path('acts_camdram_audit') }}"><i class="fa fa-undo fa-fw"></i> Audit Log</a></li>

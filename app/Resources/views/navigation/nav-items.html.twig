@@ -1,6 +1,8 @@
-{% if current_id is not defined %}{% set current_id = '' %}{% endif %}
-{% for id, item in items %}
-    <li{% if id == current_id %} class="active"{% endif %}><a href="{% if item.path is defined %}{{ item.path }}{% else %}#{% endif %}">
+{% if current_id is not defined %}{% set current_id = '' %}{% endif -%}
+{%- if class is not defined %}{% set class = '' %}{% endif %}
+{% for id, item in items -%}
+    {% set current_class = class ~ (id == current_id ? " active" : '') %}
+    <li{% if current_class | length > 0  %} class="{{current_class}}"{% endif %}><a href="{% if item.path is defined %}{{ item.path }}{% else %}#{% endif %}">
         {% if item.icon is defined %}<i class="fa fa-{{ item.icon }} fa-fw"></i>{% endif %} <span>{{ item.text }}</span></a>
     </li>
 {% endfor %}
