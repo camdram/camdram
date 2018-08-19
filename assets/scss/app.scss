@@ -15,7 +15,7 @@ $topbar-margin-bottom: 0;
 $topbar-link-bg-hover: $light-grey;
 $topbar-link-font-size: 0.9em;
 $topbar-link-weight: normal;
-$topbar-breakpoint: 500px;
+$topbar-breakpoint: 1px;
 
 $section-border-color: #e6e6e6;
 
@@ -39,6 +39,31 @@ $section-border-color: #e6e6e6;
     li.active > a:hover {
       background:inherit;
       cursor:default;
+    }
+  }
+
+  ul.left li .fa {
+      display: none;
+    }
+
+  @media only screen and (max-width: 500px) {
+    li a, ul.right li.has-dropdown > a {
+      /* second selector is redundant but needed to gain precedence over an existing !important. */
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+    }
+
+    > ul > li > a > .fa {
+      display: inline !important;
+      padding: 0 4px;
+
+      ~ span {
+        display: none;
+      }
+    }
+
+    #nav-edit-link::after {
+      content: none; /* No drop-down arrow on small screens. */
     }
   }
 }

@@ -43,15 +43,11 @@
   </header>
 
   <nav class="top-bar">
-      <ul class="title-area">
-          <li class="name"></li>
-          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-      </ul>
       <section class="top-bar-section">
       <ul class="left">
           {% include 'navigation/nav-items.html.twig'  with {items: {
-          'home': {'text': 'Home', 'path': path('acts_camdram_homepage')},
-          'diary': {'text': 'Diary', 'path': path('acts_camdram_diary')},
+          'home': {'text': 'Home', 'path': path('acts_camdram_homepage'), icon: 'home'},
+          'diary': {'text': 'Diary', 'path': path('acts_camdram_diary'), icon: 'calendar'},
           'vacancies': {'text': 'Vacancies', 'path': path('get_auditions')},
           'societies': {'text': 'Societies', 'path': path('get_societies')},
           'venues': {'text': 'Venues', 'path': path('get_venues')}
@@ -60,7 +56,7 @@
           <ul class="right">
             <li class="has-dropdown">
               <a href="#" id="nav-edit-link"><i class="fa fa-edit"></i></a>
-              <ul class="dropdown">
+              <ul class="dropdown vertical menu" data-dropdown-menu>
                   {% block option_links %}
                   {% endblock %}
                   {% include 'navigation/nav-items.html.twig' with {items: {
