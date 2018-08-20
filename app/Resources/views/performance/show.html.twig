@@ -13,10 +13,14 @@
         "/><meta itemprop="address" content="United Kingdom"/>
     </span>
     {% for p in performances %}
-        {{- p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}
+        {%- if (diary_links is defined) and (disable_links is not defined) -%}
+            <a href="/diary/{{- p.startdate|date('Y-m-d') -}}#diary-item-{{p.id}}" title="View in diary">
+		<i class="fa fa-calendar fa-fw" style="width: 2em"></i></a>
+        {% endif -%}
+        {{- p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') -}}
         {%- if date(p.startdate) != date(p.enddate) -%}
-            {# Show the duration #}
-             - {{ p.enddate|date('D jS F Y') }},
+            {#- Show the duration -#}
+             &ndash;{{ p.enddate|date('D jS F Y') }},
         {% endif %}
         {% if p.venue %}
             at {% if disable_links is defined -%}

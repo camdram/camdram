@@ -21,7 +21,9 @@
         <div class="diary-row">
         {% set last_index = -1 %}
         {% for item in row.items %}
-        <div class="diary-item diary-{{ item.numberOfDays }}-days{% if item.startIndex != last_index + 1 %} diary-skip-left-{{ item.startIndex - last_index - 1 }}{% endif %}" itemscope="" itemtype="http://schema.org/TheaterEvent">
+        <div id="diary-item-{{(item.event.uid|split('@'))[0]}}" {# Linked to from show pages. -#}
+            class="diary-item diary-{{ item.numberOfDays }}-days {% if item.startIndex != last_index + 1 -%}
+                   diary-skip-left-{{ item.startIndex - last_index - 1 }}{% endif %}" itemscope="" itemtype="http://schema.org/TheaterEvent">
             {# Jump through hoops here to get the start date of the event itself by treating the offset as seconds in a unix timestamp and 
                then rendering it to appear as a number of days to modify the date by. #}
             <meta itemprop="startDate" content="{{ week.startAt|date_modify(item.startIndex|date('+s \\d\\a\\y\\s'))|date('Y-m-d') }}"/>

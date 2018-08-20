@@ -1,4 +1,4 @@
-<p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}
+<p>{% include 'performance/show.html.twig' with {'performances': show.performances, 'diary_links': true } %}
 {% if show.weeks is not empty %}
 <em>{{ show.weeks }}</em>
 {% endif %}

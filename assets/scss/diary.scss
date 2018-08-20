@@ -85,6 +85,10 @@ ul.diary-header:after {
   overflow:hidden;
 }
 
+.diary-item:target {
+  box-shadow: 0 0 4px 1px #fe5c1f;
+}
+
 .diary-item-hidden:after {
   content: '';
   width: 100%;
