@@ -12,8 +12,11 @@ class AdminVoter extends Voter
 {
     public function supports($attribute, $subject)
     {
-        return is_object($subject) &&
-                    strpos(get_class($subject), 'Acts\\') !== false;
+        if (is_object($subject)) {
+            $subject = get_class($subject);
+        }
+
+        return strpos($subject, 'Acts\\') !== false;
     }
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
