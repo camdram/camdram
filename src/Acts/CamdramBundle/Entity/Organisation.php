@@ -104,14 +104,6 @@ abstract class Organisation implements OwnableInterface
     private $college;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="affiliate", type="boolean", nullable=false)
-     * @Gedmo\Versioned
-     */
-    private $affiliate = 0;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="logourl", type="string", length=255, nullable=true)
@@ -191,30 +183,6 @@ abstract class Organisation implements OwnableInterface
     public function getCollege()
     {
         return $this->college;
-    }
-
-    /**
-     * Set affiliate
-     *
-     * @param bool $affiliate
-     *
-     * @return Society
-     */
-    public function setAffiliate($affiliate)
-    {
-        $this->affiliate = $affiliate;
-
-        return $this;
-    }
-
-    /**
-     * Get affiliate
-     *
-     * @return bool
-     */
-    public function getAffiliate()
-    {
-        return $this->affiliate;
     }
 
     /**
