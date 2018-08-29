@@ -168,9 +168,19 @@ footer {
 
 header .logo {
   text-align: center;
+  position: relative;
   @media #{$small} {
     height:80px;
-    background:url('../images/header_separator.png') center right no-repeat;
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border-style: solid;
+      border-color: white $orange;
+      border-width: 40px 0 40px 9px;
+    }
   }
   h1 {
     font-size:1em;
@@ -181,12 +191,22 @@ header .logo {
 
 header .search {
   background: #fff;
+  position: relative;
   padding-top: 20px;
   @media #{$small} {
     height:80px;
     padding-left:30px;
     padding-right:30px;
-    background:url('../images/header_separator2.png') center right no-repeat #fff;
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border-style: solid;
+      border-color: $orange white;
+      border-width: 40px 0 40px 9px;
+    }
   }
 }
 
