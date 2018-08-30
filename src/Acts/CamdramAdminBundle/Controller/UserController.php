@@ -55,14 +55,20 @@ class UserController extends FOSRestController
         $repo = $this->getRepository();
 
         if ($request->get('q')) {
-            /** @var $search_provider \Acts\CamdramBundle\Service\Search\ProviderInterface */
-            $data = $repo->search($request->get('q'), 10);
+            $qb = $repo->search($request->get('q'));
         } else {
-            $qb = $repo->createQueryBuilder('e');
-            $adapter = new DoctrineORMAdapter($qb);
-            $data = new Pagerfanta($adapter);
-            $data->setMaxPerPage(25);
+            $qb = $repo->createQueryBuilder('u');
         }
+        if ($request->get('sort')) {
+            // Can't use :parameter notation so manually sanitizing the input.
+            $direction = $request->get('order') == 'DESC' ? 'DESC' : 'ASC';
+            $qb->orderBy('u.' . preg_replace("/[^A-Za-z_]+/", "", $request->get('sort')), $direction);
+        } else {
+            $qb->orderBy('u.id', 'ASC');
+        }
+        $adapter = new DoctrineORMAdapter($qb);
+        $data = new Pagerfanta($adapter);
+        $data->setMaxPerPage(25);
 
         return $this->view($data, 200)
             ->setTemplateVar('result')

@@ -3,32 +3,34 @@
 {% block title %}Users{% endblock %}
 
 {% block body %}
+    {%- set sort  = app.request.query.get('sort', 'id') -%}
+    {%- set order = app.request.query.get('order', 'ASC') -%}
     <div class="row">
         <h3>Manage Users</h3>
 
         <form action="{{ path('get_users') }}" method="get">
-            <div class="row">
-                <div class="large-3 columns">
-                    <label for="user_search_box" class="right inline">Search</label>
-                </div>
-                <div class="large-3 columns">
-                    <input id="user_search_box"  type="text" name="q"/>
-                </div>
-                <div class="large-6 columns">
-                    <input type="submit" class="button small"/>
-                </div>
+            <div style="display: flex; justify-content: space-around;">
+                <label for="user_search_box" class="show-for-medium-up inline">Search</label>
+                <input id="user_search_box" type="text" name="q" style="max-width: 35em; margin-right: 1em;"
+                       placeholder="Search by name, email and id" />
+                <input type="submit" class="button small" value="Go" />
             </div>
         </form>
 
-        {% include 'paginator.html.twig' %}
+        {% include 'paginator.html.twig' with {'url_suffix': '&sort='~sort~'&order='~order} %}
+        <div style="overflow-x: auto; width: 100%">
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Date joined</th>
-                <th>Last login</th>
+                {%- for column in [["ID", "id"], ["Name", "name"], ["Email", "email"],
+                ["Date joined", "registered_at"], ["Last login", "last_login_at"]] -%}
+                <th><span style="display: flex; align-items: center;">{# flex prevents wrapping awkwardly on narrow screens #}
+                    <span style="flex: 1">{{- column[0] -}}</span>
+                    <a href="{{ path('get_users') }}?sort={{ column[1] }}&order=DESC"
+                       title="{{ column[0] }}, descending">▲</a><a
+                       href="{{ path('get_users') }}?sort={{ column[1] }}&order=ASC"
+                       title="{{ column[0] }}, ascending">▼</a></span></th>
+                {%- endfor -%}
             </tr>
             </thead>
         <tbody>
@@ -43,6 +45,7 @@
         {% endfor %}
         </tbody>
         </table>
+        </div>
         {% include 'paginator.html.twig' %}
 
     </div>
