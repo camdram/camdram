@@ -16,9 +16,12 @@ Camdram.autocomplete.short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', '
 $(function() {
     $("#searchfield").focus(function(e) {
         Camdram.autocomplete.suggest(this);
+        /* .active is to work around lack of :focus-within support and should eventually be removed */
+        document.querySelector('header .search').classList.add('active');
     }).blur(function(e) {
         window.setTimeout(function() {
             Camdram.autocomplete.drawControl(false);
+            document.querySelector('header .search').classList.remove('active');
         }, 100)
     }).keyup(function(e) {
         if(e.keyCode == 38 || e.keyCode == 40)

@@ -104,10 +104,6 @@ body {
   flex-flow: column;
 }
 
-header {
-  background:$orange;
-  clear:both;
-}
 
 #wrapper > section {
   max-width:$row-width;
@@ -166,46 +162,88 @@ footer {
   }
 }
 
-header .logo {
-  text-align: center;
+header {
+  background:$orange;
+  clear: both;
   position: relative;
-  @media #{$small} {
-    height:80px;
-    &::after {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      border-style: solid;
-      border-color: white $orange;
-      border-width: 40px 0 40px 9px;
+
+  #logo-block {
+    text-align: center;
+    position: relative;
+    margin: 0;
+    height: 80px;
+
+    @media only screen and (min-width: 768px) {
+      width: 25%;
+      float: left;
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        border-style: solid;
+        border-color: white $orange;
+        border-width: 40px 0 40px 9px;
+      }
+    }
+
+    a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
-  h1 {
-    font-size:1em;
-    margin:0;
-    margin:18px 0;
-  }
-}
+  
+  .search {
+    @media only screen and (min-width: 768px) {
+      position: relative;
+      height:80px;
+      padding: 20px 30px 0 30px;
+      width: 74%;
+      float: left;
+      background: #fff;
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        border-style: solid;
+        border-color: $orange white;
+        border-width: 40px 0 40px 9px;
+      }
+    }
 
-header .search {
-  background: #fff;
-  position: relative;
-  padding-top: 20px;
-  @media #{$small} {
-    height:80px;
-    padding-left:30px;
-    padding-right:30px;
-    &::after {
-      content: "";
+    @media only screen and (max-width: 768px) {
+      background: $orange;
       position: absolute;
-      right: 0;
       top: 0;
-      bottom: 0;
-      border-style: solid;
-      border-color: $orange white;
-      border-width: 40px 0 40px 9px;
+      right: 0;
+      width: 100%;
+      height: 80px;
+      padding: 20px 10px;
+      transition: width 500ms ease-in-out;
+      /* .active is JS to make up for lack of :focus-within support */
+      &:not(.active):not(:active):not(:focus-within) {
+        width: 60px;
+        #search_form {
+          border: none;
+          background: none;
+          box-shadow: none;
+        }
+        i {
+          color: white;
+        }
+        input {
+          cursor: pointer;
+          opacity: 0;
+        }
+        #results {
+          display: none;
+        }
+      }
     }
   }
 }

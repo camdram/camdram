@@ -35,21 +35,19 @@
 
   <header>
     <div class="row">
-      <div class="large-3 columns logo">
-        <h1><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo.png') }}, {{ asset('images/logo-1.5x.png') }} 1.5x, {{ asset('images/logo-2x.png') }} 2x, {{ asset('images/logo-4x.png') }} 4x" src="{{ asset('images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
-      </div>
-      <div class="large-9 columns search">
-          <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
-              <i class="fa fa-search"></i>
-              <input type="text" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
-              <div class="results">
-                  <ul></ul>
-                  <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
-                  <div class="error">Search is not availble at the moment</div>
-              </div>
-              <i class="fa fa-spinner fa-spin"></i>
-              <input type="submit" value="Search"/>
-          </form>
+      <h1 id="logo-block"><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo.png') }}, {{ asset('images/logo-1.5x.png') }} 1.5x, {{ asset('images/logo-2x.png') }} 2x, {{ asset('images/logo-4x.png') }} 4x" src="{{ asset('images/logo.png') }}" alt="Camdram" title="Camdram"/></a></h1>
+      <div class="search">
+        <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
+          <i class="fa fa-search"></i>
+          <input type="text" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
+          <div class="results">
+            <ul></ul>
+            <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
+            <div class="error">Search is not availble at the moment</div>
+          </div>
+          <i class="fa fa-spinner fa-spin"></i>
+          <input type="submit" value="Search"/>
+        </form>
       </div>
     </div>
   </header>
