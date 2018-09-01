@@ -228,6 +228,7 @@ header {
       /* .active is JS to make up for lack of :focus-within support */
       &:not(.active):not(:active):not(:focus-within) {
         width: 60px;
+        overflow-x: hidden;
         #search_form {
           border: none;
           background: none;
