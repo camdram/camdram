@@ -506,3 +506,21 @@ $panel-font-color-alt: #000;
     color:#000000;
   }
 }
+
+.vacancies-header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  ul {
+    flex-grow: 1;
+    text-align: right;
+    list-style: none;
+    padding: 0 !important;
+    margin: 0 !important;
+    li {
+      display: inline-block;
+      margin-left: 1em;
+    }
+  }
+}

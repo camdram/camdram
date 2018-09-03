@@ -4,16 +4,17 @@
 {% block title %}Technical and designer roles{% endblock %}
 {% set current_vacancies_id='techies' %}
 
-{% block vacancies_body %}
+{% block vacancies_header %}
+    <h3>Technical and designer roles</h3>
 
-	<ul class="inline-list right">
-        <li>List view</li>
+    <ul role="navigation">
+        <li><i class="fa fa-list"></i> List view</li>
         <li><a href="techies.rss"><i class="fa fa-rss"></i> RSS Feed</a></li>
         <li><a href="techies.txt"><i class="fa fa-file-text-o"></i> Plaintext</a></li>
     </ul>
+{% endblock %}
 
-    <h3>Technical and designer roles</h3>
-
+{% block vacancies_body %}
     {% for a in techieadverts %}
         <hr>
         <div id="{{ a.show.slug }}">

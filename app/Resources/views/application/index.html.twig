@@ -3,16 +3,16 @@
 {% set current_vacancies_id = 'applications' %}
 {% block title %}Applications{% endblock %}
 
-{% block vacancies_body %}
-
-   <ul class="inline-list right">
-        <li>List View</li>
+{% block vacancies_header %}
+   <h3>Producer/director roles and show applications</h3>
+   <ul role="navigation">
+        <li><i class="fa fa-list"></i> List View</li>
         <li><a href="applications.rss"><i class="fa fa-rss"></i> RSS Feed</a></li>
         <li><a href="applications.txt"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
     </ul>
+{% endblock %}
 
-	<h3>Producer/director roles and show applications</h3>
-
+{% block vacancies_body %}
     {% spaceless %}
     {% set current = null %}
     {% for a in applications %}
