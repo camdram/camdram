@@ -1,14 +1,13 @@
 <div class="row news-item">
-    <p>
-    <a href="{{ item.getLink() }}" class="right icon-link" target="_blank">
-        <em>{{ item.getPostedAt() | date('H:i \\o\\n jS F') }}</em>
-        <img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" srcset="{{ asset('images/service/' ~ item.source ~ '.png') }}, {{ asset('images/service/' ~ item.source ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ item.source ~ '-38.png') }} 2x, {{ asset('images/service/' ~ item.source ~ '-76.png') }} 4x" class="news-source" alt="{{ item.source | capitalize }}"/>
-    </a>
+    <p class="split-header">
         {% if item.entity.organisationType == 'venue' %}<a href="{{ path('get_venue', {identifier: item.entity.slug}) }}">
         {% else %}<a href="{{ path('get_society', {identifier: item.entity.slug}) }}">{% endif %}
         <strong>{{ item.entity.name }}</strong></a>
+        <span><a href="{{ item.getLink() }}" class="icon-link" target="_blank">
+            <em>{{ item.getPostedAt() | date('H:i \\o\\n jS F') }}</em>
+            <img src="{{ asset('images/service/' ~ item.source ~ '.png') }}" srcset="{{ asset('images/service/' ~ item.source ~ '.png') }}, {{ asset('images/service/' ~ item.source ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ item.source ~ '-38.png') }} 2x, {{ asset('images/service/' ~ item.source ~ '-76.png') }} 4x" class="news-source" alt="{{ item.source | capitalize }}"/>
+        </a></span>
     </p>
-
 
     {% if item.picture %}
     <a href="{{ item.getLink() }}" target="_blank" class="news-image {{

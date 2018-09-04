@@ -1,0 +1,36 @@
+/**
+ * framework.scss
+ * Generic styles used throughout Camdram, not limited to specific elements.
+ */
+
+/**
+ * A header with left and right components. Markup
+ *    <div class="split-header">
+ *      <h#>Blah</h#>
+ *      <ul>...</ul>
+ *    </div>
+ * Not obligatory to use a <h#> or an <ul>, although an <ul> will automatically
+ * render inline.
+ */
+.split-header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  > :nth-child(2) {
+    flex-grow: 1;
+    text-align: right;
+    padding: 0 !important;
+    margin: 0 0 0 1em;
+  }
+  ul {
+    list-style: none;
+    > li {
+      display: inline-block;
+      ~ li {
+        margin-left: 1em;
+      }
+    }
+  }
+}
+
