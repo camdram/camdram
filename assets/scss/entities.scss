@@ -43,3 +43,45 @@ $include-html-classes: false;
   margin-bottom:0.7em;
 }
 
+.show-image-container {
+  max-width: 240px;
+  float: left;
+  margin-right: 1em;
+  @media (max-width: 500px) {
+    max-width: 100%;
+    width: 100%;
+    margin: auto;
+  }
+}
+
+.show-image-container ~ .show-body-text {
+  @media (min-width: 900px) {
+    margin-left: 260px;
+    margin-right: 0;
+  }
+}
+
+.show-roles-container {
+  display: flex;
+  flex-flow: row wrap;
+  > div {
+    flex: 14em;
+    margin: 1em;
+    form {
+      clear: both;
+      margin: 0;
+      > .show-new-role-fields {
+        display: flex;
+        flex-flow: row wrap;
+        > input[type="text"] {
+          width: 8em;
+          flex: 1 auto;
+          margin: 2px;
+        }
+      }
+      > button {
+        margin: 2px;
+      }
+    }
+  }
+}
