@@ -23,7 +23,8 @@
 
 {% if not is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', show) %}
 <div class="row text-center">
-    <a href="{{ path('edit_show_inline', {identifier: show.slug}) }}"><i class="fa fa-key"></i> Log in to edit show details</a>
+    <p><a href="{{ path('edit_show_inline', {identifier: show.slug})
+              }}"><i class="fa fa-key"></i> Log in to edit show details</a></p>
 </div>
 {% endif %}
 
@@ -99,7 +100,7 @@
 <div class="vacancies-panel" class="row">
     <h5>Get involved with <em>{{ show.name }}</em>:</h5>
     {% if show.getScheduledAuditions() | length > 0 %}
-    <p>Auditions are being held at the times below - <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
+    <p>Auditions are being held at the times below – <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
         <ul>
             {% for a in show.getScheduledAuditions() %}
             <li>{{ a.date|date('D d M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}</li>
@@ -108,19 +109,19 @@
     {% endif %}
     {% if show.getNonScheduledAuditions() | length > 0 %}
         {% for a in show.getNonScheduledAuditions() %}
-        <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} - <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
+        <p>For auditions contact {{a.location}} by {{ a.starttime|date('g:ia') }} on {{ a.date|date('D d M') }} – <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
         {% endfor %}
     {% endif %}
     {% if show.activeTechieAdvert %}
         <p>We are looking for:
-            {% for p in show.activeTechieAdvert.positions|split("\n") %}
-                {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif %}
-                {{- p }}
-            {% endfor %}
-        - <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
+            {% for p in show.activeTechieAdvert.positions|split("\n") -%}
+                {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif -%}
+                {{- p -}}
+            {%- endfor %}
+        – <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
     {% endif %}
     {% if show.activeApplication %}
-        <p>{{ show.activeApplication.text() }} -
+        <p>{{ show.activeApplication.text() }} –
         <a href="{{ path('get_application', {identifier: show.activeApplication.show.slug}) }}">more details</a></p>
     {% endif %}
 </div>
