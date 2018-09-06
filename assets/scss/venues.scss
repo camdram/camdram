@@ -1,6 +1,11 @@
 .map-small {
   height:270px;
   width:270px;
+  margin-right: 1em;
+  @media (max-width: 500px) {
+    width: 100%;
+    margin: auto;
+  }
 }
 
 .map-large {

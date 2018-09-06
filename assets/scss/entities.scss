@@ -38,27 +38,37 @@ $include-html-classes: false;
   }
 }
 
-.show-society {
-  font-style:italic;
-  margin-bottom:0.7em;
-}
-
-.show-image-container {
+.entity-image-container {
   max-width: 240px;
   float: left;
+  clear: left;
   margin-right: 1em;
   @media (max-width: 500px) {
-    max-width: 100%;
-    width: 100%;
+    max-width: 100% !important;
+    width: 100% !important;
     margin: auto;
+  }
+  .map-small ~ & {
+    margin-top: 1em;
+    max-width: 270px;
+    width: 270px; /* Specifying this explicity to make the image and map line up. */
   }
 }
 
-.show-image-container ~ .show-body-text {
-  @media (min-width: 900px) {
+@media (min-width: 900px) {
+  .entity-image-container ~ .entity-body-text {
     margin-left: 260px;
     margin-right: 0;
   }
+  .map-small ~ .entity-body-text {
+    margin-left: 290px;
+    margin-right: 0;
+  }
+}
+
+.show-society {
+  font-style:italic;
+  margin-bottom:0.7em;
 }
 
 .show-roles-container {
@@ -83,5 +93,23 @@ $include-html-classes: false;
         margin: 2px;
       }
     }
+  }
+}
+
+.organisation-social > .split-header + .news-item::before {
+  /* Adds a virtual <hr> to the top of the news container. */
+  display: block;
+  margin: 1.25em 0 1.1875em;
+  border: solid #ddd;
+  border-width: 1px 0 0;
+  content: "";
+  height: 0;
+}
+
+.organisation-vacancies-aside {
+  @media (min-width: 768px) {
+    width: 50%;
+    float: left;
+    padding: 0 1em 0.5em 0;
   }
 }
