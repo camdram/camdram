@@ -9,55 +9,49 @@
         {{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: society})) }}
     {% endif %}
 
-<div class="row">
-    <div class="large-12 columns panel" itemscope="" itemtype="http://schema.org/TheaterGroup">
-        <div class="row">
-        	{% if society.image %}
-        	    {# Display the society's logo beside the name #} 
-        	    <div class="large-3 columns" itemprop="image">
-        	        <a href="{{ society.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
-        	        {% if is_granted('EDIT', society) and is_granted("IS_AUTHENTICATED_FULLY") %}
-                        <ul class="inline-list">   
-                        {{ include('navigation/delete-item.html.twig', 
-                                    {item: {id: 'delete_society_image', path: path('remove_society_image',{identifier:society.slug}), text: 'Remove image', name: society.name, type: 'image'} }) }}
-                        </ul>
-                    {% endif %}
-                </div>
-        	    <div class="large-9 columns">
-        	{% elseif is_granted('EDIT', society) %}
-        		{# Display the prompt to upload image #} 
-        	    <div class="large-3 columns">
-        	    	<form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
-                        <input type="hidden" name="identifier" value="{{ society.slug }}"/>
-                        <input type="hidden" name="type" value="society"/>
-                    </form>
-         	   </div>
-         	   <div class="large-9 columns">
-        	{% else %}
-        	    {# Society name spans the entire width. #}
-        	    <div class="large-12 columns">
-        	{% endif %}
-                <h2><span itemprop="name">{{ society.name }}</span>&emsp;<small itemprop="alternateName">{{ society.shortname }}</small></h2>
-        	</div>
-        </div><!-- row -->
-        {# Place the society description beneath the title and image. #}
-        <div class="row">
-            <div class="large-12 columns">
-                <p itemprop="description">{{ society.description | camdram_markdown }}</p>
-                {% if can_contact %}
-                    <p><a href="{{ path('contact_entity', {type: 'society', identifier: society.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ society.name }}</a></p>
-                {% endif %}
-            </div>
-        </div>
-    </div><!-- twelve columns panel -->
-</div><!-- row -->
-<div class="row">
-    <div class="large-{% if society.hasSocialId %}6{% else %}12{% endif %} columns">
+<div class="row panel" itemscope="" itemtype="http://schema.org/TheaterGroup">
+    <h2><span itemprop="name">{{ society.name }}</span>&emsp;<small itemprop="alternateName">{{ society.shortname }}</small></h2>
+
+    {% if society.image %}
+    <div class="entity-image-container" itemprop="image">
+        <a href="{{ society.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
+        {% if is_granted('EDIT', society) and is_granted("IS_AUTHENTICATED_FULLY") %}
+        <ul class="inline-list">
+            {{ include('navigation/delete-item.html.twig',
+                    {item: {id: 'delete_society_image', path: path('remove_society_image',{identifier:society.slug}), text: 'Remove image', name: society.name, type: 'image'} }) }}
+        </ul>
+        {% endif %}
+    </div>
+    {% elseif is_granted('EDIT', society) %}
+    {# Display the prompt to upload image #}
+    <div class="entity-image-container">
+        <form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
+            <input type="hidden" name="identifier" value="{{ society.slug }}"/>
+            <input type="hidden" name="type" value="society"/>
+        </form>
+   </div>
+   {% endif %}
+
+   <div class="entity-body-text">
+       <p itemprop="description">{{ society.description | camdram_markdown }}</p>
+       {% if can_contact %}
+           <p><a href="{{ path('contact_entity', {type: 'society', identifier: society.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ society.name }}</a></p>
+       {% endif %}
+    </div>
+</div>
+
+<div class="organisation-social row">
+    {%- if society.hasSocialId -%}
+    <div class="organisation-vacancies-aside">
+    {%- else -%}
+    <div>
+    {%- endif -%}
         {{ render(controller('ActsCamdramBundle:Society:getVacancies', {identifier: society.slug}), {'strategy': 'esi'}) }}
     </div>
-    {% if society.hasSocialId %}
-        <div class="large-6 columns">
-            <ul class="inline-list right">
+    {%- if society.hasSocialId -%}
+        <div class="split-header">
+            <h5>News</h5>
+            <ul>
                 {% if society.facebookId %}<li>
                     <a href="{{ society.getFacebookUrl() }}" target="_blank" class="icon-link">
                         <img src="{{ asset('images/service/facebook.png') }}" srcset="{{ asset('images/service/facebook.png') }}, {{ asset('images/service/facebook-29.png') }} 1.5x, {{ asset('images/service/facebook-38.png') }} 2x, {{ asset('images/service/facebook-76.png') }} 4x" alt=""/> Facebook</a>
@@ -67,15 +61,14 @@
                         <img src="{{ asset('images/service/twitter.png') }}" srcset="{{ asset('images/service/twitter.png') }}, {{ asset('images/service/twitter-29.png') }} 1.5x, {{ asset('images/service/twitter-38.png') }} 2x, {{ asset('images/service/twitter-76.png') }} 4x" alt=""/> Twitter</a>
                     </li>{% endif %}
             </ul>
-            <h5>News</h5>
-            {{ render(controller('ActsCamdramBundle:Society:getNews', {identifier: society.slug}), {'strategy': 'esi'}) }}
         </div>
+
+        {{ render(controller('ActsCamdramBundle:Society:getNews', {identifier: society.slug}), {'strategy': 'esi'}) }}
     {% endif %}
 </div>
+
 <div class="row">
-    <div class="large-12 columns">
-        {{ render(url('get_society_events', {identifier: society.slug})) }}
-    </div>
+    {{ render(url('get_society_events', {identifier: society.slug})) }}
 </div>
 
 {% endblock %}

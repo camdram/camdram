@@ -70,7 +70,7 @@
 
     {# Display show image #}
     {%- if show.image -%}
-        <div class="show-image-container">
+        <div class="entity-image-container">
             <a itemprop="image" href="{{ show.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
             {%- if is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") -%}
                 <ul class="inline-list">
@@ -84,14 +84,14 @@
 
         {# Show prompt to upload image #}
     {%- elseif is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") -%}
-        <div class="show-image-container">
+        <div class="entity-image-container">
             <form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
                 <input type="hidden" name="identifier" value="{{ show.slug }}"/>
                 <input type="hidden" name="type" value="show"/>
             </form>
         </div>
     {%- endif -%}
-    <div class="show-body-text">
+    <div class="entity-body-text">
         {{ include('show/show-body.html.twig') }}
     </div>
 </div>
