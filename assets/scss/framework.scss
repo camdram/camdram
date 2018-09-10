@@ -2,6 +2,8 @@
  * framework.scss
  * Generic styles used throughout Camdram, not limited to specific elements.
  */
+@import './vars.scss';
+
 
 /**
  * A header with left and right components. Markup
@@ -29,6 +31,93 @@
       display: inline-block;
       ~ li {
         margin-left: 1em;
+      }
+    }
+  }
+}
+
+
+/**
+ * General navbar styling. A few more specific rules are in app.scss.
+ * Assumes <nav><div><ul/><ul/></div></nav> structure.
+ * .dropdown aligns to the right. .opt-dropdown aligns left.
+ */
+@mixin dropdown-arrow {
+  @media (min-width: $topbar-breakpoint) {
+    > a::after {
+      content: "";
+      display: inline-block;
+      border-style: solid;
+      border-width: 5px 5px 0 5px;
+      border-color: #aaa transparent;
+      vertical-align: middle;
+      margin-left: 5px;
+    }
+  }
+}
+@mixin dropdown-content($align) {
+  position: relative;
+  /* :focus-within allows keyboard users to tab through the menu */
+  &:not(:hover):not(:focus-within) > ul {
+    height: 0;
+    overflow: hidden;
+  }
+  > ul {
+    position: absolute;
+    z-index: 100;
+    #{$align}: 0;
+    top: $topbar-height;
+    a {
+      line-height: $topbar-height - 5;
+    }
+  }
+}
+nav.navbar {
+  background: $topbar-bg;
+  > div {
+    max-width: 62.5em;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    ul {
+      background: $topbar-bg;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      white-space: nowrap;
+    }
+    li:hover, li:focus-within {
+      background: $topbar-link-bg-hover;
+    }
+    a {
+      color: #fff;
+      font-size: $topbar-link-font-size;
+      padding: 0 13px;
+      line-height: $topbar-height;
+      display: block;
+      @media (max-width: $topbar-breakpoint) {
+        padding: 0 5px;
+      }
+    }
+    > ul {
+      display: flex;
+      > li.dropdown {
+        @include dropdown-arrow;
+        @include dropdown-content(right);
+      }
+      > li.opt-dropdown {
+        @media all and (min-width: $width-small) {
+          padding: 0;
+          >:first-child { display: none; }
+
+          > ul {
+            display: flex;
+          }
+        }
+        @media not all and (min-width: $width-small) {
+          @include dropdown-content(left);
+        }
+        @include dropdown-arrow;
       }
     }
   }
