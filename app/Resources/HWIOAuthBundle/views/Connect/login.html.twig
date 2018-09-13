@@ -4,7 +4,7 @@
         <li>Log in using</li>
         {% for ext in app.user.externalUsers %}
             <li><a href="{{ hwi_oauth_login_url(ext.service) }}" class="icon-link icon-link-textual">
-                    <img src="{{ asset('images/service/' ~ ext.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ ext.service ~ '.png') }}, {{ asset('images/service/' ~ ext.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ ext.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ ext.service ~ '-76.png') }} 4x" alt="{{ ext.service | capitalize }}" title="{{ ext.service | capitalize }}" width="19" height="19" />
+                    <img src="{{ asset('images/service/' ~ ext.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ ext.service ~ '.png') }}, {{ asset('images/service/' ~ ext.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ ext.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ ext.service ~ '-76.png') }} 4x" alt="" width="19" height="19" />
                     {{ ext.service | capitalize }}
                 </a></li>
         {% endfor %}
@@ -14,7 +14,7 @@
     <ul class="inline-list"><li>Log in using</li><li><ul class="inline-list">
     {% for owner in hwi_oauth_resource_owners() %}
         <li><a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link icon-link-textual">
-                <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+                <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="" width="19" height="19" />
                 {{ owner | capitalize }}
             </a></li>
     {% endfor %}

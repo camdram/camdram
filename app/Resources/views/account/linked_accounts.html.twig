@@ -5,7 +5,7 @@
 {% for u in app.user.externalUsers %}
     <p>
     <a href="{{ path('acts_camdram_security_unlink_account', {service: u.service}) }}" class="icon-link icon-link-destructive">
-    <img src="{{ asset('images/service/' ~ u.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ u.service ~ '.png') }}, {{ asset('images/service/' ~ u.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ u.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ u.service ~ '-76.png') }} 4x" alt="{{ u.service | capitalize }}" title="{{ u.service | capitalize }}" width="19" height="19" />
+    <img src="{{ asset('images/service/' ~ u.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ u.service ~ '.png') }}, {{ asset('images/service/' ~ u.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ u.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ u.service ~ '-76.png') }} 4x" alt="" width="19" height="19" />
     Unlink</a>
     Your Camdram account is linked to the {{ u.service | capitalize }} account {{ u.email }}.
     </p>
@@ -15,7 +15,7 @@
 {% for owner in hwi_oauth_resource_owners() %}
     {% if app.user.getExternalUserByService(owner) is null %}
       <li><a href="{{ hwi_oauth_login_url(owner, {_destination: path('get_account')}) }}" class="icon-link icon-link-textual">
-              <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />
+              <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="" width="19" height="19" />
               Link account with {{ owner | capitalize }}
           </a></li>
     {% endif %}
