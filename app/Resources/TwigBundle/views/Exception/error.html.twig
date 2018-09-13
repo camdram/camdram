@@ -4,18 +4,14 @@
 
 {% block body %}
 
-<div class="row">
-    <div class="twelve columns">
-        <h1>Sorry, something's gone wrong</h1>
-        <h2>The server returned the error "{{ status_code }} {{ status_text }}".</h2>
+  <h1>Sorry, something's gone wrong</h1>
+  <h2>The server returned the error "{{ status_code }} {{ status_text }}".</h2>
 
-        <p>
-            Something is broken. Please e-mail us at <a href="mailto:support@camdram.net">
-            support@camdram.net</a> and let us know
-            what you were doing when this error occurred. We will fix it as soon
-            as possible. Sorry for any inconvenience caused.
-        </p>
-    </div>
-</div>
+  <p>
+      Something is broken. Please e-mail us at <a href="mailto:support@camdram.net">
+      support@camdram.net</a> and let us know
+      what you were doing when this error occurred. We will fix it as soon
+      as possible. Sorry for any inconvenience caused.
+  </p>
 {% endblock %}
 

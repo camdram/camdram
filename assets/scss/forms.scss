@@ -79,8 +79,8 @@ textarea {
 
   label {
     display: inline-block;
-    min-width: 5em;
-    padding: 0 0.7em;
+    min-width: 7em;
+    padding: 0.4em 0.7em;
   }
 }
 
@@ -89,13 +89,18 @@ textarea {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
+  margin: 0 auto 1em auto;
+  max-width: 48em;
 
   label {
-    min-width: 5em;
-    padding: 0 0.7em;
+    min-width: 7em;
+    padding: 0.4em 0.7em;
   }
   label + * {
     flex: 20em;
+  }
+  label, input {
+    margin: 0;
   }
 }
 

@@ -3,27 +3,23 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="large-12 columns">
-    <h4>Register with Camdram</h4>
-    <p>Please enter your name and e-mail address to create a Camdram account.</p>
-    {{ form_start(form, {'action': path('hwi_oauth_connect_registration', {'key': key}), 'attr': {'class': 'hwi_oauth_registration_register'}}) }}
-        {{ form_errors(form) }}
-        {{ form_row(form.name, {value: userInformation.realName}) }}
-        {{ form_row(form.email, {value: userInformation.email}) }}
+<h4>Register with Camdram</h4>
+<p>Please enter your name and e-mail address to create a Camdram account.</p>
+{{ form_start(form, {'action': path('hwi_oauth_connect_registration', {'key': key}), 'attr': {'class': 'hwi_oauth_registration_register'}}) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.name, {value: userInformation.realName}) }}
+    {{ form_row(form.email, {value: userInformation.email}) }}
 
-        <div class="row">
-            <div class="large-12 text-right"><input type="submit" value="Register" class="button"/></div>
-        </div>
-    {{ form_end(form) }}
-    
-    <h4>Already have an account?</h4>
-        <p>If you already have a Camdram account, please log in using your email and password below to go
-        directly to your account settings. From there, you can manually connect your {{ userInformation.resourceOwner.name | capitalize }}
-        and Camdram accounts.</p>
-
-        {{ include('account/login_form.html.twig', {last_email: userInformation.email, error: false,
-            target_path: 'get_account'}) }}
+    <div class="text-right">
+        <input type="submit" value="Register" class="button"/>
     </div>
-</div>
+{{ form_end(form) }}
+
+<h4>Already have an account?</h4>
+    <p>If you already have a Camdram account, please log in using your email and password below to go
+    directly to your account settings. From there, you can manually connect your {{ userInformation.resourceOwner.name | capitalize }}
+    and Camdram accounts.</p>
+
+    {{ include('account/login_form.html.twig', {last_email: userInformation.email, error: false,
+        target_path: 'get_account'}) }}
 {% endblock %}
