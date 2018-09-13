@@ -1,7 +1,7 @@
 {% if app.user %}
     {%- if is_granted('ROLE_PREVIOUS_ADMIN') -%}
-        <li data-alert class="alert-box alert">
-            <strong>You are impersonating this user.</strong><a href="{{ path('acts_camdram_homepage', {_switch_to_user: '_exit'}) }}">Revert</a>
+        <li data-alert style="box-shadow: inset red 0 0 5px 5px">
+            <a href="{{ path('acts_camdram_homepage', {_switch_to_user: '_exit'}) }}">You are impersonating this user: revert</a>
         </li>
     {%- endif -%}
     {% if is_granted('ROLE_ADMIN') %}
@@ -13,7 +13,7 @@
         {% else %}
             {%  set main_user = app.user %}
         {% endif %}
-        <a href="{% if main_user.person %}{{ path('get_person', {identifier: main_user.person.slug }) }}{% else %}#{% endif %}">
+        <a href="#!" tabindex="-1">
             {% if main_user.profilePictureUrl %}<img src="{{ main_user.profilePictureUrl }}" width="22" height="22"/>{% endif %}
             {{ main_user.displayName }}
         </a>

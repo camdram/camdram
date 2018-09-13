@@ -39,8 +39,12 @@
 
 /**
  * General navbar styling. A few more specific rules are in app.scss.
- * Assumes <nav><div><ul/><ul/></div></nav> structure.
+ * Assumes <nav><div><ul/>...<ul/></div></nav> structure.
+ *
  * .dropdown aligns to the right. .opt-dropdown aligns left.
+ * Dropdowns labels are of the form <a href="#!" tabindex="-1">; the first part
+ * prevents the page jumping on click, and the second allows keyboard users to
+ * skip the dropdown button and head straight into the menu.
  */
 @mixin dropdown-arrow {
   @media (min-width: $topbar-breakpoint) {
