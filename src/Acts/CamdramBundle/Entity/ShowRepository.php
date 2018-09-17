@@ -132,12 +132,14 @@ class ShowRepository extends EntityRepository
     public function getCurrentByPerson(\DateTime $now, Person $person)
     {
         $query = $this->createQueryBuilder('s')
-            ->where('s.end_at >= :now')
-            ->andWhere('s.start_at < :now')
-            ->andWhere('s.authorised_by is not null')
             ->join('s.roles', 'r')
+            ->leftJoin('s.performances', 'p')
+            ->where('s.authorised_by is not null')
             ->andWhere('r.person = :person')
-            ->orderBy('s.start_at', 'ASC')
+            ->orderBy('p.start_date', 'ASC')
+            ->groupBy('s.id')
+            ->having('MIN(p.start_date) < :now')
+            ->andHaving('MAX(p.end_date) >= :now')
             ->setParameter('person', $person)
             ->setParameter('now', $now)
             ->getQuery();
