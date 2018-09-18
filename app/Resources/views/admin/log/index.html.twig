@@ -3,95 +3,101 @@
 {% block title %}Log Viewer{% endblock %}
 
 {% block stylesheets %}
-    <style>
-        .logfile {
-            height:500px;
-            overflow:scroll;
-            white-space: nowrap;
-            font-family:monospace;
-        }
-    </style>
+<style>
+.logfile {
+    height:500px;
+    overflow:scroll;
+    white-space: pre;
+    font-family:monospace;
+}
+#logTabs {
+  display: flex;
+  flex-flow: row wrap;
+}
+#logTabs .title {
+  order: -1;
+  flex: 1;
+  font-size: 0.8em;
+  padding: 1em;
+  border: 1px grey;
+  border-style: none none solid none;
+  background: #ddd;
+  color: #111;
+}
+#logTabs .title.active {
+  border-style: solid solid none solid;
+  background: #fff;
+}
+#logTabs .title:not(.active) + .content {
+  display: none;
+}
+#logTabs .content {
+  width: 100%;
+  max-width: 100%;
+}
+</style>
 {% endblock %}
 
 {% block body %}
-  <div class="row">
-      <div class="large-12 columns">
+<h3>Log Viewer</h3>
 
-          <h3>Log Viewer</h3>
+<div id="logTabs">
+        <a class="title active" href="{{ path('acts_camdram_logs_get', {file: 'action.log'}) }}">Camdram action log</a>
+        <div class="content">
+            <p>This log file is generated directly by the Camdram code in response to
+                user actions.</p>
+            <div class="logfile">
 
-          <div class="section-container tabs" data-section id="logTabs">
-              <section class="active">
-                  <p class="title" data-section-title>
-                      <a href="{{ path('acts_camdram_logs_get', {file: 'action.log'}) }}">Camdram action log</a>
-                  </p>
-                  <div class="content" data-section-content>
-                      <p>This log file is generated directly by the Camdram code in response to
-                          user actions.</p>
-                      <div class="logfile">
+            </div>
+        </div>
 
-                      </div>
-                  </div>
-              </section>
-              <section>
-                  <p class="title" data-section-title>
-                      <a href="{{ path('acts_camdram_logs_get', {file: 'mailer.log'}) }}">Mailer log</a>
-                  </p>
-                  <div class="content" data-section-content>
-                      <p>All e-mails sent by this Camdram instances.</p>
-                      <div class="logfile">
+        <a class="title" href="{{ path('acts_camdram_logs_get', {file: 'mailer.log'}) }}">Mailer log</a>
+        <div class="content">
+            <p>All e-mails sent by this Camdram instances.</p>
+            <div class="logfile">
 
-                      </div>
-                  </div>
-              </section>
-              <section>
-                  <p class="title" data-section-title>
-                      <a href="{{ path('acts_camdram_logs_get', {file: 'symfony.log'}) }}">Symfony log file</a>
-                  </p>
-                  <div class="content" data-section-content>
-                      <p>This is Symfony's log file - it will contain errors that Symfony was able to catch. In these
-                          cases a Camdram-themed error page is served to the user.
-                      </p>
-                      <div class="logfile">
+            </div>
+        </div>
 
-                      </div>
-                  </div>
-              </section>
-              <section>
-                  <p class="title" data-section-title>
-                      <a href="{{ path('acts_camdram_logs_get', {file: 'error.log'}) }}">Server error log</a>
-                  </p>
-                  <div class="content" data-section-content>
-                      <p>This is Apache's error log - if the error was not caught by Symfony then it falls
-                      back to Apache, and an unthemed error page is served to the user.</p>
-                      <div class="logfile">
+        <a class="title" href="{{ path('acts_camdram_logs_get', {file: 'symfony.log'}) }}">Symfony log file</a>
+        <div class="content">
+            <p>This is Symfony's log file - it will contain errors that Symfony was able to catch. In these
+                cases a Camdram-themed error page is served to the user.
+            </p>
+            <div class="logfile">
 
-                      </div>
-                  </div>
-              </section>
-              <section>
-                  <p class="title" data-section-title>
-                      <a href="{{ path('acts_camdram_logs_get', {file: 'access.log'}) }}">Server access log</a>
-                  </p>
-                  <div class="content" data-section-content>
-                      <p>This is Apache's access log - it contains every single HTTP request made to the site.</p>
-                      <div class="logfile">
+            </div>
+        </div>
 
-                      </div>
-                  </div>
-              </section>
-          </div>
+        <a class="title" href="{{ path('acts_camdram_logs_get', {file: 'error.log'}) }}">Server error log</a>
+        <div class="content">
+            <p>This is Apache's error log - if the error was not caught by Symfony then it falls
+            back to Apache, and an unthemed error page is served to the user.</p>
+            <div class="logfile">
 
-      </div>
-  </div>
-    <script>
-        $('#logTabs .title a').click(function(e) {
-            var $self = $(this);
-            $.get($self.attr('href'), function(response) {
-                var $div = $self.parent().parent().find('.logfile');
-                $div.html(response);
-                $div.scrollTop($div[0].scrollHeight);
-            })
-        });
-        $('#logTabs section.active .title a').click();
-    </script>
+            </div>
+        </div>
+
+        <a class="title" href="{{ path('acts_camdram_logs_get', {file: 'access.log'}) }}">Server access log</a>
+        <div class="content">
+            <p>This is Apache's access log - it contains every single HTTP request made to the site.</p>
+            <div class="logfile">
+
+            </div>
+        </div>
+</div>
+<script>
+    $('#logTabs a.title').click(function(e) {
+        var $self = $(this);
+        $.get($self.attr('href'), function(response) {
+            var $div = $self.next().find('.logfile');
+            $div.text(response);
+            $div.scrollTop($div[0].scrollHeight);
+        })
+        e.preventDefault();
+        $("#logTabs .title.active").removeClass("active");
+        this.classList.add("active");
+    });
+    $('#logTabs a.title.active').click();
+</script>
 {% endblock %}

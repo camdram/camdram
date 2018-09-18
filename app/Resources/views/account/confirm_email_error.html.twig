@@ -3,14 +3,10 @@
 {% block title %}Confirm e-mail address{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="large-12 columns">
-        <h4>There was a problem verifying your e-mail address</h4>
-        <p>
-            This could be because your email address has already been verified. If you have any problems, please contact
-            <a href="mailto:support@camdram.net">support@camdram.net</a>
-        </p>
-        <a class="button small" href="{{ path('acts_camdram_homepage') }}">Go to the home page</a>
-    </div>
-</div>
+<h4>There was a problem verifying your e-mail address</h4>
+<p>
+    This could be because your email address has already been verified. If you have any problems, please contact
+    <a href="mailto:support@camdram.net">support@camdram.net</a>
+</p>
+<a class="button small" href="{{ path('acts_camdram_homepage') }}">Go to the home page</a>
 {% endblock %}

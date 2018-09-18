@@ -59,7 +59,9 @@ class LogController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $text = nl2br(`tail "$file" -n500`);
-        return new Response($text);
+        $text = `tail "$file" -n500`;
+        $response = new Response($text);
+        $response->headers->set("Content-Type", "text/plain; charset=UTF-8");
+        return $response;
     }
 }

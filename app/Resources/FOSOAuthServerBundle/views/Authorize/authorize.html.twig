@@ -3,52 +3,48 @@
 {% block title %}Authorise{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="large-12 columns text-center">
-        <h3>Log in with Camdram</h3>
-        <p>The app <strong>{{ client.name }}</strong> (<a href="{{ client.website }}" target="_blank">{{ client.website }}</a>)
-            would like to access your profile on Camdram.</p>
-        <div class="warning_panel text-left">
-        	<div>
-        		<i class="fa fa-3x pull-left fa-question" style="color: #840"></i> 
-        	</div>
-        	<div style="padding-left: 3em">
-        		<h5>{{ client.name }} would like to:</h5>
-                <ul style="color:#420;font-size:1.1em;">
-                {% for scope in form.vars.value.scope | split(' ') %}
-                    {% if scope == 'write' -%}
-                        <li>Act on your behalf to create new data or edit existing data on Camdram</li>
-                    {% elseif scope == 'write_org' -%}
-                        <li>Act on the behalf of societies or venues you are an admin for to create
-                        new data or edit existing data on Camdram</li>
-                    {% elseif scope == 'user_email' -%}
-                        <li>Read your e-mail address</li>
-                    {% elseif scope == 'user_shows' -%}
-                    	<li>Read the list of the shows you administrate on Camdram</li>
-                    {% elseif scope == 'user_orgs' -%}
-                    	<li>Read the list of the societies and venues you administrate on Camdram</li>
-                    {% elseif scope != '' %}
-                        <li>Use the privilege &quot;{{ scope }}&quot;</li>
-                    {% endif %}
-                {% endfor %}
-                	<li>Uniquely identify you using your Camdram login.</li>
-                	<li>Read any public information listed on Camdram.</li>
-                </ul>
-            </div>
-        </div>
-        <p>Click 'Allow' to authorize {{ client.name }} to access data from Camdram on your behalf. 
-        Otherwise, click 'Cancel' and you will taken back to where you came from.</p>
-        {{ form_start(form, {'method': 'POST', 'action': path('fos_oauth_server_authorize'), 'label_attr': {'class': 'fos_oauth_server_authorize'} }) }}
-            <input type="submit" name="accepted" value="Allow" class="button" />
-            <input type="submit" name="rejected" value="Cancel" class="button secondary" />
-
-            {{ form_row(form.client_id) }}
-            {{ form_row(form.response_type) }}
-            {{ form_row(form.redirect_uri) }}
-            {{ form_row(form.state) }}
-            {{ form_row(form.scope) }}
-            {{ form_rest(form) }}
-        </form>
+<h3 class="text-center">Log in with Camdram</h3>
+<p class="text-center">The app <strong>{{ client.name }}</strong> (<a href="{{ client.website }}" target="_blank">{{ client.website }}</a>)
+    would like to access your profile on Camdram.</p>
+<div class="warning_panel">
+	<i class="fa fa-3x pull-left fa-question" style="color: #840"></i>
+	<div style="padding-left: 3em">
+		<h5>{{ client.name }} would like to:</h5>
+        <ul style="color:#420;font-size:1.1em;">
+        {% for scope in form.vars.value.scope | split(' ') %}
+            {% if scope == 'write' -%}
+                <li>Act on your behalf to create new data or edit existing data on Camdram</li>
+            {% elseif scope == 'write_org' -%}
+                <li>Act on the behalf of societies or venues you are an admin for to create
+                new data or edit existing data on Camdram</li>
+            {% elseif scope == 'user_email' -%}
+                <li>Read your e-mail address</li>
+            {% elseif scope == 'user_shows' -%}
+            	<li>Read the list of the shows you administrate on Camdram</li>
+            {% elseif scope == 'user_orgs' -%}
+            	<li>Read the list of the societies and venues you administrate on Camdram</li>
+            {% elseif scope != '' %}
+                <li>Use the privilege &quot;{{ scope }}&quot;</li>
+            {% endif %}
+        {% endfor %}
+        	<li>Uniquely identify you using your Camdram login.</li>
+        	<li>Read any public information listed on Camdram.</li>
+        </ul>
     </div>
+</div>
+<div class="text-center">
+    <p>Click 'Allow' to authorize {{ client.name }} to access data from Camdram on your behalf.
+Otherwise, click 'Cancel' and you will taken back to where you came from.</p>
+    {{ form_start(form, {'method': 'POST', 'action': path('fos_oauth_server_authorize'), 'label_attr': {'class': 'fos_oauth_server_authorize'} }) }}
+    <input type="submit" name="accepted" value="Allow" class="button" />
+    <input type="submit" name="rejected" value="Cancel" class="button secondary" />
+
+    {{ form_row(form.client_id) }}
+    {{ form_row(form.response_type) }}
+    {{ form_row(form.redirect_uri) }}
+    {{ form_row(form.state) }}
+    {{ form_row(form.scope) }}
+    {{ form_rest(form) }}
+    </form>
 </div>
 {% endblock %}
