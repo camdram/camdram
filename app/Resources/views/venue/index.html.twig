@@ -5,13 +5,9 @@
 
 {% block body %}
 
-<div class="row">
-    <div class="large-12 columns">
-        <h3>Venues</h3>
-        <div class="map-large">
-            {{ render(url('acts_camdram_venues_map')) }}
-        </div>
-    </div>
+<h3>Venues</h3>
+<div class="map-large">
+    {{ render(url('acts_camdram_venues_map')) }}
 </div>
 
 <ul class="large-block-grid-2" id="venues_list">

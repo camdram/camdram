@@ -8,31 +8,22 @@
 {% set current_subnav_id = 'new_application' %}
 {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
 
-<div class="row">
-    <div class="large-12 columns">
-        <h3>Add Director/Producer Advert</h3>
+<h3>Add Director/Producer Advert</h3>
 
-        <div class="panel">
-            <p>Use the form below to create an advert for core production team positions for your show, e.g. directors, producers, musical directors
-            and choreographers. The advert will be displayed until the deadline date.</p>
-            <p>Advertisements for other positions (e.g. musicians) are advised to create either a technical team advert or audition using the link above for now
-            (we have plans to overhaul the vacancies system eventually).</p>
-            <p>The CUADC Directors' and Producers' Reps aim to send out the Production mailing list with all the current directing and producing adverts on Camdram once a week during full term. For more information they can be contacted on <a href=mailto:director@cuadc.org> director@cuadc.org </a> and <a href=mailto:producer@cuadc.org> producer@cuadc.org </a> </p>
-        </div>
-
-        {{ form_start(form, {'action': path("post_show_application", {identifier: show.slug} )}) }}
-        {{ include('show/application-form.html.twig') }}
-        
-        <div class="row">
-            <div class="large-6">
-
-            </div>
-            <div class="large-6 text-right">
-                <input type="submit" value="Create" class="button"/>
-            </div>
-        </div>
-
-        {{ form_end(form) }}
-    </div>
+<div class="panel">
+    <p>Use the form below to create an advert for core production team positions for your show, e.g. directors, producers, musical directors
+    and choreographers. The advert will be displayed until the deadline date.</p>
+    <p>Advertisements for other positions (e.g. musicians) are advised to create either a technical team advert or audition using the link above for now
+    (we have plans to overhaul the vacancies system eventually).</p>
+    <p>The CUADC Directors' and Producers' Reps aim to send out the Production mailing list with all the current directing and producing adverts on Camdram once a week during full term. For more information they can be contacted on <a href="mailto:director@cuadc.org">director@cuadc.org</a> and <a href="mailto:producer@cuadc.org">producer@cuadc.org</a>.</p>
 </div>
+
+{{ form_start(form, {'action': path("post_show_application", {identifier: show.slug} )}) }}
+{{ include('show/application-form.html.twig') }}
+
+<div class="text-right">
+    <input type="submit" value="Create" class="button"/>
+</div>
+
+{{ form_end(form) }}
 {% endblock %}

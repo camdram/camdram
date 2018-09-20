@@ -105,11 +105,3 @@ $include-html-classes: false;
   content: "";
   height: 0;
 }
-
-.organisation-vacancies-aside {
-  @media (min-width: 768px) {
-    width: 50%;
-    float: left;
-    padding: 0 1em 0.5em 0;
-  }
-}

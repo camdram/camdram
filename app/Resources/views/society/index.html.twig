@@ -4,9 +4,7 @@
 {% block title %}Societies{% endblock %}
 
 {% block body %}
-  <div class="row">
-      <div class="large-12 columns">
-          <h3>Societies</h3>
+<h3>Societies</h3>
 
 {% if societies | length > 0 %}
 <ul class="large-block-grid-2">
@@ -19,10 +17,10 @@
             <h3>College Societies</h3>
         {% endif %}
         <li>
-            <h5>
+            <h5 class="split-header">
                 <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
                 {% if society.shortname is not empty %}
-                &emsp;<small>{{ society.shortname }}</small>
+                <small>{{ society.shortname }}</small>
                 {% endif %}
             </h5>
             {% if society.college is not empty %}
@@ -30,26 +28,13 @@
             {% endif %}
 
             {% if society.image %}
-                <div class="row">
-                    <div class="small-3 columns">
-                        <a href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('list') }}" /></a>
-                    </div>
-                    <div class="small-9 columns">
-                        <p>{{ society.description | strip_camdram_markdown | truncate(200) }}</p>
-                        <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
-                    </div>
-                </div>
-            {% else %}
-                <p>{{ society.description | strip_camdram_markdown | truncate(200) }}</p>
-                <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
-            {% endif %}
+                <a class="left" style="margin-right: 0.8em; max-width: 10em" href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('list') }}" /></a>
+            {%endif %}
+            <p>{{ society.description | strip_camdram_markdown | truncate(200) }}</p>
+            <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
         </li>
     {% endfor %}
 </ul>
 
 {% endif %}
-
-  </div>
-</div>
-
 {% endblock %}
