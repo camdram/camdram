@@ -139,3 +139,24 @@ nav.navbar {
 .text-right {
   text-align: right !important;
 }
+
+/**
+ * A list of large blocks.
+ */
+ul.large-block-list {
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+  > li {
+    padding: 0 1.25em 1.25em;
+    flex: 25em;
+  }
+  /* Generates two bogus lis to prevent the last box spreading out.
+     Works for up to three columns */
+  &::before, &::after {
+    content: "";
+    height: 0;
+    flex: 25em;
+    order: 999;
+  }
+}

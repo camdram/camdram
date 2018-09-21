@@ -18,13 +18,11 @@
         <p>Below are a selection of the people performing this week:</p>
     </div>
 
-    <div class="row">
-        <ul class="large-block-grid-2">
-        {%- for person in selectedPeople -%}
-            <li><h5><a href="{{ path('get_person', {identifier: person.person.slug}) }}">{{ person.personName }}</a></h5>
-                {{person.role}} in <a href="{{ path('get_show', {identifier: person.show.slug}) }}">{{person.show.name}}</a>
-        {%- endfor -%}
-        </ul>
-    </div>
+    <ul class="large-block-list">
+    {%- for person in selectedPeople -%}
+        <li><h5><a href="{{ path('get_person', {identifier: person.person.slug}) }}">{{ person.personName }}</a></h5>
+            {{person.role}} in <a href="{{ path('get_show', {identifier: person.show.slug}) }}">{{person.show.name}}</a>
+    {%- endfor -%}
+    </ul>
 
 {% endblock %}

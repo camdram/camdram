@@ -10,23 +10,23 @@
     {{ render(url('acts_camdram_venues_map')) }}
 </div>
 
-<ul class="large-block-grid-2" id="venues_list">
+<ul class="large-block-list" id="venues_list">
 {% for venue in venues %}
    <li id="venue-{{ venue.slug }}">
        <div class="row">
-           <div class="small-2 columns marker_column">
+           <h5><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></h5>
+           <div class="marker_column"></div>
 
-           </div>
-           <div class="small-10 columns">
-               <h5><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></h5>
-               {% if venue.college %}<h6>{{ venue.college }} College, Cambridge</h6>
-               {% elseif venue.address %}<h6>{{ venue.address }}</h6>{% endif %}
-               <p>{{ venue.description | strip_camdram_markdown | truncate(200) }}
-                   {% if venue.description|length > 200 %}
-                       ...<br>[<a href="{{ path('get_venue', {identifier: venue.slug}) }}">Read More</a>]
-                   {% endif %}
-               </p>
-           </div>
+           {%- if venue.college -%}
+              <h6>{{ venue.college }} {{ venue.college == "Anglia Ruskin" ? "University" : "College" }}, Cambridge</h6>
+           {%- elseif venue.address -%}
+              <h6>{{ venue.address }}</h6>
+           {%- endif -%}
+
+           <p>
+               {{- venue.description | strip_camdram_markdown | truncate(200) }}
+               <span class="right">[<a href="{{ path('get_venue', {identifier: venue.slug}) }}">Read More</a>]</span>
+           </p>
        </div>
    </li>
 {% endfor %}

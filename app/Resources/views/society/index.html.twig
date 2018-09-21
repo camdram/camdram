@@ -7,13 +7,13 @@
 <h3>Societies</h3>
 
 {% if societies | length > 0 %}
-<ul class="large-block-grid-2">
+<ul class="large-block-list">
     {% set seen_college = false %}
     {% for society in societies %}
         {% if (society.college is not empty) and not seen_college %}
             {% set seen_college = true %}
             <hr>
-            </ul><ul class="large-block-grid-2">
+            </ul><ul class="large-block-list">
             <h3>College Societies</h3>
         {% endif %}
         <li>
@@ -28,10 +28,10 @@
             {% endif %}
 
             {% if society.image %}
-                <a class="left" style="margin-right: 0.8em; max-width: 10em" href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('list') }}" /></a>
+                <a class="left" style="margin-right: 0.8em; max-width: 8em" href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
             {%endif %}
-            <p>{{ society.description | strip_camdram_markdown | truncate(200) }}</p>
-            <p>[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</p>
+            <p>{{ society.description | strip_camdram_markdown | truncate(200) }}
+            <span class="right">[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</span></p>
         </li>
     {% endfor %}
 </ul>

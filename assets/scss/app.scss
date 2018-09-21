@@ -89,18 +89,15 @@ nav.navbar {
 }
 
 #wrapper > section {
-  max-width:$row-width;
+  max-width: $row-width;
   margin:auto;
-  padding: emCalc(10) emCalc(15) emCalc(20) emCalc(15);
+  padding: .625rem .9375rem 1.25rem;
   background:$white;
   word-wrap:break-word;
 }
 
 #content {
-
-  p, li {
-    font-size: emCalc(14);
-  }
+  font-size: .875rem;
 
   ul {
     list-style-position: inside;
