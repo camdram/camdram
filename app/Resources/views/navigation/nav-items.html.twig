@@ -2,7 +2,15 @@
 {%- if class is not defined %}{% set class = '' %}{% endif %}
 {% for id, item in items -%}
     {% set current_class = class ~ (id == current_id ? " active" : '') %}
-    <li{% if current_class | length > 0  %} class="{{current_class}}"{% endif %}><a href="{% if item.path is defined %}{{ item.path }}{% else %}#{% endif %}">
+    {%- if noli is not defined -%}
+    <li{% if current_class | length > 0  %} class="{{current_class}}"{% endif %}>
+        <a href="{{ item.path is defined ? item.path : '#' }}">
+    {%- else -%}
+        <a href="{{ item.path is defined ? item.path : '#' }}"
+           {%- if current_class | length > 0  %} class="{{current_class}}"{% endif %}>
+    {%- endif -%}
         {% if item.icon is defined %}<i class="fa fa-{{ item.icon }} fa-fw"></i>{% endif %} <span>{{ item.text }}</span></a>
+    {%- if noli is not defined -%}
     </li>
+    {%- endif -%}
 {% endfor %}

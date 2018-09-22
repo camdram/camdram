@@ -160,3 +160,41 @@ ul.large-block-list {
     order: 999;
   }
 }
+
+/**
+ * Navigation sidebar:
+ * <nav class="sidenav">
+ *   <a ...>
+ * </nav>
+ * <...>Content</...>
+ */
+@media all and (min-width: $width-small) {
+  nav.sidenav {
+    display: inline-block;
+    vertical-align: top;
+    width: 24%;
+
+    > a {
+      display: block;
+      margin: 1em;
+    }
+
+    + * {
+      display: inline-block;
+      width: 74%;
+    }
+  }
+}
+@media not all and (min-width: $width-small) {
+  nav.sidenav {
+    margin-bottom: 0.5rem;
+    > a {
+      display: inline-block;
+      margin: 0.5rem;
+    }
+  }
+}
+nav.sidenav > a.active {
+  color: #4d4d4d;
+  font-weight: 700;
+}

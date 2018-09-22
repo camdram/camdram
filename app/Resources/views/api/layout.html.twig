@@ -3,21 +3,17 @@
 {% set current_navigation_id = 'api' %}
 
 {% block body %}
-    <div class="row">
-        <div class="large-3 columns">
-            <h3>Camdram API</h3>
+<nav class="sidenav">
+    <h3>Camdram API</h3>
 
-            <ul class="side-nav">
-                {% include 'navigation/nav-items.html.twig'  with {items: {
-                'home': {'text': 'Home', 'path': path('acts_camdram_api_homepage')},
-                'apps': {'text': 'My Apps', 'path': path('get_apps')},
-                'console': {'text': 'Test Console', 'path': path('acts_camdram_api_test_console')},
-                }, current_id: current_api_nav_id} %}
-            </ul>
-        </div>
+    {% include 'navigation/nav-items.html.twig'  with {items: {
+        'home': {'text': 'Home', 'path': path('acts_camdram_api_homepage')},
+        'apps': {'text': 'My Apps', 'path': path('get_apps')},
+        'console': {'text': 'Test Console', 'path': path('acts_camdram_api_test_console')},
+    }, current_id: current_api_nav_id, noli: true} %}
+</nav>
 
-        <div class="large-9 columns">
-            {% block api_body %}{% endblock %}
-        </div>
-    </div>
+<main>
+    {% block api_body %}{% endblock %}
+</main>
 {% endblock %}
