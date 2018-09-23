@@ -1,17 +1,12 @@
-<div class="panel">
-    <h5><div class="entity_type entity_show">Show</div><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a><h5>
-{% if show.image %}
-    <div class="row">
-    <div class="large-3 columns text-center">
-        {% if show.image %}<a href="{{ show.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>{% endif %}
+<div class="panel row">
+    <h5>Show<br><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h5>
+    {%- if show.image -%}
+    <div class="entity-image-container">
+        <a href="{{ show.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
     </div>
-    <div class="large-9 columns">
+    {%- endif -%}
+    <div class="entity-body-text">
         <p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}</p>
         <p>{{ show.description | camdram_markdown }}</p>
     </div>
-    </div>
-{% else %}
-    <p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}</p>
-    <p>{{ show.description | camdram_markdown }}</p>
-{% endif %}
 </div>

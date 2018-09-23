@@ -90,8 +90,14 @@ nav.navbar {
       list-style: none;
       white-space: nowrap;
     }
+    li.active {
+      background: $topbar-link-bg-active;
+    }
     li:hover, li:focus-within {
       background: $topbar-link-bg-hover;
+      &.active {
+        background: $topbar-link-bg-hover-active;
+      }
     }
     a {
       color: #fff;

@@ -8,22 +8,16 @@
     <h4>Test Console</h4>
 
     <form id="test_console_form">
-        <div class="row">
-            <div class="large-8 columns">
-                <input type="text" id="url"/>
-            </div>
-            <div class="large-2 columns">
-                <select id="method">
-                    <option value="GET">GET</option>
-                    <option value="POST">POST</option>
-                    <option value="PUT">PUT</option>
-                    <option value="DELETE">DELETE</option>
-                </select>
-            </div>
-            <div class="large-2 columns">
-                <input type="submit" class="button small" value="Submit"/>
-            </div>
-        </div>
+         <input type="text" id="url"/>
+         <div>
+             <select id="method">
+                 <option value="GET">GET</option>
+                 <option value="POST">POST</option>
+                 <option value="PUT">PUT</option>
+                 <option value="DELETE">DELETE</option>
+             </select>
+             <input type="submit" class="button small" value="Submit"/>
+         </div>
     </form>
     <div>
         <h5>Example queries:</h5>
@@ -100,6 +94,17 @@
 
 {% block stylesheets %}
 <style>
+    #test_console_form {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: baseline;
+    }
+    #test_console_form input, #test_console_form select {
+        margin: 0.5em;
+    }
+    #test_console_form input[type="text"] {
+        flex: 1 25em;
+    }
     #results {
         overflow:scroll;
         line-height:1em;

@@ -3,7 +3,6 @@
 {% block title %}Search{% endblock %}
 
 {% block body %}
-    <div class="row">
     <h3>Search camdram.net</h3>
 
     {% if results|length == 0 %}
@@ -16,7 +15,7 @@
             {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : entity.slug})) }}
         {% else %}
         <div class="panel">
-            <h5> <div class="entity_type entity_{{ entity.entity_type }}">{{ entity.entity_type | capitalize }}</div>
+            <h5>{{ entity.entity_type | capitalize }}<br>
                 <a href="{%- if entity.entity_type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
     {%- elseif entity.entity_type == 'society' %}{{ path('get_society', {identifier: entity.slug}) }}
     {%- elseif entity.entity_type == 'venue' %}{{ path('get_venue', {identifier: entity.slug}) }}
@@ -26,7 +25,4 @@
         </div>
         {% endif %}
     {% endfor %}
-
-    </div>
-
 {% endblock %}
