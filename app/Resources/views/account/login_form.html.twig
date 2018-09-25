@@ -1,6 +1,6 @@
 <form method="post" action="{{ path('acts_camdram_security_login_check') }}">
 
-    <div class="form-medium-widget">
+    <div class="form-large-row">
         <label class="{% if error %} error{% endif %}" for="form_email">Email</label>
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <p>{{ last_email }}</p>
@@ -10,7 +10,7 @@
         {% endif %}
     </div>
 
-    <div class="form-medium-widget">
+    <div class="form-large-row">
         <label class="required{% if error %} error{% endif %}" for="form_password">Password</label>
         <input type="password" id="form_password" name="password" required="required"{% if error %} class="error"{% endif %} />
     </div>

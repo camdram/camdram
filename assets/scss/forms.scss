@@ -1,3 +1,5 @@
+@import "./vars.scss";
+
 label.required:after { content:"*"; }
 
 select {
@@ -25,8 +27,8 @@ select {
 }
 
 input[type=date], input[type=time] {
-  width:auto;
-  display:-webkit-inline-flex;
+  width: auto;
+  display: inline-flex;
 }
 input[type=date] {
   max-width:150px;
@@ -73,14 +75,19 @@ textarea {
 .form-small-widget {
   display: inline-block;
 
-  label, input {
+  > label, > input {
     float: none !important;
   }
 
-  label {
+  > label {
     display: inline-block;
-    min-width: 7em;
-    padding: 0.4em 0.7em;
+    min-width: 7rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  > input {
+    width: auto;
+    display: inline-flex;
   }
 }
 
@@ -89,18 +96,44 @@ textarea {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  margin: 0 auto 1em auto;
-  max-width: 48em;
 
-  label {
-    min-width: 7em;
-    padding: 0.4em 0.7em;
+  > label {
+    min-width: 7rem;
+    padding: 0.4rem 0.7rem;
   }
-  label + * {
+  > label + * {
     flex: 20em;
   }
-  label, input {
-    margin: 0;
+}
+
+.form-large-row {
+  width: 100%;
+  margin-bottom: 1rem;
+
+  @media all and (min-width: $width-small) {
+    display: flex;
+    flex-flow: row wrap;
+    > :first-child {
+      flex: 1;
+      text-align: right;
+      padding: 0.4rem 1rem;
+    }
+    > :nth-child(2) {
+      flex:  3.5;
+      margin: 0 1rem;
+    }
+  }
+  @media not all and (min-width: $width-small) {
+    > :first-child {
+      display: block;
+      width: 100%;
+      font-weight: 700;
+      padding: 0.4rem 0.7rem;
+    }
+    > :nth-child(2) {
+      display: block;
+      width: 100%;
+    }
   }
 }
 
@@ -113,4 +146,9 @@ textarea {
     float:none !important;
     text-align:left;
   }
+}
+
+/* TEMPORARY CODE DURING FOUNDATION REMOVAL */
+label, input[type], textarea {
+  font-size: 1em;
 }

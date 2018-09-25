@@ -2,23 +2,11 @@
 
 {{ form_row(form.name) }}
 {{ form_row(form.author) }}
+{{ form_row(form.category) }}
 
-<div class="row">
-    <div class="large-3 columns">
-        {{ form_label(form.category) }}
-    </div>
-    <div class="large-9 columns">
-        {{ form_widget(form.category) }}
-        {{ form_errors(form.category) }}
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="large-3 columns">
-        {{ form_label(form.performances) }}
-    </div>
-    <div class="large-9 columns">
+<div class="form-large-row">
+    {{ form_label(form.performances) }}
+    <div>
         {{ form_widget(form.multi_venue) }}
         {{ form_errors(form.multi_venue) }}
 
@@ -34,62 +22,52 @@
 </div>
 
 
-<div class="row main-venue-row">
-    <div class="large-3 columns">
-        {{ form_label(form.venue) }}
-    </div>
-    <div class="large-9 columns">
-        {{ form_widget(form.venue) }}
-        {{ form_errors(form.venue) }}
-    </div>
+<div class="form-large-row main-venue-row">
+    {{ form_label(form.venue) }}
+    {{ form_widget(form.venue) }}
+    {{ form_errors(form.venue) }}
 </div>
 
-<div class="row">
-    <div class="large-3 columns">
-        {{ form_label(form.society) }}
-    </div>
-    <div class="large-9 columns">
-        {{ form_widget(form.society) }}
-        {{ form_errors(form.society) }}
-        {% if form.society.vars.disabled %}
-        <p>Please <a href="{{ path('acts_camdram_contact_us') }}">contact us</a> if you would like to change this show's society</p>
-        {% endif %}
-    </div>
+<div class="form-large-row">
+    {{ form_label(form.society) }}
+    {{ form_widget(form.society) }}
+    {{ form_errors(form.society) }}
+    {% if form.society.vars.disabled %}
+    <p>Please <a href="{{ path('acts_camdram_contact_us') }}">contact us</a> if you would like to change this show's society</p>
+    {% endif %}
 </div>
 
 {{ form_row(form.description) }}
 
-<div class="row">
-    <div class="large-3 columns">
-        {{ form_label(form.online_booking_url) }}
-    </div>
-    <div class="large-5 columns">
-        {{ form_widget(form.online_booking_url) }}
-        {{ form_errors(form.online_booking_url) }}
-    </div>
-    <div class="large-2 columns">
-        {{ form_label(form.prices) }}
-    </div>
-    <div class="large-2 columns">
-        {{ form_widget(form.prices) }}
-        {{ form_errors(form.prices) }}
+<div class="form-large-row">
+    <span>Ticket sales</span>
+    <div>
+        <div class="form-small-widget">
+            {{ form_label(form.online_booking_url) }}
+            {{ form_widget(form.online_booking_url) }}
+            {{ form_errors(form.online_booking_url) }}
+        </div>
+        <div class="form-small-widget">
+            {{ form_label(form.prices) }}
+            {{ form_widget(form.prices) }}
+            {{ form_errors(form.prices) }}
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="large-3 columns">
-        {{ form_label(form.facebook_id) }}
-    </div>
-    <div class="large-3 columns">
-        {{ form_widget(form.facebook_id) }}
-        {{ form_errors(form.facebook_id) }}
-    </div>
-    <div class="large-3 columns">
-        {{ form_label(form.twitter_id) }}
-    </div>
-    <div class="large-3 columns">
-        {{ form_widget(form.twitter_id) }}
-        {{ form_errors(form.twitter_id) }}
+<div class="form-large-row">
+    <span>Social</span>
+    <div>
+        <div class="form-small-widget">
+            {{ form_label(form.facebook_id) }}
+            {{ form_widget(form.facebook_id) }}
+            {{ form_errors(form.facebook_id) }}
+        </div>
+        <div class="form-small-widget">
+            {{ form_label(form.twitter_id) }}
+            {{ form_widget(form.twitter_id) }}
+            {{ form_errors(form.twitter_id) }}
+        </div>
     </div>
 </div>
 
