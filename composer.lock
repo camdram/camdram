@@ -7217,16 +7217,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v4.1.4",
+            "version": "v4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "d5f433034543bbe3b0dfa2f34e6cc85bf839846f"
+                "reference": "9b0165ea8d055ce0f5eea4051af29d4c3d7fcca2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/d5f433034543bbe3b0dfa2f34e6cc85bf839846f",
-                "reference": "d5f433034543bbe3b0dfa2f34e6cc85bf839846f",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/9b0165ea8d055ce0f5eea4051af29d4c3d7fcca2",
+                "reference": "9b0165ea8d055ce0f5eea4051af29d4c3d7fcca2",
                 "shasum": ""
             },
             "require": {
@@ -7279,7 +7279,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2018-08-27T17:47:02+00:00"
+            "time": "2018-09-21T12:49:42+00:00"
         }
     ],
     "aliases": [],
