@@ -6,6 +6,68 @@
 
 
 /**
+ * Generic element styles
+ */
+html, body {
+  font-family: $default-font-family;
+  font-weight: 400;
+  font-style: normal;
+}
+a {
+  text-decoration: none;
+  color: $primary-color;
+}
+hr {
+  border: solid $hr-color;
+  border-width: 1px 0 0;
+  clear: both;
+  height: 0;
+  margin: 1.25em 0 1.1875em;
+}
+img {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  height: auto;
+}
+p {
+  line-height: 1.6;
+  margin-bottom: 1.25em;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/**
+ * Simple float classes
+ */
+.left  {float: left}
+.right {float: right}
+
+
+/**
+ * Header font sizes - responsive to viewport size
+ */
+$header_font_sizes: (h1: 2.75rem, h2: 2.31rem, h3: 1.69rem, h4: 1.44rem, h5: 1.125rem, h6: 1rem);
+@each $header, $size in $header_font_sizes {
+  $factor: 100vw * ($size - 1rem) / $row-width;
+  #{$header} {
+    font-size: $size;
+    @media (max-width: $row-width) {
+      font-size: calc(#{$factor} + 1rem);
+    }
+  }
+}
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+  margin-bottom: 0.5em;
+}
+
+
+/**
  * A header with left and right components. Markup
  *    <div class="split-header">
  *      <h#>Blah</h#>
@@ -147,6 +209,20 @@ nav.navbar {
 }
 
 /**
+ * The inline list.
+ */
+.inline-list {
+  margin: 0 0 1em 0;
+  list-style: none;
+  > li {
+    display: inline-block;
+    margin: 0 1.3em 0 0;
+    &:last-child { margin: 0 }
+  }
+}
+
+
+/**
  * A list of large blocks.
  */
 ul.large-block-list {
@@ -203,4 +279,41 @@ ul.large-block-list {
 nav.sidenav > a.active {
   color: #4d4d4d;
   font-weight: 700;
+}
+
+/**
+ * A modal dialog
+ */
+.reveal-modal {
+  position: fixed;
+  z-index: 2000;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  > * {
+     max-width: 20rem;
+     width: 95%;
+     background: white;
+     margin: auto;
+     padding: 1em;
+     border-top: 4px solid $primary-color;
+  }
+  .close-reveal-modal {
+    float: right;
+    margin: 0 0 0.5em 1em;
+    font-size: 2em;
+    line-height: 0.5;
+    cursor: pointer;
+    &::after {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(100, 100, 100, 0.6);
+      top: 0;
+      left: 0;
+      z-index: -1;
+      cursor: default;
+    }
+  }
 }

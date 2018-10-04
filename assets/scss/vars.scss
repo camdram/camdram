@@ -8,6 +8,7 @@ $destructive-light: #D32F2F;
 
 $primary-color: $orange;
 $secondary-color: #999;
+$hr-color: #ccc;
 
 $topbar-height: 40px;
 $topbar-bg: $dark-grey;
@@ -20,3 +21,19 @@ $topbar-breakpoint: 500px;
 $section-border-color: #e6e6e6;
 $width-small: 768px;
 $row-width: 62.5rem;
+
+$default-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+@mixin button($bg: $primary-color) {
+  line-height: 21px;
+  color: #fff;
+  background-color: $bg;
+  padding: .75em 1.5em .8125em;
+}
+
+@mixin panel($color, $padding: 1.25em) {
+  padding: $padding;
+  margin-bottom: 1.25em;
+  background: $color;
+  border: 1px solid darken($color, 15%);
+}

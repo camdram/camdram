@@ -1,18 +1,17 @@
-$include-html-classes: false;
-@import "foundation";
+@import "./vars.scss";
 
 #entity-header {
-  @include panel();
+  @include panel(#d9d9d9);
 }
 
 /* Use the new feature panel to highlight new features on the site itself. */
 .new-feature-panel, .vacancies-panel {
-  @include panel(rgb(255,240,153), 1em 2em, false);
+  @include panel(rgb(255,240,153), 1.5em 2em 1em);
   border-radius:10px;
 }
 
 .admin-panel {
-  @include panel(rgb(255,240,200), 1em 2em, false);
+  @include panel(rgb(255,240,200), 1.5em 2em 1em);
 
   li a.active {
     color: black;
@@ -21,7 +20,7 @@ $include-html-classes: false;
 }
 
 .approve-panel {
-  @include panel(rgb(255,255,100), 1em, false);
+  @include panel(rgb(255,255,100), 1em);
 
   button {
     margin-top:-0.6em;
@@ -29,7 +28,7 @@ $include-html-classes: false;
 }
 
 .news-link {
-  @include panel(rgb(230,230,230), 1em, false);
+  @include panel(rgb(230,230,230), 1em);
   margin-bottom:10px;
   font-size:0.8em;
 

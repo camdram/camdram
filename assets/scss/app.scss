@@ -91,7 +91,7 @@ nav.navbar {
 #wrapper > section {
   max-width: $row-width;
   margin:auto;
-  padding: .625rem .9375rem 1.25rem;
+  padding: 1.5rem 1.25rem 1.25rem;
   background:$white;
   word-wrap:break-word;
 }
@@ -126,6 +126,10 @@ footer {
     padding:10px 0;
     font-size:0.9em;
   }
+  > div {
+    max-width: $row-width;
+    margin: 0 auto;
+  }
   > #sitemap {
     display: flex;
     flex-flow: row wrap;
@@ -139,10 +143,12 @@ footer {
   }
 }
 
-header {
+header#main-header {
   background:$orange;
   clear: both;
-  .row {
+  > div {
+    max-width: $row-width;
+    margin: 0 auto;
     display: flex;
     @media not screen and (min-width: 768px) {
       &::before {
@@ -235,10 +241,12 @@ header {
   }
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
   small {
     display: inline-block;
     line-height: normal;
+    color: #6f6f6f;
+    font-size: 60%;
   }
 }
 
@@ -318,6 +326,9 @@ table {
 #nav-edit-link i {
   font-size: 1.5em;
   vertical-align: middle;
+}
+.panel {
+  @include panel(#f2f2f2);
 }
 $panel-font-color-alt: #f00;
 .error_panel {
