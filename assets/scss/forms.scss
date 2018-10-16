@@ -1,16 +1,18 @@
 @import "./vars.scss";
 
-label.required:after { content:"*"; }
+label {
+  display: block;
+  color: $form-text-color;
+  &.required::after {
+    content: "\00f069";
+    font: 0.7em FontAwesome;
+    vertical-align: super;
+    color: #777;
+  }
+}
 
 select {
   width:auto;
-  background:#fff;
-  padding:6px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px solid #cccccc;
 }
 
 .dropdown.custom {
@@ -24,6 +26,17 @@ select {
 .entity_collection > div {
   border-top:1px solid #ddd;
   padding:10px 0 0;
+}
+
+input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], select, textarea, button {
+  font-family: inherit;
+  font-size: 1em;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 6px;
+  width: 100%;
+  color: $form-text-color;
 }
 
 input[type=date], input[type=time] {
@@ -74,6 +87,7 @@ textarea {
 
 .form-small-widget {
   display: inline-block;
+  margin: 0 0 1em;
 
   > label, > input {
     float: none !important;
@@ -93,6 +107,7 @@ textarea {
 
 .form-medium-widget {
   width: 100%;
+  margin: 0 0 1em;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -109,6 +124,7 @@ textarea {
 .form-large-row {
   width: 100%;
   margin-bottom: 1rem;
+  color: $form-text-color;
 
   @media all and (min-width: $width-small) {
     display: flex;
@@ -148,7 +164,24 @@ textarea {
   }
 }
 
-/* TEMPORARY CODE DURING FOUNDATION REMOVAL */
-label, input[type], textarea {
-  font-size: 1em;
+button, .button {
+  background: $primary-color;
+  cursor: pointer;
+  border: 1px solid darken($primary-color, 10%);
+  color: white;
+  font-weight: 700;
+  padding: 0.75em 1.5em 0.8em;
+  display: inline-block;
+  &.small {
+    padding: 0.6em 1.1em;
+    font-size: 0.81em;
+  }
+  &:hover:not(:disabled), &:focus:not(:disabled) {
+    background: darken($primary-color, 15%);
+  }
+  &:disabled {
+    opacity: .6;
+    filter: grayscale(.5);
+    cursor: default;
+  }
 }

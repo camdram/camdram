@@ -1,5 +1,4 @@
 @import "./vars.scss";
-@import "foundation";
 
 @mixin brighten($factor) {
   filter: brightness($factor);
@@ -195,6 +194,10 @@ header#main-header {
      * Obtain an Android device before editing the below!
      * See https://stackoverflow.com/q/14854359, https://github.com/camdram/camdram/issues/499 */
     height: 80px;
+    #searchfield {
+      font-size: 0.875rem;
+      height: 2.3125em;
+    }
 
     @media only screen and (min-width: 768px) {
       position: relative;
@@ -343,16 +346,8 @@ $panel-font-color-alt: #000;
 .button-neutral
 {
 @include button(
-    // $padding - Used to build padding for buttons Default: $button-med or rem-calc(12)
-    $button-med,
     // Background color. We can set $bg:false for a transparent background. Default: $primary-color.
     rgba(200, 200, 200, 1),
-    // If true, set to button radius which is $global-radius or explicitly set radius amount in px (ex. $radius:10px). Default:false.
-    false,
-    // We can set $full-width:true to remove side padding extend width. Default:false
-    false,
-    // We can set $disabled:true to create a disabled transparent button. Default:false
-    false
   );
 }
 

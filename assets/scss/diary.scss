@@ -4,6 +4,8 @@
   display: flex;
   flex-flow: row-reverse wrap-reverse;
   align-items: baseline;
+  margin-bottom: 1em;
+
   h3 {
     order: 3;
     margin-right: auto;
@@ -11,12 +13,16 @@
   > :nth-child(2) {
     order: 2;
     min-width: 40%;
+    margin-bottom: 0.5em;
   }
   form {
     order: 1;
     margin-left: auto;
     text-align: right;
     min-width: 55%;
+  }
+  button, .button, input, select {
+    width: auto;
   }
 }
 

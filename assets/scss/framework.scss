@@ -49,6 +49,17 @@ p {
 
 
 /**
+ * The clearfix class, called row since Foundation provided a class of that
+ * name with clearfix functionality.
+ */
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/**
  * Header font sizes - responsive to viewport size
  */
 $header_font_sizes: (h1: 2.75rem, h2: 2.31rem, h3: 1.69rem, h4: 1.44rem, h5: 1.125rem, h6: 1rem);
@@ -63,6 +74,7 @@ $header_font_sizes: (h1: 2.75rem, h2: 2.31rem, h3: 1.69rem, h4: 1.44rem, h5: 1.1
 }
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
+  margin-top: 0.2em;
   margin-bottom: 0.5em;
 }
 
@@ -282,7 +294,7 @@ nav.sidenav > a.active {
 }
 
 /**
- * A modal dialog
+ * A modal dialog; intended to be used by showModalDialog in camdram.js.
  */
 .reveal-modal {
   position: fixed;
