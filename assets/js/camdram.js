@@ -53,11 +53,20 @@ import Bloodhound from 'typeahead.js'
         $(".reveal-modal").remove();
     }
 
+    var createTabContainers = function(elementsToFix) {
+        $(".tabbed-content > .title", elementsToFix).click(function(e) {
+            e.preventDefault();
+            $(this.parentNode).children(".title.active").removeClass("active");
+            this.classList.add("active");
+        });
+    }
+
     // This function is called on the document later, but also
     // on extra elements as they are added to the page.
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
         $('a.delete-link').deleteLink();
+        createTabContainers();
 
         if (!supportsDateInput()) {
             // Inject custom datepicker on desktops
