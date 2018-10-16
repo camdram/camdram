@@ -35,6 +35,8 @@ input[type="date"], input[type="datetime-local"], input[type="datetime"], input[
   border: 1px solid #ccc;
   background: #fff;
   padding: 6px;
+}
+input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], select, textarea {
   width: 100%;
   color: $form-text-color;
 }

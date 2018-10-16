@@ -77,7 +77,7 @@
 </div>
 {% endif %}
 {% if show.authorisedBy is null %}
-<div class="approve-panel">
+<div class="approve-panel row">
     {% if is_granted('APPROVE', show) %}
         <form action="{{ path('approve_show', {identifier: show.slug, _method: 'PATCH'}) }}" method="post">
             <em>This show is not yet visible to the public.</em>
