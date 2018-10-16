@@ -16,6 +16,7 @@ html, body {
 a {
   text-decoration: none;
   color: $primary-color;
+  cursor: pointer;
 }
 hr {
   border: solid $hr-color;
@@ -136,12 +137,13 @@ h1, h2, h3, h4, h5, h6 {
 @mixin dropdown-content($align) {
   position: relative;
   /* :focus-within allows keyboard users to tab through the menu */
-  &:not(:hover):not(:focus-within) > ul {
-    height: 0;
-    overflow: hidden;
+  &:hover > ul, &:focus-within > ul {
+    height: auto;
   }
   > ul {
     position: absolute;
+    height: 0;
+    overflow: hidden;
     z-index: 100;
     #{$align}: 0;
     top: $topbar-height;

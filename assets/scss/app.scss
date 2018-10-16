@@ -222,7 +222,9 @@ header#main-header {
       padding: 20px 10px;
       transition: flex 500ms ease;
       /* .active is JS to make up for lack of :focus-within support */
-      &:not(.active):not(:focus-within) {
+      /* Supporting Edge and :focus-within at the same time involves excessive
+         faff and it's not unreasonable to expect clients to have JS. */
+      &:not(.active) /*:not(:focus-within)*/ {
         flex: 0 0 0;
         #search_form {
           border: none;
