@@ -136,8 +136,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 @mixin dropdown-content($align) {
   position: relative;
-  /* :focus-within allows keyboard users to tab through the menu */
-  &:hover > ul, &:focus-within > ul {
+  /* :focus-within allows keyboard users to tab through the menu but
+     has to be fully separate from :hover or Edge drops them both */
+  &:hover > ul {
+    height: auto;
+  }
+  &:focus-within > ul {
     height: auto;
   }
   > ul {
