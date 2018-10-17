@@ -155,9 +155,15 @@ textarea {
   }
 }
 
-/* A class for a <label> containing a radio button or checkbox. */
+/* A class for a <label> containing a radio button or checkbox.
+   🗹  Uses flex to ensure that all content is right of the
+      box like this. */
 .form-checkbox-row {
   margin: 0.4rem 0.7rem;
+  display: flex;
+  input[type="radio"], input[type="checkbox"] {
+    margin-right: 0.5em;
+  }
 }
 
 #recaptcha_widget_div {
