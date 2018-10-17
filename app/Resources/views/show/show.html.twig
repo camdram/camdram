@@ -116,7 +116,7 @@
         <p>We are looking for:
             {% for p in show.activeTechieAdvert.positions|split("\n") -%}
                 {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif -%}
-                {{- p -}}
+                {{- p | trim -}}
             {%- endfor %}
         – <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
     {% endif %}
@@ -161,7 +161,7 @@
     </ul>
 </div>
 
-{% if is_granted('EDIT', show) %}
+{% if is_granted('EDIT', show) and is_granted('IS_AUTHENTICATED_FULLY') %}
 <script>
     $("div[id|='sortable']").sortable({
         axis: "y",
@@ -175,5 +175,15 @@
         }
     });
 </script>
+{# Putting this here rather than in the site-wide CSS as it's a bit specific and
+   it may be removed if the role-adding gets a rework. #}
+<style>
+div[id|='sortable'] .ui-sortable-handle {
+  cursor: grab;
+}
+div[id|='sortable'] .ui-sortable-handle.ui-sortable-helper {
+  cursor: grabbing;
+}
+</style>
 {% endif %}
 {% endblock %}

@@ -155,6 +155,11 @@ textarea {
   }
 }
 
+/* A class for a <label> containing a radio button or checkbox. */
+.form-checkbox-row {
+  margin: 0.4rem 0.7rem;
+}
+
 #recaptcha_widget_div {
   margin-bottom: 1em;
 }

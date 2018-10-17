@@ -32,7 +32,7 @@
     " itemscope="" itemtype="http://schema.org/Person">
         <a itemprop="url" href="{{ path('get_person', {identifier: role.person.slug}) }}"><span itemprop="name">{{ role.person.name }}</span></a>
     </span>
-    {{ loop.last ? '</div>' }}
+    {{- loop.last ? '</div>' }}
 {%- endfor -%}
 </div>
 {% if editable %}

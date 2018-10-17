@@ -44,7 +44,7 @@
 {% block choice_widget_expanded %}
 <div {{ block('widget_container_attributes') }}>
 {% for child in form %}
-    <label for="{{ child.vars.id }}">
+    <label for="{{ child.vars.id }}" class="form-checkbox-row">
         {{ form_widget(child) }}
         {{ child.vars.label }}
     </label>
