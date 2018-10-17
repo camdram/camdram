@@ -376,3 +376,13 @@ nav.sidenav > a.active {
   border-style: none solid solid solid;
   padding: 1em;
 }
+
+/*
+ * Classes to hide or show content at different widths
+ */
+@media all and (min-width: $width-small) {
+  .show-for-small { display: none }
+}
+@media not all and (min-width: $width-small) {
+  .hide-for-small { display: none }
+}

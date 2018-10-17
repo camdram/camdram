@@ -49,8 +49,7 @@
 		"symfony/symfony": "3.4.*",
 		"twig/extensions": "~1.5",
 		"twig/twig": "^1.0||^2.0",
-		"zendframework/zend-feed": "2.10.*",
-		"zurb/foundation": "4.*"
+		"zendframework/zend-feed": "2.10.*"
 	},
 	"require-dev" : {
 		"behat/behat": "3.5.*",

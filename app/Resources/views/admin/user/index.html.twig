@@ -10,7 +10,7 @@
 
         <form action="{{ path('get_users') }}" method="get">
             <div style="display: flex; justify-content: space-around;">
-                <label for="user_search_box" class="show-for-medium-up inline">Search</label>
+                <label for="user_search_box" class="hide-for-small inline">Search</label>
                 <input id="user_search_box" type="text" name="q" style="max-width: 35em; margin-right: 1em;"
                        placeholder="Search by name, email and id" />
                 <input type="submit" class="button small" value="Go" />
