@@ -51,6 +51,9 @@ input[type=date] {
 input[type=time] {
   max-width:120px;
 }
+input.error {
+  box-shadow: 0 0 1.5px 1px red;
+}
 
 textarea {
   height:10em;
@@ -151,6 +154,20 @@ textarea {
     > :nth-child(2) {
       display: block;
       width: 100%;
+    }
+  }
+}
+
+.form-small-widget, .form-medium-widget, .form-large-row {
+  small.error {
+    width: 100%;
+    text-align: right;
+    margin: 0.5em 1em;
+
+    &::before {
+      content: "\00f05a\002002";
+      font: 1.5em FontAwesome;
+      color: #e11;
     }
   }
 }
