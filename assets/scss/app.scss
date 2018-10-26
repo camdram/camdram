@@ -385,3 +385,10 @@ $panel-font-color-alt: #000;
     color:#000000;
   }
 }
+
+/**
+ * Internet Exporer-specific hacks
+ */
+_:-ms-input-placeholder, :root #home-diary-nav ul, :root body {
+  display: block; /* replace flex */
+}
