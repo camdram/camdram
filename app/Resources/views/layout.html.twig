@@ -19,7 +19,9 @@
       </ul>
 
       <ul>
+        {% block logintoolbar %}
         {{ render(controller('ActsCamdramSecurityBundle:Default:toolbar')) }}
+        {% endblock %}
       </ul>
     </div>
   </nav>

@@ -2,16 +2,36 @@
 
 {% block title %}An Error Occurred: {{ status_text }}{% endblock %}
 
-{% block body %}
+{% block logintoolbar %}
+{#- Disable login toolbar on error pages as it will never display the logged-
+    in user's toolbar. -#}
+{% endblock %}
 
+{% block body %}
+{% set path = app.request.pathinfo|split('/') %}
+{% if status_code == 403 %}
+  <h1>Permission denied (403)</h1>
+  <p>
+      You're forbidden from doing whatever dastardly thing it was you tried to do. If you think you should have access here, email <a href="mailto:support@camdram.net">support@camdram.net</a> and we'll see what we can do.
+  </p>
+
+{% elseif status_code == 404 %}
+  <h1>Page not found (404)</h1>
+  <p>
+      You've navigated to a page that doesn't exist. Try checking the URL or using the search box. If you think there should be something here, email <a href="mailto:support@camdram.net">support@camdram.net</a> and we'll see what we can do.
+  </p>
+
+{% else %}
   <h1>Sorry, something's gone wrong</h1>
   <h2>The server returned the error "{{ status_code }} {{ status_text }}".</h2>
 
   <p>
-      Something is broken. Please e-mail us at <a href="mailto:support@camdram.net">
-      support@camdram.net</a> and let us know
-      what you were doing when this error occurred. We will fix it as soon
+      Something is broken. {{ status_code // 100 == 5 ?
+          "It's likely that we've been notified, but if you need help now" :
+          "We won't have received a notification, so if this seems wrong" }} email <a href="mailto:support@camdram.net">
+      support@camdram.net</a> and let us know what you were doing when this error occurred. We will fix it as soon
       as possible. Sorry for any inconvenience caused.
   </p>
+{% endif %}
 {% endblock %}
 
