@@ -20,8 +20,8 @@
 {% set title = "Sorry, something's gone wrong." %}
 {% set subtitle = "The server returned the error " ~ status_code ~ " " ~ status_text %}
 {% set message = (status_code // 100 == 5 ?
-          "Something is broken. It's likely that we've been notified, but if you need help now" :
-          "Something may be broken. We won't have received a notification, so if this seems wrong") ~
+          "Something is broken. It's likely that we've already been notified, but if you need help now" :
+          "Something may be broken. This doesn't appear to be a server error so we haven't been notified, however if this seems wrong") ~
       " email <a href=\"mailto:support@camdram.net\">support@camdram.net</a> and let us know what you were doing when this error occurred. We will fix it as soon as possible. Sorry for any inconvenience caused." %}
 {% endif %}
 
