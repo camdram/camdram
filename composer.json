@@ -58,6 +58,7 @@
 		"behat/mink-goutte-driver": "*",
 		"behat/symfony2-extension": "^2.1",
 		"dama/doctrine-test-bundle": "^4.0",
+		"deployer/deployer": "^6.3",
 		"sensio/generator-bundle": "^3.1",
 		"symfony/phpunit-bridge": "^4.1",
 		"symfony/web-server-bundle": "^3.4"

@@ -1,0 +1,132 @@
+version: 2.1
+
+commands:
+    system_setup:
+        description: System setup
+        steps:
+            - run: |
+                cp .circleci/parameters.yml app/config/parameters.yml
+                echo 'memory_limit=-1' | sudo tee -a /usr/local/etc/php/php.ini
+                sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+    install_deps:
+        description: Install Dependencies
+        steps:
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+                      # fallback to using the latest cache if no exact match is found
+                      - v1-dependencies-
+            - run: |
+                  composer install -n --prefer-dist
+                  yarn install && yarn build
+            - save_cache:
+                  paths:
+                    - ./vendor
+                    - ./node_modules
+                  key: v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+
+jobs:
+    run_tests:
+        docker:
+          - image: circleci/php:7.0-node
+          - image: docker.elastic.co/elasticsearch/elasticsearch:5.6.13
+            environment:
+                xpack.security.enabled: false
+                xpack.monitoring.enabled: false
+                xpack.ml.enabled: false
+                xpack.graph.enabled: false
+                xpack.watcher.enabled: false
+
+        working_directory: ~/repo
+
+        environment:
+            SYMFONY_DEPRECATIONS_HELPER: weak_vendors
+            SYMFONY_ENV: test
+
+        steps:
+          - checkout
+          - system_setup
+          - install_deps
+            
+          # run tests!
+          - run: 
+                name: Run Tests
+                command: |
+                    php app/console doctrine:schema:update --force
+                    php app/console lint:yaml app/config
+                    php app/console lint:twig app/Resources
+                    php bin/simple-phpunit
+                    php bin/behat
+          
+          - run: 
+                name: Test fixtures and search index population
+                command: |
+                    php app/console camdram:database:refresh
+                    php app/console fos:elastica:populate
+
+    validate_migrations:
+        docker:
+          - image: circleci/php:7.0-node
+          - image: circleci/mariadb:10
+            environment:
+                MYSQL_DATABASE: camdram_test
+                MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
+        working_directory: ~/repo
+
+        environment:
+            SYMFONY_ENV: dev
+
+        steps:
+            - checkout
+            - system_setup
+            - install_deps
+      
+            - run:
+                name: MySQL migrations
+                command: |
+                    sudo docker-php-ext-install pdo_mysql
+                    cp .circleci/parameters_mysql.yml app/config/parameters.yml
+                    composer install -n --prefer-dist
+                    SYMFONY_ENV=dev php app/console doctrine:migrations:migrate --no-interaction
+
+    deploy_production:
+        docker:
+          - image: circleci/php:7.0-node
+
+        steps:
+          - checkout
+          - system_setup
+          - install_deps
+          - deploy: php bin/dep deployment --tag=$CIRCLE_TAG
+
+    deploy_dev:
+        docker:
+          - image: circleci/php:7.0-node
+
+        steps:
+          - checkout
+          - system_setup
+          - install_deps
+          - deploy: php bin/dep deployment --branch=$CIRCLE_BRANCH --revision=$CIRCLE_SHA1
+
+
+workflows:
+    version: 2
+    test_deploy:
+        jobs:
+          # Run tests in parallel
+          - run_tests
+          - validate_migrations
+          # Deploy tagged builds to production
+          - deploy_production:
+              requires: [run_tests, validate_migrations]
+              filters:
+                tags:
+                  only: /^v.*/
+                branches:
+                  only: master
+          # Deploy all builds to a dev checkout
+          - deploy_dev:
+              requires: [run_tests, validate_migrations]
