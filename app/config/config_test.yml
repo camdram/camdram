@@ -7,9 +7,7 @@ doctrine:
         default_connection: default
         connections:
             default:
-                dbname: camdram
-                driver: pdo_sqlite
-                path: "%kernel.cache_dir%/test.db"
+                url: "sqlite:///%kernel.cache_dir%/test.db"
 
 monolog:
     handlers: ~
@@ -33,4 +31,4 @@ ewz_recaptcha:
 fos_elastica:
     indexes:
         autocomplete:
-            index_name: "%search_namespace%_autocomplete_test"
+            index_name: "%env(SEARCH_NAMESPACE)%_autocomplete_test"

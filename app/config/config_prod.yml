@@ -29,4 +29,4 @@ monolog:
             channels: ["mailer"]
 
 sentry:
-    dsn: "%sentry_dsn%"
+    dsn: "%env(SENTRY_DSN)%"

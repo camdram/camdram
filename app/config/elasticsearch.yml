@@ -3,7 +3,7 @@ fos_elastica:
         default: { host: localhost, port: 9200 }
     indexes:
         autocomplete:
-            index_name: '%search_namespace%_autocomplete'
+            index_name: '%env(SEARCH_NAMESPACE)%_autocomplete'
             settings:
                 index:
                     analysis:

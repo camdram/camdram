@@ -1,23 +1,7 @@
 parameters:
-    database_driver: pdo_sqlite
-    database_host: localhost
-    database_port: ~
-    database_name: ~
-    database_user: ~
-    database_pass: ~
-
-    # During development send emails from your own gmail address e.g.
-    # your_username@gmail.com.
-    mailer_transport:  gmail
-    mailer_host:       ~
-    mailer_port:       ~
-    mailer_user:       your_gmail_username
-    mailer_password:   your_gmail_password
-    mailer_delivery_address: example@example.com
-    mailer_sender_address    : support@camdram.net
-
-    locale:            en
-    secret:            "default secret"
+    env(DATABASE_URL): sqlite:///%kernel.root_dir%/data/orm.db
+    env(MAILER_URL): sendmail://
+    dev_delivery_address: you@domain.com
 
     facebook_id:                1234
     facebook_secret:            s3cr3t
@@ -32,11 +16,5 @@ parameters:
     github_secret:              s3cr3t
     recaptcha_site_key:         1234
     recaptcha_secret_key:       s3cr3t
-    sentry_dsn:                 https://123dsn789@sentry.io/1234567
 
-    map_center: [52.20531,0.12179]
-    development_warning: false
-    show_site_notice: false
-    site_notice_content: "Camdram will be unavailable for scheduled maintenance from 00:00:00 on 1 January 1970 for approximately 1 hour."
-    search_namespace: camdram
     search_enable_listeners: false

@@ -4,27 +4,32 @@ commands:
     system_setup:
         description: System setup
         steps:
-            - run: |
-                cp .circleci/parameters.yml app/config/parameters.yml
-                echo 'memory_limit=-1' | sudo tee -a /usr/local/etc/php/php.ini
-                sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+          - run:
+              name: System setup
+              command: |
+                  echo "parameters:
+                      search_enable_listeners: true" > app/config/parameters.yml
+                  echo 'memory_limit=-1' | sudo tee -a /usr/local/etc/php/php.ini
+                  sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
     install_deps:
         description: Install Dependencies
         steps:
-            - restore_cache:
-                  keys:
-                      - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
-                      # fallback to using the latest cache if no exact match is found
-                      - v1-dependencies-
-            - run: |
+          - restore_cache:
+              keys:
+                  - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
+                  # fallback to using the latest cache if no exact match is found
+                  - v1-dependencies-
+          - run:
+              name: Install Dependencies
+              command: |
                   composer install -n --prefer-dist
                   yarn install && yarn build
-            - save_cache:
-                  paths:
-                    - ./vendor
-                    - ./node_modules
-                  key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
+          - save_cache:
+              paths:
+                - ./vendor
+                - ./node_modules
+              key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
 
 jobs:
     run_tests:
@@ -46,22 +51,21 @@ jobs:
           - checkout
           - system_setup
           - install_deps
-            
-          # run tests!
+
           - run: 
-                name: Run Tests
-                command: |
-                    php app/console doctrine:schema:update --force
-                    php app/console lint:yaml app/config
-                    php app/console lint:twig app/Resources
-                    php bin/simple-phpunit
-                    php bin/behat
-          
+              name: Run Tests
+              command: |
+                  php app/console doctrine:schema:update --force
+                  php app/console lint:yaml app/config
+                  php app/console lint:twig app/Resources
+                  php bin/simple-phpunit
+                  php bin/behat
+        
           - run: 
-                name: Test fixtures and search index population
-                command: |
-                    php app/console camdram:database:refresh
-                    php app/console fos:elastica:populate
+              name: Test fixtures and search index population
+              command: |
+                  php app/console camdram:database:refresh
+                  php app/console fos:elastica:populate
 
     validate_migrations:
         docker:
@@ -73,19 +77,19 @@ jobs:
 
         environment:
             SYMFONY_ENV: dev
+            DATABASE_URL: mysql://root@127.0.0.1/camdram_test
 
         steps:
-            - checkout
-            - system_setup
-            - install_deps
-      
-            - run:
-                name: MySQL migrations
-                command: |
-                    sudo docker-php-ext-install pdo_mysql
-                    cp .circleci/parameters_mysql.yml app/config/parameters.yml
-                    composer install -n --prefer-dist
-                    SYMFONY_ENV=dev php app/console doctrine:migrations:migrate --no-interaction
+          - checkout
+          - system_setup
+          - install_deps
+    
+          - run:
+              name: MySQL migrations
+              command: |
+                  sudo docker-php-ext-install pdo_mysql
+                  composer install -n --prefer-dist
+                  SYMFONY_ENV=dev php app/console doctrine:migrations:migrate --no-interaction
 
     deploy_production:
         docker:
@@ -99,6 +103,7 @@ jobs:
               fingerprints:
                 - "a0:e7:3e:8e:9d:a3:e6:f5:9d:ce:4c:2f:76:5a:0a:a1"
           - deploy:
+                name: Deploy to Antigone *.dev
                 command: |
                     ssh-keyscan antigone.camdram.net >> $HOME/.ssh/known_hosts
                     php bin/dep deploy production --tag=$CIRCLE_TAG
@@ -115,10 +120,10 @@ jobs:
               fingerprints:
                 - "a0:e7:3e:8e:9d:a3:e6:f5:9d:ce:4c:2f:76:5a:0a:a1"
           - deploy:
+                name: Deploy to Antigone www
                 command: |
                     ssh-keyscan antigone.camdram.net >> $HOME/.ssh/known_hosts
                     php bin/dep deploy development --branch=$CIRCLE_BRANCH --revision=$CIRCLE_SHA1
-
 
 workflows:
     version: 2
@@ -133,8 +138,6 @@ workflows:
               filters:
                 tags:
                   only: /^v.*/
-                branches:
-                  only: master
-          # Deploy all builds to a dev checkout
+          # Deploy all builds to a branch-specific dev checkout
           - deploy_dev:
               requires: [run_tests, validate_migrations]

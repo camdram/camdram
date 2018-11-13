@@ -12,9 +12,9 @@ services:
         bind:
             # pass this value to any $supportEmail argument for any service
             # that's defined in this file (including controller arguments)
-            $adminEmail: "%mailer_sender_address%"
-            $appSecret: "%secret%"
-            $mapCenter: "%map_center%"
+            $adminEmail: "%env(SUPPORT_EMAIL_ADDRESS)%"
+            $appSecret: "%env(APP_SECRET)%"
+            $mapCenter: [52.20531, 0.12179]
 
     Acts\CamdramBundle\:
         resource: '../../src/Acts/CamdramBundle/*'
