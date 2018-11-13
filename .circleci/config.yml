@@ -139,6 +139,8 @@ workflows:
               filters:
                 tags:
                   only: /^v.*/
+                branches: 
+                  ignore: /.*/ #Ignore step for branch-only commits
           # Deploy all builds to a branch-specific dev checkout
           - deploy_dev:
               requires: [run_tests, validate_migrations]
