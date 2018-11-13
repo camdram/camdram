@@ -99,6 +99,9 @@ jobs:
           - checkout
           - system_setup
           - install_deps
+          - add_ssh_keys:
+              fingerprints:
+                - "a0:e7:3e:8e:9d:a3:e6:f5:9d:ce:4c:2f:76:5a:0a:a1"
           - deploy:
                 command: |
                     ssh-keyscan antigone.camdram.net >> $HOME/.ssh/known_hosts
@@ -112,6 +115,9 @@ jobs:
           - checkout
           - system_setup
           - install_deps
+          - add_ssh_keys:
+              fingerprints:
+                - "a0:e7:3e:8e:9d:a3:e6:f5:9d:ce:4c:2f:76:5a:0a:a1"
           - deploy:
                 command: |
                     ssh-keyscan antigone.camdram.net >> $HOME/.ssh/known_hosts
