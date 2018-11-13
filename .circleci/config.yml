@@ -14,7 +14,7 @@ commands:
         steps:
             - restore_cache:
                   keys:
-                      - v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+                      - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
                       # fallback to using the latest cache if no exact match is found
                       - v1-dependencies-
             - run: |
@@ -24,7 +24,7 @@ commands:
                   paths:
                     - ./vendor
                     - ./node_modules
-                  key: v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+                  key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "yarn.lock" }}
 
 jobs:
     run_tests:
@@ -37,8 +37,6 @@ jobs:
                 xpack.ml.enabled: false
                 xpack.graph.enabled: false
                 xpack.watcher.enabled: false
-
-        working_directory: ~/repo
 
         environment:
             SYMFONY_DEPRECATIONS_HELPER: weak_vendors
@@ -72,8 +70,6 @@ jobs:
             environment:
                 MYSQL_DATABASE: camdram_test
                 MYSQL_ALLOW_EMPTY_PASSWORD: yes
-
-        working_directory: ~/repo
 
         environment:
             SYMFONY_ENV: dev

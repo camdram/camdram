@@ -32,8 +32,6 @@ host('production')
     ->set('deploy_path', '/var/www/camdram/production')
     ->set('keep_releases', 2);
 
-$input = new ArgvInput();
-var_dump($input->getOptions());
 host('development')
     ->hostname('antigone.camdram.net')
     ->user('deploy')
