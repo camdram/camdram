@@ -101,7 +101,7 @@ jobs:
           - install_deps
           - deploy:
                 command: |
-                    ssh-keyscan antigone.camdram.net >> /root/.ssh/known_hosts
+                    ssh-keyscan antigone.camdram.net >> $HOME/.ssh/known_hosts
                     php bin/dep deploy production --tag=$CIRCLE_TAG
 
     deploy_dev:
@@ -114,7 +114,7 @@ jobs:
           - install_deps
           - deploy:
                 command: |
-                    ssh-keyscan antigone.camdram.net >> /root/.ssh/known_hosts
+                    ssh-keyscan antigone.camdram.net >> $HOME/.ssh/known_hosts
                     php bin/dep deploy development --branch=$CIRCLE_BRANCH --revision=$CIRCLE_SHA1
 
 
