@@ -99,7 +99,9 @@ jobs:
           - checkout
           - system_setup
           - install_deps
-          - deploy: php bin/dep deployment --tag=$CIRCLE_TAG
+          - deploy:
+                command: |
+                    php bin/dep deployment --tag=$CIRCLE_TAG
 
     deploy_dev:
         docker:
@@ -109,7 +111,9 @@ jobs:
           - checkout
           - system_setup
           - install_deps
-          - deploy: php bin/dep deployment --branch=$CIRCLE_BRANCH --revision=$CIRCLE_SHA1
+          - deploy:
+                command: |
+                    php bin/dep deployment --branch=$CIRCLE_BRANCH --revision=$CIRCLE_SHA1
 
 
 workflows:
