@@ -80,16 +80,17 @@ jobs:
             DATABASE_URL: mysql://root@127.0.0.1/camdram_test
 
         steps:
+          - run:
+              name: Install php-mysql
+              command: sudo docker-php-ext-install pdo_mysql
+
           - checkout
           - system_setup
           - install_deps
     
           - run:
-              name: MySQL migrations
-              command: |
-                  sudo docker-php-ext-install pdo_mysql
-                  composer install -n --prefer-dist
-                  SYMFONY_ENV=dev php app/console doctrine:migrations:migrate --no-interaction
+              name: Test MySQL migrations
+              command: php app/console doctrine:migrations:migrate --no-interaction
 
     deploy_production:
         docker:
