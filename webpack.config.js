@@ -54,11 +54,5 @@ config.resolve.alias['router$'] = path.resolve(__dirname, 'vendor/friendsofsymfo
 //Allow jQuery from CDN to be used inside js modules
 config.externals['jquery'] = 'jQuery';
 
-//Hack to make this == window for current version of Foundation
-config.module.rules.push({
-    test: /foundation\.js$/,
-    use: "imports-loader?this=>window"
-})
-
 //export config
 module.exports = config;
