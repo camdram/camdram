@@ -101,7 +101,7 @@ jobs:
           - install_deps
           - deploy:
                 command: |
-                    php bin/dep deployment --tag=$CIRCLE_TAG
+                    php bin/dep deploy production --tag=$CIRCLE_TAG
 
     deploy_dev:
         docker:
@@ -113,7 +113,7 @@ jobs:
           - install_deps
           - deploy:
                 command: |
-                    php bin/dep deployment --branch=$CIRCLE_BRANCH --revision=$CIRCLE_SHA1
+                    php bin/dep deploy development --branch=$CIRCLE_BRANCH --revision=$CIRCLE_SHA1
 
 
 workflows:
