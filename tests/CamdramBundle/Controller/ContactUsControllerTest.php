@@ -28,7 +28,7 @@ class ContactUsControllerTest extends WebTestCase
         $message = $mailCollector->getMessages()[0];
         $this->assertContains('Test Message', $message->getSubject());
         $this->assertSame('john@domain.com', key($message->getReplyTo()));
-        $recipient = $client->getKernel()->getContainer()->getParameter('mailer_sender_address');
+        $recipient = $client->getKernel()->getContainer()->getParameter('support_email_address');
         $this->assertSame($recipient, key($message->getFrom()));
         $this->assertSame($recipient, key($message->getTo()));
         $this->assertContains('Lorem ipsum', $message->getBody());

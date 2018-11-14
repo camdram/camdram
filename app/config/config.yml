@@ -4,9 +4,14 @@ imports:
     - { resource: security.yml }
     - { resource: elasticsearch.yml }
 
+parameters:
+    locale: en
+    router.request_context.host: www.camdram.net
+    support_email_address: support@camdram.net
+
 framework:
     esi: { enabled: true }
-    secret:          "%secret%"
+    secret:          "%env(APP_SECRET)%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: "%kernel.debug%"
@@ -33,9 +38,9 @@ twig:
     form_themes:
         - 'form/fields.html.twig'
     globals:
-        development_warning: "%development_warning%"
-        show_site_notice: "%show_site_notice%"
-        site_notice_content: "%site_notice_content%"
+        development_warning: "%env(DEVELOPMENT_WARNING)%"
+        show_site_notice: "%env(SHOW_SITE_NOTICE)%"
+        site_notice_content: "%env(SITE_NOTICE_CONTENT)%"
         facebook_id: "%facebook_id%"
 
 monolog:
@@ -47,13 +52,7 @@ doctrine:
         default_connection: default
         connections:
             default:
-                driver:   "%database_driver%"
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   "%database_name%"
-                user:     "%database_user%"
-                password: "%database_pass%"
-                path:     "%kernel.root_dir%/data/orm.db"
+                url: "%env(DATABASE_URL)%"
                 charset:  utf8mb4
                 default_table_options:
                     charset: utf8mb4
@@ -74,13 +73,9 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    port:      "%mailer_port%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
+    url: "%env(MAILER_URL)%"
     spool  : { type: memory }
-    sender_address: "%mailer_sender_address%"
+    sender_address: "%support_email_address%"
 
 fos_rest:
     view:
@@ -188,7 +183,3 @@ ivory_google_map:
     map:
         debug: "%kernel.debug%"
         api_key: "%google_key%"
-
-parameters:
-    router.request_context.host: www.camdram.net
-

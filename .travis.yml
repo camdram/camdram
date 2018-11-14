@@ -5,18 +5,18 @@ matrix:
     - php: 7.2
   fast_finish: true
 cache:
-  yarn: true
   directories:
   - $HOME/.composer/cache/files
 services:
   - elasticsearch
   - mysql
 before_script:
-- cp app/config/parameters.travis.yml app/config/parameters.yml
+  # Enable search listeners via paramaters.yml
+- echo -e "parameters:\n\tsearch_enable_listeners: true" > app/config/parameters.yml
+  # Disable xdebug for speedup
 - phpenv config-rm xdebug.ini
+  # Install deps. `--no-interaction` causes paramters.yml to be populated with default values
 - composer install --no-interaction
-- yarn install
-- yarn build
 script:
 - "./runtests"
 - "./check_dev_setup"
