@@ -38,8 +38,8 @@ twig:
     form_themes:
         - 'form/fields.html.twig'
     globals:
-        development_warning: "%env(DEVELOPMENT_WARNING)%"
-        show_site_notice: "%env(SHOW_SITE_NOTICE)%"
+        development_warning: "%env(bool:DEVELOPMENT_WARNING)%"
+        show_site_notice: "%env(bool:SHOW_SITE_NOTICE)%"
         site_notice_content: "%env(SITE_NOTICE_CONTENT)%"
         facebook_id: "%facebook_id%"
 
