@@ -2,6 +2,7 @@
 set -e
 export SYMFONY_DEPRECATIONS_HELPER=weak_vendors
 export SYMFONY_ENV=test
+export DATABASE_URL=sqlite:///$(dirname $0)/app/cache/test/test.db
 
 php app/console lint:yaml app/config
 php app/console lint:twig app/Resources
