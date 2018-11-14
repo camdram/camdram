@@ -109,41 +109,11 @@ import Bloodhound from 'typeahead.js'
             overshoot: 10
         }, options);
 
-        var top = $('body').scrollTop();
+        var top = $('html').scrollTop();
         var max = $(this).offset().top + options.threshold * $(this).height();
         if (top > max) {
             $('html, body').animate({scrollTop: $(this).offset().top - options.overshoot}, options.speed);
         }
-    }
-
-    $.fn.addMarkers = function(info_boxes) {
-        var $self = this;
-
-        var close_all = function() {
-            $.each(info_boxes, function(key, val) {
-                var infobox = window[val.box_id];
-                infobox.close();
-            })
-        }
-
-        $.each(info_boxes, function(key, box) {
-            var $img = $('<img/>')
-                .addClass('marker_img')
-                .attr('src', box.image)
-                .click(function() {
-                    close_all();
-
-                    var map = window[box.map_id];
-                    var marker = window[box.marker_id];
-                    var infobox = window[box.box_id];
-                    map.setZoom(17);
-                    infobox.open(map, marker);
-
-                    $(map.getDiv()).scrollTo();
-                })
-
-            $('#venue-' + box.slug + ' .marker_column').append($img);
-        });
     }
 
     $.fn.newsFeedMedia = function() {

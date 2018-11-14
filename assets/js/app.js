@@ -5,6 +5,7 @@ Routing.setRoutingData(require('./fos_js_routes.json'));
 import './camdram.js';
 import './autocomplete.js';
 import './home.js';
+import './venues.js';
 
 import '../scss/app.scss';
 import '../scss/autocomplete.scss';
@@ -18,3 +19,4 @@ import '../scss/venues.scss';
 
 import "@fancyapps/fancybox/dist/jquery.fancybox.css";
 import "../scss/jquery-ui.custom.css"
+import "leaflet/dist/leaflet.css"
