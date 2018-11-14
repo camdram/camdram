@@ -3,33 +3,26 @@
 {% block title %}Account Settings{% endblock %}
 
 {% block body %}
-  <div class="row">
-      <h3>Account Settings</h3>
+<h3>Account Settings</h3>
 
-      <div class="row">
-          <div class="large-12 columns">
-              <p><strong>Name:</strong> {{ app.user.name }}</p>
-          </div>
-      </div>
+<p><strong>Name:</strong> {{ app.user.name }}</p>
 
-      <div class="panel">
-          {{ render(controller('ActsCamdramSecurityBundle:Account:linkedAccounts')) }}
-      </div>
+<div class="panel">
+    {{ render(controller('ActsCamdramSecurityBundle:Account:linkedAccounts')) }}
+</div>
 
-      <div class="panel" id="email">
-          <h5>E-mail address</h5>
-          <p>
-              {% if app.user.isEmailVerified %}
-                  Your email address has been verified
-              {% else %}
-                  Your email address has not been verified. <a href="{{ path('acts_camdram_security_resend_verification') }}">Resend verification email</a>
-              {% endif %}
-          </p>
-          {{ render(controller('ActsCamdramSecurityBundle:Account:changeEmail')) }}
-      </div>
+<div class="panel" id="email">
+    <h5>E-mail address</h5>
+    <p>
+        {% if app.user.isEmailVerified %}
+            Your email address has been verified
+        {% else %}
+            Your email address has not been verified. <a href="{{ path('acts_camdram_security_resend_verification') }}">Resend verification email</a>
+        {% endif %}
+    </p>
+    {{ render(controller('ActsCamdramSecurityBundle:Account:changeEmail')) }}
+</div>
 
-      
-      {{ render(controller('ActsCamdramSecurityBundle:Account:changePassword')) }}
+{{ render(controller('ActsCamdramSecurityBundle:Account:changePassword')) }}
 
-  </div>
 {% endblock %}

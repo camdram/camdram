@@ -21,15 +21,11 @@
     {{ form_widget(form) }}
 
     <div class="row">
-        <div class="large-9 large-offset-3 columns">
-            <input type="submit" class="button" value="Save"/>
-            <p><a href="{{ path('remove_app', {app_id: ex_app.randomId}) }}">Delete app</a></p>
-            <p><a href="{{ path('get_apps') }}">Return to My Apps</a></p>
-        </div>
+        <input type="submit" class="button right" value="Save"/>
+        <a href="{{ path('remove_app', {app_id: ex_app.randomId}) }}" class="button" role="button">Delete app</a>
+        <p><a href="{{ path('get_apps') }}">Return to My Apps</a></p>
     </div>
 
     {{ form_end(form) }}
-
-
 
 {% endblock %}

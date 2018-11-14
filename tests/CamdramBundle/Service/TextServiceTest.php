@@ -61,8 +61,8 @@ class TextServiceTest extends TestCase
     public function testDetectLinks_Emails()
     {
         $this->assertEquals(
-            'The email <a href="mailto:websupport@camdram.net">websupport@camdram.net</a> can be used for support',
-            $this->textService->detectLinks('The email websupport@camdram.net can be used for support')
+            'The email <a href="mailto:support@camdram.net">support@camdram.net</a> can be used for support',
+            $this->textService->detectLinks('The email support@camdram.net can be used for support')
         );
     }
 
@@ -89,20 +89,20 @@ class TextServiceTest extends TestCase
     public function testConvertMarkdown_Emails()
     {
         $this->assertEquals(
-            'The email <a href="mailto:websupport@camdram.net">websupport@camdram.net</a> can be used for support',
-            $this->textService->convertMarkdown('The email [E:websupport@camdram.net] can be used for support')
+            'The email <a href="mailto:support@camdram.net">support@camdram.net</a> can be used for support',
+            $this->textService->convertMarkdown('The email [E:support@camdram.net] can be used for support')
         );
         $this->assertEquals(
-            'The <a href="mailto:websupport@camdram.net">support email</a> can be used for support',
-            $this->textService->convertMarkdown('The [E:websupport@camdram.net;support email] can be used for support')
+            'The <a href="mailto:support@camdram.net">support email</a> can be used for support',
+            $this->textService->convertMarkdown('The [E:support@camdram.net;support email] can be used for support')
         );
         $this->assertEquals(
-        'The email <a href="mailto:websupport@camdram.net">websupport@camdram.net</a> can be used for support',
-            $this->textService->convertMarkdown('The email [L:mailto:websupport@camdram.net] can be used for support')
+        'The email <a href="mailto:support@camdram.net">support@camdram.net</a> can be used for support',
+            $this->textService->convertMarkdown('The email [L:mailto:support@camdram.net] can be used for support')
         );
         $this->assertEquals(
-            'The <a href="mailto:websupport@camdram.net">support email</a> can be used for support',
-            $this->textService->convertMarkdown('The [L:mailto:websupport@camdram.net;support email] can be used for support')
+            'The <a href="mailto:support@camdram.net">support email</a> can be used for support',
+            $this->textService->convertMarkdown('The [L:mailto:support@camdram.net;support email] can be used for support')
         );
     }
 
@@ -139,12 +139,12 @@ class TextServiceTest extends TestCase
     public function testStripMarkdown_Emails()
     {
         $this->assertEquals(
-            'websupport@camdram.net can be used for support',
-            $this->textService->stripMarkdown('[E:websupport@camdram.net] can be used for support')
+            'support@camdram.net can be used for support',
+            $this->textService->stripMarkdown('[E:support@camdram.net] can be used for support')
         );
         $this->assertEquals(
             'The support email can be used for support',
-            $this->textService->stripMarkdown('The [E:websupport@camdram.net;support email] can be used for support')
+            $this->textService->stripMarkdown('The [E:support@camdram.net;support email] can be used for support')
         );
     }
 }

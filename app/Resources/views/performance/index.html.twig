@@ -1,5 +1,4 @@
 <div class="row" xmlns="http://www.w3.org/1999/html">
-    <!-- div class="twelve columns" -->
     {% set columnIdx = 0 %}
     {% set columnDate =  startDate %}
     {% for p in performances %}
@@ -61,5 +60,4 @@
             {% set columnIdx = (columnIdx + 1) % 7 %}
         {% endif %}
     {% endfor %}
-    <!-- /div -->
 </div>

@@ -11,8 +11,10 @@ import '../scss/autocomplete.scss';
 import '../scss/diary.scss';
 import '../scss/entities.scss';
 import '../scss/forms.scss';
+import '../scss/framework.scss';
 import '../scss/home.scss';
 import '../scss/news.scss';
 import '../scss/venues.scss';
 
 import "@fancyapps/fancybox/dist/jquery.fancybox.css";
+import "../scss/jquery-ui.custom.css"

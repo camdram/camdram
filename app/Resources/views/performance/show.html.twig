@@ -1,7 +1,7 @@
 {# A template for displaying the performance details for a show #}
 {% if performances|length > 0  %}
     <meta itemprop="startDate" content="{{ performances[0].startdate|date('Y-m-d') }}"/>
-    <div itemprop="location" itemscope="" itemtype="http://schema.org/PerformingArtsTheater">
+    <span itemprop="location" itemscope="" itemtype="http://schema.org/PerformingArtsTheater">
         <meta itemprop="name" content="
         {%- if performances[0].venue -%}
             {{- performances[0].venue.name -}}
@@ -11,12 +11,16 @@
             TBC
         {%- endif -%}
         "/><meta itemprop="address" content="United Kingdom"/>
-    </div>
+    </span>
     {% for p in performances %}
-        {{- p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}
+        {%- if (diary_links is defined) and (disable_links is not defined) -%}
+            <a href="/diary/{{- p.startdate|date('Y-m-d') -}}#diary-item-{{p.id}}" title="View in diary">
+		<i class="fa fa-calendar fa-fw" style="width: 2em"></i></a>
+        {% endif -%}
+        {{- p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') -}}
         {%- if date(p.startdate) != date(p.enddate) -%}
-            {# Show the duration #}
-             - {{ p.enddate|date('D jS F Y') }},
+            {#- Show the duration -#}
+             &ndash;{{ p.enddate|date('D jS F Y') }},
         {% endif %}
         {% if p.venue %}
             at {% if disable_links is defined -%}

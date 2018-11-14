@@ -4,19 +4,18 @@
 
 {% block body %}
 <div class="row">
-    <div class="large-3 columns">
-        <ul class="side-nav">
-            {% include 'navigation/nav-items.html.twig'  with {items: {
-            'auditions': {'text': 'Auditions', 'path': path('get_auditions')},
-            'techies': {'text': 'Technical and designer roles', 'path': path('get_techies')},
-            'applications': {'text': 'Producer/director roles and show applications', 'path': path('get_applications')},
+    <nav class="sidenav">
+        {% include 'navigation/nav-items.html.twig'  with {items: {
+        'auditions': {'text': 'Auditions', 'path': path('get_auditions')},
+        'techies': {'text': 'Technical and designer roles', 'path': path('get_techies')},
+        'applications': {'text': 'Producer/director roles and show applications', 'path': path('get_applications')},
 
-            }, current_id: current_vacancies_id} %}
-        </ul>
-    </div>
+        }, current_id: current_vacancies_id, noli: true} %}
+    </nav>
 
-    <div class="large-9 columns">
+    <main>
+    <div class="split-header">{% block vacancies_header %}{% endblock %}</div>
     {% block vacancies_body %}{% endblock %}
-    </div>
+    </main>
 </div>
 {% endblock %}

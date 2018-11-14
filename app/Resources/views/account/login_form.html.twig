@@ -1,36 +1,24 @@
 <form method="post" action="{{ path('acts_camdram_security_login_check') }}">
 
-    <div class="row">
-        <div class="large-3 columns">
-            <label class="right inline{% if error %} error{% endif %}" for="form_email">Email</label>
-        </div>
-        <div class="large-9 columns">
-        	{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        	<p>{{ last_email }}</p>
-            <input type="hidden" name="email" value="{{ last_email }}">
-            {% else %}
-            <input type="text" id="form_email" name="email" required="required" value="{{ last_email }}"{% if error %} class="error"{% endif %} />
-            {% endif %}
-        </div>
+    <div class="form-large-row">
+        <label class="{% if error %} error{% endif %}" for="form_email">Email</label>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <p>{{ last_email }}</p>
+        <input type="hidden" name="email" value="{{ last_email }}">
+        {% else %}
+        <input type="text" id="form_email" name="email" required="required" value="{{ last_email }}"{% if error %} class="error"{% endif %} />
+        {% endif %}
     </div>
 
-    <div class="row">
-        <div class="large-3 columns">
-            <label class="right inline required{% if error %} error{% endif %}" for="form_password">Password</label>
-        </div>
-        <div class="large-9 columns">
-            <input type="password" id="form_password" name="password" required="required"{% if error %} class="error"{% endif %} />
-        </div>
+    <div class="form-large-row">
+        <label class="required{% if error %} error{% endif %}" for="form_password">Password</label>
+        <input type="password" id="form_password" name="password" required="required"{% if error %} class="error"{% endif %} />
     </div>
 
     <input type="hidden" name="_target_path" value="{{ path('get_account') }}" />
 
     <div class="row">
-        <div class="large-6 columns">
-            <p><a href="{{ path('acts_camdram_security_forgotten_password') }}">Forgotten password?</a></p>
-        </div>
-        <div class="large-6 columns text-right">
-            <input type="submit" value="Log in" id="login_button" class="button"/>
-        </div>
+        <p class="left"><a href="{{ path('acts_camdram_security_forgotten_password') }}">Forgotten password?</a></p>
+        <input type="submit" value="Log in" id="login_button" class="button right"/>
     </div>
 </form>

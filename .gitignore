@@ -8,6 +8,7 @@ web/media
 vendor
 composer.phar
 *~
+.*.swp
 bin
 .web-server-pid
 node_modules

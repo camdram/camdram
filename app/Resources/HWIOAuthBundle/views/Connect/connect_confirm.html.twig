@@ -3,19 +3,15 @@
 {% block title %}Connect account{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="large-12 columns">
-    	<h3>Connect Account</h3>
-        <p>Are you sure that you want to link your {{ service | capitalize }} account {{ userInformation.email }} to your current account?</p>
-        <p>
-            {{ form_start(form, {'action': path('hwi_oauth_connect_service', {'service': service, 'key': key}), 'attr': {'class': 'fos_user_registration_register'}}) }}
-                {{ form_widget(form) }}
-                <div>
-                    <button type="submit" class="btn btn-primary">Connect account</button>
-                    <a href="{{ path('get_account') }}" class="button">Cancel</a>
-                </div>
-            {{ form_end(form) }}
-        </p>
-    </div>
-</div>
+<h3>Connect Account</h3>
+<p>Are you sure that you want to link your {{ service | capitalize }} account {{ userInformation.email }} to your current account?</p>
+<p>
+    {{ form_start(form, {'action': path('hwi_oauth_connect_service', {'service': service, 'key': key}), 'attr': {'class': 'fos_user_registration_register'}}) }}
+        {{ form_widget(form) }}
+        <div>
+            <button type="submit" class="btn btn-primary">Connect account</button>
+            <a href="{{ path('get_account') }}" class="button">Cancel</a>
+        </div>
+    {{ form_end(form) }}
+</p>
 {% endblock body %}

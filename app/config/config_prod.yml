@@ -27,3 +27,6 @@ monolog:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.mailer.log"
             channels: ["mailer"]
+
+sentry:
+    dsn: "%sentry_dsn%"

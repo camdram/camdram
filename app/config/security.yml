@@ -43,7 +43,7 @@ security:
                     service: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
 
             remember_me:
-                secret: "%secret%"
+                secret: "%env(APP_SECRET)%"
                 lifetime: 31536000 # 365 days in seconds
                 path:     /
                 domain:   ~

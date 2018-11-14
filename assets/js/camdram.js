@@ -27,11 +27,55 @@ import Bloodhound from 'typeahead.js'
         });
     }
 
+    var supportsDateInput = function() {
+        const input = document.createElement(`input`);
+        input.setAttribute(`type`, `date`);
+
+        const notADateValue = `not-a-date`;
+        input.setAttribute(`value`, notADateValue);
+
+        return !(input.value === notADateValue);
+      }
+
+    var showModalDialog = function(title, body) {
+        $(body).prepend($('<h5/>').text(title))
+               .prepend($('<a/>').attr('aria-label', 'Close dialog')
+                                 .attr('role', 'button')
+                                 .addClass('close-reveal-modal')
+                                 .html('&#215;').click(hideModalDialog))
+
+        $('<div/>').attr('role', 'dialog').attr('aria-modal', 'true')
+                   .addClass('reveal-modal')
+                   .append(body).appendTo('body');
+    }
+
+    var hideModalDialog = function() {
+        $(".reveal-modal").remove();
+    }
+
+    var createTabContainers = function(elementsToFix) {
+        $(".tabbed-content > .title", elementsToFix).click(function(e) {
+            e.preventDefault();
+            $(this.parentNode).children(".title.active").removeClass("active");
+            this.classList.add("active");
+        });
+    }
+
     // This function is called on the document later, but also
     // on extra elements as they are added to the page.
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
         $('a.delete-link').deleteLink();
+        createTabContainers();
+
+        if (!supportsDateInput()) {
+            // Inject custom datepicker on desktops
+            // (Use on native datepicker on mobile)
+            $('input[type=date]', elementsToFix).datepicker({
+                dateFormat: 'yy-mm-dd',
+                constrainInput: true
+            });
+        }
 
         $('.dropdown-link', elementsToFix).each(function() {
             var $link = $(this);
@@ -267,28 +311,14 @@ import Bloodhound from 'typeahead.js'
             $self.click(function(e) {
                 e.preventDefault();
 
-                var $dialog = $('<div/>').attr('title', 'Delete ' + type + '?')
-                    .attr('role', 'dialog')
-                    .addClass('reveal-modal tiny')
-                    .appendTo('body');
-                
-                $dialog.append($('<h5/>').text('Are you sure you want to delete the ' + type + ' "' + name + '"?'))
-                    .append($('<a/>').attr('aria-label', 'Close').addClass('close-reveal-modal').html('&#215;'))
-                    .append($('</p>')
+                showModalDialog('Are you sure you want to delete the ' + type + ' "' + name + '"?',
+                    $('<p/>')
                         .append($('<a/>').addClass('button').text('Yes').click(function() {
                             document.location = href;
-                            $(this).foundation('reveal', 'close');
                         }))
                         .append(' ')
-                        .append($('<a/>').addClass('button').text('No').click(function() {
-                            $(this).foundation('reveal', 'close');
-                        }))
+                        .append($('<a/>').addClass('button').text('No').click(hideModalDialog))
                     );
-                
-                $dialog.foundation('reveal', 'open')
-                .on('closed', function() {
-                    $dialog.remove();
-                });
             })
         });
     }
@@ -315,7 +345,6 @@ import Bloodhound from 'typeahead.js'
     }
 
     $(function() {
-        $(document).foundation();
         fixHtml($(document));
         doCookieConsent();
     });

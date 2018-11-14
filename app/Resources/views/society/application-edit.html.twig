@@ -8,25 +8,24 @@
 {% set current_subnav_id = 'edit_application' %}
 {{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: form.vars.value.society})) }}
 
-<div class="row">
-    <div class="large-12 columns">
-        <h3>Edit show applications advertisement</h3>
-
-        <div class="panel">
-            <p>Use the form below to modify or extend your show applications advertisement. The advert will be displayed
-            until the deadline date.</p>
-        </div>
-
-        {{ form_start(form, {'action': path("put_society_application", {identifier: form.vars.value.society.slug} )}) }}
-        {{ include('organisation/application-form.html.twig') }}
-        
-        <div class="text-right">
-            <a href="{{ path('remove_society_application', {identifier: form.vars.value.society.slug}) }}" class="button">Delete</a>
-            <input type="submit" value="Edit" class="button"/>
-        </div>
-
-        {{ form_end(form) }}
-    </div>
+<div class="split-header">
+    <h3>Edit show applications advertisement</h3>
+    <span><a href="{{ path('remove_society_application', {identifier: form.vars.value.society.slug}) }}"
+        class="button small">Delete</a></span>
 </div>
+
+<div class="panel">
+    <p>Use the form below to modify or extend your show applications advertisement. The advert will be displayed
+    until the deadline date.</p>
+</div>
+
+{{ form_start(form, {'action': path("put_society_application", {identifier: form.vars.value.society.slug} )}) }}
+{{ include('organisation/application-form.html.twig') }}
+
+<div class="text-right">
+    <input type="submit" value="Save" class="button"/>
+</div>
+
+{{ form_end(form) }}
 
 {% endblock %}

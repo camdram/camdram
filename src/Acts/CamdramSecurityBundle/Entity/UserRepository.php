@@ -158,17 +158,18 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     *
+     * Construct a querybuilder (alias u) populated with a search term.
      */
-    public function search($query, $limit)
+    public function search($query)
     {
         $qb = $this->createQueryBuilder('u');
-        $query = $qb
-            ->where($qb->expr()->orX($qb->expr()->like('u.name', ':query'), $qb->expr()->like('u.email', ':query')))
-            ->setParameter('query', '%' . $query . '%')
-            ->setMaxResults($limit)
-            ->getQuery();
-
-        return $query->getResult();
+        $condition = $qb->expr()->orX(
+                $qb->expr()->like('u.name', ':query'),
+                $qb->expr()->like('u.email', ':query'));
+        if (ctype_digit($query)) {
+            $condition = $qb->expr()->orX($condition, $qb->expr()->eq('u.id', (int)$query));
+        }
+        return $qb->where($condition)
+            ->setParameter('query', '%' . $query . '%');
     }
 }

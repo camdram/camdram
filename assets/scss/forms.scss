@@ -1,14 +1,18 @@
-label.required:after { content:"*"; }
+@import "./vars.scss";
+
+label {
+  display: block;
+  color: $form-text-color;
+  &.required::after {
+    content: "\00f069";
+    font: 0.7em FontAwesome;
+    vertical-align: super;
+    color: #777;
+  }
+}
 
 select {
   width:auto;
-  background:#fff;
-  padding:6px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px solid #cccccc;
 }
 
 .dropdown.custom {
@@ -24,16 +28,31 @@ select {
   padding:10px 0 0;
 }
 
+input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], select, textarea, button {
+  font-family: inherit;
+  font-size: 1em;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 6px;
+}
+input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], select, textarea {
+  width: 100%;
+  color: $form-text-color;
+}
+
 input[type=date], input[type=time] {
-  width:auto;
-  display:-webkit-inline-flex;
+  width: auto;
+  display: inline-flex;
 }
 input[type=date] {
   max-width:150px;
 }
 input[type=time] {
   max-width:120px;
-  margin-bottom:0;
+}
+input.error {
+  box-shadow: 0 0 1.5px 1px red;
 }
 
 textarea {
@@ -71,6 +90,99 @@ textarea {
   }
 }
 
+.form-small-widget {
+  display: inline-block;
+  margin: 0 0 1em;
+
+  > label, > input {
+    float: none !important;
+  }
+
+  > label {
+    display: inline-block;
+    min-width: 7rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  > input {
+    width: auto;
+    display: inline-flex;
+  }
+}
+
+.form-medium-widget {
+  width: 100%;
+  margin: 0 0 1em;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  > label {
+    min-width: 7rem;
+    padding: 0.4rem 0.7rem;
+  }
+  > label + * {
+    flex: 20em;
+  }
+}
+
+.form-large-row {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: $form-text-color;
+
+  @media all and (min-width: $width-small) {
+    display: flex;
+    flex-flow: row wrap;
+    > :first-child {
+      flex: 1;
+      text-align: right;
+      padding: 0.4rem 1rem;
+    }
+    > :nth-child(2) {
+      flex:  3.5;
+      margin: 0 1rem;
+    }
+  }
+  @media not all and (min-width: $width-small) {
+    > :first-child {
+      display: block;
+      width: 100%;
+      font-weight: 700;
+      padding: 0.4rem 0.7rem;
+    }
+    > :nth-child(2) {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.form-small-widget, .form-medium-widget, .form-large-row {
+  small.error {
+    width: 100%;
+    text-align: right;
+    margin: 0.5em 1em;
+
+    &::before {
+      content: "\00f05a\002002";
+      font: 1.5em FontAwesome;
+      color: #e11;
+    }
+  }
+}
+
+/* A class for a <label> containing a radio button or checkbox.
+   🗹  Uses flex to ensure that all content is right of the
+      box like this. */
+.form-checkbox-row {
+  margin: 0.4rem 0.7rem;
+  display: flex;
+  input[type="radio"], input[type="checkbox"] {
+    margin-right: 0.5em;
+  }
+}
+
 #recaptcha_widget_div {
   margin-bottom: 1em;
 }
@@ -79,5 +191,27 @@ textarea {
   label.right {
     float:none !important;
     text-align:left;
+  }
+}
+
+button, .button {
+  background: $primary-color;
+  cursor: pointer;
+  border: 1px solid darken($primary-color, 10%);
+  color: white;
+  font-weight: 700;
+  padding: 0.75em 1.5em 0.8em;
+  display: inline-block;
+  &.small {
+    padding: 0.6em 1.1em;
+    font-size: 0.81em;
+  }
+  &:hover:not(:disabled), &:focus:not(:disabled) {
+    background: darken($primary-color, 15%);
+  }
+  &:disabled {
+    opacity: .6;
+    filter: grayscale(.5);
+    cursor: default;
   }
 }

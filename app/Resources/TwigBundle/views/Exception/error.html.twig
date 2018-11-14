@@ -1,21 +1,45 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}An Error Occurred: {{ status_text }}{% endblock %}
-
-{% block body %}
-
-<div class="row">
-    <div class="twelve columns">
-        <h1>Sorry, something's gone wrong</h1>
-        <h2>The server returned the error "{{ status_code }} {{ status_text }}".</h2>
-
-        <p>
-            Something is broken. Please e-mail us at <a href="mailto:websupport@camdram.net">
-            websupport@camdram.net</a> and let us know
-            what you were doing when this error occurred. We will fix it as soon
-            as possible. Sorry for any inconvenience caused.
-        </p>
-    </div>
-</div>
+{% block logintoolbar %}
+{#- Disable login toolbar on error pages as it will never display the logged-
+    in user's toolbar. -#}
 {% endblock %}
 
+{% if status_code == 403 %}
+{% set title = "Permission denied (403)" %}
+{% set message = "You're forbidden from doing whatever dastardly thing it was you tried to do. If you think you should have access here, email <a href=\"mailto:support@camdram.net\">support@camdram.net</a> and we'll see what we can do." %}
+
+{% elseif status_code == 404 %}
+{% set title = "Page not found (404)" %}
+{% if "No route found " not in exception.message %}
+{% set subtitle = exception.message %}
+{% endif %}
+{% set message = "You've navigated to a page that doesn't exist. Try checking the URL or using the search box. If you think there should be something here, email <a href=\"mailto:support@camdram.net\">support@camdram.net</a> and we'll see what we can do." %}
+
+{% else %}
+{% set title = "Sorry, something's gone wrong." %}
+{% set subtitle = "The server returned the error " ~ status_code ~ " " ~ status_text %}
+{% set message = (status_code // 100 == 5 ?
+          "Something is broken. It's likely that we've already been notified, but if you need help now" :
+          "Something may be broken. This doesn't appear to be a server error so we haven't been notified, however if this seems wrong") ~
+      " email <a href=\"mailto:support@camdram.net\">support@camdram.net</a> and let us know what you were doing when this error occurred. We will fix it as soon as possible. Sorry for any inconvenience caused." %}
+{% endif %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<h1>{{title}}</h1>
+{% if subtitle is defined %}
+    {% set subtitle = (subtitle|trim|last in ".?!") ? subtitle : subtitle ~ "." %}
+    <h2>{{subtitle}}</h2>
+{% endif %}
+<p>{{message|raw}}</p>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+#content h1 {
+  font-family: Consolas, monospace;
+}
+</style>
+{% endblock %}

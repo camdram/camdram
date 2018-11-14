@@ -1,13 +1,8 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
-
-<div class="row">
-    <div class="large-6 column">
-        {{ form_widget(form.role, {'attr': {'placeholder': 'Role: e.g. Antonio, Director'}}) }}
-    </div>
-    <div class="large-6 column">
-        {{ form_widget(form.name, {'attr': {'placeholder': 'Name'}}) }}
-    </div>
+<div class="show-new-role-fields">
+{{ form_widget(form.role, {'attr': {'placeholder': 'Role: e.g. Antonio, Director'}}) }}
+{{ form_widget(form.name, {'attr': {'placeholder': 'Name'}}) }}
 </div>
-{{ form_row(form.send, { 'label' : 'Add role' }) }}
+{{ form_widget(form.send, { 'label' : 'Add role' }) }}
 {{ form_end(form) }}

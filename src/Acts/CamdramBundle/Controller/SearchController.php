@@ -27,7 +27,7 @@ class SearchController extends FOSRestController
     {
         $limit = $request->get('limit', 10);
         $page = $request->get('page', 1);
-        $searchText = $request->get('q');
+        $searchText = $request->get('q', '');
 
         $match = new MultiMatch;
         $match->setQuery($searchText);

@@ -3,23 +3,16 @@
 {% block title %}External login{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="twelve columns">
-    <h4>Login to Camdram</h4>
-    {% if site %}
-    	
-    	<p>
-    	The website <em>"{{ site.name }}"</em> requires you to login using your Camdram account.
-    	</p>
-    	
-    	<a href="{{ path('acts_camdram_externallogin_auth', {'redirect': redirect}) }}" class="button">Login</a>
-    	
-	{% else %}
-		<p class="error">
-		Invalid external login attempt. Please <a href="{{ path('acts_camdram_contact_us') }}">
-		contact us</a> if this issue persists.
-		</p>
-	{% endif %}
-    </div>
-</div>
+<h4>Login to Camdram</h4>
+{% if site %}
+    <p>
+    The website <em>"{{ site.name }}"</em> requires you to login using your Camdram account.
+    </p>
+    <a href="{{ path('acts_camdram_externallogin_auth', {'redirect': redirect}) }}" class="button">Login</a>
+{% else %}
+    <p class="error">
+    Invalid external login attempt. Please <a href="{{ path('acts_camdram_contact_us') }}">
+    contact us</a> if this issue persists.
+    </p>
+{% endif %}
 {% endblock %}

@@ -1,25 +1,4 @@
-$background-color: #fff9e3;
-$white: #fff;
-$orange: #fe5c1f;
-$dark-grey: #3a393a;
-$light-grey: #666;
-$destructive: #B71C1C;
-$destructive-light: #D32F2F;
-
-$primary-color: $orange;
-$secondary-color: #999;
-
-$topbar-height: 40px;
-$topbar-bg: $dark-grey;
-$topbar-margin-bottom: 0;
-$topbar-link-bg-hover: $light-grey;
-$topbar-link-font-size: 0.9em;
-$topbar-link-weight: normal;
-$topbar-breakpoint: 500px;
-
-$section-border-color: #e6e6e6;
-
-@import "foundation";
+@import "./vars.scss";
 
 @mixin brighten($factor) {
   filter: brightness($factor);
@@ -27,20 +6,6 @@ $section-border-color: #e6e6e6;
   -moz-filter: brightness($factor);
   -o-filter: brightness($factor);
   -ms-filter: brightness($factor);
-}
-
-.top-bar-section {
-  max-width:$row-width;
-  margin:auto;
-
-  ul {
-    padding-left:0;
-
-    li.active > a:hover {
-      background:inherit;
-      cursor:default;
-    }
-  }
 }
 
 html, body {
@@ -79,27 +44,59 @@ body {
   flex-flow: column;
 }
 
-header {
-  background:$orange;
-  clear:both;
+nav.navbar {
+  .fa {
+    display: inline;
+    padding: 0 4px;
+  }
+  &:first-of-type {
+    > div > ul > li > a {
+      font-size: 0.8em;
+      font-weight: 700;
+    }
+    @media (min-width: $width-small) {
+      .opt-dropdown a {
+        font-size: 0.8em;
+        font-weight: 700;
+      }
+    }
+    #login-link a {
+      display: inline-block;
+      &.icon-link {
+        padding: 0 5px 0 0;
+      }
+    }
+    #account-link > a {
+      /** User names might be very long. */
+      @media (max-width: 499px) {
+        max-width: 12em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  &:nth-of-type(2) {
+    > div > ul:first-child {
+      @media (max-width: 499px) {
+        .fa + span {display: none;}
+      }
+      @media (min-width: 500px) {
+        .fa {display: none;}
+      }
+    }
+  }
 }
 
 #wrapper > section {
-  max-width:$row-width;
+  max-width: $row-width;
   margin:auto;
-  padding: emCalc(10) emCalc(15) emCalc(20) emCalc(15);
-  min-height:100%;
+  padding: 1.5rem 1.25rem 1.25rem;
   background:$white;
   word-wrap:break-word;
-
-
 }
 
 #content {
-
-  p, li {
-    font-size: emCalc(14);
-  }
+  font-size: .875rem;
 
   ul {
     list-style-position: inside;
@@ -128,6 +125,10 @@ footer {
     padding:10px 0;
     font-size:0.9em;
   }
+  > div {
+    max-width: $row-width;
+    margin: 0 auto;
+  }
   > #sitemap {
     display: flex;
     flex-flow: row wrap;
@@ -141,38 +142,117 @@ footer {
   }
 }
 
-header .logo {
-  text-align: center;
-  @media #{$small} {
-    height:80px;
-    background:url('../images/header_separator.png') center right no-repeat;
+header#main-header {
+  background:$orange;
+  clear: both;
+  > div {
+    max-width: $row-width;
+    margin: 0 auto;
+    display: flex;
+    @media not screen and (min-width: 768px) {
+      &::before {
+        /* Why 72? It's the sum of all the x-direction padding across .search. */
+        content: "";
+        display: block;
+        flex: 0 1 72px;
+      }
+    }
   }
-  h1 {
-    font-size:1em;
-    margin:0;
-    margin:18px 0;
+
+  #logo-block {
+    text-align: center;
+    position: relative;
+    margin: 0;
+    height: 80px;
+    flex: 1 1 0;
+
+    @media only screen and (min-width: 768px) {
+      min-width: 220px;
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        border-style: solid;
+        border-color: white $orange;
+        border-width: 40px 0 40px 9px;
+      }
+    }
+
+    a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .search {
+    /* WARNING Android bug ahead. In experiments on a random old phone, animating width will
+     * lose focus, so the bar collapses again. Animating flex or right is fine. 🤷
+     * Obtain an Android device before editing the below!
+     * See https://stackoverflow.com/q/14854359, https://github.com/camdram/camdram/issues/499 */
+    height: 80px;
+    #searchfield {
+      font-size: 0.875rem;
+      height: 2.3125em;
+    }
+
+    @media only screen and (min-width: 768px) {
+      position: relative;
+      padding: 20px 30px 0 30px;
+      flex: 3;
+      background: #fff;
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        border-style: solid;
+        border-color: $orange white;
+        border-width: 40px 0 40px 9px;
+      }
+    }
+
+    @media not screen and (min-width: 768px) {
+      background: $orange;
+      flex: 10 0 100%;
+      padding: 20px 10px;
+      transition: flex 500ms ease;
+      /* .active is JS to make up for lack of :focus-within support */
+      /* Supporting Edge and :focus-within at the same time involves excessive
+         faff and it's not unreasonable to expect clients to have JS. */
+      &:not(.active) /*:not(:focus-within)*/ {
+        flex: 0 0 0;
+        #search_form {
+          border: none;
+          background: none;
+          box-shadow: none;
+        }
+        i {
+          color: white;
+        }
+        input {
+          cursor: pointer;
+          opacity: 0;
+        }
+        #results {
+          display: none;
+        }
+      }
+    }
   }
 }
 
-header .search {
-  background: #fff;
-  padding-top: 20px;
-  @media #{$small} {
-    height:80px;
-    padding-left:30px;
-    padding-right:30px;
-    background:url('../images/header_separator2.png') center right no-repeat #fff;
+h1, h2, h3, h4, h5 {
+  small {
+    display: inline-block;
+    line-height: normal;
+    color: #6f6f6f;
+    font-size: 60%;
   }
-}
-
-.diary-week {
-  font-size:0.9em;
-}
-
-.topbar-dropdown {
-  position:absolute;
-  top:9999px;
-  z-index:99;
 }
 
 #account-link img {
@@ -180,94 +260,6 @@ header .search {
   box-shadow: 0 0 3px #fff;
   margin-top:-7px;
   margin-bottom:-4px;
-}
-
-$default-float: right;
-
-ul.topbar-dropdown {
-  @include dropdown-container(list, true, 300px);
-  margin:0;
-  width:auto;
-  list-style:none;
-
-  a {
-    padding:0.2em 0.8em;
-    display:block;
-    &:hover {
-      background:#eee;
-    }
-  }
-
-}
-
-#login-dropdown {
-  width:300px;
-  background:$light-grey;
-  color:white;
-  font-size:0.8em;
-  padding-top:1em;
-
-  a, label {
-    color: white;
-    font-size:1em;
-  }
-
-  .button {
-    margin-bottom:0;
-  }
-}
-
-#header-bar {
-  background:#3a393a;
-
-  section {
-    max-width:$row-width;
-    margin:auto;
-
-    &:after {
-      content:" ";
-      clear:both;
-      height:0;
-      display:block;
-    }
-
-
-    > ul {
-      margin:0;
-      padding-left:0;
-
-      > li {
-        color: white;
-
-        > a {
-          color: white;
-          display:inline-block;
-          padding: 7px 15px;
-          font-size: 0.8em;
-          font-weight: bold;
-
-          &.icon-link {
-            padding: 0;
-            vertical-align: middle;
-          }
-        }
-
-        &#login-link {
-          padding-right:5px;
-
-          > a:first-child {
-            padding-right:5px;
-          }
-        }
-
-        &:hover {
-          background: $light-grey;
-        }
-        display:block;
-        float:left;
-      }
-    }
-  }
 }
 
 a.icon-link {
@@ -336,12 +328,12 @@ table {
   width:100%;
 }
 
-#nav-edit-link {
-  line-height:inherit;
-  padding-top:0.7em;
-  i {
-    font-size:1.5em;
-  }
+#nav-edit-link i {
+  font-size: 1.5em;
+  vertical-align: middle;
+}
+.panel {
+  @include panel(#f2f2f2);
 }
 $panel-font-color-alt: #f00;
 .error_panel {
@@ -356,16 +348,8 @@ $panel-font-color-alt: #000;
 .button-neutral
 {
 @include button(
-    // $padding - Used to build padding for buttons Default: $button-med or rem-calc(12)
-    $button-med,
     // Background color. We can set $bg:false for a transparent background. Default: $primary-color.
     rgba(200, 200, 200, 1),
-    // If true, set to button radius which is $global-radius or explicitly set radius amount in px (ex. $radius:10px). Default:false.
-    false,
-    // We can set $full-width:true to remove side padding extend width. Default:false
-    false,
-    // We can set $disabled:true to create a disabled transparent button. Default:false
-    false
   );
 }
 
@@ -400,4 +384,11 @@ $panel-font-color-alt: #000;
   h3 {
     color:#000000;
   }
+}
+
+/**
+ * Internet Exporer-specific hacks
+ */
+_:-ms-input-placeholder, :root #home-diary-nav ul, :root body {
+  display: block; /* replace flex */
 }

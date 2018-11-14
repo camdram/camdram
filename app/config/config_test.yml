@@ -1,15 +1,8 @@
 imports:
     - { resource: config.yml }
 
-
-doctrine:
-    dbal:
-        default_connection: default
-        connections:
-            default:
-                dbname: camdram
-                driver: pdo_sqlite
-                path: "%kernel.cache_dir%/test.db"
+parameters:
+    env(DATABASE_URL): "sqlite:///%kernel.cache_dir%/test.db"
 
 monolog:
     handlers: ~
@@ -20,6 +13,8 @@ framework:
         storage_id: session.storage.mock_file
     profiler:
         collect: false
+    assets:
+        json_manifest_path: ~
 
 swiftmailer:
     disable_delivery: true
@@ -33,4 +28,4 @@ ewz_recaptcha:
 fos_elastica:
     indexes:
         autocomplete:
-            index_name: "%search_namespace%_autocomplete_test"
+            index_name: "%env(SEARCH_NAMESPACE)%_autocomplete_test"

@@ -1,3 +1,31 @@
+.diary-nav {
+  /* This is a bit counter-intuitive: the items flow upward and leftward so
+     that the h3 gets its own line if the div and form fit together. */
+  display: flex;
+  flex-flow: row-reverse wrap-reverse;
+  align-items: baseline;
+  margin-bottom: 1em;
+
+  h3 {
+    order: 3;
+    margin-right: auto;
+  }
+  > :nth-child(2) {
+    order: 2;
+    min-width: 40%;
+    margin-bottom: 0.5em;
+  }
+  form {
+    order: 1;
+    margin-left: auto;
+    text-align: right;
+    min-width: 55%;
+  }
+  button, .button, input, select {
+    width: auto;
+  }
+}
+
 a.infinite_scroll {
   display:block;
   text-align:center;
@@ -55,7 +83,7 @@ ul.diary-header > li {
   float:left;
   text-align: center;
   font-weight:bold;
-  font-size:0.8em;
+  font-size:0.8rem;
 }
 ul.diary-header:after {
   visibility: hidden;
@@ -83,6 +111,10 @@ ul.diary-header:after {
   line-height:1.1em;
   position:relative;
   overflow:hidden;
+}
+
+.diary-item:target {
+  box-shadow: 0 0 4px 1px #fe5c1f;
 }
 
 .diary-item-hidden:after {

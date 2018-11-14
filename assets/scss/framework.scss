@@ -1,0 +1,388 @@
+/**
+ * framework.scss
+ * Generic styles used throughout Camdram, not limited to specific elements.
+ */
+@import './vars.scss';
+
+
+/**
+ * Generic element styles
+ */
+html, body {
+  font-family: $default-font-family;
+  font-weight: 400;
+  font-style: normal;
+}
+a {
+  text-decoration: none;
+  color: $primary-color;
+  cursor: pointer;
+}
+hr {
+  border: solid $hr-color;
+  border-width: 1px 0 0;
+  clear: both;
+  height: 0;
+  margin: 1.25em 0 1.1875em;
+}
+img {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  height: auto;
+}
+p {
+  line-height: 1.6;
+  margin-bottom: 1.25em;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/**
+ * Simple float classes
+ */
+.left  {float: left}
+.right {float: right}
+
+
+/**
+ * The clearfix class, called row since Foundation provided a class of that
+ * name with clearfix functionality.
+ */
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/**
+ * Header font sizes - responsive to viewport size
+ */
+$header_font_sizes: (h1: 2.75rem, h2: 2.31rem, h3: 1.69rem, h4: 1.44rem, h5: 1.125rem, h6: 1rem);
+@each $header, $size in $header_font_sizes {
+  $factor: 100vw * ($size - 1rem) / $row-width;
+  #{$header} {
+    font-size: $size;
+    @media (max-width: $row-width) {
+      font-size: calc(#{$factor} + 1rem);
+    }
+  }
+}
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+  margin-top: 0.2em;
+  margin-bottom: 0.5em;
+}
+
+
+/**
+ * A header with left and right components. Markup
+ *    <div class="split-header">
+ *      <h#>Blah</h#>
+ *      <ul>...</ul>
+ *    </div>
+ * Not obligatory to use a <h#> or an <ul>, although an <ul> will automatically
+ * render inline.
+ */
+.split-header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  > :nth-child(2) {
+    flex-grow: 1;
+    text-align: right;
+    padding: 0 !important;
+    margin: 0 0 0 1em;
+  }
+  ul {
+    list-style: none;
+    > li {
+      display: inline-block;
+      ~ li {
+        margin-left: 1em;
+      }
+    }
+  }
+}
+
+
+/**
+ * General navbar styling. A few more specific rules are in app.scss.
+ * Assumes <nav><div><ul/>...<ul/></div></nav> structure.
+ *
+ * .dropdown aligns to the right. .opt-dropdown aligns left.
+ * Dropdowns labels are of the form <a href="#!" tabindex="-1">; the first part
+ * prevents the page jumping on click, and the second allows keyboard users to
+ * skip the dropdown button and head straight into the menu.
+ */
+@mixin dropdown-arrow {
+  @media (min-width: $topbar-breakpoint) {
+    > a::after {
+      content: "";
+      display: inline-block;
+      border-style: solid;
+      border-width: 5px 5px 0 5px;
+      border-color: #aaa transparent;
+      vertical-align: middle;
+      margin-left: 5px;
+    }
+  }
+}
+@mixin dropdown-content($align) {
+  position: relative;
+  /* :focus-within allows keyboard users to tab through the menu but
+     has to be fully separate from :hover or Edge drops them both */
+  &:hover > ul {
+    height: auto;
+  }
+  &:focus-within > ul {
+    height: auto;
+  }
+  > ul {
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+    z-index: 100;
+    #{$align}: 0;
+    top: $topbar-height;
+    a {
+      line-height: $topbar-height - 5;
+    }
+  }
+}
+nav.navbar {
+  background: $topbar-bg;
+  > div {
+    max-width: 62.5em;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    ul {
+      background: $topbar-bg;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      white-space: nowrap;
+    }
+    li.active {
+      background: $topbar-link-bg-active;
+    }
+    li:hover, li:focus-within {
+      background: $topbar-link-bg-hover;
+      &.active {
+        background: $topbar-link-bg-hover-active;
+      }
+    }
+    a {
+      color: #fff;
+      font-size: $topbar-link-font-size;
+      padding: 0 13px;
+      line-height: $topbar-height;
+      display: block;
+      @media (max-width: $topbar-breakpoint) {
+        padding: 0 5px;
+      }
+    }
+    > ul {
+      display: flex;
+      > li.dropdown {
+        @include dropdown-arrow;
+        @include dropdown-content(right);
+      }
+      > li.opt-dropdown {
+        @media all and (min-width: $width-small) {
+          padding: 0;
+          >:first-child { display: none; }
+
+          > ul {
+            display: flex;
+          }
+        }
+        @media not all and (min-width: $width-small) {
+          @include dropdown-content(left);
+        }
+        @include dropdown-arrow;
+      }
+    }
+  }
+}
+
+/**
+ * Text align classes
+ */
+.text-left {
+  text-align: left !important;
+}
+.text-center {
+  text-align: center !important;
+}
+.text-right {
+  text-align: right !important;
+}
+
+/**
+ * The inline list.
+ */
+.inline-list {
+  margin: 0 0 1em 0;
+  list-style: none;
+  > li {
+    display: inline-block;
+    margin: 0 1.3em 0 0;
+    &:last-child { margin: 0 }
+  }
+}
+
+
+/**
+ * A list of large blocks.
+ */
+ul.large-block-list {
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+  > li {
+    padding: 0 1.25em 1.25em;
+    flex: 25em;
+  }
+  /* Generates two bogus lis to prevent the last box spreading out.
+     Works for up to three columns */
+  &::before, &::after {
+    content: "";
+    height: 0;
+    flex: 25em;
+    order: 999;
+  }
+}
+
+/**
+ * Navigation sidebar:
+ * <nav class="sidenav">
+ *   <a ...>
+ * </nav>
+ * <...>Content</...>
+ */
+@media all and (min-width: $width-small) {
+  nav.sidenav {
+    display: inline-block;
+    vertical-align: top;
+    width: 24%;
+
+    > a {
+      display: block;
+      margin: 1em;
+    }
+
+    + * {
+      display: inline-block;
+      width: 74%;
+    }
+  }
+}
+@media not all and (min-width: $width-small) {
+  nav.sidenav {
+    margin-bottom: 0.5rem;
+    > a {
+      display: inline-block;
+      margin: 0.5rem;
+    }
+  }
+}
+nav.sidenav > a.active {
+  color: #4d4d4d;
+  font-weight: 700;
+}
+
+/**
+ * A modal dialog; intended to be used by showModalDialog in camdram.js.
+ */
+.reveal-modal {
+  position: fixed;
+  z-index: 2000;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  > * {
+     max-width: 20rem;
+     width: 95%;
+     background: white;
+     margin: auto;
+     padding: 1em;
+     border-top: 4px solid $primary-color;
+  }
+  .close-reveal-modal {
+    float: right;
+    margin: 0 0 0.5em 1em;
+    font-size: 2em;
+    line-height: 0.5;
+    cursor: pointer;
+    &::after {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(100, 100, 100, 0.6);
+      top: 0;
+      left: 0;
+      z-index: -1;
+      cursor: default;
+    }
+  }
+}
+
+/**
+ * A tabbed content container. Assumes a DOM of the form
+ * <div class="tabbed-content">
+ *   <a class="title active">Initially open tab</a>
+ *   <div class="content">Initially shown content</div>
+ *
+ *   <a class="title">Initially closed tab</a>
+ *   <div class="content">Mysterious hidden content</div>
+ *   ...
+ * </div>
+ */
+.tabbed-content {
+  display: flex;
+  flex-flow: row wrap;
+}
+.tabbed-content .title {
+  order: -1;
+  flex: 1;
+  font-size: 0.8em;
+  padding: 1em;
+  border: 1px $hr-color;
+  border-style: none none solid none;
+  background: #ddd;
+  color: #111;
+}
+.tabbed-content .title.active {
+  border-style: solid solid none solid;
+  border-radius: 2px 2px 0 0;
+  background: #fff;
+}
+.tabbed-content .title:not(.active) + .content {
+  display: none;
+}
+.tabbed-content .content {
+  width: 100%;
+  max-width: 100%;
+  border: 1px $hr-color;
+  border-style: none solid solid solid;
+  padding: 1em;
+}
+
+/*
+ * Classes to hide or show content at different widths
+ */
+@media all and (min-width: $width-small) {
+  .show-for-small { display: none }
+}
+@media not all and (min-width: $width-small) {
+  .hide-for-small { display: none }
+}

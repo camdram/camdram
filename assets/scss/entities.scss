@@ -1,18 +1,17 @@
-$include-html-classes: false;
-@import "foundation";
+@import "./vars.scss";
 
 #entity-header {
-  @include panel();
+  @include panel(#f2f2f2);
 }
 
 /* Use the new feature panel to highlight new features on the site itself. */
 .new-feature-panel, .vacancies-panel {
-  @include panel(rgb(255,240,153), 1em 2em, false);
+  @include panel(rgb(255,240,153), 1.5em 2em 1em);
   border-radius:10px;
 }
 
 .admin-panel {
-  @include panel(rgb(255,240,200), 1em 2em, false);
+  @include panel(rgb(255,240,200), 1.5em 2em 1em);
 
   li a.active {
     color: black;
@@ -21,7 +20,7 @@ $include-html-classes: false;
 }
 
 .approve-panel {
-  @include panel(rgb(255,255,100), 1em, false);
+  @include panel(rgb(255,255,100), 1em);
 
   button {
     margin-top:-0.6em;
@@ -29,7 +28,7 @@ $include-html-classes: false;
 }
 
 .news-link {
-  @include panel(rgb(230,230,230), 1em, false);
+  @include panel(rgb(230,230,230), 1em);
   margin-bottom:10px;
   font-size:0.8em;
 
@@ -38,8 +37,70 @@ $include-html-classes: false;
   }
 }
 
+.entity-image-container {
+  max-width: 240px;
+  float: left;
+  clear: left;
+  margin-right: 1em;
+  @media (max-width: 500px) {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: auto;
+  }
+  .map-small ~ & {
+    margin-top: 1em;
+    max-width: 270px;
+    width: 270px; /* Specifying this explicity to make the image and map line up. */
+  }
+}
+
+@media (min-width: 900px) {
+  .entity-image-container ~ .entity-body-text {
+    margin-left: 260px;
+    margin-right: 0;
+  }
+  .map-small ~ .entity-body-text {
+    margin-left: 290px;
+    margin-right: 0;
+  }
+}
+
 .show-society {
   font-style:italic;
   margin-bottom:0.7em;
 }
 
+.show-roles-container {
+  display: flex;
+  flex-flow: row wrap;
+  > div {
+    flex: 14em;
+    margin: 1em;
+    form {
+      clear: both;
+      margin: 0;
+      > .show-new-role-fields {
+        display: flex;
+        flex-flow: row wrap;
+        > input[type="text"] {
+          width: 8em;
+          flex: 1 auto;
+          margin: 2px;
+        }
+      }
+      > button {
+        margin: 2px;
+      }
+    }
+  }
+}
+
+.organisation-social > .split-header + .news-item::before {
+  /* Adds a virtual <hr> to the top of the news container. */
+  display: block;
+  margin: 1.25em 0 1.1875em;
+  border: solid #ddd;
+  border-width: 1px 0 0;
+  content: "";
+  height: 0;
+}

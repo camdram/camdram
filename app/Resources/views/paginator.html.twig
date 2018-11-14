@@ -1,20 +1,27 @@
-{% if result.count != result.total_count %}
+{%- if result.count != result.total_count -%}
+{%- if url_suffix is not defined %}{% set url_suffix = '' %}{% endif -%}
 <div class="row">
     <div class="small-3 columns">
         <ul class="inline-list left">
-            {% if result.urls.start is defined %}<li><a href="{{ result.urls.start }}">First Page</a></li>{% endif %}
-            {% if result.urls.previous is defined %}<li><a href="{{ result.urls.previous }}">Previous Page</a></li>{% endif %}
+            {%- if result.urls.start is defined %}<li><a href="{{ result.urls.start ~ url_suffix }}"
+                ><span class="show-for-small">⇤</span><span class="hide-for-small">First Page</span></a></li>{% endif -%}
+            {%- if result.urls.previous is defined %}<li><a href="{{ result.urls.previous ~ url_suffix }}"
+                ><span class="show-for-small">←</span><span class="hide-for-small">Previous Page</span></a></li>{% endif -%}
         </ul>
     </div>
     <div class="small-6 columns text-center">
-        Results {{ (result.query.page-1) * result.query.limit + 1}} - {{ (result.query.page-1) * result.query.limit + result.count }}
-        / {{ result.total_count }}
+        <span><span class="hide-for-small">Results </span>
+        {{- (result.query.page-1) * result.query.limit + 1}}&ndash;
+        {{- (result.query.page-1) * result.query.limit + result.count }}
+        of {{ result.total_count }}</span>
     </div>
     <div class="small-3 columns">
         <ul class="inline-list right">
-            {% if result.urls.next is defined %}<li><a href="{{ result.urls.next }}">Next Page</a></li>{% endif %}
-            {% if result.urls.end is defined %}<li><a href="{{ result.urls.end }}">Last Page</a></li>{% endif %}
+            {%- if result.urls.next is defined %}<li><a href="{{ result.urls.next ~ url_suffix }}"
+                 ><span class="show-for-small">→</span><span class="hide-for-small">Next Page</span></a></li>{% endif -%}
+            {%- if result.urls.end is defined %}<li><a href="{{ result.urls.end ~ url_suffix }}"
+                 ><span class="show-for-small">⇥</span><span class="hide-for-small">Last Page</span></a></li>{% endif -%}
         </ul>
     </div>
 </div>
-{% endif %}
+{%- endif -%}

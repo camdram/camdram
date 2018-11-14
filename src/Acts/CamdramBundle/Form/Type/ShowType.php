@@ -59,7 +59,7 @@ class ShowType extends AbstractType
                 'text_field' => 'other_venue'
             ))
             ->add('online_booking_url', UrlType::class, array(
-                'required' => false, 'label' => 'URL for purchasing tickets'
+                'required' => false, 'label' => 'Ticket URL'
             ))
             ->add('facebook_id', FacebookLinkType::class, array('required' => false))
             ->add('twitter_id', TwitterLinkType::class, array('required' => false))

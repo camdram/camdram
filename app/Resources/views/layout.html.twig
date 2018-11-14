@@ -1,84 +1,86 @@
 {% extends 'base.html.twig' %}
 {% if current_navigation_id is not defined %}{% set current_navigation_id = '' %}{% endif %}
 {% block main %}
-  <nav id="header-bar">
-      <section>
-      <ul class="left hide-for-small">
-          {% include 'navigation/nav-items.html.twig'  with {items: {
-              'about': {'text': 'About', 'path': path('acts_camdram_about')},
-              'development': {'text': 'Development', 'path': path('acts_camdram_development')},
-              'api': {'text': 'API', 'path': path('acts_camdram_api_homepage')},
-              'faq': {'text': 'FAQ', 'path': path('acts_camdram_faq')},
-              'privacy': {'text': 'Privacy Policy', 'path': path('acts_camdram_privacy')},
-              'contact-us': {'text': 'Contact Us', 'path': path('acts_camdram_contact_us')},
-          }, current_id: current_navigation_id} %}
+  <nav class="navbar">
+    <div>
+      <ul>
+        <li class="opt-dropdown">
+          <a href="#!" tabindex="-1"><i class="fa fa-info-circle"></i></a>
+          <ul>
+            {% include 'navigation/nav-items.html.twig'  with {items: {
+                'about': {'text': 'About', 'path': path('acts_camdram_about')},
+                'development': {'text': 'Development', 'path': path('acts_camdram_development')},
+                'api': {'text': 'API', 'path': path('acts_camdram_api_homepage')},
+                'faq': {'text': 'FAQ', 'path': path('acts_camdram_faq')},
+                'privacy': {'text': 'Privacy Policy', 'path': path('acts_camdram_privacy')},
+                'contact-us': {'text': 'Contact Us', 'path': path('acts_camdram_contact_us')},
+            }, current_id: current_navigation_id} %}
+          </ul>
+        </li>
       </ul>
 
-      <ul class="right">
+      <ul>
+        {% block logintoolbar %}
         {{ render(controller('ActsCamdramSecurityBundle:Default:toolbar')) }}
+        {% endblock %}
       </ul>
-      </section>
+    </div>
   </nav>
 
-  <!-- End Navigation -->
-
-  <header>
-    <div class="row">
-      <div class="large-3 columns logo">
-        <h1><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo.png') }}, {{ asset('images/logo-1.5x.png') }} 1.5x, {{ asset('images/logo-2x.png') }} 2x, {{ asset('images/logo-4x.png') }} 4x" src="{{ asset('images/logo.png') }}" alt="camdram" title="camdram"/></a></h1>
-      </div>
-      <div class="large-9 columns search">
-          <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
-              <i class="fa fa-search"></i>
-              <input type="text" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
-              <div class="results">
-                  <ul></ul>
-                  <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
-                  <div class="error">Search is not availble at the moment</div>
-              </div>
-              <i class="fa fa-spinner fa-spin"></i>
-              <input type="submit" value="Search"/>
-          </form>
+  <header id="main-header">
+    <div>
+      <h1 id="logo-block"><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo.png') }}, {{ asset('images/logo-1.5x.png') }} 1.5x, {{ asset('images/logo-2x.png') }} 2x, {{ asset('images/logo-4x.png') }} 4x" src="{{ asset('images/logo.png') }}" alt="Camdram" title="Camdram"/></a></h1>
+      <div class="search">
+        <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
+          <i class="fa fa-search"></i>
+          <input type="text" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
+          <div class="results">
+            <ul></ul>
+            <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
+            <div class="error">Search is not availble at the moment</div>
+          </div>
+          <i class="fa fa-spinner fa-spin"></i>
+          <input type="submit" value="Search"/>
+        </form>
       </div>
     </div>
   </header>
 
-  <nav class="top-bar">
-      <ul class="title-area">
-          <li class="name"></li>
-          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-      </ul>
-      <section class="top-bar-section">
-      <ul class="left">
+  <nav class="navbar">
+    <div>
+      <ul>
           {% include 'navigation/nav-items.html.twig'  with {items: {
-          'home': {'text': 'Home', 'path': path('acts_camdram_homepage')},
-          'diary': {'text': 'Diary', 'path': path('acts_camdram_diary')},
+          'home': {'text': 'Home', 'path': path('acts_camdram_homepage'), icon: 'home'},
+          'diary': {'text': 'Diary', 'path': path('acts_camdram_diary'), icon: 'calendar'},
           'vacancies': {'text': 'Vacancies', 'path': path('get_auditions')},
           'societies': {'text': 'Societies', 'path': path('get_societies')},
-          'venues': {'text': 'Venues', 'path': path('get_venues')}
+          'venues': {'text': 'Venues', 'path': path('get_venues')},
           }, current_id: current_navigation_id} %}
-        </ul>
-          <ul class="right">
-            <li class="has-dropdown">
-              <a href="#" id="nav-edit-link"><i class="fa fa-edit"></i></a>
-              <ul class="dropdown">
-                  {% block option_links %}
-                  {% endblock %}
-                  {% include 'navigation/nav-items.html.twig' with {items: {
-                    'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
-                    'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
-                  }} %}
-                  {% if app.user and is_granted('ROLE_EDITOR') %}
-                  {% include 'navigation/nav-items.html.twig' with { items: {
-                    'add_venue': {text: 'Add a venue', path: path('new_venue'), icon: 'plus-circle'},
-                    'add_society': {text: 'Add a society', path: path('new_society'), icon: 'plus-circle'}
-                  }} %}
-                  {% endif %}
-              </ul>
-              </li>
+          {% include 'navigation/nav-items.html.twig'  with {items: {
+          'people': {'text': 'People', 'path': path('get_people')}
+          }, current_id: current_navigation_id, class: 'hide-for-small'} %}
+      </ul>
+      <ul>
+        <li class="dropdown">
+          <a href="#!" id="nav-edit-link" tabindex="-1"><i class="fa fa-edit"></i></a>
+          <ul>
+            {% block option_links %}
+            {% endblock %}
+            {% include 'navigation/nav-items.html.twig' with {items: {
+              'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
+              'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
+            }} %}
+            {% if app.user and is_granted('ROLE_EDITOR') %}
+            {% include 'navigation/nav-items.html.twig' with { items: {
+              'add_venue': {text: 'Add a venue', path: path('new_venue'), icon: 'plus-circle'},
+              'add_society': {text: 'Add a society', path: path('new_society'), icon: 'plus-circle'}
+            }} %}
+            {% endif %}
           </ul>
-      </section>
- </nav>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <section id="content">
 {% block body %}
 {% endblock %}
@@ -95,6 +97,7 @@
             <a href="{{ path('get_auditions') }}">Vacancies</a><br/>
             <a href="{{ path('get_societies') }}">Societies</a><br/>
             <a href="{{ path('get_venues') }}">Venues</a><br/>
+            <a href="{{ path('get_people') }}">People</a><br/>
         </div>
         <div>
             <h5>Vacant Positions</h5>
@@ -108,7 +111,7 @@
             <a href="{{ path('acts_camdram_development') }}">Development</a><br/>
             <a href="{{ path('acts_camdram_api_homepage') }}">API Documentation</a><br/>
             <a href="{{ path('acts_camdram_faq') }}">FAQ</a><br/>
-            <a href="{{ path('acts_camdram_privacy') }}">Privacy & Cookies</a><br/>
+            <a href="{{ path('acts_camdram_privacy') }}">Privacy &amp; Cookies</a><br/>
             <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a><br/>
         </div>
     </div>

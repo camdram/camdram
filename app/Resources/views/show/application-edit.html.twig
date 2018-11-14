@@ -8,39 +8,36 @@
 {% set current_subnav_id = 'edit_application' %}
 {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: form.vars.value.show})) }}
 
-<div class="row">
-    <div class="large-12 columns">
-        <h3>Edit Director/Producer advert</h3>
-
-        <div class="panel">
-            <ul class="inline-list right">
-                <li>
-                    <form action="{{ path('expire_show_application', {identifier: show.slug}) }}?_method=PATCH" method="post">
-                        <input class="button small" type="submit" value="Expire Advert"/>
-                    </form>
-                </li>
-                <li>
-                    <form action="{{ path('delete_show_application', {identifier: show.slug}) }}?_method=DELETE" method="post">
-                        <input class="button small" type="submit" value="Delete Advert"/>
-                    </form>
-                </li>
-            </ul>
-
-            <p>Use the form below to modify or extend your advert for core production team positions. The advert will be displayed
-            until the deadline date.</p>
-
-            <p>The CUADC Directors' and Producers' Reps aim to send out the Production mailing list with all the current directing and producing adverts on Camdram once a week during full term. For more information they can be contacted on <a href=mailto:director@cuadc.org> director@cuadc.org </a> and <a href=mailto:producer@cuadc.org> producer@cuadc.org </a> </p>
-        </div>
-
-        {{ form_start(form, {'action': path("put_show_application", {identifier: form.vars.value.show.slug} )}) }}
-        {{ include('show/application-form.html.twig') }}
-        
-        <div class="text-right">
-            <input type="submit" value="Edit" class="button"/>
-        </div>
-        
-        {{ form_end(form) }}
-    </div>
+<div class="split-header">
+    <h3>Edit Director/Producer advert</h3>
+    <ul>
+        <li>
+            <form action="{{ path('expire_show_application', {identifier: show.slug}) }}?_method=PATCH" method="post">
+                <input class="button small" type="submit" value="Expire Advert"/>
+            </form>
+        </li>
+        <li>
+            <form action="{{ path('delete_show_application', {identifier: show.slug}) }}?_method=DELETE" method="post">
+                <input class="button small" type="submit" value="Delete Advert"/>
+            </form>
+        </li>
+    </ul>
 </div>
+
+<div class="panel">
+    <p>Use the form below to modify or extend your advert for core production team positions. The advert will be displayed
+    until the deadline date.</p>
+
+    <p>The CUADC Directors' and Producers' Reps aim to send out the Production mailing list with all the current directing and producing adverts on Camdram once a week during full term. For more information they can be contacted on <a href=mailto:director@cuadc.org>director@cuadc.org</a> and <a href=mailto:producer@cuadc.org>producer@cuadc.org</a>.</p>
+</div>
+
+{{ form_start(form, {'action': path("put_show_application", {identifier: form.vars.value.show.slug} )}) }}
+{{ include('show/application-form.html.twig') }}
+
+<div class="text-right">
+    <input type="submit" value="Save" class="button"/>
+</div>
+
+{{ form_end(form) }}
 
 {% endblock %}

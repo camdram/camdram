@@ -3,17 +3,18 @@
 {% block title %}Auditions{% endblock %}
 {% set current_vacancies_id='auditions' %}
 
-{% block vacancies_body %}
+{% block vacancies_header %}
+    <h3>Auditions</h3>
 
-    <ul class="inline-list right">
-        <li>List view</li>
+    <ul role="navigation">
+        <li><i class="fa fa-list"></i> List view</li>
         <li><a href="{{ path('get_auditions_diary') }}"><i class="fa fa-calendar"></i> Diary View</a></li>
         <li><a href="auditions.rss"><i class="fa fa-rss"></i> RSS Feed</a></li>
         <li><a href="auditions.txt"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
     </ul>
+{% endblock %}
 
-    <h3>Auditions</h3>
-
+{% block vacancies_body %}
     {% spaceless %}
     {% set currentName = null %}
     {% for a in auditions %}
