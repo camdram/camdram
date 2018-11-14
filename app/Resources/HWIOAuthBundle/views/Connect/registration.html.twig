@@ -4,7 +4,7 @@
 
 {% block body %}
 <h4>Register with Camdram</h4>
-<p>Please enter your name and e-mail address to create a Camdram account.</p>
+<p>Please enter your name and e-mail address to create a Camdram account. By creating an account, you are agreeing to our <a href="{{ path('acts_camdram_privacy') }}">Privacy Policy</a>.</p>
 {{ form_start(form, {'action': path('hwi_oauth_connect_registration', {'key': key}), 'attr': {'class': 'hwi_oauth_registration_register'}}) }}
     {{ form_errors(form) }}
     {{ form_row(form.name, {value: userInformation.realName}) }}

@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
@@ -43,6 +44,10 @@ class RolesType extends AbstractType
                     'Production Team' => 'prod',
                     'Band/Orchestra' => 'band'
                     )
+                ))
+            ->add('gdpr', CheckboxType::class, array(
+                'label'    => 'I agree I have people's permission to add their names to Camdram.',
+                'required' => true,
                 ))
             ->add('Add roles', SubmitType::class)
         ;
