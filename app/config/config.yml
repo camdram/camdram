@@ -178,8 +178,3 @@ ewz_recaptcha:
     public_key: "%recaptcha_site_key%"
     private_key: "%recaptcha_secret_key%"
     locale_key: "%kernel.default_locale%"
-
-ivory_google_map:
-    map:
-        debug: "%kernel.debug%"
-        api_key: "%google_key%"

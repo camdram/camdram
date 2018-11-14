@@ -16,7 +16,7 @@
         {%- if venue.college %}<p>College: {{ venue.college }}</p>{% endif -%}
 
         {%- if venue.latitude %}
-            <div class="map-small left">{{ render(url('acts_camdram_venues_map', {identifier: venue.slug})) }}</div>
+            <div class="map-small left" id="venue-map"></div>
             <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
                 <meta itemprop="latitude" content="{{ venue.latitude }}"/>
                 <meta itemprop="longitude" content="{{ venue.longitude }}"/>
@@ -80,4 +80,16 @@
     <div class="row">
         {{ render(url('get_venue_events', {identifier: venue.slug})) }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(function() {
+    $('.map-small').venueMap('add-marker', {
+        'location': [{{ venue.latitude }}, {{ venue.longitude }}],
+        'content': "{{ venue.name }}",
+        'open': true,
+    })
+})
+</script>
 {% endblock %}

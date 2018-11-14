@@ -6,12 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
-use Ivory\GoogleMap\Event\MouseEvent;
-use Ivory\GoogleMap\Overlay\Marker;
-use Ivory\GoogleMap\Overlay\Icon;
-use Ivory\GoogleMap\Overlay\InfoWindow;
-use Ivory\GoogleMap\Map;
-use Ivory\GoogleMap\Base\Coordinate;
 
 /**
  * Class VenueController
@@ -114,95 +108,6 @@ class VenueController extends OrganisationController
             ->setTemplateVar('vacancies')
             ->setTemplate('venue/vacancies.html.twig')
         ;
-    }
-
-    /**
-     * Render a Google Map in an iframe. If $identifier is specified then a small map will be output with a single
-     * marker. Otherwise a large map will be output with a marker for each venue.
-     *
-     * @param null|string $identifier
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function mapAction($identifier = null)
-    {
-        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
-        if ($identifier) {
-            $venues = array($repo->findOneBySlug($identifier));
-        } else {
-            $venues = $repo->findAllOrderedByName();
-        }
-        $map = new Map;
-
-        $map->setHtmlId('map_canvas');
-        $map->setStylesheetOptions(array('width' => '100%', 'height' => '100%'));
-
-        $one_venue = count($venues) == 1;
-
-        if ($one_venue) {
-            $map->setMapOption('zoom', 16);
-            $map->setCenter(new Coordinate($venues[0]->getLatitude(), $venues[0]->getLongitude()));
-        } else {
-            $map->setMapOption('zoom', 14);
-            $map->setCenter(new Coordinate(52.20531, 0.12179));
-        }
-
-        $letter = ord('A');
-        $info_boxes = array();
-
-        foreach ($venues as $venue) {
-            if ($venue->getLatitude() && $venue->getLongitude()) {
-                $content = $this->render('venue/infobox.html.twig', array(
-                    'venue' => $venue,
-                    'one_venue' => $one_venue,
-                ))->getContent();
-
-                $infoWindow = new InfoWindow($content);
-                $infoWindow->setPosition(new Coordinate($venue->getLatitude(), $venue->getLongitude()));
-                $infoWindow->setAutoOpen(true);
-                $infoWindow->setOpenEvent(MouseEvent::CLICK);
-                $infoWindow->setAutoClose(true);
-                $infoWindow->setOption('zIndex', 10);
-                $map->getOverlayManager()->addInfoWindow($infoWindow);
-
-                $marker = new Marker(new Coordinate($venue->getLatitude(), $venue->getLongitude()));
-                if ($one_venue) {
-                    $marker->setIcon(new Icon($this->getMarkerUrl('')));
-                } else {
-                    $marker->setIcon(new Icon($this->getMarkerUrl(chr($letter))));
-                }
-                $marker->setInfoWindow($infoWindow);
-                $marker->setOption('clickable', true);
-                $map->getOverlayManager()->addMarker($marker);
-
-                $info_boxes[] = array(
-                    'image' => $this->getMarkerUrl(chr($letter)),
-                    'box_id' => $infoWindow->getVariable(),
-                    'marker_id' => $marker->getVariable(),
-                    'map_id' => $map->getVariable(),
-                    'slug' => $venue->getSlug(),
-                );
-
-                $letter++;
-                if ($letter == ord('Z') + 1) {
-                    $letter = ord('A');
-                }
-            }
-        }
-
-        return $this->render('venue/map.html.twig', array('map' => $map, 'info_boxes' => $info_boxes));
-    }
-
-    /**
-     * Utility function used by mapAction to generate the URL of a marker image.
-     *
-     * @param $letter letter of the alphabet used in the marker
-     *
-     * @return string
-     */
-    private function getMarkerUrl($letter)
-    {
-        return 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='.$letter.'|4499DD|000000';
     }
 
     /**

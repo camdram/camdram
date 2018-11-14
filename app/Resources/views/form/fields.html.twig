@@ -1,17 +1,3 @@
-{% block map_location_widget %}
-    {% spaceless %}
-        <div id="{{ id }}_container" class="form_map_container">
-            {{ form_widget(form) }}
-            <small>Click to create a marker, drag/drop to move it</small>
-            <div class="form_map">
-                {{ ivory_google_map(location_map) }}
-                {{ ivory_google_api([location_map]) }}
-                <script>$(function(){ $('#{{ id }}_container').formMap("{{ location_map.getVariable() }}")});</script>
-            </div>
-        </div>
-    {% endspaceless %}
-{% endblock %}
-
 {% block entity_search_widget %}
     {% spaceless %}
         {% set text = attribute(form.children, text_id) %}

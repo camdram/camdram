@@ -23,7 +23,6 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Acts\DiaryBundle\ActsDiaryBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-            new Ivory\GoogleMapBundle\IvoryGoogleMapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new \EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),

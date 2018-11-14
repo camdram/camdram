@@ -23,7 +23,6 @@
 		"doctrine/doctrine-fixtures-bundle": "~3.0",
 		"doctrine/doctrine-migrations-bundle": "1.3.*",
 		"doctrine/orm": "^2.5",
-		"egeloen/google-map-bundle": "^3.0",
 		"excelwebzone/recaptcha-bundle": "^1.5",
 		"facebook/graph-sdk": "^5.6",
 		"friendsofsymfony/elastica-bundle": "^5.0",

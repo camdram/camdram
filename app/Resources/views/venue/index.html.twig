@@ -6,16 +6,14 @@
 {% block body %}
 
 <h3>Venues</h3>
-<div class="map-large">
-    {{ render(url('acts_camdram_venues_map')) }}
-</div>
+<div class="map-large" id="map-main"></div>
 
 <ul class="large-block-list" id="venues_list">
 {% for venue in venues %}
-   <li id="venue-{{ venue.slug }}">
+   <li id="venue-{{ venue.slug }}" class="venue" data-latitude="{{ venue.latitude }}" data-longitude="{{ venue.longitude }}">
        <div class="row">
-           <h5><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></h5>
-           <div class="marker_column"></div>
+           <h5 class="venue-name"><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></h5>
+           <div class="marker"><img src="{{ asset("build/images/marker-icon.png") }}" /></div>
 
            {%- if venue.college -%}
               <h6>{{ venue.college }} {{ venue.college == "Anglia Ruskin" ? "University" : "College" }}, Cambridge</h6>
@@ -36,6 +34,21 @@
 
 {% block javascripts %}
 <script>
-    $(function() { $('#venues_list').addMarkers(venue_info_boxes); });
+    $(function() {
+        var map = $('#map-main')
+        map.venueMap()
+        var markerUrl = map.venueMap('marker-url')
+
+        $('.venue').each(function() {
+            var $self = $(this)
+            var marker = map.venueMap('add-marker', {
+                'location': [$self.attr('data-latitude'), $self.attr('data-longitude')],
+                'content': $self.find('.venue-name').html(),
+            })
+            $self.find('.marker').click(function() {
+                map.venueMap('select-marker', {marker: marker})
+            })
+        })
+    })
 </script>
 {% endblock %}
