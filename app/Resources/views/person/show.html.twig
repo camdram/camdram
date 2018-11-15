@@ -21,7 +21,19 @@
 {% endif %}
 
 <div id="entity-header">
-    <h2>{{ person.name }}</h2>
+    <h2>
+      {{ person.name }}
+      {% if person.users | length != 0 %}
+          {% for role in person.users.0.roles %}
+              {% if role == 'ROLE_ADMIN' %}
+                  <div style="float: right;" class="tooltip">
+                      <span style="font-size: 14px; font-style: normal; font-weight: normal;" class="tooltiptext tooltiptext-left">This user is a Camdram administrator.</span>
+                      <i style="color: #fe5c1f;" class="fa fa-cogs"></i>
+                  </div>
+              {% endif %}
+          {% endfor %}
+      {% endif %}
+    </h2>
     {% if person.description %}
     <p>{{ person.description }}</p>
     {% endif %}
