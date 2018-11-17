@@ -20,11 +20,12 @@ class ContactEntityService
     public function emailEntity($entity, $from_name, $from_email, $subject, $message)
     {
         $recipients = $this->findRecipients($entity);
+        $msg = 'You are receiving this email because you manage '.$entity->getName().' on Camdram.\n\n'.$message;
 
         $message = (new \Swift_Message('[Camdram] ' . $subject))
             ->setFrom($from_email, $from_name)
             ->setTo($recipients)
-            ->setBody($message)
+            ->setBody($msg)
             ;
 
         $this->mailer->send($message);
