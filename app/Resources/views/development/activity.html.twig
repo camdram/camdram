@@ -1,3 +1,10 @@
+<h3>The following people have made contributions to Camdram:</h3>
+<ul>
+    {% for contrib in contributors %}
+    <li>{{ contrib.name }}</li>
+    {% endfor %}
+</ul>
+
 <h3>Issues currently being worked on:</h3>
 <ul>
     {% for issue in inprogress %}
