@@ -43,24 +43,29 @@ class DevelopmentController extends Controller
             );
             $owner = 'camdram';
             $repoName = 'camdram';
-    
+
             $repo = $github->api('repo')->show($owner, $repoName);
-            $contributors = $client->api('repo')->contributors($owner, $repoName);
+            $contributors = $github->api('repo')->contributors($owner, $repoName);
             $inprogress = $github->api('issues')->all($owner, $repoName, ['labels' => 'in-progress']);
             $recent = $github->api('issues')->all($owner, $repoName, ['state' => 'open', 'sort' => 'created']);
             $fixed = $github->api('issues')->all($owner, $repoName, ['state' => 'closed', 'sort' => 'updated']);
-            
+
+            $users = array();
+            foreach ($contributors as $contributor) {
+                $users[] = $github->api('user')->show($contributor['login']);
+            }
+
             $data = array(
                 'repo' => $repo,
-                'contributors' => array_slice($contributors, 0, 10),
+                'users' => array_slice($users, 0, 10),
                 'inprogress' => array_slice($inprogress, 0, 10),
                 'recent' => array_slice($recent, 0, 10),
                 'fixed' => array_slice($fixed, 0, 10),
             );
-    
+
             $response = $this->render('development/activity.html.twig', $data);
             $response->setSharedMaxAge(60 * 15);
-    
+
             return $response;
         } catch (\Github\Exception\RuntimeException $ex) {
             return $this->render('development/github-error.html.twig');
