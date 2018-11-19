@@ -25,7 +25,7 @@
       {{ person.name }}
       {% if person.users | length != 0 %}
           {% for role in person.users.0.roles %}
-              {% if role == 'ROLE_ADMIN' %}
+              {% if role == 'ROLE_SUPER_ADMIN' %}
                   <div style="float: right;" class="tooltip">
                       <span style="font-size: 14px; font-style: normal; font-weight: normal;" class="tooltiptext tooltiptext-left">This user is a Camdram administrator.</span>
                       <i style="color: #fe5c1f;" class="fa fa-cogs"></i>
