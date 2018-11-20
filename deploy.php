@@ -22,6 +22,7 @@ add('shared_dirs', ['app/data']);
 // Writable dirs by web server 
 add('writable_dirs', ['app/data', 'web/media']);
 set('allow_anonymous_stats', false);
+set('http_group', 'www-data');
 
 // Hosts
 
