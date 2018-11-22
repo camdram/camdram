@@ -94,6 +94,8 @@ It is good practice to include the relevant issue number (prefixed with a hash #
 
 Once your changes are pushed to your Camdram fork on GitHub, you can [submit a pull request](https://help.github.com/articles/creating-a-pull-request/) to have it included in Camdram.
 
+**Please note:** we automatically display the names of some contributors on our [development page](https://www.camdram.net/development/) as a way of saying thanks! By submitting your changes you are acknowledging that you are happy for this to happen.
+
 ## 7) Pull in other people's changes
 
 At a later date, once your local repository has become out of sync with Github (because other people have make changes), you can run the following commands to pull in other people's changes and update your checkout:
