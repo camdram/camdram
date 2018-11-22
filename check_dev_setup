@@ -10,4 +10,5 @@ php app/console fos:elastica:populate
 export DATABASE_URL="mysql://travis@localhost/camdram_test"
 mysql -e 'CREATE DATABASE camdram_test;'
 php app/console doctrine:migrations:migrate --no-interaction
+php app/console doctrine:schema:validate
 php app/console doctrine:fixtures:load --no-interaction
