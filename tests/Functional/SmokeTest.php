@@ -14,6 +14,7 @@ class SmokeTest extends WebTestCase
         "/contact-us",
         "/societies",
         "/venues",
+        "/people",
         "/auth/login",
     ];
     
