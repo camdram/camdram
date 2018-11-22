@@ -114,7 +114,7 @@ class AdminController extends FOSRestController
             }
         }
 
-        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**

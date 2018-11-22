@@ -81,12 +81,6 @@ class CamdramUserProvider implements
         }
         $this->em->flush();
 
-        $tokens = $this->em->getRepository('ActsCamdramBundle:Access')->findBy(array('revoke_id' => $user2->getId()));
-        foreach ($tokens as $token) {
-            $token->setRevokeId($user1->getId());
-        }
-        $this->em->flush();
-
         //Merge emails
         $emails = $this->em->getRepository('ActsCamdramBundle:Email')->findBy(array('user_id' => $user2->getId()));
         foreach ($emails as $email) {

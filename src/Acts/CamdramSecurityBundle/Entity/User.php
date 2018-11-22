@@ -507,8 +507,7 @@ class User implements UserInterface, \Serializable
     public function getSecurityAces()
     {
         $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('type', 'security'))
-            ->andWhere(Criteria::expr()->isNull('revokedBy'));
+        $criteria->where(Criteria::expr()->eq('type', 'security'));
 
         return $this->getAces()->matching($criteria);
     }

@@ -28,7 +28,7 @@ class AccessControlEntry
     /**
      * @var int
      *
-     * @ORM\Column(name="rid", type="integer")
+     * @ORM\Column(name="entity_id", type="integer")
      */
     private $entityId;
 
@@ -43,59 +43,29 @@ class AccessControlEntry
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="aces")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="uid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
-     * })
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
     private $user;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="uid", type="integer", nullable=true)
-     */
-    private $userId;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="ace_grants")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="issuerid", referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(name="granted_by_id", referencedColumnName="id")
      */
     private $grantedBy;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creationdate", type="date", nullable=false)
+     * @ORM\Column(name="created_at", type="date", nullable=false)
      */
     private $createdAt;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="revokeid", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     * })
-     */
-    private $revokedBy;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="revokedate", type="date", nullable=true)
-     */
-    private $revokedAt;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="contact", type="boolean")
-     */
-    private $contact = 0;
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime;
+    }
 
     /**
      * Get id
@@ -156,30 +126,6 @@ class AccessControlEntry
     }
 
     /**
-     * Set revoked_at
-     *
-     * @param \DateTime $revokedAt
-     *
-     * @return AccessControlEntry
-     */
-    public function setRevokedAt($revokedAt)
-    {
-        $this->revokedAt = $revokedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get revoked_at
-     *
-     * @return \DateTime
-     */
-    public function getRevokedAt()
-    {
-        return $this->revokedAt;
-    }
-
-    /**
      * Set user
      *
      * @param User $user
@@ -225,54 +171,6 @@ class AccessControlEntry
     public function getGrantedBy()
     {
         return $this->grantedBy;
-    }
-
-    /**
-     * Set revoker
-     *
-     * @param User $revoker
-     *
-     * @return AccessControlEntry
-     */
-    public function setRevokedBy(User $revoker = null)
-    {
-        $this->revokedBy = $revoker;
-
-        return $this;
-    }
-
-    /**
-     * Get revoker
-     *
-     * @return User
-     */
-    public function getRevokedBy()
-    {
-        return $this->revokedBy;
-    }
-
-    /**
-     * Set user_id
-     *
-     * @param int $userId
-     *
-     * @return AccessControlEntry
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get user_id
-     *
-     * @return int
-     */
-    public function getUserId()
-    {
-        return $this->userId;
     }
 
     /**
@@ -323,27 +221,4 @@ class AccessControlEntry
         return $this->entityId;
     }
 
-    /**
-     * Set contact
-     *
-     * @param bool $contact
-     *
-     * @return AccessControlEntry
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-
-        return $this;
-    }
-
-    /**
-     * Get contact
-     *
-     * @return bool
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
 }

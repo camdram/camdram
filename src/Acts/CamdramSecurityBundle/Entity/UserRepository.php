@@ -27,7 +27,6 @@ class UserRepository extends EntityRepository
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
             ->andWhere('e.entityId >= :level')
-            ->andWhere('e.revokedBy IS NULL')
             ->setParameter('level', $min_level)
             ->setParameter('type', 'security')
             ->getQuery();
@@ -40,7 +39,6 @@ class UserRepository extends EntityRepository
         $qb = $this->createQueryBuilder('u');
         $query = $qb->innerJoin('u.aces', 'e')
             ->where('e.type IN (:types)')
-            ->andWhere('e.revokedBy IS NULL')
             ->setParameter('types', ['society', 'venue', 'security'])
             ->getQuery();
         
@@ -117,7 +115,6 @@ class UserRepository extends EntityRepository
             ->innerJoin('u.aces', 'e')
             ->where('e.type = :type')
             ->andWhere('e.entityId = :id')
-            ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $entity->getId())
             ->setParameter('type', $entity->getAceType())
             ->getQuery();
@@ -131,7 +128,6 @@ class UserRepository extends EntityRepository
         ->innerJoin('u.aces', 'e')
         ->where('e.type = :type')
         ->andWhere('e.entityId = :id')
-        ->andWhere('e.revokedBy IS NULL')
         ->andWhere('u.is_email_verified = true')
         ->setParameter('id', $entity->getId())
         ->setParameter('type', $entity->getAceType())
@@ -150,7 +146,6 @@ class UserRepository extends EntityRepository
             ->where("e.type = 'request-show'")
             ->andWhere('e.entityId = :id')
             ->andWhere('e.grantedBy IS NULL')
-            ->andWhere('e.revokedBy IS NULL')
             ->setParameter('id', $show->getId())
             ->getQuery();
 

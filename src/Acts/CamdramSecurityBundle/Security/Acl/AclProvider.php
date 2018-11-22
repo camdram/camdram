@@ -130,16 +130,14 @@ class AclProvider
     public function revokeAccess(OwnableInterface $entity, User $user, User $revoker)
     {
         $ace_repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
-        $ace = $ace_repo->findAce($user, $entity);
-        /* Don't re-revoke an ACE. */
-        if (($ace != null) && ($ace->getRevokedBy() == null)) {
-            $ace->setRevokedBy($revoker)
-                ->setRevokedAt(new \DateTime());
-            $this->entityManager->persist($ace);
+
+        if ($ace = $ace_repo->findAce($user, $entity)) {
+            $this->entityManager->remove($ace);
             $this->entityManager->flush();
         }
+
         if ($entity->getAceType() == 'show') {
-            /* Remove any requests to be a show admin, if they existed. */
+            /* Also remove any requests to be a show admin, if they existed. */
             $request = $ace_repo->findAceRequest($user, $entity);
             if ($request != null) {
                 $this->entityManager->remove($request);
@@ -219,13 +217,6 @@ class AclProvider
                     ->setType('show');
                 $persist = true;
             }
-        } elseif ($existing_ace->getRevokedBy() != null) {
-            /* Assume that we're undoing the previous revokation. */
-            $existing_ace->setRevokedBy(null)
-                ->setRevokedAt(null)
-                ->setGrantedBy($granter)
-                ->setGrantedAt(new \DateTime());
-            $persist = true;
         }
 
         if ($persist == true) {

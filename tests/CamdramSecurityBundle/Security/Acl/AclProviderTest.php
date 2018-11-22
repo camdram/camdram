@@ -8,77 +8,76 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
+use Camdram\Tests\RepositoryTestCase;
 
-class AclProviderTest extends TestCase
+class AclProviderTest extends RepositoryTestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $em;
-
-    /**
-     * @var MockObject
-     */
-    private $repository;
 
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
      */
     private $aclProvider;
 
+    /**
+     * @var User
+     */
+    private $admin;
+
+    /**
+     * @var User
+     */
+    private $user;
+
     public function setUp()
     {
-        $this->repository = $this->getMockBuilder('\Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository')
-            ->disableOriginalConstructor()->getMock();
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')->disableOriginalConstructor()->getMock();
-        $this->em->expects($this->any())->method('getRepository')->with('ActsCamdramSecurityBundle:AccessControlEntry')
-                ->will($this->returnValue($this->repository));
+        parent::setUp();
         $this->aclProvider = new AclProvider($this->em, new EventDispatcher());
+
+        $this->admin = new User();
+        $this->admin->setName('Admin User')
+            ->setEmail('admin@camdram.net');
+
+        $this->user = new User();
+        $this->user->setName('Test User')
+            ->setEmail('testuser@camdram.net');
+    
+        $this->em->persist($this->admin);
+        $this->em->persist($this->user);
+        $this->em->flush();
     }
 
-    public function testIsOwner_UserIsOwner()
+    private function createShow()
     {
-        $user = new User();
-        $user->setEmail('testuser@camdram.net');
         $show = new Show();
-        $show->setName('Test Show');
+        $show->setName('Test Show')
+            ->setCategory('drama')
+            ->setAuthorisedBy($this->admin);
+        $this->em->persist($show);
+        $this->em->flush();
 
-        $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(true));
-
-        $this->assertTrue($this->aclProvider->isOwner($user, $show));
+        return $show;
     }
 
-    public function testIsOwner_UserNotOwner()
+    public function testGrantAccess()
     {
-        $user = new User();
-        $user->setEmail('testuser@camdram.net');
-        $show = new Show();
-        $show->setName('Test Show');
+        $show = $this->createShow();
 
-        $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(false));
+        //Grant access
+        $this->aclProvider->grantAccess($show, $this->user, $this->admin);
+        $this->assertTrue($this->aclProvider->isOwner($this->user, $show));
 
-        $this->assertFalse($this->aclProvider->isOwner($user, $show));
+        //Revoke access
+        $this->aclProvider->revokeAccess($show, $this->user, $this->admin);
+        $this->assertFalse($this->aclProvider->isOwner($this->user, $show));
+
+        //Grant access again
+        $this->aclProvider->grantAccess($show, $this->user, $this->admin);
+        $this->assertTrue($this->aclProvider->isOwner($this->user, $show));
     }
 
-    public function testIsOwner_ExternalUserIsOwner()
+    public function testNullUser()
     {
-        $user = new User();
-        $user->setEmail('testuser@camdram.net');
-        $external_user = new ExternalUser();
-        $external_user->setUser($user)->setUsername('testuser');
-        $show = new Show();
-        $show->setName('Test Show');
-
-        $this->repository->expects($this->once())->method('aceExists')->with($user, $show)->will($this->returnValue(false));
-
-        $this->assertFalse($this->aclProvider->isOwner($user, $show));
-    }
-
-    public function testIsOwner_NotLoggedIn()
-    {
-        $show = new Show();
+        $show = $this->createShow();
         $this->assertFalse($this->aclProvider->isOwner(null, $show));
     }
 
@@ -87,10 +86,7 @@ class AclProviderTest extends TestCase
      */
     public function testGetEntityIdsByUser_InvalidClass()
     {
-        $user = new User();
-        $user->setEmail('testuser@camdram.net');
-
-        $this->aclProvider->getEntityIdsByUser($user, '\AnInvalidClassName');
+        $this->aclProvider->getEntityIdsByUser($this->user, '\AnInvalidClassName');
     }
 
     /**
@@ -98,29 +94,23 @@ class AclProviderTest extends TestCase
      */
     public function testGetEntityIdsByUser_NonOwnableClass()
     {
-        $user = new User();
-        $user->setEmail('testuser@camdram.net');
-        
-        $this->aclProvider->getEntityIdsByUser($user, '\\Acts\\CamdramBundle\\Entity\\News');
+        $this->aclProvider->getEntityIdsByUser($this->user, '\\Acts\\CamdramBundle\\Entity\\News');
     }
 
-    public function testGetEntityIdsByUser_ValidClass()
+    public function testGetEntityIdsByUser()
     {
-        $user = new User();
-        $user->setEmail('testuser@camdram.net');
+        $show1 = $this->createShow();
+        $show2 = $this->createShow();
 
-        $ace1 = new AccessControlEntry();
-        $ace1->setType('show');
-        $ace1->setEntityId(32);
-        $ace2 = new AccessControlEntry();
-        $ace2->setType('show');
-        $ace2->setEntityId(44);
-        $aces = array($ace1, $ace2);
+        $this->aclProvider->grantAccess($show1, $this->user, $this->admin);
+        $this->aclProvider->grantAccess($show2, $this->user, $this->admin);
 
-        $this->repository->expects($this->once())->method('findByUserAndType')->with($user, 'show')->will($this->returnValue($aces));
+        $ids = $this->aclProvider->getEntityIdsByUser($this->user, '\\Acts\\CamdramBundle\\Entity\\Show');
+        $this->assertEquals([$show1->getId(), $show2->getId()], $ids);
 
-        $retAces = $this->aclProvider->getEntityIdsByUser($user, '\\Acts\\CamdramBundle\\Entity\\Show');
-        $this->assertEquals(32, $retAces[0]);
-        $this->assertEquals(44, $retAces[1]);
+        $shows = $this->aclProvider->getEntitiesByUser($this->user, '\\Acts\\CamdramBundle\\Entity\\Show');
+        $this->assertEquals([$show1, $show2], $shows);
+
+        $this->assertEquals([$this->user], $this->aclProvider->getOwners($show1));
     }
 }

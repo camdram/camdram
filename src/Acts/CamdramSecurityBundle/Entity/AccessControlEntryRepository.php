@@ -12,13 +12,12 @@ class AccessControlEntryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->select('COUNT(e.id) AS c')
-                ->where('e.userId = :uid')
+                ->where('e.user = :user')
                 ->andWhere('e.entityId = :entityId')
-                ->andWhere('e.revokedBy IS NULL')
                 ->andWhere('e.type = :type')
                 ->setParameter('entityId', $entity->getId())
                 ->setParameter('type', $entity->getAceType())
-                ->setParameter('uid', $user->getId())
+                ->setParameter('user', $user)
         ;
 
         $res = $query->getQuery()->getOneOrNullResult();
@@ -63,7 +62,6 @@ class AccessControlEntryRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->where('e.user = :user')
-            ->andWhere('e.revokedBy IS NULL')
             ->andWhere('e.type = :type')
             ->setParameter('type', $type)
             ->setParameter('user', $user)
