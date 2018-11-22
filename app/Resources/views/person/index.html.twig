@@ -21,8 +21,8 @@
 
     <ul class="large-block-list">
     {%- for person in selectedPeople -%}
-        <li><h5><a href="{{ path('get_person', {identifier: person.person.slug}) }}">{{ person.personName }}</a></h5>
-            {{person.role}} in <a href="{{ path('get_show', {identifier: person.show.slug}) }}">{{person.show.name}}</a>
+        <li><h5><a href="{{ path('get_person', {identifier: person.slug}) }}">{{ person.name }}</a></h5>
+            {{person.roles.0.role}} in <a href="{{ path('get_show', {identifier: person.roles.0.show.slug}) }}">{{person.roles.0.show.name}}</a>
     {%- endfor -%}
     </ul>
 

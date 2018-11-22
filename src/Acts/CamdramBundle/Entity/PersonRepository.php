@@ -51,4 +51,29 @@ class PersonRepository extends EntityRepository
             return $person;
         }
     }
+
+     /**
+     * Appears on /people
+     *
+     * Returns $limit people who are involved with shows between $start and $end,
+     * sorted by their overall show count
+     */
+    public function getPeopleInDateRange(\DateTime $start, \DateTime $end, $limit)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT person, role, s, COUNT(role) AS HIDDEN range_show_count,
+                MAX(perf.end_date) AS HIDDEN last_end_date,
+                (SELECT COUNT(sub_r) FROM ActsCamdramBundle:Role sub_r WHERE sub_r.person = person) AS HIDDEN total_show_count
+            FROM ActsCamdramBundle:Person person
+            INNER JOIN person.roles AS role INNER JOIN role.show AS s INNER JOIN s.performances AS perf
+            WHERE perf.start_date < :end AND perf.end_date >= :start
+            GROUP BY person HAVING range_show_count > 0
+            ORDER BY total_show_count ASC, person.id DESC
+        ');
+
+        return $query->setParameter('start', $start)
+                ->setParameter('end', $end)
+                ->setMaxResults($limit)
+                ->getResult();
+    }
 }

@@ -44,21 +44,4 @@ class RoleRepository extends EntityRepository
         return $query->execute();
     }
 
-    /**
-     * Appears on /people
-     */
-    public function getRolesInDateRange(\DateTime $start, \DateTime $end)
-    {
-        $qb = $this->createQueryBuilder('r')
-            ->innerJoin('r.show', 's')
-            ->innerJoin('s.performances', 'p')
-            ->andWhere('p.start_date < :end')
-            ->andWhere('p.end_date >= :start')
-            ->setParameter('start', $start)
-            ->setParameter('end', $end);
-
-        $result = $qb->getQuery()->getResult();
-
-        return $result;
-    }
 }

@@ -97,11 +97,8 @@ class PersonController extends AbstractRestController
         $end = clone $start;
         $end->add(new \DateInterval('P7D'));
 
-        $selectedPeople = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Role')->getRolesInDateRange($start, $end);
-        usort($selectedPeople, function($a, $b) { // Prioritise people with low show counts.
-            return $a->getPerson()->getShowCount() - $b->getPerson()->getShowCount();
-        });
-        $selectedPeople = array_slice($selectedPeople, 0, 14);
+        $selectedPeople = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Person')
+            ->getPeopleInDateRange($start, $end, 14);
 
         $view = $this->view($selectedPeople, 200)
             ->setTemplateVar('selectedPeople')
