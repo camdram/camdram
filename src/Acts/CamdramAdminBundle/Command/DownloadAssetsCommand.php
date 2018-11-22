@@ -10,6 +10,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
 use Psr\Http\Message\StreamInterface;
+use Http\Client\Common\PluginClient;
+use Http\Client\Common\Plugin\RedirectPlugin;
 
 class DownloadAssetsCommand extends Command
 {
@@ -30,7 +32,9 @@ class DownloadAssetsCommand extends Command
 
     public function __construct(HttpClient $httpClient, MessageFactory $messageFactory, Filesystem $fileSystem)
     {
-        $this->httpClient = $httpClient;
+        //Add redriect plugin so that HTTP client follows 30x's
+        $this->httpClient = new PluginClient($httpClient, [new RedirectPlugin()]);
+
         $this->messageFactory = $messageFactory;
         $this->fileSystem = $fileSystem;
 
