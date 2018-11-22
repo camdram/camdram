@@ -14,7 +14,6 @@ services:
             # that's defined in this file (including controller arguments)
             $adminEmail: "%support_email_address%"
             $appSecret: "%env(APP_SECRET)%"
-            $mapCenter: [52.20531, 0.12179]
 
     Acts\CamdramBundle\:
         resource: '../../src/Acts/CamdramBundle/*'
