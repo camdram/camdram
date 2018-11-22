@@ -23,7 +23,7 @@ class ApplicationRepository extends EntityRepository
             ))
             ->andWhere($qb->expr()->orX(
                 'a.show IS NULL',
-                $qb->expr()->andX('s.authorised_by is not null')
+                $qb->expr()->andX('s.authorised = true')
             ))
             ->orderBy('a.deadlineDate', 'DESC')
             ->addOrderBy('a.deadlineTime', 'DESC')
@@ -48,7 +48,7 @@ class ApplicationRepository extends EntityRepository
                 $qb->expr()->andX('a.deadlineDate = :current_date', 'a.deadlineTime >= :current_time')
             ))
             ->andWhere('s.slug = :slug')
-            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.authorised = true')
             ->setParameter('slug', $slug)
 
             ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
@@ -91,7 +91,7 @@ class ApplicationRepository extends EntityRepository
             ->leftJoin('a.show', 's')
             ->leftJoin('a.society', 'o')
             ->andWhere($qb->expr()->orX(
-                $qb->expr()->andX('s.id IS NOT NULL', 's.slug = :slug', 's.authorised_by is not null'),
+                $qb->expr()->andX('s.id IS NOT NULL', 's.slug = :slug', 's.authorised = true'),
                 $qb->expr()->andX('o.id IS NOT NULL', 'o.slug = :slug')
             ))
             ->setParameter('slug', $slug)

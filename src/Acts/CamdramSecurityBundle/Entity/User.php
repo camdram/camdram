@@ -86,6 +86,7 @@ class User implements UserInterface, \Serializable
      * @var Person
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="users")
+     * @ORM\JoinColumn(name="person_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     private $person;
 
@@ -140,12 +141,6 @@ class User implements UserInterface, \Serializable
      * @Serializer\Exclude()
      */
     private $authorizations;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Acts\CamdramBundle\Entity\Show", mappedBy="authorised_by")
-     * @Serializer\Exclude()
-     */
-    private $authorised_shows;
     
     /**
      * Get id
@@ -636,37 +631,4 @@ class User implements UserInterface, \Serializable
         return $this->last_password_login_at;
     }
 
-    /**
-     * Add authorisedShow
-     *
-     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
-     *
-     * @return User
-     */
-    public function addAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
-    {
-        $this->authorised_shows[] = $authorisedShow;
-
-        return $this;
-    }
-
-    /**
-     * Remove authorisedShow
-     *
-     * @param \Acts\CamdramBundle\Entity\Show $authorisedShow
-     */
-    public function removeAuthorisedShow(\Acts\CamdramBundle\Entity\Show $authorisedShow)
-    {
-        $this->authorised_shows->removeElement($authorisedShow);
-    }
-
-    /**
-     * Get authorisedShows
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAuthorisedShows()
-    {
-        return $this->authorised_shows;
-    }
 }

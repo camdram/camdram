@@ -3,7 +3,6 @@
 namespace Camdram\Tests\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -39,7 +38,7 @@ class ViewVoterTest extends TestCase
     public function testViewAuthorisedShow()
     {
         $show = new Show();
-        $show->setAuthorisedBy(new User());
+        $show->setAuthorised(true);
         $this->assertEquals(ViewVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
             $show,

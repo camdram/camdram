@@ -5,7 +5,6 @@ namespace Camdram\Tests\CamdramBundle\Service;
 use Camdram\Tests\RepositoryTestCase;
 use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramSecurityBundle\Entity\User;
 
 class ApplicationRepositoryTest extends RepositoryTestCase
 {
@@ -16,15 +15,11 @@ class ApplicationRepositoryTest extends RepositoryTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->user = new User();
-        $this->user->setEmail('test@camdram.net');
-        $this->user->setName('Test User');
-        $this->em->persist($this->user);
 
         $this->show = new Show();
         $this->show->setName('Test Show');
         $this->show->setCategory('drama');
-        $this->show->setAuthorisedBy($this->user);
+        $this->show->setAuthorised(true);
         $this->em->persist($this->show);
 
         $this->em->flush();

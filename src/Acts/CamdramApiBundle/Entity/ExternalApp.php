@@ -41,13 +41,13 @@ class ExternalApp extends BaseClient
 
     /**
      * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\Organisation")
-     * @ORM\JoinColumn(name="organisation_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="organisation_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $organisation;
 

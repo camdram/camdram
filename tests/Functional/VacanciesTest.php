@@ -47,7 +47,7 @@ class VacanciesTest extends WebTestCase
     {
         $show = new Show;
         $show->setName($name)
-            ->setAuthorisedBy($this->user)
+            ->setAuthorised(true)
             ->setCategory('drama');
 
         $performance = new Performance;

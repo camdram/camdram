@@ -76,7 +76,7 @@
     {% endif %}
 </div>
 {% endif %}
-{% if show.authorisedBy is null %}
+{% if not show.authorised %}
 <div class="approve-panel row">
     {% if is_granted('APPROVE', show) %}
         <form action="{{ path('approve_show', {identifier: show.slug, _method: 'PATCH'}) }}" method="post">

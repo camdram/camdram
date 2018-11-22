@@ -76,7 +76,7 @@ class ShowListener
         $authorisationEmailSent = false;
 
         if ($event->hasChangedField('society') && $show->getSociety() instanceof Society) {
-            if ($show->isAuthorised()) {
+            if ($show->getAuthorised()) {
                 $this->moderationManager->notifySocietyChanged($show);
             } else {
                 $this->moderationManager->autoApproveOrEmailModerators($show);
@@ -85,7 +85,7 @@ class ShowListener
         }
 
         if ($event->hasChangedField('venue') && $show->getVenue() instanceof Venue) {
-            if ($show->isAuthorised()) {
+            if ($show->getAuthorised()) {
                 $this->moderationManager->notifyVenueChanged($show);
             } elseif (!$authorisationEmailSent) {
                 $this->moderationManager->autoApproveOrEmailModerators($show);

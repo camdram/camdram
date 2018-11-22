@@ -80,7 +80,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             $show->setDescription($play['description']);
             $show->setAuthor($play['author']);
             $show->setCategory($play['category']);
-            $show->setAuthorisedBy($this->getReference('adminuser'));
+            $show->setAuthorised(true);
 
             $this->allocateSociety($show);
 

@@ -17,7 +17,7 @@
             <h5><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h5>
             <p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}</p>
             <p>{{ show.description | truncate(200) | strip_new_lines | camdram_markdown }}</p>
-            {% if not show.isAuthorised %}
+            {% if not show.authorised %}
                 <div class="approve-panel">Not yet visible to the public – awaiting approval.</div>
             {% endif %}
         </div>

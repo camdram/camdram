@@ -116,19 +116,20 @@ class ModerationManager
 
     public function approveEntity(Show $entity)
     {
-        if ($entity instanceof Show && !$entity->isAuthorised()) {
-            $entity->setAuthorisedBy($this->tokenStorage->getToken()->getUser());
+        if ($entity instanceof Show && !$entity->getAuthorised()) {
+            $entity->setAuthorised(true);
 
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
             $owners = $repo->getEntityOwners($entity);
-            $this->dispatcher->sendShowApprovedEmail($entity, $owners);
+            $authorisedBy = $this->tokenStorage->getToken()->getUser();
+            $this->dispatcher->sendShowApprovedEmail($entity, $owners, $authorisedBy);
             $this->logger->info('Show authorised', array('id' => $entity->getId(), 'name' => $entity->getName()));
         }
     }
 
     public function autoApproveOrEmailModerators(Show $entity)
     {
-        if (!$entity->isAuthorised()) {
+        if (!$entity->getAuthorised()) {
             if ($this->authorizationChecker->isGranted('APPROVE', $entity)) {
                 //The current user is able to approve the show, so approve it straight away.
                 $this->approveEntity($entity);

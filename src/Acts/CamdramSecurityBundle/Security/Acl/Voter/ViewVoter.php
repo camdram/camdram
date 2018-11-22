@@ -25,7 +25,7 @@ class ViewVoter extends Voter
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         if ($subject instanceof Show) {
-            return $subject->getAuthorisedBy() !== null;
+            return $subject->getAuthorised();
         }
 
         return true;

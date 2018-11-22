@@ -68,7 +68,7 @@ class EntityContext implements Context
         $show = new Show();
         $show->setName($show_name)
             ->setCategory('drama')
-            ->setAuthorisedBy($this->getAuthoriseUser());
+            ->setAuthorised(true);
         $this->entityManager->persist($show);
         $this->entityManager->flush();
 

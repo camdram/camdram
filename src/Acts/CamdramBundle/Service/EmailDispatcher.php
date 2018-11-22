@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramSecurityBundle\Entity\User;
 
 class EmailDispatcher
 {
@@ -71,7 +72,7 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function sendShowApprovedEmail(Show $show, array $owners)
+    public function sendShowApprovedEmail(Show $show, array $owners, User $authorisedBy)
     {
         $emails = array();
         foreach ($owners as $user) {
@@ -86,6 +87,7 @@ class EmailDispatcher
                     'email/show_approved.txt.twig',
                     array(
                         'show' => $show,
+                        'authorisedBy' => $authorisedBy,
                     )
                 )
             )

@@ -217,13 +217,12 @@ class Show implements OwnableInterface
     private $venue;
 
     /**
-     * @var int
+     * @var bool
      *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", inversedBy="authorised_shows")
-     * @ORM\JoinColumn(name="authorizeid", referencedColumnName="id", nullable=true)
+     * @ORM\Column(name="authorised", type="boolean")
      * @Gedmo\Versioned
      */
-    private $authorised_by;
+    private $authorised = false;
 
     /**
      * @var \DateTime
@@ -986,7 +985,7 @@ class Show implements OwnableInterface
 
     public function isIndexable()
     {
-        return $this->getAuthorisedBy() !== null;
+        return $this->getAuthorised();
     }
 
     /**
@@ -1233,32 +1232,27 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set authorised_by
+     * Set authorised
      *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $authorisedBy
+     * @param bool
      *
      * @return Show
      */
-    public function setAuthorisedBy(User $authorisedBy = null)
+    public function setAuthorised(bool $authorised)
     {
-        $this->authorised_by = $authorisedBy;
+        $this->authorised = $authorised;
 
         return $this;
     }
 
     /**
-     * Get authorised_by
+     * Get authorised
      *
-     * @return \Acts\CamdramSecurityBundle\Entity\User
+     * @return bool
      */
-    public function getAuthorisedBy()
+    public function getAuthorised()
     {
-        return $this->authorised_by;
-    }
-
-    public function isAuthorised()
-    {
-        return $this->getAuthorisedBy() !== null;
+        return $this->authorised;
     }
 
     /**

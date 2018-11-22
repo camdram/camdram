@@ -7,7 +7,6 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Entity\Person;
-use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -31,21 +30,8 @@ class RestTest extends WebTestCase
         $this->em = $this->client->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
     }
 
-    private function createUser()
-    {
-        $user = new User;
-        $user->setName("Test User")
-            ->setEmail("admin@camdram.net");
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user;
-    }
-
     public function testSimpleShow()
     {
-        $user = $this->createUser();
-        
         $performance = new Performance;
         $performance->setStartDate(new \DateTime("2000-01-01"));
         $performance->setEndDate(new \DateTime("2000-01-07"));
@@ -54,7 +40,7 @@ class RestTest extends WebTestCase
         $show = new Show;
         $show->setName("Test Show")
             ->setCategory("comedy")
-            ->setAuthorisedBy($user)
+            ->setAuthorised(true)
             ->addPerformance($performance);
         $this->em->persist($show);
         $this->em->flush();
@@ -82,9 +68,7 @@ class RestTest extends WebTestCase
     }
 
     public function testShowWithSociety()
-    {
-        $user = $this->createUser();
-        
+    {        
         $society = new Society;
         $society->setName("Test Society");
         $this->em->persist($society);
@@ -97,7 +81,7 @@ class RestTest extends WebTestCase
         $show = new Show;
         $show->setName("Test Show")
             ->setCategory("comedy")
-            ->setAuthorisedBy($user)
+            ->setAuthorised(true)
             ->addPerformance($performance)
             ->setSociety($society);
         $this->em->persist($show);

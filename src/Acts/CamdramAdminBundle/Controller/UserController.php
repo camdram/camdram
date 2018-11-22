@@ -137,7 +137,7 @@ class UserController extends FOSRestController
         $em->remove($entity);
         $em->flush();
 
-        return $this->routeRedirectView('get_user');
+        return $this->routeRedirectView('get_users');
     }
 
     public function newAceAction(Request $request, $identifier)

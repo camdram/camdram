@@ -12,7 +12,7 @@ class ShowRepository extends EntityRepository
     public function selectAll()
     {
         $qb = $this->createQueryBuilder('s')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->leftJoin('s.performances', 'p')
             ->orderBy('p.end_date', 'desc')
             ->addOrderBy('p.start_date', 'desc')
@@ -24,7 +24,7 @@ class ShowRepository extends EntityRepository
     public function findUnauthorised()
     {
         $qb = $this->createQueryBuilder('s')
-            ->where('s.authorised_by is null')
+            ->where('s.authorised = false')
             ->join('s.performances', 'p');
 
         return $qb->getQuery()->getResult();
@@ -33,7 +33,7 @@ class ShowRepository extends EntityRepository
     public function findUnauthorisedBySociety(Society $society)
     {
         $qb = $this->createQueryBuilder('s')
-            ->where('s.authorised_by is null')
+            ->where('s.authorised = false')
             ->andWhere('s.society = :society')
             ->setParameter('society', $society)
             ->join('s.performances', 'p');
@@ -44,7 +44,7 @@ class ShowRepository extends EntityRepository
     public function findUnauthorisedByVenue(Venue $venue)
     {
         $qb = $this->createQueryBuilder('s')
-            ->where('s.authorised_by is null')
+            ->where('s.authorised = false')
             ->andWhere('s.venue = :venue')
             ->setParameter('venue', $venue)
             ->join('s.performances', 'p');
@@ -70,7 +70,7 @@ class ShowRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')->select('COUNT(DISTINCT s.id)')
             ->innerJoin('s.performances', 'p')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->andWhere('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
@@ -83,7 +83,7 @@ class ShowRepository extends EntityRepository
     public function findInDateRange(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('s')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->join('s.performances', 'p')
             ->andWhere('p.start_date <= :end')
             ->andWhere('p.end_date >= :start')
@@ -103,7 +103,7 @@ class ShowRepository extends EntityRepository
         $qb->leftJoin('s.performances', 'p')
             ->where('p.start_date < :end')
             ->andWhere('p.end_date > :start')
-            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.authorised = true')
             ->setParameter('start', $week->getStartAt())
             ->setParameter('end', $week->getEndAt())
             ->orderBy('p.end_date - p.start_date', 'DESC')
@@ -117,7 +117,7 @@ class ShowRepository extends EntityRepository
         $query = $this->createQueryBuilder('s')
             ->join('s.roles', 'r')
             ->leftJoin('s.performances', 'p')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->andWhere('r.person = :person')
             ->orderBy('p.start_date', 'ASC')
             ->groupBy('s.id')
@@ -134,7 +134,7 @@ class ShowRepository extends EntityRepository
         $query = $this->createQueryBuilder('s')
             ->join('s.roles', 'r')
             ->leftJoin('s.performances', 'p')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->andWhere('r.person = :person')
             ->orderBy('p.start_date', 'ASC')
             ->groupBy('s.id')
@@ -152,7 +152,7 @@ class ShowRepository extends EntityRepository
         $query = $this->createQueryBuilder('s')
             ->leftJoin('s.performances', 'p')
             ->join('s.roles', 'r')
-            ->andwhere('s.authorised_by is not null')
+            ->andwhere('s.authorised = true')
             ->andWhere('r.person = :person')
             ->orderBy('p.end_date', 'DESC')
             ->groupBy('s.id')
@@ -168,7 +168,7 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->select('MIN(s.start_at)')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->andWhere('s.start_at IS NOT NULL')
             ->andWhere('s.start_at > :min')
             ->setMaxResults(1)
@@ -182,7 +182,7 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->select('MAX(s.end_at)')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->setMaxResults(1)
             ->getQuery();
 
@@ -196,7 +196,7 @@ class ShowRepository extends EntityRepository
             ->leftjoin('s.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->andWhere('s.society = :society');
 
         if ($from) {
@@ -222,7 +222,7 @@ class ShowRepository extends EntityRepository
             ->join('s.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
-            ->where('s.authorised_by is not null');
+            ->where('s.authorised = true');
 
         if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);

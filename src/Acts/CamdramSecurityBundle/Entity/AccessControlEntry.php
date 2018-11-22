@@ -51,7 +51,7 @@ class AccessControlEntry
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="ace_grants")
-     * @ORM\JoinColumn(name="granted_by_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="granted_by_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     private $grantedBy;
 

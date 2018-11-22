@@ -51,7 +51,7 @@ class AclProviderTest extends RepositoryTestCase
         $show = new Show();
         $show->setName('Test Show')
             ->setCategory('drama')
-            ->setAuthorisedBy($this->admin);
+            ->setAuthorised(true);
         $this->em->persist($show);
         $this->em->flush();
 

@@ -20,7 +20,7 @@ class TechieAdvertRepository extends EntityRepository
         $qb = $query_res->createQueryBuilder('a');
         $query = $qb->leftJoin('a.show', 's')
             ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
-            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.authorised = true')
             ->orderBy('a.expiry, s.name, s.society')
             ->setParameter('expiry', $date, \Doctrine\DBAL\Types\Type::DATE)
             ->setParameter('time', $date, \Doctrine\DBAL\Types\Type::TIME)
@@ -35,7 +35,7 @@ class TechieAdvertRepository extends EntityRepository
 
         return $qb->leftJoin('a.show', 's')
             ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
-            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.authorised = true')
             ->orderBy('a.last_updated')
             ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
             ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)
@@ -68,7 +68,7 @@ class TechieAdvertRepository extends EntityRepository
         return $qb->leftJoin('a.show', 's')
             ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
             ->andWhere('s.slug = :slug')
-            ->andWhere('s.authorised_by is not null')
+            ->andWhere('s.authorised = true')
             ->setParameter('slug', $slug)
             ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
             ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)

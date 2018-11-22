@@ -54,7 +54,7 @@ class PendingAccess
      * @var int
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
-     * @ORM\JoinColumn(name="issuerid", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="issuerid", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     private $issuer;
 

@@ -66,7 +66,7 @@ class SearchTest extends WebTestCase
     {
         $show = new Show;
         $show->setName($name)
-            ->setAuthorisedBy($this->user)
+            ->setAuthorised(true)
             ->setCategory('drama');
 
         $performance = new Performance;
@@ -91,7 +91,7 @@ class SearchTest extends WebTestCase
         //People must have >= 1 role to be indexed
         $show = new Show;
         $show->setName('Test Show')
-            ->setAuthorisedBy($this->user)
+            ->setAuthorised(true)
             ->setCategory('drama');
 
         $role = new Role;

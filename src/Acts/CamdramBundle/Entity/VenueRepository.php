@@ -20,7 +20,7 @@ class VenueRepository extends EntityRepository
         $qb = $this->createQueryBuilder('v')->select('COUNT(DISTINCT v.id)')
             ->innerJoin('v.performances', 'p')
             ->innerJoin('p.show', 's')
-            ->where('s.authorised_by is not null')
+            ->where('s.authorised = true')
             ->andWhere('p.start_date < :end')
             ->andWhere('p.end_date >= :start')
             ->setParameter('start', $start)
