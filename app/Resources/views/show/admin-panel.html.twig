@@ -77,20 +77,18 @@
 </div>
 {% endif %}
 {% if not show.authorised %}
-<div class="approve-panel row">
     {% if is_granted('APPROVE', show) %}
-        <form action="{{ path('approve_show', {identifier: show.slug, _method: 'PATCH'}) }}" method="post">
+        <form action="{{ path('approve_show', {identifier: show.slug, _method: 'PATCH'}) }}" method="post" class="approve-panel">
             <em>This show is not yet visible to the public.</em>
             <button class="button right small"><i class="fa fa-check"></i> Approve this show</button>
         </form>
     {% else %}
-        <p><em>This show is not yet visible to the public - it is awaiting approval from
-                {% if show.society and show.venue %}someone on the <strong>{{ show.society.name }}</strong> committee or a representative of <strong>{{ show.venue.name }}</strong>
-                {% elseif show.society %}someone on the <strong>{{ show.society.name }}</strong> committee
-                {% elseif show.venue %}a representative of <strong>{{ show.venue.name }}</strong>
-                {% else %}a Camdram administrator{% endif %}
-            </em></p>
+        <div class="approve-panel"><em>This show is not yet visible to the public – it is awaiting approval from
+                {% if show.society and show.venue %}someone on the <strong>{{ show.society.name }}</strong> committee or a representative of <strong>{{ show.venue.name }}.</strong>
+                {% elseif show.society %}someone on the <strong>{{ show.society.name }}</strong> committee.
+                {% elseif show.venue %}a representative of <strong>{{ show.venue.name }}.</strong>
+                {% else %}a Camdram administrator.{% endif %}
+            </em></div>
     {% endif %}
-</div>
 {% endif %}
 

@@ -20,10 +20,11 @@
 }
 
 .approve-panel {
-  @include panel(rgb(255,255,100), 1em);
-
-  button {
-    margin-top:-0.6em;
+  @include panel(rgb(255,255,100), 0.6em);
+  display: flex;
+  em {
+    margin: auto;
+    padding: 0.4em;
   }
 }
 
