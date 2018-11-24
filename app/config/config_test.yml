@@ -1,8 +1,9 @@
-imports:
-    - { resource: config.yml }
-
 parameters:
     env(DATABASE_URL): "sqlite:///%kernel.cache_dir%/test.db"
+    env(SEARCH_NAMESPACE): camdram_test
+
+imports:
+    - { resource: config.yml }
 
 monolog:
     handlers: ~
@@ -24,8 +25,3 @@ fos_js_routing:
 
 ewz_recaptcha:
     enabled: false
-
-fos_elastica:
-    indexes:
-        autocomplete:
-            index_name: "%env(SEARCH_NAMESPACE)%_autocomplete_test"
