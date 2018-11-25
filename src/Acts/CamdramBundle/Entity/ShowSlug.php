@@ -47,7 +47,7 @@ class ShowSlug
     /**
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * })
      */
     private $show;
@@ -123,7 +123,7 @@ class ShowSlug
      *
      * @return ShowSlug
      */
-    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show)
     {
         $this->show = $show;
 
