@@ -17,7 +17,7 @@
                 <th></th>
                 <th>Name</th>
                 <th>Type</th>
-                <th>App ID</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@
                 <td><a href="{{ path('get_app', {app_id: ex_app.randomId}) }}"><i class="fa fa-pencil"></i></a></td>
                 <td><a href="{{ path('get_app', {app_id: ex_app.randomId}) }}">{{ ex_app.name }}</a></td>
                 <td>{{ ex_app.appType | capitalize }}</td>
-                <td>{{ ex_app.publicId }}</td>
+                <td>{{ ex_app.description }}</td>
             </tr>
             {% endfor %}
         </tbody>
