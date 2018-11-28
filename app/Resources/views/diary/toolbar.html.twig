@@ -7,6 +7,12 @@
     </div>
 
     <form action="{{ url('acts_camdram_diary') }}" method="get" id="diary_jump_form">
+
+        <ul style="margin-bottom: 5px;">
+            <li style="display: inline-block;"><a href="diary.ics"><i class="fa fa-calendar"></i> iCal</a></li>
+            <li style="display: inline-block;"><a href="diary.rss"><i class="fa fa-rss"></i> RSS</a></li>
+        </ul>
+
         Jump to
         <select id="years" name="year">
             {% for year in years %}
