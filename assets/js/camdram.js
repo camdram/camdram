@@ -65,7 +65,7 @@ import Bloodhound from 'typeahead.js'
     // on extra elements as they are added to the page.
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
-        $('a.delete-link').deleteLink();
+        $('.button-destructive').deleteLink();
         createTabContainers();
 
         if (!supportsDateInput()) {
@@ -272,20 +272,33 @@ import Bloodhound from 'typeahead.js'
     $.fn.deleteLink = function() {
         $(this).each(function() {
             var $self = $(this);
-            var name = $self.attr('data-name');
-            var type = $self.attr('data-type');
-            var href = $self.attr('href');
-            //Remove href to prevent accidental ctrl/middle clicking
-            $self.attr('href', '#');
+            var dialogtitle = this.getAttribute('data-title');
+            var bodytext = this.getAttribute('data-text') || "";
+            if (this.tagName.toLowerCase() == "a") {
+                var href = $self.attr('href');
+
+                // Remove href to prevent accidental ctrl/middle clicking
+                $self.attr('href', '#');
+                var action = function() { document.location = href; };
+            } else if (this.tagName.toLowerCase() == "button") {
+                var form = $self.parents('form:first').get(0);
+                // Inactivate the form.
+                form.setAttribute('data-oldaction', form.action);
+                form.action = '';
+                var action = function() {
+                    form.action = form.getAttribute('data-oldaction');
+                    form.submit();
+                };
+            } else {
+                return;
+            }
 
             $self.click(function(e) {
                 e.preventDefault();
 
-                showModalDialog('Are you sure you want to delete the ' + type + ' "' + name + '"?',
-                    $('<p/>')
-                        .append($('<a/>').addClass('button').text('Yes').click(function() {
-                            document.location = href;
-                        }))
+                showModalDialog(dialogtitle,
+                    (bodytext ? $('<p/>').text(bodytext).append($("<br>")) : $("<p/>"))
+                        .append($('<a/>').addClass('button').text('Yes').click(action))
                         .append(' ')
                         .append($('<a/>').addClass('button').text('No').click(hideModalDialog))
                     );

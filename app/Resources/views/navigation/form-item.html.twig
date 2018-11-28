@@ -1,0 +1,11 @@
+{# This uses a form inside of the li to allow a POST request. #}
+{% spaceless %}
+<li><form action="{{ item.path }}" method="post">
+    <button {% if destructive is defined %}data-title="{{destructive.title}}" data-text="{{destructive.text ?: ''}}"
+            class="button-destructive"{% endif %}
+            >
+        {% if item.icon %}<i class="fa fa-{{ item.icon }} fa-fw"></i>{% endif %}
+        {{ item.text }}
+    </button>
+</form></li>
+{% endspaceless %}

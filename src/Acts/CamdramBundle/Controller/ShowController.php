@@ -177,6 +177,18 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
+    public function unapproveAction($identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
+
+        $em = $this->getDoctrine()->getManager();
+        $show->setAuthorised(false);
+        $em->flush();
+
+        return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
+    }
+
     public function getRolesAction($identifier)
     {
         $show = $this->getEntity($identifier);

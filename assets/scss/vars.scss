@@ -38,7 +38,7 @@ $default-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 @mixin menubutton($color, $fontweight,
                   $bg, $bghover,
                   $border: none, $borderhover: none) {
-  padding-right: 0.5em;
+  padding: 0 0.5em 0 0;
   border-radius: 4px;
   background-color: $bg;
   color: $color;
@@ -61,6 +61,7 @@ $default-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     width: 1em;
     height: 1em;
   }
+
 }
 
 @mixin panel($color, $padding: 1.25em) {

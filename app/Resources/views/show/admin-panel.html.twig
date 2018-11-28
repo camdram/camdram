@@ -8,6 +8,10 @@
         {% if is_granted('DELETE', show) %}
             {{ include('navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show',{identifier:show.slug}), text: 'Delete this show', name: show.name, type: 'show'} }) }}
         {% endif %}
+        {% if show.authorised and is_granted('APPROVE', show) %}
+            {{ include('navigation/form-item.html.twig', {item: {id: 'unapprove_show', path: path('unapprove_show',{identifier:show.slug, _method:'PATCH'}), icon: 'lock', text: 'Deauthorize this show' },
+               destructive: {title: "Are you sure you want to de-authorize this show?", text: "The show “" ~ show.name ~ "” will be hidden from public view, and returned to the awaiting-approval stage." }}) }}
+        {% endif %}
         {% if show.auditions | length == 0 %}
             {{ include('navigation/nav-item.html.twig',
             {item: {id: 'edit_auditions', path: path('edit_show_auditions',{identifier:show.slug}), icon: 'plus-circle', text: 'Add an audition'} }) }}
