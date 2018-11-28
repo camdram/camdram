@@ -1,5 +1,6 @@
 <div class="admin-panel">
-    <ul class="inline-list">
+    <h6 class="split-header">Person Administration: {{ person.name}}<span>ID: {{person.id}}</span></h6>
+    <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_person', path: path('edit_person',{identifier:person.slug}), icon: 'pencil', text: 'Edit profile'} }) }}
         {% if is_granted('DELETE', person) %}
             {{ include('navigation/delete-item.html.twig', {item: {id: 'remove_person', path: path('remove_person',{identifier:person.slug}), text: 'Delete profile', name: person.name, type: 'person'} }) }}

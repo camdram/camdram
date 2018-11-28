@@ -32,6 +32,37 @@ $default-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: .75em 1.5em .8125em;
 }
 
+/**
+ * This is used by the login provider buttons, admin panel buttons, etc.
+ */
+@mixin menubutton($color, $fontweight,
+                  $bg, $bghover,
+                  $border: none, $borderhover: none) {
+  padding-right: 0.5em;
+  border-radius: 4px;
+  background-color: $bg;
+  color: $color;
+  font-weight: $fontweight;
+  font-size: 0.8rem;
+  margin: 1px 0;
+  display: inline-block;
+  border: $border 1px;
+
+  &:hover, &:focus {
+    background: $bghover;
+    border: $borderhover 1px;
+  }
+
+  > .fa {
+    padding: 4px;
+    border-radius: 2px;
+    box-sizing: content-box;
+    font-size: 16px;
+    width: 1em;
+    height: 1em;
+  }
+}
+
 @mixin panel($color, $padding: 1.25em) {
   padding: $padding;
   margin-bottom: 1.25em;

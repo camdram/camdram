@@ -1,7 +1,9 @@
 {% if is_granted('EDIT', show) %}
 <div class="admin-panel">
-    <h6>Show Administration: <a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h6>
-    <ul class="inline-list">
+    <h6 class="split-header">
+        <span>Show Administration: <a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></span>
+        <span>ID: {{ show.id}}</span></h6>
+    <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier:show.slug}), icon: 'pencil', text: 'Edit this show'} }) }}
         {% if is_granted('DELETE', show) %}
             {{ include('navigation/delete-item.html.twig', {item: {id: 'delete_show', path: path('remove_show',{identifier:show.slug}), text: 'Delete this show', name: show.name, type: 'show'} }) }}
@@ -22,10 +24,10 @@
         {% endif %}
         {% if show.applications | length == 0 %}
             {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'new_application', path: path('new_show_application',{identifier:show.slug}), icon: 'plus-circle', text: 'Add director/producer advert'} }) }}
+            {item: {id: 'new_application', path: path('new_show_application',{identifier:show.slug}), icon: 'plus-circle', text: 'Add director/​producer advert'} }) }}
         {% else %}
             {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_application', path: path('edit_show_application',{identifier:show.slug}), icon: 'pencil', text: 'Edit director/producer advert'} }) }}
+            {item: {id: 'edit_application', path: path('edit_show_application',{identifier:show.slug}), icon: 'pencil', text: 'Edit director/​producer advert'} }) }}
         {% endif %}
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'edit_admin', path: path('edit_show_admin',{identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}

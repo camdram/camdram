@@ -17,6 +17,24 @@
     color: black;
     cursor: default;
   }
+
+  ul[role="menubar"] {
+    display: flex;
+    flex-flow: row wrap;
+    padding-left: 0 !important;
+    list-style: none;
+    > li {
+      flex: 12em;
+      margin: 2px;
+    > a {
+      @include menubutton(black, normal, transparent, white,
+                          rgba($orange, 0.3) solid, rgba($orange, 0.4) solid);
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+    }
+  }
 }
 
 .approve-panel {

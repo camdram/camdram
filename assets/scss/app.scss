@@ -264,33 +264,11 @@ h1, h2, h3, h4, h5 {
 
 a.icon-link {
   &.icon-link-textual {
-    padding-right: 0.5em;
-    border-radius: 4px;
-    background-color: $dark-grey;
-    color: white;
-    font-weight: bold;
-    font-size: 0.8rem;
-    margin: 1px 0;
-    display: inline-block;
-
-    &:hover {
-      background: $light-grey;
-    }
+    @include menubutton(white, bold, $dark-grey, $light-grey);
   }
 
   &.icon-link-destructive {
-    padding-right: 0.5em;
-    border-radius: 4px;
-    background-color: $destructive;
-    color: white;
-    font-weight: bold;
-    font-size: 0.8rem;
-    margin: 1px 0;
-    display: inline-block;
-
-    &:hover {
-      background: $destructive-light;
-    }
+    @include menubutton(white, bold, $destructive, $destructive-light);
   }
 
   > img {

@@ -1,12 +1,11 @@
 <div class="admin-panel">
 
-    <div class="right">
-        <a href="{{ path('get_users') }}" class="button small">Back to user list</a>
+    <div class="split-header">
+        <h3><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.name }}</a></h3>
+        <div><a href="{{ path('get_users') }}" class="button small">Back to user list</a></div>
     </div>
 
-    <h3><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.name }}</a></h3>
-
-    <ul class="inline-list">
+    <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {
             item: {id: 'edit_user', path: path('edit_user',{identifier:user.id}), icon: 'pencil',
             text: 'Edit this user'} })
