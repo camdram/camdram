@@ -245,11 +245,10 @@ abstract class AbstractRestController extends FOSRestController
             $query->setFrom(($page-1)*$limit)->setSize($limit);
             //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
             $query->setSort([
-                'rank' => ['order' => 'desc', 'missing' => PHP_INT_MAX-1]
+                'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => PHP_INT_MAX-1]
             ]);
 
-            $search = $this->get('fos_elastica.index.autocomplete')->createSearch();
-            $search->addType($this->type);
+            $search = $this->get('fos_elastica.index.autocomplete_'.$this->type)->createSearch();
             $resultSet = $search->search($query);
 
             $data = [];

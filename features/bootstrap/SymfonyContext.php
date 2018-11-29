@@ -23,20 +23,6 @@ use FOS\ElasticaBundle\Elastica\Index;
  */
 class SymfonyContext extends RawMinkContext
 {
-    private $listenersEnabled;
-
-
-    private $elasticaResetter;
-
-    private $elasticaIndex;
-
-    public function __construct($listenersEnabled, Resetter $elasticaResetter, Index $elasticaIndex)
-    {
-        $this->listenersEnabled = $listenersEnabled;
-        $this->elasticaResetter = $elasticaResetter;
-        $this->elasticaIndex = $elasticaIndex;
-    }
-
     /**
      * @Given /^(.*) without redirection$/
      */
@@ -73,14 +59,6 @@ class SymfonyContext extends RawMinkContext
     {
         Time::mockDateTime(new \DateTime('2000-07-03 15:30:00'));
         StaticDriver::beginTransaction();
-
-        if ($this->listenersEnabled) {
-            $this->elasticaResetter->resetAllIndexes();
-        } 
-        elseif ($scope->getScenario()->hasTag('search')
-                || $scope->getFeature()->hasTag('search')) {
-            throw new PendingException('Elasticsearch not configured');
-        }
     }
 
     /**
@@ -89,13 +67,5 @@ class SymfonyContext extends RawMinkContext
     public function afterScenario(AfterScenarioScope $scope)
     {
         StaticDriver::rollBack();
-    }
-
-    /**
-     * @Given /^I refresh the search index$/
-     */
-    public function refreshSearchIndex()
-    {
-        $this->elasticaIndex->refresh();
     }
 }

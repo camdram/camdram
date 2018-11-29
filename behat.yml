@@ -9,10 +9,7 @@ default:
                 - UserContext:
                     entityManager: '@doctrine.orm.entity_manager'
                     encoderFactory: '@security.encoder_factory'
-                - SymfonyContext:
-                    listenersEnabled: '%%search_enable_listeners%%'
-                    elasticaResetter: '@fos_elastica.resetter'
-                    elasticaIndex: '@fos_elastica.index.autocomplete'
+                - SymfonyContext: ~
     extensions:
         Behat\Symfony2Extension: ~
         Behat\MinkExtension:

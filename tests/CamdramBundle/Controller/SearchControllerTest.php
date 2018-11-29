@@ -13,7 +13,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 /**
  * @group search
  */
-class SearchTest extends WebTestCase
+class SearchControllerTest extends WebTestCase
 {
     /**
      * @var Symfony\Bundle\FrameworkBundle\Client
@@ -38,28 +38,19 @@ class SearchTest extends WebTestCase
         if (!$container->getParameter('search_enable_listeners')) {
             $this->markTestSkipped('search_enable_listeners is disabled');
         }
+
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
         $container->get('fos_elastica.resetter')->resetAllIndexes();
-
-        $this->user = $this->createUser();
     }
 
-    private function createUser()
+    private function refreshIndexes()
     {
-        $user = new User;
-        $user->setName("Test User")
-            ->setEmail("admin@camdram.net");
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        return $user;
-    }
-
-    private function refreshIndex()
-    {
-        //Elasticsearch ordinarilytakes a few secs to update its index after a change.
-        //This ensures it's up to date before making assertions
-        $this->client->getKernel()->getContainer()->get('fos_elastica.index.autocomplete')->refresh();
+        //Elasticsearch ordinarily takes a few secs to update its indexes after a change.
+        //This ensures they're up to date before making assertions
+        $indexManager = $this->client->getKernel()->getContainer()->get('fos_elastica.index_manager');
+        foreach ($indexManager->getAllIndexes() as $index) {
+            $index->refresh();
+        };
     }
 
     private function createShow($name, $startDate, $flush = true)
@@ -155,7 +146,7 @@ class SearchTest extends WebTestCase
     public function testAutocomplete()
     {
         $this->createShow('Test Show', '2000-01-01');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch('tes');
         $this->assertEquals(1, count($results));
@@ -200,11 +191,34 @@ class SearchTest extends WebTestCase
         $this->assertEquals('Test Show', $results[0]['name']);
     }
 
+    public function testHtmlView()
+    {
+        $this->createShow('Test Show 1', '2000-01-01');
+        $this->createShow('Test Show 2', '2000-02-01');
+        $this->createSociety('Test Society 1', 'soc1');
+        $this->createSociety('Test Society 2', 'scoc2');
+        $this->createVenue('Test Venue 1');
+        $this->createVenue('Test Venue 2');
+        $this->refreshIndexes();
+
+        $crawler = $this->client->request('GET', '/');
+        $form = $crawler->selectButton('Search')->form();
+        $form['q'] = 'test';
+        $crawler = $this->client->submit($form);
+
+        $this->assertEquals($crawler->filter('#content a:contains("Test Show 1")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content a:contains("Test Show 2")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content a:contains("Test Society 1")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content a:contains("Test Society 2")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content a:contains("Test Venue 1")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content a:contains("Test Venue 2")')->count(), 1);
+    }
+
     public function testPunctuation()
     {
         $this->createShow("Journey's End", '2000-01-01');
         $this->createShow("Panto: Snow Queen", '2001-01-01');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch("journeys");
         $this->assertEquals("Journey's End", $results[0]['name']);
@@ -229,7 +243,7 @@ class SearchTest extends WebTestCase
     {
         $this->createShow('Les Misérables', '2000-01-01');
         $this->createPerson('Zoë');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch("les mise");
         $this->assertEquals("Les Misérables", $results[0]['name']);
@@ -257,7 +271,7 @@ class SearchTest extends WebTestCase
     {
         $showName = '窦娥冤'; // "The Midsummer Snow" by Guan Hanqing
         $this->createShow($showName, '2000-01-01');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch('窦娥');
         $this->assertEquals($showName, $results[0]['name']);
@@ -277,7 +291,7 @@ class SearchTest extends WebTestCase
         $this->createShow('Test Show 2001', '2001-05-17');
         $this->createShow('Test Show 2012', '2012-01-02');
         $this->createShow('Test Show 1995', '1995-06-22');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch('test');
         $this->assertEquals(4, count($results));
@@ -295,7 +309,7 @@ class SearchTest extends WebTestCase
             $this->createShow($name, $startAt, false);
         }
         $this->entityManager->flush();
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doPaginatedSearch('test', 1, 1);
         $this->assertEquals(1, count($results));
@@ -331,7 +345,7 @@ class SearchTest extends WebTestCase
         $longName = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra euismod justo sed malesuada. '
             . 'Fusce facilisis, neque nec faucibus blandit, sem orci auctor metus, ac luctus diam elit eget sapien.';
         $this->createShow($longName, '2000-01-01');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch($longName);
         $this->assertEquals($longName, $results[0]['name']);
@@ -340,7 +354,7 @@ class SearchTest extends WebTestCase
     public function testPerson()
     {
         $this->createPerson('John Smith');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch('joh');
         $this->assertEquals('John Smith', $results[0]['name']);
@@ -359,7 +373,7 @@ class SearchTest extends WebTestCase
     {
         $name = 'Cambridge University Amateur Dramatic Club';
         $this->createSociety($name, 'cuadc');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch('cam');
         $this->assertEquals($name, $results[0]['name']);
@@ -384,7 +398,7 @@ class SearchTest extends WebTestCase
     public function testVenue()
     {
         $this->createVenue('ADC Theatre');
-        $this->refreshIndex();
+        $this->refreshIndexes();
 
         $results = $this->doSearch('ad');
         $this->assertEquals('ADC Theatre', $results[0]['name']);

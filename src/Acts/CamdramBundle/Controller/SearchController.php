@@ -35,12 +35,15 @@ class SearchController extends FOSRestController
 
         $query = new Query($match);
         $query->setFrom(($page-1)*$limit)->setSize($limit);
-        //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
         $query->setSort([
-            'rank' => ['order' => 'desc', 'missing' => PHP_INT_MAX-1]
+            'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => '_first']
         ]);
 
-        $search = $this->get('fos_elastica.index.autocomplete')->createSearch();
+        $indexManager = $this->get('fos_elastica.index_manager');
+        $search = $indexManager->getIndex('autocomplete_show')->createSearch();
+        $search->addIndex($indexManager->getIndex('autocomplete_person')->getName());
+        $search->addIndex($indexManager->getIndex('autocomplete_society')->getName());
+        $search->addIndex($indexManager->getIndex('autocomplete_venue')->getName());
         $resultSet = $search->search($query);
 
         $data = [];

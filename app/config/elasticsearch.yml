@@ -1,10 +1,14 @@
+parameters:
+    search_use_alias: true
+
 fos_elastica:
     clients:
         default: { host: localhost, port: 9200 }
     indexes:
-        autocomplete:
-            index_name: '%env(SEARCH_NAMESPACE)%_autocomplete'
-            settings:
+        autocomplete_show:
+            index_name: '%env(SEARCH_NAMESPACE)%_autocomplete_show'
+            use_alias: "%search_use_alias%"
+            settings: &autocomplete_settings
                 index:
                     analysis:
                         tokenizer:
@@ -58,6 +62,11 @@ fos_elastica:
                         finder: ~
                         listener: { enabled: '%search_enable_listeners%' }
                     indexable_callback: isIndexable
+        autocomplete_society:
+            index_name: '%env(SEARCH_NAMESPACE)%_autocomplete_society'
+            use_alias: "%search_use_alias%"
+            settings: *autocomplete_settings
+            types:
                 society:
                     properties:
                         name: { analyzer: autocomplete, search_analyzer: search  }
@@ -69,6 +78,11 @@ fos_elastica:
                         provider: ~
                         finder: ~
                         listener: { enabled: '%search_enable_listeners%' }
+        autocomplete_venue:
+            index_name: '%env(SEARCH_NAMESPACE)%_autocomplete_venue'
+            use_alias: "%search_use_alias%"
+            settings: *autocomplete_settings
+            types:
                 venue:
                     properties:
                         name: { analyzer: autocomplete, search_analyzer: search }
@@ -79,6 +93,11 @@ fos_elastica:
                         provider: ~
                         finder: ~
                         listener: { enabled: '%search_enable_listeners%' }
+        autocomplete_person:
+            index_name: '%env(SEARCH_NAMESPACE)%_autocomplete_person'
+            use_alias: "%search_use_alias%"
+            settings: *autocomplete_settings
+            types:
                 person:
                     properties:
                         name: { analyzer: autocomplete, search_analyzer: search }
