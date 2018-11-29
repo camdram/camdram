@@ -1,5 +1,11 @@
 <div class="diary-nav">
-    <h3>Diary</h3>
+    <div class="split-header">
+        <h3>Diary</h3>
+        <ul role="navigation">
+            <li><a href="diary.ics"><i class="fa fa-calendar"></i> iCal</a></li>
+            <li><a href="diary.rss"><i class="fa fa-rss"></i> RSS</a></li>
+        </ul>
+    </div>
 
     <div>
         <a class="button small" role="button" id="load_today" href="{{ url('acts_camdram_diary') }}">This week</a>
@@ -8,12 +14,8 @@
 
     <form action="{{ url('acts_camdram_diary') }}" method="get" id="diary_jump_form">
 
-        <ul style="margin-bottom: 5px;">
-            <li style="display: inline-block;"><a href="diary.ics"><i class="fa fa-calendar"></i> iCal</a></li>
-            <li style="display: inline-block;"><a href="diary.rss"><i class="fa fa-rss"></i> RSS</a></li>
-        </ul>
 
-        Jump to
+        Jump to&nbsp;
         <select id="years" name="year">
             {% for year in years %}
                 <option value="{{ year }}"{% if current_year == year %} selected{% endif %}>{{ year }}</option>

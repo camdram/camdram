@@ -1,25 +1,30 @@
+@import "./vars.scss";
+
 .diary-nav {
   /* This is a bit counter-intuitive: the items flow upward and leftward so
      that the h3 gets its own line if the div and form fit together. */
   display: flex;
-  flex-flow: row-reverse wrap-reverse;
+  flex-flow: row-reverse wrap;
   align-items: baseline;
   margin-bottom: 1em;
 
-  h3 {
-    order: 3;
-    margin-right: auto;
+  .split-header {
+    width: 100%;
   }
   > :nth-child(2) {
-    order: 2;
-    min-width: 40%;
-    margin-bottom: 0.5em;
+    order: 3;
   }
-  form {
-    order: 1;
-    margin-left: auto;
-    text-align: right;
-    min-width: 55%;
+  #diary_jump_form {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    max-width: 100%;
+    margin-bottom: 0.2em;
+  }
+  #periods {
+    flex: 1 1 0;
+    max-width: 11em;
   }
   button, .button, input, select {
     width: auto;
