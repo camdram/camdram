@@ -1,32 +1,21 @@
 <?php
+namespace Camdram\Tests\CamdramBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+use Camdram\Tests\RestTestCase;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Service\Time;
 
 
-class DiaryControllerTest extends WebTestCase
+class DiaryControllerTest extends RestTestCase
 {
-
-    /**
-     * @var Symfony\Bundle\FrameworkBundle\Client
-     */
-    private $client;
-
-    /**
-     * @var \Doctrine\ORM\EntityManager;
-     */
-    private $entityManager;
 
     public function setUp()
     {
-        $this->client = self::createClient(array('environment' => 'test'));
-
-        $container = $this->client->getKernel()->getContainer();
-        $this->entityManager = $container->get('doctrine.orm.entity_manager');
+        parent::setUp();
 
         Time::mockDateTime(new \DateTime('2000-07-03 15:30:00'));
     }

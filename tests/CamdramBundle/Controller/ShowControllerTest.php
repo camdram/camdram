@@ -1,33 +1,14 @@
 <?php
+namespace Camdram\Tests\CamdramBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
-use Symfony\Component\BrowserKit\Cookie;
-
+use Camdram\Tests\RestTestCase;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
-use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Acts\CamdramBundle\Entity\Society;
 
 
-class ShowControllerTest extends WebTestCase
+class ShowControllerTest extends RestTestCase
 {
-
-    /**
-     * @var Symfony\Bundle\FrameworkBundle\Client
-     */
-    private $client;
-
-    /**
-     * @var \Doctrine\ORM\EntityManager;
-     */
-    private $entityManager;
-
-    /**
-     * @var AclProvider
-     */
-    private $aclProvider;
 
     /**
      * @var Show
@@ -36,12 +17,7 @@ class ShowControllerTest extends WebTestCase
 
     public function setUp()
     {
-        $this->client = self::createClient(array('environment' => 'test'));
-
-        $container = $this->client->getKernel()->getContainer();
-        $this->entityManager = $container->get('doctrine.orm.entity_manager');
-
-        $this->aclProvider = $container->get('camdram.security.acl.provider');
+        parent::setUp();
 
         $this->show = new Show();
         $this->show->setName("Test Show")
@@ -49,31 +25,6 @@ class ShowControllerTest extends WebTestCase
             ->setAuthorised(true);
         $this->entityManager->persist($this->show);
         $this->entityManager->flush();
-
-    }
-
-    private function login(User $user)
-    {
-        $session = $this->client->getContainer()->get('session');
-
-        //$token = new UsernamePasswordToken('admin', null, 'public', array('ROLE_ADMIN'));
-        $token = new OAuthToken('test_token', $user->getRoles());
-        $token->setUser($user);
-        $session->set('_security_public', serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-    }
-
-    private function createUser()
-    {
-        $user = new User();
-        $user->setName("Test User")->setEmail("test@camdram.net");
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        return $user;
     }
 
     public function testViewLoggedOut()
@@ -116,5 +67,59 @@ class ShowControllerTest extends WebTestCase
 
         $input = $crawler->filter('input[name="show[name]"]');
         $this->assertEquals("Test Show", $input->attr('value'));
+    }
+
+    public function testSimpleShow()
+    {
+        $performance = new Performance;
+        $performance->setStartDate(new \DateTime("2000-01-01"));
+        $performance->setEndDate(new \DateTime("2000-01-07"));
+        $performance->setTime(new \DateTime("19:30"));
+
+        $show = new Show;
+        $show->setName("Test Show")
+            ->setCategory("comedy")
+            ->setAuthorised(true)
+            ->addPerformance($performance);
+        $this->entityManager->persist($show);
+        $this->entityManager->flush();
+
+        $data = $this->doJsonRequest('/shows/2000-test-show.json');
+        $this->assertEquals("Test Show", $data['name']);
+
+        $data = $this->doXmlRequest('/shows/2000-test-show.xml');
+        $this->assertEquals("Test Show", $data->name);
+
+        $data = $this->doJsonRequest('/shows/by-id/' . $show->getId() . '.json');
+        $this->assertEquals("Test Show", $data['name']);
+    }
+
+    public function testShowWithSociety()
+    {
+        $society = new Society;
+        $society->setName("Test Society");
+        $this->entityManager->persist($society);
+
+        $performance = new Performance;
+        $performance->setStartDate(new \DateTime("2000-01-01"));
+        $performance->setEndDate(new \DateTime("2000-01-07"));
+        $performance->setTime(new \DateTime("19:30"));
+
+        $show = new Show;
+        $show->setName("Test Show")
+            ->setCategory("comedy")
+            ->setAuthorised(true)
+            ->addPerformance($performance)
+            ->setSociety($society);
+        $this->entityManager->persist($show);
+        $this->entityManager->flush();
+
+        $data = $this->doJsonRequest('/shows/2000-test-show.json');
+        $this->assertEquals("Test Show", $data['name']);
+        $this->assertEquals("Test Society", $data['society']['name']);
+
+        $data = $this->doXmlRequest('/shows/2000-test-show.xml');
+        $this->assertEquals("Test Show", $data->name);
+        $this->assertEquals("Test Society", $data->society->name);
     }
 }
