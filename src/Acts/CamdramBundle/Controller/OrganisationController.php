@@ -87,7 +87,7 @@ abstract class OrganisationController extends AbstractRestController
      *
      * @return mixed
      */
-    public function getEventsAction(Request $request, $identifier)
+    public function getDiaryAction(Request $request, $identifier)
     {
         $diary = new Diary;
 
@@ -109,10 +109,19 @@ abstract class OrganisationController extends AbstractRestController
 
         $view = $this->view($diary, 200)
             ->setTemplateVar('diary')
-            ->setTemplate('organisation/shows.html.twig')
+            ->setTemplate('organisation/diary.html.twig')
         ;
 
         return $view;
+    }
+
+    /**
+     * Redirect from /events -> /diary for backwards compatibility
+     */
+    public function getEventsAction(Request $request, $identifier)
+    {
+        return $this->redirect($this->generateUrl('get_'.$this->type.'_diary',
+            ['identifier' => $identifier, '_format' => $request->getRequestFormat()]));
     }
 
     private function getApplicationForm(Organisation $org, $obj = null, $method = 'POST')

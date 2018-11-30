@@ -2,6 +2,8 @@
 
 namespace Acts\DiaryBundle\Diary;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Class Label
  *
@@ -14,23 +16,30 @@ class Label
     const TYPE_PERIOD = 'period';
 
     /**
-     * @var string
-     *             The type of label, either LABEL_TYPE_WEEK or LABEL_TYPE_PERIOD
+     * @var string The type of label, either LABEL_TYPE_WEEK or LABEL_TYPE_PERIOD
+     * 
+     * @Serializer\XmlElement(cdata=false)
      */
     private $type;
 
     /**
      * @var \DateTime The start time of the period this label refers to
+     * 
+     * @Serializer\XmlElement(cdata=false)
      */
     private $start_at;
 
     /**
      * @var \DateTime The end time of the period this label refers to
+     * 
+     * @Serializer\XmlElement(cdata=false)
      */
     private $end_at;
 
     /**
-     * @var string The column in which this event starts (0-based)
+     * @var string The user-visible name of the label
+     * 
+     * @Serializer\XmlElement(cdata=false)
      */
     private $text;
 

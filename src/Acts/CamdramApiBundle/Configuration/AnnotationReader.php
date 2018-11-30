@@ -13,6 +13,9 @@ class AnnotationReader
 {
     private $reader;
 
+    /**
+     * @var EntityManagerInterface
+     */
     private $em;
 
     public function __construct(Reader $reader, EntityManagerInterface $em)
@@ -49,7 +52,9 @@ class AnnotationReader
             $data->setSelfLink($link);
         }
 
-        $doctrineMetadata = $this->em->getClassMetadata($reflection->getName());
+        //Be careful not to throw exceptions when visiting non-entity classes
+        $doctrineMetadata = $this->em->getMetadataFactory()->isTransient($reflection->getName())
+            ? null : $this->em->getClassMetadata($reflection->getName());
 
         foreach ($reflection->getProperties() as $property) {
             $annotation = $this->reader->getPropertyAnnotation($property, 'Acts\\CamdramApiBundle\\Configuration\\Annotation\\Link');
@@ -60,7 +65,7 @@ class AnnotationReader
                 if (!$link->getName()) {
                     $link->setName($property->getName());
                 }
-                if (!$link->getEntity()) {
+                if (!$link->getEntity() && $doctrineMetadata) {
                     $mapping = $doctrineMetadata->getAssociationMapping($property->getName());
 
                     $targetType = strtolower((new \ReflectionClass($mapping['targetEntity']))->getShortName());

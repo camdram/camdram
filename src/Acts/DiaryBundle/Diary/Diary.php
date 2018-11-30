@@ -3,6 +3,7 @@
 namespace Acts\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Model\EventInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Class Diary
@@ -11,23 +12,36 @@ use Acts\DiaryBundle\Model\EventInterface;
  * end_date, which, if specified, cause the diary to ignore events or parts of multi-day events that take place
  * outside that time period. Only start and end dates that are at the beginning/end of weeks (midnight Sunday morning)
  * have been tested.
+ * 
+ * @Serializer\XmlRoot("diary")
  */
 class Diary
 {
     /**
      * @var array An array of the events that have been added to the Diary.
+     * 
+     * @Serializer\XmlList(inline = true, entry = "event")
      */
     private $events = array();
 
+    /**
+     * @var array An array of week names and time periods relevant to the diary
+     * 
+     * @Serializer\XmlList(inline = true, entry = "label")
+     */
     private $labels = array();
 
     /**
      * @var \DateTime
+     * 
+     * @Serializer\XmlElement(cdata=false)
      */
     private $start_date;
 
     /**
      * @var \DateTime
+     * 
+     * @Serializer\XmlElement(cdata=false)
      */
     private $end_date;
 

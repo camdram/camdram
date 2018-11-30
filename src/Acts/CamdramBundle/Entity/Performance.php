@@ -16,7 +16,6 @@ use Acts\DiaryBundle\Model\EventInterface;
  * @Serializer\ExclusionPolicy("all")
  * @Gedmo\Loggable
  * @Serializer\XmlRoot("performance")
- *
  */
 class Performance implements EventInterface
 {
@@ -26,6 +25,8 @@ class Performance implements EventInterface
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\Expose
+     * @Serializer\XmlAttribute
      */
     private $id;
 
@@ -37,6 +38,7 @@ class Performance implements EventInterface
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 

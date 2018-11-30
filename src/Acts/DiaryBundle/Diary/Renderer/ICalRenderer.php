@@ -19,13 +19,10 @@ class ICalRenderer
         $vcalendar->add('PRODID', '-//Camdram//NONSGML Show Diary//EN');
 
         foreach ($diary->getEvents() as $event) {
-            $start_time = null;
-            $rrule = array();
+            $start_time = new \DateTime($event->getStartDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
+            $rrule = null;
 
-            if ($event->getStartDate() == $event->getEndDate()) {
-                $start_time = new \DateTime($event->getDate().' '.$event->getStartTime()->format('H:i:s'));
-            } else {
-                $start_time = new \DateTime($event->getStartDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
+            if ($event->getStartDate() != $event->getEndDate()) {
                 $last_start_time = new \DateTime($event->getEndDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
                 $rrule = 'FREQ=DAILY;UNTIL='.$last_start_time->format('Ymd\\THis\\Z');
             }
@@ -40,12 +37,11 @@ class ICalRenderer
 
                 $params = array(
                     'SUMMARY' => $event->getName(),
-                    'LOCATION' => $event->getVenue(),
+                    'LOCATION' => $event->getVenue() ? $event->getVenue()->getName() : $event->getVenueName(),
                     'UID' => $event->getId().'@camdram.net',
                     'DTSTAMP' => $dtstamp,
                     'DTSTART' => $start_time,
                     'DURATION' => 'PT2H00M00S',
-                    'DESCRIPTION' => $event->getDescription()
                 );
                 if ($rrule) {
                     $params['RRULE'] = $rrule;
