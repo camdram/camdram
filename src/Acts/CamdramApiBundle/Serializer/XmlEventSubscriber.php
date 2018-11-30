@@ -100,6 +100,9 @@ class XmlEventSubscriber implements EventSubscriberInterface
         if ($metadata->getSelfLink()) {
             $visitor->getCurrentNode()->appendChild($this->createLinkNode($metadata->getSelfLink(), $visitor, $object));
         }
+
+        $class = new \ReflectionClass($object);
+        $visitor->getCurrentNode()->setAttribute('rel', strtolower($class->getShortName()));
     }
 
     private function createLinkNode(LinkMetadata $link, XmlSerializationVisitor $visitor, $object)

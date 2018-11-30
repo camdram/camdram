@@ -3,8 +3,6 @@
 namespace Acts\DiaryBundle\Diary\Renderer;
 
 use Acts\DiaryBundle\Diary\Diary;
-use Acts\DiaryBundle\Event\MultiDayEventInterface;
-use Acts\DiaryBundle\Event\SingleDayEventInterface;
 use Sabre\VObject\Component\VCalendar;
 
 /**
@@ -21,15 +19,12 @@ class ICalRenderer
         $vcalendar->add('PRODID', '-//Camdram//NONSGML Show Diary//EN');
 
         foreach ($diary->getEvents() as $event) {
-            $start_time = null;
-            $rrule = array();
+            $start_time = new \DateTime($event->getStartDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
+            $rrule = null;
 
-            if ($event instanceof MultiDayEventInterface) {
-                $start_time = new \DateTime($event->getStartDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
+            if ($event->getStartDate() != $event->getEndDate()) {
                 $last_start_time = new \DateTime($event->getEndDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
                 $rrule = 'FREQ=DAILY;UNTIL='.$last_start_time->format('Ymd\\THis\\Z');
-            } elseif ($event instanceof SingleDayEventInterface) {
-                $start_time = new \DateTime($event->getDate().' '.$event->getStartTime()->format('H:i:s'));
             }
 
             if ($start_time) {
@@ -42,12 +37,11 @@ class ICalRenderer
 
                 $params = array(
                     'SUMMARY' => $event->getName(),
-                    'LOCATION' => $event->getVenue(),
-                    'UID' => $event->getUid(),
+                    'LOCATION' => $event->getVenue() ? $event->getVenue()->getName() : $event->getVenueName(),
+                    'UID' => $event->getId().'@camdram.net',
                     'DTSTAMP' => $dtstamp,
                     'DTSTART' => $start_time,
                     'DURATION' => 'PT2H00M00S',
-                    'DESCRIPTION' => $event->getDescription()
                 );
                 if ($rrule) {
                     $params['RRULE'] = $rrule;

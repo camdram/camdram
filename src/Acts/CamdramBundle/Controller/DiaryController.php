@@ -122,9 +122,7 @@ class DiaryController extends FOSRestController
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
         $performances = $repo->findInDateRange($start_date, $end_date);
-
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
-        $diary->addEvents($events);
+        $diary->addEvents($performances);
 
         return $this->renderDiary($request, $diary);
     }
@@ -149,8 +147,7 @@ class DiaryController extends FOSRestController
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
         $performances = $repo->findInDateRange($start, $end);
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
-        $diary->addEvents($events);
+        $diary->addEvents($performances);
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName');
         foreach ($repo->findBetween($start, $end) as $name) {

@@ -4,8 +4,7 @@ namespace Camdram\Tests\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Diary\DiaryItem;
 use Acts\DiaryBundle\Diary\DiaryRow;
-use Acts\DiaryBundle\Event\MultiDayEvent;
-use Acts\DiaryBundle\Event\SingleDayEvent;
+use Acts\DiaryBundle\Model\Event;
 use PHPUnit\Framework\TestCase;
 
 class DiaryRowTest extends TestCase
@@ -31,7 +30,7 @@ class DiaryRowTest extends TestCase
 
     public function testAddSingleDayEvent()
     {
-        $event = new SingleDayEvent();
+        $event = new Event();
         $event->setDate(new \DateTime('2014-02-03'));
         $event->setStartTime(new \DateTime('14:00'));
         $event->setEndTime(new \DateTime('15:00'));
@@ -45,7 +44,7 @@ class DiaryRowTest extends TestCase
 
     public function testAddMultiDayEvent()
     {
-        $event = new MultiDayEvent();
+        $event = new Event();
         $event->setStartDate(new \DateTime('2014-02-02'));
         $event->setEndDate(new \DateTime('2014-02-05'));
         $event->setStartTime(new \DateTime('14:00'));
@@ -60,7 +59,7 @@ class DiaryRowTest extends TestCase
 
     public function testAddMultiDayEvent_OverlapStart()
     {
-        $event = new MultiDayEvent();
+        $event = new Event();
         $event->setStartDate(new \DateTime('2014-01-30'));
         $event->setEndDate(new \DateTime('2014-02-02'));
         $event->setStartTime(new \DateTime('14:00'));
@@ -75,7 +74,7 @@ class DiaryRowTest extends TestCase
 
     public function testAddMultiDayEvent_OverlapEnd()
     {
-        $event = new MultiDayEvent();
+        $event = new Event();
         $event->setStartDate(new \DateTime('2014-02-06'));
         $event->setEndDate(new \DateTime('2014-02-10'));
         $event->setStartTime(new \DateTime('14:00'));
@@ -90,7 +89,7 @@ class DiaryRowTest extends TestCase
 
     public function testCanAccept_WithinTimeThreshold()
     {
-        $event = new SingleDayEvent();
+        $event = new Event();
         $event->setDate(new \DateTime('2014-02-01'));
         $event->setStartTime(new \DateTime('14:00'));
         $event->setEndTime(new \DateTime('15:00'));
@@ -99,7 +98,7 @@ class DiaryRowTest extends TestCase
 
     public function testCanAccept_OutsideTimeThreshold()
     {
-        $event = new SingleDayEvent();
+        $event = new Event();
         $event->setDate(new \DateTime('2014-02-01'));
         $event->setStartTime(new \DateTime('16:00'));
         $event->setEndTime(new \DateTime('17:00'));
@@ -108,13 +107,13 @@ class DiaryRowTest extends TestCase
 
     public function testCanAccept_Clash()
     {
-        $event1 = new SingleDayEvent();
+        $event1 = new Event();
         $event1->setDate(new \DateTime('2014-02-01'));
         $event1->setStartTime(new \DateTime('14:00'));
         $event1->setEndTime(new \DateTime('15:00'));
         $this->row->addEvent($event1);
 
-        $event2 = new SingleDayEvent();
+        $event2 = new Event();
         $event2->setDate(new \DateTime('2014-02-01'));
         $event2->setStartTime(new \DateTime('14:00'));
         $event2->setEndTime(new \DateTime('15:00'));
@@ -124,14 +123,14 @@ class DiaryRowTest extends TestCase
 
     public function testCanAccept_MultiDay()
     {
-        $event1 = new MultiDayEvent();
+        $event1 = new Event();
         $event1->setStartDate(new \DateTime('2014-02-02'));
         $event1->setEndDate(new \DateTime('2014-02-04'));
         $event1->setStartTime(new \DateTime('14:00'));
         $event1->setEndTime(new \DateTime('15:00'));
         $this->row->addEvent($event1);
 
-        $event2 = new SingleDayEvent();
+        $event2 = new Event();
         $event2->setDate(new \DateTime('2014-02-01'));
         $event2->setStartTime(new \DateTime('14:00'));
         $event2->setEndTime(new \DateTime('15:00'));
@@ -141,14 +140,14 @@ class DiaryRowTest extends TestCase
 
     public function testCanAccept_MultiDayClash()
     {
-        $event1 = new MultiDayEvent();
+        $event1 = new Event();
         $event1->setStartDate(new \DateTime('2014-02-02'));
         $event1->setEndDate(new \DateTime('2014-02-04'));
         $event1->setStartTime(new \DateTime('14:00'));
         $event1->setEndTime(new \DateTime('15:00'));
         $this->row->addEvent($event1);
 
-        $event2 = new SingleDayEvent();
+        $event2 = new Event();
         $event2->setDate(new \DateTime('2014-02-02'));
         $event2->setStartTime(new \DateTime('14:00'));
         $event2->setEndTime(new \DateTime('15:00'));

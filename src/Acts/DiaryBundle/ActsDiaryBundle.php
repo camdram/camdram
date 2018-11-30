@@ -12,8 +12,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * the DiaryFactory, then adding event objects to it. The diary can then be passed to
  * Acts\DiaryBundle\Diary\Renderer\HtmlRenderer to render it as HTML.
  *
- * All Events must implement SingleDayEventInterface or MultiDayEventInterface depending on whether the event lasts
- * a single day or a period of days at the same time.
+ * All Events must implement EventInterface
  *
  * This bundle is deliberately de-coupled from CamdramBundle, such that it could be made into a useful external bundle.
  * There's a helper class inside CamdramBundle which deals with turning shows and performances into events.

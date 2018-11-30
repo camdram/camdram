@@ -78,7 +78,17 @@
     </div>
 
     <div class="row">
-        {{ render(url('get_venue_events', {identifier: venue.slug})) }}
+        <div class="split-header">
+            <h3>Shows</h3>
+            <ul role="navigation">
+                <li>
+                    <a href="{{ path('get_venue_diary', {identifier: venue.slug, _format: 'ics'}) }}">
+                        <i class="fa fa-calendar"></i> iCal
+                    </a>
+                </li>
+            </ul>
+        </div>
+        {{ render(url('get_venue_diary', {identifier: venue.slug})) }}
     </div>
 {% endblock %}
 

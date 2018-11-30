@@ -2,9 +2,7 @@
 
 namespace Acts\DiaryBundle\Diary;
 
-use Acts\DiaryBundle\Event\EventInterface;
-use Acts\DiaryBundle\Event\SingleDayEventInterface;
-use Acts\DiaryBundle\Event\MultiDayEventInterface;
+use Acts\DiaryBundle\Model\EventInterface;
 
 class DiaryRow
 {
@@ -83,16 +81,10 @@ class DiaryRow
         }
 
         //Now see if there's space in the row
-        if ($event instanceof SingleDayEventInterface) {
-            $index = $this->calculateIndex($event->getDate());
+        $start_index = $this->calculateIndex($event->getStartDate());
+        $end_index = $this->calculateIndex($event->getEndDate());
 
-            return $this->rangeIsFree($index, $index);
-        } elseif ($event instanceof MultiDayEventInterface) {
-            $start_index = $this->calculateIndex($event->getStartDate());
-            $end_index = $this->calculateIndex($event->getEndDate());
-
-            return $this->rangeIsFree($start_index, $end_index);
-        }
+        return $this->rangeIsFree($start_index, $end_index);
     }
 
     public function addItem(DiaryItem $item)
@@ -114,19 +106,13 @@ class DiaryRow
         $item->setStartAt($event->getStartTime());
         $item->setEndAt($event->getEndTime());
 
-        if ($event instanceof SingleDayEventInterface) {
-            $item->setNumberOfDays(1);
-            $item->setStartIndex($this->calculateIndex($event->getDate()));
+        $start_index = $this->calculateIndex($event->getStartDate());
+        $end_index = $this->calculateIndex($event->getEndDate());
+        $numberOfDays = $end_index - $start_index + 1;
+        if ($numberOfDays > 0) {
+            $item->setStartIndex($start_index);
+            $item->setNumberOfDays($end_index - $start_index + 1);
             $this->addItem($item);
-        } elseif ($event instanceof MultiDayEventInterface) {
-           $start_index = $this->calculateIndex($event->getStartDate());
-           $end_index = $this->calculateIndex($event->getEndDate());
-           $numberOfDays = $end_index - $start_index + 1;
-           if ($numberOfDays > 0) {
-               $item->setStartIndex($start_index);
-               $item->setNumberOfDays($end_index - $start_index + 1);
-               $this->addItem($item);
-           }
         }
     }
 

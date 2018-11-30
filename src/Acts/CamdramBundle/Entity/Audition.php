@@ -5,7 +5,9 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
+use Acts\DiaryBundle\Model\EventInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Audition
@@ -16,8 +18,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     description="Auditions advertised for shows in Cambridge",
  *     template="audition/rss.html.twig")
  * @Gedmo\Loggable
+ * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("audition")
+ * @Api\Link(route="get_audition", params={"identifier": "object.getShow().getSlug()"})
  */
-class Audition
+class Audition implements EventInterface
 {
     /**
      * @var int
@@ -25,6 +30,9 @@ class Audition
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -35,6 +43,8 @@ class Audition
      * @Assert\NotBlank()
      * @Assert\Date()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $date;
 
@@ -45,6 +55,8 @@ class Audition
      * @Assert\NotBlank()
      * @Assert\Time()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $start_time;
 
@@ -54,6 +66,8 @@ class Audition
      * @ORM\Column(name="endtime", type="time", nullable=true)
      * @Assert\Time()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $end_time;
 
@@ -63,6 +77,8 @@ class Audition
      * @ORM\Column(name="location", type="string", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $location;
 
@@ -74,6 +90,7 @@ class Audition
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 
@@ -279,5 +296,37 @@ class Audition
     public function getSlug()
     {
         return $this->getShow()->getSlug();
+    }
+
+    // EventInterface
+
+    public function getName()
+    {
+        return $this->show->getName();
+    }
+
+    public function getStartDate()
+    {
+        return $this->date;
+    }
+
+    public function getEndDate()
+    {
+        return $this->date;
+    }
+
+    public function getVenueName()
+    {
+        return $this->location;
+    }
+
+    public function getVenue()
+    {
+        return null;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->getShow()->getTimestamp();
     }
 }

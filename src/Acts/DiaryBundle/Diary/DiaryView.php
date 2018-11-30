@@ -2,9 +2,7 @@
 
 namespace Acts\DiaryBundle\Diary;
 
-use Acts\DiaryBundle\Event\EventInterface;
-use Acts\DiaryBundle\Event\MultiDayEventInterface;
-use Acts\DiaryBundle\Event\SingleDayEventInterface;
+use Acts\DiaryBundle\Model\EventInterface;
 
 /**
  * Class DiaryView
@@ -72,29 +70,15 @@ class DiaryView
      */
     public function addEvent(EventInterface $event)
     {
-        if ($event instanceof MultiDayEventInterface) {
-            //If it's a multi-day event, we may well need to display it in multiple weeks
-            $week_start = Week::getWeekStart($event->getStartDate());
-            do {
-                $week = $this->getWeekForDate($week_start);
-                if ($week) {
-                    $week->addEvent($event);
-                }
-                $week_start->modify('+7 days');
-            } while ($week_start < $event->getEndDate());
-        } elseif ($event instanceof SingleDayEventInterface) {
-            $this->getWeekForDate($event->getDate())->addEvent($event);
-
-            //If its end time is before its start time, we assume this means it continues until that time the next day
-            if ($event->getEndTime() < $event->getStartTime()
-                        && $event->getDate()->format('N') == 6) {
-                $tomorrow = $event->getDate()->modify('+1 day');
-                $week = $this->getWeekForDate($tomorrow);
-                if ($week) {
-                    $week->addEvent($event);
-                }
+        //If it's a multi-day event, we may well need to display it in multiple weeks
+        $week_start = Week::getWeekStart($event->getStartDate());
+        do {
+            $week = $this->getWeekForDate($week_start);
+            if ($week) {
+                $week->addEvent($event);
             }
-        }
+            $week_start->modify('+7 days');
+        } while ($week_start < $event->getEndDate());
     }
 
     /**

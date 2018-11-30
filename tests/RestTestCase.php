@@ -4,6 +4,7 @@ namespace Camdram\Tests;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
+use Sabre\VObject;
 
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
@@ -80,5 +81,16 @@ class RestTestCase extends WebTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('text/xml', $response->headers->get('Content-Type'));
         return new \SimpleXMLElement($response->getContent());
+    }
+
+    protected function doICalRequest($url)
+    {
+        $this->client->request('GET', $url);
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('text/calendar', $response->headers->get('Content-Type'));
+        $vobj = VObject\Reader::read($response->getContent());
+        $this->assertEquals(0, count($vobj->validate()));
+        return $vobj;
     }
 }

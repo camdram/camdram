@@ -1,13 +1,13 @@
 <?php
 
-namespace Acts\DiaryBundle\Event;
+namespace Acts\DiaryBundle\Model;
 
 /**
- * Class AbstractEvent
+ * Class Event
  *
  * A standard implementation of an event
  */
-abstract class AbstractEvent implements EventInterface
+class Event implements EventInterface
 {
     /**
      * @var string
@@ -15,9 +15,24 @@ abstract class AbstractEvent implements EventInterface
     private $name;
 
     /**
-     * @var string
+     * @var VenueInterface\null
      */
     private $venue;
+
+    /**
+     * @var string
+     */
+    private $venue_name;
+
+    /**
+     * @var \DateTime
+     */
+    private $start_date;
+
+    /**
+     * @var \DateTime
+     */
+    private $end_date;
 
     /**
      * @var \DateTime
@@ -30,24 +45,14 @@ abstract class AbstractEvent implements EventInterface
     private $end_time;
 
     /**
-     * @var string|null
-     */
-    private $link;
-
-    /**
-     * @var string|null
-     */
-    private $venue_link;
-
-    /**
      * @var \DateTime
      */
     private $updated_at;
 
     /**
-     * @var string|null
+     * @var int
      */
-    private $uid;
+    private $id;
 
     /**
      * @var string|null
@@ -73,7 +78,16 @@ abstract class AbstractEvent implements EventInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Set the event's venue
+     */
+    public function setVenue(VenueInterface $venue = null)
+    {
+        $this->venue = $venue;
+        return $this;
+    }
+
+    /**
+     * Set the event's venue
      */
     public function getVenue()
     {
@@ -81,49 +95,67 @@ abstract class AbstractEvent implements EventInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * Set the URL reached by clicking on the event's name
-     *
-     * @param string|null $link
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-    }
-
-    /**
      * Set the venue name
      *
      * @param string $venue
      */
-    public function setVenue($venue)
+    public function setVenueName($venueName)
     {
-        $this->venue = $venue;
+        $this->venue_name = $venueName;
+        return $this;
+    }
+
+    /**
+     * Get the venue name
+     *
+     * @param string $venue
+     */
+    public function getVenueName()
+    {
+        return $this->venue_name;
+    }
+
+    /**
+     * Convenience method to set start and end dates to the same value
+     */
+    public function setDate(\DateTime $date)
+    {
+        $this->setStartDate($date);
+        $this->setEndDate($date);
+        return $this;
+    }
+
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * Set the first date on which the event takes place
+     *
+     * @param \DateTime $start_date
+     */
+    public function setStartDate(\DateTime $start_date)
+    {
+        $this->start_date = $start_date;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVenueLink()
+    public function getEndDate()
     {
-        return $this->venue_link;
+        return $this->end_date;
     }
 
     /**
-     * Set the URL reached by clicking on the venue name
+     * Set the last date on which the event takes place
      *
-     * @param string|null $link
+     * @param \DateTime $end_date
      */
-    public function setVenueLink($link)
+    public function setEndDate(\DateTime $end_date)
     {
-        $this->venue_link = $link;
+        $this->end_date = $end_date;
     }
 
     /**
@@ -163,19 +195,19 @@ abstract class AbstractEvent implements EventInterface
     }
 
     /**
-     * @param null|string $uid
+     * @param int $uid
      */
-    public function setUid($uid)
+    public function setId($id)
     {
-        $this->uid = $uid;
+        $this->id = $id;
     }
 
     /**
      * @return null|string
      */
-    public function getUid()
+    public function getId()
     {
-        return $this->uid;
+        return $this->id;
     }
 
     /**

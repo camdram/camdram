@@ -3,7 +3,7 @@
 namespace Camdram\Tests\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Diary\Week;
-use Acts\DiaryBundle\Event\SingleDayEvent;
+use Acts\DiaryBundle\Model\Event;
 use PHPUnit\Framework\TestCase;
 
 class DiaryWeekTest extends TestCase
@@ -50,7 +50,7 @@ class DiaryWeekTest extends TestCase
 
     public function testAddEvent()
     {
-        $event = new SingleDayEvent();
+        $event = new Event();
         $event->setDate(new \DateTime('2014-02-01'));
         $event->setStartTime(new \DateTime('14:00'));
         $event->setEndTime(new \DateTime('15:00'));
@@ -64,12 +64,12 @@ class DiaryWeekTest extends TestCase
 
     public function testAddEvent_DifferentDays()
     {
-        $event1 = new SingleDayEvent();
+        $event1 = new Event();
         $event1->setDate(new \DateTime('2014-01-29'));
         $event1->setStartTime(new \DateTime('14:00'));
         $event1->setEndTime(new \DateTime('15:00'));
 
-        $event2 = new SingleDayEvent();
+        $event2 = new Event();
         $event2->setDate(new \DateTime('2014-02-01'));
         $event2->setStartTime(new \DateTime('14:00'));
         $event2->setEndTime(new \DateTime('15:00'));
@@ -83,12 +83,12 @@ class DiaryWeekTest extends TestCase
 
     public function testAddEvent_SameDay()
     {
-        $event1 = new SingleDayEvent();
+        $event1 = new Event();
         $event1->setDate(new \DateTime('2014-01-29'));
         $event1->setStartTime(new \DateTime('14:00'));
         $event1->setEndTime(new \DateTime('15:00'));
 
-        $event2 = new SingleDayEvent();
+        $event2 = new Event();
         $event2->setDate(new \DateTime('2014-01-29'));
         $event2->setStartTime(new \DateTime('14:00'));
         $event2->setEndTime(new \DateTime('15:00'));

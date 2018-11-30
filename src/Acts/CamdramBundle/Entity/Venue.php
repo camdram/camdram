@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
+use Acts\DiaryBundle\Model\VenueInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("venue")
  */
-class Venue extends Organisation
+class Venue extends Organisation implements VenueInterface
 {
     /**
      * @var string
