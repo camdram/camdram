@@ -101,10 +101,11 @@ class AclProvider
      * database, and dispatches a Camdram-specific event that is used
      * to trigger sending of emails.
      */
-    public function grantAccess(OwnableInterface $entity, User $user, User $granter)
+    public function grantAccess(OwnableInterface $entity, User $user, User $granter = null)
     {
         $ace = new AccessControlEntry();
         $ace->setUser($user);
+        $user->addAce($ace);
 
         $ace->setEntityId($entity->getId())
             ->setCreatedAt(new \DateTime())
@@ -127,7 +128,7 @@ class AclProvider
     /**
      * Revoke access to the entity.
      */
-    public function revokeAccess(OwnableInterface $entity, User $user, User $revoker)
+    public function revokeAccess(OwnableInterface $entity, User $user, User $revoker = null)
     {
         $ace_repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
 
@@ -167,6 +168,7 @@ class AclProvider
 
         $ace = new AccessControlEntry();
         $ace->setUser($user);
+        $user->addAce($ace);
 
         $ace->setEntityId($level)
             ->setCreatedAt(new \DateTime())

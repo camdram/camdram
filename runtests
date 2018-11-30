@@ -7,5 +7,4 @@ export SYMFONY_ENV=test
 php app/console lint:yaml app/config
 php app/console lint:twig app/Resources
 bin/simple-phpunit
-bin/behat
 php app/console security:check --end-point=http://security.sensiolabs.org/check_lock
