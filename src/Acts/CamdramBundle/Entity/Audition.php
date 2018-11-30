@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Acts\DiaryBundle\Model\EventInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Audition
@@ -17,6 +18,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     description="Auditions advertised for shows in Cambridge",
  *     template="audition/rss.html.twig")
  * @Gedmo\Loggable
+ * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("audition")
+ * @Api\Link(route="get_audition", params={"identifier": "object.getShow().getSlug()"})
  */
 class Audition implements EventInterface
 {
@@ -26,6 +30,9 @@ class Audition implements EventInterface
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -36,6 +43,8 @@ class Audition implements EventInterface
      * @Assert\NotBlank()
      * @Assert\Date()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $date;
 
@@ -46,6 +55,8 @@ class Audition implements EventInterface
      * @Assert\NotBlank()
      * @Assert\Time()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $start_time;
 
@@ -55,6 +66,8 @@ class Audition implements EventInterface
      * @ORM\Column(name="endtime", type="time", nullable=true)
      * @Assert\Time()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $end_time;
 
@@ -64,6 +77,8 @@ class Audition implements EventInterface
      * @ORM\Column(name="location", type="string", nullable=false)
      * @Assert\NotBlank()
      * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      */
     private $location;
 
@@ -75,6 +90,7 @@ class Audition implements EventInterface
      *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
 
