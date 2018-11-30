@@ -3,10 +3,9 @@
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Audition;
-use Acts\DiaryBundle\Event\MultiDayEvent;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
-use Acts\DiaryBundle\Event\SingleDayEvent;
+use Acts\DiaryBundle\Event\Event;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -35,11 +34,11 @@ class DiaryHelper
      * @param Show        $show
      * @param Performance $performance
      *
-     * @return MultiDayEvent
+     * @return Event
      */
     public function createEventsFromPerformance(Performance $performance)
     {
-        $event = new MultiDayEvent();
+        $event = new Event();
         $event->setName($performance->getShow()->getName());
         $event->setLink($this->router->generate('get_show', array('identifier' => $performance->getShow()->getSlug())));
         $event->setStartTime($performance->getTime());
@@ -103,10 +102,11 @@ class DiaryHelper
 
     public function createEventFromAudition(Audition $audition)
     {
-        $event = new SingleDayEvent();
+        $event = new Event();
         $event->setName($audition->getShow()->getName());
         $event->setLink($this->router->generate('get_auditions').'#auditions-'.$audition->getShow()->getId());
-        $event->setDate($audition->getDate());
+        $event->setStartDate($audition->getDate());
+        $event->setEndDate($audition->getDate());
         $event->setStartTime($audition->getStartTime());
         $event->setEndTime($audition->getEndTime());
         $event->setVenue($audition->getLocation());

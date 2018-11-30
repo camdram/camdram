@@ -3,14 +3,14 @@
 namespace Camdram\Tests\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Diary\DiaryItem;
-use Acts\DiaryBundle\Event\SingleDayEvent;
+use Acts\DiaryBundle\Event\Event;
 use PHPUnit\Framework\TestCase;
 
 class DiaryItemTest extends TestCase
 {
     public function testDiaryItem()
     {
-        $event = new SingleDayEvent();
+        $event = new Event();
         $event->setName('Test Event');
 
         $item = new DiaryItem();

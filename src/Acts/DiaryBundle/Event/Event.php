@@ -3,11 +3,11 @@
 namespace Acts\DiaryBundle\Event;
 
 /**
- * Class AbstractEvent
+ * Class Event
  *
  * A standard implementation of an event
  */
-abstract class AbstractEvent implements EventInterface
+class Event implements EventInterface
 {
     /**
      * @var string
@@ -18,6 +18,16 @@ abstract class AbstractEvent implements EventInterface
      * @var string
      */
     private $venue;
+
+    /**
+     * @var \DateTime
+     */
+    private $start_date;
+
+    /**
+     * @var \DateTime
+     */
+    private $end_date;
 
     /**
      * @var \DateTime
@@ -124,6 +134,49 @@ abstract class AbstractEvent implements EventInterface
     public function setVenueLink($link)
     {
         $this->venue_link = $link;
+    }
+
+    /**
+     * Convenience method to set start and end dates to the same value
+     */
+    public function setDate(\DateTime $date)
+    {
+        $this->setStartDate($date);
+        $this->setEndDate($date);
+        return $this;
+    }
+
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * Set the first date on which the event takes place
+     *
+     * @param \DateTime $start_date
+     */
+    public function setStartDate(\DateTime $start_date)
+    {
+        $this->start_date = $start_date;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEndDate()
+    {
+        return $this->end_date;
+    }
+
+    /**
+     * Set the last date on which the event takes place
+     *
+     * @param \DateTime $end_date
+     */
+    public function setEndDate(\DateTime $end_date)
+    {
+        $this->end_date = $end_date;
     }
 
     /**

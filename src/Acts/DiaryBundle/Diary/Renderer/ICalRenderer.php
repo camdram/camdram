@@ -3,8 +3,6 @@
 namespace Acts\DiaryBundle\Diary\Renderer;
 
 use Acts\DiaryBundle\Diary\Diary;
-use Acts\DiaryBundle\Event\MultiDayEventInterface;
-use Acts\DiaryBundle\Event\SingleDayEventInterface;
 use Sabre\VObject\Component\VCalendar;
 
 /**
@@ -24,12 +22,12 @@ class ICalRenderer
             $start_time = null;
             $rrule = array();
 
-            if ($event instanceof MultiDayEventInterface) {
+            if ($event->getStartDate() == $event->getEndDate()) {
+                $start_time = new \DateTime($event->getDate().' '.$event->getStartTime()->format('H:i:s'));
+            } else {
                 $start_time = new \DateTime($event->getStartDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
                 $last_start_time = new \DateTime($event->getEndDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
                 $rrule = 'FREQ=DAILY;UNTIL='.$last_start_time->format('Ymd\\THis\\Z');
-            } elseif ($event instanceof SingleDayEventInterface) {
-                $start_time = new \DateTime($event->getDate().' '.$event->getStartTime()->format('H:i:s'));
             }
 
             if ($start_time) {
