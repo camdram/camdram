@@ -105,8 +105,7 @@ abstract class OrganisationController extends AbstractRestController
         }
 
         $performances = $this->getPerformances($identifier, $from, $to);
-        $events = $this->get('acts.camdram.diary_helper')->createEventsFromPerformances($performances);
-        $diary->addEvents($events);
+        $diary->addEvents($performances);
 
         $view = $this->view($diary, 200)
             ->setTemplateVar('diary')

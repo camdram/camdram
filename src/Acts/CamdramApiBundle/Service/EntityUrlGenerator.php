@@ -6,10 +6,14 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Doctrine\Common\Inflector\Inflector;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class EntityUrlGenerator
+class EntityUrlGenerator extends AbstractExtension
 {
     private $router;
+
+    private $accessor;
 
     private static $class_map = array(
         'TechieAdvert' => 'techie'
@@ -18,6 +22,15 @@ class EntityUrlGenerator
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
+        $this->accessor = PropertyAccess::createPropertyAccessor();
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            new TwigFunction('entity_url', array($this, 'generateUrl')),
+            new TwigFunction('has_entity_url', array($this, 'hasUrl')),
+        );
     }
 
     private function getRouteResourceName($class)
@@ -35,29 +48,36 @@ class EntityUrlGenerator
     {
         $route = 'get_' . Inflector::pluralize($this->getRouteResourceName($class));
         if ($this->router->getRouteCollection()->get($route) === null) {
-            throw new \InvalidArgumentException('That entity does not have a corresponding collection route');
+            throw new \InvalidArgumentException('That entity does not have a corresponding collection route: ' . $route);
         }
 
         return $route;
     }
 
-    public function getRoute($entity)
+    public function getRouteAndEntity($entity)
     {
         $route = 'get_' . $this->getRouteResourceName($entity);
-        if ($this->router->getRouteCollection()->get($route) === null) {
-            throw new \InvalidArgumentException('That entity does not have a corresponding route');
+        if ($this->router->getRouteCollection()->get($route) !== null) {
+            return [$route, $entity];
         }
+        else if ($show = $this->accessor->getValue($entity, 'show')) {
+            return ['get_show', $show];
+        }
+    }
 
-        return $route;
+    public function hasUrl($entity)
+    {
+        $route = 'get_' . $this->getRouteResourceName($entity);
+        return $this->router->getRouteCollection()->get($route) !== null
+            || $this->accessor->isReadable($entity, 'show');
     }
 
     public function getIdentifier($entity)
     {
-        $accessor = PropertyAccess::createPropertyAccessor();
         try {
-            $id = $accessor->getValue($entity, 'slug');
+            $id = $this->accessor->getValue($entity, 'slug');
         } catch (NoSuchPropertyException $e) {
-            $id = $accessor->getValue($entity, 'id');
+            $id = $this->accessor->getValue($entity, 'id');
         }
 
         return $id;
@@ -65,8 +85,10 @@ class EntityUrlGenerator
 
     public function generateUrl($entity, $format = null)
     {
-        return $this->router->generate($this->getRoute($entity), array(
-            'identifier' => $this->getIdentifier($entity),
+        list($route, $routeEntity) = $this->getRouteAndEntity($entity);
+
+        return $this->router->generate($route, array(
+            'identifier' => $this->getIdentifier($routeEntity),
             '_format'     => $format
         ), true);
     }

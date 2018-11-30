@@ -2,7 +2,7 @@
 
 namespace Acts\DiaryBundle\Diary;
 
-use Acts\DiaryBundle\Event\EventInterface;
+use Acts\DiaryBundle\Model\EventInterface;
 
 /**
  * Class DiaryItem
@@ -24,7 +24,7 @@ class DiaryItem
     private $end_at;
 
     /**
-     * @var \Acts\DiaryBundle\Event\EventInterface The event associated with this diary item
+     * @var \Acts\DiaryBundle\Model\EventInterface The event associated with this diary item
      */
     private $event;
 

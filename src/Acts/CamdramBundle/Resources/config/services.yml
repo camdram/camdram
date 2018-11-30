@@ -1,10 +1,5 @@
 services:
 
-    acts.camdram.diary_helper:
-        class: Acts\CamdramBundle\Service\DiaryHelper
-        arguments: ['@router']
-        public: true
-
     acts.camdram.type.form_extension:
         class: Acts\CamdramBundle\Form\CamdramFormTypeExtension
         tags:

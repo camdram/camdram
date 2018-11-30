@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\DiaryBundle\Event;
+namespace Acts\DiaryBundle\Model;
 
 /**
  * Class EventInterface
@@ -15,11 +15,18 @@ interface EventInterface
     public function getName();
 
     /**
+     * The venue where the event takes place
+     *
+     * @return VenueInterface
+     */
+    public function getVenue();
+
+    /**
      * The name of the venue where the event takes place
      *
      * @return string
      */
-    public function getVenue();
+    public function getVenueName();
 
     /**
      * The first date on which the event takes place
@@ -50,20 +57,6 @@ interface EventInterface
     public function getEndTime();
 
     /**
-     * The URL reached by clicking on the event name (optional)
-     *
-     * @return null|string
-     */
-    public function getLink();
-
-    /**
-     * The URL reached by clicking on the venue name (optional)
-     *
-     * @return null|string
-     */
-    public function getVenueLink();
-
-    /**
      * The date/time at which the information about the event was last updated
      *
      * @return \DateTime
@@ -75,12 +68,6 @@ interface EventInterface
      *
      * @return string
      */
-    public function getUid();
+    public function getId();
 
-    /**
-     * A description of the event
-     *
-     * @return string
-     */
-    public function getDescription();
 }

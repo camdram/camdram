@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\DiaryBundle\Event;
+namespace Acts\DiaryBundle\Model;
 
 /**
  * Class Event
@@ -15,9 +15,14 @@ class Event implements EventInterface
     private $name;
 
     /**
-     * @var string
+     * @var VenueInterface\null
      */
     private $venue;
+
+    /**
+     * @var string
+     */
+    private $venue_name;
 
     /**
      * @var \DateTime
@@ -40,24 +45,14 @@ class Event implements EventInterface
     private $end_time;
 
     /**
-     * @var string|null
-     */
-    private $link;
-
-    /**
-     * @var string|null
-     */
-    private $venue_link;
-
-    /**
      * @var \DateTime
      */
     private $updated_at;
 
     /**
-     * @var string|null
+     * @var int
      */
-    private $uid;
+    private $id;
 
     /**
      * @var string|null
@@ -83,7 +78,16 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Set the event's venue
+     */
+    public function setVenue(VenueInterface $venue = null)
+    {
+        $this->venue = $venue;
+        return $this;
+    }
+
+    /**
+     * Set the event's venue
      */
     public function getVenue()
     {
@@ -91,49 +95,24 @@ class Event implements EventInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * Set the URL reached by clicking on the event's name
-     *
-     * @param string|null $link
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-    }
-
-    /**
      * Set the venue name
      *
      * @param string $venue
      */
-    public function setVenue($venue)
+    public function setVenueName($venueName)
     {
-        $this->venue = $venue;
+        $this->venue_name = $venueName;
+        return $this;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getVenueLink()
-    {
-        return $this->venue_link;
-    }
-
-    /**
-     * Set the URL reached by clicking on the venue name
+     * Get the venue name
      *
-     * @param string|null $link
+     * @param string $venue
      */
-    public function setVenueLink($link)
+    public function getVenueName()
     {
-        $this->venue_link = $link;
+        return $this->venue_name;
     }
 
     /**
@@ -216,19 +195,19 @@ class Event implements EventInterface
     }
 
     /**
-     * @param null|string $uid
+     * @param int $uid
      */
-    public function setUid($uid)
+    public function setId($id)
     {
-        $this->uid = $uid;
+        $this->id = $id;
     }
 
     /**
      * @return null|string
      */
-    public function getUid()
+    public function getId()
     {
-        return $this->uid;
+        return $this->id;
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace Camdram\Tests\DiaryBundle\Diary;
 
 use Acts\DiaryBundle\Diary\DiaryItem;
-use Acts\DiaryBundle\Event\Event;
+use Acts\DiaryBundle\Model\Event;
 use PHPUnit\Framework\TestCase;
 
 class DiaryItemTest extends TestCase

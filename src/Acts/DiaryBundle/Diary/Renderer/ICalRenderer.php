@@ -41,7 +41,7 @@ class ICalRenderer
                 $params = array(
                     'SUMMARY' => $event->getName(),
                     'LOCATION' => $event->getVenue(),
-                    'UID' => $event->getUid(),
+                    'UID' => $event->getId().'@camdram.net',
                     'DTSTAMP' => $dtstamp,
                     'DTSTART' => $start_time,
                     'DURATION' => 'PT2H00M00S',

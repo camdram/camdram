@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
+use Acts\DiaryBundle\Model\EventInterface;
 
 /**
  * Performance
@@ -17,7 +18,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Serializer\XmlRoot("performance")
  *
  */
-class Performance
+class Performance implements EventInterface
 {
     /**
      * @var int
@@ -285,23 +286,24 @@ class Performance
         return $this;
     }
 
-    /**
-     * Generate a more useful view of the performance dates, making it easier
-     * to render the diary page.
-     *
-     * @return An array of diary entries (currently just one).
-     */
-    public function getDiaryEntries()
+    public function getName()
     {
-        $entries = array();
-        $entry = array();
-
-        $entry['startdate'] = $this->start_date;
-        $entry['enddate'] = $this->end_date;
-        $entry['numdays'] = $entry['enddate']->diff($entry['startdate'])->d + 1;
-
-        $entries[] = $entry;
-
-        return $entries;
+        return $this->getShow()->getName();
     }
+
+    public function getUpdatedAt()
+    {
+        return $this->getShow()->getTimestamp();
+    }
+
+    public function getStartTime()
+    {
+        return $this->getTime();
+    }
+
+    public function getEndTime()
+    {
+        return null;
+    }
+
 }

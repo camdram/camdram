@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
+use Acts\DiaryBundle\Model\EventInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -17,7 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     template="audition/rss.html.twig")
  * @Gedmo\Loggable
  */
-class Audition
+class Audition implements EventInterface
 {
     /**
      * @var int
@@ -279,5 +280,37 @@ class Audition
     public function getSlug()
     {
         return $this->getShow()->getSlug();
+    }
+
+    // EventInterface
+
+    public function getName()
+    {
+        return $this->show->getName();
+    }
+
+    public function getStartDate()
+    {
+        return $this->date;
+    }
+
+    public function getEndDate()
+    {
+        return $this->date;
+    }
+
+    public function getVenueName()
+    {
+        return $this->location;
+    }
+
+    public function getVenue()
+    {
+        return null;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->getShow()->getTimestamp();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Acts\DiaryBundle\Diary;
 
-use Acts\DiaryBundle\Event\EventInterface;
+use Acts\DiaryBundle\Model\EventInterface;
 
 /**
  * Class DiaryView
