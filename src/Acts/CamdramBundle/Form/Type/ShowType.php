@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -63,26 +64,15 @@ class ShowType extends AbstractType
             ))
             ->add('facebook_id', FacebookLinkType::class, array('required' => false))
             ->add('twitter_id', TwitterLinkType::class, array('required' => false))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                //society's 'read-only' field is dependent on whether a new show is being created
-                $show = $event->getData();
-                $form = $event->getForm();
-
-                $disabled = $show
-                    && $show->getId() !== null
-                    && $show->getSociety() !== null
-                    && !$this->authorizationChecker->isGranted('ROLE_ADMIN')
-                    ;
-
-                $form->add('society', EntitySearchType::class, array(
-                    'route' => 'get_societies',
-                    'class' => 'Acts\\CamdramBundle\\Entity\\Society',
+            ->add('societies', CollectionType::class, array(
+                    'entry_type' => TextType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'label' => 'Societies',
                     'required' => false,
-                    'disabled' => $disabled,
-                    'text_field' => 'other_society'
-                ));
-            })
-        ;
+                    'mapped' => false
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -128,6 +128,8 @@ abstract class AbstractRestController extends FOSRestController
                 $this->get('logger')->warning('Failed to add new entity to search index', ['type' => $this->type, 'id' => $entity->getId()]);
             }
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
+            $this->afterEditFormSubmitted($form, $form->getData()->getSlug());
+            $em->flush();
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
         } else {
             return $this->view($form, 400)
@@ -146,6 +148,7 @@ abstract class AbstractRestController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
         $form = $this->getForm($entity, 'PUT');
+        $this->modifyEditForm($form, $identifier);
 
         return $this->view($form, 200)
             ->setTemplateVar('form')
@@ -162,9 +165,9 @@ abstract class AbstractRestController extends FOSRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
         $form = $this->getForm($entity, 'PUT');
-
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $this->afterEditFormSubmitted($form, $identifier);
             $em = $this->getDoctrine()->getManager();
             try {
                 $em->flush();
@@ -192,14 +195,28 @@ abstract class AbstractRestController extends FOSRestController
 
         $form->submit($request->request->get($form->getName()), true);
         if ($form->isValid()) {
+            $this->afterEditFormSubmitted($form, $identifier);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
         } else {
             return $this->view($form, 400)
-                ->setTemplateVar('form');
+                ->setTemplateVar('form')
+                ->setTemplate($this->type.'/edit.html.twig');
         }
     }
+
+    /**
+     * Called before a new edit form is sent to the user.
+     */
+    public function modifyEditForm($form, $identifier) {}
+
+    /**
+     * Called after an edit (or new) form has been successfully submitted and
+     * changes given to Doctrine.
+     * $em->flush() will be called soon after this is called.
+     */
+    public function afterEditFormSubmitted($form, $identifier) {}
 
     /**
      * Action where PUT request is submitted from edit entity form

@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
@@ -100,6 +101,59 @@ class ShowController extends AbstractRestController
     public function postAction(Request $request)
     {
         return parent::postAction($request);
+    }
+
+    /**
+     * Called by AbstractRestController before form goes to user.
+     */
+    public function modifyEditForm($form, $identifier) {
+        // List of societies is public knowledge, no ACL checks here.
+        $em = $this->getDoctrine()->getManager();
+        $show = $this->getEntity($identifier);
+        $socs = $show->getPrettySocData();
+        foreach ($socs as &$soc) {
+            $soc = $soc instanceof Society ? $soc->getName() : $soc["name"];
+        }
+        $form->get('societies')->setData($socs);
+    }
+
+    /**
+     * Called by AbstractRestController after form sent by user.
+     */
+    public function afterEditFormSubmitted($form, $identifier) {
+        $em   = $this->getDoctrine()->getManager();
+        $show = $this->getEntity($identifier);
+
+        $socRepo = $em->getRepository('ActsCamdramBundle:Society');
+        $newSocs = [];   // Array of [string, Society]
+        $newSocIds = [];
+        $liveSocs = $show->getSocieties();
+        $oldSocs = $liveSocs->toArray();
+        $displayList = [];
+        foreach ($form->get('societies')->getData() as $newSocName) {
+            $newSoc = $socRepo->findOneByName($newSocName);
+            $newSocs[] = [$newSocName, $newSoc];
+            if ($newSoc) $newSocIds[] = $newSoc->getId();
+        }
+        // Erase societies from show.societies
+        foreach ($oldSocs as $oldSoc) {
+            if (!in_array($oldSoc->getId(), $newSocIds, true)) {
+                $liveSocs->removeElement($oldSoc);
+            }
+        }
+        foreach ($newSocs as $newSocData) {
+            // Add societies to show.societies
+            $newSociety = $newSocData[1];
+            if ($newSociety && !$liveSocs->exists(function($key, $value) use ($newSociety) {
+                return $value->getId() == $newSociety->getId();
+            })) {
+                $liveSocs->add($newSociety);
+            }
+
+            // Generate JSON representation
+            $displayList[] = $newSociety ? $newSociety->getId() : $newSocData[0];
+        }
+        $show->setSocietiesDisplayList(json_encode($displayList));
     }
 
     public function deleteAction($identifier)
