@@ -65,8 +65,7 @@ class ApplicationRepository extends EntityRepository
     public function findLatestBySociety(Society $society, $limit, \DateTime $now)
     {
         $qb = $this->getLatestQuery($limit, $now);
-        $qb->andWhere(
-                    $qb->expr()->orX('s.society = :society', 'a.society = :society')
+        $qb->andWhere($qb->expr()->orX(':society MEMBER OF s.societies', 'a.society = :society')
             )->setParameter('society', $society);
 
         return $qb->getQuery()->getResult();

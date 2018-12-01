@@ -34,7 +34,7 @@ class ShowRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised = false')
-            ->andWhere('s.society = :society')
+            ->andWhere(':society MEMBER OF s.societies')
             ->setParameter('society', $society)
             ->join('s.performances', 'p');
 
@@ -197,7 +197,7 @@ class ShowRepository extends EntityRepository
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised = true')
-            ->andWhere('s.society = :society');
+            ->andWhere(':society MEMBER OF s.societies');
 
         if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
