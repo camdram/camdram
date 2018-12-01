@@ -162,17 +162,20 @@ class Show implements OwnableInterface
     private $other_venue = '';
 
     /**
-     * The show's society, if it is not linked to a venue resource
+     * A JSON representation of how the show's societies should be displayed,
+     * for the purpose of storing unregistered societies and how they are
+     * ordered with registered societies.
+     * NOT used for access control or anything outside the /shows/ page.
+     * ["New Society", 12] might be rendered as
+     *     New Society and Cambridge Footlights present...
+     * assuming the Footlights have id 12.
      *
      * @var string
      *
-     * @ORM\Column(name="society", type="string", length=255, nullable=true)
+     * @ORM\Column(name="socs_list", type="string", nullable=true)
      * @Gedmo\Versioned
-     * @Serializer\Expose()
-     * @Serializer\Type("string")
-     * @Serializer\XmlElement(cdata=false)
      */
-    private $other_society = '';
+    private $societies_display_list = '';
 
     /**
      * @var bool
@@ -197,14 +200,11 @@ class Show implements OwnableInterface
     private $audextra;
 
     /**
-     * @var Society
-     *
-     * @ORM\ManyToOne(targetEntity="Society", inversedBy="shows")
-     * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
-     * @Gedmo\Versioned
-     * @Api\Link(embed=true, route="get_society", params={"identifier": "object.getSociety().getSlug()"})
+     * All the registered scieties involved with this show.
+     * @ORM\ManyToMany(targetEntity="Society", inversedBy="shows")
+     * @ORM\JoinTable(name="acts_show_soc_link")
      */
-    private $society;
+    private $societies;
 
     /**
      * @var Venue
@@ -478,32 +478,59 @@ class Show implements OwnableInterface
         }
     }
 
-    public function getOtherSociety()
+    /**
+     * It's advisable to use getPrettySocData instead as it has the definitive
+     * handling of inconsistencies between societies (i.e. the join table) and
+     * this.
+     */
+    public function getSocietiesDisplayList()
     {
-        return $this->other_society;
+        return $this->societies_display_list;
     }
 
     /**
-     * Set other_society
+     * Set societies_display_list
      *
-     * @param string $societyName
+     * @param string $societiesList
      *
      * @return Show
      */
-    public function setOtherSociety($societyName)
+    public function setSocietiesDisplayList($societiesList)
     {
-        $this->other_society = $societyName;
+        $this->societies_display_list = $societiesList;
 
         return $this;
     }
 
-    public function getSocietyName()
-    {
-        if ($this->other_society) {
-            return $this->other_society;
-        } elseif ($this->society) {
-            return $this->society->getName();
+    /**
+     * Gets all relevant data on societies ready for display to the user;
+     * returns an array of arrays [ "name" => "Some Small Soc" ] or Societies.
+     * Uses societies_display_list for ordering but gives priority to the info
+     * in societies.
+     */
+    public function getPrettySocData() {
+        $data = json_decode($this->societies_display_list);
+        $out = array();
+        foreach ($data as $soc_basic) {
+            if (is_string($soc_basic)) {
+                $out[] = ["name" => $soc_basic];
+            } else if (is_numeric($soc_basic)) {
+                # is_numeric would return true for the STRING "1234", so the if
+                # statements have to be in this order.
+                foreach ($this->societies as $s) {
+                    if ($s->getId() == $soc_basic) {
+                        $out[] = $s;
+                        break;
+                    }
+                }
+            }
         }
+        foreach ($this->societies as $society) {
+            if (!in_array($society->getId(), $data, true)) {
+                $out[] = $society;
+            }
+        }
+        return $out;
     }
 
     /**
@@ -740,27 +767,13 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set society
+     * Get societies
      *
-     * @param \Acts\CamdramBundle\Entity\Society $society
-     *
-     * @return Show
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
+    public function getSocieties()
     {
-        $this->society = $society;
-
-        return $this;
-    }
-
-    /**
-     * Get society
-     *
-     * @return \Acts\CamdramBundle\Entity\Society
-     */
-    public function getSociety()
-    {
-        return $this->society;
+        return $this->societies;
     }
 
     /**
@@ -809,13 +822,15 @@ class Show implements OwnableInterface
      */
     public function __construct()
     {
-        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->techie_adverts = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->auditions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->auditions    = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles        = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->societies    = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->techie_adverts = new \Doctrine\Common\Collections\ArrayCollection();
+
         $this->entry_expiry = new \DateTime();
-        $this->timestamp = new \DateTime();
+        $this->timestamp    = new \DateTime();
     }
 
     /**

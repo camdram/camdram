@@ -39,8 +39,8 @@ class ShowVoter extends Voter
                 return true;
             }
         }
-        if ($subject->getSociety()) {
-            if ($this->aclProvider->isOwner($token->getUser(), $subject->getSociety())) {
+        foreach ($subject->getSocieties() as $society) {
+            if ($this->aclProvider->isOwner($token->getUser(), $society)) {
                 return true;
             }
         }
