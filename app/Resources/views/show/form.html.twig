@@ -29,12 +29,19 @@
 </div>
 
 <div class="form-large-row">
-    {{ form_label(form.society) }}
-    {{ form_widget(form.society) }}
-    {{ form_errors(form.society) }}
-    {% if form.society.vars.disabled %}
-    <p>Please <a href="{{ path('acts_camdram_contact_us') }}">contact us</a> if you would like to change this show's society</p>
-    {% endif %}
+    {{ form_label(form.societies) }}
+    <div>
+        <p>Registered societies will appear in the search pop-up, but you can also add societies that aren't registered with Camdram. Adding a registered society allows its admins to approve and edit your show.
+        {{ form_errors(form.societies) }}</p>
+        <div class="linked-societies" data-prototype="{% filter escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endfilter %}">
+            {% for society in form.societies %}
+		{% include 'show/society-form.html.twig' with {society: society} %}
+            {% endfor %}
+        </div>
+        <ul class="inline-list right">
+           <li> <a href="#" class="add_link">Add society</a></li>
+        </ul>
+    </div>
 </div>
 
 {{ form_row(form.description) }}
@@ -107,6 +114,15 @@ $(function() {
     update_date_fields();
     $('.performances').entityCollection({
         initialiseRow: update_date_fields
+    });
+    $('.linked-societies').entityCollection({
+        initialiseRow: function(index, row) {
+            var input = $(row).find("input");
+            console.log(row);
+            input.addClass("autocomplete_input");
+            input.entitySearch({route: 'get_societies'});
+        },
+        min_items: 0
     });
 });
 </script>

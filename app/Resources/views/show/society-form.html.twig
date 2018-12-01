@@ -1,0 +1,10 @@
+<div class="form-medium-widget">
+    <menu style="display: flex; justify-content: space-around" class="fake-label">
+        <a href="#!" class="fa fa-fw remove_link fa-times" title="Remove this society"></a>
+        <a href="#!" class="fa fa-fw fa-long-arrow-up" title="Move this society up"></a>
+        <a href="#!" class="fa fa-fw fa-long-arrow-down" title="Move this society down"></a>
+    </menu>
+    {{ form_widget(society) }}
+    {{ form_errors(society)}}
+    {{ form_rest(society) }}
+</div>
