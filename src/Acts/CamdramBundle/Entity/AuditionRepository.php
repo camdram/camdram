@@ -90,14 +90,14 @@ class AuditionRepository extends EntityRepository
     public function findUpcomingBySociety(Society $society, $limit, \DateTime $now)
     {
         return $this->getUpcomingQuery($limit, $now)
-            ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
+            ->andWhere(':society MEMBER OF s.societies')->setParameter('society', $society)
             ->getQuery()->getResult();
     }
 
     public function findUpcomingNonScheduledBySociety(Society $society, $limit, \DateTime $now)
     {
         return $this->getUpcomingNonScheduledQuery($limit, $now)
-            ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
+            ->andWhere(':society MEMBER OF s.societies')->setParameter('society', $society)
             ->getQuery()->getResult();
     }
 

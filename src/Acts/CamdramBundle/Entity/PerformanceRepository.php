@@ -95,7 +95,7 @@ class PerformanceRepository extends EntityRepository
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised = true')
-            ->andWhere('s.society = :society');
+            ->andWhere(':society MEMBER OF s.societies');
 
         if ($from) {
             $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);

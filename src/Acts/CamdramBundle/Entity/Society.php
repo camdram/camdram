@@ -16,7 +16,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 class Society extends Organisation
 {
     /**
-     * @ORM\ManyToMany(targetEntity="Show", mappedBy="society")
+     * @ORM\ManyToMany(targetEntity="Show", mappedBy="societies")
      * @Api\Link(route="get_society_shows", params={"identifier": "object.getSlug()"})
      */
     private $shows;

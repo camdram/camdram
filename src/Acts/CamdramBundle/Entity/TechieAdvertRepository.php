@@ -21,7 +21,7 @@ class TechieAdvertRepository extends EntityRepository
         $query = $qb->leftJoin('a.show', 's')
             ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
             ->andWhere('s.authorised = true')
-            ->orderBy('a.expiry, s.name, s.society')
+            ->orderBy('a.expiry, s.name')
             ->setParameter('expiry', $date, \Doctrine\DBAL\Types\Type::DATE)
             ->setParameter('time', $date, \Doctrine\DBAL\Types\Type::TIME)
             ->getQuery();
@@ -50,7 +50,7 @@ class TechieAdvertRepository extends EntityRepository
     public function findLatestBySociety(Society $society, $limit, \DateTime $now)
     {
         return $this->getLatestQuery($limit, $now)
-            ->leftJoin('s.society', 'y')->andWhere('y = :society')->setParameter('society', $society)
+            ->andWhere(':society MEMBER OF s.societies')->setParameter('society', $society)
             ->getQuery()->getResult();
     }
 

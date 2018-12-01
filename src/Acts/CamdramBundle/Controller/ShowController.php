@@ -126,9 +126,8 @@ class ShowController extends AbstractRestController
         $admins = $this->get('camdram.security.acl.provider')->getOwners($show);
         $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
-        if ($show->getSociety()) {
-            $admins[] = $show->getSociety();
-        }
+        $admins = array_merge($admins, $show->getSocieties()->toArray());
+
         if ($show->getVenue()) {
             $admins[] = $show->getVenue();
         }
