@@ -8,7 +8,12 @@
         {{ not loop.first ? '</div>' }}
         <div {% if editable %}id="role_{{ role.id }}"{% endif %} style="clear: both">
         {%- if editable -%}
-        <div class="right"><i class="fa fa-arrows-v"></i>&nbsp;<a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}"><i class="fa fa-trash-o"></i></a></div>
+        <div class="right">
+            <i class="fa fa-arrows-v"></i>&nbsp;
+            <a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}" class="delete-link">
+                <i class="fa fa-trash-o"></i>
+            </a>
+        </div>
         {%- endif -%}
 
         {# Pretify name-less roles held by people. #}
