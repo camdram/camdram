@@ -232,19 +232,25 @@ import Bloodhound from 'typeahead.js'
             var $add_link = $(options.add_link_selector, $self.parent());
 
             var update_links = function() {
+                var uparrows = $('[data-entitycollection="moveup"]', $self);
+                var downarrows = $('[data-entitycollection="movedown"]', $self);
                 if ($('.remove_link', $self).length > options.min_items) {
-                    $('.remove_link', $self).show();
+                    $('.remove_link', $self).css('visibility', 'visible');
                 }
                 else {
-                    $('.remove_link', $self).hide();
+                    $('.remove_link', $self).css('visibility', 'hidden');
                 }
 
                 if ($('.remove_link', $self).length < options.max_items) {
-                    $add_link.show();
+                    $add_link.css('visibility', 'visible');
                 }
                 else {
-                    $add_link.hide();
+                    $add_link.css('visibility', 'hidden');
                 }
+                uparrows.not(':first').css('visibility', 'visible');
+                uparrows.first().css('visibility', 'hidden');
+                downarrows.not(':last').css('visibility', 'visible');
+                downarrows.last().css('visibility', 'hidden');
             }
 
             $add_link.click(function(e) {
@@ -254,15 +260,29 @@ import Bloodhound from 'typeahead.js'
                 $self.append($row);
                 fixHtml($row);
                 update_links();
-                options.initialiseRow.apply($row);
+                options.initialiseRow(index, $row);
                 index++;
-            })
+            });
 
-            $('.remove_link', $self).live('click', function(e) {
+            $self.on('click', '.remove_link', function(e) {
                 e.preventDefault();
                 $(this).parentsUntil($self).remove();
                 update_links();
-            })
+            });
+
+            var rowSwapper = function(e) {
+                e.preventDefault();
+                var action = this.getAttribute('data-entitycollection');
+                var $myRow = $(this).parentsUntil($self).last();
+                var myInput = $myRow.find("input[name]").get(0);
+                var otherInput = (action === 'moveup' ? $myRow.prev() : $myRow.next()
+                      ).find("input[name]").get(0);
+                var temp = myInput.value;
+                myInput.value = otherInput.value;
+                otherInput.value = temp;
+            }
+
+            $self.on('click', '[data-entitycollection]', rowSwapper);
 
             update_links();
             $self.children().each(options.initialiseRow);

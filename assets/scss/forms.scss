@@ -117,12 +117,12 @@ textarea {
   flex-flow: row wrap;
   align-items: center;
 
-  > label {
+  > label, > .fake-label {
     min-width: 7rem;
     padding: 0.4rem 0.7rem;
-  }
-  > label + * {
-    flex: 20em;
+    + * {
+      flex: 20em;
+    }
   }
 }
 
