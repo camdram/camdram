@@ -3,11 +3,19 @@
  direct or produce. #}
 <h4><a href="{{ path('get_show',
     {identifier: show.slug}) }}">{{ show.name }}</a>
-{% if show.society %}
-    - <a href="{{ path('get_society', {identifier: show.society.slug}) }}">{{ show.society.shortname ?: show.society.name }}</a>
-{% elseif show.societyname is not empty %}
-    - {{ show.societyname }}
-{% endif %}
+    {% for society in show.prettysocdata %}
+        {{- loop.index == 1 ? " – " -}}
+        {%- if society.id is defined -%}
+            <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.shortname ?: society.name }}</a>
+        {%- else -%}
+            {{ society.name }}
+        {%- endif -%}
+        {%- if loop.revindex > 2 -%}
+            ,
+        {% elseif loop.revindex == 2 %}
+            and
+        {% endif -%}
+    {% endfor %}
 </h4>
 <p>{% include 'performance/show.html.twig' with { 'performances' : show.performances} %}
 {% if show.weeks is not empty %}

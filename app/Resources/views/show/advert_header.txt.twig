@@ -1,11 +1,16 @@
 {# A common template for displaying information of about a show in any kind
  of advert i.e. auditions, production team vancancies, and applications to
  direct or produce. #}
-{% if show.society %}
-    {{- show.society.shortname ?: show.society.name }} presents
-{% elseif show.societyname is not empty %}
-    {{- show.societyname }} presents
+{% for society in show.prettysocdata %}
+{%- if society.id is defined -%}
+{{ society.shortname ?: society.name }}
+{%- else -%}
+{{ society.name }}
+{%- endif -%}
+{%- if loop.revindex > 2 -%}, {% elseif loop.revindex == 2 %} and {% elseif loop.length == 1 %} presents...
+{% else %} present...
 {% endif %}
+{% endfor %}
 {{ show.name }}
 {% include 'performance/show.txt.twig' with {
     'performances' : show.performances} -%}

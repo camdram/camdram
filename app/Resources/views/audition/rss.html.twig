@@ -1,11 +1,18 @@
-<p>{{ entity.show.name }}</p>
+<p>{{ entity.show.name }}
 
-{% if entity.show.society %}
-	- <a href="{{ path('get_society', {identifier: entity.show.society.slug}) }}">{{ entity.show.society.shortname ?: entity.show.society.name }}</a>
-{% elseif entity.show.societyname is not empty %}
-    - {{ entity.show.societyname }}
+{% for society in entity.show.prettysocdata %}
+{{- loop.index == 1 ? " – " -}}
+{%- if society.id is defined -%}
+    <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.shortname ?: society.name }}</a>
+{%- else -%}
+    {{ society.name }}
 {% endif %}
-
+{%- if loop.revindex > 2 -%}
+    ,
+{% elseif loop.revindex == 2 %}
+    and
+{% endif -%}
+{% endfor %}</p>
 <p>{{ entity.show.audextra | camdram_markdown }}</p>
 
 <ul>
