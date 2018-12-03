@@ -178,9 +178,11 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
     private function allocateSociety(Show $show)
     {
         if (mt_rand(0, 3) == 0) {
-            $show->setOtherSociety('Random Society '.mt_rand(1, 100));
+            $show->setSocietiesDisplayList(json_encode(['Random Society '.mt_rand(1, 100)]));
         } else {
-            $show->setSociety($this->society_repo->findOneById($this->society_ids[mt_rand(0, count($this->society_ids) - 1)]));
+            $socId = $this->society_ids[mt_rand(0, count($this->society_ids) - 1)];
+            $show->setSocietiesDisplayList('['.$socId.']');
+            $show->getSocieties()->add($this->society_repo->findOneById($socId));
         }
     }
 
