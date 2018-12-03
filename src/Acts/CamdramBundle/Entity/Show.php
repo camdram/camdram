@@ -489,6 +489,32 @@ class Show implements OwnableInterface
     }
 
     /**
+     * DEPRECATED and going away eventually. Returns the first society name.
+     * @Serializer\VirtualProperty()
+     * @Serializer\Type("string")
+     * @Serializer\XmlElement(cdata=false)
+     */
+    public function getOtherSociety()
+    {
+        $data = $this->getPrettySocData();
+        return empty($data) ? NULL :
+            (is_array($data[0]) ? $data[0]["name"] : $data[0]->getName());
+    }
+
+    /**
+     * The correct way to access societies in the API.
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlKeyValuePairs()
+     */
+    public function getAllSocieties()
+    {
+        $data = $this->getPrettySocData();
+        return array_map(function($s) {
+            return is_array($s) ? $s : ["id" => $s->getId(), "name" => $s->getName(), "slug" => $s->getSlug()];
+        }, $data);
+    }
+
+    /**
      * Set societies_display_list
      *
      * @param string $societiesList
@@ -504,7 +530,7 @@ class Show implements OwnableInterface
 
     /**
      * Gets all relevant data on societies ready for display to the user;
-     * returns an array of arrays [ "name" => "Some Small Soc" ] or Societies.
+     * returns an array of arrays [ "name" => "Some Small Soc" ] or of Societies.
      * Uses societies_display_list for ordering but gives priority to the info
      * in societies.
      */
