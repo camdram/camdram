@@ -172,7 +172,7 @@ class Show implements OwnableInterface
      *
      * @var string
      *
-     * @ORM\Column(name="socs_list", type="string", nullable=true)
+     * @ORM\Column(name="socs_list", type="text", nullable=false)
      * @Gedmo\Versioned
      */
     private $societies_display_list = '';
@@ -831,6 +831,8 @@ class Show implements OwnableInterface
 
         $this->entry_expiry = new \DateTime();
         $this->timestamp    = new \DateTime();
+
+        $this->setSocietiesDisplayList('[]');
     }
 
     /**
