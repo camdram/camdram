@@ -75,7 +75,7 @@ class ShowListener
     {
         $authorisationEmailSent = false;
 
-        if ($event->hasChangedField('society') && $show->getSociety() instanceof Society) {
+        if ($event->hasChangedField('society') && ! $show->getSocieties()->isEmpty()) {
             if ($show->getAuthorised()) {
                 $this->moderationManager->notifySocietyChanged($show);
             } else {

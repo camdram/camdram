@@ -37,19 +37,7 @@ before authorizing.</p>
 
 <h3>Show details follow</h3	>
 
-<p>
-{% if show.society %}{{ show.society.name }} presents <br>{% endif %} 
-<b>{{ show.name }}</b><br>
-{% if show.author %} by {{ show.author }}<br> {% endif %}
-{% for p in show.performances %}
-    {{ p.time|date('g:ia') }}, {{ p.startdate|date('D jS F Y') }}{% if date(p.startdate) != date(p.enddate) %} - {{ p.enddate|date('D jS F Y') }},{% endif %}
-    {%- if p.venue %} @ {{ p.venue.name|e }}
-    {%- elseif p.venuename is not empty %} @ {{ p.venuename }}
-    {%- else %} @ Venue to be confirmed{% endif %}
-    <br>
-{% endfor %}
-</p>
-
+{% include 'show/advert_header.html.twig' %}
 <p>
 	{{ show.description }}
 </p>

@@ -54,8 +54,10 @@ class ContactEntityService
         $recipients = $this->aclProvider->getOwners($entity);
 
         if ($entity instanceof Show) {
-            if (count($recipients) == 0 && $entity->getSociety()) {
-                $recipients = $this->aclProvider->getOwners($entity->getSociety());
+            if (count($recipients) == 0) {
+                foreach ($entity->getSocieties() as $society) {
+                    $recipients = $this->aclProvider->getOwners($society);
+                }
             }
             if (count($recipients) == 0 && $entity->getVenue()) {
                 $recipients = $this->aclProvider->getOwners($entity->getVenue());
