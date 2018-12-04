@@ -3,6 +3,7 @@
 namespace Camdram\Tests\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Service\EmailDispatcher;
 use PHPUnit\Framework\TestCase;
@@ -58,5 +59,26 @@ class EmailDispatcherTest extends TestCase
         $this->mailer->expects($this->once())->method('send');
 
         $this->emailDispatcher->sendShowCreatedEmail($show, $owners, $recipients, $admins);
+    }
+
+    public function testSendShowSocietyChangedEmail() {
+        $show = new Show();
+        $show->getSocieties()->add(new Society());
+        $owners = array('owner1', 'owner2');
+
+        $user1 = new User();
+        $user1->setEmail('user1@camdram.net');
+        $user2 = new User();
+        $user2->setEmail('user2@camdram.net');
+        $moderators = array(
+            $user1, $user2
+        );
+
+        $this->twig->expects($this->exactly(1))->method('render')
+            ->with($this->anything(), array('owners' => $owners, 'show' => $show))
+            ->will($this->returnValue('The message'));
+
+        $this->mailer->expects($this->once())->method('send');
+        $this->emailDispatcher->sendShowSocietyChangedEmail($show, $owners, $moderators);
     }
 }
