@@ -92,8 +92,8 @@ class ModerationManager
         $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
         if ($entity instanceof Show) {
-            if ($entity->getSociety()) {
-                $users = array_merge($users, $repo->getEntityOwners($entity->getSociety()));
+            foreach ($entity->getSocieties() as $society) {
+                $users = array_merge($users, $repo->getEntityOwners($society));
             }
             if ($entity->getVenue()) {
                 $users = array_merge($users, $repo->getEntityOwners($entity->getVenue()));
@@ -178,7 +178,10 @@ class ModerationManager
     {
         if ($entity instanceof Show) {
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
-            $moderators = $repo->getEntityOwners($entity->getSociety());
+            $moderators = [];
+            foreach ($entity->getSocieties() as $society) {
+                $moderators = array_merge($moderators, $repo->getEntityOwners($society));
+            }
             if (count($moderators) > 0) {
                 if ($this->tokenStorage->getToken()) {
                     $owners = array($this->tokenStorage->getToken()->getUser());

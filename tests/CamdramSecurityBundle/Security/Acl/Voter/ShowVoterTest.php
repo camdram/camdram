@@ -47,7 +47,7 @@ class ShowVoterTest extends TestCase
         $show = new Show();
         $society = new Society();
         $society->setName('Test Society');
-        $show->setSociety($society);
+        $show->getSocieties()->add($society);
 
         $this->aclProvider->expects($this->any())->method('isOwner')
             ->with($this->user, $society)->will($this->returnValue(true));
@@ -69,7 +69,7 @@ class ShowVoterTest extends TestCase
         $show = new Show();
         $society = new Society();
         $society->setName('Test Society');
-        $show->setSociety($society);
+        $show->getSocieties()->add($society);
 
         $this->aclProvider->expects($this->atLeastOnce())->method('isOwner')
             ->with($this->user, $society)->will($this->returnValue(false));

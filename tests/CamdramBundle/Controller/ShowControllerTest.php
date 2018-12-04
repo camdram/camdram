@@ -110,7 +110,7 @@ class ShowControllerTest extends RestTestCase
             ->setCategory("comedy")
             ->setAuthorised(true)
             ->addPerformance($performance)
-            ->setSociety($society);
+            ->getSocieties()->add($society);
         $this->entityManager->persist($show);
         $this->entityManager->flush();
 

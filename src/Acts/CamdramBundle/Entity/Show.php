@@ -165,7 +165,7 @@ class Show implements OwnableInterface
      * A JSON representation of how the show's societies should be displayed,
      * for the purpose of storing unregistered societies and how they are
      * ordered with registered societies.
-     * NOT used for access control or anything outside the /shows/ page.
+     * NOT used for access control etc.
      * ["New Society", 12] might be rendered as
      *     New Society and Cambridge Footlights present...
      * assuming the Footlights have id 12.
@@ -489,12 +489,28 @@ class Show implements OwnableInterface
     }
 
     /**
+     * DEPRECATED and going away eventually. Returns the first society, if it
+     * is registered.
+     * @Api\Link(embed=true, name="society", route="get_society", params={"identifier": "object.getSocietyLegacy().getSlug()"})
+     */
+    public function getSocietyLegacy()
+    {
+        $data = $this->getPrettySocData();
+        if (empty($data) || is_array($data[0])) { return; }
+        return $data[0];
+    }
+
+    /**
      * DEPRECATED and going away eventually. Returns the first society name.
+     * Historically afaict this could differ from getSociety()->getName();
+     * as the other_society column has now been deleted, they now must be
+     * consistent.
      * @Serializer\VirtualProperty()
      * @Serializer\Type("string")
      * @Serializer\XmlElement(cdata=false)
+     * @Serializer\SerializedName("other_society")
      */
-    public function getOtherSociety()
+    public function getOtherSocietyLegacy()
     {
         $data = $this->getPrettySocData();
         return empty($data) ? NULL :
@@ -505,8 +521,9 @@ class Show implements OwnableInterface
      * The correct way to access societies in the API.
      * @Serializer\VirtualProperty()
      * @Serializer\XmlKeyValuePairs()
+     * @Serializer\SerializedName("societies")
      */
-    public function getAllSocieties()
+    public function getSocietiesForAPI()
     {
         $data = $this->getPrettySocData();
         return array_map(function($s) {

@@ -110,7 +110,8 @@ class EmailDispatcher
     {
         $toEmails = $this->emailArrayFromUsers($moderators);
 
-        $message = (new \Swift_Message('Society changed to '. $show->getSociety()->getName() .': '.$show->getName()))
+        $message = (new \Swift_Message('Authorized society(s) changed to '. implode("; ",
+               $show->getSocieties()->map(function($s) { return $s->getName(); })->toArray())))
             ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($toEmails)
             ->setBody(
