@@ -42,6 +42,7 @@
            <li> <a href="#" class="add_link">Add society</a></li>
         </ul>
     </div>
+    {% do form.societies.setRendered %}
 </div>
 
 {{ form_row(form.description) }}
