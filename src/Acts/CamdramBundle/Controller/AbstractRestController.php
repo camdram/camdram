@@ -125,7 +125,7 @@ abstract class AbstractRestController extends FOSRestController
                 $em->persist($form->getData());
                 $em->flush();
             } catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $this->get('logger')->warning('Failed to add new entity to search index', ['type' => $this->type, 'id' => $entity->getId()]);
+                $this->get('logger')->warning('Failed to add new entity to search index', ['type' => $this->type]);
             }
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
             $this->afterEditFormSubmitted($form, $form->getData()->getSlug());
