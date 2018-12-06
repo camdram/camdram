@@ -27,7 +27,7 @@ class Version20181203000730 extends AbstractMigration
 
         // Migrate
         $this->addSql('UPDATE acts_shows SET socs_list = "[]"');
-        $this->addSql('UPDATE acts_shows SET socs_list = CONCAT("[", JSON_QUOTE(society), "]") ' .
+        $this->addSql("UPDATE acts_shows SET socs_list = CONCAT('[\"', REPLACE(REPLACE(society, '\\\\', '\\\\\\\\'), '\\\"', '\\\\\"'), '\"]') " .
                       'WHERE socid IS NULL AND COALESCE(society, "") <> "";');
         $this->addSql('UPDATE acts_shows SET socs_list = CONCAT("[", socid, "]") WHERE socid IS NOT NULL;');
         $this->addSql('INSERT INTO acts_show_soc_link (show_id, society_id) SELECT id, socid FROM acts_shows WHERE socid IS NOT NULL');
