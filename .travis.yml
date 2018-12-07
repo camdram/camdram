@@ -11,12 +11,12 @@ services:
   - elasticsearch
   - mysql
 before_script:
-  # Disable xdebug for speedup
-- phpenv config-rm xdebug.ini
   # Enable search listeners via paramaters.yml
 - cp app/config/parameters.travis.yml app/config/parameters.yml
   # Install deps. `--no-interaction` causes paramters.yml to be populated with default values
-- composer install --no-interaction
+- travis_retry composer install --no-interaction
 script:
-- "./runtests"
+- "./runtests --coverage-clover=coverage.xml"
 - "./check_dev_setup"
+after_success:
+- bash <(curl -s https://codecov.io/bash)

@@ -13,3 +13,4 @@ bin
 .web-server-pid
 node_modules
 assets/js/fos_js_routes.json
+coverage.xml
