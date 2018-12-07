@@ -151,9 +151,12 @@ class ShowController extends AbstractRestController
             }
 
             // Generate JSON representation
-            $displayList[] = $newSociety ? $newSociety->getId() : $newSocData[0];
+            $jsonRep = $newSociety ? $newSociety->getId() : $newSocData[0];
+            if (!in_array($jsonRep, $displayList, true)) {
+                $displayList[] = $jsonRep;
+            }
         }
-        $show->setSocietiesDisplayList(json_encode($displayList));
+        $show->setSocietiesDisplayList($displayList);
     }
 
     public function deleteAction($identifier)

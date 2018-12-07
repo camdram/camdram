@@ -170,12 +170,12 @@ class Show implements OwnableInterface
      *     New Society and Cambridge Footlights present...
      * assuming the Footlights have id 12.
      *
-     * @var string
+     * @var array
      *
-     * @ORM\Column(name="socs_list", type="text", nullable=false)
+     * @ORM\Column(name="socs_list", type="json_array", nullable=false)
      * @Gedmo\Versioned
      */
-    private $societies_display_list = '';
+    private $societies_display_list = [];
 
     /**
      * @var bool
@@ -552,7 +552,7 @@ class Show implements OwnableInterface
      * in societies.
      */
     public function getPrettySocData() {
-        $data = json_decode($this->societies_display_list);
+        $data = $this->societies_display_list;
         $out = array();
         foreach ($data as $soc_basic) {
             if (is_string($soc_basic)) {
@@ -875,7 +875,7 @@ class Show implements OwnableInterface
         $this->entry_expiry = new \DateTime();
         $this->timestamp    = new \DateTime();
 
-        $this->setSocietiesDisplayList('[]');
+        $this->setSocietiesDisplayList([]);
     }
 
     /**

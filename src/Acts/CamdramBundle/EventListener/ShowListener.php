@@ -78,7 +78,7 @@ class ShowListener
         if ($event->hasChangedField('societies_display_list') && ! $show->getSocieties()->isEmpty()) {
             // Can't access changes to the societies Association here, so
             // it's neccessary to parse the JSON.
-            $socs_data = array_map('json_decode', $event->getEntityChangeSet()['societies_display_list']);
+            $socs_data = $event->getEntityChangeSet()['societies_display_list'];
             if (is_array($socs_data[0]) && is_array($socs_data[1])) {
                 $socs_data = [array_filter($socs_data[0], 'is_int'), array_filter($socs_data[1], 'is_int')];
                 if (array_diff($socs_data[0], $socs_data[1]) || array_diff($socs_data[1], $socs_data[0])) {

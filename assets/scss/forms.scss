@@ -130,6 +130,7 @@ textarea {
   width: 100%;
   margin-bottom: 1rem;
   color: $form-text-color;
+  clear: both;
 
   @media all and (min-width: $width-small) {
     display: flex;
