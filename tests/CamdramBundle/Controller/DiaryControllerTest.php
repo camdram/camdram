@@ -185,4 +185,12 @@ class DiaryControllerTest extends RestTestCase
         ], $data);
     }
 
+    public function testInvalidDates()
+    {
+        $this->client->request('GET', '/diary/blah');
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+
+        $this->client->request('GET', '/diary/2003.json?end=invalid-date');
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+    }
 }

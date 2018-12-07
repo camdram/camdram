@@ -6,6 +6,7 @@ use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Label;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Acts\CamdramBundle\Service\Time;
 
 /**
@@ -72,7 +73,7 @@ class DiaryController extends FOSRestController
 
     public function yearAction(Request $request, $year)
     {
-        $start_date = new \DateTime($year.'-01-01');
+        $start_date = \DateTime::createFromFormat('!Y', $year);
 
         return $this->dateAction($request, $start_date);
     }
@@ -114,7 +115,7 @@ class DiaryController extends FOSRestController
     public function singleWeekAction(Request $request, $date)
     {
         $week_manager = $this->get('acts.camdram.week_manager');
-        $start_date = $week_manager->previousSunday(new \DateTime($date));
+        $start_date = $week_manager->previousSunday(\DateTime::createFromFormat('!Y-m-d', $date));
         $end_date = clone $start_date;
         $end_date->modify('+1 week');
         $diary = new Diary;
@@ -130,14 +131,17 @@ class DiaryController extends FOSRestController
     public function dateAction(Request $request, $start)
     {
         if (is_string($start)) {
-            $start = new \DateTime($start);
+            $start = \DateTime::createFromFormat('!Y-m-d', $start);
+            if (!$start) {
+                throw new BadRequestHttpException('Invalid start date', null, 400);
+            }
         }
 
         if ($request->query->has('end')) {
-            $end = new \DateTime($request->query->get('end'));
-        } elseif ($request->query->has('length')) {
-            $end = clone $start;
-            $end->modify($request->query->get('length'));
+            $end = \DateTime::createFromFormat('!Y-m-d', $request->query->get('end'));
+            if (!$end) {
+                throw new BadRequestHttpException('Invalid end date', null, 400);
+            }
         } else {
             $end = clone $start;
             $end->modify('+8 weeks');
