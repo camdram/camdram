@@ -60,8 +60,9 @@ class ExternalLoginController extends Controller
         $query_parts['camdramauthtoken'] = $tokenId;
         $query_parts['finaldestination'] = $redirectUri;
         $query_str = http_build_query($query_parts);
-        $url = $redirect_parts['scheme']."://".$redirect_parts['host'].$redirect_parts['path']
-        .'?'.$query_str;
+        $url = $redirect_parts['scheme']."://".$redirect_parts['host'];
+        if (isset($redirect_parts['path'])) $url .= $redirect_parts['path'];
+        $url .= '?'.$query_str;
         return $this->redirect($url);
     }
     
