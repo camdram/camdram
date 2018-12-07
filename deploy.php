@@ -69,7 +69,7 @@ task('database:update', function() {
     {
         run('{{bin/php}} {{bin/console}} camdram:database:refresh');
         //For some reason SQLite seems to require the group writable bit to be set
-        run("chmod -R g+w {{release_path}}/app/data/");
+        run("chmod -R g+w {{release_path}}/app/data/orm.db");
     }
 })->desc('Refresh development database');
 
