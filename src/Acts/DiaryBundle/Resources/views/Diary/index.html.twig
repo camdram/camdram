@@ -27,7 +27,7 @@
             {# Jump through hoops here to get the start date of the event itself by treating the offset as seconds in a unix timestamp and 
                then rendering it to appear as a number of days to modify the date by. #}
             <meta itemprop="startDate" content="{{ week.startAt|date_modify(item.startIndex|date('+s \\d\\a\\y\\s'))|date('Y-m-d') }}"/>
-            <span class="diary-time">{{ item.startAt | date('g:ia') }}{% if item.endAt %}-{{ item.endAt | date('g:ia') }}<br/>{% endif %}</span>
+            <span class="diary-time">{{ item.startAt | date('H:i') }}{% if item.endAt %}-{{ item.endAt | date('H:i') }}<br/>{% endif %}</span>
             {% if has_entity_url(item.event) %}<a itemprop="name" href="{{ entity_url(item.event) }}">{{ item.event.name }}</a>
             {% else %}{{ item.event.name }}{% endif %}
             {% if item.event.venue %}<span class="diary-venue" itemprop="location" itemscope="" itemtype="http://schema.org/PerformingArtsTheater">

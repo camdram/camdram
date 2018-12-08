@@ -25,7 +25,7 @@ Looking for:
 Contact: {{ a.contact|strip_camdram_markdown }}
 Deadline for applications: {{ a.expiry|date('l jS F') }}
 {%- if a.deadlinetime and a.deadlinetime | date('H:i') != '00:00' %}
-, {{ a.deadlinetime | date('g:ia') }}
+, {{ a.deadlinetime | date('H:i') }}
 {% endif %}
 
 

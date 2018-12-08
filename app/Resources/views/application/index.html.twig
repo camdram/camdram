@@ -37,7 +37,7 @@
         {% endif %}
         <p><strong>Deadline:</strong> {{ a.deadlinedate|date('l jS F') }}
         {% if a.deadlinetime %}
-            {{ a.deadlinetime|date('g:ia') }}
+            {{ a.deadlinetime|date('H:i') }}
         {% endif %}
         </p>
         </div>
