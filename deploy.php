@@ -110,8 +110,8 @@ task('deploy', [
     'deploy:cache:warmup',
     'deploy:writable',
     'database:update',
-    'search:populate_index',
     'deploy:symlink',
+    'search:populate_index',
     'deploy:unlock',
     'cleanup',
 ])->desc('Deploy Camdram');
