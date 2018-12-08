@@ -9,31 +9,32 @@ use PHPUnit\Framework\TestCase;
 
 class DiaryRowTest extends TestCase
 {
+    /**
+     * @var DiaryRow
+     */
     private $row;
 
     public function setUp()
     {
-        $this->row = new DiaryRow(new \DateTime('14:00'), new \DateTime('2014-02-01'));
+        $this->row = new DiaryRow(new \DateTime('2014-02-01'));
     }
 
     public function testGetTimes()
     {
         $item = new DiaryItem();
-        $item->setStartAt(new \DateTime('15:00'));
-        $item->setEndAt(new \DateTime('16:00'));
+        $item->setStartAt(new \DateTime('2014-02-01 15:00'));
+        $item->setEndAt(new \DateTime('2014-02-01 16:00'));
         $this->row->addItem($item);
 
-        $this->assertEquals('14:00', $this->row->getStartTime()->format('H:i'));
-        $this->assertEquals('15:00', $this->row->getEndTime()->format('H:i'));
+        $this->assertEquals(15 * 60, $this->row->getStartTime());
         $this->assertEquals('1 February 2014', $this->row->getStartDate()->format('j F Y'));
     }
 
     public function testAddSingleDayEvent()
     {
         $event = new Event();
-        $event->setDate(new \DateTime('2014-02-03'));
-        $event->setStartTime(new \DateTime('14:00'));
-        $event->setEndTime(new \DateTime('15:00'));
+        $event->setStartAt(new \DateTime('2014-02-03 14:00'));
+        $event->setEndAt(new \DateTime('2014-02-03 15:00'));
         $this->row->addEvent($event);
 
         $item = current($this->row->getItems());
@@ -45,10 +46,9 @@ class DiaryRowTest extends TestCase
     public function testAddMultiDayEvent()
     {
         $event = new Event();
-        $event->setStartDate(new \DateTime('2014-02-02'));
-        $event->setEndDate(new \DateTime('2014-02-05'));
-        $event->setStartTime(new \DateTime('14:00'));
-        $event->setEndTime(new \DateTime('15:00'));
+        $event->setStartAt(new \DateTime('2014-02-02 14:00'));
+        $event->setEndAt(new \DateTime('2014-02-02 15:00'));
+        $event->setRepeatUntil(new \DateTime('2014-02-05'));
         $this->row->addEvent($event);
 
         $item = current($this->row->getItems());
@@ -60,10 +60,9 @@ class DiaryRowTest extends TestCase
     public function testAddMultiDayEvent_OverlapStart()
     {
         $event = new Event();
-        $event->setStartDate(new \DateTime('2014-01-30'));
-        $event->setEndDate(new \DateTime('2014-02-02'));
-        $event->setStartTime(new \DateTime('14:00'));
-        $event->setEndTime(new \DateTime('15:00'));
+        $event->setStartAt(new \DateTime('2014-01-30 14:00'));
+        $event->setStartAt(new \DateTime('2014-01-30 15:00'));
+        $event->setRepeatUntil(new \DateTime('2014-02-02'));
         $this->row->addEvent($event);
 
         $item = current($this->row->getItems());
@@ -75,10 +74,9 @@ class DiaryRowTest extends TestCase
     public function testAddMultiDayEvent_OverlapEnd()
     {
         $event = new Event();
-        $event->setStartDate(new \DateTime('2014-02-06'));
-        $event->setEndDate(new \DateTime('2014-02-10'));
-        $event->setStartTime(new \DateTime('14:00'));
-        $event->setEndTime(new \DateTime('15:00'));
+        $event->setStartAt(new \DateTime('2014-02-06 14:00'));
+        $event->setEndAt(new \DateTime('2014-02-06 15:00'));
+        $event->setRepeatUntil(new \DateTime('2014-02-10'));
         $this->row->addEvent($event);
 
         $item = current($this->row->getItems());
@@ -90,33 +88,35 @@ class DiaryRowTest extends TestCase
     public function testCanAccept_WithinTimeThreshold()
     {
         $event = new Event();
-        $event->setDate(new \DateTime('2014-02-01'));
-        $event->setStartTime(new \DateTime('14:00'));
-        $event->setEndTime(new \DateTime('15:00'));
+        $event->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $event->setEndAt(new \DateTime('2014-02-01 15:00'));
+
         $this->assertTrue($this->row->canAccept($event));
     }
 
     public function testCanAccept_OutsideTimeThreshold()
     {
-        $event = new Event();
-        $event->setDate(new \DateTime('2014-02-01'));
-        $event->setStartTime(new \DateTime('16:00'));
-        $event->setEndTime(new \DateTime('17:00'));
-        $this->assertFalse($this->row->canAccept($event));
+        $event1 = new Event();
+        $event1->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $event1->setEndAt(new \DateTime('2014-02-01 15:00'));
+        $this->row->addEvent($event1);
+
+        $event2 = new Event();
+        $event2->setStartAt(new \DateTime('2014-02-01 16:00'));
+        $event2->setEndAt(new \DateTime('2014-02-01 17:00'));
+        $this->assertFalse($this->row->canAccept($event2));
     }
 
     public function testCanAccept_Clash()
     {
         $event1 = new Event();
-        $event1->setDate(new \DateTime('2014-02-01'));
-        $event1->setStartTime(new \DateTime('14:00'));
-        $event1->setEndTime(new \DateTime('15:00'));
+        $event1->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $event1->setEndAt(new \DateTime('2014-02-01 15:00'));
         $this->row->addEvent($event1);
 
         $event2 = new Event();
-        $event2->setDate(new \DateTime('2014-02-01'));
-        $event2->setStartTime(new \DateTime('14:00'));
-        $event2->setEndTime(new \DateTime('15:00'));
+        $event2->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $event2->setEndAt(new \DateTime('2014-02-01 15:00'));
 
         $this->assertFalse($this->row->canAccept($event2));
     }
@@ -124,16 +124,14 @@ class DiaryRowTest extends TestCase
     public function testCanAccept_MultiDay()
     {
         $event1 = new Event();
-        $event1->setStartDate(new \DateTime('2014-02-02'));
-        $event1->setEndDate(new \DateTime('2014-02-04'));
-        $event1->setStartTime(new \DateTime('14:00'));
-        $event1->setEndTime(new \DateTime('15:00'));
+        $event1->setStartAt(new \DateTime('2014-02-02 14:00'));
+        $event1->setEndAt(new \DateTime('2014-02-02 15:00'));
+        $event1->setRepeatUntil(new \DateTime('2014-02-04'));
         $this->row->addEvent($event1);
 
         $event2 = new Event();
-        $event2->setDate(new \DateTime('2014-02-01'));
-        $event2->setStartTime(new \DateTime('14:00'));
-        $event2->setEndTime(new \DateTime('15:00'));
+        $event2->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $event2->setEndAt(new \DateTime('2014-02-01 15:00'));
 
         $this->assertTrue($this->row->canAccept($event2));
     }
@@ -141,16 +139,14 @@ class DiaryRowTest extends TestCase
     public function testCanAccept_MultiDayClash()
     {
         $event1 = new Event();
-        $event1->setStartDate(new \DateTime('2014-02-02'));
-        $event1->setEndDate(new \DateTime('2014-02-04'));
-        $event1->setStartTime(new \DateTime('14:00'));
-        $event1->setEndTime(new \DateTime('15:00'));
+        $event1->setStartAt(new \DateTime('2014-02-02 14:00'));
+        $event1->setEndAt(new \DateTime('2014-02-02 15:00'));
+        $event1->setRepeatUntil(new \DateTime('2014-02-04'));
         $this->row->addEvent($event1);
 
         $event2 = new Event();
-        $event2->setDate(new \DateTime('2014-02-02'));
-        $event2->setStartTime(new \DateTime('14:00'));
-        $event2->setEndTime(new \DateTime('15:00'));
+        $event2->setStartAt(new \DateTime('2014-02-02 14:00'));
+        $event2->setEndAt(new \DateTime('2014-02-02 15:00'));
 
         $this->assertFalse($this->row->canAccept($event2));
     }

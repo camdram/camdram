@@ -29,12 +29,10 @@ class AuditionRepository extends EntityRepository
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
         $qb = $query_res->createQueryBuilder('a');
         $qb->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
-            ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
-            ->andWhere('a.display = 0')
+            ->where('a.end_at >= :now')
             ->andWhere('s.authorised = true')
-            ->orderBy('s.name, a.date, a.start_time, a.nonScheduled')
-            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->orderBy('s.name, a.start_at, a.nonScheduled')
+            ->setParameter('now', $now)
             ->getQuery();
 
         return $qb->getQuery()->getResult();
@@ -45,14 +43,12 @@ class AuditionRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a');
 
         $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
+            ->where('a.end_at > :now')
             ->andWhere('a.nonScheduled = false')
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised = true')
-            ->orderBy('a.date')
-            ->addOrderBy('a.start_time')
-            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->orderBy('a.start_at')
+            ->setParameter('now', $now)
             ->setMaxResults($limit);
 
         return $qb;
@@ -62,14 +58,12 @@ class AuditionRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a');
         $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.date > :current_date', $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')))
+            ->where('a.start_at > :now')
             ->andWhere('a.nonScheduled = true')
             ->andWhere('a.show IS NOT NULL')
             ->andWhere('s.authorised = true')
-            ->orderBy('a.date')
-            ->addOrderBy('a.start_time')
-            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME);
+            ->orderBy('a.start_at')
+            ->setParameter('now', $now);
         if ($limit > 0) {
             $qb->setMaxResults($limit);
         }
@@ -120,16 +114,12 @@ class AuditionRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a');
 
         return $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX(
-                'a.date > :current_date',
-                $qb->expr()->andX('a.date = :current_date', 'a.end_time >= :current_time')
-            ))
+            ->where('a.end_at > :now')
             ->andWhere('s.slug = :slug')
             ->andWhere('s.authorised = true')
             ->setMaxResults(1)
             ->setParameter('slug', $slug)
-            ->setParameter('current_date', $now, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('current_time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->setParameter('now', $now)
             ->getQuery()->getOneOrNullResult();
     }
 }

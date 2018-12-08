@@ -39,37 +39,25 @@ class Audition implements EventInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date", nullable=false)
+     * @ORM\Column(name="start_at", type="datetime", nullable=false)
      * @Assert\NotBlank()
-     * @Assert\Date()
+     * @Assert\DateTime()
      * @Gedmo\Versioned
      * @Serializer\Expose()
      * @Serializer\XmlElement(cdata=false)
      */
-    private $date;
+    private $start_at;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="starttime", type="time", nullable=false)
-     * @Assert\NotBlank()
-     * @Assert\Time()
+     * @ORM\Column(name="end_at", type="datetime", nullable=true)
+     * @Assert\DateTime()
      * @Gedmo\Versioned
      * @Serializer\Expose()
      * @Serializer\XmlElement(cdata=false)
      */
-    private $start_time;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="endtime", type="time", nullable=true)
-     * @Assert\Time()
-     * @Gedmo\Versioned
-     * @Serializer\Expose()
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $end_time;
+    private $end_at;
 
     /**
      * @var string
@@ -121,75 +109,51 @@ class Audition implements EventInterface
     }
 
     /**
-     * Set date
+     * Set start_at
      *
-     * @param \DateTime $date
+     * @param \DateTime $startAt
      *
      * @return Audition
      */
-    public function setDate($date)
+    public function setStartAt($startAt)
     {
-        $this->date = $date;
+        $this->start_at = $startAt;
 
         return $this;
     }
 
     /**
-     * Get date
+     * Get start_at
      *
      * @return \DateTime
      */
-    public function getDate()
+    public function getStartAt()
     {
-        return $this->date;
+        return $this->start_at;
     }
 
     /**
-     * Set start_time
+     * Set end_at
      *
-     * @param \DateTime $startTime
+     * @param \DateTime $endAt
      *
      * @return Audition
      */
-    public function setStartTime($startTime)
+    public function setEndAt($endAt)
     {
-        $this->start_time = $startTime;
+        $this->end_at = $endAt;
 
         return $this;
     }
 
     /**
-     * Get start_time
+     * Get end_at
      *
      * @return \DateTime
      */
-    public function getStartTime()
+    public function getEndAt()
     {
-        return $this->start_time;
-    }
-
-    /**
-     * Set end_time
-     *
-     * @param \DateTime $endTime
-     *
-     * @return Audition
-     */
-    public function setEndTime($endTime)
-    {
-        $this->end_time = $endTime;
-
-        return $this;
-    }
-
-    /**
-     * Get end_time
-     *
-     * @return \DateTime
-     */
-    public function getEndTime()
-    {
-        return $this->end_time;
+        return $this->end_at;
     }
 
     /**
@@ -305,14 +269,9 @@ class Audition implements EventInterface
         return $this->show->getName();
     }
 
-    public function getStartDate()
+    public function getRepeatUntil()
     {
-        return $this->date;
-    }
-
-    public function getEndDate()
-    {
-        return $this->date;
+        return $this->getStartAt();
     }
 
     public function getVenueName()

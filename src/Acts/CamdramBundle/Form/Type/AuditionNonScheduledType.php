@@ -6,8 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class AuditionNonScheduledType extends AbstractType
 {
@@ -18,9 +17,8 @@ class AuditionNonScheduledType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateType::class, array('label' => 'Advert expiry date', 'widget' => 'single_text'))
-            ->add('start_time', TimeType::class, array('label' => 'Advert expiry time', 'widget' => 'single_text'))
-            ->add('location', TextType::class, array('label' => 'Contact details'))
+            ->add('start_at', DateTimeType::class, ['date_widget' => 'single_text', 'time_widget' => 'single_text'])
+            ->add('location', TextType::class, ['label' => 'Contact details'])
         ;
     }
 

@@ -37,9 +37,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
         $ad->setNonScheduled(false);
 
@@ -54,9 +53,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
         $ad->setNonScheduled(false);
 
@@ -71,9 +69,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
         $ad->setNonScheduled(false);
 
@@ -88,9 +85,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
         $ad->setNonScheduled(false);
 
@@ -105,9 +101,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('Contact me');
         $ad->setNonScheduled(true);
 
@@ -122,9 +117,7 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 14:00'));
         $ad->setLocation('Contact me');
         $ad->setNonScheduled(true);
 
@@ -139,9 +132,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('Contact me');
         $ad->setNonScheduled(true);
 
@@ -156,9 +148,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     {
         $ad = new Audition();
         $ad->setShow($this->show);
-        $ad->setDate(new \DateTime('2014-03-12'));
-        $ad->setStartTime(new \DateTime('12:00'));
-        $ad->setEndTime(new \DateTime('16:00'));
+        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('Contact me');
         $ad->setNonScheduled(true);
 

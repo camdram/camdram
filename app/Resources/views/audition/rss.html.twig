@@ -18,9 +18,9 @@
 <ul>
 {% if entity.nonscheduled %}
 	</ul>
-	<p>Contact {{entity.location}} before {{entity.starttime|date('g:ia')}} {{entity.date|date('D d M')}} for more details.</p>
+	<p>Contact {{entity.location}} before {{entity.startAt|date('g:ia D d M')}} for more details.</p>
 	{% set currentName = null %}
 {% else %}
-    <li>{{ entity.date|date('D jS M') }}, {{ entity.starttime|date('g:ia') }}-{{ entity.endtime|date('g:ia') }}, {{ entity.location }}</li>
+    <li>{{ entity.startAt|date('D jS M, g:ia') }}-{{ entity.endAt|date('g:ia') }}, {{ entity.location }}</li>
     </ul>
 {% endif %}

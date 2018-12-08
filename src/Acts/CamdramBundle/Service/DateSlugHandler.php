@@ -72,9 +72,6 @@ class DateSlugHandler implements SlugHandlerInterface
      */
     public static function validate(array $options, ClassMetadata $meta)
     {
-        if ($meta->getTypeOfField($options['dateField']) !== 'datetime') {
-            throw new InvalidMappingException("Unable to find datetime field - [{$options['dateField']}] in class - {$meta->name}");
-        }
     }
 
     /**

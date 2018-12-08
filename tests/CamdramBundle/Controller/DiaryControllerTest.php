@@ -28,19 +28,21 @@ class DiaryControllerTest extends RestTestCase
             ->setAuthorised(true);
         $this->entityManager->persist($show);
 
+        $time = \DateTime::createFromFormat('!H:i', $time);
         $start_date = Time::now();
+        $start_date->setTime($time->format('H'), $time->format('i'));
         $day_of_week = $start_date->format('N');
         if ($day_of_week < 7) {
             $start_date->modify('-'.$day_of_week.' days');
         }
+        
         $start_date->modify('+'.$days.' day');
         $end_date = clone $start_date;
         $end_date->modify('+'.($length - 1).' days');
 
         $performance = new Performance();
-        $performance->setStartDate($start_date);
-        $performance->setEndDate($end_date);
-        $performance->setTime(new \DateTime($time));
+        $performance->setStartAt($start_date);
+        $performance->setRepeatUntil($end_date);
         $performance->setShow($show);
         $show->addPerformance($performance);
 
@@ -64,20 +66,18 @@ class DiaryControllerTest extends RestTestCase
                 [
                     'show' => ['name' => 'Test Show 1'],
                     '_links' => [
-                        'show' => '/shows/test-show-1',
+                        'show' => '/shows/2000-test-show-1',
                     ],
-                    'start_date' => (new \DateTime('2000-07-03'))->format('c'),
-                    'end_date' => (new \DateTime('2000-07-06'))->format('c'),
-                    'time' => (new \DateTime('1970-01-01 19:30'))->format('c'),
+                    'start_at' => '2000-07-03T19:30:00+00:00',
+                    'repeat_until' => '2000-07-06',
                 ],
                 [
                     'show' => ['name' => 'Test Show 2'],
                     '_links' => [
-                        'show' => '/shows/test-show-2',
+                        'show' => '/shows/2000-test-show-2',
                     ],
-                    'start_date' => (new \DateTime('2000-07-04'))->format('c'),
-                    'end_date' => (new \DateTime('2000-07-04'))->format('c'),
-                    'time' => (new \DateTime('1970-01-01 14:00'))->format('c'),
+                    'start_at' => '2000-07-04T14:00:00+00:00',
+                    'repeat_until' => '2000-07-04',
                 ],
             ]
         ], $data);
@@ -107,11 +107,10 @@ class DiaryControllerTest extends RestTestCase
                 [
                     'show' => ['name' => 'Test Show'],
                     '_links' => [
-                        'show' => '/shows/test-show',
+                        'show' => '/shows/2000-test-show',
                     ],
-                    'start_date' => (new \DateTime('2000-06-25'))->format('c'),
-                    'end_date' => (new \DateTime('2000-06-26'))->format('c'),
-                    'time' => (new \DateTime('1970-01-01 19:30'))->format('c'),
+                    'start_at' => '2000-06-25T19:30:00+00:00',
+                    'repeat_until' => '2000-06-26',
                 ],
             ]
         ], $data);
@@ -132,11 +131,10 @@ class DiaryControllerTest extends RestTestCase
                 [
                     'show' => ['name' => 'Test Show'],
                     '_links' => [
-                        'show' => '/shows/test-show',
+                        'show' => '/shows/2000-test-show',
                     ],
-                    'start_date' => (new \DateTime('2000-06-02'))->format('c'),
-                    'end_date' => (new \DateTime('2000-06-08'))->format('c'),
-                    'time' => (new \DateTime('1970-01-01 19:30'))->format('c'),
+                    'start_at' => '2000-06-02T19:30:00+00:00',
+                    'repeat_until' => '2000-06-08',
                 ],
             ]
         ], $data);
@@ -168,18 +166,17 @@ class DiaryControllerTest extends RestTestCase
                 [
                     'show' => ['name' => 'Test Show'],
                     '_links' => [
-                        'show' => '/shows/test-show',
+                        'show' => '/shows/2000-test-show',
                     ],
-                    'start_date' => (new \DateTime('2000-06-18'))->format('c'),
-                    'end_date' => (new \DateTime('2000-06-19'))->format('c'),
-                    'time' => (new \DateTime('1970-01-01 19:30'))->format('c'),
+                    'start_at' => '2000-06-18T19:30:00+00:00',
+                    'repeat_until' => '2000-06-19',
                 ],
             ],
             'labels' => [
                 [
                     'text' => 'Test Period',
-                    'start_at' => (new \DateTime('2000-06-01'))->format('c'),
-                    'end_at' => (new \DateTime('2000-07-15'))->format('c'),
+                    'start_at' => '2000-06-01',
+                    'end_at' => '2000-07-15',
                 ]
             ]
         ], $data);

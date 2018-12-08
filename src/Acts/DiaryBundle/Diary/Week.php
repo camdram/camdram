@@ -95,7 +95,7 @@ class Week
 
     protected function createRow(EventInterface $event)
     {
-        return new DiaryRow($event->getStartTime(), $this->getStartAt());
+        return new DiaryRow($this->getStartAt());
     }
 
     public function addEvent(EventInterface $event)
@@ -112,7 +112,7 @@ class Week
         //No such row exists, so we create one
         $row = $this->createRow($event);
         $row->addEvent($event);
-        $id = $row->getStartTime()->format('U');
+        $id = $row->getStartTime();
 
         //There may be multiple rows representing the same time, so we add a suffix e.g. '_1', '_2' to the array key
         if (isset($this->rows[$id])) {

@@ -61,9 +61,8 @@ class SearchControllerTest extends WebTestCase
             ->setCategory('drama');
 
         $performance = new Performance;
-        $performance->setStartDate(new \DateTime($startDate));
-        $performance->setEndDate(new \DateTime($startDate));
-        $performance->setTime(new \DateTime("19:30"));
+        $performance->setStartAt(new \DateTime($startDate.' 19:30'));
+        $performance->setRepeatUntil(new \DateTime($startDate));
         $show->addPerformance($performance);
 
         $this->entityManager->persist($show);

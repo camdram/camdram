@@ -64,9 +64,9 @@ class ShowControllerTest extends RestTestCase
         $crawler = $this->client->request('GET', '/shows/new');
         $form = $crawler->selectButton('Create')->form();
         $form['show[name]'] = 'Test Show';
-        $form['show[performances][0][start_date]'] = '2001-03-02';
-        $form['show[performances][0][end_date]'] = '2001-03-05';
-        $form['show[performances][0][time]'] = '19:45';
+        $form['show[performances][0][start_at][date]'] = '2001-03-02';
+        $form['show[performances][0][start_at][time]'] = '19:45';
+        $form['show[performances][0][repeat_until]'] = '2001-03-05';
         $crawler = $this->client->submit($form);
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -90,9 +90,8 @@ class ShowControllerTest extends RestTestCase
     public function testSimpleShow()
     {
         $performance = new Performance;
-        $performance->setStartDate(new \DateTime("2000-01-01"));
-        $performance->setEndDate(new \DateTime("2000-01-07"));
-        $performance->setTime(new \DateTime("19:30"));
+        $performance->setStartAt(new \DateTime("2000-01-01 19:30"));
+        $performance->setRepeatUntil(new \DateTime("2000-01-07"));
 
         $show = new Show;
         $show->setName("Test Show")
@@ -119,9 +118,8 @@ class ShowControllerTest extends RestTestCase
         $this->entityManager->persist($society);
 
         $performance = new Performance;
-        $performance->setStartDate(new \DateTime("2000-01-01"));
-        $performance->setEndDate(new \DateTime("2000-01-07"));
-        $performance->setTime(new \DateTime("19:30"));
+        $performance->setStartAt(new \DateTime("2000-01-01 19:30"));
+        $performance->setRepeatUntil(new \DateTime("2000-01-07"));
 
         $show = new Show;
         $show->setName("Test Show")

@@ -51,28 +51,25 @@ class DiaryWeekTest extends TestCase
     public function testAddEvent()
     {
         $event = new Event();
-        $event->setDate(new \DateTime('2014-02-01'));
-        $event->setStartTime(new \DateTime('14:00'));
-        $event->setEndTime(new \DateTime('15:00'));
+        $event->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $event->setEndAt(new \DateTime('2014-02-01 15:00'));
         $this->week->addEvent($event);
 
         $rows = $this->week->getRows();
         $this->assertEquals(1, count($rows));
         $row = current($rows);
-        $this->assertEquals('14:00', $row->getStartTime()->format('H:i'));
+        $this->assertEquals(14 * 60, $row->getStartTime());
     }
 
     public function testAddEvent_DifferentDays()
     {
         $event1 = new Event();
-        $event1->setDate(new \DateTime('2014-01-29'));
-        $event1->setStartTime(new \DateTime('14:00'));
-        $event1->setEndTime(new \DateTime('15:00'));
+        $event1->setStartAt(new \DateTime('2014-01-29 14:00'));
+        $event1->setEndAt(new \DateTime('2014-01-29 15:00'));
 
         $event2 = new Event();
-        $event2->setDate(new \DateTime('2014-02-01'));
-        $event2->setStartTime(new \DateTime('14:00'));
-        $event2->setEndTime(new \DateTime('15:00'));
+        $event2->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $event2->setEndAt(new \DateTime('2014-02-01 15:00'));
 
         $this->week->addEvent($event1);
         $this->week->addEvent($event2);
@@ -84,14 +81,12 @@ class DiaryWeekTest extends TestCase
     public function testAddEvent_SameDay()
     {
         $event1 = new Event();
-        $event1->setDate(new \DateTime('2014-01-29'));
-        $event1->setStartTime(new \DateTime('14:00'));
-        $event1->setEndTime(new \DateTime('15:00'));
+        $event1->setStartAt(new \DateTime('2014-01-29 14:00'));
+        $event1->setEndAt(new \DateTime('2014-01-29 5:00'));
 
         $event2 = new Event();
-        $event2->setDate(new \DateTime('2014-01-29'));
-        $event2->setStartTime(new \DateTime('14:00'));
-        $event2->setEndTime(new \DateTime('15:00'));
+        $event2->setStartAt(new \DateTime('2014-01-29 14:00'));
+        $event2->setEndAt(new \DateTime('2014-01-29 15:00'));
 
         $this->week->addEvent($event1);
         $this->week->addEvent($event2);

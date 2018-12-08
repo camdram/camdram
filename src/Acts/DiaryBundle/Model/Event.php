@@ -27,22 +27,17 @@ class Event implements EventInterface
     /**
      * @var \DateTime
      */
-    private $start_date;
+    private $start_at;
 
     /**
      * @var \DateTime
      */
-    private $end_date;
+    private $end_at;
 
     /**
      * @var \DateTime
      */
-    private $start_time;
-
-    /**
-     * @var \DateTime
-     */
-    private $end_time;
+    private $repeat_until;
 
     /**
      * @var \DateTime
@@ -98,6 +93,7 @@ class Event implements EventInterface
      * Set the venue name
      *
      * @param string $venue
+     * @return Event
      */
     public function setVenueName($venueName)
     {
@@ -109,89 +105,62 @@ class Event implements EventInterface
      * Get the venue name
      *
      * @param string $venue
+     * @return string
      */
     public function getVenueName()
     {
         return $this->venue_name;
     }
 
-    /**
-     * Convenience method to set start and end dates to the same value
-     */
-    public function setDate(\DateTime $date)
+    public function getStartAt()
     {
-        $this->setStartDate($date);
-        $this->setEndDate($date);
-        return $this;
-    }
-
-    public function getStartDate()
-    {
-        return $this->start_date;
+        return $this->start_at;
     }
 
     /**
      * Set the first date on which the event takes place
      *
-     * @param \DateTime $start_date
+     * @param \DateTime $startAt
      */
-    public function setStartDate(\DateTime $start_date)
+    public function setStartAt(\DateTime $startAt)
     {
-        $this->start_date = $start_date;
+        $this->start_at = $startAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getEndDate()
+    public function getEndAt()
     {
-        return $this->end_date;
+        return $this->end_at;
     }
 
     /**
      * Set the last date on which the event takes place
      *
-     * @param \DateTime $end_date
+     * @param \DateTime $endAt
      */
-    public function setEndDate(\DateTime $end_date)
+    public function setEndAt(\DateTime $endAt)
     {
-        $this->end_date = $end_date;
+        $this->end_at = $endAt;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getStartTime()
+    public function getRepeatUntil()
     {
-        return $this->start_time;
-    }
-
-    /**
-     * Set the start time of the event
-     *
-     * @param \DateTime $start_time
-     */
-    public function setStartTime(\DateTime $start_time)
-    {
-        $this->start_time = $start_time;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEndTime()
-    {
-        return $this->end_time;
+        return $this->repeat_until;
     }
 
     /**
      * Set the end time of the event
      *
-     * @param \DateTime $end_time
+     * @param \DateTime $repeatUntil
      */
-    public function setEndTime(\DateTime $end_time)
+    public function setRepeatUntil(\DateTime $repeatUntil)
     {
-        $this->end_time = $end_time;
+        $this->repeat_until = $repeatUntil;
     }
 
     /**

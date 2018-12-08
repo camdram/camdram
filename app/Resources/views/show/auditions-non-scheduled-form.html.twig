@@ -5,12 +5,12 @@
     </div>
 
     <div class="form-small-widget">
-        {{ form_label(audition.date) }}
-        {{ form_widget(audition.date) }}
+        {{ form_label(audition.start_at.date, 'Advert expiry date') }}
+        {{ form_widget(audition.start_at.date) }}
     </div>
     <div class="form-small-widget">
-        {{ form_label(audition.start_time) }}
-        {{ form_widget(audition.start_time) }}
+        {{ form_label(audition.start_at.time, 'Advert expiry time') }}
+        {{ form_widget(audition.start_at.time) }}
     </div>
 
     <ul class="inline-list">

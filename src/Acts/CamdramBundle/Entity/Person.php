@@ -475,8 +475,8 @@ class Person
     {
         $latest = null;
         foreach ($this->getRoles() as $role) {
-            if ($role->getShow() && (!$latest || $role->getShow()->getEndAt() > $latest) && $role->getShow()->getEndAt()) {
-                $latest = $role->getShow()->getEndAt();
+            if ($role->getShow() && (!$latest || $role->getShow()->getStartAt() > $latest) && $role->getShow()->getStartAt()) {
+                $latest = $role->getShow()->getStartAt();
             }
         }
 

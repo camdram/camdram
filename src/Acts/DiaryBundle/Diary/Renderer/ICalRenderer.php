@@ -19,11 +19,11 @@ class ICalRenderer
         $vcalendar->add('PRODID', '-//Camdram//NONSGML Show Diary//EN');
 
         foreach ($diary->getEvents() as $event) {
-            $start_time = new \DateTime($event->getStartDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
+            $start_time = $event->getStartAt();
             $rrule = null;
 
-            if ($event->getStartDate() != $event->getEndDate()) {
-                $last_start_time = new \DateTime($event->getEndDate()->format('Y-m-d').' '.$event->getStartTime()->format('H:i:s'));
+            if ($event->getStartAt()->format('Y-m-d' != $event->getRepeatUntil()->format('Y-m-d'))) {
+                $last_start_time = new \DateTime($event->getRepeatUntil()->format('Y-m-d').' '.$event->getStartAt()->format('H:i:s'));
                 $rrule = 'FREQ=DAILY;UNTIL='.$last_start_time->format('Ymd\\THis\\Z');
             }
 

@@ -35,6 +35,7 @@ class Diary
      * @var \DateTime
      * 
      * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
     private $start_date;
 
@@ -42,6 +43,7 @@ class Diary
      * @var \DateTime
      * 
      * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
     private $end_date;
 

@@ -15,17 +15,16 @@ class DiaryRow
 
     private $items = array();
 
-    private $start;
+    private $start_time;
 
-    private $end;
+    private $end_time;
 
     private $start_date;
 
-    public function __construct(\DateTime $start_time, \DateTime $start_date)
+    public function __construct(\DateTime $start_at)
     {
-        $this->start = clone $start_time;
-        $this->end = clone $start_time;
-        $this->start_date = $start_date;
+        $this->start_date = clone $start_at;
+        $this->start_date->setTime(0, 0, 0);
     }
 
     private function calculateIndex(\DateTime $date)
@@ -72,17 +71,18 @@ class DiaryRow
     public function canAccept(EventInterface $event)
     {
         //First check if the time is the same (within a certain threshold)
-        $earliest = clone $this->start;
-        $earliest->modify('-'.(self::MAX_ROW_RANGE_MINUTES + 1).' minutes');
-        $latest = clone $this->start;
-        $latest->modify('+'.(self::MAX_ROW_RANGE_MINUTES + 1).' minutes');
-        if ($event->getStartTime() <= $earliest || $event->getStartTime() >= $latest) {
+        $eventStartTime = $event->getStartAt()->format('H') * 60 + $event->getStartAt()->format('i');
+        if ($this->start_time && $eventStartTime <= $this->start_time - (self::MAX_ROW_RANGE_MINUTES * 60)) {
+            return false;
+        }
+
+        if ($this->end_time && $eventStartTime >= $this->end_time + (self::MAX_ROW_RANGE_MINUTES * 60)) {
             return false;
         }
 
         //Now see if there's space in the row
-        $start_index = $this->calculateIndex($event->getStartDate());
-        $end_index = $this->calculateIndex($event->getEndDate());
+        $start_index = $this->calculateIndex($event->getStartAt());
+        $end_index = $event->getRepeatUntil() ? $this->calculateIndex($event->getRepeatUntil()) : $start_index;
 
         return $this->rangeIsFree($start_index, $end_index);
     }
@@ -91,11 +91,16 @@ class DiaryRow
     {
         $this->items[$item->getStartIndex()] = $item;
 
-        if (!$this->start || $item->getStartAt() < $this->start) {
-            $this->start = $item->getStartAt();
+        $eventStartTime = $item->getStartAt()->format('H') * 60 + $item->getStartAt()->format('i');
+        if (!$this->start_time || $eventStartTime < $this->start_time) {
+            $this->start_time = $eventStartTime;
         }
-        if (!$this->end || $item->getStartAt() > $this->end) {
-            $this->end = $item->getStartAt();
+
+        if ($item->getEndAt()) {
+            $eventEndTime = $item->getEndAt()->format('H') * 60 + $item->getEndAt()->format('i');
+            if (!$this->end_time || $eventEndTime > $this->end_time) {
+                $this->end_time = $eventEndTime;
+            }
         }
     }
 
@@ -103,12 +108,13 @@ class DiaryRow
     {
         $item = new DiaryItem();
         $item->setEvent($event);
-        $item->setStartAt($event->getStartTime());
-        $item->setEndAt($event->getEndTime());
+        $item->setStartAt($event->getStartAt());
+        $item->setEndAt($event->getEndAt());
 
-        $start_index = $this->calculateIndex($event->getStartDate());
-        $end_index = $this->calculateIndex($event->getEndDate());
+        $start_index = $this->calculateIndex($event->getStartAt());
+        $end_index = $event->getRepeatUntil() ? $this->calculateIndex($event->getRepeatUntil()) : $start_index;
         $numberOfDays = $end_index - $start_index + 1;
+
         if ($numberOfDays > 0) {
             $item->setStartIndex($start_index);
             $item->setNumberOfDays($end_index - $start_index + 1);
@@ -125,12 +131,7 @@ class DiaryRow
 
     public function getStartTime()
     {
-        return $this->start;
-    }
-
-    public function getEndTime()
-    {
-        return $this->end;
+        return $this->start_time;
     }
 
     public function getStartDate()

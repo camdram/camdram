@@ -71,14 +71,14 @@ class DiaryView
     public function addEvent(EventInterface $event)
     {
         //If it's a multi-day event, we may well need to display it in multiple weeks
-        $week_start = Week::getWeekStart($event->getStartDate());
+        $week_start = Week::getWeekStart($event->getStartAt());
         do {
             $week = $this->getWeekForDate($week_start);
             if ($week) {
                 $week->addEvent($event);
             }
             $week_start->modify('+7 days');
-        } while ($week_start < $event->getEndDate());
+        } while ($week_start < $event->getRepeatUntil());
     }
 
     /**

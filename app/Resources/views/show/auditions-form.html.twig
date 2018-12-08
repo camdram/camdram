@@ -1,19 +1,19 @@
 <div class="audition">
     <a href="#" class="remove_link right fa fa-times" title="Remove audition"></a>
     <div class="form-small-widget">
-        {{ form_label(audition.date) }}
-        {{ form_widget(audition.date) }}
-        {{ form_errors(audition.date) }}
+        {{ form_label(audition.start_at.date) }}
+        {{ form_widget(audition.start_at.date) }}
+        {{ form_errors(audition.start_at.date) }}
     </div>
     <div class="form-small-widget">
-        {{ form_label(audition.start_time) }}
-        {{ form_widget(audition.start_time) }}
-        {{ form_errors(audition.start_time) }}
+        {{ form_label(audition.start_at.time, 'Start time') }}
+        {{ form_widget(audition.start_at.time) }}
+        {{ form_errors(audition.start_at.time) }}
     </div>
     <div class="form-small-widget">
-        {{ form_label(audition.end_time) }}
-        {{ form_widget(audition.end_time) }}
-        {{ form_errors(audition.end_time) }}
+        {{ form_label(audition.end_at, 'End time') }}
+        {{ form_widget(audition.end_at) }}
+        {{ form_errors(audition.end_at) }}
     </div>
     <div class="form-medium-widget">
         {{ form_label(audition.location) }}
