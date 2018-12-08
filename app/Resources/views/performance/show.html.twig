@@ -17,11 +17,7 @@
             <a href="/diary/{{- p.startAt|date('Y-m-d') -}}#diary-item-{{p.id}}" title="View in diary">
 		<i class="fa fa-calendar fa-fw" style="width: 2em"></i></a>
         {% endif -%}
-        {{- p.startAt|date('g:ia, D jS F Y') -}}
-        {%- if p.repeating -%}
-            {#- Show the duration -#}
-             &ndash;{{ p.repeatUntil|date('D jS F Y') }},
-        {% endif %}
+        {{- p.dateString -}}
         {% if p.venue %}
             at {% if disable_links is defined -%}
                 {{ p.venue.name }}

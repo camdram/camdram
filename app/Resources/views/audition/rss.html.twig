@@ -18,9 +18,9 @@
 <ul>
 {% if entity.nonscheduled %}
 	</ul>
-	<p>Contact {{entity.location}} before {{entity.startAt|date('g:ia D d M')}} for more details.</p>
+	<p>Contact {{entity.location}} before {{entity.dateString}} for more details.</p>
 	{% set currentName = null %}
 {% else %}
-    <li>{{ entity.startAt|date('D jS M, g:ia') }}-{{ entity.endAt|date('g:ia') }}, {{ entity.location }}</li>
+    <li>{{ entity.dateString }}, {{ entity.location }}</li>
     </ul>
 {% endif %}

@@ -35,11 +35,11 @@
             {% endif %}
             {% if a.nonscheduled %}
 	            </ul>
-                <p>Contact {{a.location}} before {{a.startAt | date('g:ia D d M')}} for more details.</p>
+                <p>Contact {{a.location}} before {{a.dateString}} for more details.</p>
 	            </div>
 		    {% set currentName = null %}
 	        {% else %}
-                <li>{{ a.startAt | date('D jS M H:i') }}-{{ a.endAt | date('g:ia') }}, {{ a.location }}</li>
+                <li>{{ a.dateString }}, {{ a.location }}</li>
             {% endif %}
         {% endif %}
     {% else %}

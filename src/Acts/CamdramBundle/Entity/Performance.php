@@ -56,7 +56,7 @@ class Performance implements EventInterface
      * @var \DateTime
      *
      * @ORM\Column(name="repeat_until", type="date", nullable=false)
-     * @Serializer\Expose
+     * @Serializer\Expose(if="object.isRepeating()")
      * @Gedmo\Versioned
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\Type("DateTime<'Y-m-d'>")
@@ -119,6 +119,19 @@ class Performance implements EventInterface
     public function getShowId()
     {
         return $this->show_id;
+    }
+
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\XmlElement(cdata=false)
+     */
+    public function getDateString()
+    {
+        $str = $this->getStartAt()->format('H:i, D jS F Y');
+        if ($this->isRepeating()) {
+            $str .= ' - '.$this->getRepeatUntil()->format('D jS F Y');
+        }
+        return $str;
     }
 
     /**

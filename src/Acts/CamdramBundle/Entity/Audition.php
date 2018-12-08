@@ -109,6 +109,27 @@ class Audition implements EventInterface
     }
 
     /**
+     * @Serializer\VirtualProperty
+     * @Serializer\XmlElement(cdata=false)
+     */
+    public function getDateString()
+    {
+        $startDate = $this->getStartAt()->format('D jS M');
+        $startTime = $this->getStartAt()->format('H:i');
+        $str = $startDate . ', ' . $startTime;
+
+        if ($this->getEndAt()) {
+            $endDate = $this->getEndAt()->format('D jS M');
+            $endTime = $this->getEndAt()->format('H:i');
+            $str .= ' - ';
+            if ($endDate != $startDate) $str .= $endDate . ', ';
+            $str .= $endTime;
+        }
+        
+        return $str;
+    }
+
+    /**
      * Set start_at
      *
      * @param \DateTime $startAt
