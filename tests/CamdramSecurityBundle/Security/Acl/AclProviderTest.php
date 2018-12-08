@@ -19,6 +19,11 @@ class AclProviderTest extends RepositoryTestCase
     private $aclProvider;
 
     /**
+     * @var \Acts\CamdramSecurityBundle\Entity\AccessControlEntryRepository
+     */
+    private $aceRepo;
+
+    /**
      * @var User
      */
     private $admin;
@@ -27,22 +32,28 @@ class AclProviderTest extends RepositoryTestCase
      * @var User
      */
     private $user;
+    private $user2;
 
     public function setUp()
     {
         parent::setUp();
         $this->aclProvider = new AclProvider($this->em, new EventDispatcher());
+        $this->aceRepo = $this->em->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
 
         $this->admin = new User();
         $this->admin->setName('Admin User')
             ->setEmail('admin@camdram.net');
 
         $this->user = new User();
+        $this->user2 = new User();
         $this->user->setName('Test User')
             ->setEmail('testuser@camdram.net');
-    
+        $this->user2->setName('Test User 2')
+            ->setEmail('user2@camdram.net');
+
         $this->em->persist($this->admin);
         $this->em->persist($this->user);
+        $this->em->persist($this->user2);
         $this->em->flush();
     }
 
@@ -73,6 +84,34 @@ class AclProviderTest extends RepositoryTestCase
         //Grant access again
         $this->aclProvider->grantAccess($show, $this->user, $this->admin);
         $this->assertTrue($this->aclProvider->isOwner($this->user, $show));
+    }
+
+    public function testAdmin()
+    {
+        $this->aclProvider->revokeAdmin($this->admin);
+        $this->aclProvider->grantAdmin($this->admin);
+        $query = $this->aceRepo->createQueryBuilder('a')->where('a.type = :type')
+            ->andWhere('a.user = :user')
+            ->setParameter('type', 'security')
+            ->setParameter('user', $this->admin)
+            ->getQuery();
+        // asserting both that there is exactly one result and that it is the
+        // right level.
+        $this->assertSame($query->getSingleResult()->getEntityId(), AccessControlEntry::LEVEL_FULL_ADMIN);
+        $this->assertContains($this->admin, $this->aclProvider->getAdmins());
+        $this->assertContains($this->admin, $this->aclProvider->getAdmins(AccessControlEntry::LEVEL_CONTENT_ADMIN));
+
+        $this->aclProvider->grantAdmin($this->admin, AccessControlEntry::LEVEL_ADMIN);
+        $this->aclProvider->grantAdmin($this->admin, AccessControlEntry::LEVEL_ADMIN); // second call should do nothing
+        $this->assertSame($query->getSingleResult()->getEntityId(), AccessControlEntry::LEVEL_ADMIN);
+        $this->assertNotContains($this->admin, $this->aclProvider->getAdmins());
+        $this->assertContains($this->admin, $this->aclProvider->getAdmins(AccessControlEntry::LEVEL_ADMIN));
+        $this->assertContains($this->admin, $this->aclProvider->getAdmins(AccessControlEntry::LEVEL_CONTENT_ADMIN));
+
+        $this->aclProvider->revokeAdmin($this->admin);
+        $this->assertTrue(empty($query->getResult()));
+        $this->assertNotContains($this->admin, $this->aclProvider->getAdmins());
+        $this->assertNotContains($this->admin, $this->aclProvider->getAdmins(AccessControlEntry::LEVEL_CONTENT_ADMIN));
     }
 
     public function testNullUser()
@@ -110,6 +149,9 @@ class AclProviderTest extends RepositoryTestCase
 
         $shows = $this->aclProvider->getEntitiesByUser($this->user, '\\Acts\\CamdramBundle\\Entity\\Show');
         $this->assertEquals([$show1, $show2], $shows);
+
+        $shows = $this->aclProvider->getEntitiesByUser($this->user2, '\\Acts\\CamdramBundle\\Entity\\Show');
+        $this->assertEquals([], $shows);
 
         $this->assertEquals([$this->user], $this->aclProvider->getOwners($show1));
     }
