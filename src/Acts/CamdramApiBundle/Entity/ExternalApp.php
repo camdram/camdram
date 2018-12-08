@@ -230,6 +230,9 @@ class ExternalApp extends BaseClient
         $this->app_type = $appType;
 
         switch ($appType) {
+            case 'website':
+                $this->setAllowedGrantTypes(array('token', 'refresh_token', 'authorization_code', 'client_credentials'));
+                break;
             case 'server':
                 $this->setAllowedGrantTypes(array('client_credentials'));
                 break;
