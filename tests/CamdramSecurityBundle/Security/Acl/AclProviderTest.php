@@ -3,6 +3,8 @@
 namespace Camdram\Tests\CamdramSecurityBundle\Security\Acl;
 
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
@@ -120,6 +122,24 @@ class AclProviderTest extends RepositoryTestCase
         $this->assertFalse($this->aclProvider->isOwner(null, $show));
     }
 
+
+    public function testGetOrganisationIdsByUser()
+    {
+        $society = new Society();
+        $society->setName("Society 1");
+        $venue = new Venue();
+        $venue->setName("Venue 1");
+        $this->em->persist($society);
+        $this->em->persist($venue);
+        $this->em->flush();
+
+        $this->aclProvider->grantAccess($society, $this->user, $this->admin);
+        $this->aclProvider->grantAccess($venue, $this->user, $this->admin);
+        $this->assertArraySubset($this->aclProvider->getOrganisationIdsByUser($this->user),
+            [$society->getId(), $venue->getId()]);
+        $this->assertSame($this->aclProvider->getOrganisationIdsByUser($this->user2), []);
+    }
+
     /**
      * @expectedException \ReflectionException
      */
@@ -154,5 +174,42 @@ class AclProviderTest extends RepositoryTestCase
         $this->assertEquals([], $shows);
 
         $this->assertEquals([$this->user], $this->aclProvider->getOwners($show1));
+    }
+
+    public function testShowAdminRequests()
+    {
+        $show = $this->createShow();
+        $ace = new AccessControlEntry();
+        $ace->setUser($this->user)
+            ->setEntityId($show->getId())
+            ->setCreatedAt(new \DateTime())
+            ->setType('request-show');
+        $this->em->persist($ace);
+        $this->em->flush();
+        $aceRequestQuery = $this->aceRepo->createQueryBuilder('a')
+            ->where("a.type = 'request-show'")->andWhere('a.user = :user')
+            ->setParameter('user', $this->user)
+            ->getQuery();
+        $aceGrantedQuery = $this->aceRepo->createQueryBuilder('a')
+            ->where("a.type = 'show'")->andWhere('a.user = :user')
+            ->setParameter('user', $this->user)
+            ->getQuery();
+        $aceRequestQuery->getSingleResult(); // asserts that there is only one
+        $this->assertEmpty($aceGrantedQuery->getResult());
+
+        $this->aclProvider->revokeAccess($show, $this->user, $this->admin);
+        $this->assertEmpty($aceRequestQuery->getResult());
+        $this->assertEmpty($aceGrantedQuery->getResult());
+
+        $ace = new AccessControlEntry();
+        $ace->setUser($this->user)
+            ->setEntityId($show->getId())
+            ->setCreatedAt(new \DateTime())
+            ->setType('request-show');
+        $this->em->persist($ace);
+        $this->em->flush();
+        $this->aclProvider->approveShowAccess($show, $this->user, $this->admin);
+        $aceGrantedQuery->getSingleResult(); // asserts that there is only one
+        $this->assertEmpty($aceRequestQuery->getResult());
     }
 }
