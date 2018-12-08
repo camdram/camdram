@@ -56,6 +56,24 @@ class ShowControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter('#content:contains("Show Administration")')->count(), 1);
     }
 
+    public function testCreateShow()
+    {
+        $user = $this->createUser();
+        $this->login($user);
+
+        $crawler = $this->client->request('GET', '/shows/new');
+        $form = $crawler->selectButton('Create')->form();
+        $form['show[name]'] = 'Test Show';
+        $form['show[performances][0][start_date]'] = '2001-03-02';
+        $form['show[performances][0][end_date]'] = '2001-03-05';
+        $form['show[performances][0][time]'] = '19:45';
+        $crawler = $this->client->submit($form);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals($crawler->filter('#content:contains("Test Show")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 1);
+    }
+
     public function testEditShow()
     {
         $user = $this->createUser();
@@ -122,4 +140,5 @@ class ShowControllerTest extends RestTestCase
         $this->assertEquals("Test Show", $data->name);
         $this->assertEquals("Test Society", $data->society->name);
     }
+
 }

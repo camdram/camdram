@@ -89,12 +89,10 @@
             <button class="button right small"><i class="fa fa-check"></i> Approve this show</button>
         </form>
     {% else %}
-        <div class="approve-panel"><em>This show is not yet visible to the public – it is awaiting approval from
-                {% if show.society and show.venue %}someone on the <strong>{{ show.society.name }}</strong> committee or a representative of <strong>{{ show.venue.name }}.</strong>
-                {% elseif show.society %}someone on the <strong>{{ show.society.name }}</strong> committee.
-                {% elseif show.venue %}a representative of <strong>{{ show.venue.name }}.</strong>
-                {% else %}a Camdram administrator.{% endif %}
-            </em></div>
+        <div class="approve-panel"><em>
+            This show is not yet visible to the public – it is awaiting approval 
+            from a society/venue owner or a Camdram administrator.
+        </em></div> 
     {% endif %}
 {% endif %}
 
