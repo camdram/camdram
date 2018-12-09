@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
  * @Api\Link(route="get_application",
- *      params={"identifier": "object.getShow() ? object.getShow().getSlug() : object.getSociety.getSlug()"})
+ *      params={"identifier": "object.getShow() ? object.getShow().getSlug() : object.getSociety().getSlug()"})
  * @Serializer\XmlRoot("application")
  */
 class Application
