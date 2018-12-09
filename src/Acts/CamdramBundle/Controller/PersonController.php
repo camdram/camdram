@@ -68,7 +68,7 @@ class PersonController extends AbstractRestController
     {
         $this->checkAuthenticated();
         $person = $this->getRepository()->findOneById($id);
-        
+
         if (!$person)
         {
             throw $this->createNotFoundException('That person id does not exist');
@@ -125,6 +125,26 @@ class PersonController extends AbstractRestController
 
         return $this->redirect($this->generateUrl('get_person', array('identifier' => $identifier)));
     }*/
+
+    /**
+     * @param $identifier
+     *
+     * @return $this
+     * @Rest\Get("/people/{identifier}/roles")
+     */
+    public function getRolesAction($identifier)
+    {
+        $person = $this->getEntity($identifier);
+        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getByPerson($person);
+        $data = [];
+        foreach($shows as $show) {
+            foreach($show->getRolesByPerson($person) as $role) {
+                $data[] = $role;
+            }
+        }
+
+        return $this->view($data, 200);
+    }
 
     /**
      * @param $identifier

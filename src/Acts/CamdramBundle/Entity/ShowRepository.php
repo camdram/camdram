@@ -112,6 +112,21 @@ class ShowRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getByPerson(Person $person)
+    {
+        $query = $this->createQueryBuilder('s')
+            ->leftJoin('s.performances', 'p')
+            ->join('s.roles', 'r')
+            ->andwhere('s.authorised = true')
+            ->andWhere('r.person = :person')
+            ->orderBy('p.end_date', 'ASC')
+            ->groupBy('s.id')
+            ->setParameter('person', $person)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     public function getUpcomingByPerson(\DateTime $now, Person $person)
     {
         $query = $this->createQueryBuilder('s')
