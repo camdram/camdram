@@ -114,13 +114,19 @@ class Audition implements EventInterface
      */
     public function getDateString()
     {
-        $startDate = $this->getStartAt()->format('D jS M');
-        $startTime = $this->getStartAt()->format('H:i');
+        $startAt = clone $this->getStartAt();
+        $startAt->setTimezone(new \DateTimeZone("Europe/London"));
+
+        $startDate = $startAt->format('D jS M');
+        $startTime = $startAt->format('H:i');
         $str = $startDate . ', ' . $startTime;
 
         if ($this->getEndAt()) {
-            $endDate = $this->getEndAt()->format('D jS M');
-            $endTime = $this->getEndAt()->format('H:i');
+            $endAt = clone $this->getEndAt();
+            $endAt->setTimezone(new \DateTimeZone("Europe/London"));
+
+            $endDate = $endAt->format('D jS M');
+            $endTime = $endAt->format('H:i');
             $str .= ' - ';
             if ($endDate != $startDate) $str .= $endDate . ', ';
             $str .= $endTime;

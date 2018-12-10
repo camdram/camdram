@@ -22,11 +22,14 @@ class Version20181207142112 extends AbstractMigration
         $this->addSql('ALTER TABLE acts_performances ADD start_at DATETIME NOT NULL, ADD repeat_until DATE NOT NULL');
         $this->addSql('UPDATE acts_performances SET start_at = TIMESTAMP(startdate, `time`), repeat_until = enddate');
         $this->addSql('ALTER TABLE acts_performances DROP startdate, DROP enddate, DROP time');
+        $this->addSql('UPDATE acts_performances SET start_at = CONVERT_TZ(start_at, "Europe/London", "UTC")');
 
         //Auditions
         $this->addSql('ALTER TABLE acts_auditions ADD start_at DATETIME NOT NULL, ADD end_at DATETIME DEFAULT NULL');
         $this->addSql('UPDATE acts_auditions SET start_at = TIMESTAMP(`date`, `starttime`), end_at = TIMESTAMP(`date`, `endtime`)');
         $this->addSql('ALTER TABLE acts_auditions DROP date, DROP starttime, DROP endtime');
+        $this->addSql('UPDATE acts_auditions SET start_at = CONVERT_TZ(start_at, "Europe/London", "UTC"), 
+            end_at = CONVERT_TZ(start_at, "Europe/London", "UTC")');
         
         //Shows
         $this->addSql('ALTER TABLE acts_shows DROP start_at, DROP end_at');

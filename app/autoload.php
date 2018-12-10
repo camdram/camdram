@@ -2,6 +2,7 @@
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Composer\Autoload\ClassLoader;
 error_reporting(error_reporting() & ~E_USER_DEPRECATED);
+date_default_timezone_set('UTC');
 /**
  * @var ClassLoader $loader
  */

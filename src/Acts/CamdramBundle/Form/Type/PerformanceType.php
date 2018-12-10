@@ -22,6 +22,8 @@ class PerformanceType extends AbstractType
             ->add('start_at', DateTimeType::class, [
                     'date_widget' => 'single_text',
                     'time_widget' => 'single_text',
+                    'model_timezone' => 'UTC',
+                    'view_timezone' => 'Europe/London',
                 ])
             ->add('repeat_until', DateType::class, array('label' => 'End', 'widget' => 'single_text'))
             ->add('venue', EntitySearchType::class, array(

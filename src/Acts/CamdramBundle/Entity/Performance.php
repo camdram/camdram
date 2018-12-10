@@ -83,10 +83,6 @@ class Performance implements EventInterface
      */
     private $other_venue;
 
-    public function __construct()
-    {
-    }
-
     /**
      * Get id
      *
@@ -127,10 +123,16 @@ class Performance implements EventInterface
      */
     public function getDateString()
     {
-        $str = $this->getStartAt()->format('H:i, D jS F Y');
+        $startAt = clone $this->getStartAt();
+        $startAt->setTimezone(new \DateTimeZone("Europe/London"));
+
+        $str = $startAt->format('H:i');
+
+        $str .= ', ' . $startAt->format('D jS F Y');
         if ($this->isRepeating()) {
             $str .= ' - '.$this->getRepeatUntil()->format('D jS F Y');
         }
+        
         return $str;
     }
 

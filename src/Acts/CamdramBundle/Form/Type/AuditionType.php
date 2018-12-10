@@ -20,8 +20,16 @@ class AuditionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('start_at', DateTimeType::class, ['date_widget' => 'single_text', 'time_widget' => 'single_text'])
-            ->add('end_at', TimeType::class, ['widget' => 'single_text'])
+            ->add('start_at', DateTimeType::class, [
+                'date_widget' => 'single_text', 'time_widget' => 'single_text',
+                'model_timezone' => 'UTC',
+                'view_timezone' => 'Europe/London',
+            ])
+            ->add('end_at', TimeType::class, [
+                'widget' => 'single_text',
+                'model_timezone' => 'UTC',
+                'view_timezone' => 'Europe/London',
+            ])
             ->add('location')
             ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
                 //endAt is only a Time field so ensure its date is correct
