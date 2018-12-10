@@ -322,7 +322,8 @@ class Performance implements EventInterface
      */
     public function getTime()
     {
-        $startAt = $this->getStartAt();
+        $startAt = clone $this->getStartAt();
+        $startAt->setTimezone(new \DateTimezone('Europe/London'));
         return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
     }
 }

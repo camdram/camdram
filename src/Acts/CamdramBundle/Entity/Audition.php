@@ -335,7 +335,8 @@ class Audition implements EventInterface
      */
     public function getStartTime()
     {
-        $startAt = $this->getStartAt();
+        $startAt = clone $this->getStartAt();
+        $startAt->setTimezone(new \DateTimezone('Europe/London'));
         return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
     }
 
@@ -346,7 +347,8 @@ class Audition implements EventInterface
      */
     public function getEndTime()
     {
-        $endAt = $this->getEndAt();
+        $endAt = clone $this->getEndAt();
+        $endAt->setTimezone(new \DateTimezone('Europe/London'));
         return \DateTime::createFromFormat('!H:i', $endAt->format('H').':'.$endAt->format('i'));
     }
 }
