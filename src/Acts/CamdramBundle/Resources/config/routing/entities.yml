@@ -41,10 +41,6 @@ acts_camdram_search:
     type:     rest
     resource: Acts\CamdramBundle\Controller\SearchController
 
-acts_camdram_termdates:
-    type:     rest
-    resource: Acts\CamdramBundle\Controller\TermDateController
-
 acts_camdram_applications:
     type:     rest
     prefix: /vacancies
