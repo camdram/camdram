@@ -293,4 +293,36 @@ class Performance implements EventInterface
         return null;
     }
 
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlElement(cdata=false)
+     * @deprecated
+     */
+    public function getStartDate()
+    {
+        $date = clone $this->getStartAt();
+        $date->setTime(0, 0, 0);
+        return $date;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlElement(cdata=false)
+     * @deprecated
+     */
+    public function getEndDate()
+    {
+        return $this->getRepeatUntil();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlElement(cdata=false)
+     * @deprecated
+     */
+    public function getTime()
+    {
+        $startAt = $this->getStartAt();
+        return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
+    }
 }
