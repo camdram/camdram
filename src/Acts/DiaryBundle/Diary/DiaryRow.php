@@ -17,8 +17,6 @@ class DiaryRow
 
     private $start_time;
 
-    private $end_time;
-
     private $start_date;
 
     public function __construct(\DateTime $start_at)
@@ -72,11 +70,9 @@ class DiaryRow
     {
         //First check if the time is the same (within a certain threshold)
         $eventStartTime = $event->getStartAt()->format('H') * 60 + $event->getStartAt()->format('i');
-        if ($this->start_time && $eventStartTime <= $this->start_time - (self::MAX_ROW_RANGE_MINUTES * 60)) {
-            return false;
-        }
-
-        if ($this->end_time && $eventStartTime >= $this->end_time + (self::MAX_ROW_RANGE_MINUTES * 60)) {
+        if ($this->start_time && (
+                $eventStartTime <= $this->start_time - self::MAX_ROW_RANGE_MINUTES
+                || $eventStartTime >= $this->start_time + self::MAX_ROW_RANGE_MINUTES)) {
             return false;
         }
 
@@ -94,13 +90,6 @@ class DiaryRow
         $eventStartTime = $item->getStartAt()->format('H') * 60 + $item->getStartAt()->format('i');
         if (!$this->start_time || $eventStartTime < $this->start_time) {
             $this->start_time = $eventStartTime;
-        }
-
-        if ($item->getEndAt()) {
-            $eventEndTime = $item->getEndAt()->format('H') * 60 + $item->getEndAt()->format('i');
-            if (!$this->end_time || $eventEndTime > $this->end_time) {
-                $this->end_time = $eventEndTime;
-            }
         }
     }
 

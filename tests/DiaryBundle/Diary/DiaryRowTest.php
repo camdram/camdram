@@ -75,7 +75,6 @@ class DiaryRowTest extends TestCase
     {
         $event = new Event();
         $event->setStartAt(new \DateTime('2014-02-06 14:00'));
-        $event->setEndAt(new \DateTime('2014-02-06 15:00'));
         $event->setRepeatUntil(new \DateTime('2014-02-10'));
         $this->row->addEvent($event);
 
@@ -87,23 +86,30 @@ class DiaryRowTest extends TestCase
 
     public function testCanAccept_WithinTimeThreshold()
     {
-        $event = new Event();
-        $event->setStartAt(new \DateTime('2014-02-01 14:00'));
-        $event->setEndAt(new \DateTime('2014-02-01 15:00'));
+        $event1 = new Event();
+        $event1->setStartAt(new \DateTime('2014-02-01 14:00'));
+        $this->row->addEvent($event1);
 
-        $this->assertTrue($this->row->canAccept($event));
+        $event2= new Event();
+        $event2->setStartAt(new \DateTime('2014-02-02 14:15'));
+
+        $this->assertTrue($this->row->canAccept($event2));
     }
 
     public function testCanAccept_OutsideTimeThreshold()
     {
         $event1 = new Event();
         $event1->setStartAt(new \DateTime('2014-02-01 14:00'));
-        $event1->setEndAt(new \DateTime('2014-02-01 15:00'));
         $this->row->addEvent($event1);
 
         $event2 = new Event();
-        $event2->setStartAt(new \DateTime('2014-02-01 16:00'));
-        $event2->setEndAt(new \DateTime('2014-02-01 17:00'));
+
+        //after
+        $event2->setStartAt(new \DateTime('2014-02-02 16:00'));
+        $this->assertFalse($this->row->canAccept($event2));
+
+        //before
+        $event2->setStartAt(new \DateTime('2014-02-02 12:00'));
         $this->assertFalse($this->row->canAccept($event2));
     }
 
