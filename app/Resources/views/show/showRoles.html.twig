@@ -8,9 +8,14 @@
         {{ not loop.first ? '</div>' }}
         <div {% if editable %}id="role_{{ role.id }}"{% endif %} style="clear: both">
         {%- if editable -%}
+        <form action="{{ path('delete_show_role', {identifier: show.slug, 'role': role.id}) }}"
+                class="delete-form" method="post" id="role-delete-form-{{ role.id }}">
+            <input type="hidden" name="_method" value="DELETE"/>
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_show_role') }}"/>
+        </form>
         <div class="right">
             <i class="fa fa-arrows-v"></i>&nbsp;
-            <a href="{{ path('remove_show_role', {identifier: show.slug, 'role': role.id}) }}" class="delete-link">
+            <a href="javascript:document.getElementById('role-delete-form-{{ role.id }}').submit()">
                 <i class="fa fa-trash-o"></i>
             </a>
         </div>

@@ -6,8 +6,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
@@ -16,9 +15,10 @@ use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
- * @RouteResource("User")
+ * @Rest\RouteResource("User")
  * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class UserController extends FOSRestController
@@ -128,10 +128,14 @@ class UserController extends FOSRestController
         }
     }
 
-    public function removeAction($identifier)
+    public function deleteAction(Request $request, $identifier)
     {
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('DELETE', $entity);
+
+        if (!$this->isCsrfTokenValid('delete_user', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
@@ -168,12 +172,17 @@ class UserController extends FOSRestController
 
     /**
      * @param $identifier
-     * @Get("/users/{identifier}/reset-password")
+     * @Rest\Patch("/users/{identifier}/reset-password")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resetPasswordAction($identifier, TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
+    public function resetPasswordAction(Request $request, $identifier, 
+            TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
     {
+        if (!$this->isCsrfTokenValid('reset_user_password', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $user = $this->getEntity($identifier);
 
         $token = $tokenGenerator->generatePasswordResetToken($user);

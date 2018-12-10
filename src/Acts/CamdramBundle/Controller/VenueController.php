@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
@@ -142,16 +143,30 @@ class VenueController extends OrganisationController
         return $show_repo->getByVenue($this->getEntity($slug), $from, $to);
     }
 
-    public function removeImageAction($identifier)
+    public function deleteImageAction(Request $request, $identifier)
     {
         $venue = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $venue);
-        
+
+        if (!$this->isCsrfTokenValid('delete_venue_image', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($venue->getImage());
         $venue->setImage(null);
         $em->flush();
         
         return $this->redirectToRoute('get_venue', ['identifier' => $identifier]);
+    }
+
+    /**
+     * Revoke a pending admin's access to an organisation.
+     * 
+     * @Rest\Delete("/venues/{identifier}/pending-admins/{uid}")
+     */
+    public function deletePendingAdminAction(Request $request, $identifier, $uid)
+    {
+        return parent::deletePendingAdminAction($request, $identifier, $uid);
     }
 }

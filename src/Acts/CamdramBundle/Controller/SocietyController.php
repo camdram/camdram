@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\SocietyType;
@@ -138,16 +139,30 @@ class SocietyController extends OrganisationController
         return $show_repo->getBySociety($this->getEntity($slug), $from, $to);
     }
 
-    public function removeImageAction($identifier)
+    public function deleteImageAction(Request $request, $identifier)
     {
         $society = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $society);
-        
+
+        if (!$this->isCsrfTokenValid('delete_society_image', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($society->getImage());
         $society->setImage(null);
         $em->flush();
         
         return $this->redirectToRoute('get_society', ['identifier' => $identifier]);
+    }
+    
+    /**
+     * Revoke a pending admin's access to an organisation.
+     * 
+     * @Rest\Delete("/societies/{identifier}/pending-admins/{uid}")
+     */
+    public function deletePendingAdminAction(Request $request, $identifier, $uid)
+    {
+        return parent::deletePendingAdminAction($request, $identifier, $uid);
     }
 }

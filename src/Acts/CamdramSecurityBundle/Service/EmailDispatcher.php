@@ -153,6 +153,7 @@ class EmailDispatcher
                 $entity = $this->em->getRepository('ActsCamdramBundle:Organisation')->findOneById($ace->getRid());
                 break;
         }
+
         $message->setSubject('Access to '.$entity->getName().' on Camdram granted')
             ->setBody(
                 $this->twig->render(

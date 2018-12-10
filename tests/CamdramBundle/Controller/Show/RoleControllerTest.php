@@ -38,10 +38,10 @@ class RoleControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter('#sortable-cast div:contains("John Smith")')->count(), 2);
         
         //Remove both roles
-        $link = $crawler->filter('#sortable-cast .delete-link')->link();
-        $crawler = $this->client->click($link);
-        $link = $crawler->filter('#sortable-cast .delete-link')->link();
-        $crawler = $this->client->click($link);
+        $form = $crawler->filter('#sortable-cast .delete-form')->form();
+        $crawler = $this->client->submit($form);
+        $form = $crawler->filter('#sortable-cast .delete-form')->form();
+        $crawler = $this->client->submit($form);
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals($crawler->filter('#sortable-cast div:contains("John Smith")')->count(), 0);

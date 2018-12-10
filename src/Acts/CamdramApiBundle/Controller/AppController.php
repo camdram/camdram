@@ -5,17 +5,18 @@ namespace Acts\CamdramApiBundle\Controller;
 use Acts\CamdramApiBundle\Entity\ExternalApp;
 use Acts\CamdramApiBundle\Form\Type\ExternalAppType;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\OAuthServerBundle\Util\Random;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class AppController
  *
- * @RouteResource("App")
+ * @Rest\RouteResource("App")
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class AppController extends FOSRestController
@@ -99,8 +100,12 @@ class AppController extends FOSRestController
         }
     }
 
-    public function removeAction($app_id)
+    public function deleteAction(Request $request, $app_id)
     {
+        if (!$this->isCsrfTokenValid('delete_app', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $app = $this->getApp($app_id);
         $this->getDoctrine()->getManager()->remove($app);
         $this->getDoctrine()->getManager()->flush();
@@ -109,10 +114,14 @@ class AppController extends FOSRestController
     }
 
     /**
-     * @Route("/apps/{app_id}/regenerate-secret", name="api_app_regenerate_secret")
+     * @Rest\Patch("/apps/{app_id}/regenerate-secret")
      */
-    public function regenerateSecretAction($app_id)
+    public function regenerateSecretAction(Request $request, $app_id)
     {
+        if (!$this->isCsrfTokenValid('regenerate_app_secret', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $app = $this->getApp($app_id);
         $app->setSecret(Random::generateToken());
         $this->getDoctrine()->getManager()->flush();

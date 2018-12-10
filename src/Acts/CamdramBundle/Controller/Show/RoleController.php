@@ -97,10 +97,15 @@ class RoleController extends FOSRestController
     /**
      * Remove a role from a show.
      */
-    public function removeRoleAction(Request $request, $identifier)
+    public function deleteRoleAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        if (!$this->isCsrfTokenValid('delete_show_role', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('role');
         $role_repo = $em->getRepository('ActsCamdramBundle:Role');

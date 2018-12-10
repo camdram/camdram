@@ -10,14 +10,14 @@
             item: {id: 'edit_user', path: path('edit_user',{identifier:user.id}), icon: 'pencil',
             text: 'Edit this user'} })
         }}
-        {{ include('navigation/delete-item.html.twig', {
-            item: {id: 'remove_user', path: path('remove_user',{identifier:user.id}), text: 'Delete this user',
-                type: 'user', name: user.name ~ ' (' ~ user.email ~ ')'} })
-        }}
-        {{ include('navigation/nav-item.html.twig', {
-            item: {id: 'reset_user_password', path: path('reset_user_password',{identifier:user.id}), icon: 'key',
-            text: 'Reset password'} })
-        }}
+        {{ include('navigation/form-item.html.twig', {item: {id: 'delete_user', 
+                path: path('delete_user', {identifier:user.id}), method: 'DELETE', text: 'Delete this user', icon: 'eraser'},
+                destructive: {title: "Are you sure you want to delete the user " ~ user.name ~ " (" ~ user.email ~ ")?", 
+                    text: "This is a permanent action that cannot be undone" }
+                }) }}
+        {{ include('navigation/form-item.html.twig', {item: {id: 'reset_user_password', 
+                path: path('reset_user_password', {identifier:user.id}), text: 'Reset password', icon: 'key'}
+                }) }}
         {% if not is_granted('ROLE_PREVIOUS_ADMIN') %}
             {{ include('navigation/nav-item.html.twig', {
                 item: {id: 'impersonate_user', path: path('acts_camdram_homepage', {_switch_to_user: user.email}),

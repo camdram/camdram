@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\FOSRestController;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
@@ -219,13 +220,17 @@ abstract class AbstractRestController extends FOSRestController
     public function afterEditFormSubmitted($form, $identifier) {}
 
     /**
-     * Action where PUT request is submitted from edit entity form
+     * Action to delete entity
      */
-    public function removeAction($identifier)
+    public function deleteAction(Request $request, $identifier)
     {
         $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
+
+        if (!$this->isCsrfTokenValid('delete_' . $this->type, $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);

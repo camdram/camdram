@@ -1,7 +1,9 @@
 {# This uses a form inside of the li to allow a POST request. #}
 {% spaceless %}
 <li><form action="{{ item.path }}" method="post">
-    <button {% if destructive is defined %}data-title="{{destructive.title}}" data-text="{{destructive.text ?: ''}}"
+    <input type="hidden" name="_method" value="{{ item.method ?? 'PATCH' }}"/>
+    <input type="hidden" name="_token" value="{{ csrf_token(item.intent ?? item.id) }}"/>
+    <button {% if destructive is defined %}data-title="{{destructive.title}}" data-text="{{destructive.text ?? ''}}"
             class="button-destructive"{% endif %}
             >
         {% if item.icon %}<i class="fa fa-{{ item.icon }} fa-fw"></i>{% endif %}

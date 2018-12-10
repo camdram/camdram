@@ -6,6 +6,8 @@ use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Form\Type\OrganisationApplicationType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
@@ -213,13 +215,17 @@ abstract class OrganisationController extends AbstractRestController
         }
     }
 
-    public function removeApplicationAction(Request $request, $identifier)
+    public function deleteApplicationAction(Request $request, $identifier)
     {
         $this->checkAuthenticated();
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $org);
-        $application = $org->getApplications()->first();
 
+        if (!$this->isCsrfTokenValid('delete_application', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
+        $application = $org->getApplications()->first();
         $em = $this->getDoctrine()->getManager();
         $em->remove($application);
         $em->flush();
@@ -335,14 +341,20 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * Revoke an admin's access to an organisation.
+     * 
+     * @Rest\Delete
      */
-    public function revokeAdminAction(Request $request, $identifier)
+    public function deleteAdminAction(Request $request, $identifier, $uid)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
+
+        if (!$this->isCsrfTokenValid('delete_admin', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
-        $id = $request->query->get('uid');
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($uid);
         if ($user != null) {
             $this->get('camdram.security.acl.provider')->revokeAccess($org, $user, $this->getUser());
         }
@@ -358,13 +370,17 @@ abstract class OrganisationController extends AbstractRestController
     /**
      * Revoke a pending admin's access to an organisation.
      */
-    public function revokePendingAdminAction(Request $request, $identifier)
+    public function deletePendingAdminAction(Request $request, $identifier, $uid)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
+
+        if (!$this->isCsrfTokenValid('delete_pending_admin', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
-        $id = $request->query->get('pending_admin');
-        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($id);
+        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($uid);
         if ($pending_admin != null) {
             $em->remove($pending_admin);
             $em->flush();

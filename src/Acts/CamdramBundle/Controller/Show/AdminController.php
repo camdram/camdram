@@ -9,7 +9,9 @@ use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AdminController extends FOSRestController
 {
@@ -180,14 +182,19 @@ class AdminController extends FOSRestController
 
     /**
      * Revoke an admin's access to a show.
+     * 
      */
-    public function revokeAdminAction(Request $request, $identifier)
+    public function deleteAdminAction(Request $request, $identifier, $uid)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        if (!$this->isCsrfTokenValid('delete_admin', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
-        $id = $request->query->get('uid');
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($uid);
         if ($user != null) {
             $this->get('camdram.security.acl.provider')->revokeAccess($show, $user, $this->getUser());
         }
@@ -197,14 +204,20 @@ class AdminController extends FOSRestController
 
     /**
      * Revoke a pending admin's access to a show.
+     * 
+     * @Rest\Delete("/shows/{identifier}/pending-admins/{uid}")
      */
-    public function revokePendingAdminAction(Request $request, $identifier)
+    public function deletePendingAdminAction(Request $request, $identifier, $uid)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        if (!$this->isCsrfTokenValid('delete_pending_admin', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
-        $id = $request->query->get('pending_admin');
-        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($id);
+        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($uid);
         if ($pending_admin != null) {
             $em->remove($pending_admin);
             $em->flush();

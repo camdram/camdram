@@ -10,6 +10,7 @@ use Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class ShowController
@@ -159,11 +160,6 @@ class ShowController extends AbstractRestController
         $show->setSocietiesDisplayList($displayList);
     }
 
-    public function deleteAction($identifier)
-    {
-        parent::removeAction($identifier);
-    }
-
     private function getTechieAdvertForm(Show $show, $obj = null)
     {
         if (!$obj) {
@@ -220,10 +216,14 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
     
-    public function removeImageAction($identifier)
+    public function deleteImageAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+
+        if (!$this->isCsrfTokenValid('delete_show_image', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
         
         $em = $this->getDoctrine()->getManager();
         $em->remove($show->getImage());
@@ -233,10 +233,31 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
-    public function unapproveAction($identifier)
+    public function approveAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
+
+        $token = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('approve_show', $token)) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
+        $this->get('acts.camdram.moderation_manager')->approveEntity($show);
+        $this->get('doctrine.orm.entity_manager')->flush();
+
+        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+    }
+
+    public function unapproveAction(Request $request, $identifier)
+    {
+        $show = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
+
+        $token = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('unapprove_show', $token)) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
 
         $em = $this->getDoctrine()->getManager();
         $show->setAuthorised(false);

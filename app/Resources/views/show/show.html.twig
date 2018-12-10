@@ -83,10 +83,10 @@
             <a itemprop="image" href="{{ show.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
             {%- if is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") -%}
                 <ul class="inline-list">
-                {{ include('navigation/delete-item.html.twig', {item:
-                        {id: 'delete_show',
-                         path: path('remove_show_image', {identifier:show.slug}),
-                         text: 'Remove image', name: show.name, type: 'image'} }) }}
+                {{ include('navigation/form-item.html.twig', {item: {id: 'delete_show_image', 
+                    path: path('delete_show_image', {identifier:show.slug}), method: 'DELETE', text: 'Remove image', icon: 'eraser'},
+                    destructive: {title: "Are you sure you want to delete the image for “" ~ show.name ~ "”?" }
+                    }) }}
                 </ul>
             {%- endif -%}
         </div>

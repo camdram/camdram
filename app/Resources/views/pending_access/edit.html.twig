@@ -13,19 +13,19 @@
 
 <p>
 {% if entity.entityType == 'show' %}
-    {% set revoke_admin_route = 'revoke_show_admin' %}
-    {% set revoke_pending_admin_route = 'revoke_show_pending_admin' %}
+    {% set revoke_admin_route = 'delete_show_admin' %}
+    {% set revoke_pending_admin_route = 'delete_show_pending_admin' %}
     Admins are able to edit the details of a show, create adverts for production
     team vacancies, and edit the people listed who are involved in the show. These
     list show the current admins and the list of people who will be able to edit
     the show after they create an account on Camdram.
 {% elseif entity.entityType == 'society' %}
-    {% set revoke_admin_route = 'revoke_society_admin' %}
+    {% set revoke_admin_route = 'delete_society_admin' %}
     {% set revoke_pending_admin_route = 'revoke_society_pending_admin' %}
     Society admins are able to edit the information listed on Camdram, authorise shows involving the society, and to open applications for new shows.
 {% elseif entity.entityType == 'venue' %}
-    {% set revoke_admin_route = 'revoke_venue_admin' %}
-    {% set revoke_pending_admin_route = 'revoke_venue_pending_admin' %}
+    {% set revoke_admin_route = 'delete_venue_admin' %}
+    {% set revoke_pending_admin_route = 'deletevenue_pending_admin' %}
     Venue admins are able to edit the information listed on Camdram, authorise shows involving the venue, and to open applications for new shows.
 {% endif %}
 </p>
@@ -56,7 +56,12 @@
 {% endif %}
 {% for admin in admins %}
     <div id="admin_{{ admin.id }}">
-    <span data-tooltip class="has-tip" title="Revoke this admin."><a href="{{ path((revoke_admin_route), {identifier: entity.slug, 'uid': admin.id}) }}" class="fa fa-fw fa-trash-o"></a></span>&ensp;
+        <form action="{{ path(revoke_admin_route, {identifier: entity.slug, uid: admin.id}) }}" method="post" id="revoke_admin_form_{{ admin.id }}">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_admin') }}" />
+        </form>
+    <span title="Revoke this admin.">
+        <a href="javascript:document.getElementById('revoke_admin_form_{{ admin.id }}').submit()" class="fa fa-fw fa-trash-o"></a></span>&ensp;
     {%- if admin.person is defined -%}
         {%- if admin.person -%}
             <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
@@ -73,7 +78,13 @@
 {% endif %}
 {% for pending in pending_admins %}
     <div id="pending_{{ pending.id }}">
-    <span data-tooltip class="has-tip" title="Revoke this pending admin."><a href="{{ path((revoke_pending_admin_route), {identifier: entity.slug, 'pending_admin': pending.id}) }}" class="fa fa-fw fa-trash-o"></a></span>&ensp;
+    <form action="{{ path(revoke_pending_admin_route, {identifier: entity.slug, uid: pending.id}) }}" method="post" id="revoke_pending_admin_form_{{ pending.id }}">
+        <input type="hidden" name="_method" value="DELETE" />
+        <input type="hidden" name="_token" value="{{ csrf_token('delete_pending_admin') }}" />
+    </form>
+
+    <span title="Revoke this pending admin.">
+        <a href="javascript:document.getElementById('revoke_pending_admin_form_{{ pending.id }}').submit()" class="fa fa-fw fa-trash-o"></a></span>&ensp;
     {{ pending.email }}
     </div>
 {% endfor %}

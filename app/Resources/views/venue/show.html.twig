@@ -30,9 +30,10 @@
             </a>
             {% if is_granted('EDIT', venue) and is_granted("IS_AUTHENTICATED_FULLY") %}
             <ul class="inline-list">
-                {{ include('navigation/delete-item.html.twig', {item:
-                   {id: 'delete_venue_image', path: path('remove_venue_image',{identifier:venue.slug}),
-                    text: 'Remove image', name: venue.name, type: 'image'} }) }}
+                {{ include('navigation/form-item.html.twig', {item: {id: 'delete_venue_image', 
+                    path: path('delete_venue_image', {identifier:venue.slug}), method: 'DELETE', text: 'Remove image', icon: 'eraser'},
+                    destructive: {title: "Are you sure you want to delete the image for “" ~ venue.name ~ "”?" }
+                    }) }}
             </ul>
             {% endif %}
         </div>

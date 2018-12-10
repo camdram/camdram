@@ -4,7 +4,10 @@
     <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_venue', path: path('edit_venue',{identifier:org.slug}), icon: 'pencil', text: 'Edit this venue'} }) }}
         {% if is_granted('DELETE', org) %}
-            {{ include('navigation/delete-item.html.twig', {item: {id: 'remove_venue', path: path('remove_venue',{identifier:org.slug}), text: 'Delete this venue', name: org.name, type: 'venue'} }) }}
+            {{ include('navigation/form-item.html.twig', {item: {id: 'delete_venue', 
+                path: path('delete_venue', {identifier:org.slug}), method: 'DELETE', text: 'Delete this venue', icon: 'eraser'},
+                destructive: {title: "Are you sure you want to delete the venue “" ~ org.name ~ "”?", text: "This is a permanent action that cannot be undone" }
+                }) }}
         {% endif %}
         {% if org.applications | length == 0 %}
             {{ include('navigation/nav-item.html.twig',
