@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Acts\CamdramBundle\Form\Type\EntitySearchType;
 
 /**
@@ -19,11 +19,13 @@ class PerformanceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder// 'format' => 'eee d MMM y',
-            ->add('start_date', DateType::class, array('label' => 'Start', 'widget' => 'single_text'))
-            ->add('end_date', DateType::class, array('label' => 'End', 'widget' => 'single_text'))
-            ->add('time', TimeType::class, array('label' => 'Time', 'widget' => 'single_text', 'attr' => array(
-                'placeholder' => 'e.g. 19:45'
-            )))
+            ->add('start_at', DateTimeType::class, [
+                    'date_widget' => 'single_text',
+                    'time_widget' => 'single_text',
+                    'model_timezone' => 'UTC',
+                    'view_timezone' => 'Europe/London',
+                ])
+            ->add('repeat_until', DateType::class, array('label' => 'End', 'widget' => 'single_text'))
             ->add('venue', EntitySearchType::class, array(
                 'route' => 'get_venues',
                 'class' => 'Acts\\CamdramBundle\\Entity\\Venue',

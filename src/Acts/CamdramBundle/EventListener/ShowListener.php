@@ -28,8 +28,6 @@ class ShowListener
     {
         //ensure the venue attached to the show and to the performances are consistent
         $show->updateVenues();
-        //ensure the start_at and end_at fields are equal to the start and end of the first and last performances
-        $this->updateTimes($show);
     }
 
     public function prePersist(Show $show, LifecycleEventArgs $event)
@@ -145,22 +143,6 @@ class ShowListener
                 }
                 break;
         }
-    }
-
-    public function updateTimes(Show $show)
-    {
-        $min = null;
-        $max = null;
-        foreach ($show->getPerformances() as $performance) {
-            if (is_null($min) || $performance->getStartDate() < $min) {
-                $min = $performance->getStartDate();
-            }
-            if (is_null($max) || $performance->getEndDate() > $max) {
-                $max = $performance->getEndDate();
-            }
-        }
-        $show->setStartAt($min);
-        $show->setEndAt($max);
     }
 
     /**

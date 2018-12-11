@@ -190,9 +190,8 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
     {
         $perf = new Performance();
         $perf->setShow($show);
-        $perf->setStartDate($start);
-        $perf->setEndDate($end);
-        $perf->setTime($this->generateTime());
+        $perf->setStartAt(new \DateTime($start->format('Y-m-d ').$this->generateTime()));
+        $perf->setRepeatUntil($end);
 
         return $perf;
     }
@@ -205,12 +204,12 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             $time = new \DateTime('19:15');
             $time->modify('+'.($quart * 15).' minutes');
 
-            return $time;
+            return $time->format('H:i');
         } else {
             $hour = mt_rand(10, 22);
             $minute = mt_rand(0, 3) * 15;
 
-            return new \DateTime($hour.':'.$minute);
+            return $hour.':'.$minute;
         }
     }
 
@@ -334,17 +333,16 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < $numScheduledAuditions; $i++) {
             $audition = new Audition();
-            $audition->setDate(new \DateTime(mt_rand(-5, 10) . ' days'));
 
+            $days = mt_rand(-5, 10);
             $hour = mt_rand(10, 19);
             $minute = mt_rand(0, 3) * 15;
+            
+            $audition->setStartAt(new \DateTime("$days days $hour:$minute"));
 
-            $startTime = new \DateTime($hour.':'.$minute);
-            $endTime = clone $startTime;
+            $endTime = clone $audition->getStartAt();
             $endTime->add(\DateInterval::createFromDateString(mt_rand(2, 4). ' hours'));
-
-            $audition->setStartTime($startTime);
-            $audition->setEndTime($endTime);
+            $audition->setEndAt($endTime);
 
             $audition->setLocation('Random Location ' . mt_rand(1, 50));
 

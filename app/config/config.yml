@@ -35,6 +35,8 @@ sensio_framework_extra:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    date:
+        timezone: "Europe/London"
     form_themes:
         - 'form/fields.html.twig'
     globals:

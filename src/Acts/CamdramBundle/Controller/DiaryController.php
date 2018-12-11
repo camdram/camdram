@@ -41,9 +41,9 @@ class DiaryController extends FOSRestController
         }
         $current_year = $start_date->format('Y');
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
-        $first_date = $repo->getFirstShowDate();
-        $last_date = $repo->getLastShowDate();
+        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $first_date = $repo->getFirstDate();
+        $last_date = $repo->getLastDate();
         $years = range($first_date->format('Y'), $last_date->format('Y'));
 
         $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');

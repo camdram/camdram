@@ -21,8 +21,8 @@ class VenueRepository extends EntityRepository
             ->innerJoin('v.performances', 'p')
             ->innerJoin('p.show', 's')
             ->where('s.authorised = true')
-            ->andWhere('p.start_date < :end')
-            ->andWhere('p.end_date >= :start')
+            ->andWhere('p.start_at < :end')
+            ->andWhere('p.repeat_until >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();

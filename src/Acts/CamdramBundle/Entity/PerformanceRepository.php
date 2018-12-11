@@ -31,8 +31,9 @@ class PerformanceRepository extends EntityRepository
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised = true')
-            ->andWhere('p.start_date < :end')
-            ->andWhere('p.end_date >= :start')
+            ->andWhere('p.start_at < :end')
+            ->andWhere('p.repeat_until >= :start')
+            ->orderBy('p.start_at', 'ASC')
             ->setParameter('start', $start)
             ->setParameter('end', $end)
         ;
@@ -44,8 +45,8 @@ class PerformanceRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p');
         $qb->join('p.show', 's')
-            ->where('p.start_date < :end')
-            ->andWhere('p.end_date >= :start')
+            ->where('p.start_at < :end')
+            ->andWhere('p.repeat_until >= :start')
             ->andWhere('s.authorised = true')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
@@ -56,8 +57,8 @@ class PerformanceRepository extends EntityRepository
         $max_end->modify('-1 day');
         foreach ($result as $p) {
             if ($p->getShow()) {
-                $start_at = $p->getStartDate();
-                $end_at = $p->getEndDate();
+                $start_at = $p->getStartAt();
+                $end_at = $p->getRepeatUntil();
                 if ($start_at < $start) {
                     $start_at = $start;
                 }
@@ -78,8 +79,8 @@ class PerformanceRepository extends EntityRepository
             ->innerJoin('p.show', 's')
             ->where('s.authorised = true')
             ->andwhere('p.venue IS NULL')
-            ->andWhere('p.start_date < :end')
-            ->andWhere('p.end_date >= :start')
+            ->andWhere('p.start_at < :end')
+            ->andWhere('p.repeat_until >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
         $result = $qb->getQuery()->getOneOrNullResult();
@@ -98,14 +99,14 @@ class PerformanceRepository extends EntityRepository
             ->andWhere(':society MEMBER OF s.societies');
 
         if ($from) {
-            $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
+            $query = $query->andWhere('p.start_at > :from')->setParameter('from', $from);
         }
 
         if ($to) {
-            $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
+            $query = $query->andWhere('p.repeat_until <= :to')->setParameter('to', $to);
         }
 
-        $query = $query->orderBy('p.start_date', 'ASC')
+        $query = $query->orderBy('p.start_at', 'ASC')
             ->setParameter('society', $society)
             ->getQuery();
 
@@ -122,18 +123,45 @@ class PerformanceRepository extends EntityRepository
             ->where('s.authorised = true');
 
         if ($from) {
-            $query = $query->andWhere('p.start_date > :from')->setParameter('from', $from);
+            $query = $query->andWhere('p.start_at > :from')->setParameter('from', $from);
         }
 
         if ($to) {
-            $query = $query->andWhere('p.end_date <= :to')->setParameter('to', $to);
+            $query = $query->andWhere('p.repeat_until <= :to')->setParameter('to', $to);
         }
 
         $query = $query->andWhere('s.venue = :venue')
-            ->orderBy('p.start_date', 'ASC')
+            ->orderBy('p.start_at', 'ASC')
             ->setParameter('venue', $venue)
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    public function getFirstDate()
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('MIN(p.start_at)')
+            ->join('p.show', 's')
+            ->where('s.authorised = true')
+            ->andWhere('p.start_at IS NOT NULL')
+            ->andWhere('p.start_at > :min')
+            ->setMaxResults(1)
+            ->setParameter('min', new \DateTime('1990-01-01'))
+            ->getQuery();
+
+        return new \DateTime(current($query->getOneOrNullResult()));
+    }
+
+    public function getLastDate()
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('MAX(p.repeat_until)')
+            ->join('p.show', 's')
+            ->where('s.authorised = true')
+            ->setMaxResults(1)
+            ->getQuery();
+
+        return new \DateTime(current($query->getOneOrNullResult()));
     }
 }

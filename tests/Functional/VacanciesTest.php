@@ -51,9 +51,8 @@ class VacanciesTest extends WebTestCase
             ->setCategory('drama');
 
         $performance = new Performance;
-        $performance->setStartDate(new \DateTime($startDate));
-        $performance->setEndDate(new \DateTime($startDate));
-        $performance->setTime(new \DateTime("19:30"));
+        $performance->setStartAt(new \DateTime($startDate. ' 19:30'));
+        $performance->setRepeatUntil(new \DateTime($startDate));
         $show->addPerformance($performance);
 
         $this->entityManager->persist($show);
@@ -101,9 +100,8 @@ class VacanciesTest extends WebTestCase
         $show->setAudextra('blah');
         $audition = new Audition;
         $audition->setDisplay(0)
-            ->setDate(new \DateTime('2000-01-15'))
-            ->setStartTime(new \Datetime('10:00'))
-            ->setEndTime(new \DateTime('18:00'))
+            ->setStartAt(new \Datetime('2000-01-15 10:00'))
+            ->setEndAt(new \DateTime('2000-01-15 18:00'))
             ->setLocation('Somewhere')
             ->setNonScheduled(false)
             ->setShow($show);

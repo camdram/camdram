@@ -3,7 +3,7 @@
     <ul>
     {% for audition in auditions %}
         <li><a href="{{ path('get_show', {identifier: audition.show.slug}) }}">{{ audition.show.name }}</a> is holding auditions:
-            in {{ audition.location }} from {{ audition.starttime | date('H:i') }} to {{ audition.endtime | date('H:i') }} on {{ audition.date | date('D jS M') }}
+            in {{ audition.location }} from {{ audition.startAt | date('H:i') }} to {{ audition.startAt | date('H:i') }} on {{ audition.startAt | date('D jS M') }}
             - <a href="{{ path('get_audition', {identifier: audition.show.slug}) }}">more details</a>
         </li>
     {% endfor %}

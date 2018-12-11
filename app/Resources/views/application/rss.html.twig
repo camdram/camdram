@@ -11,6 +11,6 @@
 
 <p><strong>Deadline:</strong> {{ entity.deadlinedate|date('l jS F') }}
 {% if entity.deadlinetime %}
-	{{ entity.deadlinetime|date('g:ia') }}
+	{{ entity.deadlinetime|date('H:i') }}
 {% endif %}
 </p>

@@ -26,6 +26,7 @@ class Label
      * @var \DateTime The start time of the period this label refers to
      * 
      * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
     private $start_at;
 
@@ -33,6 +34,7 @@ class Label
      * @var \DateTime The end time of the period this label refers to
      * 
      * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
     private $end_at;
 

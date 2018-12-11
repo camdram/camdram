@@ -29,32 +29,27 @@ interface EventInterface
     public function getVenueName();
 
     /**
-     * The first date on which the event takes place
+     * The start date and time of the event
      *
      * @return \DateTime
      */
-    public function getStartDate();
+    public function getStartAt();
 
     /**
-     * The last date on which the event takes place
+     * The end date and time of the event
+     * Return null if not end time defined
      *
-     * @return \DateTime
+     * @return \DateTime | null
      */
-    public function getEndDate();
+    public function getEndAt();
 
     /**
-     * The start time of the event. It is represented by a DateTime object, but only the time component is ever used
+     * For events that repeat daily, the last date on which the event takes place.
+     * It is represented by a DateTime object, but only the date component is ever used.
      *
      * @return \DateTime
      */
-    public function getStartTime();
-
-    /**
-     * The end time of the event. It is represented by a DateTime object, but only the time component is ever used
-     *
-     * @return \DateTime
-     */
-    public function getEndTime();
+    public function getRepeatUntil();
 
     /**
      * The date/time at which the information about the event was last updated

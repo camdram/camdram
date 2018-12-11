@@ -93,9 +93,9 @@ class WeekManager
         $res = "";
         /* Guard condition. */
         if (count($performances) > 0) {
-            $start_week = $this->findAt($performances[0]->getStartDate());
+            $start_week = $this->findAt($performances[0]->getStartAt());
             /* Assume performances are supplied in chronological order. */
-            $end_week = $this->findAt($performances[count($performances) - 1]->getEndDate());
+            $end_week = $this->findAt($performances[count($performances) - 1]->getRepeatUntil());
             if ($start_week->getName() == $end_week->getName()) {
                 /* Any show that runs for less than a week, e.g. most
                  * shows at the ADC Theatre.

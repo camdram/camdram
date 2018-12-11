@@ -283,25 +283,11 @@ class Show implements OwnableInterface
      * @var array
      *
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"start_date" = "ASC"})
+     * @ORM\OrderBy({"start_at" = "ASC"})
      * @Serializer\Expose()
      * @Serializer\XmlList(entry = "performance")
      */
     private $performances;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start_at", type="datetime", nullable=true)
-     */
-    private $start_at;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_at", type="datetime", nullable=true)
-     */
-    private $end_at;
 
     /**
      * @var string
@@ -879,51 +865,18 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set start_at
-     *
-     * @param \DateTime $startAt
-     *
-     * @return Show
-     */
-    public function setStartAt($startAt)
-    {
-        $this->start_at = $startAt;
-
-        return $this;
-    }
-
-    /**
-     * Get start_at
+     * Get last performance time
      *
      * @return \DateTime
      */
     public function getStartAt()
     {
-        return $this->start_at;
-    }
-
-    /**
-     * Set end_at
-     *
-     * @param \DateTime $endAt
-     *
-     * @return Show
-     */
-    public function setEndAt($endAt)
-    {
-        $this->end_at = $endAt;
-
-        return $this;
-    }
-
-    /**
-     * Get end_at
-     *
-     * @return \DateTime
-     */
-    public function getEndAt()
-    {
-        return $this->end_at;
+        $criteria = Criteria::create()
+            ->orderBy(['start_at' => Criteria::ASC])
+            ->setMaxResults(1)
+            ;
+        $performance = $this->performances->matching($criteria)->first();
+        return $performance ? $performance->getStartAt() : null;
     }
 
     public function getMultiVenue()
@@ -1015,7 +968,8 @@ class Show implements OwnableInterface
         */
     public function getRank()
     {
-        return $this->start_at ? $this->start_at->format('Ymd') : 0;
+        $startAt = $this->getStartAt();
+        return $startAt ? (int) $startAt->format('Ymd') : 0;
     }
 
 
@@ -1153,7 +1107,10 @@ class Show implements OwnableInterface
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('display', 0))
-            ->andWhere(Criteria::expr()->gte('date', new \DateTime()));
+            ->andWhere(Criteria::expr()->orX(
+                Criteria::expr()->gte('start_at', new \DateTime()),
+                Criteria::expr()->gte('end_at', new \DateTime())
+            ));
 
         return $this->auditions->matching($criteria);
     }
@@ -1161,7 +1118,7 @@ class Show implements OwnableInterface
     public function getScheduledAuditions()
     {
         $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->gte('date', new \DateTime()))
+            ->andWhere(Criteria::expr()->gte('end_at', new \DateTime()))
             ->andWhere(Criteria::expr()->eq('nonScheduled', false));
 
         return $this->auditions->matching($criteria);
@@ -1197,7 +1154,9 @@ class Show implements OwnableInterface
     public function getNonScheduledAuditions()
     {
         $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('nonScheduled', true));
+            ->andWhere(Criteria::expr()->eq('nonScheduled', true))
+            ->andWhere(Criteria::expr()->gte('start_at', new \DateTime()))
+            ;
 
         return $this->auditions->matching($criteria);
     }
@@ -1548,9 +1507,9 @@ class Show implements OwnableInterface
     {
         $ret = array();
         foreach ($this->getPerformances() as $performance) {
-            $current_day = clone $performance->getStartDate(); //ate'] . " " . $perf['time']);
-            $end_day = $performance->getEndDate(); //ate'] . " " . $perf['time']);
-            $time = $performance->getTime();
+            $current_day = clone $performance->getStartAt(); //ate'] . " " . $perf['time']);
+            $end_day = $performance->getRepeatUntil(); //ate'] . " " . $perf['time']);
+            $time = $performance->getStartAt();
             if ($performance->getVenue() != null) {
                 $venue = $performance->getVenue()->getName();
             } else {
@@ -1625,7 +1584,7 @@ class Show implements OwnableInterface
         $future = false;
         $now = new \DateTime();
         foreach ($this->getPerformances() as $performance) {
-            if ($performance->getEndDate() >= $now) {
+            if ($performance->getRepeatUntil() >= $now) {
                 $future = true;
                 break;
             }
@@ -1639,7 +1598,7 @@ class Show implements OwnableInterface
         $archived = true;
         $now = new \DateTime();
         foreach ($this->getPerformances() as $performance) {
-            if ($performance->getStartDate()->modify('+1 year') >= $now) {
+            if ($performance->getStartAt()->modify('+1 year') >= $now) {
                 $archived = false;
                 break;
             }

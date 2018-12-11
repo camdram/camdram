@@ -28,7 +28,7 @@ th, td {
 <tr>
 <th></th><th colspan=2>Tech</th><th colspan=2>Dress</th>
 {%- for event in events -%}
-    <th colspan=2>{{ event['date']|date(date_format) }} {{ event.time|date('G:i') }}</th>
+    <th colspan=2>{{ event['date']|date(date_format) }} {{ event.time|date('H:i') }}</th>
 {%- endfor -%}
 </tr>
 <tr><td>&nbsp;</td>{%- for i in 0..events|length + 1 -%}<td>In</td><td>Out</td>{%- endfor -%}</tr>

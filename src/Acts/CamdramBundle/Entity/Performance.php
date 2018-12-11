@@ -45,32 +45,23 @@ class Performance implements EventInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="startdate", type="date", nullable=false)
+     * @ORM\Column(name="start_at", type="datetime", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
      * @Serializer\XmlElement(cdata=false)
      */
-    private $start_date;
+    private $start_at;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="enddate", type="date", nullable=false)
-     * @Serializer\Expose
+     * @ORM\Column(name="repeat_until", type="date", nullable=false)
+     * @Serializer\Expose(if="object.isRepeating()")
      * @Gedmo\Versioned
      * @Serializer\XmlElement(cdata=false)
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
-    private $end_date;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="time", type="time", nullable=false)
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $time;
+    private $repeat_until;
 
     /**
      * @var \Venue
@@ -91,10 +82,6 @@ class Performance implements EventInterface
      * @Serializer\XmlElement(cdata=false)
      */
     private $other_venue;
-
-    public function __construct()
-    {
-    }
 
     /**
      * Get id
@@ -131,75 +118,78 @@ class Performance implements EventInterface
     }
 
     /**
-     * Set start_date
+     * @Serializer\VirtualProperty
+     * @Serializer\XmlElement(cdata=false)
+     */
+    public function getDateString()
+    {
+        $startAt = clone $this->getStartAt();
+        $startAt->setTimezone(new \DateTimeZone("Europe/London"));
+
+        $str = $startAt->format('H:i');
+
+        $str .= ', ' . $startAt->format('D jS F Y');
+        if ($this->isRepeating()) {
+            $str .= ' - '.$this->getRepeatUntil()->format('D jS F Y');
+        }
+        
+        return $str;
+    }
+
+    /**
+     * Set start_at
      *
-     * @param \DateTime $startDate
+     * @param \DateTime $startAt
      *
      * @return Performance
      */
-    public function setStartDate($startDate)
+    public function setStartAt($startAt)
     {
-        $this->start_date = $startDate;
+        $this->start_at = $startAt;
 
         return $this;
     }
 
     /**
-     * Get start_date
+     * Get start_at
      *
      * @return \DateTime
      */
-    public function getStartDate()
+    public function getStartAt()
     {
-        return $this->start_date;
+        return $this->start_at;
     }
 
     /**
-     * Set end_date
+     * Set repeat_until
      *
-     * @param \DateTime $endDate
+     * @param \DateTime $repeatUntil
      *
      * @return Performance
      */
-    public function setEndDate($endDate)
+    public function setRepeatUntil($repeatUntil)
     {
-        $this->end_date = $endDate;
+        $this->repeat_until = $repeatUntil;
 
         return $this;
     }
 
     /**
-     * Get end_date
+     * Get repeat_until
      *
      * @return \DateTime
      */
-    public function getEndDate()
+    public function getRepeatUntil()
     {
-        return $this->end_date;
+        return $this->repeat_until;
     }
 
     /**
-     * Set time
-     *
-     * @param \DateTime $time
-     *
-     * @return Performance
+     * @return bool
      */
-    public function setTime($time)
+    public function isRepeating()
     {
-        $this->time = $time;
-
-        return $this;
-    }
-
-    /**
-     * Get time
-     *
-     * @return \DateTime
-     */
-    public function getTime()
-    {
-        return $this->time;
+        return $this->getStartAt()->format('Y-m-d') != $this->getRepeatUntil()->format('Y-m-d');
     }
 
     /**
@@ -298,14 +288,42 @@ class Performance implements EventInterface
         return $this->getShow()->getTimestamp();
     }
 
-    public function getStartTime()
-    {
-        return $this->getTime();
-    }
-
-    public function getEndTime()
+    public function getEndAt()
     {
         return null;
     }
 
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlElement(cdata=false)
+     * @deprecated
+     */
+    public function getStartDate()
+    {
+        $date = clone $this->getStartAt();
+        $date->setTime(0, 0, 0);
+        return $date;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlElement(cdata=false)
+     * @deprecated
+     */
+    public function getEndDate()
+    {
+        return $this->getRepeatUntil();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlElement(cdata=false)
+     * @deprecated
+     */
+    public function getTime()
+    {
+        $startAt = clone $this->getStartAt();
+        $startAt->setTimezone(new \DateTimezone('Europe/London'));
+        return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
+    }
 }

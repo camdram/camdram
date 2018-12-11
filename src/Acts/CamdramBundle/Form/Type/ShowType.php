@@ -13,6 +13,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Acts\CamdramBundle\Entity\Performance;
 
 /**
  * Class ShowType
@@ -50,7 +51,8 @@ class ShowType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label' => 'Dates and times'
+                'label' => 'Dates and times',
+                'prototype_data' => new Performance(),
             ))
             ->add('category', ShowCategoryType::class)
             ->add('venue', EntitySearchType::class, array(

@@ -16,8 +16,8 @@ class PersonRepository extends EntityRepository
             ->innerJoin('e.roles', 'r')
             ->innerJoin('r.show', 's')
             ->innerJoin('s.performances', 'p')
-            ->andWhere('p.start_date < :end')
-            ->andWhere('p.end_date >= :start')
+            ->andWhere('p.start_at < :end')
+            ->andWhere('p.repeat_until >= :start')
             ->setParameter('start', $start)
             ->setParameter('end', $end);
 
@@ -62,11 +62,10 @@ class PersonRepository extends EntityRepository
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT person, role, s, COUNT(role) AS HIDDEN range_show_count,
-                MAX(perf.end_date) AS HIDDEN last_end_date,
                 (SELECT COUNT(sub_r) FROM ActsCamdramBundle:Role sub_r WHERE sub_r.person = person) AS HIDDEN total_show_count
             FROM ActsCamdramBundle:Person person
             INNER JOIN person.roles AS role INNER JOIN role.show AS s INNER JOIN s.performances AS perf
-            WHERE perf.start_date < :end AND perf.end_date >= :start
+            WHERE perf.start_at < :end AND perf.repeat_until >= :start
             GROUP BY person HAVING range_show_count > 0
             ORDER BY total_show_count ASC, person.id DESC
         ');

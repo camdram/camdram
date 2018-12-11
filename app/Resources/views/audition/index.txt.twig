@@ -28,12 +28,12 @@
 Is holding auditions:
 {% endif %}
 {% if a.nonscheduled -%}
-    Contact {{a.location}} before {{a.starttime|date('g:ia')}} {{a.date|date('D d M')}} for more details.
+    Contact {{a.location}} before {{a.dateString}} for more details.
 
 {{ a.show.audextra }}
 {% set currentName = null %}
 {%- else %}
-    {{- a.date|date('D jS M') }}, {{ a.starttime|date('g:ia') }}-{{ a.endtime|date('g:ia') }}, {{ a.location }}
+    {{- a.dateString }}, {{ a.location }}
 {% endif %}
 {% if loop.last %}
 

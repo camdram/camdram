@@ -52,7 +52,7 @@ class SigninsheetController extends Controller
             $header_1 = ["", "Tech", "", "Dress", ""];
             $header_2 = ["", "In", "Out", "In", "Out"];
             foreach ($events as $event) {
-                $header_1 = array_merge($header_1, [$event["date"]->format($date_format)." ".$event["time"]->format("G:i"), ""]);
+                $header_1 = array_merge($header_1, [$event["date"]->format($date_format)." ".$event["time"]->format("H:i"), ""]);
                 $header_2 = array_merge($header_2, ["In", "Out"]);
             }
             fputcsv($handle, $header_1);

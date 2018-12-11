@@ -4,19 +4,19 @@
             <a href="#" class="remove_link"><i class="fa fa-times"></i></a>
         </div>
         <div class="form-small-widget">
-            {{ form_label(performance.start_date) -}}
-            {{- form_widget(performance.start_date) }}
-            {{ form_errors(performance.start_date) }}
+            {{ form_label(performance.start_at.date, 'Start') -}}
+            {{- form_widget(performance.start_at.date) }}
+            {{ form_errors(performance.start_at.date) }}
         </div>
         <div class="end-date form-small-widget">
-            {{ form_label(performance.end_date) -}}
-            {{- form_widget(performance.end_date) }}
-            {{ form_errors(performance.end_date) }}
+            {{ form_label(performance.repeat_until) -}}
+            {{- form_widget(performance.repeat_until) }}
+            {{ form_errors(performance.repeat_until) }}
         </div>
         <div class="form-small-widget">
-            {{ form_label(performance.time) -}}
-            {{- form_widget(performance.time) }}
-            {{ form_errors(performance.time) }}
+            {{ form_label(performance.start_at.time) -}}
+            {{- form_widget(performance.start_at.time) }}
+            {{ form_errors(performance.start_at.time) }}
         </div>
     </div>
     <div class="row venue-row">
