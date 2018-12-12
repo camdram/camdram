@@ -1360,16 +1360,16 @@
         },
         {
             "name": "excelwebzone/recaptcha-bundle",
-            "version": "v1.5.11",
+            "version": "v1.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
-                "reference": "609e2a59980825085f953c794bf85311032c9cc2"
+                "reference": "110f85ad9c843d1b1bb51e90777b28b2034c7c17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/609e2a59980825085f953c794bf85311032c9cc2",
-                "reference": "609e2a59980825085f953c794bf85311032c9cc2",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/110f85ad9c843d1b1bb51e90777b28b2034c7c17",
+                "reference": "110f85ad9c843d1b1bb51e90777b28b2034c7c17",
                 "shasum": ""
             },
             "require": {
@@ -1410,7 +1410,7 @@
             "keywords": [
                 "recaptcha"
             ],
-            "time": "2018-06-19T01:14:57+00:00"
+            "time": "2018-11-30T20:00:00+00:00"
         },
         {
             "name": "facebook/graph-sdk",
