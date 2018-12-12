@@ -75,6 +75,12 @@ class ExternalApp extends BaseClient
      */
     protected $updated_at;
 
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $last_used = null;
+
     public function __construct()
     {
         parent::__construct();
@@ -368,5 +374,30 @@ class ExternalApp extends BaseClient
     public function getUsers()
     {
         return $this->users;
+    }
+
+
+    /**
+     * Set last_used
+     *
+     * @param \DateTime $lastUsed
+     *
+     * @return ExternalApp
+     */
+    public function setLastUsed($lastUsed)
+    {
+        $this->last_used = $lastUsed;
+
+        return $this;
+    }
+
+    /**
+     * Get last_used
+     *
+     * @return \DateTime
+     */
+    public function getLastUsed()
+    {
+        return $this->last_used;
     }
 }
