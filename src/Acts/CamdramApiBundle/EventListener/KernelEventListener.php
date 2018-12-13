@@ -30,6 +30,7 @@ class KernelEventListener
 
             if ($app) {
                 $now = new \DateTime;
+                $app->incrementRequestCounter();
                 $app->setLastUsed($now);
                 $this->entityManager->flush();
             }

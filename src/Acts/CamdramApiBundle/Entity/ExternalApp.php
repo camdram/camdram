@@ -81,6 +81,12 @@ class ExternalApp extends BaseClient
      */
     protected $last_used = null;
 
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     */
+    protected $total_requests = 0;
+
     public function __construct()
     {
         parent::__construct();
@@ -387,7 +393,6 @@ class ExternalApp extends BaseClient
     public function setLastUsed($lastUsed)
     {
         $this->last_used = $lastUsed;
-
         return $this;
     }
 
@@ -399,5 +404,17 @@ class ExternalApp extends BaseClient
     public function getLastUsed()
     {
         return $this->last_used;
+    }
+
+    /**
+     * Increment total_requests by one
+     *
+     * @return ExternalApp
+     */
+    public function incrementRequestCounter()
+    {
+        if ($total_requests == null) $this->total_requests = 0;
+        $this->total_requests += 1;
+        return $this;
     }
 }
