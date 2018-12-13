@@ -413,7 +413,7 @@ class ExternalApp extends BaseClient
      */
     public function incrementRequestCounter()
     {
-        if ($total_requests == null) $this->total_requests = 0;
+        if ($this->total_requests == null) $this->total_requests = 0;
         $this->total_requests += 1;
         return $this;
     }

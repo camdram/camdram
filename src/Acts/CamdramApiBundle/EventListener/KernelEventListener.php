@@ -20,19 +20,19 @@ class KernelEventListener
         $params = $event->getRequest()->request;
         // The client_id POST parameter has the database primary key embedded
         $parts = explode("_", $params->get("client_id"));
-        $id = $parts[0];
-        $clientId = $parts[1];
         $clientSecret = $params->get("client_secret");
-
-        if ($id && $clientId && $clientSecret) {
-            $appRepo = $this->entityManager->getRepository('ActsCamdramApiBundle:ExternalApp');
-            $app = $appRepo->findByCredentials($id, $clientId, $clientSecret);
-
-            if ($app) {
-                $now = new \DateTime;
-                $app->incrementRequestCounter();
-                $app->setLastUsed($now);
-                $this->entityManager->flush();
+        if (count($parts) == 2) {
+            $id = $parts[0];
+            $clientId = $parts[1];
+            if ($id && $clientId && $clientSecret) {
+                $appRepo = $this->entityManager->getRepository('ActsCamdramApiBundle:ExternalApp');
+                $app = $appRepo->findByCredentials($id, $clientId, $clientSecret);
+                if ($app) {
+                    $now = new \DateTime;
+                    $app->incrementRequestCounter();
+                    $app->setLastUsed($now);
+                    $this->entityManager->flush();
+                }
             }
         }
     }
