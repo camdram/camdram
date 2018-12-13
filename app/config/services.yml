@@ -17,7 +17,7 @@ services:
 
     Acts\CamdramBundle\:
         resource: '../../src/Acts/CamdramBundle/*'
-    
+
     Acts\CamdramSecurityBundle\:
         resource: '../../src/Acts/CamdramSecurityBundle/*'
 
@@ -26,6 +26,10 @@ services:
 
     Acts\CamdramApiBundle\:
         resource: '../../src/Acts/CamdramApiBundle/*'
+
+    Acts\CamdramApiBundle\EventListener\KernelEventListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
 
     Acts\DiaryBundle\:
         resource: '../../src/Acts/DiaryBundle/*'
@@ -36,7 +40,7 @@ services:
           - app_id: "%facebook_id%"
             app_secret: "%facebook_secret%"
             default_access_token: "%facebook_id%|%facebook_secret%"
-            
+
     Abraham\TwitterOAuth\TwitterOAuth:
         lazy: true
         arguments:
@@ -44,7 +48,7 @@ services:
           - "%twitter_secret%"
           - "%twitter_token%"
           - "%twitter_token_secret%"
-          
+
     Github\Client:
         lazy: true
 
