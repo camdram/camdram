@@ -3,13 +3,12 @@ set -e
 export SYMFONY_ENV=test
 
 # Test fixutre generation and search index population
-#php app/console camdram:database:refresh
-#php app/console fos:elastica:populate
+php app/console camdram:database:refresh
+php app/console fos:elastica:populate
 
 #Create a mysql database and test migrations using MySQL
-#export DATABASE_URL="mysql://travis@localhost/camdram_test"
-export DATABASE_URL="mysql://peter:password@localhost/camdram_test"
-#mysql -e 'CREATE DATABASE camdram_test;'
+export DATABASE_URL="mysql://travis@localhost/camdram_test"
+mysql -e 'CREATE DATABASE camdram_test;'
 php app/console doctrine:migrations:migrate --no-interaction
 php app/console doctrine:schema:validate || {
   echo "Schema difference:"
