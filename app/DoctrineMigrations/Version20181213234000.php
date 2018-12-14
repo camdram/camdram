@@ -14,7 +14,7 @@ class Version20181213234000 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-        $this->addSql('ALTER TABLE acts_api_apps ADD total_requests INTEGER DEFAULT 0');
+        $this->addSql('ALTER TABLE acts_api_apps ADD total_requests INT NOT NULL');
     }
     /**
      * @param Schema $schema
@@ -23,6 +23,6 @@ class Version20181213234000 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-        $this->addSql('ALTER TABLE acts_apit_apps DROP total_requests');
+        $this->addSql('ALTER TABLE acts_api_apps DROP total_requests');
     }
 }
