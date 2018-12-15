@@ -16,10 +16,12 @@
 {{ form_end(form) }}
 
 <h4>Already have an account?</h4>
-    <p>If you already have a Camdram account, please log in using your email and password below to go
-    directly to your account settings. From there, you can manually connect your {{ userInformation.resourceOwner.name | capitalize }}
-    and Camdram accounts.</p>
 
-    {{ include('account/login_form.html.twig', {last_email: userInformation.email, error: false,
-        target_path: 'get_account'}) }}
+<p>If you already have a Camdram account, please log in again using an authentication provider that you have used previously.
+You can later connect your {{ userInformation.resourceOwner.name | capitalize }} account to your Camdram account in the account settings.</p>
+
+<p>If you are having trouble logging in, please <a href="{{ path("acts_camdram_contact_us") }}">contact us</a> for further assistance.</p>
+
+{{ include('@HWIOAuth/Connect/service-list.html.twig') }}
+
 {% endblock %}

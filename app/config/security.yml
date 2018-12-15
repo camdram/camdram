@@ -25,11 +25,6 @@ security:
             logout:
                 path: /logout
                 target: /
-            form_login:
-                check_path: /auth/login_check
-                login_path: /auth/login
-                username_parameter: email
-                password_parameter: password
             oauth:
                 resource_owners:
                     raven:              "/auth/check-raven"
@@ -52,13 +47,6 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
-    access_control:
-#        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
-
-    encoders:
-        Acts\CamdramSecurityBundle\Entity\User:
-            id: Acts\CamdramSecurityBundle\Security\Encoder\LegacyMd5Encoder
 
 hwi_oauth:
     firewall_names: [public]

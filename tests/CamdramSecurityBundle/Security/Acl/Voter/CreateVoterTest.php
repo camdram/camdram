@@ -3,7 +3,7 @@
 namespace Camdram\Tests\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\CreateVoter;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use PHPUnit\Framework\TestCase;
 
 class CreateVoterTest extends TestCase
@@ -14,14 +14,15 @@ class CreateVoterTest extends TestCase
     private $voter;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+     * @var OAuthToken
      */
     private $token;
 
     public function setUp(): void
     {
         $this->voter = new CreateVoter();
-        $this->token = new UsernamePasswordToken('testuser', 'password', 'public');
+        $this->token = new OAuthToken('', []);
+        $this->token->setUser('testuser');
     }
 
     public function testCreateShow()

@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class OAuthTest extends WebTestCase
 {
@@ -67,10 +66,6 @@ class OAuthTest extends WebTestCase
         $this->appUser->setEmail('user1@camdram.net')
             ->setName('Test User');
 
-        $encoder = new LegacyMd5Encoder();
-        $hashed_password = $encoder->encodePassword('password', $this->appUser->getSalt());
-        $this->appUser->setPassword($hashed_password);
-
         $em->persist($this->appUser);
 
         $app = new ExternalApp();
@@ -86,27 +81,24 @@ class OAuthTest extends WebTestCase
         $this->app = $app;
     }
 
-    private function login()
+    private function login($email)
     {
         $this->loginUser = new User();
-        $this->loginUser->setEmail('user2@camdram.net')
+        $this->loginUser->setEmail($email)
             ->setName('Test User 2');
-
-        $encoder = new LegacyMd5Encoder();
-        $hashed_password = $encoder->encodePassword('password', $this->loginUser->getSalt());
-        $this->loginUser->setPassword($hashed_password);
 
         $em = $this->getEntityManager();
         $em->persist($this->loginUser);
         $em->flush();
 
-        $crawler = $this->userClient->request('GET', '/auth/login');
-        $form = $crawler->selectButton('Log in')->form();
-        $form->setValues(array(
-            'email' => $this->loginUser->getEmail(),
-            'password' => 'password'
-        ));
-        $this->userClient->submit($form);
+        $session = $this->client->getContainer()->get('session');
+        $token = new \HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken('test_token', $this->loginUser ->getRoles());
+        $token->setUser($this->loginUser);
+        $session->set('_security_public', serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->userClient->getCookieJar()->set($cookie);
     }
 
     public function performOAuthUserLogin($scope)
@@ -141,7 +133,7 @@ class OAuthTest extends WebTestCase
 
     public function testLoginFlow()
     {
-        $this->login('user1@camdram.net', 'password');
+        $this->login('user1@camdram.net');
         $token = $this->performOAuthUserLogin('user_shows');
         $this->assertTrue(is_string($token));
 
@@ -154,12 +146,12 @@ class OAuthTest extends WebTestCase
 //
 //    public function testRememberAuthorization()
 //    {
-//        $this->login('user1@camdram.net', 'password');
+//        $this->login('user1@camdram.net');
 //        $token = $this->performOAuthUserLogin('');
 //        $this->assertTrue(is_string($token));
 //
 //        //Go to auth page a second time
-//        $params = array(
+//       $params = array(
 //            'client_id' => $this->app->getPublicId(),
 //            'response_type' => 'code',
 //            'redirect_uri' => '/authenticate',
@@ -172,7 +164,7 @@ class OAuthTest extends WebTestCase
 
     public function testCreateShowNoScope()
     {
-        $this->login('user1@camdram.net', 'password');
+        $this->login('user1@camdram.net');
         $token = $this->performOAuthUserLogin('');
 
         $data = array(
@@ -188,7 +180,7 @@ class OAuthTest extends WebTestCase
 
     public function testCreateShowWriteScope()
     {
-        $this->login('user1@camdram.net', 'password');
+        $this->login('user1@camdram.net');
         $token = $this->performOAuthUserLogin('api_write');
 
         $data = array(

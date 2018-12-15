@@ -8,6 +8,6 @@
     <a class="button small" href="{{ path('acts_camdram_homepage') }}">Go to the home page</a>
 {% else %}
     <p>You can log back in to Camdram below</p>
-    {{ render(path('hwi_oauth_connect')) }}
+    {{ include('@HWIOAuth/Connect/service-list.html.twig') }}
 {% endif %}
 {% endblock %}

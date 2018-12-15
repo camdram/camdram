@@ -5,7 +5,7 @@ namespace Camdram\Tests\CamdramSecurityBundle\Security\Acl\Voter;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ProfileVoter;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use PHPUnit\Framework\TestCase;
 
 class ProfileVoterTest extends TestCase
@@ -16,7 +16,7 @@ class ProfileVoterTest extends TestCase
     private $voter;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+     * @var OAuthToken
      */
     private $token;
 
@@ -28,8 +28,8 @@ class ProfileVoterTest extends TestCase
     public function setUp(): void
     {
         $this->voter = new ProfileVoter();
-        $this->token = new UsernamePasswordToken('testuser', 'password', 'public');
         $this->user = new User();
+        $this->token = new OAuthToken('', $this->user->getRoles());
         $this->token->setUser($this->user);
     }
 

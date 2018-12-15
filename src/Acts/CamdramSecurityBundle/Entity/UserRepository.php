@@ -9,17 +9,6 @@ use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
 class UserRepository extends EntityRepository
 {
-    public function findByEmailAndPassword($email, $password)
-    {
-        $query = $this->createQueryBuilder('u')
-            ->where('u.email = :email')
-            ->andWhere('u.password = :password')
-            ->setParameter('email', $email)
-            ->setParameter('password', md5($password))
-            ->getQuery();
-
-        return $query->getOneOrNullResult();
-    }
 
     public function findAdmins($min_level)
     {

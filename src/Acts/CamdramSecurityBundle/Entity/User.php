@@ -54,14 +54,6 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="pass", type="string", length=32, nullable=true)
-     * @Assert\Length(min=8, max=100, minMessage="The password must be at least 8 characters long")
-     */
-    private $password;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registered_at", type="datetime", nullable=true)
@@ -69,6 +61,8 @@ class User implements UserInterface, \Serializable
     private $registered_at;
 
     /**
+     * The last time the user underwent an explicit login flow
+     * 
      * @var \DateTime
      *
      * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
@@ -76,11 +70,13 @@ class User implements UserInterface, \Serializable
     private $last_login_at;
 
     /**
+     * The last time a session was created for the user
+     * 
      * @var \DateTime
      *
-     * @ORM\Column(name="last_password_login_at", type="datetime", nullable=true)
+     * @ORM\Column(name="last_session_at", type="datetime", nullable=true)
      */
-    private $last_password_login_at;
+    private $last_session_at;
 
     /**
      * @var Person
@@ -254,27 +250,37 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set password
+     * Set last_session_at
      *
-     * @param string $password
+     * @param \DateTime $login
      *
      * @return User
      */
-    public function setPassword($password)
+    public function setLastSessionAt($last_session_at)
     {
-        $this->password = $password;
+        $this->last_session_at = $last_session_at;
 
         return $this;
     }
 
     /**
-     * Get password
+     * Get last_session_at
+     *
+     * @return \DateTime
+     */
+    public function getLastSessionAt()
+    {
+        return $this->last_session_at;
+    }
+
+    /**
+     * Get password. Required for UserInterface
      *
      * @return string
      */
     public function getPassword()
     {
-        return $this->password;
+        return '';
     }
 
     public function getUsername()
@@ -339,6 +345,7 @@ class User implements UserInterface, \Serializable
     {
         $this->registered_at = new \DateTime();
         $this->last_login_at = new \DateTime();
+        $this->last_session_at = new \DateTime();
 
         $this->aces = new ArrayCollection();
         $this->external_users = new ArrayCollection();
@@ -347,12 +354,12 @@ class User implements UserInterface, \Serializable
     public function serialize()
     {
         return serialize(array(
-                $this->id, $this->name, $this->email, $this->password
+                $this->id, $this->name, $this->email
         ));
     }
     public function unserialize($serialized)
     {
-        list($this->id, $this->name, $this->email, $this->password) = unserialize($serialized);
+        list($this->id, $this->name, $this->email) = unserialize($serialized);
     }
 
     public function __toString()
@@ -605,30 +612,6 @@ class User implements UserInterface, \Serializable
     public function getAuthorizations()
     {
         return $this->authorizations;
-    }
-
-    /**
-     * Set lastPasswordLoginAt
-     *
-     * @param \DateTime $lastPasswordLoginAt
-     *
-     * @return User
-     */
-    public function setLastPasswordLoginAt($lastPasswordLoginAt)
-    {
-        $this->last_password_login_at = $lastPasswordLoginAt;
-
-        return $this;
-    }
-
-    /**
-     * Get lastPasswordLoginAt
-     *
-     * @return \DateTime
-     */
-    public function getLastPasswordLoginAt()
-    {
-        return $this->last_password_login_at;
     }
 
 }

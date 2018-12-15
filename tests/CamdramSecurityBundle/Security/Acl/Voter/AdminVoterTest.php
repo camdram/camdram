@@ -7,7 +7,7 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\AdminVoter;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use PHPUnit\Framework\TestCase;
 
 class AdminVoterTest extends TestCase
@@ -24,7 +24,7 @@ class AdminVoterTest extends TestCase
 
     public function testAdminShow()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', ['ROLE_ADMIN']);
+        $token = new OAuthToken('', ['ROLE_ADMIN']);
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, Show::class, ['CREATE']));
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, new Show, ['EDIT']));
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, new Show, ['DELETE']));
@@ -32,7 +32,7 @@ class AdminVoterTest extends TestCase
 
     public function testAdminSociety()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', ['ROLE_ADMIN']);
+        $token = new OAuthToken('', ['ROLE_ADMIN']);
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, Society::class, ['CREATE']));
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, new Society, ['EDIT']));
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, new Society, ['DELETE']));
@@ -40,7 +40,7 @@ class AdminVoterTest extends TestCase
 
     public function testAdminVenue()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', ['ROLE_ADMIN']);
+        $token = new OAuthToken('', ['ROLE_ADMIN']);
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, Venue::class, ['CREATE']));
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, new Venue, ['EDIT']));
         $this->assertEquals(AdminVoter::ACCESS_GRANTED, $this->voter->vote($token, new Venue, ['DELETE']));
@@ -48,7 +48,7 @@ class AdminVoterTest extends TestCase
 
     public function testNonAdmin()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', []);
+        $token = new OAuthToken('', []);
         $this->assertEquals(AdminVoter::ACCESS_DENIED, $this->voter->vote($token, Show::class, ['CREATE']));
         $this->assertEquals(AdminVoter::ACCESS_DENIED, $this->voter->vote($token, new Show, ['EDIT']));
         $this->assertEquals(AdminVoter::ACCESS_DENIED, $this->voter->vote($token, new Show, ['DELETE']));
@@ -56,7 +56,7 @@ class AdminVoterTest extends TestCase
 
     public function testNonCamdramObject()
     {
-        $token = new UsernamePasswordToken('testuser', 'password', 'public', ['ROLE_ADMIN']);
+        $token = new OAuthToken('', ['ROLE_ADMIN']);
         $request = new Request();
         $attributes = array('EDIT');
         $this->assertEquals(AdminVoter::ACCESS_ABSTAIN, $this->voter->vote($token, $request, $attributes));

@@ -196,42 +196,6 @@ class ExternalUser implements \Serializable
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getPassword()
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSalt()
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getRoles()
-    {
-        $roles = array('ROLE_USER');
-        if ($this->getUser()) {
-            $roles = array_merge($roles, $this->getUser()->getRoles());
-        }
-
-        return $roles;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function eraseCredentials()
-    {
-    }
-
-    /**
      * Set name
      *
      * @param string $name

@@ -84,24 +84,6 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function sendPasswordResetEmail(User $user, $token)
-    {
-        $message = (new \Swift_Message('Password reset'))
-            ->setFrom($this->from_address)
-            ->setTo($user->getEmail())
-            ->setBody(
-                $this->twig->render(
-                    'email/password_reset.txt.twig',
-                    array(
-                        'user' => $user,
-                        'token' => $token
-                    )
-                )
-            )
-        ;
-        $this->mailer->send($message);
-    }
-
     /**
      * Send an email informing someone that they've been granted access to a
      * resource (show, society, or venue).

@@ -3,7 +3,6 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 
@@ -51,7 +50,6 @@ class TokenUtilities
      */
     public static function isInteractiveRequest(TokenInterface $token)
     {
-        return $token instanceof UsernamePasswordToken
-            || $token instanceof \HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
+        return $token instanceof \HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
     }
 }
