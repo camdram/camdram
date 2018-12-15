@@ -6,7 +6,7 @@ use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\EditorVoter;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -38,7 +38,8 @@ class EditorVoterTest extends TestCase
     public function testEditorCreate()
     {
         $user = $this->getEditorUser();
-        $token = new UsernamePasswordToken($user, 'password', 'public', $user->getRoles());
+        $token = new OAuthToken('', $user->getRoles());
+        $token->setUser($user);
 
         $this->assertEquals(EditorVoter::ACCESS_GRANTED, $this->voter->vote(
                 $token,
@@ -50,7 +51,8 @@ class EditorVoterTest extends TestCase
     public function testEditorEdit()
     {
         $user = $this->getEditorUser();
-        $token = new UsernamePasswordToken($user, 'password', 'public', $user->getRoles());
+        $token = new OAuthToken('', $user->getRoles());
+        $token->setUser($user);
 
         $this->assertEquals(EditorVoter::ACCESS_GRANTED, $this->voter->vote(
                 $token,
@@ -61,7 +63,8 @@ class EditorVoterTest extends TestCase
 
     public function testNotEditor()
     {
-        $token = new UsernamePasswordToken(new User(), 'password', 'public', array());
+        $token = new OAuthToken('', []);
+        $token->setUser(new User());
 
         $this->assertEquals(EditorVoter::ACCESS_DENIED, $this->voter->vote(
                 $token,

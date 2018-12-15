@@ -46,7 +46,6 @@ class RestTestCase extends WebTestCase
     {
         $session = $this->client->getContainer()->get('session');
 
-        //$token = new UsernamePasswordToken('admin', null, 'public', array('ROLE_ADMIN'));
         $token = new OAuthToken('test_token', $user->getRoles());
         $token->setUser($user);
         $session->set('_security_public', serialize($token));

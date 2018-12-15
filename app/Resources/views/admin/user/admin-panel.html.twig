@@ -15,9 +15,6 @@
                 destructive: {title: "Are you sure you want to delete the user " ~ user.name ~ " (" ~ user.email ~ ")?",
                     text: "This is a permanent action that cannot be undone" }
                 }) }}
-        {{ include('navigation/form-item.html.twig', {item: {id: 'reset_user_password',
-                path: path('reset_user_password', {identifier:user.id}), text: 'Reset password', icon: 'key'}
-                }) }}
         {% if not is_granted('ROLE_PREVIOUS_ADMIN') %}
             {{ include('navigation/nav-item.html.twig', {
                 item: {id: 'impersonate_user', path: path('acts_camdram_homepage', {_switch_to_user: user.email}),

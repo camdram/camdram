@@ -5,7 +5,7 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\OwnerVoter;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -23,7 +23,7 @@ class OwnerVoterTest extends TestCase
     private $voter;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+     * @var OAuthToken
      */
     private $token;
 
@@ -32,7 +32,8 @@ class OwnerVoterTest extends TestCase
         $this->aclProvider = $this->getMockBuilder('\Acts\\CamdramSecurityBundle\\Security\\Acl\\AclProvider')
             ->disableOriginalConstructor()->getMock();
         $this->voter = new OwnerVoter($this->aclProvider);
-        $this->token = new UsernamePasswordToken('testuser', 'password', 'public');
+        $this->token = new OAuthToken('', []);
+        $this->token->setUser('testuser');
     }
 
     public function testOwner()

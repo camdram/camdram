@@ -5,7 +5,7 @@ namespace Camdram\Tests\CamdramSecurityBundle\Security\Acl\Voter;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ViewVoter;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use PHPUnit\Framework\TestCase;
 
 class ViewVoterTest extends TestCase
@@ -16,14 +16,15 @@ class ViewVoterTest extends TestCase
     private $voter;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+     * @var OAuthToken
      */
     private $token;
 
     public function setUp(): void
     {
         $this->voter = new ViewVoter();
-        $this->token = new UsernamePasswordToken('testuser', 'password', 'public');
+        $this->token = new OAuthToken('', []);
+        $this->token->setUser('testuser');
     }
 
     public function testViewNewShow()

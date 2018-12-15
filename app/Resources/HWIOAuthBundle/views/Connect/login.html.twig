@@ -1,22 +1,36 @@
-{% if app.user %}
-    {% if app.user.externalUsers | length > 0 %}
-    <ul class="inline-list">
-        <li>Log in using</li>
-        {% for ext in app.user.externalUsers %}
-            <li><a href="{{ hwi_oauth_login_url(ext.service) }}" class="icon-link icon-link-textual">
-                    <img src="{{ asset('images/service/' ~ ext.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ ext.service ~ '.png') }}, {{ asset('images/service/' ~ ext.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ ext.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ ext.service ~ '-76.png') }} 4x" alt="" width="19" height="19" />
-                    {{ ext.service | capitalize }}
-                </a></li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-{% else %}
-    <ul class="inline-list"><li>Log in using</li><li><ul class="inline-list">
-    {% for owner in hwi_oauth_resource_owners() %}
-        <li><a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link icon-link-textual">
-                <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="" width="19" height="19" />
-                {{ owner | capitalize }}
-            </a></li>
-    {% endfor %}
-    </ul></li></ul>
+{% extends 'layout.html.twig' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+<h4>Log in to Camdram</h4>
+
+{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+<p class="panel">For security reasons, you must log in again before accessing this page.</p>
 {% endif %}
+
+{% if error is defined and error %}
+    <div class="error_panel">
+        <p>
+        {{ error }}</p>
+    </div>
+{% endif %}
+
+{{ include('@HWIOAuth/Connect/service-list.html.twig') }}
+
+{% if not app.user or app.user.externalUsers | length == 0 %}
+<div class="panel">
+    <h5><i class="fa fa-info-circle"></i> You can no longer use a password to log into your Camdram account.</h5>
+    <p>If you previously logged in using a password, please follow one of the following options:</p>
+    <ul>
+        <li>If you are registered with a <em>&commat;cam.ac.uk</em> e-mail address, please log in using
+            <strong>Raven</strong> above and your Camdram account will be automatically detected.</li>
+        <li>If you use the same e-mail address for Camdram as your primary e-mail address for a <strong>Google</strong>,
+            <strong>Facebook</strong> or <strong>Twitter</strong> account, please use the corresponding link above and your existing
+            Camdram account will be automatically detected.</li>
+        <li>Otherwise, please <a href="{{ path("acts_camdram_contact_us") }}">contact us</a> and we will help you to 
+            regain access to your account.</li>
+    </ul>
+</div>
+{% endif %}
+{% endblock %}

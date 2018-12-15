@@ -29,7 +29,7 @@
 {% else %}
     <li id="login-link">
 
-        <a href="{{ path('acts_camdram_security_login') }}">Log in with </a>
+        <a href="{{ path('hwi_oauth_connect') }}">Log in with </a>
             {%- for owner in hwi_oauth_resource_owners() -%}
                <a href="{{ hwi_oauth_login_url(owner) }}" class="icon-link">
                     <img src="{{ asset('images/service/' ~ owner ~ '.png') }}" srcset="{{ asset('images/service/' ~ owner ~ '.png') }}, {{ asset('images/service/' ~ owner ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ owner ~ '-38.png') }} 2x, {{ asset('images/service/' ~ owner ~ '-76.png') }} 4x" alt="{{ owner | capitalize }}" title="{{ owner | capitalize }}" width="19" height="19" />

@@ -3,7 +3,6 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**

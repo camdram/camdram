@@ -5,10 +5,10 @@ namespace Acts\CamdramSecurityBundle\EventListener;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\SecurityEvents;
-use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
+use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
+use Acts\CamdramBundle\Service\Time;
 
 /**
  * LastLoginTimeListener
@@ -36,18 +36,15 @@ class LastLoginTimeListener implements EventSubscriberInterface
      */
     public function onAuthenticationSuccess(InteractiveLoginEvent $event)
     {
-        $now = new \DateTime;
+        $now = Time::now();
         $token = $event->getAuthenticationToken();
         $user = $token->getUser();
         if ($user instanceof User) {
-            $user->setLastLoginAt($now);
+            $user->setLastSessionAt($now);
 
-            if ($token instanceof UsernamePasswordToken)
-            {
-                $user->setLastPasswordLoginAt($now);
-            }
-            else if ($token instanceof OAuthToken)
-            {
+            if (!$token instanceof RememberMeToken) {
+                $user->setLastLoginAt($now);
+
                 if ($externalUser = $user->getExternalUserByService($token->getResourceOwnerName()))
                 {
                     $externalUser->setLastLoginAt($now);

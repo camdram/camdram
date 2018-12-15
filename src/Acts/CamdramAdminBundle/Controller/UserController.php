@@ -149,35 +149,6 @@ class UserController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
-     * @Rest\Patch("/users/{identifier}/reset-password")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function resetPasswordAction(Request $request, $identifier,
-            TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
-    {
-        if (!$this->isCsrfTokenValid('reset_user_password', $request->request->get('_token'))) {
-            throw new BadRequestHttpException('Invalid CSRF token');
-        }
-
-        $user = $this->getEntity($identifier);
-
-        $token = $tokenGenerator->generatePasswordResetToken($user);
-        $emailDispatcher->sendPasswordResetEmail($user, $token);
-        $url = $this->generateUrl(
-            'acts_camdram_security_reset_password',
-            array('email' => $user->getEmail(), 'token' => $token),
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-
-        return $this->render(
-            'admin/user/reset-password-complete.html.twig',
-              array('user' => $user, 'url' => $url)
-        );
-    }
-
-    /**
      * @Rest\Get("/users/{identifier}/merge")
      */
     public function getMergeAction($identifier, UserMerger $merger)

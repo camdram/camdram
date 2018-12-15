@@ -3,7 +3,6 @@
 namespace Acts\CamdramSecurityBundle\Controller;
 
 use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
-use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
@@ -100,41 +99,6 @@ class AccountController extends AbstractFOSRestController
         }
 
         return $this->render('account/change_email_form.html.twig', array(
-            'form' => $form->createView()
-        ));
-    }
-
-    /**
-     * @Rest\Post("/settings/change-password")
-     */
-    public function changePasswordAction(Request $request, EncoderFactoryInterface $factory)
-    {
-        if (!$this->getUser()->getPassword()) {
-            //Adding password only allowed if account already has a password
-            return new Response('', 200);
-        }
-
-        $form = $form = $this->createForm(ChangePasswordType::class, $this->getUser());
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $user = $form->getData();
-
-                $encoder = $factory->getEncoder($user);
-                $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
-                $user->setPassword($password);
-
-                $this->getDoctrine()->getManager()->flush();
-
-                return $this->render('account/change_password_complete.html.twig');
-            }
-
-            return $this->render('account/change_password.html.twig', array(
-                'form' => $form->createView()
-            ));
-        }
-
-        return $this->render('account/change_password_form.html.twig', array(
             'form' => $form->createView()
         ));
     }

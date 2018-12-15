@@ -7,8 +7,8 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter;
+use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use Camdram\Tests\RestTestCase;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ShowVoterTest extends RestTestCase
@@ -19,7 +19,7 @@ class ShowVoterTest extends RestTestCase
     private $voter;
 
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+     * @var OAuthToken
      */
     private $token;
 
@@ -33,7 +33,8 @@ class ShowVoterTest extends RestTestCase
         parent::setUp();
         $this->voter = new ShowVoter($this->aclProvider);
         $this->user = $this->createUser();
-        $this->token = new UsernamePasswordToken($this->user, 'password', 'public', $this->user->getRoles());
+        $this->token = new OAuthToken('', $this->user->getRoles());
+        $this->token->setUser($this->user);
     }
 
     public function testSocietyOwner()
