@@ -33,7 +33,7 @@
             {% else %}
                 This advert will expire on
             {% endif %}
-            {{ form.vars.value.expiry | date('jS F Y') }} at {{ form.vars.value.deadlineTime | date("H:i") }}
+            {{ form.vars.value.expiry | date('jS F Y') }} at {{ form.vars.value.deadlineTime | date("H:i", "UTC") }}
         </strong>
     </p>
     <p>If you simply want to renew or extend the advert simply check over the information and click 'Modify/Renew' below.

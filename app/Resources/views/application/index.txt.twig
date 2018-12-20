@@ -24,7 +24,7 @@
 
 Deadline: {{ a.deadlinedate|date('l jS F') }}
 {%- if a.deadlinetime %}
- {{ a.deadlinetime|date('H:i') }}
+ {{ a.deadlinetime|date('H:i', 'UTC') }}
 {% endif %}
 
 {% else -%}
