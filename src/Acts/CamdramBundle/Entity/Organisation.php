@@ -4,152 +4,12 @@ namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramBundle\Search\SearchableInterface;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as Serializer;
-use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
- * Organisation
- *
- * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="org_slugs",columns={"slug"})})
- * @ORM\Entity(repositoryClass="OrganisationRepository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({0 = "Society", 1 = "Venue"})
- * @Gedmo\Loggable
- * @Serializer\ExclusionPolicy("all")
+ * Organisation common features
  */
 abstract class Organisation implements OwnableInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Serializer\XmlAttribute
-     * @Serializer\Expose
-     */
-    private $id;
-
-    /**
-     * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
-     * @var string
-     * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
-     *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
-     * @ORM\Column(name="colour", type="string", length=7, nullable=true)
-     * @Serializer\Expose
-     * @Serializer\Type("string")
-     */
-    private $theme_color;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     * @Assert\NotBlank()
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     */
-    private $description;
-
-    /**
-     * @var Image
-     *
-     * @ORM\ManyToOne(targetEntity="Image")
-     * @Gedmo\Versioned
-     * @Serializer\Expose()
-     */
-    private $image;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $facebook_id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $twitter_id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="shortname", type="string", length=100, nullable=true)
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $short_name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="college", type="string", length=100, nullable=true)
-     * @Serializer\Expose
-     * @Gedmo\Versioned
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $college;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="logourl", type="string", length=255, nullable=true)
-     */
-    private $logo_url;
-
-    /**
-     * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\SlugHandler", options={})
-     * }, fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=128, nullable=false)
-     * @Serializer\Expose
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $slug;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expires", type="date", nullable=true)
-     */
-    private $expires;
-
-    /**
-     * @ORM\OneToMany(targetEntity="News", mappedBy="entity")
-     */
-    private $news;
-
-    /**
-     * @var Application[]
-     *
-     * @ORM\OneToMany(targetEntity="Application", mappedBy="society")
-     */
-    private $applications;
-
     /**
      * Set short_name
      *
@@ -157,22 +17,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Society
      */
-    public function setShortName($shortName)
-    {
-        $this->short_name = $shortName;
-
-        return $this;
-    }
+    abstract public function setShortName($shortName);
 
     /**
      * Get short_name
      *
      * @return string
      */
-    public function getShortName()
-    {
-        return $this->short_name;
-    }
+    abstract public function getShortName();
 
     /**
      * Set college
@@ -181,22 +33,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Society
      */
-    public function setCollege($college)
-    {
-        $this->college = $college;
-
-        return $this;
-    }
+    abstract public function setCollege($college);
 
     /**
      * Get college
      *
      * @return string
      */
-    public function getCollege()
-    {
-        return $this->college;
-    }
+    abstract public function getCollege();
 
     /**
      * Set logo_url
@@ -205,56 +49,21 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Society
      */
-    public function setLogoUrl($logoUrl)
-    {
-        $this->logo_url = $logoUrl;
-
-        return $this;
-    }
+    abstract public function setLogoUrl($logoUrl);
 
     /**
      * Get logo_url
      *
      * @return string
      */
-    public function getLogoUrl()
-    {
-        return $this->logo_url;
-    }
-
-    /**
-     * Set expires
-     *
-     * @param \DateTime $expires
-     *
-     * @return Society
-     */
-    public function setExpires($expires)
-    {
-        $this->expires = $expires;
-
-        return $this;
-    }
-
-    /**
-     * Get expires
-     *
-     * @return \DateTime
-     */
-    public function getExpires()
-    {
-        return $this->expires;
-    }
+    abstract public function getLogoUrl();
 
     /**
      * Get id
      *
      * @return int
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    abstract public function getId();
 
     /**
      * Set name
@@ -263,22 +72,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+    abstract public function setName($name);
 
     /**
      * Get name
      *
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    abstract public function getName();
 
     /**
      * Set description
@@ -287,22 +88,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
+    abstract public function setDescription($description);
 
     /**
      * Get description
      *
      * @return string
      */
-    public function getDescription()
-    {
-        return $this->description;
-    }
+    abstract public function getDescription();
 
     /**
      * Set facebook_id
@@ -311,22 +104,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function setFacebookId($facebookId)
-    {
-        $this->facebook_id = $facebookId;
-
-        return $this;
-    }
+    abstract public function setFacebookId($facebookId);
 
     /**
      * Get facebook_id
      *
      * @return string
      */
-    public function getFacebookId()
-    {
-        return $this->facebook_id;
-    }
+    abstract public function getFacebookId();
 
     /**
      * Set twitter_id
@@ -335,22 +120,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function setTwitterId($twitterId)
-    {
-        $this->twitter_id = $twitterId;
-
-        return $this;
-    }
+    abstract public function setTwitterId($twitterId);
 
     /**
      * Get twitter_id
      *
      * @return string
      */
-    public function getTwitterId()
-    {
-        return $this->twitter_id;
-    }
+    abstract public function getTwitterId();
 
     public function setSocialId($service, $id)
     {
@@ -398,22 +175,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function setImage(Image $image = null)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
+    abstract public function setImage(Image $image = null);
 
     /**
      * Get image
      *
      * @return Image
      */
-    public function getImage()
-    {
-        return $this->image;
-    }
+    abstract public function getImage();
 
     /**
      * Set slug
@@ -422,22 +191,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
+    abstract public function setSlug($slug);
 
     /**
      * Get slug
      *
      * @return string
      */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
+    abstract public function getSlug();
 
     public function getRank()
     {
@@ -451,40 +212,21 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function addNew(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news[] = $news;
-
-        return $this;
-    }
+    abstract public function addNew(\Acts\CamdramBundle\Entity\News $news);
 
     /**
      * Remove news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
      */
-    public function removeNew(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news->removeElement($news);
-    }
+    abstract public function removeNew(\Acts\CamdramBundle\Entity\News $news);
 
     /**
      * Get news
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getNews()
-    {
-        return $this->news;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->news = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    abstract public function getNews();
 
     /**
      * Add news
@@ -493,22 +235,14 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function addNews(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news[] = $news;
-
-        return $this;
-    }
+    abstract public function addNews(\Acts\CamdramBundle\Entity\News $news);
 
     /**
      * Remove news
      *
      * @param \Acts\CamdramBundle\Entity\News $news
      */
-    public function removeNews(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news->removeElement($news);
-    }
+    abstract public function removeNews(\Acts\CamdramBundle\Entity\News $news);
 
     /**
      * Add applications
@@ -517,50 +251,21 @@ abstract class Organisation implements OwnableInterface
      *
      * @return Organisation
      */
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications[] = $applications;
-
-        return $this;
-    }
+    abstract public function addApplication(\Acts\CamdramBundle\Entity\Application $applications);
 
     /**
      * Remove applications
      *
      * @param \Acts\CamdramBundle\Entity\Application $applications
      */
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications->removeElement($applications);
-    }
+    abstract public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications);
 
     /**
      * Get applications
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getApplications()
-    {
-        return $this->applications;
-    }
-
-    public static function getAceType()
-    {
-        return 'society';
-    }
+    abstract public function getApplications();
 
     abstract public function getOrganisationType();
-
-    public function setThemeColor(?string $theme_color): self
-    {
-        $this->theme_color = $theme_color;
-
-        return $this;
-    }
-
-    public function getThemeColor(): ?string
-    {
-        return $this->theme_color;
-    }
-
 }

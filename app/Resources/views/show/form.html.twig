@@ -185,6 +185,7 @@ $(function() {
     $('.performances').entityCollection({
         initialiseRow: update_date_fields
     });
+    $('#show_venue').entitySearch({route: 'get_venues'});
     $('.linked-societies').entityCollection({
         initialiseRow: function(index, row) {
             var input = $(row).find("input");

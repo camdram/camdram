@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
  * @Api\Link(route="get_application",
- *      params={"identifier": "object.getShow() ? object.getShow().getSlug() : object.getSociety().getSlug()"})
+ *      params={"identifier": "object.getOwningEntity().getSlug()"})
  * @Serializer\XmlRoot("application")
  */
 class Application
@@ -50,7 +50,7 @@ class Application
     /**
      * @var \Society
      *
-     * @ORM\ManyToOne(targetEntity="Organisation", inversedBy="applications")
+     * @ORM\ManyToOne(targetEntity="Society", inversedBy="applications")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="socid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
@@ -58,6 +58,18 @@ class Application
      * @Api\Link(embed=true, route="get_society", params={"identifier": "object.getSociety().getSlug()"})
      */
     private $society;
+
+    /**
+     * @var \Venue
+     *
+     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="applications")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="venid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * })
+     * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
+     */
+    private $venue;
 
     /**
      * @var string
@@ -236,11 +248,11 @@ class Application
     /**
      * Set society
      *
-     * @param \Acts\CamdramBundle\Entity\Organisation $society
+     * @param \Acts\CamdramBundle\Entity\Society $society
      *
      * @return Application
      */
-    public function setSociety(Organisation $society = null)
+    public function setSociety(Society $society = null)
     {
         $this->society = $society;
 
@@ -250,28 +262,52 @@ class Application
     /**
      * Get society
      *
-     * @return \Acts\CamdramBundle\Entity\Organisation
+     * @return \Acts\CamdramBundle\Entity\Society
      */
     public function getSociety()
     {
         return $this->society;
     }
 
+    /**
+     * Set venue
+     *
+     * @param \Acts\CamdramBundle\Entity\Venue $venue
+     *
+     * @return Application
+     */
+    public function setVenue(Venue $venue = null)
+    {
+        $this->venue = $venue;
+
+        return $this;
+    }
+
+    /**
+     * Get venue
+     *
+     * @return \Acts\CamdramBundle\Entity\Venue
+     */
+    public function getVenue()
+    {
+        return $this->venue;
+    }
+
+    /**
+     * Gets the owning entity.
+     */
+    public function getOwningEntity()
+    {
+        return $this->show ?: $this->society ?: $this->venue;
+    }
+
     public function getFeedTitle()
     {
-        if ($this->getShow()) {
-            return $this->getShow()->getName();
-        } else {
-            return $this->getSociety()->getName();
-        }
+        return $this->getOwningEntity()->getName();
     }
 
     public function getSlug()
     {
-        if ($this->getShow()) {
-            return $this->getShow()->getSlug();
-        } else {
-            return $this->getSociety()->getSlug();
-        }
+        return $this->getOwningEntity()->getSlug();
     }
 }

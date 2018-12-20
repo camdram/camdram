@@ -10,7 +10,7 @@
                 {% for show in shows %}
                     <li>
                         <h6><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h6>
-                        <div class="show_info">{{ show.venueName }}</div>
+                        <div class="show_info">{{ show.venuenames|join(', ') }}</div>
                         {{ show.description | truncate(50) }}
                     </li>
                 {% endfor %}

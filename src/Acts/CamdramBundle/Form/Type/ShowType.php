@@ -40,7 +40,7 @@ class ShowType extends AbstractType
             )))
             ->add('multi_venue', ChoiceType::class, array(
                 'expanded' => true,
-                'by_reference' => false,
+                'mapped' => false,
                 'choices' => array(
                     'All the performances are at the same venue (e.g. an ADC mainshow/lateshow)' => 'single',
                     'The performances are at a number of different venues (e.g. a tour)' => 'multi',
@@ -55,11 +55,9 @@ class ShowType extends AbstractType
                 'prototype_data' => new Performance(),
             ))
             ->add('category', ShowCategoryType::class)
-            ->add('venue', EntitySearchType::class, array(
-                'route' => 'get_venues',
-                'class' => 'Acts\\CamdramBundle\\Entity\\Venue',
+            ->add('venue', TextType::class, array(
                 'required' => false,
-                'text_field' => 'other_venue'
+                'mapped' => false
             ))
             ->add('online_booking_url', UrlType::class, array(
                 'required' => false, 'label' => 'Ticket URL'

@@ -15,7 +15,7 @@
 {% block vacancies_body %}
     {%- set current = null -%}
     {%- for a in applications -%}
-        {%- set entity = a.society ? a.society : a.show -%}
+        {%- set entity = a.society ?? a.show ?? a.venue -%}
         {%- if entity.name != current-%}
             {%- if current != null -%}
                 </div>
@@ -24,11 +24,11 @@
             <div>
         {%- endif -%}
         <hr>
-        <div id="{{- a.show ? a.show.slug : a.society.slug -}}">
+        <div id="{{ entity.slug -}}">
         {%- if a.show -%}
             {%- include 'show/advert_header.html.twig' with {'show': a.show} -%}
         {%- else -%}
-            <h4><a href="{{ path('get_society', {identifier: entity.slug}) }}">{{ current }}</a></h4>
+            <h4><a href="{{ path('get_' ~ entity.organisationtype, {identifier: entity.slug}) }}">{{ current }}</a></h4>
         {%- endif -%}
         <h5>{{ a.text }}</h5>
         {%- if a.furtherinfo -%}

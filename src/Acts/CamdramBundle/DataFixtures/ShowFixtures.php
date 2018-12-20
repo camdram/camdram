@@ -98,7 +98,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
                     $end = clone $start;
                     $end->modify('+'.mt_rand(3, 7 - $offset).' days');
                     $p = $this->generatePerformance($show, $start, $end);
-                    $this->allocateVenue($show);
+                    $this->allocateVenue($p);
                     $show->addPerformance($p);
                     $manager->persist($p);
                     break;
@@ -107,7 +107,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
                     $start->modify('+'.mt_rand(0, 6).' days');
                     $p = $this->generatePerformance($show, $start, $start);
                     $manager->persist($p);
-                    $this->allocateVenue($show);
+                    $this->allocateVenue($p);
                     $show->addPerformance($p);
 
                     break;
@@ -131,13 +131,22 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
                     $start->modify('+'.$offset.' days');
                     $end = clone $start;
                     $end->modify('+'.mt_rand(3, 7 - $offset).' days');
-                    $this->allocateVenue($show);
+                    $venue = null;
+                    $other_venue = null;
 
                     for ($j = 0; $j <= 2; $j++) {
                         $start->modify('+1 week');
                         $end->modify('+1 week');
                         $p = $this->generatePerformance($show, clone $start, clone $end);
                         $p->setShow($show);
+                        if ($j) {
+                            $p->setVenue($venue);
+                            $p->setOtherVenue($other_venue);
+                        } else {
+                            $this->allocateVenue($p);
+                            $venue = $p->getVenue();
+                            $other_venue = $p->getOtherVenue();
+                        }
                         $show->addPerformance($p);
                         $manager->persist($p);
                     }

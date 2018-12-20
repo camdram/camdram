@@ -24,15 +24,8 @@ class ShowListener
         $this->weekManager = $weekManager;
     }
 
-    private function updateFields(Show $show, EntityManager $om)
-    {
-        //ensure the venue attached to the show and to the performances are consistent
-        $show->updateVenues();
-    }
-
     public function prePersist(Show $show, LifecycleEventArgs $event)
     {
-        $this->updateFields($show, $event->getObjectManager());
     }
 
     public function postLoad(Show $show, LifecycleEventArgs $event)

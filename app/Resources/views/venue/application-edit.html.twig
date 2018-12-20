@@ -6,13 +6,13 @@
 {% block body %}
 
 {% set current_subnav_id = 'edit_application' %}
-{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: form.vars.value.society})) }}
+{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: form.vars.value.venue})) }}
 
 <div class="split-header"
     <h3>Edit show applications advertisement</h3>
     <ul>
         {{ include('navigation/form-item.html.twig', {item: {id: 'delete_application',
-            path: path('delete_venue_application', {identifier:form.vars.value.society.slug}), method: 'DELETE', text: 'Delete', icon: 'eraser'},
+            path: path('delete_venue_application', {identifier:form.vars.value.venue.slug}), method: 'DELETE', text: 'Delete', icon: 'eraser'},
             destructive: {title: "Are you sure you want to delete this application?" }
             }) }}
     </ul>
@@ -23,7 +23,7 @@
     until the deadline date.</p>
 </div>
 
-<form action="{{ path("put_venue_application", {identifier: form.vars.value.society.slug, _method: 'put'}) }}" method="post">
+<form action="{{ path("put_venue_application", {identifier: form.vars.value.venue.slug, _method: 'put'}) }}" method="post">
     {{ include('organisation/application-form.html.twig') }}
     <div class="text-right">
         <input type="submit" value="Save" class="button"/>

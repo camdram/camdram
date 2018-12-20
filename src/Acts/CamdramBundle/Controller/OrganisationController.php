@@ -151,7 +151,11 @@ abstract class OrganisationController extends AbstractRestController
     {
         if (!$obj) {
             $obj = new Application();
-            $obj->setSociety($org);
+            if ($org instanceof Society) {
+                $obj->setSociety($org);
+            } else {
+                $obj->setVenue($org);
+            }
         }
         $form = $this->createForm(OrganisationApplicationType::class, $obj, ['method' => $method]);
 

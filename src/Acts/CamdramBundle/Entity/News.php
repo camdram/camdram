@@ -22,9 +22,16 @@ class News
     private $id;
 
     /** @var Entity
-     * @ORM\ManyToOne(targetEntity="Organisation", inversedBy="news")
+     * @ORM\ManyToOne(targetEntity="Society", inversedBy="news")
+     * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
-    private $entity;
+    private $society;
+
+    /** @var Entity
+     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="news")
+     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     */
+    private $venue;
 
     /**
      * @var int
@@ -155,7 +162,13 @@ class News
      */
     public function setEntity(\Acts\CamdramBundle\Entity\Organisation $entity = null)
     {
-        $this->entity = $entity;
+        if ($entity instanceof Society) {
+            $this->society = $entity;
+        } else if ($entity instanceof Venue) {
+            $this->venue = $entity;
+        } else {
+            throw new Exception('Expected Society or Venue.');
+        }
 
         return $this;
     }
@@ -167,7 +180,7 @@ class News
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->society ?: $this->venue;
     }
 
     /**

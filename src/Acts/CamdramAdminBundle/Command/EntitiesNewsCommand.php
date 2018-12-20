@@ -52,9 +52,8 @@ class EntitiesNewsCommand extends Command
     {
         $this->twitter->setDecodeJsonAsArray(true);
 
-        $org_repo = $this->entityManager->getRepository('ActsCamdramBundle:Organisation');
         $news_repo = $this->entityManager->getRepository('ActsCamdramBundle:News');
-        $entities = $org_repo->findWithService('twitter');
+        $entities = $this->getOrganisationsWithService('twitter');
         foreach ($entities as $entity) {
             $response = $this->twitter->get(
                 'statuses/user_timeline', [
@@ -120,5 +119,15 @@ class EntitiesNewsCommand extends Command
         $this->entityManager->persist($news);
         $output->writeln('Created news '.$news->getRemoteId().' for '.$entity->getName().' on '.$service_name);
         $this->entityManager->flush();
+    }
+
+    private function getOrganisationsWithService(string $service)
+    {
+        $soc_qb = $this->entityManager->getRepository('ActsCamdramBundle:Society')->createQueryBuilder('s');
+        $ven_qb = $this->entityManager->getRepository('ActsCamdramBundle:Venue')->createQueryBuilder('v');
+        $column_name = ['facebook' => 'facebook_id', 'twitter' => 'twitter_id'][$service];
+
+        return array_merge($soc_qb->where('s.'.$column_name.' IS NOT NULL')->getQuery()->getResult(),
+                           $ven_qb->where('v.'.$column_name.' IS NOT NULL')->getQuery()->getResult());
     }
 }

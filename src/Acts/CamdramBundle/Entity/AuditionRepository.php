@@ -98,14 +98,16 @@ class AuditionRepository extends EntityRepository
     public function findUpcomingByVenue(Venue $venue, $limit, \DateTime $now)
     {
         return $this->getUpcomingQuery($limit, $now)
-            ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+            ->andWhere('EXISTS (SELECT p FROM \Acts\CamdramBundle\Entity\Performance p WHERE p.show = s AND p.venue = :venue)')
+            ->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 
     public function findUpcomingNonScheduledByVenue(Venue $venue, $limit, \DateTime $now)
     {
         return $this->getUpcomingNonScheduledQuery($limit, $now)
-            ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+            ->andWhere('EXISTS (SELECT p FROM \Acts\CamdramBundle\Entity\Performance p WHERE p.show = s AND p.venue = :venue)')
+            ->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 

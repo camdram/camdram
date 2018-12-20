@@ -85,8 +85,7 @@ class UserController extends AbstractFOSRestController
     {
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
-        $ids = $aclProvider->getOrganisationIdsByUser($entity);
-        $orgs = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
+        $orgs = $aclProvider->getOrganisationsByUser($entity);
         $ids = $aclProvider->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
         $view = $this->view(array(

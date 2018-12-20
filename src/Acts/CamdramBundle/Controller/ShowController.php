@@ -126,6 +126,13 @@ class ShowController extends AbstractRestController
             $soc = $soc instanceof Society ? $soc->getName() : $soc["name"];
         }
         $form->get('societies')->setData($socs);
+
+        // Venues
+        $form->get('multi_venue')->setData($show->getMultiVenue());
+        $performances = $show->getPerformances();
+        if (!$performances->isEmpty()) {
+            $form->get('venue')->setData($performances->first()->getVenueName());
+        }
     }
 
     /**
@@ -135,6 +142,7 @@ class ShowController extends AbstractRestController
         $em   = $this->getDoctrine()->getManager();
         $show = $this->getEntity($identifier);
 
+        // Societies
         $socRepo = $em->getRepository('ActsCamdramBundle:Society');
         $newSocs = [];   // Array of [string, Society]
         $newSocIds = [];
@@ -173,6 +181,20 @@ class ShowController extends AbstractRestController
         // would be overkill to ensure slugs get regenerated. Just invalidating
         // here and always regenerating.
         $show->setSlug(null);
+
+        // Venues
+        if ($form->get('multi_venue')->getData() == 'single') {
+            $venRepo = $em->getRepository('ActsCamdramBundle:Venue');
+            $venueName = $form->get('venue')->getData();
+            $venue = $venRepo->findOneByName($venueName);
+            if (empty(trim($venueName))) {
+                $venueName = null;
+            }
+            foreach ($show->getPerformances() as $p) {
+                $p->setVenue($venue);
+                $p->setOtherVenue($venueName);
+            }
+        }
     }
 
     private function getTechieAdvertForm(Show $show, $obj = null)
@@ -197,10 +219,7 @@ class ShowController extends AbstractRestController
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         $errors = $this->getValidationErrors($show);
         $admins = array_merge($admins, $show->getSocieties()->toArray());
-
-        if ($show->getVenue()) {
-            $admins[] = $show->getVenue();
-        }
+        $admins = array_merge($admins, $show->getVenues());
 
         return $this->render(
             'show/admin-panel.html.twig',

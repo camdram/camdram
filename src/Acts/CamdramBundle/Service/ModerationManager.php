@@ -64,8 +64,7 @@ class ModerationManager
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $show_repo->findUnauthorised();
         } elseif ($this->authorizationChecker->isGranted('ROLE_USER')) {
-            $ids = $this->aclProvider->getOrganisationIdsByUser($this->tokenStorage->getToken()->getUser());
-            $orgs = $this->entityManager->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
+            $orgs = $this->aclProvider->getOrganisationsByUser($this->tokenStorage->getToken()->getUser());
             $entities = array();
             foreach ($orgs as $org) {
                 if ($org instanceof Society) {

@@ -149,19 +149,6 @@ class Show implements OwnableInterface
     private $photo_url = '';
 
     /**
-     * The show's main venue, if it is not linked to a venue resource
-     *
-     * @var string
-     *
-     * @ORM\Column(name="venue", type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
-     * @Serializer\Expose()
-     * @Serializer\Type("string")
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $other_venue = '';
-
-    /**
      * A JSON representation of how the show's societies should be displayed,
      * for the purpose of storing unregistered societies and how they are
      * ordered with registered societies.
@@ -205,16 +192,6 @@ class Show implements OwnableInterface
      * @ORM\JoinTable(name="acts_show_soc_link")
      */
     private $societies;
-
-    /**
-     * @var Venue
-     *
-     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
-     * @Gedmo\Versioned
-     * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
-     */
-    private $venue;
 
     /**
      * @var bool
@@ -289,8 +266,6 @@ class Show implements OwnableInterface
      * @Serializer\XmlList(entry = "performance")
      */
     private $performances;
-
-    private $multi_venue;
 
     /**
      * @var string
@@ -434,43 +409,6 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set other_venue
-     *
-     * @param string $venueName
-     *
-     * @return Show
-     */
-    public function setOtherVenue($venueName)
-    {
-        $this->other_venue = $venueName;
-
-        return $this;
-    }
-
-    public function getOtherVenue()
-    {
-        if (!$this->venue) {
-            return $this->other_venue;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Get venue_name
-     *
-     * @return string
-     */
-    public function getVenueName()
-    {
-        if ($this->other_venue) {
-            return $this->other_venue;
-        } elseif ($this->venue) {
-            return $this->venue->getName();
-        }
-    }
-
-    /**
      * It's advisable to use getPrettySocData instead as it has the definitive
      * handling of inconsistencies between societies (i.e. the join table) and
      * this.
@@ -566,6 +504,32 @@ class Show implements OwnableInterface
             }
         }
         return $out;
+    }
+
+    /**
+     * Gets all registered venues referenced in this show's performances.
+     */
+    public function getVenues()
+    {
+        $venids = [];
+        $venues = [];
+        foreach ($this->performances as $p) {
+            if (($v = $p->getVenue()) && !in_array($v->getId(), $venids, true)) {
+                $venues[] = $v;
+                $venids[] = $v->getId();
+            }
+        }
+        return $venues;
+    }
+
+    /**
+     * Returns a list of all venue names for this show.
+     */
+    public function getVenueNames()
+    {
+        return array_unique($this->performances->map(function($p) {
+            return $p->getVenueName();
+        })->toArray());
     }
 
     /**
@@ -713,30 +677,6 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set venue
-     *
-     * @param \Acts\CamdramBundle\Entity\Venue $venue
-     *
-     * @return Show
-     */
-    public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
-    {
-        $this->venue = $venue;
-
-        return $this;
-    }
-
-    /**
-     * Get venue
-     *
-     * @return \Acts\CamdramBundle\Entity\Venue
-     */
-    public function getVenue()
-    {
-        return $this->venue;
-    }
-
-    /**
      * Add roles
      *
      * @param \Acts\CamdramBundle\Entity\Role $roles
@@ -822,13 +762,6 @@ class Show implements OwnableInterface
     {
         $this->performances->add($performance);
         $performance->setShow($this);
-        if (!($performance->getOtherVenue())) {
-            if ($this->getVenue()) {
-                $performance->setVenue($this->getVenue());
-            } else {
-                $performance->setOtherVenue($this->getOtherVenue());
-            }
-        }
 
         return $this;
     }
@@ -902,16 +835,11 @@ class Show implements OwnableInterface
 
     public function getMultiVenue()
     {
-        if ($this->multi_venue) {
-            return $this->multi_venue;
-        }
-
         if (count($this->getPerformances()) == 0) {
             return 'single';
         }
 
         $venue = null;
-        $same = true;
         foreach ($this->getPerformances() as $performance) {
             if ($performance->getVenue()) {
                 $cur_venue = $performance->getVenue()->getName();
@@ -921,64 +849,11 @@ class Show implements OwnableInterface
             if ($venue == null) {
                 $venue = $cur_venue;
             } elseif ($venue != $cur_venue) {
-                $same = false;
-                break;
+                return 'multi';
             }
         }
 
-        return $same ? 'single' : 'multi';
-    }
-
-    public function setMultiVenue($value)
-    {
-        $this->multi_venue = $value;
-        $this->updateVenues();
-    }
-
-    public function updateVenues()
-    {
-        switch ($this->getMultiVenue()) {
-            case 'single':
-                foreach ($this->getPerformances() as $performance) {
-                    $performance->setVenue($this->getVenue());
-                    $performance->setOtherVenue($this->getOtherVenue());
-                }
-                break;
-            case 'multi':
-                //Try to work out the 'main' venue
-                //First count venue objects and venue names
-                $venues = array();
-                $venue_counts = array();
-                $name_counts = array();
-                foreach ($this->getPerformances() as $performance) {
-                    if ($performance->getVenue()) {
-                        $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) {
-                            $venue_counts[$key] = 1;
-                        } else {
-                            $venue_counts[$key]++;
-                        }
-                        $venues[$key] = $performance->getVenue();
-                    }
-                    if ($performance->getOtherVenue()) {
-                        $key = $performance->getOtherVenue();
-                        if (!isset($name_counts[$key])) {
-                            $name_counts[$key] = 1;
-                        } else {
-                            $name_counts[$key]++;
-                        }
-                    }
-                    //Favour a venue object over a venue name
-                    if (count($venue_counts) > 0) {
-                        $venue_id = array_search(max($venue_counts), $venue_counts);
-                        $this->setVenue($venues[$venue_id]);
-                    } else {
-                        $venue_name = array_search(max($name_counts), $name_counts);
-                        $this->setOtherVenue($venue_name);
-                    }
-                }
-                break;
-        }
+        return 'single';
     }
 
     /**

@@ -45,7 +45,7 @@ class ShowRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.authorised = false')
-            ->andWhere('s.venue = :venue')
+            ->andWhere('EXISTS (SELECT pp FROM \Acts\CamdramBundle\Entity\Performance pp WHERE pp.show = s AND pp.venue = :venue)')
             ->setParameter('venue', $venue)
             ->join('s.performances', 'p');
 

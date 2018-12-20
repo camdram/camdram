@@ -56,14 +56,18 @@ class AclProvider
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findAdmins($min_level);
     }
 
-    public function getOrganisationIdsByUser(User $user)
+    public function getOrganisationsByUser(User $user): array
     {
-        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUserAndType($user, 'society');
-        $ids = array_map(function (AccessControlEntry $ace) {
-            return $ace->getEntityId();
-        }, $aces);
+        $socs = $this->entityManager->getRepository('ActsCamdramBundle:Society')->createQueryBuilder('s')
+            ->where("EXISTS (SELECT ace FROM \\Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry ace ".
+                    "WHERE ace.entityId = s.id AND ace.type = 'society' AND ace.user = :user)")
+            ->setParameter('user', $user)->getQuery()->getResult();
+        $vens = $this->entityManager->getRepository('ActsCamdramBundle:Venue')->createQueryBuilder('v')
+            ->where("EXISTS (SELECT ace FROM \\Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry ace ".
+                    "WHERE ace.entityId = v.id AND ace.type = 'venue' AND ace.user = :user)")
+            ->setParameter('user', $user)->getQuery()->getResult();
 
-        return $ids;
+        return array_merge($socs, $vens);
     }
 
     public function getEntityIdsByUser(User $user, $class)
