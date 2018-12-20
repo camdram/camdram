@@ -118,7 +118,7 @@ class ShowRepository extends EntityRepository
             ->join('s.roles', 'r')
             ->andwhere('s.authorised = true')
             ->andWhere('r.person = :person')
-            ->orderBy('p.end_date', 'ASC')
+            ->orderBy('p.start_at')
             ->groupBy('s.id')
             ->setParameter('person', $person)
             ->getQuery();
