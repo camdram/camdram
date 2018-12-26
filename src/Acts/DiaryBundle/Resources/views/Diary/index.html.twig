@@ -42,6 +42,10 @@
          {% set last_index = item.endIndex %}
         {% endfor %}
         </div>
+    {% else %}
+        <div class="diary-no-shows">
+        {%- if week.startAt|date("md") > 1215 -%}🎄 No shows this week. 🎄<br>Merry Christmas from the Camdram team!
+        {% else %}No shows this week.{% endif %}</div>
     {% endfor %}
     </div>
     </div>
