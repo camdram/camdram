@@ -135,7 +135,7 @@ class Society extends Organisation
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="News", mappedBy="entity")
+     * @ORM\OneToMany(targetEntity="News", mappedBy="society")
      */
     private $news;
 

@@ -163,7 +163,7 @@ class Venue extends Organisation implements VenueInterface
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="News", mappedBy="entity")
+     * @ORM\OneToMany(targetEntity="News", mappedBy="venue")
      */
     private $news;
 
