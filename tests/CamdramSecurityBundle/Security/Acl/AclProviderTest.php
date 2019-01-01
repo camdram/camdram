@@ -125,7 +125,7 @@ class AclProviderTest extends RepositoryTestCase
     }
 
 
-    public function testGetOrganisationIdsByUser()
+    public function testGetOrganisationsByUser()
     {
         $society = new Society();
         $society->setName("Society 1");
@@ -137,9 +137,9 @@ class AclProviderTest extends RepositoryTestCase
 
         $this->aclProvider->grantAccess($society, $this->user, $this->admin);
         $this->aclProvider->grantAccess($venue, $this->user, $this->admin);
-        $this->assertArraySubset($this->aclProvider->getOrganisationIdsByUser($this->user),
-            [$society->getId(), $venue->getId()]);
-        $this->assertSame($this->aclProvider->getOrganisationIdsByUser($this->user2), []);
+        $this->assertArraySubset($this->aclProvider->getOrganisationsByUser($this->user),
+            [$society, $venue]);
+        $this->assertSame($this->aclProvider->getOrganisationsByUser($this->user2), []);
     }
 
     public function testGetEntityIdsByUser_InvalidClass()

@@ -85,18 +85,12 @@ class ModerationManager
      *
      * @return Users[] an array of Camdram Users.
      */
-    public function getModeratorsForEntity($entity)
+    public function getModeratorsForEntity($entity): array
     {
         $users = array();
-        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
         if ($entity instanceof Show) {
-            foreach ($entity->getSocieties() as $society) {
-                $users = array_merge($users, $repo->getEntityOwners($society));
-            }
-            if ($entity->getVenue()) {
-                $users = array_merge($users, $repo->getEntityOwners($entity->getVenue()));
-            }
+            $users = $this->aclProvider->getOwnersOfOwningOrgs($entity);
         }
         if (count($users) == 0) {
             //If there is no venue/society or both have zero admins, then the Camdram admins become the moderators
@@ -106,7 +100,7 @@ class ModerationManager
         return $users;
     }
 
-    public function getModeratorAdmins()
+    public function getModeratorAdmins(): array
     {
         $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
@@ -194,6 +188,7 @@ class ModerationManager
         }
     }
 
+    // FIXME properly...
     public function notifyVenueChanged($entity)
     {
         if ($entity instanceof Show) {

@@ -53,14 +53,11 @@ class ContactEntityService
     {
         $recipients = $this->aclProvider->getOwners($entity);
 
-        if ($entity instanceof Show) {
+        if ($entity instanceof Show && count($recipients) == 0) {
+            $recipients = $this->aclProvider->getOwnersOfOwningSocs($entity);
+
             if (count($recipients) == 0) {
-                foreach ($entity->getSocieties() as $society) {
-                    $recipients = $this->aclProvider->getOwners($society);
-                }
-            }
-            if (count($recipients) == 0 && $entity->getVenue()) {
-                $recipients = $this->aclProvider->getOwners($entity->getVenue());
+                $recipients = $this->aclProvider->getOwnersOfOwningVens($entity);
             }
         }
 

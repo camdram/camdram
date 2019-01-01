@@ -7,6 +7,8 @@ use Symfony\Component\BrowserKit\Cookie;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use Sabre\VObject;
 
+use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -62,14 +64,37 @@ class RestTestCase extends WebTestCase
         $this->client->getCookieJar()->clear();
     }
 
-    protected function createUser()
+    protected function createUser(
+        string $name = "Test User", string $email = "test@camdram.net",
+        int $admin_rank = 0): User
     {
         $user = new User();
-        $user->setName("Test User")->setEmail("test@camdram.net");
+        $user->setName($name)->setEmail($email);
         $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        if ($admin_rank) {
+            $this->aclProvider->grantAdmin($user, $admin_rank);
+        }
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    protected function createShow(string $name): Show
+    {
+        $show = new Show();
+        $show->setName($name);
+        $show->setCategory("drama");
+        $show->setAuthorised(true);
+        $this->entityManager->persist($show);
+        $performance = new Performance();
+        $performance->setStartAt(new \DateTime('Tuesday 19:45 next week'));
+        $performance->setRepeatUntil(new \DateTime('Saturday 19:45 next week'));
+        $show->addPerformance($performance);
+        $this->entityManager->persist($performance);
+        $this->entityManager->flush();
+
+        return $show;
     }
 
     protected function doJsonRequest($url, $params = [])

@@ -150,32 +150,6 @@ class ExternalApp extends BaseClient
         return $this->user;
     }
 
-
-#     * Set organisation
-#     *
-#     * @param \Acts\CamdramBundle\Entity\Organisation $organisation
-#     *
-#     * @return ApiApp
-#
-#    public function setOrganisation(\Acts\CamdramBundle\Entity\Organisation $organisation)
-#    {
-#        $this->organisation = $organisation;
-#        $this->user = null;
-#        $this->is_admin = false;
-#
-#        return $this;
-#    }
-#
-#
-#     * Get organisation
-#     *
-#     * @return \Acts\CamdramBundle\Entity\Organisation
-#
-#    public function getOrganisation()
-#    {
-#        return $this->organisation;
-#    }
-
     /**
      * Set name
      *

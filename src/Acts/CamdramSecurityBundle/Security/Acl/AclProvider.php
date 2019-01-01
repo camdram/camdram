@@ -51,6 +51,40 @@ class AclProvider
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($entity);
     }
 
+    // user -> ace ->society -> (join table) -> show
+    //             ↳  venue  -> performance  ⮥
+    public function getOwnersOfOwningSocs(Show $show): array
+    {
+        return $this->getOwnersOfOwningOrgs($show, 'society');
+    }
+
+    public function getOwnersOfOwningVens(Show $show): array
+    {
+        return $this->getOwnersOfOwningOrgs($show, 'venue');
+    }
+
+    public function getOwnersOfOwningOrgs(Show $show, string $type = null): array
+    {
+        if ($type && $type !== 'society' && $type !== 'venue') {
+            throw new Exception("Type may not be ". $type);
+        }
+        $socs = ($type === 'venue') ? [] : $show->getSocieties()->map(
+            function($s) { return $s->getId(); })->toArray();
+
+        $query = $this->entityManager->createQuery(
+            "SELECT u FROM ActsCamdramSecurityBundle:User u WHERE EXISTS
+            (SELECT ace FROM ActsCamdramSecurityBundle:AccessControlEntry ace WHERE ace.user = u AND (
+                (ace.type = 'society' AND ace.entityId IN (:socs))"
+            . ($type === 'society' ? '))' :
+            "   OR (ace.type = 'venue' AND ace.entityId IN
+                (SELECT IDENTITY(perf.venue) FROM ActsCamdramBundle:Performance perf
+                 WHERE perf.show = :show AND perf.venue IS NOT NULL))))")
+            )->setParameter('socs', $socs);
+        if ($type !== 'society') $query->setParameter('show', $show);
+
+        return $query->getResult();
+    }
+
     public function getAdmins($min_level = AccessControlEntry::LEVEL_FULL_ADMIN)
     {
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findAdmins($min_level);
