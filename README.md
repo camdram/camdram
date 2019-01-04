@@ -15,7 +15,7 @@ If you encounter any problems with the instructions below, please [create a GitH
 
 ## 1) Install programs
 
-You will need to install the necessary package dependencies required to run Camdram. **PHP version 7.0 or greater is requied**.
+You will need to install the necessary package dependencies required to run Camdram. **PHP version 7.3 or greater is required**.
 
 The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)). Installation methods on other distros and operating systems will vary.
 

@@ -89,10 +89,7 @@
 		"symfony-assets-install" : "relative"
 	},
 	"config" : {
-		"bin-dir" : "bin/",
-		"platform": {
-            "php": "7.0.30"
-        },
-        "sort-packages": true
+                "bin-dir" : "bin/",
+                "sort-packages": true
 	}
 }
