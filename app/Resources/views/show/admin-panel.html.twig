@@ -95,9 +95,29 @@
         </form>
     {% else %}
         <div class="approve-panel"><em>
-            This show is not yet visible to the public – it is awaiting approval 
+            This show is not yet visible to the public – it is awaiting approval
             from a society/venue owner or a Camdram administrator.
-        </em></div> 
+        </em></div>
     {% endif %}
 {% endif %}
-
+{%- if errors -%}
+<div class="error_panel">
+<h3 class="text-center" aria-label="Warning"><i class="fa fa-warning"></i></h3>
+{{ errors|length == 1 ? 'An error was' : 'Errors were' }}
+found in this show's listing. This may be a result of your show or another show; if you think another show is at fault, you should attempt to contact them to rectify it. These errors don't necessarily prevent your show from appearing—and are only shown to admins.<ul>
+{%- for err in errors -%}
+  <li>
+  {%- if err[0] == 'clashwithother' -%}
+     Clash (at {{ err[1].venuename }}) between this show's performance at {{ err[1].datestring }} and<ul>
+     {%- for perf in err[2:] -%}
+        <li><a href="{{ path('get_show', {identifier: perf.show.slug}) }}">{{ perf.show.name }}</a>
+            <em>(ID={{ perf.show.id ~ (perf.show.authorised ? '' : ', not authorized') }})</em>: {{ perf.datestring }}</li>
+     {%- endfor -%}</ul>
+  {%- elseif err[0] == 'noperformances' -%}
+     This show has no performances attached; please edit it and add the dates, time, and venue!
+  {%- else -%}
+     {{ err[0] }}
+  {%- endif -%}</li>
+{%- endfor -%}
+</ul></div>
+{%- endif -%}

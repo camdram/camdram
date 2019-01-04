@@ -179,6 +179,7 @@ class ShowController extends AbstractRestController
         $admins = $this->get('camdram.security.acl.provider')->getOwners($show);
         $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
+        $errors = $this->getValidationErrors($show);
         $admins = array_merge($admins, $show->getSocieties()->toArray());
 
         if ($show->getVenue()) {
@@ -188,6 +189,7 @@ class ShowController extends AbstractRestController
         return $this->render(
             'show/admin-panel.html.twig',
             array('show' => $show,
+                  'errors' => $errors,
                   'admins' => $admins,
                   'requested_admins' => $requested_admins,
                   'pending_admins' => $pending_admins)
@@ -278,5 +280,43 @@ class ShowController extends AbstractRestController
     public function getPeopleAction($identifier)
     {
         return $this->getRolesAction($identifier);
+    }
+
+    /**
+     * Returns an array of problems with this entity. Returned errors:
+     *  • ["noperformances"]
+     *  • ["clashwithother", Performance of this show,
+     *    clashing Performances from other shows ...]
+     * Does not return information that the user shouldn't know.
+     */
+    public function getValidationErrors(Show $show): array {
+        $errors = [];
+        $em = $this->getDoctrine()->getManager();
+        $aclHelper = $this->get('camdram.security.acl.helper');
+        if ($show->getPerformances()->isEmpty()) $errors[] = ["noperformances"];
+        foreach ($show->getPerformances() as $p) {
+            $clashes = $em->createQueryBuilder()
+                 ->select(['p', 's'])->from('ActsCamdramBundle:Performance', 'p')
+                 ->where('p.venue = :venue')->andWhere('p.venue IS NOT NULL')
+                 // This sees if the time components are the same.
+                 ->andWhere("p.start_at = DATE_ADD(:start_at, DATE_DIFF(p.start_at, :start_at), 'DAY')")
+                 ->andWhere('DATE_DIFF(p.start_at, :repeat_until) <= 0')
+                 ->andWhere('DATE_DIFF(:start_at, p.repeat_until) <= 0')
+                 ->andWhere('p.show != :show')
+                 ->join('p.show', 's')->setParameters([
+                     'start_at' => $p->getStartAt(),
+                     'repeat_until' => $p->getRepeatUntil(),
+                     'venue' => $p->getVenue(),
+                     'show' => $show
+                 ])->getQuery()->getResult();
+            $clashes = array_filter($clashes, function($perf) use ($aclHelper) {
+                return $aclHelper->isGranted('VIEW', $perf->getShow(), false);
+            });
+            if (empty($clashes)) continue;
+
+            array_unshift($clashes, "clashwithother", $p);
+            $errors[] = $clashes;
+        }
+        return $errors;
     }
 }
