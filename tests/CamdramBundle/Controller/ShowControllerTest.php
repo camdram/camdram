@@ -157,7 +157,6 @@ class ShowControllerTest extends RestTestCase
         $this->entityManager->flush();
 
         $crawler = $this->client->request('GET', '/shows/validator-test');
-        fwrite(STDERR, $crawler->html());
         $this->assertEquals($crawler->filter('.error_panel:contains("no performances")')->count(), 1);
     }
 }
