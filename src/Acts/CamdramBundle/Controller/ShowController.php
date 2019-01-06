@@ -288,6 +288,8 @@ class ShowController extends AbstractRestController
      *  • ["clashwithother", Performance of this show,
      *    clashing Performances from other shows ...]
      * Does not return information that the user shouldn't know.
+     * Due to issues with the DQL-SQLite driver, the "clashwithother" test is
+     * only possible on MySQL/MariaDB.
      */
     public function getValidationErrors(Show $show): array {
         $errors = [];
