@@ -28,10 +28,8 @@ class TextService
         # Temporarily making the most common HTML work
         '/<\/?b>/'                                           => '**',
         '/<\/?i>/'                                           => '*',
-        '/<br ?\/?>/'                                        => "\n\n",
+        '/<br ?\/?>/'                                        => "\n",
         '/<hr ?\/?>/'                                        => "\n_______\n",
-        # Any number of \n → paragraph break
-        '/[\n]+/'                                            => "\n\n",
     );
 
     /**
@@ -53,6 +51,7 @@ class TextService
     {
         $this->parsedown = new Parsedown();
         $this->parsedown->setSafeMode(true);
+        $this->parsedown->setBreaksEnabled(true);
     }
 
     /**
