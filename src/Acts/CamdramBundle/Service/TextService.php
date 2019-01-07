@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Service;
 
 use Doctrine\Common\Inflector\Inflector;
+use Parsedown;
 
 /**
  * Class TextService
@@ -16,14 +17,21 @@ class TextService
      * @var array the regexes used to convert markdown taken from the old camdram codebase
      */
     protected $markdown_regexs = array(
-        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-\?\&]+)\]/'          => '<a href="http://$1" rel="ext" target="_blank">$1</a>',
-        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+)\]/'               => '<a href="$1" rel="ext" target="_blank">$1</a>',
-        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-\?\&]+);([^\]]+)\]/' => '<a href="http://$1" rel="ext" target="_blank">$2</a>',
-        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+);([^\]]+)\]/'      => '<a href="$1" rel="ext" target="_blank">$2</a>',
-        '/\[E:([a-zA-Z0-9\.@\_\-]+)\]/'                      => '<a href="mailto:$1">$1</a>',
-        '/\[E:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'             => '<a href="mailto:$1">$2</a>',
-        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+)\]/'              => '<a href="mailto:$1">$1</a>',
-        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'     => '<a href="mailto:$1">$2</a>',
+        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-\?\&]+)\]/'          => '[$1](http://$1)',
+        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+)\]/'               => '$1',
+        '/\[L:(www\.[a-zA-Z0-9\.:\\/\_\-\?\&]+);([^\]]+)\]/' => '[$2](http://$1)',
+        '/\[L:([a-zA-Z0-9\.:\\/\_\-\?\&]+);([^\]]+)\]/'      => '[$2]($1)',
+        '/\[E:([a-zA-Z0-9\.@\_\-]+)\]/'                      => '[$1](mailto:$1)',
+        '/\[E:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'             => '[$2](mailto:$1)',
+        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+)\]/'              => '[$1](mailto:$1)',
+        '/\[L:mailto\:([a-zA-Z0-9\.@\_\-]+);([^\]]+)\]/'     => '[$2](mailto:$1)',
+        # Temporarily making the most common HTML work
+        '/<\/?b>/'                                           => '**',
+        '/<\/?i>/'                                           => '*',
+        '/<br ?\/?>/'                                        => "\n\n",
+        '/<hr ?\/?>/'                                        => "\n_______\n",
+        # Any number of \n → paragraph break
+        '/[\n]+/'                                            => "\n\n",
     );
 
     /**
@@ -39,6 +47,13 @@ class TextService
     );
 
     protected $allowed_tags = '<b><i><u><strong><em><p><ul><li><ol><br><green><red><pre><hr>';
+    protected $parsedown;
+
+    public function __construct()
+    {
+        $this->parsedown = new Parsedown();
+        $this->parsedown->setSafeMode(true);
+    }
 
     /**
      * Convert the markdown format used by old camdram into HTML.
@@ -55,7 +70,7 @@ class TextService
         }
         $text = preg_replace(array_keys($this->markdown_regexs), array_values($this->markdown_regexs), $text);
 
-        return nl2br($text);
+        return $this->parsedown->text($text);
     }
 
     protected $link_regexes = array(

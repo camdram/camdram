@@ -69,19 +69,19 @@ class TextServiceTest extends TestCase
     public function testConvertMarkdown_Links()
     {
         $this->assertEquals(
-            'The website <a href="http://www.camdram.net" rel="ext" target="_blank">www.camdram.net</a> is great',
+            '<p>The website <a href="http://www.camdram.net">www.camdram.net</a> is great</p>',
             $this->textService->convertMarkdown('The website [L:www.camdram.net] is great')
         );
         $this->assertEquals(
-            'The website <a href="http://www.camdram.net" rel="ext" target="_blank">http://www.camdram.net</a> is great',
+            '<p>The website <a href="http://www.camdram.net">http://www.camdram.net</a> is great</p>',
             $this->textService->convertMarkdown('The website [L:http://www.camdram.net] is great')
         );
         $this->assertEquals(
-            'The website <a href="https://www.camdram.net" rel="ext" target="_blank">Camdram</a> is great',
+            '<p>The website <a href="https://www.camdram.net">Camdram</a> is great</p>',
             $this->textService->convertMarkdown('The website [L:https://www.camdram.net;Camdram] is great')
         );
         $this->assertEquals(
-            'The website <a href="http://www.camdram.net" rel="ext" target="_blank">Camdram</a> is great',
+            '<p>The website <a href="http://www.camdram.net">Camdram</a> is great</p>',
             $this->textService->convertMarkdown('The website [L:www.camdram.net;Camdram] is great')
         );
     }
@@ -89,19 +89,19 @@ class TextServiceTest extends TestCase
     public function testConvertMarkdown_Emails()
     {
         $this->assertEquals(
-            'The email <a href="mailto:support@camdram.net">support@camdram.net</a> can be used for support',
+            '<p>The email <a href="mailto:support@camdram.net">support@camdram.net</a> can be used for support</p>',
             $this->textService->convertMarkdown('The email [E:support@camdram.net] can be used for support')
         );
         $this->assertEquals(
-            'The <a href="mailto:support@camdram.net">support email</a> can be used for support',
+            '<p>The <a href="mailto:support@camdram.net">support email</a> can be used for support</p>',
             $this->textService->convertMarkdown('The [E:support@camdram.net;support email] can be used for support')
         );
         $this->assertEquals(
-        'The email <a href="mailto:support@camdram.net">support@camdram.net</a> can be used for support',
+            '<p>The email <a href="mailto:support@camdram.net">support@camdram.net</a> can be used for support</p>',
             $this->textService->convertMarkdown('The email [L:mailto:support@camdram.net] can be used for support')
         );
         $this->assertEquals(
-            'The <a href="mailto:support@camdram.net">support email</a> can be used for support',
+            '<p>The <a href="mailto:support@camdram.net">support email</a> can be used for support</p>',
             $this->textService->convertMarkdown('The [L:mailto:support@camdram.net;support email] can be used for support')
         );
     }
@@ -109,11 +109,11 @@ class TextServiceTest extends TestCase
     public function testConvertMarkdown_StripTags()
     {
         $this->assertEquals(
-            '<b>Hello</b> <i>world</i>',
+            '<p><strong>Hello</strong> <em>world</em></p>',
             $this->textService->convertMarkdown('<b>Hello</b> <i>world</i>')
         );
         $this->assertEquals(
-            'Hello world',
+            '<p>Hello world</p>',
             $this->textService->convertMarkdown('<script>Hello</script> <html>world</html>')
         );
     }
