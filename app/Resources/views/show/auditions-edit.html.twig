@@ -14,6 +14,7 @@
     <p>Use the form below modify or add auditions for your show.</p>
     <p>You can add one or more audition sessions and/or leave contact details for people to get in touch about auditioning.</p>
     <p>The CUADC Actors' Reps aim to send out the Actors' mailing list with all the current auditions on Camdram twice a week during full term. For more information they can be contacted on <a href=mailto:actor@cuadc.org> actor@cuadc.org </a> </p>
+    <p>You can now format your audition information using Markdown. Links just work, <strong>**bold**</strong>, <em>*italics*</em>, and <b style="display: inline-block">## Headings</b> are also available. See <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/">this page</a> for a rough guide, although not all features are available.</p>
 </div>
 
 {{ form_start(form, {'action': path("put_show_auditions", {identifier: form.vars.value.slug} )}) }}
