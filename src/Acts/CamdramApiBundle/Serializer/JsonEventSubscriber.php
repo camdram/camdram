@@ -15,6 +15,7 @@ use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Metadata\StaticPropertyMetadata;
 use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -76,7 +77,7 @@ class JsonEventSubscriber implements EventSubscriberInterface
                     }
 
                     $linkJson[$link->getName()] = $this->createLinkUrl($link, $object);
-                    
+
                     $childData = array();
                     foreach (array('id', 'name', 'slug') as $property) {
                         if ($accessor->isReadable($child, $property)) {
@@ -84,17 +85,18 @@ class JsonEventSubscriber implements EventSubscriberInterface
                         }
                     }
                     $childData['_type'] = $link->getEntity();
-                    $visitor->addData($link->getName(), $childData);
+                    $visitor->visitProperty(new StaticPropertyMetadata('', $link->getName(), null), $childData);
                 }
             }
         }
 
         if (count($linkJson) > 0) {
-            $visitor->addData('_links', $linkJson);
+            $visitor->visitProperty(new StaticPropertyMetadata('', '_links', null), $linkJson);
         }
 
         $class = new \ReflectionClass($object);
-        $visitor->addData('_type', strtolower($class->getShortName()));
+        $visitor->visitProperty(new StaticPropertyMetadata('', '_type', null),
+            strtolower($class->getShortName()));
     }
 
     private function createLinkUrl(LinkMetadata $link, $object)
