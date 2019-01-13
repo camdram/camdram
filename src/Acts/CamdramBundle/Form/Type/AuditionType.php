@@ -32,12 +32,22 @@ class AuditionType extends AbstractType
             ])
             ->add('location')
             ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
-                //endAt is only a Time field so ensure its date is correct
+                //endAt is only a Time field so ensure its date is correct, taking timezones into account...
                 $audition = $event->getData();
                 $startAt = $audition->getStartAt();
-                $endAt = $audition->getEndAt();
+                $endAtTime = $audition->getEndAt();
+                //Reverse model transform -> UTC to retrieve original time
+                $endAtTime->setTimezone(new \DateTimezone('Europe/London'));
 
-                $endAt->setDate($startAt->format('Y'), $startAt->format('m'), $startAt->format('d'));
+                $endAt = clone $startAt;
+                //Reverse model transform -> UTC before setting date
+                $endAt->setTimezone(new \DateTimezone('Europe/London'));
+                $endAt->setTime($endAtTime->format('H'), $endAtTime->format('i'), $endAtTime->format('s'));
+                //Convert back to UTC for serialization
+                $endAt->setTimezone(new \DateTimezone('UTC'));
+                $audition->setEndAt($endAt);
+
+                // End time after start time then assume it's the next day
                 if ($endAt < $startAt) {
                     $endAt->modify('+1 day');
                 }
