@@ -81,6 +81,9 @@
         </ul>
     </div>
     {{ render(url('get_society_diary', {identifier: society.slug})) }}
+
+    <h4>Past shows</h4>
+    <p>See all the shows this society has been previously involved in at <a href="{{ path('get_society_history', {identifier: society.slug}) }}"> the society history page</a>.
 </div>
 
 {% endblock %}

@@ -90,6 +90,9 @@
             </ul>
         </div>
         {{ render(url('get_venue_diary', {identifier: venue.slug})) }}
+
+        <h4>Past shows</h4>
+        <p>See all the shows that have been performed here at <a href="{{ path('get_venue_history', {identifier: venue.slug}) }}"> the venue history page</a>.
     </div>
 {% endblock %}
 

@@ -129,3 +129,44 @@
   content: "";
   height: 0;
 }
+
+.historic-show-list {
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+  padding: 0 !important;
+  li {
+    flex: 15rem;
+    margin: 1.5em 0.5em;
+    display: flex;
+    flex-flow: column;
+    h4 {
+      margin: auto 0;
+    }
+    div {
+      line-height: 1.2em;
+      position: relative;
+      height: 7.2em;
+      overflow: hidden;
+      margin-top: auto;
+      &::after {
+        content: "";
+        display: block;
+        width: 45%;
+        height: 1.2em;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+      }
+    }
+  }
+  &::before, &::after {
+    /* the align-the-last-box trick */
+    content: "";
+    order: 99;
+    height: 0;
+    flex: 15rem;
+    margin: 0.5em;
+  }
+}

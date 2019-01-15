@@ -1,0 +1,31 @@
+{#
+   Requires a society or a venue object, and a shows array.
+#}
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = (org.entitytype == 'society') ? 'societies' : 'venues' %}
+{% set title = (org.entitytype == 'society' ? 'Past shows by ' : 'Past shows at ') ~ org.name %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<a href="{{ path('get_' ~ org.entitytype, { identifier: org.slug }) }}"><i class="fa fa-chevron-left"></i>&ensp;Back to {{ org.name }}</a>
+
+<h2>{{title}}</h2>
+
+<ul class="historic-show-list">
+    {% for show in shows|reverse %}
+    <li><h4><a href="{{ path('get_show', { identifier: show.slug }) }}">{{ show.name }}</a></h4>
+        {%- set start = show.startat | date('F Y') | split(' ') -%}
+        {%- set end   = show.endat   | date('F Y') | split(' ') -%}
+        {%- if start[0] == end[0] and start[1] == end[1] -%}
+            <span>{{ start|join(' ') }}</span>
+        {%- elseif start[1] == end[1] -%}
+            <span>{{ start[0]~'–'~(end|join(' ')) }}</span>
+        {%- else -%}
+            <span>{{ (start|join(' '))~'–'~(end|join(' ')) }}</span>
+        {%- endif -%}
+        <div>{{ show.description | strip_camdram_markdown }}</div>
+    {% endfor %}
+</ul>
+
+{% endblock %}

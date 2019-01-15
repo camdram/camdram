@@ -393,4 +393,17 @@ abstract class OrganisationController extends AbstractRestController
 
         return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
     }
+
+    /**
+     * View a list of the organisation's last shows.
+     */
+    public function getHistoryAction(Request $request, $identifier) {
+        $org = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $org);
+
+        return $this->view([
+            'org' => $org,
+            'shows' => $this->getShows($identifier, new \DateTime('1970-01-01'), new \DateTime('yesterday'))
+        ], 200)->setTemplate('organisation/past-shows.html.twig');
+    }
 }
