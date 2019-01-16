@@ -3,7 +3,7 @@
 <em>{{ show.weeks }}</em>
 {% endif %}
 </p>
-<p>{{ show.description | camdram_markdown }}</p>
+{{ show.description | camdram_markdown }}
 {% if not show.isArchived() and can_contact %}
 <p><a href="{{ path('contact_entity', {type: 'show', identifier: show.slug}) }}">
     <i class="fa fa-envelope-o"></i> Contact organizers</a>

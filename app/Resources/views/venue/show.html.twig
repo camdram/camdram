@@ -30,7 +30,7 @@
             </a>
             {% if is_granted('EDIT', venue) and is_granted("IS_AUTHENTICATED_FULLY") %}
             <ul class="inline-list">
-                {{ include('navigation/form-item.html.twig', {item: {id: 'delete_venue_image', 
+                {{ include('navigation/form-item.html.twig', {item: {id: 'delete_venue_image',
                     path: path('delete_venue_image', {identifier:venue.slug}), method: 'DELETE', text: 'Remove image', icon: 'eraser'},
                     destructive: {title: "Are you sure you want to delete the image for “" ~ venue.name ~ "”?" }
                     }) }}
@@ -44,8 +44,8 @@
         </form>
         {%- endif -%}
 
-        <div class="entity-body-text">
-            <p itemprop="description">{{ venue.description | camdram_markdown }}</p>
+        <div class="entity-body-text" itemprop="description">
+            {{ venue.description | camdram_markdown }}
             {% if can_contact %}
             <p><a href="{{ path('contact_entity', {type: 'venue', identifier: venue.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ venue.name }}</a></p>
             {% endif %}
@@ -81,7 +81,7 @@
     <div class="row">
         <div class="split-header">
             <h3>Shows</h3>
-            <ul role="navigation">
+            <ul>
                 <li>
                     <a href="{{ path('get_venue_diary', {identifier: venue.slug, _format: 'ics'}) }}">
                         <i class="fa fa-calendar"></i> iCal

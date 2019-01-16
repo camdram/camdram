@@ -34,8 +34,8 @@
    </div>
    {% endif %}
 
-   <div class="entity-body-text">
-       <p itemprop="description">{{ society.description | camdram_markdown }}</p>
+   <div class="entity-body-text" itemprop="description">
+       {{ society.description | camdram_markdown }}
        {% if can_contact %}
            <p><a href="{{ path('contact_entity', {type: 'society', identifier: society.slug}) }}"><i class="fa fa-envelope-o"></i> Contact {{ society.name }}</a></p>
        {% endif %}
@@ -72,7 +72,7 @@
 <div class="row">
     <div class="split-header">
         <h3>Shows</h3>
-        <ul role="navigation">
+        <ul>
             <li>
                 <a href="{{ path('get_society_diary', {identifier: society.slug, _format: 'ics'}) }}">
                     <i class="fa fa-calendar"></i> iCal

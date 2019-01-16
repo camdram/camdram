@@ -80,7 +80,7 @@
       </ul>
     </div>
   </nav>
-  <section id="content">
+  <section id="content" {{ (section_attribs_raw ?? '') | raw }}>
 {% block body %}
 {% endblock %}
   </section>
