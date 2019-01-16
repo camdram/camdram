@@ -12,8 +12,10 @@
 
 <h2>{{title}}</h2>
 
+{% include 'paginator.html.twig' %}
+
 <ul class="historic-show-list">
-    {% for show in shows|reverse %}
+    {% for show in shows %}
     <li><h4><a href="{{ path('get_show', { identifier: show.slug }) }}">{{ show.name }}</a></h4>
         {%- set start = show.startat | date('F Y') | split(' ') -%}
         {%- set end   = show.endat   | date('F Y') | split(' ') -%}
@@ -27,5 +29,7 @@
         <div>{{ show.description | strip_camdram_markdown }}</div>
     {% endfor %}
 </ul>
+
+{% include 'paginator.html.twig' %}
 
 {% endblock %}
