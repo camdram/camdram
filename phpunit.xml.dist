@@ -21,10 +21,6 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src</directory>
-            <exclude>
-                <directory suffix=".php">/src/Acts/CamdramBundle/DataFixtures</directory>
-                <directory suffix=".php">/src/Acts/CamdramSecurityBundle/DataFixtures</directory>
-            </exclude>
         </whitelist>
     </filter>
 
