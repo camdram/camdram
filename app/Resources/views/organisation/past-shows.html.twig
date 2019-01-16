@@ -15,7 +15,7 @@
 {% include 'paginator.html.twig' %}
 
 <ul class="historic-show-list">
-    {% for show in shows %}
+    {% for show in paginator %}
     <li><h4><a href="{{ path('get_show', { identifier: show.slug }) }}">{{ show.name }}</a></h4>
         {%- set start = show.startat | date('F Y') | split(' ') -%}
         {%- set end   = show.endat   | date('F Y') | split(' ') -%}

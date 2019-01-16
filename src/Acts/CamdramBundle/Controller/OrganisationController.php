@@ -411,31 +411,13 @@ abstract class OrganisationController extends AbstractRestController
               ->setFirstResult($showsPerPage * ($page - 1))
               ->setMaxResults($showsPerPage);
         $paginator = new Paginator($qb->getQuery());
-        // Converting from Doctrine Paginator to the Twig template we've set up
-        // for Pagerfanta, should probably re-write the Twig soon and switch
-        // away from Pagerfanta now Doctrine has native pagination.
-        $total_count = $paginator->count();
-        $count = $paginator->getIterator()->count();
-        $urls = [];
         $route = explode('?', $request->getRequestUri())[0] . '?p=';
-        if ($page > 1) {
-            $urls['start'] = $route . 1;
-            $urls['previous'] = $route . ($page - 1);
-        }
-        if ($page * $showsPerPage < $total_count) {
-            $urls['next'] = $route . ($page + 1);
-            $urls['end'] = $route . (int)ceil($total_count / $showsPerPage);
-        }
 
         return $this->view([
             'org' => $org,
-            'shows' => $paginator,
-            'result' => [
-                 'count' => $count,
-                 'query' => ['limit' => $showsPerPage, 'page' => $page],
-                 'urls' => $urls,
-                 'total_count' => $total_count
-            ]
+            'paginator' => $paginator,
+            'page_num' => $page,
+            'page_urlprefix' => $route
         ], 200)->setTemplate('organisation/past-shows.html.twig');
     }
 }
