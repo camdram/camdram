@@ -76,7 +76,7 @@ class VenueController extends OrganisationController
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
-            return parent::cgetAction($request);
+            return $this->entitySearch($request);
         }
 
         $venues = $this->getRepository()->findAllOrderedByName();

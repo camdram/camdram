@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\FOSRestController;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
 use Elastica\Query;
 use Elastica\Query\MultiMatch;
 
@@ -245,10 +243,13 @@ abstract class AbstractRestController extends FOSRestController
      * If a search term 'q' is provided, then a text search is performed against Elasticsearch. Otherwise, a paginated
      * collection of all entities is returned.
      */
-    public function cgetAction(Request $request)
-    {
-        $this->checkAuthenticated();
+    abstract public function cgetAction(Request $request);
 
+
+    /**
+     * Perform a search.
+     */
+    protected function entitySearch(Request $request) {
         if (!$request->get('page')) {
             $request->query->set('page', 1);
         }
@@ -256,44 +257,33 @@ abstract class AbstractRestController extends FOSRestController
             $request->query->set('limit', 10);
         }
 
-        if ($request->get('q')) {
-            $match = new MultiMatch;
-            $match->setQuery($request->get('q'));
-            $match->setFields(['name', 'short_name']);
+        $match = new MultiMatch;
+        $match->setQuery($request->get('q'));
+        $match->setFields(['name', 'short_name']);
 
-            $page = $request->get('page');
-            $limit = $request->get('limit');
-            $query = new Query($match);
-            $query->setFrom(($page-1)*$limit)->setSize($limit);
-            //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
-            $query->setSort([
-                'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => PHP_INT_MAX-1]
-            ]);
+        $page = $request->get('page');
+        $limit = $request->get('limit');
+        $query = new Query($match);
+        $query->setFrom(($page-1)*$limit)->setSize($limit);
+        //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
+        $query->setSort([
+            'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => PHP_INT_MAX-1]
+        ]);
 
-            $search = $this->get('fos_elastica.index.autocomplete_'.$this->type)->createSearch();
-            $resultSet = $search->search($query);
+        $search = $this->get('fos_elastica.index.autocomplete_'.$this->type)->createSearch();
+        $resultSet = $search->search($query);
 
-            $data = [];
-            foreach ($resultSet as $result) {
-                $row = $result->getSource();
-                $row['id'] = $result->getId();
-                $row['entity_type'] = $result->getType();
-                $data[] = $row;
-            }
-        }
-        else {
-            $repo = $this->getRepository();
-            $qb = $repo->selectAll()->getQuery();
-            $adapter = new DoctrineORMAdapter($qb);
-            $data = new Pagerfanta($adapter);
+        $data = [];
+        foreach ($resultSet as $result) {
+            $row = $result->getSource();
+            $row['id'] = $result->getId();
+            $row['entity_type'] = $result->getType();
+            $data[] = $row;
         }
 
-        $view = $this->view($data, 200)
+        return $this->view($data, 200)
             ->setTemplateVar('result')
-            ->setTemplate($this->type.'/index.html.twig')
-        ;
-
-        return $view;
+            ->setTemplate($this->type.'/index.html.twig');
     }
 
     /**
@@ -310,31 +300,5 @@ abstract class AbstractRestController extends FOSRestController
         ;
 
         return $view;
-    }
-
-    /**
-     * Action called by Camdram v1 which triggers creating fields only used by v1, e.g. the slug
-     *
-     * @param $id
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    public function upgradeAction($id)
-    {
-        $this->checkAuthenticated();
-        $entity = $this->getRepository()->findOneById($id);
-        if (!$entity) {
-            throw new NotFoundHttpException('Not found');
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $entity->setSlug('__id__');
-        $changeset = array();
-        $this->getDoctrine()->getManager()->getEventManager()->dispatchEvent('preUpdate', new PreUpdateEventArgs($entity, $this->getDoctrine()->getManager(), $changeset));
-        $em->flush();
-
-        $this->getDoctrine()->getManager()->getEventManager()->dispatchEvent('postUpdate', new LifecycleEventArgs($entity, $this->getDoctrine()->getManager()));
-
-        return $this->view(array('success' => true), 200);
     }
 }

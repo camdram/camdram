@@ -44,6 +44,10 @@ class ShowController extends AbstractRestController
 
     public function cgetAction(Request $request)
     {
+        if ($request->query->has('q')) {
+            return $this->entitySearch($request);
+        }
+
         if ($request->getRequestFormat() == 'rss') {
             $now = new \DateTime;
             $next_week = clone $now;
@@ -52,7 +56,11 @@ class ShowController extends AbstractRestController
 
             return $this->view($shows);
         } else {
-            return parent::cgetAction($request);
+            $shows = $this->getRepository()->createQueryBuilder('s')
+                          ->orderBy('s.id', 'DESC')->setMaxResults(10)
+                          ->getQuery()->getResult();
+            return $this->view(['shows' => $shows])
+                ->setTemplate('show/index.html.twig');
         }
     }
 

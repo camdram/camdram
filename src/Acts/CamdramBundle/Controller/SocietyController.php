@@ -72,7 +72,7 @@ class SocietyController extends OrganisationController
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
-            return parent::cgetAction($request);
+            return $this->entitySearch($request);
         }
 
         $societies = $this->getRepository()->findAllOrderedByCollegeName();

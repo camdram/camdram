@@ -77,7 +77,7 @@ class PersonController extends AbstractRestController
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
-            return parent::cgetAction($request);
+            return $this->entitySearch($request);
         }
 
         $now = new \Datetime;

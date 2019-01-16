@@ -8,7 +8,7 @@
 <h2>Shows</h2>
 <h5>New on Camdram</h5>
 <ul class="large-block-list">
-{% for show in result.data %}
+{% for show in shows %}
     <li>
         <div class="panel" itemscope itemtype="http://schema.org/TheaterEvent">
             <h5><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h5>
