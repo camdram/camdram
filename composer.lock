@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1bb2efa31e58ff999ce3c10df13a3c1",
+    "content-hash": "d72638f783ccbcb73fb7efbf34564415",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -6772,32 +6772,34 @@
     "packages-dev": [
         {
             "name": "dama/doctrine-test-bundle",
-            "version": "v4.0.2",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
-                "reference": "438346b3380cc7675e37fbcdca912fdc33471d32"
+                "reference": "f166fed1c902807db361c125798741e4a78a06ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/438346b3380cc7675e37fbcdca912fdc33471d32",
-                "reference": "438346b3380cc7675e37fbcdca912fdc33471d32",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/f166fed1c902807db361c125798741e4a78a06ce",
+                "reference": "f166fed1c902807db361c125798741e4a78a06ce",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "~2.5",
                 "doctrine/doctrine-bundle": "~1.4",
-                "php": ">=5.5.0",
+                "php": "^7.1",
                 "symfony/framework-bundle": "~2.7|~3.0|~4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.4.4|~6.0",
-                "symfony/yaml": "~2.7|~3.0"
+                "doctrine/common": "~2.10",
+                "phpunit/phpunit": "~6.0|~7.0",
+                "symfony/phpunit-bridge": "~2.8|~3.0|~4.0",
+                "symfony/yaml": "~2.8|~3.0|~4.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1.x-dev"
+                    "dev-master": "5.1.x-dev"
                 }
             },
             "autoload": {
@@ -6815,9 +6817,10 @@
                     "email": "mail@dmaicher.de"
                 }
             ],
-            "description": "Symfony 2/3 bundle to isolate doctrine database tests and improve test performance",
+            "description": "Symfony bundle to isolate doctrine database tests and improve test performance",
             "keywords": [
                 "Symfony 3",
+                "Symfony 4",
                 "doctrine",
                 "isolation",
                 "performance",
@@ -6825,7 +6828,7 @@
                 "symfony 2",
                 "tests"
             ],
-            "time": "2018-01-13T13:14:27+00:00"
+            "time": "2018-12-09T10:45:39+00:00"
         },
         {
             "name": "sensio/generator-bundle",
