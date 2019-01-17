@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d72638f783ccbcb73fb7efbf34564415",
+    "content-hash": "c98bd53bf509a519ef50abad0cb88f4d",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -2960,6 +2960,57 @@
             "time": "2014-01-12T16:20:24+00:00"
         },
         {
+            "name": "jean85/pretty-package-versions",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Jean85/pretty-package-versions.git",
+                "reference": "75c7effcf3f77501d0e0caa75111aff4daa0dd48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Jean85/pretty-package-versions/zipball/75c7effcf3f77501d0e0caa75111aff4daa0dd48",
+                "reference": "75c7effcf3f77501d0e0caa75111aff4daa0dd48",
+                "shasum": ""
+            },
+            "require": {
+                "ocramius/package-versions": "^1.2.0",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jean85\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alessandro Lai",
+                    "email": "alessandro.lai85@gmail.com"
+                }
+            ],
+            "description": "A wrapper for ocramius/package-versions to get pretty versions strings",
+            "keywords": [
+                "composer",
+                "package",
+                "release",
+                "versions"
+            ],
+            "time": "2018-06-13T13:22:40+00:00"
+        },
+        {
             "name": "jms/metadata",
             "version": "1.7.0",
             "source": {
@@ -5428,40 +5479,42 @@
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "1.0.3",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "482c98d2699fe9cccd995bc1239894ecc5704633"
+                "reference": "b36df3632e944d49d81599410a5c85edff2972a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/482c98d2699fe9cccd995bc1239894ecc5704633",
-                "reference": "482c98d2699fe9cccd995bc1239894ecc5704633",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/b36df3632e944d49d81599410a5c85edff2972a9",
+                "reference": "b36df3632e944d49d81599410a5c85edff2972a9",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6|^7.0",
-                "sentry/sentry": "^1.8",
-                "symfony/config": "^2.7|^3.0",
-                "symfony/console": "^2.7|^3.0",
-                "symfony/dependency-injection": "^2.7|^3.0",
-                "symfony/event-dispatcher": "^2.7|^3.0",
-                "symfony/http-kernel": "^2.7|^3.0",
-                "symfony/security-core": "^2.7|^3.0",
-                "symfony/yaml": "^2.7|^3.0"
+                "jean85/pretty-package-versions": "^1.0",
+                "php": "^7.1",
+                "sentry/sentry": "^1.9",
+                "symfony/config": "^3.0||^4.0",
+                "symfony/console": "^3.3||^4.0",
+                "symfony/dependency-injection": "^3.0||^4.0",
+                "symfony/event-dispatcher": "^3.0||^4.0",
+                "symfony/http-kernel": "^3.0||^4.0",
+                "symfony/security-core": "^3.0||^4.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.5",
-                "phpunit/phpunit": "^5.7|^6.5",
-                "scrutinizer/ocular": "^1.5"
+                "friendsofphp/php-cs-fixer": "^2.8",
+                "phpstan/phpstan": "^0.10",
+                "phpstan/phpstan-phpunit": "^0.10",
+                "phpunit/phpunit": "^7",
+                "scrutinizer/ocular": "^1.4",
+                "symfony/expression-language": "^3.0||^4.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "master": "2.0.x-dev",
-                    "releases/0.8.x": "0.8.x-dev",
-                    "releases/1.x": "1.0.x-dev"
+                    "master": "2.1.x-dev",
+                    "releases/1.x": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -5491,7 +5544,7 @@
                 "sentry",
                 "symfony"
             ],
-            "time": "2018-06-01T08:48:53+00:00"
+            "time": "2019-01-05T13:33:24+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
