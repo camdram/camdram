@@ -46,12 +46,20 @@ class SearchController extends FOSRestController
         $search->addIndex($indexManager->getIndex('autocomplete_venue')->getName());
         $resultSet = $search->search($query);
 
-        $view = $this->view(['page_num' => $page,
-            'page_urlprefix' => "search?limit={$limit}&q=".urlencode($searchText).'&page=',
-            'query' => $searchText, 'resultset' => $resultSet], 200)
-            ->setTemplate('search/index.html.twig')
-        ;
+        $data = [];
+        foreach ($resultSet as $result) {
+            $row = $result->getSource();
+            $row['id'] = $result->getId();
+            $row['entity_type'] = $result->getType();
+            $data[] = $row;
+        }
 
-        return $view;
+        return $this->view($data, 200)
+            ->setTemplate('search/index.html.twig')
+            ->setTemplateVar('results')
+            ->setTemplateData(['page_num' => $page,
+            'page_urlprefix' => "search?limit={$limit}&q=".urlencode($searchText).'&page=',
+            'query' => $searchText, 'resultset' => $resultSet])
+        ;
     }
 }
