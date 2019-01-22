@@ -25,8 +25,8 @@ class SearchController extends FOSRestController
      */
     public function searchAction(Request $request)
     {
-        $limit = $request->get('limit', 10);
-        $page = $request->get('page', 1);
+        $limit = (int) $request->get('limit', 10);
+        $page = (int) $request->get('page', 1);
         $searchText = $request->get('q', '');
 
         $match = new MultiMatch;
@@ -46,16 +46,9 @@ class SearchController extends FOSRestController
         $search->addIndex($indexManager->getIndex('autocomplete_venue')->getName());
         $resultSet = $search->search($query);
 
-        $data = [];
-        foreach ($resultSet as $result) {
-            $row = $result->getSource();
-            $row['id'] = $result->getId();
-            $row['entity_type'] = $result->getType();
-            $data[] = $row;
-        }
-
-        $view = $this->view($data, 200)
-            ->setTemplateVar('results')
+        $view = $this->view(['page_num' => $page,
+            'page_urlprefix' => "search?limit={$limit}&q=".urlencode($searchText).'&page=',
+            'query' => $searchText, 'resultset' => $resultSet], 200)
             ->setTemplate('search/index.html.twig')
         ;
 
