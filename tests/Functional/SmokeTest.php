@@ -11,7 +11,7 @@ class SmokeTest extends WebTestCase
         "/about",
         "/faq",
         "/privacy",
-        "/user-policy",
+        "/user-guidelines",
         "/contact-us",
         "/societies",
         "/venues",
