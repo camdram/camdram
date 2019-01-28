@@ -11,23 +11,24 @@ class SmokeTest extends WebTestCase
         "/about",
         "/faq",
         "/privacy",
+        "/user-policy",
         "/contact-us",
         "/societies",
         "/venues",
         "/people",
         "/auth/login",
     ];
-    
+
     /**
      * @var Symfony\Bundle\FrameworkBundle\Client
      */
     private $client;
-    
+
     public function setUp()
     {
         $this->client = self::createClient(array('environment' => 'test'));
     }
-    
+
     public function testSuccessful()
     {
         foreach ($this->URLS as $url) {
@@ -40,5 +41,5 @@ class SmokeTest extends WebTestCase
             $this->assertContains('</body>', $response->getContent(), "URL: $url");
         }
     }
-    
+
 }
