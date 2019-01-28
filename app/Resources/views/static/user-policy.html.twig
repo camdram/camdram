@@ -1,0 +1,150 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}User Policy{% endblock %}
+
+{% block body %}
+
+<h2>Camdram User Policy</h2>
+
+<h3>Summary</h3>
+
+    <p>If you log in to Camdram, you agree to:</p>
+    <ol>
+    <li>Obey laws regarding copyright, plagiarism and personal data privacy;
+    <li>Only create genuine, accurate show listings, and describe them legally
+        and reasonably.
+    </ol>
+    <p>
+        Please read on for more information about these requirements; we've
+        tried to keep this brief and clear.
+    </p>
+
+<h3>Definitions</h3>
+
+    <p>In this document:</p>
+    <ul>
+    <li>words like &lsquo;us&rsquo; or &lsquo;we&rsquo; mean the volunteers who manage
+        and administer Camdram, who can be contacted by emailing
+        <a href="mailto:support@camdram.net?Subject=User%20Policy">support@camdram.net</a>;
+
+    <li>words like &lsquo;Camdram&rsquo; or &lsquo;the website&rsquo; mean the website
+        hosted at www.camdram.net and other subdomains of camdram.net;
+
+    <li>words like &lsquo;you&rsquo; mean the people who use Camdram to list productions,
+        roles, vacancies and adverts.
+    </ul>
+
+    <p>
+        Camdram is governed by English law. Whilst run for the benefit of the Cambridge
+        student amateur theatrical community, Camdram is officially unaffiliated with any
+        theatre or educational institution.
+    </p>
+
+    <p>
+        By using Camdram you also accept our
+        <a href="{{ path('acts_camdram_privacy') }}">Privacy Policy</a>.
+    </p>
+
+<h3>Changes to this Policy</h3>
+
+    <p>
+        We may change this User Policy at any time. The latest version will always be available
+        on this website. If we make any significant changes, we will make reasonable efforts to
+        inform users of the change, usually via email. If you continue to use Camdram, you
+        accept the latest version of the User Policy.
+    </p>
+
+<h3>Respect copyright &amp; plagiarism law</h3>
+
+    <ul>
+    <li>We could be sued for hosting copyrighted or plagiarised content (images, text or other
+        formats). Any legal action would likely cause Camdram to shut down permanently.
+    <li>We rely on and trust you to ensure you have permission (or &lsquo;rights&rsquo;) to use
+        images or descriptive text added to Camdram. You must include credits or citations where
+        needed.
+    <li>Absence of a copyright statement or mark (like &copy; or &trade;) does not automatically
+        mean content can be used freely or without permission. You must assume you cannot use
+        content until you know for sure you can.
+    </ul>
+
+<h3>Show listings must be genuine and accurate</h3>
+
+    <ul>
+    <li>Part of the purpose of Camdram is to be an accurate historical record.
+    <li>Other third-party websites reuse content from Camdram.
+    <li>You must only create show listings for genuine productions or performances,
+        that are aligned with our Suitability Guidelines (LINK).                                <!-- TODO -->
+    <li>It is absolutely OK to create listings for productions which have an element of
+        uncertainty over whether they will be able to go ahead, for practical / logistic
+        reasons (e.g. funding), provided there's a genuine desire and effort to make them
+        happen. If the production does not end up being performed or completed, you should
+        delete the listing as soon as reasonably possible.
+    <li>You must not create entirely fictitious listings, for any reason.
+    <li>Camdram is an English-language website. Listings should be predominantly in
+        English; foreign-language listing titles are fine, but general descriptions and
+        roles should be in English.
+    <li>If you can edit a show listing on Camdram, you are responsible for the
+        listing's content, regardless of whether others can also edit the listing.
+    <li>You must do your best to keep show details accurate, for example if performance
+        time or location is changed. This also includes information in show descriptions.
+    <li>Show listings do not need to be deadly serious. Humour is great, especially if
+        it fits the production. However, listings should always be grounded in fact.
+    <li>We want Camdram to be accessible, inclusive and welcoming to as wide an
+        audience as possible. You must not go out of your way to embed in-jokes in show
+        listings or otherwise make the listing inscrutable or incomprehensible to a
+        general audience.
+    <li>All people listed as having participated in a production (cast, band and
+        production team) must genuinely have participated.
+            <ul>
+            <li>Cast should be credited according to the script, libretto or other source
+                text, where applicable.
+            <li>You should use standard role titles where possible for production team.
+                Humorous roles are fine provided they describe genuine participation
+                (&lsquo;Technical Overlord&rsquo; is fine, for example).
+            </ul>
+    </ul>
+
+<h3>Respect personal data privacy</h3>
+
+    <ul>
+    <li>If you wish to add someone's name as a participant (cast, crew or band member)
+        in a show, you must ensure you have their consent for that information to appear in:
+            <ul>
+                <li>Camdram's show listings, which are accessible to the general public
+                    as well as search engines;
+                <li>Third party websites that follow our Acceptable Use Policy (LINK).          <!-- TODO -->
+            </ul>
+    <li>Consent can be explicit (they tell you it's OK) or implicit (tell them you intend
+        to add their name, and allow reasonable time for them to object or opt-out).
+    <li>Do not assume permission solely because the person is already listed on other
+        shows on Camdram.
+    <li>You can remove or correct data on Camdram at any time by contacting either the
+        show's administrators or support@camdram.net.
+    <li>We are obliged to comply with privacy laws regarding the use of personal data
+        (including people's names and details of show participation).
+        As with copyright law, any legal action would likely cause Camdram to shut down
+        permanently.
+    </ul>
+
+<h3>Show listings must be legal and reasonable</h3>
+    <ul>
+    <li>We need to keep Camdram as accessible and welcoming to all visitors as
+        possible, as well as preventing any legal action against the website.
+    <li>You must not use Camdram to incite hatred or prejudice.
+    <li>Images uploaded to Camdram must not be illegal, nor inappropriate for a general
+        audience.
+    <li>Content of show listings must not be gratuitously or needlessly obscene.
+        Explicit language is OK if justified by the show for artistic reasons; unnecessary
+        swearing in descriptions or role titles is not.
+    </ul>
+
+<h3>Enforcing this policy</h3>
+
+    <p>
+        We will remove any content that we know or reasonably suspect does not align with
+        this Policy. We may suspend or ban users who ignore this Policy deliberately or
+        repeatedly. We will be reasonable in how we apply these powers but final decisions
+        will rest with us and us alone.
+    </p>
+
+{% endblock %}
