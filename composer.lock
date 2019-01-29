@@ -3209,16 +3209,16 @@
         },
         {
             "name": "knplabs/github-api",
-            "version": "2.10.1",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "493423ae7ad1fa9075924cdfb98537828b9e80b5"
+                "reference": "7e67b4ccf9ef62fbd6321a314c61d3202c07b855"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/493423ae7ad1fa9075924cdfb98537828b9e80b5",
-                "reference": "493423ae7ad1fa9075924cdfb98537828b9e80b5",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/7e67b4ccf9ef62fbd6321a314c61d3202c07b855",
+                "reference": "7e67b4ccf9ef62fbd6321a314c61d3202c07b855",
                 "shasum": ""
             },
             "require": {
@@ -3241,7 +3241,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.10.x-dev"
+                    "dev-master": "2.11.x-dev"
                 }
             },
             "autoload": {
@@ -3272,7 +3272,7 @@
                 "gist",
                 "github"
             ],
-            "time": "2018-09-05T19:12:14+00:00"
+            "time": "2019-01-28T19:31:35+00:00"
         },
         {
             "name": "liip/imagine-bundle",
@@ -3776,21 +3776,21 @@
         },
         {
             "name": "php-http/cache-plugin",
-            "version": "v1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/cache-plugin.git",
-                "reference": "c573ac6ea9b4e33fad567f875b844229d18000b9"
+                "reference": "8e2505d2090316fac7cce637b39b6bbb5249c5a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/cache-plugin/zipball/c573ac6ea9b4e33fad567f875b844229d18000b9",
-                "reference": "c573ac6ea9b4e33fad567f875b844229d18000b9",
+                "url": "https://api.github.com/repos/php-http/cache-plugin/zipball/8e2505d2090316fac7cce637b39b6bbb5249c5a8",
+                "reference": "8e2505d2090316fac7cce637b39b6bbb5249c5a8",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.4 || ^7.0",
-                "php-http/client-common": "^1.1",
+                "php-http/client-common": "^1.9 || ^2.0",
                 "php-http/message-factory": "^1.0",
                 "psr/cache": "^1.0",
                 "symfony/options-resolver": "^2.6 || ^3.0 || ^4.0"
@@ -3802,7 +3802,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -3828,7 +3828,7 @@
                 "httplug",
                 "plugin"
             ],
-            "time": "2017-11-29T20:45:41+00:00"
+            "time": "2019-01-23T16:51:58+00:00"
         },
         {
             "name": "php-http/client-common",
@@ -3893,16 +3893,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.5.2",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "ffef11d54171336d841a34816a35bc035fb8cef0"
+                "reference": "02b7ea21eafa0757af04140890a67d8ed45f83b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/ffef11d54171336d841a34816a35bc035fb8cef0",
-                "reference": "ffef11d54171336d841a34816a35bc035fb8cef0",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/02b7ea21eafa0757af04140890a67d8ed45f83b2",
+                "reference": "02b7ea21eafa0757af04140890a67d8ed45f83b2",
                 "shasum": ""
             },
             "require": {
@@ -3912,8 +3912,7 @@
                 "nyholm/psr7": "<1.0"
             },
             "require-dev": {
-                "henrikbjorn/phpspec-code-coverage": "^2.0.2",
-                "php-http/httplug": "^1.0|^2.0",
+                "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message-factory": "^1.0",
                 "phpspec/phpspec": "^2.4",
                 "puli/composer-plugin": "1.0.0-beta10"
@@ -3954,7 +3953,7 @@
                 "message",
                 "psr7"
             ],
-            "time": "2018-12-31T07:31:26+00:00"
+            "time": "2019-01-23T12:41:22+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -5781,7 +5780,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
