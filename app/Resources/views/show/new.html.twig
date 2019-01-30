@@ -6,6 +6,10 @@
 
 <h3>Create a new show</h3>
 <div class="panel">
+    <p>Please ensure you're familiar with our
+    <a href="{{ path('acts_camdram_userguidelines') }}">User Guidelines</a>
+    and <a href="{{ path('acts_camdram_faq') }}#suitability">Show Suitability Guidelines</a> first.</p>
+
     <p>Required fields are marked with an asterisk (*). You can change any field later, with the
     possible exception of Society: please contact us to change it later if neccessary.
     Once the show is created you'll be able to add a
@@ -14,9 +18,14 @@
     <p>Write a Description with the general public in mind – what is this show and why
     should somebody come to see it? You can add auditions and production team vacancies
     separately once the show is created; they don't need to be mentioned here.</p>
+
     {% if not is_granted('APPROVE', form.vars.data) %}
-        <p>When you click 'create', it will be sent to a moderator, who it check it over before it
-        appears on Camdram.</p>
+        <p>When you click 'Create', this information will be sent to moderators,
+        who will have to review and approve it before it appears on Camdram.
+        If you enter a society or venue that is registered on Camdram, they will
+        be responsible for show approval; if not, Camdram's volunteer website
+        admins will do this. Please allow time for this step.
+        </p>
     {% endif %}
 </div>
 <form action="{{ path("post_show") }}" method="post" class="">
