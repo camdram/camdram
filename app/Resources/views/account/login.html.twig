@@ -16,6 +16,9 @@
     </div>
 {% endif %}
 
+<p>By logging in, you agree to follow our
+<a href="{{ path('acts_camdram_userguidelines') }}">User Guidelines</a>.</p>
+
 {{ render(path('hwi_oauth_connect')) }}
 
 {% if not app.user or app.user.externalUsers | length == 0 %}
