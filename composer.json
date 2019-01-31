@@ -48,7 +48,7 @@
 		"symfony/symfony": "3.4.*",
 		"twig/extensions": "~1.5",
 		"twig/twig": "^1.0||^2.0",
-		"zendframework/zend-feed": "2.10.*"
+		"zendframework/zend-feed": "2.11.*"
 	},
 	"require-dev" : {
 		"dama/doctrine-test-bundle": "^5.0",
