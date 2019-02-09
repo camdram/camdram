@@ -31,7 +31,14 @@
 <div class="form-large-row">
     {{ form_label(form.societies) }}
     <div>
-        <p>Registered societies will appear in the search pop-up, but you can also add societies that aren't registered with Camdram. Adding a registered society allows its admins to approve and edit your show.
+        <p><small>
+            Registered societies will appear in the search pop-up,
+            but you can also add societies that aren't registered with Camdram.
+            Adding a registered society allows its admins to approve and edit
+            your show. &nbsp;
+            <a href="{{ path('acts_camdram_faq') }}#newsociety">How do societies
+            become registered with Camdram?</a>
+            </small>
         {{ form_errors(form.societies) }}</p>
         <div class="linked-societies" data-prototype="{% filter escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endfilter %}">
             {% for society in form.societies %}
@@ -48,7 +55,15 @@
 <div class="form-large-row">
     {{ form_label(form.description) }}
     <div>
-         <p>You can now format your show descriptions using Markdown. Links just work, <strong>**bold**</strong>, <em>*italics*</em>, and <b style="display: inline-block">## Headings</b> are also available. See <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/">this page</a> for a rough guide, although not all features are available.</p>
+        <p><small>You can now format your show descriptions using Markdown.
+           Links just work, <strong>**bold**</strong>, <em>*italics*</em>,
+           and <b style="display: inline-block">## Headings</b> are also available.
+           See <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="_blank">this page</a>
+           for a rough guide, although not all features are available.</small></p>
+
+        <p><small>Write this with the general public in mind – what is this show and why
+            should somebody come to see it? Don't mention auditions or production
+            team vacancies: you'll add them later.</small></p>
          {{ form_widget(form.description) }}
          {{ form_errors(form.description) }}
     </div>
@@ -85,6 +100,17 @@
         </div>
     </div>
 </div>
+
+{% if not is_granted('APPROVE', form.vars.data) %}
+    <p class="panel">After you click 'Create', this show will not be public
+    until moderators (normally the society and venue adminstrators) approve it.
+    Please be patient: this may take a few days. You can make changes while waiting
+    for approval.
+    Camdram's volunteer site admins moderate shows without a registered society
+    or venue.
+    </p>
+{% endif %}
+
 
 {{ form_rest(form) }}
 
