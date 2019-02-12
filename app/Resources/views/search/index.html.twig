@@ -3,26 +3,27 @@
 {% block title %}Search{% endblock %}
 
 {% block body %}
-    <h3>Search camdram.net</h3>
+    {%- if query is empty -%}
+        <div class="error_panel">No search string given! Use the search bar above.</div>
+    {%- else -%}
+        <h3>{{ resultset.totalhits }} results for “{{ query }}”.</h3>
+    {%- endif -%}
 
-    {% if results|length == 0 %}
-        <div class="panel">
-            <h5>No results found.</h5>
-        </div>
-    {% endif %}
-    {% for entity in results %}
-        {% if entity.entity_type == 'show' %}
+    {%- for result in resultset -%}
+        {%- set entity = result.source -%}
+        {% if result.type == 'show' %}
             {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : entity.slug})) }}
         {% else %}
         <div class="panel">
-            <h5>{{ entity.entity_type | capitalize }}<br>
-                <a href="{%- if entity.entity_type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
-    {%- elseif entity.entity_type == 'society' %}{{ path('get_society', {identifier: entity.slug}) }}
-    {%- elseif entity.entity_type == 'venue' %}{{ path('get_venue', {identifier: entity.slug}) }}
+            <h5>{{ result.type | capitalize }}<br>
+                <a href="{%- if result.type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
+    {%- elseif result.type == 'society' %}{{ path('get_society', {identifier: entity.slug}) }}
+    {%- elseif result.type == 'venue' %}{{ path('get_venue', {identifier: entity.slug}) }}
     {%- endif %}">{{ entity.name }}</a>
-
             </h5>
         </div>
         {% endif %}
-    {% endfor %}
+    {%- endfor -%}
+
+    {% include 'paginator.html.twig' %}
 {% endblock %}

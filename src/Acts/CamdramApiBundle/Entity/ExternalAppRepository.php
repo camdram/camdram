@@ -31,4 +31,16 @@ class ExternalAppRepository extends EntityRepository
             ->setParameter('user', $user)
             ->getQuery()->getOneOrNullResult();
     }
+
+    public function findByCredentials($id, $clientId, $clientSecret)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.id = :id')
+            ->andWhere('a.randomId = :clientid')
+            ->andWhere('a.secret = :clientsecret')
+            ->setParameter('id', $id)
+            ->setParameter('clientid', $clientId)
+            ->setParameter('clientsecret', $clientSecret)
+            ->getQuery()->getOneOrNullResult();
+    }
 }

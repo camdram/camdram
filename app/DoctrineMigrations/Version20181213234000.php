@@ -1,14 +1,11 @@
 <?php
-
 namespace Application\Migrations;
-
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20181122163431 extends AbstractMigration
+class Version20181213234000 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -17,10 +14,8 @@ class Version20181122163431 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE acts_show_slugs CHANGE create_date create_date DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE acts_api_apps ADD total_requests INT NOT NULL');
     }
-
     /**
      * @param Schema $schema
      */
@@ -28,7 +23,6 @@ class Version20181122163431 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('ALTER TABLE acts_show_slugs CHANGE create_date create_date DATE NOT NULL');
+        $this->addSql('ALTER TABLE acts_api_apps DROP total_requests');
     }
 }

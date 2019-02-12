@@ -865,7 +865,7 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Get last performance time
+     * Get first performance time
      *
      * @return \DateTime
      */
@@ -877,6 +877,21 @@ class Show implements OwnableInterface
             ;
         $performance = $this->performances->matching($criteria)->first();
         return $performance ? $performance->getStartAt() : null;
+    }
+
+    /**
+     * Get last performance time
+     *
+     * @return \DateTime
+     */
+    public function getEndAt()
+    {
+        $criteria = Criteria::create()
+            ->orderBy(['repeat_until' => Criteria::DESC])
+            ->setMaxResults(1)
+            ;
+        $performance = $this->performances->matching($criteria)->first();
+        return $performance ? $performance->getRepeatUntil() : null;
     }
 
     public function getMultiVenue()

@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * ShowRepository
@@ -118,7 +119,7 @@ class ShowRepository extends EntityRepository
             ->join('s.roles', 'r')
             ->andwhere('s.authorised = true')
             ->andWhere('r.person = :person')
-            ->orderBy('p.end_date', 'ASC')
+            ->orderBy('p.start_at')
             ->groupBy('s.id')
             ->setParameter('person', $person)
             ->getQuery();
@@ -178,7 +179,16 @@ class ShowRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getBySociety(Society $society, \DateTime $from = null, \DateTime $to = null)
+    public function queryByOrganisation(Organisation $org, \DateTime $from = null, \DateTime $to = null): QueryBuilder
+    {
+        if ($org instanceof Society) {
+            return $this->queryBySociety($org, $from, $to);
+        } else {
+            return $this->queryByVenue($org, $from, $to);
+        }
+    }
+
+    private function queryBySociety(Society $society, \DateTime $from = null, \DateTime $to = null): QueryBuilder
     {
         $query = $this->createQueryBuilder('s')
             ->join('s.performances', 'p')
@@ -196,15 +206,17 @@ class ShowRepository extends EntityRepository
             $query = $query->andWhere('p.repeat_until <= :to')->setParameter('to', $to);
         }
 
-        $query = $query->orderBy('p.start_at', 'ASC')
+        return $query->orderBy('p.start_at', 'ASC')
             ->setParameter('society', $society)
-            ->groupBy('s.id')
-            ->getQuery();
-
-        return $query->getResult();
+            ->groupBy('s.id');
     }
 
-    public function getByVenue(Venue $venue, \DateTime $from = null, \DateTime $to = null)
+    public function getBySociety(Society $society, \DateTime $from = null, \DateTime $to = null)
+    {
+        return $this->queryBySociety($society, $from, $to)->getQuery()->getResult();
+    }
+
+    private function queryByVenue(Venue $venue, \DateTime $from = null, \DateTime $to = null): QueryBuilder
     {
         $query = $this->createQueryBuilder('s')
             ->join('s.performances', 'p')
@@ -221,12 +233,14 @@ class ShowRepository extends EntityRepository
             $query = $query->andWhere('p.repeat_until <= :to')->setParameter('to', $to);
         }
 
-        $query = $query->andWhere('s.venue = :venue')
+        return $query->andWhere('s.venue = :venue')
             ->orderBy('p.start_at', 'ASC')
             ->setParameter('venue', $venue)
-            ->groupBy('s.id')
-            ->getQuery();
+            ->groupBy('s.id');
+    }
 
-        return $query->getResult();
+    public function getByVenue(Venue $venue, \DateTime $from = null, \DateTime $to = null)
+    {
+        return $this->queryByVenue($venue, $from, $to)->getQuery()->getResult();
     }
 }

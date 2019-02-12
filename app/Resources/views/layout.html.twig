@@ -28,7 +28,7 @@
 
   <header id="main-header">
     <div>
-      <h1 id="logo-block"><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo-christmas.png') }}, {{ asset('images/logo-christmas-1.5x.png') }} 1.5x, {{ asset('images/logo-christmas-2x.png') }} 2x, {{ asset('images/logo-christmas-4x.png') }} 4x" src="{{ asset('images/logo-christmas.png') }}" alt="Camdram" title="Camdram" style="padding-bottom: 15px;"/></a></h1>
+      <h1 id="logo-block"><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo.png') }}, {{ asset('images/logo-1.5x.png') }} 1.5x, {{ asset('images/logo-2x.png') }} 2x, {{ asset('images/logo-4x.png') }} 4x" src="{{ asset('images/logo.png') }}" alt="Camdram" title="Camdram"/></a></h1>
       <div class="search">
         <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
           <i class="fa fa-search"></i>
@@ -80,7 +80,7 @@
       </ul>
     </div>
   </nav>
-  <section id="content">
+  <section id="content" {{ (section_attribs_raw ?? '') | raw }}>
 {% block body %}
 {% endblock %}
   </section>
@@ -109,6 +109,7 @@
             <a href="{{ path('acts_camdram_about') }}">About Camdram</a><br/>
             <a href="{{ path('acts_camdram_development') }}">Development</a><br/>
             <a href="{{ path('acts_camdram_privacy') }}">Privacy &amp; Cookies</a><br/>
+            <a href="{{ path('acts_camdram_userguidelines') }}">User Guidelines</a><br/>
             <a href="{{ path('acts_camdram_faq') }}">FAQ</a><br/>
             <a href="{{ path('acts_camdram_contact_us') }}">Contact Us</a><br/>
         </div>

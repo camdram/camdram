@@ -5,15 +5,17 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Form\Type\OrganisationApplicationType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use Acts\DiaryBundle\Diary\Diary;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\ORM\Query;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 /**
  * Class OrganisationController
@@ -392,5 +394,30 @@ abstract class OrganisationController extends AbstractRestController
         }
 
         return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
+    }
+
+    /**
+     * View a list of the organisation's last shows.
+     */
+    public function getHistoryAction(Request $request, $identifier) {
+        $showsPerPage = 36;
+
+        $org = $this->getEntity($identifier);
+        $this->denyAccessUnlessGranted('VIEW', $org);
+        $page = $request->query->has("p") ? (int) $request->query->get("p") : 1;
+        $qb = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')
+              ->queryByOrganisation($org, new \DateTime('1970-01-01'), new \DateTime('yesterday'))
+              ->orderBy('p.start_at', 'DESC')->addOrderBy('s.id') // Make deterministic
+              ->setFirstResult($showsPerPage * ($page - 1))
+              ->setMaxResults($showsPerPage);
+        $paginator = new Paginator($qb->getQuery());
+        $route = explode('?', $request->getRequestUri())[0] . '?p=';
+
+        return $this->view([
+            'org' => $org,
+            'paginator' => $paginator,
+            'page_num' => $page,
+            'page_urlprefix' => $route
+        ], 200)->setTemplate('organisation/past-shows.html.twig');
     }
 }

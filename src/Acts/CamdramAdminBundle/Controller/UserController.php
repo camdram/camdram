@@ -2,20 +2,19 @@
 
 namespace Acts\CamdramAdminBundle\Controller;
 
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Rest\RouteResource("User")
@@ -53,27 +52,28 @@ class UserController extends FOSRestController
     public function cgetAction(Request $request)
     {
         $repo = $this->getRepository();
+        $page = (int)($request->query->get('p', 1));
+        // Can't use :parameter notation so manually sanitizing the input.
+        $sort  = preg_replace('/[^A-Za-z_]+/', '', $request->query->get('sort', 'id'));
+        $order = ($request->query->get('order') == 'DESC') ? 'DESC' : 'ASC';
+        $q     = $request->get('q', '');
 
-        if ($request->get('q')) {
+        if ($q !== '') {
             $qb = $repo->search($request->get('q'));
         } else {
             $qb = $repo->createQueryBuilder('u');
         }
-        if ($request->get('sort')) {
-            // Can't use :parameter notation so manually sanitizing the input.
-            $direction = $request->get('order') == 'DESC' ? 'DESC' : 'ASC';
-            $qb->orderBy('u.' . preg_replace("/[^A-Za-z_]+/", "", $request->get('sort')), $direction);
-        } else {
-            $qb->orderBy('u.id', 'ASC');
-        }
-        $adapter = new DoctrineORMAdapter($qb);
-        $data = new Pagerfanta($adapter);
-        $data->setMaxPerPage(25);
+        $qb->orderBy('u.'.$sort, $order);
+        $qb->setMaxResults(25);
+        $qb->setFirstResult(25 * ($page - 1));
 
-        return $this->view($data, 200)
-            ->setTemplateVar('result')
-            ->setTemplate('admin/user/index.html.twig')
-        ;
+        return $this->view([
+            'paginator' => new Paginator($qb->getQuery()),
+            'page_num' => $page,
+            'page_urlprefix' => explode('?', $request->getRequestUri())[0] .
+                 '?sort='.$sort . '&order='.$order . '&q='.urlencode($q).'&p=',
+            'query' => $q
+            ], 200)->setTemplate('admin/user/index.html.twig');
     }
 
     public function getAction($identifier)

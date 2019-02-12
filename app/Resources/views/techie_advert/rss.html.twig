@@ -11,7 +11,7 @@
 {% endif %}
 <p><strong>Contact:</strong> {{ entity.contact|camdram_markdown }}</strong><br/>
     <strong>Deadline for applications:</strong> {{ entity.expiry|date('l jS F') }}
-    {% if entity.deadlinetime and entity.deadlinetime | date('H:i') != '00:00' %}
-        {{ entity.deadlinetime | date('H:i') }}
+    {% if entity.deadlinetime and entity.deadlinetime | date('H:i', 'UTC') != '00:00' %}
+        {{ entity.deadlinetime | date('H:i', 'UTC') }}
     {% endif %}
 </p>

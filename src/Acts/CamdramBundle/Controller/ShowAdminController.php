@@ -9,14 +9,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class ShowController
+ * Class ShowAdminController
  *
- * Controller for REST actions for shows. Inherits from AbstractRestController.
+ * Controller for site-wide show administration.
  *
  * @RouteResource("My-Show")
  */
 class ShowAdminController extends Controller
 {
+    /**
+     * Lists all the user's shows.
+     */
     public function cgetAction(Request $request)
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_USER');
@@ -27,6 +30,9 @@ class ShowAdminController extends Controller
         return $this->render('show_admin/index.html.twig', array('shows' => $shows));
     }
 
+    /**
+     * Lists all the shows waiting for approval by this user.
+     */
     public function cgetUnauthorisedAction(Request $request)
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_USER');

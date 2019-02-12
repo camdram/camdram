@@ -139,4 +139,24 @@ class ShowControllerTest extends RestTestCase
         $this->assertEquals("Test Society", $data->society->name);
     }
 
+    /**
+     * Due to limitations of the DQL-SQLite driver, this does not test the
+     * venue clash check.
+     */
+    public function testShowValidator()
+    {
+        $user = $this->createUser();
+        $this->aclProvider->grantAdmin($user);
+        $this->login($user);
+
+        $show = new Show();
+        $show->setName("Validator Test")
+            ->setCategory("comedy")
+            ->setAuthorised(true);
+        $this->entityManager->persist($show);
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request('GET', '/shows/validator-test');
+        $this->assertEquals($crawler->filter('.error_panel:contains("no performances")')->count(), 1);
+    }
 }

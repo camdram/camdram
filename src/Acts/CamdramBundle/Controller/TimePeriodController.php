@@ -14,7 +14,7 @@ class TimePeriodController extends FOSRestController
 {
     public function getAction($year)
     {
-        $final_date = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getLastShowDate();
+        $final_date = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance')->getLastDate();
         $periods = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')
                       ->findByYearBefore($year, $final_date);
 

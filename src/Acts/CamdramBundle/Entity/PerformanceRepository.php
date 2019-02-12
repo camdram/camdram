@@ -27,7 +27,7 @@ class PerformanceRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->join('p.show', 's')
-            ->leftjoin('s.venue', 'v')
+            ->leftjoin('p.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised = true')
@@ -92,7 +92,7 @@ class PerformanceRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('p')
             ->join('p.show', 's')
-            ->leftjoin('s.venue', 'v')
+            ->leftjoin('p.venue', 'v')
             ->addSelect('s')
             ->addSelect('v')
             ->where('s.authorised = true')
@@ -130,7 +130,7 @@ class PerformanceRepository extends EntityRepository
             $query = $query->andWhere('p.repeat_until <= :to')->setParameter('to', $to);
         }
 
-        $query = $query->andWhere('s.venue = :venue')
+        $query = $query->andWhere('p.venue = :venue')
             ->orderBy('p.start_at', 'ASC')
             ->setParameter('venue', $venue)
             ->getQuery();

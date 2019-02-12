@@ -23,6 +23,11 @@ acts_camdram_privacy:
     defaults:
         _controller: FrameworkBundle:Template:template
         template: 'static/privacy.html.twig'
+acts_camdram_userguidelines:
+    path: /user-guidelines
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: 'static/user-guidelines.html.twig'
 acts_camdram_roles:
     type:     rest
     prefix:   /
@@ -42,7 +47,7 @@ acts_camdram_faq:
     defaults:
         _controller: FrameworkBundle:Template:template
         template: 'static/faq.html.twig'
-        
+
 camdram_annotation:
     resource: "@ActsCamdramBundle/Controller/"
     type:     annotation

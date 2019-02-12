@@ -15,14 +15,14 @@
   "publisher": {
     "@type": "Organization",
     "name": "Camdram",
-	"url": "http://www.camdram.net/"
+	"url": "https://www.camdram.net/"
   }
 
 }
 </script>
 
 <!-- Email text -->
-<p>A new show has been added to <a href = 'http://www.camdram.net/'>camdram.net</a> by {% if owners | length > 0 %}by {% endif %}{% for owner in owners %}{{ owner.name }} (<a href="mailto:{{ owner.email }}">{{ owner.email }}</a>){% if not loop.last %}, {% endif %}{% endfor %} and must be manually authorised before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
+<p>A new show has been added to <a href = 'https://www.camdram.net/'>camdram.net</a> by {% if owners | length > 0 %}by {% endif %}{% for owner in owners %}{{ owner.name }} (<a href="mailto:{{ owner.email }}">{{ owner.email }}</a>){% if not loop.last %}, {% endif %}{% endfor %} and must be manually authorised before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
 <ul>
 	<li>Dates</li>
 	<li>Venue</li>
@@ -31,13 +31,13 @@
 
 before authorizing.</p>
 
-<p>A summary of the show is given below. You can edit, authorise or delete the show as appropriate by visiting:  <a href = '{{ url('get_show', {identifier: show.slug}) }}'>{{ url('get_show', {identifier: show.slug}) }}</a></p>
+<p>A summary of the show is given below. You can edit, authorise or delete the show as appropriate by visiting:  <a href = 'https:{{ url('get_show', {identifier: show.slug}, true) }}'>{{ url('get_show', {identifier: show.slug}) }}</a></p>
 
 {% include 'email/signature.html.twig' %}
 
 <h3>Show details follow</h3	>
 
-{% include 'show/advert_header.html.twig' %}
+{% include 'show/advert_header.html.twig' with { full_urls: true } %}
 <p>
 	{{ show.description }}
 </p>

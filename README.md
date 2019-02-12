@@ -15,17 +15,35 @@ If you encounter any problems with the instructions below, please [create a GitH
 
 ## 1) Install programs
 
-You will need to install the necessary package dependencies required to run Camdram. **PHP version 7.0 or greater is requied**.
+You will need to install the necessary package dependencies required to run Camdram. **PHP version 7.3 or greater is required**.
 
-The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)). Installation methods on other distros and operating systems will vary.
+### Debian/Ubuntu and Derivatives
+
+The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)). 
 
 ```
 sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json php-mbstring php-xml php-zip
 ```
 
-The steps below assume that the Composer PHP package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/
+### macOS
+
+You will need to have [Homebrew](https://brew.sh/) installed. The following command _appears_ (from minimal testing) to install everything required on recent versions of macOS.
+
+```
+brew install git php composer
+```
+
+Installation methods on other distros and operating systems will vary.
 
 ## 2) Create a local version of Camdram
+
+The steps below assume that the Composer PHP package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/.
+
+**Note**: some of the SQL database operations performed by the `composer` commands below are memory-intensive. Default installations of PHP tend to set the memory limit of a PHP script to a value which will undoubtedly cause fatal errors. To prevent this, find your `php.ini` file (location varies by system) and change the `memory_limit` setting, to something like `memory_limit = 1G` (a gigabyte is definitely sufficient - you may be able to get away with a lot less if you prefer). Alternatively you can call the PHP interpreter like so:
+
+```
+php -d memory_limit=1G $(which composer) etc.......
+```
 
 The command below will download and set up a Camdram checkout in a new folder called `camdram`:
 
@@ -132,4 +150,4 @@ The following wiki pages detail how to create a server set-up that's more simila
 
 Camdram is released under version two of the [GNU General Public License](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html#SEC1).
 
-Copyright (C) 2014–2018 *The Association of Cambridge Theatre Societies* and contributing groups.
+Copyright (C) 2014–2019 *The Association of Cambridge Theatre Societies* and contributing groups.

@@ -25,8 +25,8 @@ class SearchController extends FOSRestController
      */
     public function searchAction(Request $request)
     {
-        $limit = $request->get('limit', 10);
-        $page = $request->get('page', 1);
+        $limit = (int) $request->get('limit', 10);
+        $page = (int) $request->get('page', 1);
         $searchText = $request->get('q', '');
 
         $match = new MultiMatch;
@@ -54,11 +54,12 @@ class SearchController extends FOSRestController
             $data[] = $row;
         }
 
-        $view = $this->view($data, 200)
-            ->setTemplateVar('results')
+        return $this->view($data, 200)
             ->setTemplate('search/index.html.twig')
+            ->setTemplateVar('results')
+            ->setTemplateData(['page_num' => $page,
+            'page_urlprefix' => "search?limit={$limit}&q=".urlencode($searchText).'&page=',
+            'query' => $searchText, 'resultset' => $resultSet])
         ;
-
-        return $view;
     }
 }

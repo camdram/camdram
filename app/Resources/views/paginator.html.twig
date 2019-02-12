@@ -1,27 +1,34 @@
-{%- if result.count != result.total_count -%}
-{%- if url_suffix is not defined %}{% set url_suffix = '' %}{% endif -%}
-<div class="row">
-    <div class="small-3 columns">
-        <ul class="inline-list left">
-            {%- if result.urls.start is defined %}<li><a href="{{ result.urls.start ~ url_suffix }}"
-                ><span class="show-for-small">⇤</span><span class="hide-for-small">First Page</span></a></li>{% endif -%}
-            {%- if result.urls.previous is defined %}<li><a href="{{ result.urls.previous ~ url_suffix }}"
-                ><span class="show-for-small">←</span><span class="hide-for-small">Previous Page</span></a></li>{% endif -%}
-        </ul>
-    </div>
-    <div class="small-6 columns text-center">
+{#- Arguments:
+    page_num        current page number, 1-based
+    page_urlprefix  url to which target page numbers are appended
+    paginator       * a Doctrine paginator
+    resultset       * an Elastica\ResultSet
+
+    * Only provide one of these
+-#}
+{%- set total_count = paginator is defined ? paginator.count : resultset.totalhits -%}
+{%- set count = paginator is defined ? paginator.iterator.count : resultset.count  -%}
+{%- if total_count != count -%}
+{%- set limit = paginator is defined ? paginator.query.maxresults : resultset.query.getParam('size') -%}
+{%- set lastpage = (total_count / limit)|round(0, 'ceil') -%}
+<div style="display: flex">
+    <ul class="inline-list" style="flex: 25%">
+        {%- if page_num > 1 %}<li><a href="{{ page_urlprefix ~ 1 }}"
+            ><span class="show-for-small">⇤</span><span class="hide-for-small">First Page</span></a></li>{% endif -%}
+        {%- if page_num > 2 %}<li><a href="{{ page_urlprefix ~ (page_num - 1) }}"
+            ><span class="show-for-small">←</span><span class="hide-for-small">Previous Page</span></a></li>{% endif -%}
+    </ul>
+    <div style="margin: 0 auto;">
         <span><span class="hide-for-small">Results </span>
-        {{- (result.query.page-1) * result.query.limit + 1}}&ndash;
-        {{- (result.query.page-1) * result.query.limit + result.count }}
-        of {{ result.total_count }}</span>
+        {{- (page_num-1) * limit + 1}}&ndash;
+        {{- (page_num-1) * limit + count }}
+        of {{ total_count }}</span>
     </div>
-    <div class="small-3 columns">
-        <ul class="inline-list right">
-            {%- if result.urls.next is defined %}<li><a href="{{ result.urls.next ~ url_suffix }}"
-                 ><span class="show-for-small">→</span><span class="hide-for-small">Next Page</span></a></li>{% endif -%}
-            {%- if result.urls.end is defined %}<li><a href="{{ result.urls.end ~ url_suffix }}"
-                 ><span class="show-for-small">⇥</span><span class="hide-for-small">Last Page</span></a></li>{% endif -%}
-        </ul>
-    </div>
+    <ul class="inline-list text-right" style="flex: 25%">
+        {%- if lastpage - page_num > 1 %}<li><a href="{{ page_urlprefix ~ (page_num + 1) }}"
+             ><span class="show-for-small">→</span><span class="hide-for-small">Next Page</span></a></li>{% endif -%}
+        {%- if lastpage != page_num  %}<li><a href="{{ page_urlprefix ~ lastpage }}"
+             ><span class="show-for-small">⇥</span><span class="hide-for-small">Last Page</span></a></li>{% endif -%}
+    </ul>
 </div>
 {%- endif -%}

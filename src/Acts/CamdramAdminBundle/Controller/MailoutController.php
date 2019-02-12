@@ -39,8 +39,6 @@ For any enquiries, please contact support@camdram.net.";
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
         $numActiveUsers = count($repo->findActiveUsersForMailOut());
-        $numPasswordOnlyCam = count($repo->findActiveCamUsersWithoutExternalUser());
-        $numPasswordOnlyOther = count($repo->findActiveNonCamUsersWithoutExternalUser());
         $numAdmins = count($repo->findOrganisationAdmins());
         
         $form = $this->createFormBuilder()
@@ -48,8 +46,6 @@ For any enquiries, please contact support@camdram.net.";
             ->add('recipients', ChoiceType::class, [
                 'choices' => [
                     "All Active Users ($numActiveUsers)" => 'active',
-                    "Active cam.ac.uk users without an external login ($numPasswordOnlyCam)" => 'password_only_cam',
-                    "Other active users without an external login ($numPasswordOnlyOther)" => 'password_only_other',
                     "Society and venue admins ($numAdmins)" => 'admins',
                     "Just me (1)" => 'me'
                 ],
@@ -76,12 +72,6 @@ For any enquiries, please contact support@camdram.net.";
         switch ($data['recipients']) {
             case 'active':
                 $users = $repo->findActiveUsersForMailOut();
-                break;
-            case 'password_only_cam':
-                $users = $repo->findActiveCamUsersWithoutExternalUser();
-                break;
-            case 'password_only_other':
-                $users = $repo->findActiveNonCamUsersWithoutExternalUser();
                 break;
             case 'admins':
                 $users = $repo->findOrganisationAdmins();

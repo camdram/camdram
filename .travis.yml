@@ -1,8 +1,8 @@
 language: php
+dist: xenial
 matrix:
   include:
-    - php: 7.0
-    - php: 7.2
+    - php: 7.3
   fast_finish: true
 cache:
   directories:

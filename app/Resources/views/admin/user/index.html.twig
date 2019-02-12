@@ -3,8 +3,6 @@
 {% block title %}Users{% endblock %}
 
 {% block body %}
-    {%- set sort  = app.request.query.get('sort', 'id') -%}
-    {%- set order = app.request.query.get('order', 'ASC') -%}
     <div class="row">
         <h3>Manage Users</h3>
 
@@ -12,12 +10,12 @@
             <div style="display: flex; justify-content: space-around;">
                 <label for="user_search_box" class="hide-for-small inline">Search</label>
                 <input id="user_search_box" type="text" name="q" style="max-width: 35em; margin-right: 1em;"
-                       placeholder="Search by name, email and id" />
+                       placeholder="Search by name, email and id" value="{{ query }}"/>
                 <input type="submit" class="button small" value="Go" />
             </div>
         </form>
 
-        {% include 'paginator.html.twig' with {'url_suffix': '&sort='~sort~'&order='~order} %}
+        {% include 'paginator.html.twig' %}
         <div style="overflow-x: auto; width: 100%">
         <table>
             <thead>
@@ -34,7 +32,7 @@
             </tr>
             </thead>
         <tbody>
-        {% for user in result.data %}
+        {% for user in paginator %}
         <tr>
             <td><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.id }}</a></td>
             <td><a href="{{ path('get_user', {identifier: user.id}) }}">{{ user.name }}</a></td>

@@ -1,6 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% set current_navigation_id = 'shows' %}
+{% set section_attribs_raw = ' itemscope="" itemtype="http://schema.org/TheaterEvent"' %}
 {% block title %}Show: {{ show.name }}{% endblock %}
 
 {# Facebook open graph markup #}
@@ -28,7 +29,7 @@
 </div>
 {% endif %}
 
-<div class="row panel" itemscope="" itemtype="http://schema.org/TheaterEvent">
+<div class="row panel">
     <meta itemprop="name" content="{{ show.name }}"/>
     <ul class="inline-list right">
         {%- if show.hasFuturePerformances() -%}
@@ -133,6 +134,12 @@
         <p>{{ show.activeApplication.text() }} –
         <a href="{{ path('get_application', {identifier: show.activeApplication.show.slug}) }}">more details</a></p>
     {% endif %}
+</div>
+{%- endif -%}
+
+{%- if is_granted('EDIT', show) and is_granted('IS_AUTHENTICATED_FULLY') -%}
+<div class="warning_panel" id="role-addition-consent">
+    Adding people to a show’s credits list requires their consent. Please ask for your team members’ permission <em>before</em> adding them!
 </div>
 {%- endif -%}
 
