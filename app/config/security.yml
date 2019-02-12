@@ -18,6 +18,7 @@ security:
 
         api:
             pattern: ^/.*\.(json|xml)
+            host: ^(?!(localhost)$)(\w*)$
             fos_oauth:  true
             stateless:  true
             anonymous:  false
