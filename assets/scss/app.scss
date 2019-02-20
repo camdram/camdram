@@ -110,6 +110,18 @@ nav.navbar {
   img {
     margin-bottom:0.8em;
   }
+  
+  a.icon-link {
+    > img {
+      &[src*="google"] {
+        /* The Google logo has a white background, the same as the main
+        content section of a page. Here we give it a dark grey inside
+        border in all such cases. Notably this doesn't include the site's
+        menu bar header which already has a dark background. */
+        box-shadow: inset 0px 0px 0px 1px $dark-grey;
+      }
+    }
+  }
 }
 
 footer {
