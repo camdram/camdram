@@ -83,7 +83,6 @@ For any enquiries, please contact support@camdram.net.";
         
         $mailer = $this->get('mailer');
         $output = ['sent' => [], 'not_active' => [], 'not_verified' => []];
-        $loginThreshold = new \DateTime('-2 years');
         
         foreach ($users as $user) {
             if (!$user->getIsEmailVerified()) {
