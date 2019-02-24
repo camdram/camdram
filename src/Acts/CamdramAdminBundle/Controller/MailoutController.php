@@ -86,9 +86,7 @@ For any enquiries, please contact support@camdram.net.";
         $loginThreshold = new \DateTime('-2 years');
         
         foreach ($users as $user) {
-            if ($user->getLastLoginAt() < $loginThreshold && $user->getRegisteredAt() < $loginThreshold) {
-                $output['not_active'][] = $user;
-            } elseif (!$user->getIsEmailVerified()) {
+            if (!$user->getIsEmailVerified()) {
                 $output['not_verified'][] = $user;
             } else {
                 $message = (new \Swift_Message($data['subject']))
