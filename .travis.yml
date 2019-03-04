@@ -18,6 +18,7 @@ before_script:
   # Install deps. `--no-interaction` causes paramters.yml to be populated with default values
 - travis_retry composer install --no-interaction
 script:
+- "mkdir web/build"
 - "./gen-csp-hashes.py"
 - "./runtests"
 - "./check_dev_setup"
