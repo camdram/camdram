@@ -179,17 +179,19 @@
 
 {% if is_granted('EDIT', show) and is_granted('IS_AUTHENTICATED_FULLY') %}
 <script>
+    {#- begin-CSP-permitted-script -#}
     $("div[id|='sortable']").sortable({
         axis: "y",
         items: "> div",
         stop: function(event, ui) {
             jQuery.ajax({
-                url: "{{ url('patch_roles_reorder') }}",
+                url: Routing.generate('patch_roles_reorder'),
                 type: 'PATCH',
                 data: $(this).sortable('serialize')
             });
         }
     });
+    {#- end-CSP-permitted-script -#}
 </script>
 {# Putting this here rather than in the site-wide CSS as it's a bit specific and
    it may be removed if the role-adding gets a rework. #}

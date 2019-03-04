@@ -59,6 +59,13 @@ p {
   clear: both;
 }
 
+/**
+ * A generic class to position block elements inline.
+ */
+.inline-block {
+  display: inline-block !important;
+}
+
 
 /**
  * Header font sizes - responsive to viewport size

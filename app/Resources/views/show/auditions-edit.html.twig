@@ -75,7 +75,9 @@
 
 
 <script>
+    {#- begin-CSP-permitted-script -#}
     $('.scheduled_auditions').entityCollection({min_items: 0});
     $('.non_scheduled_auditions').entityCollection({min_items: 0, max_items: 1});
+    {#- end-CSP-permitted-script -#}
 </script>
 {% endblock %}

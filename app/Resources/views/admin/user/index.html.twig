@@ -52,6 +52,7 @@
 
 {% block javascripts %}
 <script>
+    {#- begin-CSP-permitted-script -#}
     $(function() {
         $('#user_search_box').typeahead({
             name: 'users_search',
@@ -61,5 +62,6 @@
             document.location = Routing.generate('get_user', {identifier: datum.id})
         });
     })
+    {#- end-CSP-permitted-script -#}
 </script>
 {% endblock %}

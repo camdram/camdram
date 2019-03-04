@@ -21,6 +21,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
+    acts.camdram.listener.response_subscriber:
+        class: Acts\CamdramBundle\EventListener\ResponseSubscriber
+        autowire: true
+
     acts.camdram.listener.show:
         class: Acts\CamdramBundle\EventListener\ShowListener
         arguments: ['@acts.camdram.moderation_manager', '@acts.camdram.week_manager']

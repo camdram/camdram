@@ -23,6 +23,7 @@
 {{ form_rest(form) }}
 
 <script>
+    {#- begin-CSP-permitted-script -#}
     $(function() {
         var $has_deadline = $('#techie_advert_deadline');
         var $deadline_fields = $('#deadline-fields .form-small-widget');
@@ -40,4 +41,5 @@
             $deadline_fields.hide();
         }
     })
+    {#- end-CSP-permitted-script -#}
 </script>

@@ -56,13 +56,12 @@
 {% endif %}
 {% for admin in admins %}
     <div id="admin_{{ admin.id }}">
-        <form action="{{ path(revoke_admin_route, {identifier: entity.slug, uid: admin.id}) }}" method="post" id="revoke_admin_form_{{ admin.id }}">
+        <form action="{{ path(revoke_admin_route, {identifier: entity.slug, uid: admin.id}) }}" method="post" id="revoke_admin_form_{{ admin.id }}" class="inline-block">
             <input type="hidden" name="_method" value="DELETE" />
             <input type="hidden" name="_token" value="{{ csrf_token('delete_admin') }}" />
+            <button title="Revoke this admin." class="fa fa-fw fa-trash-o text-button"></button>
         </form>
-    <span title="Revoke this admin.">
-        <a href="javascript:document.getElementById('revoke_admin_form_{{ admin.id }}').submit()" class="fa fa-fw fa-trash-o"></a></span>&ensp;
-    {%- if admin.person is defined -%}
+    {% if admin.person is defined -%}
         {%- if admin.person -%}
             <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
         {%- else -%}
@@ -78,13 +77,12 @@
 {% endif %}
 {% for pending in pending_admins %}
     <div id="pending_{{ pending.id }}">
-    <form action="{{ path(revoke_pending_admin_route, {identifier: entity.slug, uid: pending.id}) }}" method="post" id="revoke_pending_admin_form_{{ pending.id }}">
+    <form action="{{ path(revoke_pending_admin_route, {identifier: entity.slug, uid: pending.id}) }}" method="post" id="revoke_pending_admin_form_{{ pending.id }}" class="inline-block">
         <input type="hidden" name="_method" value="DELETE" />
         <input type="hidden" name="_token" value="{{ csrf_token('delete_pending_admin') }}" />
+        <button title="Revoke this pending admin." class="fa fa-fw fa-trash-o text-button"></button>
     </form>
 
-    <span title="Revoke this pending admin.">
-        <a href="javascript:document.getElementById('revoke_pending_admin_form_{{ pending.id }}').submit()" class="fa fa-fw fa-trash-o"></a></span>&ensp;
     {{ pending.email }}
     </div>
 {% endfor %}

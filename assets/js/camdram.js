@@ -2,6 +2,9 @@ import Dropzone from 'dropzone';
 import Routing from 'router';
 import Bloodhound from 'typeahead.js'
 
+// Leak Routing to the global scope so that inline scripts work.
+window.Routing = Routing;
+
 ;(function($, window) {
     String.prototype.truncate = function(length) {
         str = jQuery.trim(this).substring(0, length)
@@ -168,10 +171,25 @@ import Bloodhound from 'typeahead.js'
     }
 
     $.fn.entitySearch = function(options) {
-       var options = $.extend({
-           placeholder: 'start typing to search',
-           prefetch : true
-       }, options);
+        if (options['auto']) {
+           this.find('[data-entitysearch-route]').each(function() {
+               $(this).entitySearch({
+                   placeholder: 'start typing to search',
+                   prefetch: this.getAttribute('data-entitysearch-prefetch'),
+                   route: this.getAttribute('data-entitysearch-route')
+               });
+               // Ensure that entitySearch is fired only once per element,
+               // regardless of how many times entitySearch({auto}) is called.
+               this.removeAttribute('data-entitysearch-prefetch');
+               this.removeAttribute('data-entitysearch-route');
+           });
+           return;
+        }
+
+        var options = $.extend({
+            placeholder: 'start typing to search',
+            prefetch : true
+        }, options);
         var $self = $(this);
 
         var tokenize = function(str) {
