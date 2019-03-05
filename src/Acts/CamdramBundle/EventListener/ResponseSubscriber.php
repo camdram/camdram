@@ -33,6 +33,8 @@ class ResponseSubscriber implements EventSubscriberInterface
         # browsers in question (largely IE and Android browser) don't support
         # hashes in CSP.
         $response->headers->set($this->header_name, $this->policy);
+
+        $response->headers->set('x-frame-options', 'deny');
     }
 
     private function generatePolicy()

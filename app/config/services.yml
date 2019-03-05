@@ -31,10 +31,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
-    Acts\CamdramBundle\EventListener\FrameOptionsHeader:
-        tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-
     Acts\DiaryBundle\:
         resource: '../../src/Acts/DiaryBundle/*'
 
