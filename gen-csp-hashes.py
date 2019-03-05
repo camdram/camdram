@@ -14,10 +14,10 @@ sha256 = hashlib.sha256()
 
 debug_mode = (len(sys.argv) > 1) and ('--debug-mode' in sys.argv)
 
-with open('web/build/csp_hashes.txt', 'w') as outfile:
+with open('web/build/csp_hashes.txt', 'w', encoding='utf-8', newline='') as outfile:
     for root, dirs, files in os.walk('app/Resources/views'):
         for name in files:
-            with open(os.path.join(root, name)) as f:
+            with open(os.path.join(root, name), encoding='utf-8', newline='') as f:
                 content = f.read()
                 for match in regex.findall(content):
                     match = bytes(match.strip(), 'utf-8')
