@@ -1516,52 +1516,32 @@ class Show implements OwnableInterface
     }
 
     /**
-
+     * Returns an array of arrays
+     *   ["datetime" => a DateTime object, "venue" => string]
+     * for every performance, i.e. 1 or many per Performance object.
      */
     public function getAllPerformances()
     {
         $ret = array();
         foreach ($this->getPerformances() as $performance) {
-            $current_day = clone $performance->getStartAt(); //ate'] . " " . $perf['time']);
-            $end_day = $performance->getRepeatUntil(); //ate'] . " " . $perf['time']);
-            $time = $performance->getStartAt();
+            $current_day = clone $performance->getStartAt();
+            $end_day = clone $performance->getRepeatUntil();
+            $end_day->setTime(23, 59, 59);
             if ($performance->getVenue() != null) {
                 $venue = $performance->getVenue()->getName();
             } else {
                 $venue = $performance->getOtherVenue();
             }
             while ($current_day <= $end_day) {
-                $datetime = clone $current_day;
-
-                $datetime->setTime($time->format('G'), $time->format('i'), $time->format('s')); //  Eugh. PHP doesn't seem to give a better way
-                array_push($ret, array('date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue));
-                $current_day = clone $current_day;
+                array_push($ret, ['datetime' => clone $current_day, 'venue' => $venue]);
                 $current_day->modify('+1 day');
             }
         }
-        usort($ret, array($this, 'cmpPerformances'));
+        usort($ret, function($a, $b) {
+          return ($a['datetime']) <=> ($b['datetime']);
+        });
 
         return $ret;
-    }
-
-    /**
-     * compare two performance objects, returning -1 if $a is before $b, 1 if
-     * it's after, or 0 if they're at the same time.
-     * Used by getAllPerformances()
-     */
-    private function cmpPerformances($a, $b)
-    {
-        if ($a['date'] < $b['date']) {
-            return -1;
-        } elseif ($a['date'] > $b['date']) {
-            return 1;
-        } elseif ($a['time'] < $b['time']) {
-            return -1;
-        } elseif ($a['time'] > $b['time']) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     public static function getAceType()
