@@ -91,12 +91,6 @@ class DiaryController extends AbstractFOSRestController
 
     public function weekAction(Request $request, WeekManager $week_manager, $year, $period, $week)
     {
-        if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/', $week)) {
-            return $this->rangeAction($week);
-        } elseif (preg_match('/[0-9]{2}\-[0-9]{2}/', $week)) {
-            return $this->rangeAction($year.'-'.$week);
-        }
-
         $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
         if ($week) {
             return $this->dateAction($request, $week_manager, $week->getStartAt());
