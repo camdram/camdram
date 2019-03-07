@@ -169,13 +169,18 @@ class AdminController extends AbstractFOSRestController
     /**
      * Approve a request to be an admin for this show.
      *
-     * @Rest\Get("/shows/{identifier}/admin/approve", name="approve_show_admin")
+     * @Rest\Patch("/shows/{identifier}/admin/approve", name="approve_show_admin")
      * @param $identifier
      */
     public function approveAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
         $helper->ensureGranted('EDIT', $show);
+
+        if (!$this->isCsrfTokenValid('approve_show_admin', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('uid');
         $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
