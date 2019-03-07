@@ -118,6 +118,7 @@ class AuditionRepositoryTest extends RepositoryTestCase
         $ad = new Audition();
         $ad->setShow($this->show);
         $ad->setStartAt(new \DateTime('2014-03-12 14:00'));
+        $ad->setEndAt(new \DateTime('2014-03-12 14:00'));
         $ad->setLocation('Contact me');
         $ad->setNonScheduled(true);
 
