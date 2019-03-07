@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,7 +13,7 @@ use Acts\DiaryBundle\Diary\Diary;
 /**
  * @RouteResource("Audition")
  */
-class AuditionController extends FOSRestController
+class AuditionController extends AbstractFOSRestController
 {
     public function cgetAction(Request $request)
     {

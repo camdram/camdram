@@ -2,14 +2,16 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
+use Acts\CamdramBundle\Entity\Role;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Acts\CamdramBundle\Entity\Role;
 
 /**
  */
-class RoleController extends FOSRestController
+class RoleController extends AbstractFOSRestController
 {
     /**
      * reorderRolesAction
@@ -17,10 +19,10 @@ class RoleController extends FOSRestController
      * Reorder the display ordering for the array of Roles identified by their ID.
      *
      * @param Request $request
-     *
+     * @Rest\Patch("/roles/reorder", name="patch_roles_reorder")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function patchRolesReorderAction(Request $request)
+    public function patchRolesReorderAction(Request $request, Helper $_helper)
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('ActsCamdramBundle:Role');
@@ -28,7 +30,7 @@ class RoleController extends FOSRestController
         $i = 0;
         foreach ($role_ids as $id) {
             $role = $repo->findOneById($id);
-            $can_reorder = $this->get('camdram.security.acl.helper')->isGranted('EDIT', $role->getShow());
+            $can_reorder = $_helper->isGranted('EDIT', $role->getShow());
             if (($role->getOrder() != $i) && $can_reorder) {
                 $role->setOrder($i);
             }

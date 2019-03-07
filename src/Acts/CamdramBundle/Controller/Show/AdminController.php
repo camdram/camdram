@@ -2,18 +2,22 @@
 
 namespace Acts\CamdramBundle\Controller\Show;
 
+use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
-use FOS\RestBundle\Controller\FOSRestController;
+use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class AdminController extends FOSRestController
+class AdminController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
@@ -23,12 +27,13 @@ class AdminController extends FOSRestController
     /**
      * Get a form for adding an admin to a show.
      *
+     * @Rest\Get("/shows/{identifier}/admin/edit", name="edit_show_admin")
      * @param $identifier
      */
-    public function editAdminAction($identifier)
+    public function editAdminAction($identifier, Helper $helper)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $ace = new PendingAccess();
         $ace->setRid($show->getId());
@@ -66,12 +71,14 @@ class AdminController extends FOSRestController
      * funding society, the venue the show is being performed at, or have
      * suitable site-wide privileges.
      *
+     * @Rest\Post("/shows/{identifier}/admins", name="post_show_admin")
      * @param $identifier
      */
-    public function postAdminAction(Request $request, $identifier)
+    public function postAdminAction(Request $request, AclProvider $aclProvider, Helper $helper,
+        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $pending_ace = new PendingAccess();
         $form = $this->createForm(PendingAccessType::class, $pending_ace);
@@ -80,8 +87,7 @@ class AdminController extends FOSRestController
             /* Check if the ACE doesn't need to be created for various reasons. */
             /* Is this person already an admin? */
             $already_admin = false;
-            $admins = $this->get('acts.camdram.moderation_manager')
-                ->getModeratorsForEntity($show);
+            $admins = $moderation_manager->getModeratorsForEntity($show);
             foreach ($admins as $admin) {
                 if ($admin->getEmail() == $pending_ace->getEmail()) {
                     $already_admin = true;
@@ -95,8 +101,7 @@ class AdminController extends FOSRestController
                     ->findOneByEmail($pending_ace->getEmail());
 
                 if ($existing_user != null) {
-                    $this->get('camdram.security.acl.provider')
-                        ->grantAccess($show, $existing_user, $this->getUser());
+                    $aclProvider->grantAccess($show, $existing_user, $this->getUser());
                 } else {
                     /* This is an unknown email address. Check if they've already
                      * got a pending access token for this resource, otherwise
@@ -107,7 +112,7 @@ class AdminController extends FOSRestController
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
-                        $this->get('event_dispatcher')->dispatch(
+                        $event_dispatcher->dispatch(
                             CamdramSecurityEvents::PENDING_ACCESS_CREATED,
                             new PendingAccessEvent($pending_ace)
                         );
@@ -122,15 +127,15 @@ class AdminController extends FOSRestController
     /**
      * Request to be an admin associated with this show.
      *
-     *
+     * @Rest\Get("/shows/{identifier}/admin/request", name="request_show_admin")
      * @param $identifier
      */
-    public function requestAdminAction($identifier)
+    public function requestAdminAction(Helper $helper, EventDispatcherInterface $event_dispatcher, $identifier)
     {
-        $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_USER');
+        $helper->ensureGranted('ROLE_USER');
 
         $show = $this->getEntity($identifier);
-        if ($this->get('camdram.security.acl.helper')->isGranted('EDIT', $show)) {
+        if ($helper->isGranted('EDIT', $show)) {
             // TODO add a no-action return code.
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
         } else {
@@ -152,7 +157,7 @@ class AdminController extends FOSRestController
                 ->setType('request-show');
             $em->persist($ace);
             $em->flush();
-            $this->get('event_dispatcher')->dispatch(
+            $event_dispatcher->dispatch(
                 CamdramSecurityEvents::ACE_CREATED,
                 new AccessControlEntryEvent($ace)
             );
@@ -164,17 +169,18 @@ class AdminController extends FOSRestController
     /**
      * Approve a request to be an admin for this show.
      *
+     * @Rest\Get("/shows/{identifier}/admin/approve", name="approve_show_admin")
      * @param $identifier
      */
-    public function approveAdminAction(Request $request, $identifier)
+    public function approveAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('uid');
         $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
         if ($user != null) {
-            $this->get('camdram.security.acl.provider')->approveShowAccess($show, $user, $this->getUser());
+            $aclProvider->approveShowAccess($show, $user, $this->getUser());
         }
 
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
@@ -182,12 +188,13 @@ class AdminController extends FOSRestController
 
     /**
      * Revoke an admin's access to a show.
-     * 
+     *
+     * @Rest\Delete("/shows/{identifier}/admins/{uid}", name="delete_show_admin")
      */
-    public function deleteAdminAction(Request $request, $identifier, $uid)
+    public function deleteAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $identifier, $uid)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         if (!$this->isCsrfTokenValid('delete_admin', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
@@ -196,7 +203,7 @@ class AdminController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($uid);
         if ($user != null) {
-            $this->get('camdram.security.acl.provider')->revokeAccess($show, $user, $this->getUser());
+            $aclProvider->revokeAccess($show, $user, $this->getUser());
         }
 
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
@@ -204,13 +211,13 @@ class AdminController extends FOSRestController
 
     /**
      * Revoke a pending admin's access to a show.
-     * 
+     *
      * @Rest\Delete("/shows/{identifier}/pending-admins/{uid}")
      */
-    public function deletePendingAdminAction(Request $request, $identifier, $uid)
+    public function deletePendingAdminAction(Request $request, Helper $helper, $identifier, $uid)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         if (!$this->isCsrfTokenValid('delete_pending_admin', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');

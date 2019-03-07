@@ -5,14 +5,14 @@ namespace Acts\CamdramBundle\Service;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class WeekManager
 {
     private $weekRepository;
     private $periodRepository;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->weekRepository = $entityManager->getRepository('ActsCamdramBundle:WeekName');
         $this->periodRepository = $entityManager->getRepository('ActsCamdramBundle:TimePeriod');

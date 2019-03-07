@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Criteria;
 /**
  * @RouteResource("Application")
  */
-class ApplicationController extends FOSRestController
+class ApplicationController extends AbstractFOSRestController
 {
     /**
      * cgetAction

@@ -2,18 +2,19 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
 use Acts\CamdramBundle\Service\Time;
+use Acts\CamdramBundle\Service\WeekManager;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Doctrine\Common\Collections\Criteria;
 
 /**
- * @RouteResource("Techie")
+ * @Rest\RouteResource("Techie")
  */
-class TechieAdvertController extends FOSRestController
+class TechieAdvertController extends AbstractFOSRestController
 {
     protected $class = 'Acts\\CamdramBundle\\Entity\\TechieAdvert';
 
@@ -35,18 +36,18 @@ class TechieAdvertController extends FOSRestController
      * cgetAction
      *
      * Display technician adverts from now until the end of (camdram) time
+     * @Rest\Get("/vacancies/techies.{_format}", name="get_techies")
      */
-    public function cgetAction(Request $request)
+    public function cget(Request $request, WeekManager $week_manager, string $_format = 'html')
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
             ->findNotExpiredOrderedByDateName(Time::now());
-        
-        $week_manager = $this->get('acts.camdram.week_manager');
+
         $weeks = array();
         foreach ($techieAdverts as $advert) {
             $weeks[$advert->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($advert->getShow()->getPerformances());
         }
-        
+
         $view = $this->view($techieAdverts)
             ->setTemplate('techie_advert/index.'.$request->getRequestFormat().'.twig')
             ->setTemplateVar('techieadverts')

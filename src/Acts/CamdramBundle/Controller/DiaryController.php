@@ -2,31 +2,32 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Service\Time;
+use Acts\CamdramBundle\Service\WeekManager;
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Label;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Acts\CamdramBundle\Service\Time;
 
 /**
  * Class DiaryController
  *
  * Controller for the diary page. The diary
  */
-class DiaryController extends FOSRestController
+class DiaryController extends AbstractFOSRestController
 {
     /**
      * Renders the main diary template
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, WeekManager $week_manager)
     {
         $now = Time::now();
-        $week_start = $this->get('acts.camdram.week_manager')->previousSunday($now);
+        $week_start = $week_manager->previousSunday($now);
 
-        return $this->dateAction($request, $week_start);
+        return $this->dateAction($request, $week_manager, $week_start);
     }
 
     /**
@@ -71,24 +72,24 @@ class DiaryController extends FOSRestController
         return $view;
     }
 
-    public function yearAction(Request $request, $year)
+    public function yearAction(Request $request, WeekManager $week_manager, $year)
     {
         $start_date = \DateTime::createFromFormat('!Y', $year);
 
-        return $this->dateAction($request, $start_date);
+        return $this->dateAction($request, $week_manager, $start_date);
     }
 
-    public function periodAction(Request $request, $year, $period)
+    public function periodAction(Request $request, WeekManager $week_manager, $year, $period)
     {
         $period = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')->getBySlugAndYear($period, $year);
         if ($period) {
-            return $this->dateAction($request, $period->getStartAt());
+            return $this->dateAction($request, $week_manager, $period->getStartAt());
         } else {
             throw $this->createNotFoundException('Invalid time period specified');
         }
     }
 
-    public function weekAction(Request $request, $year, $period, $week)
+    public function weekAction(Request $request, WeekManager $week_manager, $year, $period, $week)
     {
         if (preg_match('/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/', $week)) {
             return $this->rangeAction($week);
@@ -98,7 +99,7 @@ class DiaryController extends FOSRestController
 
         $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
         if ($week) {
-            return $this->dateAction($request, $week->getStartAt());
+            return $this->dateAction($request, $week_manager, $week->getStartAt());
         } else {
             throw $this->createNotFoundException('Invalid week specified');
         }
@@ -112,9 +113,8 @@ class DiaryController extends FOSRestController
      *
      * @return \Acts\DiaryBundle\Diary\Diary
      */
-    public function singleWeekAction(Request $request, $date)
+    public function singleWeekAction(Request $request, WeekManager $week_manager, $date)
     {
-        $week_manager = $this->get('acts.camdram.week_manager');
         $start_date = $week_manager->previousSunday(\DateTime::createFromFormat('!Y-m-d', $date));
         $end_date = clone $start_date;
         $end_date->modify('+1 week');
@@ -128,7 +128,7 @@ class DiaryController extends FOSRestController
         return $this->renderDiary($request, $diary);
     }
 
-    public function dateAction(Request $request, $start)
+    public function dateAction(Request $request, WeekManager $week_manager, $start)
     {
         if (is_string($start)) {
             $start = \DateTime::createFromFormat('!Y-m-d', $start);
@@ -162,7 +162,6 @@ class DiaryController extends FOSRestController
             $diary->addLabel(Label::TYPE_PERIOD, $period->getFullName(), $period->getStartAt(), $period->getEndAt());
         }
 
-        $week_manager = $this->get('acts.camdram.week_manager');
         $diary->setDateRange($week_manager->previousSunday($start), $week_manager->nextSunday($end));
 
         return $this->renderDiary($request, $diary);
