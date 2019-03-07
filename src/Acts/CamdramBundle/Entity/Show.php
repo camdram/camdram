@@ -1114,7 +1114,16 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Get auditions
+     * Get all auditions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAllAuditions() {
+        return $this->auditions;
+    }
+
+    /**
+     * Get auditions that are upcoming.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

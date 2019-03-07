@@ -51,7 +51,7 @@ class Audition implements EventInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_at", type="datetime", nullable=true)
+     * @ORM\Column(name="end_at", type="datetime", nullable=false)
      * @Assert\DateTime()
      * @Gedmo\Versioned
      * @Serializer\Expose()
@@ -124,14 +124,15 @@ class Audition implements EventInterface
         if ($this->getEndAt()) {
             $endAt = clone $this->getEndAt();
             $endAt->setTimezone(new \DateTimeZone("Europe/London"));
+            if ($startAt == $endAt) return $str;
 
             $endDate = $endAt->format('D jS M');
             $endTime = $endAt->format('H:i');
-            $str .= ' - ';
+            $str .= '–';
             if ($endDate != $startDate) $str .= $endDate . ', ';
             $str .= $endTime;
         }
-        
+
         return $str;
     }
 

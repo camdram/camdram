@@ -49,7 +49,13 @@ class AuditionController extends FOSRestController
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
+            $formData = $form->getData();
+            foreach ($formData->getAllAuditions() as $aud) {
+                if ($aud->getNonScheduled()) {
+                    $aud->setEndAt(clone ($aud->getStartAt()));
+                }
+            }
+            $em->persist($formData);
             $em->flush();
 
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
