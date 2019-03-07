@@ -7,6 +7,7 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Form\Type\ShowType;
+use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -243,9 +244,10 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
-    public function approveAction(Request $request, $identifier)
+    public function approveAction(Request $request, $identifier, ModerationManager $moderation_manager)
     {
         $show = $this->getEntity($identifier);
+        $em = $this->getDoctrine()->getManager();
         $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
 
         $token = $request->request->get('_token');
@@ -253,8 +255,8 @@ class ShowController extends AbstractRestController
             throw new BadRequestHttpException('Invalid CSRF token');
         }
 
-        $this->get('acts.camdram.moderation_manager')->approveEntity($show);
-        $this->get('doctrine.orm.entity_manager')->flush();
+        $moderation_manager->approveEntity($show);
+        $em->flush();
 
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }

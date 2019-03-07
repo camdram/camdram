@@ -2,12 +2,15 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\ElasticaBundle\Index\IndexManager;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Elastica\Query;
 use Elastica\Query\MultiMatch;
 
@@ -17,7 +20,7 @@ use Elastica\Query\MultiMatch;
  * This controller is used as a base for show, venue, society and people pages, containing common functionality for
  * viewing, searching, creating, editing and deleting editities.
  */
-abstract class AbstractRestController extends FOSRestController
+abstract class AbstractRestController extends AbstractFOSRestController
 {
     /** @var string The fully qualified class name for the entity represented by the class */
     protected $class;
@@ -27,6 +30,15 @@ abstract class AbstractRestController extends FOSRestController
 
     /** @var string the plural form of the English word for the entity represented by the class  */
     protected $type_plural;
+
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+        $services['camdram.security.acl.helper'] = Helper::class;
+        $services['camdram.security.acl.provider'] = AclProvider::class;
+        $services['fos_elastica.index_manager'] = IndexManager::class;
+        return $services;
+    }
 
     /**
      * @return string used to populate the namespace of the templates for this class
@@ -269,8 +281,7 @@ abstract class AbstractRestController extends FOSRestController
         $query->setSort([
             'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => PHP_INT_MAX-1]
         ]);
-
-        $search = $this->get('fos_elastica.index.autocomplete_'.$this->type)->createSearch();
+        $search = $this->get('fos_elastica.index_manager')->getIndex('autocomplete_'.$this->type)->createSearch();
         $resultSet = $search->search($query);
 
         $data = [];

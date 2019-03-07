@@ -7,7 +7,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -38,7 +38,7 @@ class ModerationManager
     private $logger;
 
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         EmailDispatcher $dispatcher,
                                 AclProvider $aclProvider,
         AuthorizationCheckerInterface $authorizationChecker,

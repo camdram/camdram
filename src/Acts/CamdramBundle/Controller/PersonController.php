@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Acts\CamdramAdminBundle\Service\PeopleMerger;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Form\Type\PersonType;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -196,14 +197,20 @@ class PersonController extends AbstractRestController
             ->setTemplate('person/current-shows.html.twig');
     }
 
-    public function getMergeAction($identifier)
+    /**
+     * @param $identifier
+     * @param $request Request
+     *
+     * @Rest\Get("/people/{identifier}/merge")
+     */
+    public function getMergeAction($identifier, PeopleMerger $merger)
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
         $person = $this->getEntity($identifier);
 
         return $this->render('person/merge.html.twig', array(
             'person' => $person,
-            'form' => $this->get('acts_camdram_admin.people_merger')->createForm()->createView()
+            'form' => $merger->createForm()->createView()
         ));
     }
 
@@ -214,11 +221,10 @@ class PersonController extends AbstractRestController
      * @return $this
      * @Rest\Post("/people/{identifier}/merge")
      */
-    public function mergeAction($identifier, Request $request)
+    public function mergeAction($identifier, Request $request, PeopleMerger $merger)
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
         $person = $this->getEntity($identifier);
-        $merger = $this->get('acts_camdram_admin.people_merger');
 
         $form = $merger->createForm();
         $form->handleRequest($request);

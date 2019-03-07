@@ -6,6 +6,7 @@ use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Form\Type\OrganisationApplicationType;
 use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
@@ -13,6 +14,7 @@ use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use Acts\DiaryBundle\Diary\Diary;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\Query;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -285,7 +287,8 @@ abstract class OrganisationController extends AbstractRestController
      *
      * @param $identifier
      */
-    public function postAdminAction(Request $request, $identifier)
+    public function postAdmin(Request $request, $identifier,
+        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
@@ -297,8 +300,7 @@ abstract class OrganisationController extends AbstractRestController
             /* Check if the ACE doesn't need to be created for various reasons. */
             /* Is this person already an admin? */
             $already_admin = false;
-            $admins = $this->get('acts.camdram.moderation_manager')
-                        ->getModeratorsForEntity($org);
+            $admins = $moderation_manager->getModeratorsForEntity($org);
             foreach ($admins as $admin) {
                 if ($admin->getEmail() == $pending_ace->getEmail()) {
                     $already_admin = true;
@@ -324,7 +326,7 @@ abstract class OrganisationController extends AbstractRestController
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
-                        $this->get('event_dispatcher')->dispatch(
+                        $event_dispatcher->dispatch(
                             CamdramSecurityEvents::PENDING_ACCESS_CREATED,
                             new PendingAccessEvent($pending_ace)
                         );

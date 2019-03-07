@@ -2,11 +2,13 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\SocietyType;
+use Acts\CamdramBundle\Service\ModerationManager;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class SocietyController
@@ -164,5 +166,15 @@ class SocietyController extends OrganisationController
     public function deletePendingAdminAction(Request $request, $identifier, $uid)
     {
         return parent::deletePendingAdminAction($request, $identifier, $uid);
+    }
+
+    /**
+      * @Rest\Post("/societies/{identifier}/admins", name="post_society_admin")
+      * @param $identifier
+      */
+    public function postAdminAction(Request $request, $identifier,
+        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
+    {
+        return parent::postAdmin($request, $identifier, $moderation_manager, $event_dispatcher);
     }
 }

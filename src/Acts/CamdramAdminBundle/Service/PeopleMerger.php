@@ -3,7 +3,7 @@
 namespace Acts\CamdramAdminBundle\Service;
 
 use Acts\CamdramBundle\Entity\Person;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactory;
 use Acts\CamdramBundle\Form\Type\EntitySearchType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,7 +15,7 @@ class PeopleMerger
 
     private $formFactory;
 
-    public function __construct(EntityManager $entityManager, FormFactory $formFactory)
+    public function __construct(EntityManagerInterface $entityManager, FormFactory $formFactory)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;

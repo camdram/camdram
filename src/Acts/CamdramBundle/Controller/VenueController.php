@@ -2,11 +2,13 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
+use Acts\CamdramBundle\Service\ModerationManager;
 
 /**
  * Class VenueController
@@ -168,5 +170,15 @@ class VenueController extends OrganisationController
     public function deletePendingAdminAction(Request $request, $identifier, $uid)
     {
         return parent::deletePendingAdminAction($request, $identifier, $uid);
+    }
+
+    /**
+      * @Rest\Post("/venues/{identifier}/admins", name="post_venue_admin")
+      * @param $identifier
+      */
+    public function postAdminAction(Request $request, $identifier,
+        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
+    {
+        return parent::postAdmin($request, $identifier, $moderation_manager, $event_dispatcher);
     }
 }
