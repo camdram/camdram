@@ -69,6 +69,7 @@ window.Routing = Routing;
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
         $('.button-destructive').deleteLink();
+        $(elementsToFix).entitySearch({auto: 1});
         createTabContainers();
 
         if (!supportsDateInput()) {
@@ -173,16 +174,17 @@ window.Routing = Routing;
     $.fn.entitySearch = function(options) {
         if (options['auto']) {
            this.find('[data-entitysearch-route]').each(function() {
+               console.log(this);
                $(this).entitySearch({
                    placeholder: 'start typing to search',
-                   prefetch: this.getAttribute('data-entitysearch-prefetch'),
+                   prefetch: this.getAttribute('data-entitysearch-prefetch') == 'true',
                    route: this.getAttribute('data-entitysearch-route')
                });
-               // Ensure that entitySearch is fired only once per element,
-               // regardless of how many times entitySearch({auto}) is called.
-               this.removeAttribute('data-entitysearch-prefetch');
-               this.removeAttribute('data-entitysearch-route');
            });
+           // Ensure that entitySearch is fired only once per element,
+           // regardless of how many times entitySearch({auto}) is called.
+           this.find('[data-entitysearch-prefetch]').removeAttr('data-entitysearch-prefetch');
+           this.find('[data-entitysearch-route]').removeAttr('data-entitysearch-route');
            return;
         }
 

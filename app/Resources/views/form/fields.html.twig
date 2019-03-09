@@ -3,18 +3,9 @@
         {% set text = attribute(form.children, text_id) %}
         {% set hidden = attribute(form.children, hidden_id) %}
         {{ form_widget(text, {'attr': {
-           'data-entitysearch-prefetch': prefetch,
+           'data-entitysearch-prefetch': (prefetch ? 'true' : 'false'),
            'data-entitysearch-route': route } }) }}
         {{ form_widget(hidden) }}
-
-        <script>
-            {#- begin-CSP-permitted-script -#}
-            $(function(){
-                $(document).entitySearch({'auto': 1});
-            })
-            {#- end-CSP-permitted-script -#}
-        </script>
-
     {% endspaceless %}
 {% endblock %}
 
