@@ -2,41 +2,50 @@
 
 namespace Acts\CamdramSecurityBundle\Controller;
 
-use FOS\RestBundle\Context\Context;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
 use Acts\CamdramSecurityBundle\Form\Type\ChangePasswordType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
+use FOS\RestBundle\Context\Context;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * Class AccountController
  *
- * @RouteResource("Account")
+ * @Rest\RouteResource("Account")
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class AccountController extends FOSRestController
+class AccountController extends AbstractFOSRestController
 {
-    public function getAction()
+    /**
+     * @Rest\Get("/account")
+     */
+    public function getAction(AuthorizationCheckerInterface $auth)
     {
         $context = new Context();
-        $auth = $this->get('security.authorization_checker');
         $serializationGroups = ['all'];
         if ($auth->isGranted('ROLE_USER_EMAIL') || $auth->isGranted('IS_AUTHENTICATED_FULLY')) {
             $serializationGroups[] = 'user_email';
         }
         $context->setGroups($serializationGroups);
-        
+
         return $this->view($this->getUser())
             ->setTemplate('account/settings.html.twig')
             ->setContext($context)
             ;
     }
 
+    /**
+     * The linked accounts block on the account settings page.
+     * @Rest\NoRoute()
+     */
     public function linkedAccountsAction()
     {
         return $this->render('account/linked_accounts.html.twig');
@@ -44,12 +53,12 @@ class AccountController extends FOSRestController
 
     /**
      * @Security("has_role('ROLE_USER_SHOWS')")
-     *
+     * @Rest\NoRoute()
      * @return \FOS\RestBundle\View\View
      */
-    public function getShowsAction()
+    public function getShowsAction(AclProvider $aclProvider)
     {
-        $shows = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Show');
+        $shows = $aclProvider->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Show');
 
         return $this->view($shows);
     }
@@ -57,11 +66,12 @@ class AccountController extends FOSRestController
     /**
      * @Security("has_role('ROLE_USER_ORGS')")
      *
+     * @Rest\NoRoute()
      * @return \FOS\RestBundle\View\View
      */
-    public function getOrganisationsAction()
+    public function getOrganisationsAction(AclProvider $aclProvider)
     {
-        $orgs = $this->get('camdram.security.acl.provider')->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Organisation');
+        $orgs = $this->$aclProvider->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Organisation');
 
         return $this->view($orgs);
     }
@@ -90,7 +100,7 @@ class AccountController extends FOSRestController
         ));
     }
 
-    public function changePasswordAction(Request $request)
+    public function changePasswordAction(Request $request, EncoderFactoryInterface $factory)
     {
         if (!$this->getUser()->getPassword()) {
             //Adding password only allowed if account already has a password
@@ -103,7 +113,6 @@ class AccountController extends FOSRestController
             if ($form->isValid()) {
                 $user = $form->getData();
 
-                $factory = $this->get('security.encoder_factory');
                 $encoder = $factory->getEncoder($user);
                 $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
                 $user->setPassword($password);

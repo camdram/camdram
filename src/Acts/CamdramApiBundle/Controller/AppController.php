@@ -4,11 +4,12 @@ namespace Acts\CamdramApiBundle\Controller;
 
 use Acts\CamdramApiBundle\Entity\ExternalApp;
 use Acts\CamdramApiBundle\Form\Type\ExternalAppType;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Routing\Annotation\Route;
+use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Util\Random;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -19,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * @Rest\RouteResource("App")
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class AppController extends FOSRestController
+class AppController extends AbstractFOSRestController
 {
 
     public function cgetAction()
@@ -63,14 +64,16 @@ class AppController extends FOSRestController
         ));
     }
 
-    public function postAction(Request $request)
+    /**
+     * @Rest\Post("/api/apps")
+     */
+    public function postAction(Request $request, ClientManagerInterface $clientManager)
     {
         $form = $form = $this->createForm(ExternalAppType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $app = $form->getData();
             $app->setUser($this->getUser());
-            $clientManager = $this->get('fos_oauth_server.client_manager.default');
             $clientManager->updateClient($app);
 
             return $this->redirect($this->generateUrl('get_apps'));

@@ -5,11 +5,12 @@ namespace Acts\CamdramBundle\Controller\Show;
 use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\ApplicationType;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ApplicationController extends FOSRestController
+class ApplicationController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
@@ -31,10 +32,10 @@ class ApplicationController extends FOSRestController
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/application/new")
      */
-    public function newApplicationAction($identifier)
+    public function newApplicationAction($identifier, Helper $helper)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $form = $this->getApplicationForm($show);
 
@@ -47,10 +48,10 @@ class ApplicationController extends FOSRestController
      * @param $identifier
      * @Rest\Post("/shows/{identifier}/application")
      */
-    public function postApplicationAction(Request $request, $identifier)
+    public function postApplicationAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $form = $this->getApplicationForm($show);
         $form->handleRequest($request);
@@ -71,10 +72,10 @@ class ApplicationController extends FOSRestController
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/application/edit")
      */
-    public function editApplicationAction($identifier)
+    public function editApplicationAction($identifier, Helper $helper)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $application = $show->getApplications()->first();
         $form = $this->getApplicationForm($show, $application, 'PUT');
@@ -88,10 +89,10 @@ class ApplicationController extends FOSRestController
      * @param $identifier
      * @Rest\Put("/shows/{identifier}/application")
      */
-    public function putApplicationAction(Request $request, $identifier)
+    public function putApplicationAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $application = $show->getApplications()->first();
         $form = $this->getApplicationForm($show, $application, 'PUT');
@@ -117,10 +118,10 @@ class ApplicationController extends FOSRestController
      *
      * @return \FOS\RestBundle\View\View
      */
-    public function expireApplicationAction(Request $request, $identifier)
+    public function expireApplicationAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         /** @var Application $application */
         $application = $show->getApplications()->first();
@@ -137,12 +138,13 @@ class ApplicationController extends FOSRestController
      * @param Request $request
      * @param $identifier
      *
+     * @Rest\Delete("/shows/{identifier}/application")
      * @return \FOS\RestBundle\View\View
      */
-    public function deleteApplicationAction(Request $request, $identifier)
+    public function deleteApplicationAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $application = $show->getApplications()->first();
         $em = $this->getDoctrine()->getManager();

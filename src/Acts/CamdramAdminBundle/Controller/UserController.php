@@ -5,11 +5,12 @@ namespace Acts\CamdramAdminBundle\Controller;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
+use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @Rest\RouteResource("User")
  * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class UserController extends FOSRestController
+class UserController extends AbstractFOSRestController
 {
     protected function getRouteParams($user)
     {
@@ -76,13 +77,16 @@ class UserController extends FOSRestController
             ], 200)->setTemplate('admin/user/index.html.twig');
     }
 
-    public function getAction($identifier)
+    /**
+     * @Rest\Get("/users/{identifier}")
+     */
+    public function getAction(AclProvider $aclProvider, $identifier)
     {
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
-        $ids = $this->get('camdram.security.acl.provider')->getOrganisationIdsByUser($entity);
+        $ids = $aclProvider->getOrganisationIdsByUser($entity);
         $orgs = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
-        $ids = $this->get('camdram.security.acl.provider')->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
+        $ids = $aclProvider->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
         $view = $this->view(array(
             'user' => $entity,
@@ -142,32 +146,6 @@ class UserController extends FOSRestController
         $em->flush();
 
         return $this->routeRedirectView('get_users');
-    }
-
-    public function newAceAction(Request $request, $identifier)
-    {
-        $form = $this->createForm(AddAclType::class, array('identifier' => $identifier));
-
-        return $this->view($form, 200)
-            ->setTemplateVar('form')
-            ->setTemplate('admin/user/ace-new-form.html.twig');
-    }
-
-    public function postAceAction(Request $request, $identifier)
-    {
-        $form = $this->createForm(AddAclType::class, array('identifier' => $identifier));
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $user = $this->getEntity($identifier);
-            $data = $form->getData();
-            $this->get('camdram.security.acl.provider')->grantAccess($data['entity'], $user, $this->getUser());
-
-            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($user));
-        } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('user')
-                ->setTemplate('admin/user/ace-new.html.twig');
-        }
     }
 
     /**

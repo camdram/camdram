@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 /**
@@ -10,7 +10,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
  *
  * @RouteResource("time-period")
  */
-class TimePeriodController extends FOSRestController
+class TimePeriodController extends AbstractFOSRestController
 {
     public function getAction($year)
     {
