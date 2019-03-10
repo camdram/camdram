@@ -53,7 +53,7 @@ class AccountController extends AbstractFOSRestController
 
     /**
      * @Security("has_role('ROLE_USER_SHOWS')")
-     * @Rest\NoRoute()
+     * @Rest\Get("/account/shows")
      * @return \FOS\RestBundle\View\View
      */
     public function getShowsAction(AclProvider $aclProvider)
@@ -66,7 +66,7 @@ class AccountController extends AbstractFOSRestController
     /**
      * @Security("has_role('ROLE_USER_ORGS')")
      *
-     * @Rest\NoRoute()
+     * @Rest\Get("/account/organisations")
      * @return \FOS\RestBundle\View\View
      */
     public function getOrganisationsAction(AclProvider $aclProvider)
