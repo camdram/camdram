@@ -58,11 +58,12 @@ class ResponseSubscriber implements EventSubscriberInterface
             "script-src 'self' https://www.googletagmanager.com https://ajax.googleapis.com https://www.google-analytics.com *.google.com *.gstatic.com ".
             $script_hashes .
             "; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://netdna.bootstrapcdn.com";
-            if ($onProd) {
+            // We risk hitting rate limits if we send off literally all reports
+            // to Sentry; censoring a random 2/3 of them is safer.
+            if ($onProd && rand(0, 2) == 2) {
                 $this->policy .= "; report-uri https://sentry.io/api/1273126/security/?sentry_key=303e272fab60425da4073a20d5a6c710";
-                // As this is just a trial no content will actually be blocked
-                // on production.
-                $this->header_name = "Content-Security-Policy-Report-Only";
+                // Trial worked, setting the policy to enforce.
+                // $this->header_name = "Content-Security-Policy-Report-Only";
             }
         }
     }
