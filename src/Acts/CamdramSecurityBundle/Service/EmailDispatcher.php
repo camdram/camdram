@@ -151,6 +151,7 @@ class EmailDispatcher
                 $entity = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
                 break;
             case 'society':
+            case 'venue':
                 $entity = $this->em->getRepository('ActsCamdramBundle:Organisation')->findOneById($ace->getRid());
                 break;
         }
