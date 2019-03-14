@@ -52,6 +52,9 @@ class ResponseSubscriber implements EventSubscriberInterface
             $this->policy = "block-all-mixed-content; " .
             "default-src 'self' https://www.google-analytics.com https://*.openstreetmap.org " .
             "*.googleusercontent.com *.facebook.com *.googletagmanager.com; " .
+            "img-src 'self' https://www.google-analytics.com https://*.openstreetmap.org " .
+            "*.googleusercontent.com *.facebook.com *.googletagmanager.com " .
+            "*.fbcdn.net *.fbsbx.com *.twimg.com; " .
             "font-src 'self' https://netdna.bootstrapcdn.com; " .
             "child-src *.google.com; " . # We don't put frames around our own content
             "frame-src *.google.com; " . # We don't put frames around our own content
