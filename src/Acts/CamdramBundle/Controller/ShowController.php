@@ -58,6 +58,7 @@ class ShowController extends AbstractRestController
             return $this->view($shows);
         } else {
             $shows = $this->getRepository()->createQueryBuilder('s')
+                          ->where('s.authorised = TRUE')
                           ->orderBy('s.id', 'DESC')->setMaxResults(10)
                           ->getQuery()->getResult();
             return $this->view(['shows' => $shows])

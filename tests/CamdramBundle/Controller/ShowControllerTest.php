@@ -109,6 +109,10 @@ class ShowControllerTest extends RestTestCase
 
         $data = $this->doJsonRequest('/shows/by-id/' . $show->getId() . '.json');
         $this->assertEquals("Test Show", $data['name']);
+
+        // Check that by-id can generate 404s
+        $crawler = $this->client->request('GET', '/shows/by-id/28934');
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     public function testShowWithSociety()
