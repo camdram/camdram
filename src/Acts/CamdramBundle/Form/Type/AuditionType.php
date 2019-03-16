@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Form\Type;
 
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,11 +25,13 @@ class AuditionType extends AbstractType
                 'date_widget' => 'single_text', 'time_widget' => 'single_text',
                 'model_timezone' => 'UTC',
                 'view_timezone' => 'Europe/London',
+                'constraints' => new Constraints\NotBlank()
             ])
             ->add('end_at', TimeType::class, [
                 'widget' => 'single_text',
                 'model_timezone' => 'UTC',
                 'view_timezone' => 'Europe/London',
+                'constraints' => new Constraints\NotBlank()
             ])
             ->add('location')
             ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
@@ -36,6 +39,10 @@ class AuditionType extends AbstractType
                 $audition = $event->getData();
                 $startAt = $audition->getStartAt();
                 $endAtTime = $audition->getEndAt();
+
+                // Symfony will handle this fine if we don't throw any exceptions (#604)
+                if ($startAt == null || $endAtTime == null) return;
+
                 //Reverse model transform -> UTC to retrieve original time
                 $endAtTime->setTimezone(new \DateTimezone('Europe/London'));
 
