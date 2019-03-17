@@ -101,7 +101,7 @@ class Show implements OwnableInterface
      *          @Gedmo\SlugHandlerOption(name="dateField", value="start_at"),
      *      })
      * }, fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @ORM\Column(name="slug", type="string", length=128, nullable=false)
      * @Serializer\Expose
      * @Serializer\Type("string")
      * @Serializer\XmlElement(cdata=false)
@@ -288,13 +288,6 @@ class Show implements OwnableInterface
      * @Serializer\XmlList(entry = "performance")
      */
     private $performances;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="freebase_id", type="string", nullable=true)
-     */
-    private $freebase_id;
 
     private $multi_venue;
 
@@ -987,30 +980,6 @@ class Show implements OwnableInterface
         return $startAt ? (int) $startAt->format('Ymd') : 0;
     }
 
-
-    /**
-     * Set freebase_id
-     *
-     * @param string $freebaseId
-     *
-     * @return Show
-     */
-    public function setFreebaseId($freebaseId)
-    {
-        $this->freebase_id = $freebaseId;
-
-        return $this;
-    }
-
-    /**
-     * Get freebase_id
-     *
-     * @return string
-     */
-    public function getFreebaseId()
-    {
-        return $this->freebase_id;
-    }
 
     public function isIndexable()
     {
