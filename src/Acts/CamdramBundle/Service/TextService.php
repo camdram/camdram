@@ -30,6 +30,9 @@ class TextService
         '/<\/?i>/'                                           => '*',
         '/<br ?\/?>/'                                        => "\n",
         '/<hr ?\/?>/'                                        => "\n_______\n",
+        # Enforce sensble header levels in user-submitted content. h1 → h3, hn → h(n-1) for 2 ≤ n < 6.
+        '/(?m)^(#{2,5}[^#])/'                                => "#$1",
+        '/(?m)^#([^#])/'                                     => "###$1",
     );
 
     /**

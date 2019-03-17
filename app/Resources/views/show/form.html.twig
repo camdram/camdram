@@ -55,11 +55,7 @@
 <div class="form-large-row">
     {{ form_label(form.description) }}
     <div>
-        <p><small>You can now format your show descriptions using Markdown.
-           Links just work, <strong>**bold**</strong>, <em>*italics*</em>,
-           and <b style="display: inline-block">## Headings</b> are also available.
-           See <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="_blank">this page</a>
-           for a rough guide, although not all features are available.</small></p>
+        <p><small>{{ include('markdown_notice.html.twig', { thing: 'show descriptions' }) }}</small></p>
 
         <p><small>Write this with the general public in mind – what is this show and why
             should somebody come to see it? Don't mention auditions or production

@@ -30,7 +30,7 @@
         </ul>
         </p>
         {% if a.techextra %}
-            <p>{{ a.techextra|nl2br|detect_links }}</p>
+            <p>{{ a.techextra|camdram_markdown }}</p>
         {% endif %}
         <p><strong>Contact:</strong> {{ a.contact|detect_links }}</strong><br/>
         <strong>Deadline for applications:</strong> {{ a.expiry|date('l jS F') }}

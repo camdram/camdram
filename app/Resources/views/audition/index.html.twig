@@ -35,10 +35,10 @@
             {% endif %}
             {% if a.nonscheduled %}
 	            </ul>
-                <p>Contact {{a.location}} before {{a.dateString}} for more details.</p>
+                <p>Contact {{ a.location|detect_links }} before {{a.dateString}} for more details.</p>
 	            </div>
 		    {% set currentName = null %}
-	        {% else %}
+            {% else %}
                 <li>{{ a.dateString }}, {{ a.location }}</li>
             {% endif %}
         {% endif %}

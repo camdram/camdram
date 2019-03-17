@@ -18,7 +18,7 @@
 <ul>
 {% if entity.nonscheduled %}
 	</ul>
-	<p>Contact {{entity.location}} before {{entity.dateString}} for more details.</p>
+	<p>Contact {{ entity.location|detect_links }} before {{entity.dateString}} for more details.</p>
 	{% set currentName = null %}
 {% else %}
     <li>{{ entity.dateString }}, {{ entity.location }}</li>

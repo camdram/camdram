@@ -6,7 +6,7 @@
 <h3>{{ entity.text }}</h3>
 
 {% if entity.furtherinfo %}
-	<p>{{ entity.furtherinfo|nl2br|detect_links }}</p>
+	<p>{{ entity.furtherinfo|camdram_markdown }}</p>
 {% endif %}
 
 <p><strong>Deadline:</strong> {{ entity.deadlinedate|date('l jS F') }}
