@@ -5,7 +5,6 @@ namespace Acts\CamdramBundle\Validator\Constraints;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
-use Acts\CamdramBundle\Entity\MapLocation;
 
 /**
  *
