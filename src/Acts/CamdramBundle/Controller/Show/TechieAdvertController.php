@@ -129,7 +129,7 @@ class TechieAdvertController extends AbstractFOSRestController
 
         $now = new \DateTime;
         $techie_advert->setDeadline(true);
-        $techie_advert->setExpiry($now)->setDeadlineTime($now);
+        $techie_advert->setExpiry($now);
         $em->flush();
 
         return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));

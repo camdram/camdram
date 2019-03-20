@@ -30,9 +30,7 @@ class TechieAdvertListener
     private function updateExpiryDate(TechieAdvert $techieAdvert)
     {
         if (!$techieAdvert->getDeadline()) {
-            $expires = \DateTime::createFromFormat('U', time());
-            $expires->modify('+'.$this->default_expiry_days.' days');
-            $techieAdvert->setDeadlineTime(new \DateTime('00:00'));
+            $expires = new \DateTime('midnight +'.$this->default_expiry_days.' days');
             $techieAdvert->setExpiry($expires);
         }
     }

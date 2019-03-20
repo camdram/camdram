@@ -28,12 +28,12 @@
     <p>Use the form below to modify or extend your advert for technical positions.</p>
     <p>
         <strong>
-            {% if form.vars.value.expiry < date() and form.vars.value.deadlineTime < date() %}
+            {% if form.vars.value.expiry < date() %}
                 This advert expired on
             {% else %}
                 This advert will expire on
             {% endif %}
-            {{ form.vars.value.expiry | date('jS F Y') }} at {{ form.vars.value.deadlineTime | date("H:i", "UTC") }}
+            {{ form.vars.value.expiry | date('jS F Y \\a\\t H:i') }}
         </strong>
     </p>
     <p>

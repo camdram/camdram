@@ -1020,13 +1020,8 @@ class Show implements OwnableInterface
     public function getActiveTechieAdvert()
     {
         $now = new \DateTime();
-        $today = new \DateTime($now->format('Y-m-d'));
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gt('expiry', $today))
-            ->orWhere(Criteria::expr()->andX(
-                Criteria::expr()->gte('expiry', $today),
-                Criteria::expr()->gt('deadlineTime', $now)
-            ));
+            ->where(Criteria::expr()->gt('expiry', $now));
 
         return $this->techie_adverts->matching($criteria)->first();
     }

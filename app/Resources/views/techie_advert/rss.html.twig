@@ -10,8 +10,5 @@
     <p>{{ entity.techextra|camdram_markdown }}</p>
 {% endif %}
 <p><strong>Contact:</strong> {{ entity.contact|detect_links }}</strong><br/>
-    <strong>Deadline for applications:</strong> {{ entity.expiry|date('l jS F') }}
-    {% if entity.deadlinetime and entity.deadlinetime | date('H:i', 'UTC') != '00:00' %}
-        {{ entity.deadlinetime | date('H:i', 'UTC') }}
-    {% endif %}
+    <strong>Deadline for applications:</strong> {{ entity.expiry|date('l jS F H:i')|replace({' 00:00': ''}) }}
 </p>

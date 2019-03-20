@@ -301,12 +301,6 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
 
         if (mt_rand(0, 4) > 0) {
             $techieAdvert->setDeadline(true);
-            $hour = mt_rand(10, 22);
-            $minute = mt_rand(0, 3) * 15;
-
-            $deadline = $expiry->format("j M $hour:$minute");
-
-            $techieAdvert->setDeadlineTime($expiry);
         }
 
         $techieAdvert->setDisplay(mt_rand(0, 4) > 0);
