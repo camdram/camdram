@@ -6,6 +6,11 @@
   version "3.3.5"
   resolved "https://registry.yarnpkg.com/@fancyapps/fancybox/-/fancybox-3.3.5.tgz#e0bead520450ff0af51d353a17ac6bf864ba0f49"
 
+"@github/hotkey@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-1.2.0.tgz#e204d31363d597b428f2605df09e9b57d9c6c9d6"
+  integrity sha512-Bz56UdEr0BCdu7DfPSoWK2kve16zf/zGY9xZwasnRg3GlZzOQUuySgajwrDRHa8E3gsUY5rJk1lHCI2vGU9WiQ==
+
 "@symfony/webpack-encore@^0.20.1":
   version "0.20.1"
   resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-0.20.1.tgz#ab879839f31aef8d6706eef3803ad3e2fb271dc4"
