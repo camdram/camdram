@@ -13,6 +13,7 @@ use FOS\ElasticaBundle\Index\IndexManager;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Elastica\Query;
 use Elastica\Query\MultiMatch;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class AbstractRestController
@@ -37,6 +38,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $services['camdram.security.acl.helper'] = Helper::class;
         $services['camdram.security.acl.provider'] = AclProvider::class;
         $services['fos_elastica.index_manager'] = IndexManager::class;
+        $services['logger'] = LoggerInterface::class;
         return $services;
     }
 
