@@ -21,7 +21,29 @@
 
     &.fa-search {
       left:10px;
+
+      span {
+        visibility: hidden;
+        background-color: rgb(58, 57, 58);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        right: 30px;
+        width: 200px;
+        font-size: 9pt;
+      }
+
+      &:hover span {
+        @media only screen and (min-width: 768px) {
+          visibility: visible;
+        }
+      }
     }
+
     &.fa-spinner {
       right:10px;
       display:none;
