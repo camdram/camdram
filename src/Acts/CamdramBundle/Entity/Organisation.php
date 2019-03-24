@@ -111,8 +111,10 @@ abstract class Organisation implements OwnableInterface
     private $logo_url;
 
     /**
-     * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\SlugHandler", options={})
+     * }, fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, nullable=false)
      * @Serializer\Expose
      * @Serializer\XmlElement(cdata=false)
      */

@@ -97,7 +97,7 @@ class Show implements OwnableInterface
      * The 'slug' of the show (used to generate the URL)
      *
      * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\DateSlugHandler", options={
+     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\SlugHandler", options={
      *          @Gedmo\SlugHandlerOption(name="dateField", value="start_at"),
      *      })
      * }, fields={"name"})

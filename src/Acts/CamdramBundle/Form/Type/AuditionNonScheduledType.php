@@ -19,8 +19,11 @@ class AuditionNonScheduledType extends AbstractType
     {
         $builder
             ->add('start_at', DateTimeType::class, ['date_widget' => 'single_text',
-                 'time_widget' => 'single_text', 'constraints' => new Constraints\NotBlank()])
-            ->add('location', TextType::class, ['label' => 'Contact details'])
+                 'time_widget' => 'single_text',
+                 'constraints' => [new Constraints\NotBlank(), new Constraints\GreaterThanOrEqual("now")]])
+            ->add('location', TextType::class, [
+                 'label' => 'Contact details',
+                 'constraints' => [new Constraints\NotBlank()]])
         ;
     }
 
