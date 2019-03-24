@@ -20,5 +20,8 @@
     "js-routing": "php app/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json",
     "build": "SYMFONY_ENV=prod yarn js-routing && yarn encore production && python3 gen-csp-hashes.py",
     "dev": "SYMFONY_ENV=dev yarn js-routing && yarn encore dev && python3 gen-csp-hashes.py"
+  },
+  "dependencies": {
+    "@github/hotkey": "^1.2.0"
   }
 }
