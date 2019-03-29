@@ -1,0 +1,69 @@
+{% extends 'layout.html.twig' %}
+{% set current_navigation_id = 'about' %}
+
+{% block title %}DoS and Tutor Mode{% endblock %}
+
+{% block body %}
+<h2>Overview for directors of study</h2>
+
+<p>
+Camdram supports the student performing arts community in the
+historic city of Cambridge, England.
+</p>
+
+<p>But we know that student theatre can take over students' lives, so to help you support them best, we've introduced: DoS and Tutor Mode!</p>
+
+<p>How it works:</p>
+
+<ul>
+<li> You input a list of your students.
+<li> We let you know how many shows they take part in each term and analyse how that might affect their academic achievement.
+<li> We'll send you an end-of-term report you can use in your tutor and DoS meetings!
+</ul>
+
+<p> To get started, enter your first student's name below. CamSIS integration is coming soon.</p>
+
+<div class="form-large-row">
+    <label>Your students</label>
+    <div>
+        <div class="linked-societies" data-prototype="&lt;div class=&quot;form-medium-widget&quot;&gt;
+    &lt;menu style=&quot;display: flex; justify-content: space-around&quot; class=&quot;fake-label&quot;&gt;
+        &lt;a href=&quot;#!&quot; class=&quot;fa fa-fw remove_link fa-times&quot; title=&quot;Remove this student&quot;&gt;&lt;/a&gt;
+    &lt;/menu&gt;
+    &lt;input type=&quot;text&quot; id=&quot;show_societies___name__&quot; name=&quot;show[societies][__name__]&quot; /&gt;
+&lt;/div&gt;
+">
+            		<div class="form-medium-widget">
+    <menu style="display: flex; justify-content: space-around" class="fake-label">
+        <a href="#!" class="fa fa-fw remove_link fa-times" title="Unwatch this student"></a>
+    </menu>
+    <input type="text" id="show_societies_0" name="show[societies][0]" />
+</div>
+                    </div>
+        <ul class="inline-list right">
+           <li> <a href="#" class="add_link">Add student</a></li>
+        </ul>
+    </div>
+    </div>
+
+<script>
+{#- begin-CSP-permitted-script -#}
+$(function() {
+    $('.linked-societies').entityCollection({
+        initialiseRow: function(index, row) {
+            var input = $(row).find("input");
+            input.addClass("autocomplete_input");
+            input.entitySearch({route: 'get_people'});
+        },
+        min_items: 0
+    });
+});
+{#- end-CSP-permitted-script -#}
+</script>
+
+<p class="text-center">
+<a class="button" href="https://youtu.be/dQw4w9WgXcQ">Get started...</a>
+</p>
+
+{% endblock %}
+
