@@ -1495,9 +1495,19 @@ class Show implements OwnableInterface
      */
     public function getAllPerformances()
     {
+        // Time zone problems: we have to set all hours to be the same as the
+        // first after converting to "Europe/London".
+        // $current_day holds the current day of the iteration at noon, London time
+        // $time is an array of [hour, minute, second], London time
+        // $dateTimeOut is a combination of these and is what we actually return.
         $ret = array();
         foreach ($this->getPerformances() as $performance) {
-            $current_day = clone $performance->getStartAt();
+            $first_day = clone $performance->getStartAt();
+            $first_day->setTimezone(new \DateTimeZone("Europe/London"));
+            $time = explode(':', $first_day->format('H:i:s'));
+            $current_day = clone $first_day;
+            $current_day->setTime(12, 0, 0);
+
             $end_day = clone $performance->getRepeatUntil();
             $end_day->setTime(23, 59, 59);
             if ($performance->getVenue() != null) {
@@ -1506,7 +1516,9 @@ class Show implements OwnableInterface
                 $venue = $performance->getOtherVenue();
             }
             while ($current_day <= $end_day) {
-                array_push($ret, ['datetime' => clone $current_day, 'venue' => $venue]);
+                $dateTimeOut = clone $current_day;
+                $dateTimeOut->setTime(...$time);
+                array_push($ret, ['datetime' => $dateTimeOut, 'venue' => $venue]);
                 $current_day->modify('+1 day');
             }
         }

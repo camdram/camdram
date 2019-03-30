@@ -29,11 +29,13 @@ class SigninsheetControllerTest extends RestTestCase
             $this->assertContains('There are no performances associated with this show', $this->client->getResponse()->getContent());
         }
 
-        // Test with a performance
+        // Test with a performance, spanning a timezone change for the UK.
         $perf = new Performance();
+        $startAt = new \DateTime('2019-03-28 19:45');
+        $endAt = (clone $startAt)->modify("+4 days");
         $perf->setShow($show);
-        $perf->setStartAt(new \DateTime('next Tuesday 19:45'));
-        $perf->setRepeatUntil(new \DateTime('next Tuesday 19:45 +4 days'));
+        $perf->setStartAt($startAt);
+        $perf->setRepeatUntil($endAt);
         $show->addPerformance($perf);
         $this->entityManager->persist($perf);
         $this->entityManager->persist($show);
@@ -43,7 +45,7 @@ class SigninsheetControllerTest extends RestTestCase
         $crawler = $this->client->request('GET', '/shows/'.$show->getSlug().'/signinsheet');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $table = $crawler->filter('table')->first();
-        $this->assertRegExp('/Tech.*Dress.*Tue.*19:45.*Wed.*19:45.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45/',
+        $this->assertRegExp('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/',
             $table->filter('tr')->first()->html());
     }
 
