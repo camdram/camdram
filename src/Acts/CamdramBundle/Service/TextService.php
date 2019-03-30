@@ -109,8 +109,8 @@ class TextService
     {
         $text = strip_tags($text);
         $text = preg_replace(array_keys($this->markdown_strip_regexs), array_values($this->markdown_strip_regexs), $text);
-
-        return $text;
+        $text = $this->parsedown->text($text);
+        return strip_tags($text);
     }
 
     /**
