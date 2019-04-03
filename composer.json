@@ -15,7 +15,7 @@
 			"Camdram\\Tests\\": "tests/"
 		}
 	},
-	"license" : "GPL-2.0",
+	"license" : "GPL-2.0-only",
 	"require" : {
 		"php": ">=7.3",
 		"abraham/twitteroauth": "^1.0",
