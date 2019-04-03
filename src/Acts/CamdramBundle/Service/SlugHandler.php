@@ -43,13 +43,6 @@ class SlugHandler implements SlugHandlerWithUniqueCallbackInterface
                 'check_included' => true, 'nameField' => 'name'],
             $config['handlers'][get_called_class()]
         );
-
-        if (!$isInsert && !$needToChangeSlug) {
-            $changeSet = $ea->getObjectChangeSet($om->getUnitOfWork(), $object);
-            if (isset($changeSet[$this->options['dateField']])) {
-                $needToChangeSlug = true;
-            }
-        }
     }
 
     /**

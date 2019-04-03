@@ -168,6 +168,11 @@ class ShowController extends AbstractRestController
             }
         }
         $show->setSocietiesDisplayList($displayList);
+
+        // Adding an EventListener to Performance to check for changed dates
+        // would be overkill to ensure slugs get regenerated. Just invalidating
+        // here and always regenerating.
+        $show->setSlug(null);
     }
 
     private function getTechieAdvertForm(Show $show, $obj = null)

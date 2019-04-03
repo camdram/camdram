@@ -969,11 +969,11 @@ class Show implements OwnableInterface
     }
 
     /**
-        * A ranking used by the autocomplete index
-        * For shows, return the Unix timestamp of the show's start date
-        *
-        * @return int
-        */
+     * A ranking used by the autocomplete index
+     * For shows, return the Ymd timestamp of the show's start date
+     *
+     * @return int
+     */
     public function getRank()
     {
         $startAt = $this->getStartAt();
