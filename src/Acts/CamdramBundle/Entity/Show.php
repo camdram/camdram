@@ -1492,8 +1492,9 @@ class Show implements OwnableInterface
      * Returns an array of arrays
      *   ["datetime" => a DateTime object, "venue" => string]
      * for every performance, i.e. 1 or many per Performance object.
+     * null if there are too many (>1000). This is due to #617.
      */
-    public function getAllPerformances()
+    public function getAllPerformances(): ?array
     {
         // Time zone problems: we have to set all hours to be the same as the
         // first after converting to "Europe/London".
@@ -1510,6 +1511,9 @@ class Show implements OwnableInterface
 
             $end_day = clone $performance->getRepeatUntil();
             $end_day->setTime(23, 59, 59);
+            if ($first_day->diff($end_day, true)->days > 1000) {
+                return null;
+            }
             if ($performance->getVenue() != null) {
                 $venue = $performance->getVenue()->getName();
             } else {
