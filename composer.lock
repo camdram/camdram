@@ -3635,16 +3635,16 @@
         },
         {
             "name": "oneup/uploader-bundle",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
-                "reference": "f5b496f44c9fcdaeb9cca2866981969f121e73cd"
+                "reference": "1fb5be7e7d5bb96f5936bc6bac7c35ecd6148989"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/f5b496f44c9fcdaeb9cca2866981969f121e73cd",
-                "reference": "f5b496f44c9fcdaeb9cca2866981969f121e73cd",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/1fb5be7e7d5bb96f5936bc6bac7c35ecd6148989",
+                "reference": "1fb5be7e7d5bb96f5936bc6bac7c35ecd6148989",
                 "shasum": ""
             },
             "require": {
@@ -3715,7 +3715,7 @@
                 "plupload",
                 "upload"
             ],
-            "time": "2019-04-05T07:57:01+00:00"
+            "time": "2019-04-05T11:57:18+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",
