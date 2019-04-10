@@ -41,4 +41,4 @@ oneup_uploader:
     type: uploader
 
 liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"

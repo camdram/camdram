@@ -57,7 +57,7 @@
         "incenteev/composer-parameter-handler": "^2.1",
         "jms/serializer-bundle": "^2.4",
         "knplabs/github-api": "^2.8",
-        "liip/imagine-bundle": "~1.9",
+        "liip/imagine-bundle": "^2.1",
         "oneup/uploader-bundle": "^2.0",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.10",
