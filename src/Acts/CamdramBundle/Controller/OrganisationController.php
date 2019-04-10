@@ -345,7 +345,7 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * Revoke an admin's access to an organisation.
-     * 
+     *
      * @Rest\Delete
      */
     public function deleteAdminAction(Request $request, $identifier, $uid)
@@ -400,6 +400,7 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * View a list of the organisation's last shows.
+     * @Rest\Get(requirements={"_format"="html"})
      */
     public function getHistoryAction(Request $request, $identifier) {
         $showsPerPage = 36;
