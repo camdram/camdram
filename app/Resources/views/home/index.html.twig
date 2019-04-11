@@ -13,12 +13,12 @@
                <a title="Expand diary"><i class="fa fa-expand"></i></a>
            </li>
            {%- for week in weeks -%}
-               {%- if term is not defined or term != week.name|split(' Week')[0] -%}
+               {%- if term is not defined or term != week.name|split(' May Week')[0]|split(' Week')[0] -%}
                <li class="diary-term-name">
                    {%- if loop.first -%}
                    <a href="{{ url('acts_camdram_diary') }}" class="diary-link">View more in diary</a>
                    {%- endif -%}
-                   {%- set term = week.name|split(' Week')[0] -%}
+                   {%- set term = week.name|split(' May Week')[0]|split(' Week')[0] -%}
                    {{ term }}
                </li>
                {%- endif -%}
