@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190211223019 extends AbstractMigration
+final class Version20190414085950 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,7 +18,7 @@ final class Version20190211223019 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE acts_venues (id INT AUTO_INCREMENT NOT NULL, image_id INT DEFAULT NULL, address LONGTEXT DEFAULT NULL, latitude DOUBLE PRECISION DEFAULT NULL, longitude DOUBLE PRECISION DEFAULT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, facebook_id VARCHAR(50) DEFAULT NULL, twitter_id VARCHAR(50) DEFAULT NULL, shortname VARCHAR(100) DEFAULT NULL, college VARCHAR(100) DEFAULT NULL, logourl VARCHAR(255) DEFAULT NULL, slug VARCHAR(128) DEFAULT NULL, INDEX IDX_4EEC599D3DA5256D (image_id), UNIQUE INDEX ven_slugs (slug), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE acts_venues (id INT AUTO_INCREMENT NOT NULL, image_id INT DEFAULT NULL, address LONGTEXT DEFAULT NULL, latitude DOUBLE PRECISION DEFAULT NULL, longitude DOUBLE PRECISION DEFAULT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, facebook_id VARCHAR(50) DEFAULT NULL, twitter_id VARCHAR(50) DEFAULT NULL, shortname VARCHAR(100) DEFAULT NULL, college VARCHAR(100) DEFAULT NULL, logourl VARCHAR(255) DEFAULT NULL, slug VARCHAR(128) NOT NULL, INDEX IDX_4EEC599D3DA5256D (image_id), UNIQUE INDEX ven_slugs (slug), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE acts_venues ADD CONSTRAINT FK_4EEC599D3DA5256D FOREIGN KEY (image_id) REFERENCES images (id)');
         // Transfer venues to a new table:
         $this->addSql('INSERT INTO acts_venues (id, image_id, address, latitude, longitude, name, description, facebook_id, twitter_id, shortname, college, logourl, slug) ' .
