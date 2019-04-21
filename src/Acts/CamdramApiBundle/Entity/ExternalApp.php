@@ -109,7 +109,6 @@ class ExternalApp extends BaseClient
     {
         $this->is_admin = true;
         $this->user = null;
-#        $this->organisation = null;
 
         return $this;
     }
@@ -134,7 +133,6 @@ class ExternalApp extends BaseClient
     public function setUser(User $user)
     {
         $this->user = $user;
-#        $this->organisation = null;
         $this->is_admin = false;
 
         return $this;
