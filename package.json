@@ -14,7 +14,7 @@
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
     "typeahead.js": "^0.11.1",
-    "webpack-notifier": "^1.6.0"
+    "webpack-notifier": "^1.7.0"
   },
   "scripts": {
     "js-routing": "php app/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json",
