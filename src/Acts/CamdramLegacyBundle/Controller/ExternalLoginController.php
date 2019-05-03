@@ -40,9 +40,13 @@ class ExternalLoginController extends Controller
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         
         $redirectUri = $request->query->get('redirect');
+        if ($redirectUri == "http://roombooking.adctheatre.complayroom") {
+            $redirectUri = "http://roombooking.adctheatre.com/playroom";
+        }
         $redirect_parts = parse_url($redirectUri);
         
         $repo = $this->getDoctrine()->getRepository('ActsCamdramLegacyBundle:ExternalSite');
+        
         $site = $repo->findOneByUrl('http://' . $redirect_parts['host']);
         
         $tokenId = md5(rand());
