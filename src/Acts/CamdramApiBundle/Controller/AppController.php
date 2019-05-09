@@ -38,7 +38,7 @@ class AppController extends AbstractFOSRestController
         $repo = $this->getDoctrine()->getRepository('ActsCamdramApiBundle:ExternalApp');
         $app = $repo->getByUserAndId($this->getUser(), $app_id);
         if (!$app) {
-            return $this->createNotFoundException();
+            throw $this->createNotFoundException("You do not own an app with ID $app_id.");
         }
 
         return $app;
