@@ -5,6 +5,7 @@ namespace Acts\CamdramAdminBundle\Controller;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Form\Type\AddAclType;
+use Acts\CamdramAdminBundle\Service\UserMerger;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
@@ -177,13 +178,16 @@ class UserController extends AbstractFOSRestController
         );
     }
 
-    public function getMergeAction($identifier)
+    /**
+     * @Rest\Get("/users/{identifier}/merge")
+     */
+    public function getMergeAction($identifier, UserMerger $merger)
     {
         $user = $this->getEntity($identifier);
 
         return $this->render('admin/user/merge.html.twig', array(
             'user' => $user,
-            'form' => $this->get('acts_camdram_admin.user_merger')->createForm()->createView()
+            'form' => $merger->createForm(true)->createView()
         ));
     }
 
@@ -193,16 +197,15 @@ class UserController extends AbstractFOSRestController
      *
      * @return $this
      */
-    public function mergeAction($identifier, Request $request)
+    public function mergeAction($identifier, Request $request, UserMerger $merger)
     {
         $user = $this->getEntity($identifier);
-        $merger = $this->get('acts_camdram_admin.user_merger');
 
         $form = $merger->createForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
-            $otherUser = $this->get('doctrine.orm.entity_manager')->getRepository('ActsCamdramSecurityBundle:User')
+            $otherUser = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')
                 ->findOneByEmail($data['email']);
             if ($otherUser) {
                 if ($otherUser == $user) {

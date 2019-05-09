@@ -4,7 +4,7 @@ namespace Acts\CamdramAdminBundle\Service;
 
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,25 +16,27 @@ class UserMerger
 
     private $formFactory;
 
-    public function __construct(EntityManager $entityManager, FormFactory $formFactory)
+    public function __construct(EntityManagerInterface $entityManager, FormFactory $formFactory)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;
     }
 
-    public function createForm()
+    public function createForm(bool $setDefault = false)
     {
         return $this->formFactory->createBuilder()
-            ->add('email', TextType::class, array('label' => "Other user's email", 'required' => true))
-            ->add('keep_user', ChoiceType::class, array(
+            ->add('email', TextType::class, ['label' => "Other user's email", 'required' => true])
+            ->add('keep_user', ChoiceType::class, [
                 'label' => 'Keep which user?',
                 'expanded' => true,
-                'choices' => array(
+                'choices' => [
                     'This user' => 'this',
                     'The other user' => 'other'
-                ),
-                'data' => 'this'
-            ))
+                ]
+            // Setting a 'data' attribute overrides any user-submitted choice
+            // (defeating the point of the field) so have to set it only for
+            // the form that is sent to the user.
+            ] + ($setDefault ? ['data' => 'this'] : []) )
             ->setMethod('PATCH')
             ->getForm();
     }
