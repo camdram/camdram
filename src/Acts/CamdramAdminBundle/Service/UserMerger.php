@@ -5,7 +5,7 @@ namespace Acts\CamdramAdminBundle\Service;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,7 +16,7 @@ class UserMerger
 
     private $formFactory;
 
-    public function __construct(EntityManagerInterface $entityManager, FormFactory $formFactory)
+    public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory)
     {
         $this->entityManager = $entityManager;
         $this->formFactory = $formFactory;

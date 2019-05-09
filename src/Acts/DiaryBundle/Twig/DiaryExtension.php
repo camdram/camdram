@@ -3,6 +3,7 @@
 namespace Acts\DiaryBundle\Twig;
 
 use Acts\DiaryBundle\Diary\Diary;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Class DiaryExtension
@@ -10,7 +11,7 @@ use Acts\DiaryBundle\Diary\Diary;
  * A Twig extension which provides custom functionality that can be used in Twig templates. The extension is registered
  * in services.yml
  */
-class DiaryExtension extends \Twig_Extension
+class DiaryExtension extends AbstractExtension
 {
     public function getName()
     {

@@ -16,36 +16,33 @@
 {% endblock %}
 
 {% block vacancies_body %}
-    {% spaceless %}
-    {% set currentName = null %}
-    {% for a in auditions %}
-        {% if a.show %}
-            {% if currentName != a.show.name %}
-                {% if currentName is not empty %}
+    {%- set currentName = null -%}
+    {%- for a in auditions -%}
+        {%- if a.show -%}
+            {%- if currentName != a.show.name -%}
+                {%- if currentName is not empty -%}
                     </ul>
                     </div>
-                {% endif %}
-                {% set currentName = a.show.name %}
+                {%- endif -%}
+                {%- set currentName = a.show.name -%}
                 <hr>
                 <div id="{{ a.show.slug }}">
-                    {% include 'show/advert_header.html.twig' with
-                        {'show': a.show} %}
+                    {%- include 'show/advert_header.html.twig' with
+                        {'show': a.show} -%}
                     <p>{{ a.show.audextra | camdram_markdown }}</p>
                     <ul>
-            {% endif %}
-            {% if a.nonscheduled %}
+            {%- endif -%}
+            {%- if a.nonscheduled -%}
 	            </ul>
                 <p>Contact {{ a.location|detect_links }} before {{a.dateString}} for more details.</p>
 	            </div>
-		    {% set currentName = null %}
-            {% else %}
+		    {%- set currentName = null -%}
+            {%- else -%}
                 <li>{{ a.dateString }}, {{ a.location }}</li>
-            {% endif %}
-        {% endif %}
-    {% else %}
-        <p>There are currently no auditions listed - please check again later.</p>
-    {% endfor %}
+            {%- endif -%}
+        {%- endif -%}
+    {%- else -%}
+        <p>There are currently no auditions listed – please check again later.</p>
+    {%- endfor -%}
     </ul>
-    {% endspaceless %}
-
 {% endblock %}

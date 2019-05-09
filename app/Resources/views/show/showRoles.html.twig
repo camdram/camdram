@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
 {% set roles = show.getRolesByType(type) %}
 {% set editable = is_granted('EDIT', show) and is_granted("IS_AUTHENTICATED_FULLY") %}
 {% set current_role = null %}
@@ -46,4 +46,4 @@
 {% if editable %}
     {{ render(path('new_show_role', {identifier: show.slug, type: type})) }}
 {% endif %}
-{% endspaceless %}
+{% endapply %}

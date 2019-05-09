@@ -1,12 +1,10 @@
 {% block entity_search_widget %}
-    {% spaceless %}
-        {% set text = attribute(form.children, text_id) %}
-        {% set hidden = attribute(form.children, hidden_id) %}
-        {{ form_widget(text, {'attr': {
-           'data-entitysearch-prefetch': (prefetch ? 'true' : 'false'),
-           'data-entitysearch-route': route } }) }}
-        {{ form_widget(hidden) }}
-    {% endspaceless %}
+    {%- set text = attribute(form.children, text_id) -%}
+    {%- set hidden = attribute(form.children, hidden_id) -%}
+    {{- form_widget(text, {'attr': {
+       'data-entitysearch-prefetch': (prefetch ? 'true' : 'false'),
+       'data-entitysearch-route': route } }) -}}
+    {{- form_widget(hidden) -}}
 {% endblock %}
 
 {% block form_option_box %}

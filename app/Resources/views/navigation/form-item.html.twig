@@ -1,5 +1,5 @@
 {# This uses a form inside of the li to allow a POST request. #}
-{% spaceless %}
+{% apply spaceless %}
 <li><form action="{{ item.path }}" method="post">
     <input type="hidden" name="_method" value="{{ item.method ?? 'PATCH' }}"/>
     <input type="hidden" name="_token" value="{{ csrf_token(item.intent ?? item.id) }}"/>
@@ -10,4 +10,4 @@
         {{ item.text }}
     </button>
 </form></li>
-{% endspaceless %}
+{% endapply %}

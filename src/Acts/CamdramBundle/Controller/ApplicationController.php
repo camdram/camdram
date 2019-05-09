@@ -47,30 +47,4 @@ class ApplicationController extends AbstractFOSRestController
             return $this->view($data);
         }
     }
-
-    /**
-     * weeksApplicationsAction
-     *
-     * Generates the table data for displaying application deadlines in
-     * the week beggining with $startOfWeek
-     *
-     * @param DateTime $startOfWeek The start date of the week.
-     */
-    public function weeksApplicationsAction($startOfWeek)
-    {
-        $startDate = $startOfWeek->getTimestamp();
-        $endDate = clone $startOfWeek;
-        $endDate = $endDate->modify('+6 days')->getTimestamp();
-
-        $repo = $this->getDoctrine()->getEntityManager()->getRepository('ActsCamdramBundle:Application');
-
-        $applications = $repo->findScheduledOrderedByDeadline($startDate, $endDate);
-
-        $view = $this->view(array('startDate' => $startDate, 'endDate' => $endDate, 'applications' => $applications), 200)
-            ->setTemplate('application/diary.html.twig')
-            ->setTemplateVar('applications')
-        ;
-
-        return $view;
-    }
 }

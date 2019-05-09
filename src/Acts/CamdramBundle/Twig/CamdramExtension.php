@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Twig;
 
 use Acts\CamdramBundle\Service\TextService;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Class CamdramExtension
@@ -10,7 +11,7 @@ use Acts\CamdramBundle\Service\TextService;
  * A Twig extension which provides custom functionality that can be used in Twig templates. The extension is registered
  * in services.yml
  */
-class CamdramExtension extends \Twig_Extension
+class CamdramExtension extends AbstractExtension
 {
     /**
      * @var \Acts\CamdramBundle\Service\TextService
