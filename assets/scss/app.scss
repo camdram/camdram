@@ -99,8 +99,10 @@ nav.navbar {
   font-size: .875rem;
 
   ul {
-    list-style-position: inside;
+    list-style-position: outside;
     padding-left:20px;
+    margin-left: 1em;
+    margin-right: 1em;
   }
 
   .inline-list {
