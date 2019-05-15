@@ -69,7 +69,7 @@ $default-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin-bottom: 1.25em;
   background: $color;
   border: 1px solid darken($color, 15%);
-  & :last-child {
+  & > :last-child {
     margin-bottom: 0;
   }
 }
