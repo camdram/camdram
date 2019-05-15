@@ -54,6 +54,12 @@ class PersonController extends AbstractRestController
     }
 
     /**
+     * People are created by adding them to shows. No form.
+     * @Rest\NoRoute()
+     */
+    public function newAction() { throw $this->createNotFoundException(); }
+
+    /**
      * Action that allows querying by id. Redirects to slug URL
      * 
      * @Rest\Get("/people/by-id/{id}")
@@ -201,7 +207,7 @@ class PersonController extends AbstractRestController
      * @param $identifier
      * @param $request Request
      *
-     * @Rest\Get("/people/{identifier}/merge")
+     * @Rest\Get("/people/{identifier}/merge", requirements={"_format"="html"})
      */
     public function getMergeAction($identifier, PeopleMerger $merger)
     {
@@ -219,7 +225,7 @@ class PersonController extends AbstractRestController
      * @param $request Request
      *
      * @return $this
-     * @Rest\Post("/people/{identifier}/merge")
+     * @Rest\Post("/people/{identifier}/merge", requirements={"_format"="html"})
      */
     public function mergeAction($identifier, Request $request, PeopleMerger $merger)
     {

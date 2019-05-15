@@ -276,7 +276,7 @@ h1, h2, h3, h4, h5 {
   margin-bottom:-4px;
 }
 
-a.icon-link {
+.icon-link {
   &.icon-link-textual {
     @include menubutton(white, bold, $dark-grey, $light-grey);
   }

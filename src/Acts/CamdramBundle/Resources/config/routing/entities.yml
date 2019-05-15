@@ -1,7 +1,3 @@
-acts_camdram_venues_map:
-    path: /venues/map/{identifier}
-    defaults: { _controller: ActsCamdramBundle:Venue:map, identifier: ~ }
-
 acts_camdram_shows:
     type:     rest
     resource: Acts\CamdramBundle\Controller\ShowController
@@ -61,7 +57,3 @@ acts_camdram_timeperiods:
 acts_camdram_show_admin:
     path: /show-admin
     defaults: { _controller: ActsCamdramBundle:ShowAdmin:cget }
-
-acts_camdram_show_unauthorised:
-    path: /show-admin/unauthorised
-    defaults: { _controller: ActsCamdramBundle:ShowAdmin:cgetUnauthorised }

@@ -187,6 +187,7 @@ class ShowController extends AbstractRestController
 
     /**
      * Render the Admin Panel
+     * @Rest\NoRoute()
      */
     public function adminPanelAction(Show $show)
     {

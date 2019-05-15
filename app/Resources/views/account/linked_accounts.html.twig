@@ -3,12 +3,12 @@
 <p>Linked accounts can be used to log into your Camdram account.</p>
 
 {% for u in app.user.externalUsers %}
-    <p>
-    <a href="{{ path('acts_camdram_security_unlink_account', {service: u.service}) }}" class="icon-link icon-link-destructive">
+    <form action="{{ path('unlink_account_account', {service: u.service}) }}" method="POST"><p>
+    <button class="icon-link icon-link-destructive">
     <img src="{{ asset('images/service/' ~ u.service ~ '.png') }}" srcset="{{ asset('images/service/' ~ u.service ~ '.png') }}, {{ asset('images/service/' ~ u.service ~ '-29.png') }} 1.5x, {{ asset('images/service/' ~ u.service ~ '-38.png') }} 2x, {{ asset('images/service/' ~ u.service ~ '-76.png') }} 4x" alt="" width="19" height="19" />
-    Unlink</a>
-    Your Camdram account is linked to the {{ u.service | capitalize }} account {{ u.email }}.
-    </p>
+    Unlink</button>
+    Your Camdram account is linked to the {{ u.service | capitalize }} account {{ u.email }}.</p>
+    </form>
 {% endfor %}
 
 <ul class="inline-list">

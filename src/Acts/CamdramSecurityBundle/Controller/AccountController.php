@@ -76,6 +76,9 @@ class AccountController extends AbstractFOSRestController
         return $this->view($orgs);
     }
 
+    /**
+     * @Rest\Post("/settings/change-email")
+     */
     public function changeEmailAction(Request $request)
     {
         $form = $form = $this->createForm(ChangeEmailType::class, $this->getUser());
@@ -100,6 +103,9 @@ class AccountController extends AbstractFOSRestController
         ));
     }
 
+    /**
+     * @Rest\Post("/settings/change-password")
+     */
     public function changePasswordAction(Request $request, EncoderFactoryInterface $factory)
     {
         if (!$this->getUser()->getPassword()) {
@@ -132,6 +138,9 @@ class AccountController extends AbstractFOSRestController
         ));
     }
 
+    /**
+     * @Rest\Post("/settings/resend-verification")
+     */
     public function resendVerificationAction(TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
     {
         $user = $this->getUser();
@@ -141,6 +150,9 @@ class AccountController extends AbstractFOSRestController
         return $this->redirect($this->generateUrl('get_account'));
     }
 
+    /**
+     * @Rest\Post("/settings/unlink-account/{service}")
+     */
     public function unlinkAccountAction($service)
     {
         $user = $this->getUser();

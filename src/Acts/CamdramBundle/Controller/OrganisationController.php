@@ -29,6 +29,7 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * Render the Admin Panel
+     * @Rest\NoRoute
      */
     public function adminPanelAction(Organisation $org)
     {
