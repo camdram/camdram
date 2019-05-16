@@ -37,8 +37,10 @@ class ShowListener
 
     public function postLoad(Show $show, LifecycleEventArgs $event)
     {
-        $weeks = $this->weekManager->getPerformancesWeeksAsString($show->getPerformances());
-        $show->setWeeks($weeks);
+        // Looking up week names whenever any show is loaded is expensive.
+        // Instead injecting the weekManager into $show (despite this being
+        // considered an "antipattern")
+        $show->setWeekManager($this->weekManager);
     }
 
     public function postPersist(Show $show, LifecycleEventArgs $event)

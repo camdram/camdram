@@ -38,14 +38,14 @@ class TechieAdvertController extends AbstractFOSRestController
      * Display technician adverts from now until the end of (camdram) time
      * @Rest\Get("/vacancies/techies.{_format}", name="get_techies")
      */
-    public function cget(Request $request, WeekManager $week_manager, string $_format = 'html')
+    public function cget(Request $request, string $_format = 'html')
     {
         $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
             ->findNotExpiredOrderedByDateName(Time::now());
 
         $weeks = array();
         foreach ($techieAdverts as $advert) {
-            $weeks[$advert->getShow()->getId()] = $week_manager->getPerformancesWeeksAsString($advert->getShow()->getPerformances());
+            $weeks[$advert->getShow()->getId()] = $advert->getShow()->getWeeks();
         }
 
         $view = $this->view($techieAdverts)

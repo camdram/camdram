@@ -317,6 +317,7 @@ class Show implements OwnableInterface
     private $online_booking_url;
 
     private $weeks = array();
+    private $weekManager;
 
     private $entity_type = 'show';
 
@@ -1593,11 +1594,14 @@ class Show implements OwnableInterface
 
     public function getWeeks()
     {
+        if (!$this->weeks && $this->getStartAt() && $this->weekManager) {
+            $this->weeks = $this->weekManager->getPerformancesWeeksAsString($this->getStartAt(), $this->getEndAt());
+        }
         return $this->weeks;
     }
 
-    public function setWeeks($weeks)
+    public function setWeekManager($manager)
     {
-        $this->weeks = $weeks;
+        $this->weekManager = $manager;
     }
 }
