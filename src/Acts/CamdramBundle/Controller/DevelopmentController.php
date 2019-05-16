@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * Class DevelopmentController
@@ -12,12 +13,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class DevelopmentController extends Controller
 {
-    public function indexAction()
+    public function indexAction(\Github\Client $github)
     {
-        return $this->render('development/index.html.twig');
+        $cache = new FilesystemAdapter();
+        $gitInfoItem = $cache->getItem('development_git_info');
+        if ($gitInfoItem->isHit()) {
+            $gitInfo = $gitInfoItem->get();
+        } else {
+            $gitInfo = $this->gitInfo();
+            $gitInfoItem->set($gitInfo);
+            $gitInfoItem->expiresAfter(20);
+            $cache->save($gitInfoItem);
+        }
+        $activityItem = $cache->getItem('development_activity');
+        if ($activityItem->isHit()) {
+            $activity = $activityItem->get();
+        } else {
+            $activity = $this->activity($github);
+            $activityItem->set($activity);
+            $activityItem->expiresAfter(3600);
+            $cache->save($activityItem);
+        }
+        return $this->render('development/index.html.twig',
+            ['git_info' => $gitInfo, 'activity' => $activity]);
     }
 
-    public function gitInfoAction()
+    private function gitInfo(): string
     {
         $git_info = [
             'tag' => exec('git tag --points-at HEAD'),
@@ -29,11 +50,10 @@ class DevelopmentController extends Controller
         }
 
         $response = $this->render('development/git-info.html.twig', ['git_info' => $git_info]);
-        $response->setSharedMaxAge(3600 * 24);
-        return $response;
+        return $response->getContent();
     }
 
-    public function activityAction(\Github\Client $github)
+    private function activity(\Github\Client $github): string
     {
         try {
             $github->authenticate(
@@ -63,12 +83,9 @@ class DevelopmentController extends Controller
                 'fixed' => array_slice($fixed, 0, 10),
             );
 
-            $response = $this->render('development/activity.html.twig', $data);
-            $response->setSharedMaxAge(60 * 15);
-
-            return $response;
+            return $this->render('development/activity.html.twig', $data)->getContent();
         } catch (\Github\Exception\RuntimeException $ex) {
-            return $this->render('development/github-error.html.twig');
+            return $this->render('development/github-error.html.twig')->getContent();
         }
     }
 }

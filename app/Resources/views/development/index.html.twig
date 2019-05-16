@@ -6,7 +6,7 @@
 {% block body %}
 <h2>Development</h2>
 
-{{ render(controller('ActsCamdramBundle:Development:gitInfo'), {'strategy': 'esi'}) }}
+{{ git_info | raw }}
 
 <p>
 Camdram is an <a href="http://opensource.org/docs/osd" target="_blank" rel="ext">open-source</a> project developed by a team of volunteers
@@ -41,5 +41,5 @@ anyone who has a reasonable number of pull requests accepted will be given acces
 Below is a summary of recent development activity on Camdram.
 </p>
 
-{{ render(controller('ActsCamdramBundle:Development:activity'), {'strategy': 'esi'}) }}
+{{ activity | raw }}
 {% endblock %}
