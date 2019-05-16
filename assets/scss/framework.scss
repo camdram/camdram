@@ -16,6 +16,7 @@ html, body {
 a {
   text-decoration: none;
   color: $primary-color;
+  color: var(--primary-color, $primary-color);
   cursor: pointer;
 }
 hr {

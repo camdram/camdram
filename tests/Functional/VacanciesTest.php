@@ -67,7 +67,7 @@ class VacanciesTest extends WebTestCase
 
         $this->assertEquals(200, $response->getStatusCode(), "URL: $url");
         $this->assertContains('text/html', $response->headers->get('Content-Type'), "URL: $url");
-        $this->assertContains('<body>', $response->getContent(), "URL: $url");
+        $this->assertContains('<body', $response->getContent(), "URL: $url");
         $this->assertContains('</body>', $response->getContent(), "URL: $url");
         return $response;
     }

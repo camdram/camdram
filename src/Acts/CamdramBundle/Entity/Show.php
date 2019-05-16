@@ -303,6 +303,15 @@ class Show implements OwnableInterface
     private $other_url;
 
     /**
+     * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
+     * @var string
+     * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
+     *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
+     * @ORM\Column(name="colour", type="string", length=7, nullable=true)
+     */
+    private $theme_color;
+
+    /**
      * A URL from which tickets for the show can be bought
      *
      * @var string
@@ -1487,6 +1496,18 @@ class Show implements OwnableInterface
     public function getOnlineBookingUrl()
     {
         return $this->online_booking_url;
+    }
+
+    public function setThemeColor(?string $theme_color): self
+    {
+        $this->theme_color = $theme_color;
+
+        return $this;
+    }
+
+    public function getThemeColor(): ?string
+    {
+        return $this->theme_color;
     }
 
     /**

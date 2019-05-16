@@ -25,7 +25,6 @@ import {install} from '@github/hotkey'
 
 $(function() {
   // Install all the hotkeys on the page
-  console.log(document.querySelectorAll('[data-hotkey]'));
   for (const el of document.querySelectorAll('[data-hotkey]')) {
     install(el)
   }

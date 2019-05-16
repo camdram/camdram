@@ -74,7 +74,8 @@ class ShowType extends AbstractType
                     'label' => 'Societies',
                     'required' => false,
                     'mapped' => false
-            ));
+            ))
+            ->add('theme_color');
     }
 
     public function configureOptions(OptionsResolver $resolver)

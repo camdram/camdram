@@ -96,6 +96,7 @@ nav.navbar {
 }
 
 #content {
+  --primary-color: var(--color-text, #{$orange});
   font-size: .875rem;
 
   ul {
@@ -112,7 +113,7 @@ nav.navbar {
   img {
     margin-bottom:0.8em;
   }
-  
+
   a.icon-link {
     > img {
       &[src*="google"] {
@@ -127,7 +128,7 @@ nav.navbar {
 }
 
 footer {
-  background:$dark-grey;
+  background: #2B2B2B;
   color: $white;
   h5 {
     color: $white;
@@ -157,7 +158,8 @@ footer {
 }
 
 header#main-header {
-  background:$orange;
+  background: $orange;
+  background: var(--custom-color, $orange);
   clear: both;
   > div {
     max-width: $row-width;
@@ -190,6 +192,7 @@ header#main-header {
         bottom: 0;
         border-style: solid;
         border-color: white $orange;
+        border-color: white var(--custom-color, $orange);
         border-width: 40px 0 40px 9px;
       }
     }
@@ -226,18 +229,20 @@ header#main-header {
         bottom: 0;
         border-style: solid;
         border-color: $orange white;
+        border-color: var(--custom-color, $orange) white;
         border-width: 40px 0 40px 9px;
       }
     }
 
     @media not screen and (min-width: 768px) {
       background: $orange;
+      background: var(--custom-color, $orange);
       flex: 10 0 100%;
       padding: 20px 10px;
       transition: flex 500ms ease;
       /* .active is JS to make up for lack of :focus-within support */
       /* Supporting Edge and :focus-within at the same time involves excessive
-         faff and it's not unreasonable to expect clients to have JS. */
+         faff. */
       &:not(.active) /*:not(:focus-within)*/ {
         flex: 0 0 0;
         #search_form {

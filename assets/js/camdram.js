@@ -174,7 +174,6 @@ window.Routing = Routing;
     $.fn.entitySearch = function(options) {
         if (options['auto']) {
            this.find('[data-entitysearch-route]').each(function() {
-               console.log(this);
                $(this).entitySearch({
                    placeholder: 'start typing to search',
                    prefetch: this.getAttribute('data-entitysearch-prefetch') == 'true',
@@ -210,7 +209,6 @@ window.Routing = Routing;
             $self.trigger('entitysearch:changed', [datum]);
         };
 
-        console.log(Routing.generate(options.route, {q: '%QUERY', _format: 'json'}))
 
         var engine = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
@@ -232,7 +230,6 @@ window.Routing = Routing;
        }).on('typeahead:autocompleted', onValueSelect).on('typeahead:selected', onValueSelect);
 
        $(this).change(function() {
-           console.log($self.parent().siblings('input[type=hidden]').val())
            $self.parent().siblings('input[type=hidden]').val('');
        }).attr('placeholder', options.placeholder);
 

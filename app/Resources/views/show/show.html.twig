@@ -1,6 +1,12 @@
 {% extends 'layout.html.twig' %}
 
 {% set current_navigation_id = 'shows' %}
+{% if show.themeColor %}
+    {% set colors = wcag_colors(show.themeColor) %}
+    {% set body_attribs_raw = ' style="--custom-color: '  ~ colors['raw'] ~
+                                    '; --color-text: ' ~ colors['smalltext'] ~ ';"' %}
+    {% set panel_style = 'style="border-color: '~colors['raw']~'; border-width: 8px 1px 1px; border-radius: 0; background: none;"' %}
+{% endif %}
 {% set section_attribs_raw = ' itemscope="" itemtype="http://schema.org/TheaterEvent"' %}
 {% block title %}Show: {{ show.name }}{% endblock %}
 
@@ -29,7 +35,7 @@
 </div>
 {% endif %}
 
-<div class="row panel">
+<div class="row panel" {{ (panel_style ?? '') | raw }}>
     <meta itemprop="name" content="{{ show.name }}"/>
     <ul class="inline-list right">
         {%- if show.hasFuturePerformances() -%}
@@ -107,7 +113,7 @@
 </div>
 
 {%- if show.hasVacancies() -%}
-<div class="vacancies-panel" class="row">
+<div class="vacancies-panel row" {{ (panel_style ?? '') | raw }}>
     <h5>Get involved with <em>{{ show.name }}</em>:</h5>
     {% if show.getScheduledAuditions() | length > 0 %}
     <p>Auditions are being held at the times below – <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
