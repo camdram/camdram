@@ -13,7 +13,7 @@
    <li id="venue-{{ venue.slug }}" class="venue" data-latitude="{{ venue.latitude }}" data-longitude="{{ venue.longitude }}">
        <div class="row">
            <h5 class="venue-name"><a href="{{ path('get_venue', {identifier: venue.slug}) }}">{{ venue.name }}</a></h5>
-           <div class="marker"><img src="{{ asset("build/images/marker-icon.png") }}" /></div>
+           <div class="marker" title="Scoll map to this venue"><img src="{{ asset("build/images/marker-icon.png") }}" /></div>
 
            {%- if venue.college -%}
               <h6>{{ venue.college }} {{ venue.college == "Anglia Ruskin" ? "University" : "College" }}, Cambridge</h6>

@@ -4,11 +4,13 @@ Routing.setRoutingData(require('./fos_js_routes.json'));
 
 import './camdram.js';
 import './autocomplete.js';
+import './color-picker.js';
 import './home.js';
 import './venues.js';
 
 import '../scss/app.scss';
 import '../scss/autocomplete.scss';
+import '../scss/color-picker.scss';
 import '../scss/diary.scss';
 import '../scss/entities.scss';
 import '../scss/forms.scss';

@@ -35,6 +35,17 @@ abstract class Organisation implements OwnableInterface
     private $id;
 
     /**
+     * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
+     * @var string
+     * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
+     *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
+     * @ORM\Column(name="colour", type="string", length=7, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     */
+    private $theme_color;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
@@ -539,4 +550,17 @@ abstract class Organisation implements OwnableInterface
     }
 
     abstract public function getOrganisationType();
+
+    public function setThemeColor(?string $theme_color): self
+    {
+        $this->theme_color = $theme_color;
+
+        return $this;
+    }
+
+    public function getThemeColor(): ?string
+    {
+        return $this->theme_color;
+    }
+
 }

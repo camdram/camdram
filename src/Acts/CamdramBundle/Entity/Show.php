@@ -308,6 +308,8 @@ class Show implements OwnableInterface
      * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
      *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
      * @ORM\Column(name="colour", type="string", length=7, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Type("string")
      */
     private $theme_color;
 

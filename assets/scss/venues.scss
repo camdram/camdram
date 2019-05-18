@@ -1,3 +1,5 @@
+@import './vars.scss';
+
 .map-small {
   height:270px;
   width:270px;
@@ -24,4 +26,17 @@
   margin: 1em 1.5em 0.2em;
   float: left;
   cursor: pointer;
+}
+
+/* Rebrand Leaflet */
+#content .leaflet-control-attribution a {
+    color: $primary-color;
+    color: var(--primary-color, $primary-color);
+}
+.custom-map-icon {
+    background-image: url('/images/leaflet-marker-shadow.png');
+    path {
+        fill: $primary-color;
+        fill: var(--primary-color, $primary-color);
+    }
 }

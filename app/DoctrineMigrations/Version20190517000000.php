@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190516234812 extends AbstractMigration
+final class Version20190517000000 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,6 +23,7 @@ final class Version20190516234812 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE acts_shows ADD colour VARCHAR(7) DEFAULT NULL');
+        $this->addSql('ALTER TABLE acts_societies ADD colour VARCHAR(7) DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -31,5 +32,6 @@ final class Version20190516234812 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE acts_shows DROP colour');
+        $this->addSql('ALTER TABLE acts_societies DROP colour');
     }
 }

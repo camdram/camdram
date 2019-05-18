@@ -1,6 +1,12 @@
 {% extends 'layout.html.twig' %}
 
 {% set current_navigation_id = 'venues' %}
+{% if venue.themeColor %}
+    {% set colors = wcag_colors(venue.themeColor) %}
+    {% set body_attribs_raw = ' style="--custom-color: '  ~ colors['raw'] ~
+                                    '; --color-text: ' ~ colors['smalltext'] ~ ';"' ~
+                              ' class="entity-has-theme-color"' %}
+{% endif %}
 {% block title %}Venue: {{ venue.name }}{% endblock %}
 
 {% block body %}

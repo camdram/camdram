@@ -1,6 +1,12 @@
 {% extends 'layout.html.twig' %}
 
 {% set current_navigation_id = 'societies' %}
+{% if society.themeColor %}
+    {% set colors = wcag_colors(society.themeColor) %}
+    {% set body_attribs_raw = ' style="--custom-color: '  ~ colors['raw'] ~
+                                    '; --color-text: ' ~ colors['smalltext'] ~ ';"' ~
+                              ' class="entity-has-theme-color"' %}
+{% endif %}
 {% block title %}Society: {{ society.name }}{% endblock %}
 
 {% block body %}

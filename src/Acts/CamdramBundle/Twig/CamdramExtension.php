@@ -114,11 +114,12 @@ class CamdramExtension extends AbstractExtension
         // it in the HSL model, while the luminance value it's being compared
         // to is based on a far more sophisticated approach.
 
+        $rawMaxLum    = 0.5;       # Arbitrary luminance cap.
         // $laxMaxLum = 0.3;       # Level AA, ≥ 18pt text vs. white.
-        //while ($laxMaxLum < self::rgbToLum($rgb)) {
-        //    $rgb[0] *= 0.95; $rgb[1] *= 0.95; $rgb[2] *= 0.95;
-        //}   // Not currently needed.
-        //$result['bigtext'] = '#' . substr('000000' . dechex((int)$rgb[0] << 16 | (int)$rgb[1] << 8 | (int)$rgb[2]), -6);
+        while ($rawMaxLum < self::rgbToLum($rgb)) {
+            $rgb[0] *= 0.95; $rgb[1] *= 0.95; $rgb[2] *= 0.95;
+        }
+        $result['raw'] = '#' . substr('000000' . dechex((int)$rgb[0] << 16 | (int)$rgb[1] << 8 | (int)$rgb[2]), -6);
         while ($strictMaxLum < self::rgbToLum($rgb)) {
             $rgb[0] *= 0.95; $rgb[1] *= 0.95; $rgb[2] *= 0.95;
         }
