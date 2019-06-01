@@ -10,7 +10,7 @@
         {{ form_widget(form.multi_venue) }}
         {{ form_errors(form.multi_venue) }}
 
-        <div class="performances entity_collection" data-prototype="{% filter escape('html') %}{% include 'show/performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endfilter %}">
+        <div class="performances entity_collection" data-prototype="{% apply escape('html') %}{% include 'show/performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endapply %}">
             {% for performance in form.performances %}
                 {% include 'show/performance-form.html.twig' %}
             {% endfor %}
@@ -40,7 +40,7 @@
             become registered with Camdram?</a>
             </small>
         {{ form_errors(form.societies) }}</p>
-        <div class="linked-societies" data-prototype="{% filter escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endfilter %}">
+        <div class="linked-societies" data-prototype="{% apply escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endapply %}">
             {% for society in form.societies %}
 		{% include 'show/society-form.html.twig' with {society: society} %}
             {% endfor %}
@@ -156,5 +156,6 @@ $(function() {
         },
         min_items: 0
     });
+});
 {#- end-CSP-permitted-script -#}
 </script>
