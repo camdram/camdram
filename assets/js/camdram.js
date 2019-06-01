@@ -211,7 +211,7 @@ window.Routing = Routing;
 
 
         var engine = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
             remote: {
