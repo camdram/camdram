@@ -18,7 +18,7 @@ class PersonType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('no_robots', null, array('required' => false))
+            ->add('no_robots', null, ['label'=> 'No-index: ask search engines to hide this page', 'required' => false ])
         ;
     }
 

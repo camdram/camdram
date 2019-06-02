@@ -32,3 +32,9 @@
 {{ render(url('get_person_past_roles', {identifier: person.slug})) }}
 
 {% endblock %}
+
+{% block javascripts %}
+{% if person.norobots %}
+<meta name="robots" content="noindex" />
+{% endif %}
+{% endblock %}
