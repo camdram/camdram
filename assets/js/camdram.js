@@ -97,6 +97,8 @@ window.Routing = Routing;
                 },200);
             })
         });
+
+        $('.flash-messages').delay(2500).fadeOut(300);
     };
 
     $.fn.scrollTo = function(options) {

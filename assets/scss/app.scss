@@ -420,3 +420,37 @@ _:-ms-input-placeholder, :root #home-diary-nav ul, :root body {
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+/**
+ * Messages that appear to the user once then fade away.
+ */
+.flash-messages {
+  position: fixed;
+  z-index: 99999;
+  max-width: 40rem;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  p {
+    margin: 1em;
+    padding: 1em;
+    background: white;
+    border: 1px solid grey;
+    border-left-width: 6px;
+    display: flex;
+    align-items: center;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    &::before {
+      font-family: FontAwesome;
+    }
+    &.flash-error {
+      border-color: #A20;
+      &::before { content: '\f06a\2003'; color: #a20; }
+    }
+    &.flash-success {
+      border-color: #0A0;
+      &::before { content: '\f00c\2003'; color: #0A0; }
+    }
+  }
+}

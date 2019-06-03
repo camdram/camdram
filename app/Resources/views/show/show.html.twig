@@ -177,8 +177,10 @@
         }) }}
 
         {% if app.user and not is_granted('EDIT', show) %}
-            {{ include('navigation/nav-item.html.twig',
-                {item: {id: 'show_request_admin', path: path('request_show_admin',{identifier: show.slug}), icon: 'unlock-alt', text: 'Request to be an admin'} }) }}
+            {{ include('navigation/form-item.html.twig', {item: {id: 'show_request_admin',
+                path: path('request_show_admin', {identifier: show.slug}), method: 'POST',
+                class: 'text-button',
+                icon: 'unlock-alt', text: 'Request to be an admin'} }) }}
         {% endif %}
     </ul>
 </div>

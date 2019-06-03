@@ -127,17 +127,20 @@ class AdminController extends AbstractFOSRestController
     /**
      * Request to be an admin associated with this show.
      *
-     * @Rest\Get("/shows/{identifier}/admin/request", name="request_show_admin")
+     * @Rest\Post("/shows/{identifier}/admin/request", name="request_show_admin")
      * @param $identifier
      */
-    public function requestAdminAction(Helper $helper, EventDispatcherInterface $event_dispatcher, $identifier)
+    public function requestAdminAction(Request $request, Helper $helper, EventDispatcherInterface $event_dispatcher, $identifier)
     {
         $helper->ensureGranted('ROLE_USER');
+        if (!$this->isCsrfTokenValid('show_request_admin', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
 
         $show = $this->getEntity($identifier);
         if ($helper->isGranted('EDIT', $show)) {
-            // TODO add a no-action return code.
-            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+            $this->addFlash('error', 'Cannot request admin rights on this show: you are already an admin.');
+            return $this->routeRedirectView('get_show', ['identifier' => $show->getSlug()]);
         } else {
             // Check if there's already a matching request.
             $em = $this->getDoctrine()->getManager();
@@ -147,6 +150,8 @@ class AdminController extends AbstractFOSRestController
             $request = $ace_repo->findAceRequest($user, $show);
             if ($request != null) {
                 // A pre-existing request exists. Don't create another one.
+                $date = $request->getCreatedAt()->format('j F Y');
+                $this->addFlash('error', "Can't request admin rights again; you put in a request on $date which has not yet been answered.");
                 return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
             }
 
@@ -162,7 +167,8 @@ class AdminController extends AbstractFOSRestController
                 new AccessControlEntryEvent($ace)
             );
 
-            return $this->render('show/access_requested.html.twig');
+            $this->addFlash('success', 'Your request for access to this show has been sent.');
+            return $this->routeRedirectView('get_show', ['identifier' => $show->getSlug()]);
         }
     }
 
