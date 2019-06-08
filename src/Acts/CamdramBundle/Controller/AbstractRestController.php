@@ -239,6 +239,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
+        $name = $entity->getName();
 
         if (!$this->isCsrfTokenValid('delete_' . $this->type, $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
@@ -247,6 +248,8 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
+
+        $this->addFlash('success', "Deleted {$this->type} “{$name}”.");
 
         return $this->routeRedirectView('get_'.$this->type_plural);
     }
