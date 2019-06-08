@@ -11,5 +11,9 @@
     {{ render_diary(diary) }}
 </div>
 
-<script src="{{ asset('build/diarypage.js') }}"></script>
 {% endblock %}
+
+{% block compiled_assets -%}
+    {{ encore_entry_link_tags('diarypage') }}
+    {{ encore_entry_script_tags('diarypage') }}
+{%- endblock %}

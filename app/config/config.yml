@@ -180,3 +180,6 @@ ewz_recaptcha:
     public_key: "%recaptcha_site_key%"
     private_key: "%recaptcha_secret_key%"
     locale_key: "%kernel.default_locale%"
+
+webpack_encore:
+    output_path: "%kernel.root_dir%/../web/build/"

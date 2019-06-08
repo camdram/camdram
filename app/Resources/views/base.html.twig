@@ -38,16 +38,16 @@
 
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
         <link href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet"/>
-        <link href="{{ asset('build/app.css') }}" rel="stylesheet" />     
         {% block stylesheets %}{% endblock %}
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script src="{{ asset('build/manifest.js') }}"></script>
-        <script src="{{ asset('build/vendor.js') }}"></script>
-        <script src="{{ asset('build/app.js') }}"></script>
+        <script src="{{ asset('build/typeahead.bundle.min.js') }}"></script>
+        {% block compiled_assets -%}
+            {{ encore_entry_link_tags('base') }}
+            {{ encore_entry_script_tags('base') }}
+        {%- endblock %}
         {% block javascripts %}{% endblock %}
-        
     </head>
     <body {{ (body_attribs_raw ?? '') | raw }}>
         <div id="wrapper">

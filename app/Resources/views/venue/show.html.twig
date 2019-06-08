@@ -120,3 +120,7 @@ $(function() {
 {#- end-CSP-permitted-script -#}
 </script>
 {% endblock %}
+{% block compiled_assets -%}
+    {{ encore_entry_link_tags('venue') }}
+    {{ encore_entry_script_tags('venue') }}
+{%- endblock %}

@@ -1,6 +1,6 @@
+import 'cookieconsent';
 import Dropzone from 'dropzone';
 import Routing from 'router';
-import Bloodhound from 'typeahead.js'
 
 // Leak Routing to the global scope so that inline scripts work.
 window.Routing = Routing;

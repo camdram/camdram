@@ -1,3 +1,4 @@
+import './base.js';
 import moment from 'moment';
 import Routing from 'router';
 

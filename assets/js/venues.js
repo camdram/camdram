@@ -1,4 +1,7 @@
+import './base.js'
 import L from 'leaflet'
+import "leaflet/dist/leaflet.css"
+import '../scss/venues.scss';
 
 L.Marker.prototype.options.icon = L.divIcon({
     className: 'custom-map-icon',
@@ -26,7 +29,7 @@ $(function() {
 
             $self.data('map', map)
         }
-        
+
         switch(action) {
             case 'add-marker':
                 let marker = L.marker(opts.location)

@@ -69,6 +69,7 @@
         "symfony/monolog-bundle": "^3.3",
         "symfony/swiftmailer-bundle": "^3.2.2",
         "symfony/symfony": "3.4.*",
+        "symfony/webpack-encore-bundle": "^1.6",
         "twig/extensions": "~1.5",
         "twig/twig": "^2.7",
         "zendframework/zend-feed": "2.12.*"
