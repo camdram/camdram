@@ -21,7 +21,7 @@ class RefreshDatabaseCommand extends ContainerAwareCommand
     {
         $conn = $this->getContainer()->get('doctrine.dbal.default_connection');
         if ($conn->getDatabasePlatform()->getName() != 'sqlite' 
-            && !$this->getContainer()->getParameter('development_warning'))
+            && !$this->getContainer()->getParameter('env(DEVELOPMENT_WARNING)'))
         {
             //Precaution to avoid running this on the real database, as it drops the DB
             $output->writeln("camdram:database:refresh requires either a SQLite database or the development_warning flag to be set");
