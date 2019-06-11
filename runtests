@@ -5,7 +5,6 @@ export SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 export SYMFONY_ENV=test
 
 mkdir -p web/build
-./gen-csp-hashes.py
 php app/console lint:yaml app/config
 php app/console lint:twig app/Resources
 bin/simple-phpunit $@

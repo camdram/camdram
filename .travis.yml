@@ -17,6 +17,8 @@ before_script:
 - cp app/config/parameters.travis.yml app/config/parameters.yml
   # Install deps. `--no-interaction` causes paramters.yml to be populated with default values
 - travis_retry composer install --no-interaction
+- yarn install
 script:
+- "yarn build"
 - "./runtests"
 - "./check_dev_setup"
