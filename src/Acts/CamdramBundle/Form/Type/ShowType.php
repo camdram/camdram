@@ -76,7 +76,9 @@ class ShowType extends AbstractType
                     'mapped' => false
             ))
             ->add('theme_color', ThemeColorType::class, ['theme_color_message' =>
-                    'Setting a colour for your show makes it stand out around Camdram.']);
+                    'Setting a colour for your show makes it stand out around Camdram.',
+                    'required' => false
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
