@@ -70,7 +70,7 @@ class DevelopmentController extends Controller
             $recent = $github->api('issues')->all($owner, $repoName, ['state' => 'open', 'sort' => 'created']);
             $fixed = $github->api('issues')->all($owner, $repoName, ['state' => 'closed', 'sort' => 'updated']);
 
-            $botIds = array(36207117);
+            $botIds = array(36207117, 27856297);
             $users = array();
             foreach ($contributors as $contributor) {
                 if (! in_array($contributor['id'], $botIds)) {
