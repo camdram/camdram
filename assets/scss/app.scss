@@ -326,6 +326,11 @@ table {
   width:100%;
 }
 
+table, th, td {
+  border: 1px solid $hr-color;
+  padding: 0.5em;
+}
+
 #nav-edit-link i {
   font-size: 1.5em;
   vertical-align: middle;
