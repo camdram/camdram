@@ -44,6 +44,7 @@ class CamdramExtension extends AbstractExtension
     {
         return array(
             new \Twig_SimpleFunction('wcag_colors', [$this, 'genWcagColors']),
+            new \Twig_SimpleFunction('list_sep_verb', [$this, 'list_sep_verb']),
             new \Twig_SimpleFunction('requires_article', [$this, 'requiresArticle'])
         );
     }
@@ -89,6 +90,17 @@ class CamdramExtension extends AbstractExtension
         } else {
             return $this->textService->pluralize($word);
         }
+    }
+
+    public function list_sep_verb(array $loop, string $verb_pl = null, string $verb_sing = null): string
+    {
+        if ($loop['revindex'] > 2)  return ', ';
+        if ($loop['revindex'] == 2) return ' and ';
+        if ($verb_pl == null)    return '';
+
+        return ($loop['length'] == 1) ?
+            ' '.($verb_sing ?? ($verb_pl.'s')).' ' :
+            " $verb_pl ";
     }
 
     public function getName()

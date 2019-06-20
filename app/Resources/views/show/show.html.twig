@@ -66,15 +66,7 @@
             <span itemprop="name" content="{{ soc.name }}">{{ soc.name }}</span>
         {%- endif -%}
         </span>
-        {%- if loop.revindex > 2 -%}
-            ,
-        {% elseif loop.revindex == 2 %}
-            and
-        {% elseif loop.length == 1 %}
-            presents...
-        {%- else %}
-            present...
-        {%- endif -%}
+        {{- list_sep_verb(loop, 'present...', 'presents...') -}}
     {% endfor %}
 
     <h2 itemprop="workPerformed" itemscope="" itemtype="http://schema.org/CreativeWork">
