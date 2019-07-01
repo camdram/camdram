@@ -183,7 +183,7 @@ header#main-header {
     flex: 1 1 0;
 
     @media only screen and (min-width: 768px) {
-      min-width: 250px;
+      min-width: 220px;
       &::after {
         content: "";
         position: absolute;
