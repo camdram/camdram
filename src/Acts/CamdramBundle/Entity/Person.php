@@ -290,6 +290,7 @@ class Person
      */
     public function setName($name)
     {
+        $name = preg_replace('/[\p{Cc}\p{Cf}]/u', '', $name);
         $this->name = $name;
 
         return $this;
