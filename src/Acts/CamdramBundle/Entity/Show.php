@@ -509,10 +509,10 @@ class Show implements OwnableInterface
     /**
      * Gets all registered venues referenced in this show's performances.
      */
-    public function getVenues()
+    public function getVenues(): array
     {
-        $venids = [];
-        $venues = [];
+        $venids = []; // Not returned, used to check for duplication.
+        $venues = []; // Returned
         foreach ($this->performances as $p) {
             if (($v = $p->getVenue()) && !in_array($v->getId(), $venids, true)) {
                 $venues[] = $v;
@@ -525,7 +525,7 @@ class Show implements OwnableInterface
     /**
      * Returns a list of all venue names for this show.
      */
-    public function getVenueNames()
+    public function getVenueNames(): array
     {
         return array_unique($this->performances->map(function($p) {
             return $p->getVenueName();

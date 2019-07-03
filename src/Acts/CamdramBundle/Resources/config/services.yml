@@ -15,6 +15,13 @@ services:
             - '@security.token_storage'
             - '@monolog.logger.camdram'
 
+    # This is an overall Doctrine listener rather than an entity listener
+    acts.camdram.listener.doctrine_event_listener:
+        class: Acts\CamdramBundle\EventListener\DoctrineEventListener
+        autowire: true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
     acts.camdram.listener.doctrine_event_logger:
         class: Acts\CamdramBundle\EventListener\DoctrineEventLogger
         arguments: ['@monolog.logger.camdram']

@@ -171,10 +171,8 @@ class ModerationManager
     {
         if ($entity instanceof Show) {
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
-            $moderators = [];
-            foreach ($entity->getSocieties() as $society) {
-                $moderators = array_merge($moderators, $repo->getEntityOwners($society));
-            }
+            $moderators = $repo->getOwnersOfEntities($entity->getSocieties());
+
             if (count($moderators) > 0) {
                 if ($this->tokenStorage->getToken()) {
                     $owners = array($this->tokenStorage->getToken()->getUser());
@@ -188,22 +186,19 @@ class ModerationManager
         }
     }
 
-    // FIXME properly...
-    public function notifyVenueChanged($entity)
+    public function notifyVenueChanged(Show $show, array $addedVenIds, array $removedVenIds): void
     {
-        if ($entity instanceof Show) {
-            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
-            $moderators = $repo->getEntityOwners($entity->getVenue());
-            if (count($moderators) > 0) {
-                if ($this->tokenStorage->getToken()) {
-                    $owners = array($this->tokenStorage->getToken()->getUser());
-                } else {
-                    $owners = $repo->getEntityOwners($entity);
-                }
-
-                $this->dispatcher->sendShowVenueChangedEmail($entity, $owners, $moderators);
-                $this->logger->info('Venue changed e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
-            }
-        }
+        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+        $addedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')
+            ->setParameter(1, $addedVenIds)->getResult();
+        $removedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')
+            ->setParameter(1, $removedVenIds)->getResult();
+        $modOrgs = array_merge($addedVenues, $removedVenues, iterator_to_array($show->getSocieties(), false));
+        $moderators = $repo->getOwnersOfEntities($modOrgs);
+        $owners = $repo->getEntityOwners($show);
+        if (count($moderators) > 0) {
+            $this->dispatcher->sendShowVenueChangedEmail($show, $owners, $moderators, $addedVenues, $removedVenues);
+            $this->logger->info('Venue changed e-mail sent', array('id' => $show->getId(), 'name' => $show->getName()));
+       }
     }
 }

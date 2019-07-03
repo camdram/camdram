@@ -82,14 +82,6 @@ class ShowListener
                 }
             }
         }
-
-        if ($event->hasChangedField('venue') && $show->getVenue() instanceof Venue) {
-            if ($show->getAuthorised()) {
-                $this->moderationManager->notifyVenueChanged($show);
-            } elseif (!$authorisationEmailSent) {
-                $this->moderationManager->autoApproveOrEmailModerators($show);
-            }
-        }
     }
 
     /**

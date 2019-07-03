@@ -67,6 +67,38 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * Returns the combined owners of an array of ownable entities.
+     */
+    public function getOwnersOfEntities(iterable $entities): array
+    {
+        if (empty($entities)) return [];
+        $queryData = [];
+        foreach ($entities as $entity) {
+            $type = $entity->getAceType();
+            if (isset($queryData[$type])) {
+                $queryData[$type][] = $entity->getId();
+            } else {
+                $queryData[$type] = [$entity->getId()];
+            }
+        }
+
+        $expr = "(e.type = :type0 AND e.entityId IN (:ids0))";
+        for ($i = 1; $i < count($queryData); $i++) {
+            $expr .= "OR (e.type = :type$i AND e.entityId IN (:ids$i))";
+        }
+        $qb = $this->createQueryBuilder('u')
+            ->innerJoin('u.aces', 'e')
+            ->where($expr);
+        $i = 0;
+        foreach ($queryData as $type => $ids) {
+            $qb->setParameter("ids$i", $ids)
+               ->setParameter("type$i", $type);
+            $i++;
+        }
+        return $qb->getQuery()->getResult();
+    }
+
     public function getContactableEntityOwners(OwnableInterface $entity)
     {
         $query = $this->createQueryBuilder('u')
