@@ -192,9 +192,7 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->join('s.performances', 'p')
-            ->leftjoin('s.venue', 'v')
             ->addSelect('s')
-            ->addSelect('v')
             ->where('s.authorised = true')
             ->andWhere(':society MEMBER OF s.societies');
 
@@ -220,9 +218,7 @@ class ShowRepository extends EntityRepository
     {
         $query = $this->createQueryBuilder('s')
             ->join('s.performances', 'p')
-            ->join('s.venue', 'v')
             ->addSelect('s')
-            ->addSelect('v')
             ->where('s.authorised = true');
 
         if ($from) {
@@ -233,7 +229,7 @@ class ShowRepository extends EntityRepository
             $query = $query->andWhere('p.repeat_until <= :to')->setParameter('to', $to);
         }
 
-        return $query->andWhere('s.venue = :venue')
+        return $query->andWhere('p.venue = :venue')
             ->orderBy('p.start_at', 'ASC')
             ->setParameter('venue', $venue)
             ->groupBy('s.id');
