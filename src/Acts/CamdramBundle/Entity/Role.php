@@ -89,6 +89,12 @@ class Role
     private $person;
 
     /**
+     * @ORM\Column(name="tag", type="string", length=20, nullable=true)
+     * @Gedmo\Versioned
+     */
+    private $tag;
+
+    /**
      * Get id
      *
      * @return int
@@ -240,6 +246,23 @@ class Role
     public function getPerson()
     {
         return $this->person;
+    }
+
+    public function setTag(?string $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+    public function getTag(): ?string
+    {
+        return $this->tag;
+    }
+    public function getAdjustedTag(): string
+    {
+        return $this->tag ?? [
+            'cast' => 'Acting', 'band' => 'Band', 'prod' => 'Crew'
+        ][$this->type];
     }
 
     /**

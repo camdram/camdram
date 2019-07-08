@@ -368,6 +368,17 @@ nav.sidenav > a.active {
   border-style: none none solid none;
   background: #ddd;
   color: #111;
+  outline: none;
+  position: relative;
+  &:focus::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #bbb;
+    height: 3px;
+  }
 }
 .tabbed-content .title.active {
   border-style: solid solid none solid;

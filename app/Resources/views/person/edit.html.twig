@@ -4,6 +4,8 @@
 
 {% block body %}
 
+{{ include('person/admin-panel.html.twig', {person: form.vars.value}) }}
+
 <div class="row">
     <h3>Edit Person</h3>
     <form action="{{ path("put_person", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post" class="custom">

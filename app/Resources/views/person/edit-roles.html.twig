@@ -1,0 +1,150 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Person - {{ person.name }} - Edit{% endblock %}
+
+{% block body %}
+
+{%- set tags = [] -%}
+{%- for role in roles -%}
+    {%- if role.tag and role.tag not in tags -%}
+        {%- set tags = tags|merge([role.tag]) -%}
+    {%- endif -%}
+{%- endfor -%}
+{#- Reversing twice converts sorted arrays such as { 1 => 'Alpha', 0 => 'Beta' }
+    to { 0 => 'Alpha', 1 => 'Beta' } so that json_encode correctly creates a JS array -#}
+{%- set tags = tags|sort|reverse|reverse -%}
+
+{{ include('person/admin-panel.html.twig') }}
+
+<h3>Edit Roles</h3>
+<p>By default your roles are all displayed at once, but can be sorted into cast, band, and prod team. If you have a large number of roles you might like to change how your roles are sorted by adding a tag to some or all of them.</p>
+
+<h4>Your tags</h4>
+<p>Create new tags here, then you can apply them to each role.</p>
+
+<div class="tag-container" data-tags-json="{{ tags | json_encode() }}">
+<span class="new-tag-generator"><input placeholder="New tag..."/><button type="button" class="small fa fa-plus-circle"></button></span>
+</div>
+<br>
+
+<h4>Your roles</h4>
+<table id="roles-table">
+<tr><th>Show name</th><th>Your role</th><th>Type</th><th style="min-width: 7em">Tag</th></tr>
+{%- for role in roles -%}
+<tr>
+<td>
+<a href="{{ path('get_show', { identifier: role.show.slug }) }}">{{ role.show.name }}</a>
+{%- if not role.show.authorised %} <abbr title="This show is not publicly visible yet" class="fa fa-eye-slash"></abbr>{%- endif -%}
+<span class="fa roles-status-icon"></span>
+</td>
+<td>{{ role.role }}</td><td>{{ role.type }}</td>
+<td><select data-role-id="{{ role.id }}">
+<option value="" {% if not role.tag %}selected="selected"{% endif %} style="color: grey">No tag</option>
+{%- for tag in tags -%}
+    <option value="{{ tag }}" {% if tag == role.tag %}selected="selected"{% endif %}>{{tag}}</option>
+{%- endfor -%}
+</select></td>
+</tr>
+{%- endfor -%}
+</table>
+
+<script>
+{#- begin-CSP-permitted-script -#}
+    var tagContainer = document.querySelector('.tag-container');
+    var newTagGenerator = document.querySelector('.new-tag-generator');
+    var tags = JSON.parse(tagContainer.dataset.tagsJson);
+
+    function saveState(selectBox) {
+        var role = selectBox.dataset.roleId;
+        var newtag = selectBox.selectedOptions[0].value;
+        var xhr = new XMLHttpRequest();
+        var icon = selectBox.parentNode.parentNode.querySelector('.roles-status-icon');
+        icon.classList.add('fa-spinner');
+        icon.classList.add('fa-spin');
+        icon.classList.remove('fa-exclamation-circle');
+        icon.title = 'Loading...';
+        xhr.addEventListener("load", function() {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                icon.classList.remove('fa-spinner');
+                icon.classList.remove('fa-spin');
+                icon.classList.remove('fa-exclamation-circle');
+                icon.title = '';
+            } else {
+                icon.classList.remove('fa-spinner');
+                icon.classList.remove('fa-spin');
+                icon.classList.add('fa-exclamation-circle');
+                icon.title = 'Unable to save changes (error ' + xhr.status + ')';
+            }
+        });
+        xhr.addEventListener("error", function() {
+            icon.classList.remove('fa-spinner');
+            icon.classList.remove('fa-spin');
+            icon.classList.add('fa-exclamation-circle');
+            icon.title = 'Unable to save changes';
+        });
+        xhr.open('PATCH', Routing.generate('patch_roles_settag'));
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send('role=' + encodeURIComponent(role) + '&newtag=' + encodeURIComponent(newtag));
+    }
+
+    function deleteTag(e) {
+        var tagItem = e.target.parentNode;
+        for (var selectBox of document.querySelectorAll("#roles-table select")) {
+            if (selectBox.selectedOptions[0].value == tagItem.dataset.tagName) {
+                selectBox.selectedIndex = 0;
+                saveState(selectBox);
+            }
+            for (var option of selectBox.querySelectorAll('option')) {
+                if (option.value == tagItem.dataset.tagName) selectBox.removeChild(option);
+            }
+        }
+        tagItem.parentNode.removeChild(tagItem);
+        tags.splice(tags.indexOf(tagItem.dataset.tagName), 1);
+    }
+
+    function createTagItem(name) {
+        var tagItem = document.createElement('span');
+        tagItem.classList = 'tag';
+        tagItem.innerText = name;
+        tagItem.dataset.tagName = name;
+        var closeButton = document.createElement('button');
+        closeButton.classList = 'fa fa-times-circle text-button';
+        closeButton.addEventListener('click', deleteTag);
+        tagItem.insertBefore(closeButton, null);
+        tagContainer.insertBefore(tagItem, newTagGenerator);
+    }
+
+    function listNewTag(tagName) {
+        if (!tagName || tags.indexOf(tagName) >= 0) return;
+        tags.push(tagName);
+
+        createTagItem(tagName);
+        for (var selectBox of document.querySelectorAll("#roles-table select")) {
+            var newOption = document.createElement('option');
+            newOption.innerText = tagName;
+            newOption.value = tagName;
+            selectBox.insertAdjacentElement('beforeend', newOption);
+        }
+    };
+
+    newTagGenerator.querySelector('input').addEventListener('keydown', function(e) {
+        if (e.key !== 'Enter') return;
+        var newTagName = newTagGenerator.querySelector('input').value;
+        listNewTag(newTagName);
+    });
+    newTagGenerator.querySelector('button').addEventListener('click', function(e) {
+        var newTagName = newTagGenerator.querySelector('input').value;
+        listNewTag(newTagName);
+    });
+
+    for (var tag of tags) {
+        createTagItem(tag);
+    }
+    for (var selectBox of document.querySelectorAll("#roles-table select")) {
+        // Overcome effect of browser saving values.
+        selectBox.querySelector('option[selected]').selected = true;
+        selectBox.addEventListener('change', function(e) { saveState(e.target) });
+    }
+{#- end-CSP-permitted-script -#}
+</script>
+{% endblock %}

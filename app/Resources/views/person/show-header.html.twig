@@ -1,5 +1,11 @@
+{%- set tags = [] -%}
+{%- set roles = show.rolesByPerson(person) -%}
+{%- for role in roles -%}
+    {%- set tags = tags|merge([role.adjustedTag]) -%}
+{%- endfor -%}
+itemscope itemtype="http://schema.org/TheaterEvent" data-roletypes="{{ tags|json_encode()|e('html_attr') }}">
 <h5><a href="{{ url('get_show', {identifier : show.slug}) }}">{{ show.name }}</a> -
-    {% for role in show.rolesByPerson(person) %}
+    {% for role in roles %}
         {{ role.role -}}
         {% if not loop.last %},{% endif %}
     {% endfor %}

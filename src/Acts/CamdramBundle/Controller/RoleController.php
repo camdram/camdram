@@ -18,11 +18,9 @@ class RoleController extends AbstractFOSRestController
      *
      * Reorder the display ordering for the array of Roles identified by their ID.
      *
-     * @param Request $request
      * @Rest\Patch("/roles/reorder", name="patch_roles_reorder")
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function patchRolesReorderAction(Request $request, Helper $_helper)
+    public function patchRolesReorderAction(Request $request, Helper $_helper): Response
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('ActsCamdramBundle:Role');
@@ -41,5 +39,29 @@ class RoleController extends AbstractFOSRestController
         $response = new Response();
         $response->setStatusCode(204); // Success no content
         return $response;
+    }
+
+    /**
+     * Allow the person named in a role to set a tag on it
+     * Required params:
+     *    role,   int (role id)
+     *    newtag, string. (If blank, interpret as null)
+     * @Rest\Patch("/roles/settag", name="patch_roles_settag")
+     */
+    public function patchRolesSetTagAction(Request $request, Helper $_helper): Response
+    {
+        $em     = $this->getDoctrine()->getManager();
+        $repo   = $em->getRepository('ActsCamdramBundle:Role');
+        $id     = $request->request->get('role');
+        $newtag = trim($request->request->get('newtag'));
+        $role   = $repo->findOneById($id);
+
+        if (!$role) return new Response('role not found', 404);
+
+        $_helper->ensureGranted('EDIT', $role->getPerson());
+        $role->setTag(empty($newtag) ? NULL : $newtag);
+        $em->flush();
+        $em->clear();
+        return new Response('', 204); // Success no content
     }
 }

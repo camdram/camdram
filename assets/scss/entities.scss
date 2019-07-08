@@ -179,3 +179,11 @@
     margin: 0.5em;
   }
 }
+
+.tag-container .tag {
+    background: lighten($orange, 35%);
+    padding: 0.4em 0.5em;
+    margin: 0.5em;
+    border: 1px solid $orange;
+    button { padding-left: 0.5em; }
+}

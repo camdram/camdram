@@ -204,6 +204,27 @@ class PersonController extends AbstractRestController
     }
 
     /**
+     * @Rest\Get("/people/{identifier}/edit-roles", requirements={"_format"="html"})
+     */
+    public function getEditRolesAction($identifier)
+    {
+        $person = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $person);
+
+        $roles = $this->getDoctrine()->getManager()->createQuery(
+            'SELECT r, s FROM ActsCamdramBundle:Role r JOIN r.show s WHERE r.person = :p ORDER BY s.id')
+            ->setParameter('p', $person)->getResult();
+        $roles = array_filter($roles, function($r) {
+            return $this->get('camdram.security.acl.helper')->isGranted('VIEW', $r->getShow());
+        });
+
+        return $this->render('person/edit-roles.html.twig', array(
+            'person' => $person,
+            'roles' => $roles
+        ));
+    }
+
+    /**
      * @param $identifier
      * @param $request Request
      *
