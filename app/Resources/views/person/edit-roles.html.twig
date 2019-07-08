@@ -22,7 +22,7 @@
 <h4>Your tags</h4>
 <p>Create new tags here, then you can apply them to each role.</p>
 
-<div class="tag-container" data-tags-json="{{ tags | json_encode() }}">
+<div class="tag-container" data-tags-json="{{ tags | json_encode() }}" data-csrf-token="{{ csrf_token('patch_roles_settag') }}">
 <span class="new-tag-generator"><input placeholder="New tag..."/><button type="button" class="small fa fa-plus-circle"></button></span>
 </div>
 <br>
@@ -53,6 +53,7 @@
     var tagContainer = document.querySelector('.tag-container');
     var newTagGenerator = document.querySelector('.new-tag-generator');
     var tags = JSON.parse(tagContainer.dataset.tagsJson);
+    var csrfToken = tagContainer.dataset.csrfToken;
 
     function saveState(selectBox) {
         var role = selectBox.dataset.roleId;
@@ -84,7 +85,8 @@
         });
         xhr.open('PATCH', Routing.generate('patch_roles_settag'));
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send('role=' + encodeURIComponent(role) + '&newtag=' + encodeURIComponent(newtag));
+        xhr.send('role=' + encodeURIComponent(role) + '&newtag=' + encodeURIComponent(newtag) +
+            '&_token=' + encodeURIComponent(csrfToken));
     }
 
     function deleteTag(e) {

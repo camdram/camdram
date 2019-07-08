@@ -6,6 +6,7 @@ use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -46,10 +47,15 @@ class RoleController extends AbstractFOSRestController
      * Required params:
      *    role,   int (role id)
      *    newtag, string. (If blank, interpret as null)
+     *    _token  CSRF token
      * @Rest\Patch("/roles/settag", name="patch_roles_settag")
      */
     public function patchRolesSetTagAction(Request $request, Helper $_helper): Response
     {
+        if (!$this->isCsrfTokenValid('patch_roles_settag', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
         $em     = $this->getDoctrine()->getManager();
         $repo   = $em->getRepository('ActsCamdramBundle:Role');
         $id     = $request->request->get('role');
