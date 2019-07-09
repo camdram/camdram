@@ -28,8 +28,9 @@
 <br>
 
 <h4>Your roles</h4>
+<div style="overflow-x: auto; width: 100%">
 <table id="roles-table">
-<tr><th>Show name</th><th>Your role</th><th>Type</th><th style="min-width: 7em">Tag</th></tr>
+<tr><th>Show name</th><th>Your role</th><th class="hide-for-small">Type</th><th style="min-width: 7em">Tag</th></tr>
 {%- for role in roles -%}
 <tr>
 <td>
@@ -37,7 +38,7 @@
 {%- if not role.show.authorised %} <abbr title="This show is not publicly visible yet" class="fa fa-eye-slash"></abbr>{%- endif -%}
 <span class="fa roles-status-icon"></span>
 </td>
-<td>{{ role.role }}</td><td>{{ role.type }}</td>
+<td>{{ role.role }}<i class="show-for-small"> ({{ role.type }})</i></td><td class="hide-for-small">{{ role.type }}</td>
 <td><select data-role-id="{{ role.id }}">
 <option value="" {% if not role.tag %}selected="selected"{% endif %} style="color: grey">No tag</option>
 {%- for tag in tags -%}
@@ -47,6 +48,7 @@
 </tr>
 {%- endfor -%}
 </table>
+</div>
 
 <script>
 {#- begin-CSP-permitted-script -#}
