@@ -66,6 +66,7 @@ $(function() {
 
     for (var tagName of Object.keys(tags).sort()) {
         aftertabs.insertAdjacentHTML('beforebegin', '<a href="#!" class="title"></a>');
+        aftertabs.previousElementSibling.href = '#!tab-' + tagName.replace(/[^A-Za-z0-9]/,'');
         aftertabs.previousElementSibling.innerText = tagName;
         aftertabs.previousElementSibling.addEventListener('click', (function(x) { return function(e) {
             for (var show of shows) show.setAttribute('hidden', 'hidden');
@@ -80,6 +81,9 @@ $(function() {
                 }
             }
         }})(tags[tagName]));
+        if (aftertabs.previousElementSibling.href == window.location.href) {
+            aftertabs.previousElementSibling.click();
+        }
     }
     aftertabs.parentNode.firstElementChild.addEventListener('click', function(e) {
         for (var show of shows) show.removeAttribute('hidden');
