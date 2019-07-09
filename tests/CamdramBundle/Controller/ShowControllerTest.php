@@ -74,6 +74,28 @@ class ShowControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 1);
     }
 
+    public function testAuthorizeShow()
+    {
+        $this->show->setAuthorised(false);
+        $this->entityManager->flush();
+
+        $user = $this->createUser();
+        $this->aclProvider->grantAdmin($user);
+        $this->login($user);
+
+        $crawler = $this->client->request('GET', '/shows/test-show');
+        $form = $crawler->selectButton('Approve this show')->form();
+        $crawler = $this->client->submit($form);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 0);
+
+        $this->logout();
+        $crawler = $this->client->request('GET', '/shows/test-show');
+        $this->assertEquals($crawler->filter('#content:contains("Test Show")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content .admin-panel')->count(), 0);
+    }
+
     public function testEditShow()
     {
         $user = $this->createUser();

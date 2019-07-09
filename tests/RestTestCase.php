@@ -52,6 +52,14 @@ class RestTestCase extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
+    protected function logout(): void
+    {
+        $session = $this->client->getContainer()->get('session');
+        $session->invalidate();
+        $session->save();
+        $this->client->getCookieJar()->clear();
+    }
+
     protected function createUser()
     {
         $user = new User();
