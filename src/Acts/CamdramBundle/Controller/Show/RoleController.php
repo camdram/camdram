@@ -80,12 +80,12 @@ class RoleController extends FOSRestController
 
                 try {
                     $em->flush();
-                    
+
                     //Attempt to update role count in people search index
                     $this->get('fos_elastica.object_persister.autocomplete_person.person')->replaceOne($person);
                 }
                 catch (\Elastica\Exception\ExceptionInterface $ex) {
-                    $this->get('logger')->warning('Failed to update search index during role entry', 
+                    $this->get('logger')->warning('Failed to update search index during role entry',
                             ['role' => $role->getId()]);
                 }
             }
@@ -116,7 +116,7 @@ class RoleController extends FOSRestController
             $role_repo->removeRoleFromOrder($role);
             $person->removeRole($role);
             $em->remove($role);
-            
+
             // Ensure the person is not an orphan.
             if ($person->getRoles()->isEmpty()) {
                 $em->remove($person);
@@ -124,15 +124,15 @@ class RoleController extends FOSRestController
 
             try {
                 $em->flush();
-                
+
                 if ($em->contains($person)) //person isn't deleted
                 {
                     //Attempt to update role count in people search index
                     $this->get('fos_elastica.object_persister.autocomplete_person.person')->replaceOne($person);
                 }
-            } 
+            }
             catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $this->get('logger')->warning('Failed to update search index during role entry', 
+                $this->get('logger')->warning('Failed to update search index during role entry',
                         ['role' => $role->getId()]);
             }
         }

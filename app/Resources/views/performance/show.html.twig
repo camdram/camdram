@@ -15,7 +15,7 @@
     {% for p in performances %}
         {%- if (diary_links is defined) and (disable_links is not defined) -%}
             <a href="/diary/{{- p.startAt|date('Y-m-d') -}}#diary-item-{{p.id}}" title="View in diary">
-		<i class="fa fa-calendar fa-fw" style="width: 2em"></i></a>
+        <i class="fa fa-calendar fa-fw" style="width: 2em"></i></a>
         {% endif -%}
         {{- p.dateString -}}
         {% if p.venue %}

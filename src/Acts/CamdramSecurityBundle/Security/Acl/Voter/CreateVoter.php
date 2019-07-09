@@ -16,7 +16,7 @@ class CreateVoter extends Voter
         if ($attribute != "CREATE") {
             return false;
         }
-    
+
         if (is_object($subject)) {
             $subject = get_class($subject);
         }

@@ -37,7 +37,7 @@ class EntityCollectionType extends AbstractType
         ));
         $builder->addViewTransformer(new EntityCollectionTransformer($this->em, $options['class']));
     }
- 
+
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['route'] = $options['route'];

@@ -75,7 +75,7 @@ class WeekManager
             return $this->getWeekFromDate($date);
         }
     }
-    
+
     /**
      * Given any array of performances return a string version
      * of the performances datses in "Cambridge terms" e.g.

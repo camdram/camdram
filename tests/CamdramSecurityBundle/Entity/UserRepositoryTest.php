@@ -20,7 +20,7 @@ class UserRepositoryTest extends RepositoryTestCase
         $user1 = new User();
         $user1->setName('Test User 1');
         $user1->setEmail('abc123');
-        
+
         $user2 = new User();
         $user2->setName('Test User 2');
         $user2->setEmail('abc123@cam.ac.uk');

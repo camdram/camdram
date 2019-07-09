@@ -33,10 +33,10 @@
                     <ul>
             {%- endif -%}
             {%- if a.nonscheduled -%}
-	            </ul>
+                </ul>
                 <p>Contact {{ a.location|detect_links }} before {{a.dateString}} for more details.</p>
-	            </div>
-		    {%- set currentName = null -%}
+                </div>
+            {%- set currentName = null -%}
             {%- else -%}
                 <li>{{ a.dateString }}, {{ a.location }}</li>
             {%- endif -%}

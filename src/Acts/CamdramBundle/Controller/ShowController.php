@@ -83,24 +83,24 @@ class ShowController extends AbstractRestController
 
         $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
             ->getContactableEntityOwners($show) > 0;
-        
+
         $view = $this->view($show, 200)
             ->setTemplate('show/show.html.twig')
             ->setTemplateData(['show' => $show, 'can_contact' => $can_contact]);
         ;
         return $view;
     }
-    
+
     /**
      * Action that allows querying by id. Redirects to slug URL
-     * 
+     *
      * @Rest\Get("/shows/by-id/{id}")
      */
     public function getByIdAction(Request $request, $id)
     {
         $this->checkAuthenticated();
         $show = $this->getRepository()->findOneById($id);
-        
+
         if (!$show)
         {
             throw $this->createNotFoundException('That show id does not exist');
@@ -233,7 +233,7 @@ class ShowController extends AbstractRestController
 
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
-    
+
     public function deleteImageAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
@@ -242,12 +242,12 @@ class ShowController extends AbstractRestController
         if (!$this->isCsrfTokenValid('delete_show_image', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
         }
-        
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($show->getImage());
         $show->setImage(null);
         $em->flush();
-        
+
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 

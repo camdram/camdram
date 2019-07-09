@@ -77,7 +77,7 @@ class FacebookLinkTransformer implements DataTransformerInterface
 
         try {
             $data = $this->api->get('/'.urlencode($value));
-            
+
             return $data->getDecodedBody()['id'];
         } catch (\Facebook\Exceptions\FacebookResponseException $e) {
             if (is_numeric($value)) {

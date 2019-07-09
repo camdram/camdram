@@ -32,11 +32,11 @@ class AnnotationReader
     public function read($object)
     {
         $data = new ApiData();
-        
+
         if (!is_object($object)) {
             return $data;
         }
-        
+
         $reflection = new \ReflectionObject($object);
 
         $annotation = $this->reader->getClassAnnotation($reflection, 'Acts\\CamdramApiBundle\\Configuration\\Annotation\\Feed');

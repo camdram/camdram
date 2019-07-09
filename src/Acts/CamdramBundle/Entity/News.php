@@ -169,7 +169,7 @@ class News
     {
         return $this->entity;
     }
-  
+
     /**
      * Constructor
      */

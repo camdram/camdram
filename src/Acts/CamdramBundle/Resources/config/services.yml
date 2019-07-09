@@ -5,7 +5,7 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
-    acts.camdram.moderation_manager: 
+    acts.camdram.moderation_manager:
         class: Acts\CamdramBundle\Service\ModerationManager
         arguments:
             - '@doctrine.orm.entity_manager'
@@ -50,7 +50,7 @@ services:
 
     acts.camdram.image_listener:
         class: Acts\CamdramBundle\EventListener\ImageListener
-        arguments: 
+        arguments:
             - '@doctrine.orm.entity_manager'
             - '@security.authorization_checker'
             - '@liip_imagine'
@@ -58,7 +58,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.validation, method: validate }
             - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
-            
+
     acts.camdram.email_logger:
         class: Acts\CamdramBundle\EventListener\EmailLogger
         arguments:

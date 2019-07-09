@@ -20,7 +20,7 @@ class SocietyFixtures extends Fixture
             $society->setName("Society $i");
             $society->setShortName("S-$i");
             $society->setDescription("Description of society $i");
-            
+
             $socialMediaBitmask = mt_rand(0, 3);
             if ($socialMediaBitmask & 0x01)
             {

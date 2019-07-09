@@ -12,11 +12,11 @@
 
     {{ form_start(form, {'action': path("put_user", {identifier: form.vars.value.id})}) }}
     {{ form_widget(form) }}
-    
+
     <div class="text-right">
         <input type="submit" value="Save" class="button"/>
     </div>
-    
+
     {{ form_end(form) }}
 </div>
 

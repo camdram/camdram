@@ -331,7 +331,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             $days = mt_rand(-5, 10);
             $hour = mt_rand(10, 19);
             $minute = mt_rand(0, 3) * 15;
-            
+
             $audition->setStartAt(new \DateTime("$days days $hour:$minute"));
 
             $endTime = clone $audition->getStartAt();

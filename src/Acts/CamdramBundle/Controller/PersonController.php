@@ -61,7 +61,7 @@ class PersonController extends AbstractRestController
 
     /**
      * Action that allows querying by id. Redirects to slug URL
-     * 
+     *
      * @Rest\Get("/people/by-id/{id}")
      */
     public function getByIdAction(Request $request, $id)

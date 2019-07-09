@@ -10,12 +10,12 @@
             item: {id: 'edit_user', path: path('edit_user',{identifier:user.id}), icon: 'pencil',
             text: 'Edit this user'} })
         }}
-        {{ include('navigation/form-item.html.twig', {item: {id: 'delete_user', 
+        {{ include('navigation/form-item.html.twig', {item: {id: 'delete_user',
                 path: path('delete_user', {identifier:user.id}), method: 'DELETE', text: 'Delete this user', icon: 'eraser'},
-                destructive: {title: "Are you sure you want to delete the user " ~ user.name ~ " (" ~ user.email ~ ")?", 
+                destructive: {title: "Are you sure you want to delete the user " ~ user.name ~ " (" ~ user.email ~ ")?",
                     text: "This is a permanent action that cannot be undone" }
                 }) }}
-        {{ include('navigation/form-item.html.twig', {item: {id: 'reset_user_password', 
+        {{ include('navigation/form-item.html.twig', {item: {id: 'reset_user_password',
                 path: path('reset_user_password', {identifier:user.id}), text: 'Reset password', icon: 'key'}
                 }) }}
         {% if not is_granted('ROLE_PREVIOUS_ADMIN') %}

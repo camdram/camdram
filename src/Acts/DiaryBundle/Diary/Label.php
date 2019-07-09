@@ -17,14 +17,14 @@ class Label
 
     /**
      * @var string The type of label, either LABEL_TYPE_WEEK or LABEL_TYPE_PERIOD
-     * 
+     *
      * @Serializer\XmlElement(cdata=false)
      */
     private $type;
 
     /**
      * @var \DateTime The start time of the period this label refers to
-     * 
+     *
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\Type("DateTime<'Y-m-d'>")
      */
@@ -32,7 +32,7 @@ class Label
 
     /**
      * @var \DateTime The end time of the period this label refers to
-     * 
+     *
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\Type("DateTime<'Y-m-d'>")
      */
@@ -40,7 +40,7 @@ class Label
 
     /**
      * @var string The user-visible name of the label
-     * 
+     *
      * @Serializer\XmlElement(cdata=false)
      */
     private $text;

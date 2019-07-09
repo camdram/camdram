@@ -14,7 +14,7 @@
     <p>
         <strong>App secret:</strong> {{ ex_app.secret }}<br />
         <ul class="inline-list">
-        {{ include('navigation/form-item.html.twig', {item: {id: 'regenerate_app_secret', 
+        {{ include('navigation/form-item.html.twig', {item: {id: 'regenerate_app_secret',
             path: path('regenerate_app_secret', {app_id:ex_app.randomId}), text: 'Regenerate secret', icon: 'refresh'},
             destructive: {title: "Are you sure you want to regenerate the secret for the app “" ~ ex_app.name ~ "”?",
                 text: "This will invalid all existing access tokens" }
@@ -28,9 +28,9 @@
 
     <div class="row">
         <input type="submit" class="button right" value="Save"/>
-  
+
         <ul class="inline-list">
-        {{ include('navigation/form-item.html.twig', {item: {id: 'delete_app', 
+        {{ include('navigation/form-item.html.twig', {item: {id: 'delete_app',
             path: path('delete_app', {app_id:ex_app.randomId}), method: 'DELETE', text: 'Delete app', icon: 'eraser'},
             destructive: {title: "Are you sure you want to delete the app “" ~ ex_app.name ~ "”?" }
             }) }}

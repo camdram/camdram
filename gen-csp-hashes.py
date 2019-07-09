@@ -22,8 +22,8 @@ with open('web/build/csp_hashes.txt', 'w', encoding='utf-8', newline='') as outf
                 for match in regex.findall(content):
                     match = bytes(match.strip(), 'utf-8')
                     if debug_mode:
-                    	print(root + name, base64.b64encode(hashlib.sha256(match).digest()).decode('utf-8'))
-                    	print(match.decode('utf-8'))
-                    	print()
+                        print(root + name, base64.b64encode(hashlib.sha256(match).digest()).decode('utf-8'))
+                        print(match.decode('utf-8'))
+                        print()
                     print('\'sha256-' + base64.b64encode(hashlib.sha256(match).digest()).decode('utf-8'), end='\' ', file=outfile)
 

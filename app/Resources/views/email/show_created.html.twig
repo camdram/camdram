@@ -15,7 +15,7 @@
   "publisher": {
     "@type": "Organization",
     "name": "Camdram",
-	"url": "https://www.camdram.net/"
+    "url": "https://www.camdram.net/"
   }
 
 }
@@ -24,9 +24,9 @@
 <!-- Email text -->
 <p>A new show has been added to <a href = 'https://www.camdram.net/'>camdram.net</a> by {% if owners | length > 0 %}by {% endif %}{% for owner in owners %}{{ owner.name }} (<a href="mailto:{{ owner.email }}">{{ owner.email }}</a>){% if not loop.last %}, {% endif %}{% endfor %} and must be manually authorised before it is shown in any public areas. This process ensures all shows are checked over by the producing society or venue before they are advertised. In particular, please check the following details are correct:
 <ul>
-	<li>Dates</li>
-	<li>Venue</li>
-	<li>Start Time</li>
+    <li>Dates</li>
+    <li>Venue</li>
+    <li>Start Time</li>
 </ul>
 
 before authorizing.</p>
@@ -35,11 +35,11 @@ before authorizing.</p>
 
 {% include 'email/signature.html.twig' %}
 
-<h3>Show details follow</h3	>
+<h3>Show details follow</h3>
 
 {% include 'show/advert_header.html.twig' with { full_urls: true } %}
 <p>
-	{{ show.description }}
+    {{ show.description }}
 </p>
 </body>
 </html>

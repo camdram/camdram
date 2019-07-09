@@ -9,11 +9,11 @@
 
     <ul class="diary-header">
     {% for date in week.headerDates %}
-    	{% if date|date("d/m/Y") == "now"|date("d/m/Y") %}
-    		<li class="diary-today">{{ date | date('D j M') }}</li>
-    	{% else %} 
-    		<li>{{ date | date('D j M') }}</li>
-    	{% endif %}
+        {% if date|date("d/m/Y") == "now"|date("d/m/Y") %}
+            <li class="diary-today">{{ date | date('D j M') }}</li>
+        {% else %}
+            <li>{{ date | date('D j M') }}</li>
+        {% endif %}
     {% endfor %}
     </ul>
     <div class="diary-content" >
@@ -24,7 +24,7 @@
         <div id="diary-item-{{ item.event.id }}" {# Linked to from show pages. -#}
             class="diary-item diary-{{ item.numberOfDays }}-days {% if item.startIndex != last_index + 1 -%}
                    diary-skip-left-{{ item.startIndex - last_index - 1 }}{% endif %}" itemscope="" itemtype="http://schema.org/TheaterEvent">
-            {# Jump through hoops here to get the start date of the event itself by treating the offset as seconds in a unix timestamp and 
+            {# Jump through hoops here to get the start date of the event itself by treating the offset as seconds in a unix timestamp and
                then rendering it to appear as a number of days to modify the date by. #}
             <meta itemprop="startDate" content="{{ week.startAt|date_modify(item.startIndex|date('+s \\d\\a\\y\\s'))|date('Y-m-d') }}"/>
             <span class="diary-time">{{ item.startAt | date('H:i') }}{% if item.endAt %}-{{ item.endAt | date('H:i') }}<br/>{% endif %}</span>

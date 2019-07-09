@@ -116,12 +116,12 @@ class User implements UserInterface, \Serializable
      * @Serializer\Exclude()
      */
     private $aces;
-    
+
     /**
      * @Api\Link(route="get_account_shows", targetType="Acts\\CamdramBundle\\Entity\\Show")
      */
     private $shows;
-    
+
     /**
      * @Api\Link(route="get_account_organisations", targetType="Acts\\CamdramBundle\\Entity\\Organisation")
      */
@@ -141,7 +141,7 @@ class User implements UserInterface, \Serializable
      * @Serializer\Exclude()
      */
     private $authorizations;
-    
+
     /**
      * Get id
      *
@@ -252,7 +252,7 @@ class User implements UserInterface, \Serializable
     {
         return $this->last_login_at;
     }
-    
+
     /**
      * Set password
      *
@@ -354,7 +354,7 @@ class User implements UserInterface, \Serializable
     {
         list($this->id, $this->name, $this->email, $this->password) = unserialize($serialized);
     }
-    
+
     public function __toString()
     {
         return $this->getName().' ('.$this->getEmail().')';
@@ -403,7 +403,7 @@ class User implements UserInterface, \Serializable
         if (is_null($this->external_users)) {
             return null;
         }
-        
+
         $criteria = Criteria::create()
         ->where(Criteria::expr()->eq('service', $service));
         $res = $this->external_users->matching($criteria);
@@ -540,7 +540,7 @@ class User implements UserInterface, \Serializable
     {
         return $this->apps;
     }
-    
+
     /**
      * Add ace_grants
      *

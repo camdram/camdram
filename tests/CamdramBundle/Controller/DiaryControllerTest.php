@@ -35,7 +35,7 @@ class DiaryControllerTest extends RestTestCase
         if ($day_of_week < 7) {
             $start_date->modify('-'.$day_of_week.' days');
         }
-        
+
         $start_date->modify('+'.$days.' day');
         $end_date = clone $start_date;
         $end_date->modify('+'.($length - 1).' days');

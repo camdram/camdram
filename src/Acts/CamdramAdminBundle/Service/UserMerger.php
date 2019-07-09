@@ -55,12 +55,12 @@ class UserMerger
             $user2 = $user1;
             $user1 = $tempUser;
         }
-        
+
         $metadata = $this->entityManager->getClassMetadata('ActsCamdramSecurityBundle:User');
         $accessor = PropertyAccess::createPropertyAccessor();
         foreach ($metadata->getAssociationMappings() as $mapping) {
             $fieldName = $mapping['fieldName'];
-            
+
             if ($accessor->isReadable($user2, $fieldName)
                 && $accessor->isWritable($user1, $fieldName)) {
                 $user2Value = $accessor->getValue($user2, $fieldName);
@@ -79,9 +79,9 @@ class UserMerger
                 }
             }
         }
-        
+
         $this->entityManager->remove($user2);
-        
+
         $this->entityManager->flush();
 
         return $user1;

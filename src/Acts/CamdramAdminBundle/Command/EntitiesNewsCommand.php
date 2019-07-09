@@ -47,7 +47,7 @@ class EntitiesNewsCommand extends Command
     {
         $this->executeForTwitter($output);
     }
-    
+
     private function executeForTwitter(OutputInterface $output)
     {
         $this->twitter->setDecodeJsonAsArray(true);
@@ -58,9 +58,9 @@ class EntitiesNewsCommand extends Command
         foreach ($entities as $entity) {
             $response = $this->twitter->get(
                 'statuses/user_timeline', [
-                    'user_id' => $entity->getTwitterId(), 
+                    'user_id' => $entity->getTwitterId(),
                     'count' => 50,
-                    'trim_user' => true, 
+                    'trim_user' => true,
                     'include_rts' => false,
                     'tweet_mode' => 'extended',
                     'exclude_replies' => true,
@@ -80,13 +80,13 @@ class EntitiesNewsCommand extends Command
     }
 
     private function addNews($service_name, $item, $entity, OutputInterface $output)
-    {        
+    {
         $news = new News();
         $news->setEntity($entity);
         $news->setRemoteId($item['id_str']);
         $news->setSource($service_name);
         $news->setPostedAt(new \DateTime($item['created_at']));
-        
+
         $body = $item['full_text'];
         $replacements = [];
 

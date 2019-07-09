@@ -66,7 +66,7 @@ class OAuthTest extends WebTestCase
         $this->appUser = new User();
         $this->appUser->setEmail('user1@camdram.net')
             ->setName('Test User');
-        
+
         $encoder = new LegacyMd5Encoder();
         $hashed_password = $encoder->encodePassword('password', $this->appUser->getSalt());
         $this->appUser->setPassword($hashed_password);

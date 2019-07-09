@@ -132,7 +132,7 @@ class Performance implements EventInterface
         if ($this->isRepeating()) {
             $str .= ' - '.$this->getRepeatUntil()->format('D jS F Y');
         }
-        
+
         return $str;
     }
 

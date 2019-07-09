@@ -24,7 +24,7 @@ class ApplicationController extends AbstractFOSRestController
     {
         $applications = array_reverse($this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
             ->findLatest(-1, Time::now()));
-        
+
         $view = $this->view($applications, 200)
                   ->setTemplate('application/index.'.$request->getRequestFormat().'.twig')
                    ->setTemplateVar('applications')
@@ -36,7 +36,7 @@ class ApplicationController extends AbstractFOSRestController
     {
         $data = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
             ->findOneBySlug($identifier, Time::now());
-            
+
         if (!$data) {
             throw $this->createNotFoundException('No application exists with that identifier');
         }

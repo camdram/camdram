@@ -94,7 +94,7 @@ class AppController extends AbstractFOSRestController
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
-        } 
+        }
         else {
             return $this->render('api/app/view.html.twig', array(
                 'ex_app' => $app,
@@ -128,7 +128,7 @@ class AppController extends AbstractFOSRestController
         $app = $this->getApp($app_id);
         $app->setSecret(Random::generateToken());
         $this->getDoctrine()->getManager()->flush();
-        
+
         return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
     }
 }

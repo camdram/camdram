@@ -13,7 +13,7 @@ use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 class VacanciesTest extends WebTestCase
-{   
+{
     /**
      * @var Symfony\Bundle\FrameworkBundle\Client
      */
@@ -28,7 +28,7 @@ class VacanciesTest extends WebTestCase
      * @var User
      */
     private $user;
-    
+
     public function setUp()
     {
         $this->client = self::createClient(array('environment' => 'test'));
@@ -76,7 +76,7 @@ class VacanciesTest extends WebTestCase
     {
         $this->client->request('GET', $url);
         $response = $this->client->getResponse();
-        
+
         $this->assertEquals(200, $response->getStatusCode(), "URL: $url");
         $this->assertContains('text/plain', $response->headers->get('Content-Type'), "URL: $url");
         $this->assertNotContains('<html>', $response->getContent(), "URL: $url");
@@ -165,5 +165,5 @@ class VacanciesTest extends WebTestCase
         $response = $this->fetchRss('/vacancies/applications.rss');
         $this->assertContains('Test Show', $response->getContent());
     }
-    
+
 }

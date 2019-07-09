@@ -12,7 +12,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 
 class RestTestCase extends WebTestCase
 {
-    
+
     /**
      * @var Symfony\Bundle\FrameworkBundle\Client
      */
@@ -27,7 +27,7 @@ class RestTestCase extends WebTestCase
      * @var AclProvider
      */
     protected $aclProvider;
-    
+
     public function setUp()
     {
         $this->client = self::createClient(array('environment' => 'test'));

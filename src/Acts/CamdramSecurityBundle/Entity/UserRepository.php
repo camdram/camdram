@@ -33,7 +33,7 @@ class UserRepository extends EntityRepository
 
         return $query->getResult();
     }
-    
+
     public function findOrganisationAdmins()
     {
         $qb = $this->createQueryBuilder('u');
@@ -41,16 +41,16 @@ class UserRepository extends EntityRepository
             ->where('e.type IN (:types)')
             ->setParameter('types', ['society', 'venue', 'security'])
             ->getQuery();
-        
+
         return $query->getResult();
     }
-    
+
     public function findActiveUsersForMailOut()
     {
         $qb = $this->createQueryBuilder('u');
         $query = $qb->where('u.is_email_verified = true')
         ->getQuery();
-        
+
         return $query->getResult();
     }
 
@@ -66,7 +66,7 @@ class UserRepository extends EntityRepository
 
         return $query->getResult();
     }
-    
+
     public function getContactableEntityOwners(OwnableInterface $entity)
     {
         $query = $this->createQueryBuilder('u')
@@ -77,7 +77,7 @@ class UserRepository extends EntityRepository
         ->setParameter('id', $entity->getId())
         ->setParameter('type', $entity->getAceType())
         ->getQuery();
-        
+
         return $query->getResult();
     }
 

@@ -16,7 +16,7 @@ class EditorVoter extends Voter
         if (!in_array($attribute, ['EDIT', 'CREATE', 'APPROVE', 'DELETE'])) {
             return false;
         }
-    
+
         if (is_object($subject)) {
             $subject = get_class($subject);
         }
@@ -39,7 +39,7 @@ class EditorVoter extends Voter
     {
         return TokenUtilities::isInteractiveRequest($token)
             && TokenUtilities::hasRole($token, 'ROLE_EDITOR');
-        
+
         return false;
     }
 }

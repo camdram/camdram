@@ -29,7 +29,7 @@ class MapDistanceValidatorTest extends ConstraintValidatorTestCase
 
         parent::setup();
     }
-    
+
     public function testValidate_Invalid()
     {
         $value = new MapLocation(50.0, 0.0);

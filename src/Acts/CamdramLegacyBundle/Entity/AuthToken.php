@@ -34,7 +34,7 @@ class AuthToken
      * @ORM\Column(name="siteid", type="integer", nullable=false)
      */
     private $site_id;
-    
+
     /**
      * @var \Acts\CamdramSecurityBundle\Entity\User
      *

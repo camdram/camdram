@@ -41,28 +41,28 @@ class SocietyController extends OrganisationController
     {
         $society = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('VIEW', $society);
-        
+
         $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
             ->getContactableEntityOwners($society) > 0;
-        
+
         $view = $this->view($society, 200)
             ->setTemplate('society/show.html.twig')
             ->setTemplateData(['society' => $society, 'can_contact' => $can_contact])
         ;
-        
+
         return $view;
     }
 
     /**
      * Action that allows querying by id. Redirects to slug URL
-     * 
+     *
      * @Rest\Get("/societies/by-id/{id}")
      */
     public function getByIdAction(Request $request, $id)
     {
         $this->checkAuthenticated();
         $society = $this->getRepository()->findOneById($id);
-        
+
         if (!$society)
         {
             throw $this->createNotFoundException('That society id does not exist');
@@ -70,7 +70,7 @@ class SocietyController extends OrganisationController
 
         return $this->redirectToRoute('get_society', ['identifier' => $society->getSlug(), '_format' => $request->getRequestFormat()]);
     }
-    
+
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
@@ -154,13 +154,13 @@ class SocietyController extends OrganisationController
         $em->remove($society->getImage());
         $society->setImage(null);
         $em->flush();
-        
+
         return $this->redirectToRoute('get_society', ['identifier' => $identifier]);
     }
-    
+
     /**
      * Revoke a pending admin's access to an organisation.
-     * 
+     *
      * @Rest\Delete("/societies/{identifier}/pending-admins/{uid}")
      */
     public function deletePendingAdminAction(Request $request, $identifier, $uid)

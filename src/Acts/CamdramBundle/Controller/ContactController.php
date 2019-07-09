@@ -50,7 +50,7 @@ class ContactController extends Controller
             'form' => $form->createView()
         ]);
     }
-    
+
     private function getEntity($type, $identifier)
     {
         switch ($type) {

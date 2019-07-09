@@ -32,7 +32,7 @@ class ModerationManager
     private $aclProvider;
 
     private $authorizationChecker;
-    
+
     private $tokenStorage;
 
     private $logger;

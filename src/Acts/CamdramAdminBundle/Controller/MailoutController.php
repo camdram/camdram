@@ -22,13 +22,13 @@ class MailoutController extends Controller
 --
 Sent by the Camdram administration team.
 For any enquiries, please contact support@camdram.net.";
-    
+
     const FROM_NAME = "Camdram";
-    
+
     const FROM_EMAIL = "support@camdram.net";
-    
+
     const RETURN_EMAIL = "support-bounces@camdram.net";
-    
+
     /**
      * @Route("/mailout", name="acts_camdram_mailout")
      *
@@ -40,7 +40,7 @@ For any enquiries, please contact support@camdram.net.";
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
         $numActiveUsers = count($repo->findActiveUsersForMailOut());
         $numAdmins = count($repo->findOrganisationAdmins());
-        
+
         $form = $this->createFormBuilder()
             ->add('subject', TextType::class)
             ->add('recipients', ChoiceType::class, [
@@ -53,22 +53,22 @@ For any enquiries, please contact support@camdram.net.";
             ])
             ->add('message', TextareaType::class, ['data' => self::SIGNATURE])
             ->getForm();
-            
+
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->sendEmails($form->getData());
         }
-        
+
         return $this->render('admin/mailout/index.html.twig',
             ['form' => $form->createView()]
         );
     }
-    
+
     private function sendEmails($data)
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
-        
+
         switch ($data['recipients']) {
             case 'active':
                 $users = $repo->findActiveUsersForMailOut();
@@ -80,10 +80,10 @@ For any enquiries, please contact support@camdram.net.";
                 $users = [$this->getUser()];
                 break;
         }
-        
+
         $mailer = $this->get('mailer');
         $output = ['sent' => [], 'not_active' => [], 'not_verified' => []];
-        
+
         foreach ($users as $user) {
             if (!$user->getIsEmailVerified()) {
                 $output['not_verified'][] = $user;
@@ -97,7 +97,7 @@ For any enquiries, please contact support@camdram.net.";
                 $output['sent'][] = $user;
             }
         }
-        
+
         return $this->render('admin/mailout/sent.html.twig',
                 ['data' => $data, 'output' => $output]
         );

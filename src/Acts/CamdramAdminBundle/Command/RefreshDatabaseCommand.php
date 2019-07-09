@@ -20,7 +20,7 @@ class RefreshDatabaseCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $conn = $this->getContainer()->get('doctrine.dbal.default_connection');
-        if ($conn->getDatabasePlatform()->getName() != 'sqlite' 
+        if ($conn->getDatabasePlatform()->getName() != 'sqlite'
             && !$this->getContainer()->getParameter('env(DEVELOPMENT_WARNING)'))
         {
             //Precaution to avoid running this on the real database, as it drops the DB

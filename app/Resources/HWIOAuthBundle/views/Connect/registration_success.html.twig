@@ -9,11 +9,11 @@
 
     {% if not app.user.isEmailVerified %}
     <p>
-    We have sent an e-mail to {{ app.user.email }} to verify your e-mail address 
-    - please click on the link in order to receive further e-mails from Camdram. 
+    We have sent an e-mail to {{ app.user.email }} to verify your e-mail address
+    - please click on the link in order to receive further e-mails from Camdram.
     </p>
     {% endif %}
-    
+
     <p><a class="button" href="{{ path('acts_camdram_homepage') }}">Go to the home page</a></p>
-    
+
 {% endblock body %}

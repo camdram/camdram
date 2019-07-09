@@ -36,33 +36,33 @@ class VenueController extends OrganisationController
     {
         return $this->createForm(VenueType::class, $venue, ['method' => $method]);
     }
-    
+
     public function getAction($identifier)
     {
         $venue = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('VIEW', $venue);
-        
+
         $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
             ->getContactableEntityOwners($venue) > 0;
-        
+
         $view = $this->view($venue, 200)
             ->setTemplate('venue/show.html.twig')
             ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
         ;
-        
+
         return $view;
     }
 
     /**
      * Action that allows querying by id. Redirects to slug URL
-     * 
+     *
      * @Rest\Get("/venues/by-id/{id}")
      */
     public function getByIdAction(Request $request, $id)
     {
         $this->checkAuthenticated();
         $venue = $this->getRepository()->findOneById($id);
-        
+
         if (!$venue)
         {
             throw $this->createNotFoundException('That venue id does not exist');
@@ -158,13 +158,13 @@ class VenueController extends OrganisationController
         $em->remove($venue->getImage());
         $venue->setImage(null);
         $em->flush();
-        
+
         return $this->redirectToRoute('get_venue', ['identifier' => $identifier]);
     }
 
     /**
      * Revoke a pending admin's access to an organisation.
-     * 
+     *
      * @Rest\Delete("/venues/{identifier}/pending-admins/{uid}")
      */
     public function deletePendingAdminAction(Request $request, $identifier, $uid)

@@ -42,7 +42,7 @@
         {{ form_errors(form.societies) }}</p>
         <div class="linked-societies" data-prototype="{% apply escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endapply %}">
             {% for society in form.societies %}
-		{% include 'show/society-form.html.twig' with {society: society} %}
+        {% include 'show/society-form.html.twig' with {society: society} %}
             {% endfor %}
         </div>
         <ul class="inline-list right">

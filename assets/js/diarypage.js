@@ -230,9 +230,9 @@ $(function() {
                 else {
                     history.pushState(data, document.title, url);
                 }
-    
+
             }
-    
+
             history.replaceState(
                 {start: diary.get_first_date().format(Camdram.diary_date_format)},
                 document.title, document.location

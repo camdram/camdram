@@ -77,7 +77,7 @@ class SearchControllerTest extends WebTestCase
     {
         $person = new Person;
         $person->setName($name);
-        
+
         //People must have >= 1 role to be indexed
         $show = new Show;
         $show->setName('Test Show')

@@ -155,7 +155,7 @@ class UserController extends AbstractFOSRestController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function resetPasswordAction(Request $request, $identifier, 
+    public function resetPasswordAction(Request $request, $identifier,
             TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
     {
         if (!$this->isCsrfTokenValid('reset_user_password', $request->request->get('_token'))) {

@@ -35,7 +35,7 @@ window.Routing = Routing;
 
     var showModalDialog = function(title, body) {
         $(body).prepend($('<h5/>').text(title))
-               .prepend($('<a/>').attr('aria-label', 'Close dialog')
+               .prepend($('<a/>').attr('aria-label', 'Close dialog')
                                  .attr('role', 'button')
                                  .addClass('close-reveal-modal')
                                  .html('&#215;').click(hideModalDialog))
@@ -325,63 +325,54 @@ window.Routing = Routing;
         fixHtml($(document));
         doCookieConsent();
     });
-    
-    Dropzone.options.imageUpload = {
-    		  paramName: "file", // The name that will be used to transfer the file
-    		  maxFilesize: 2, // MB
-    		  createImageThumbnails: true,
-    		  thumbnailWidth: 120,
-    		  thumbnailHeight: 120,
-    		  resizeWidth: 1024,
-    		  maxFiles: 1,
-    		  acceptedFiles: 'image/*',
-    		  dictDefaultMessage: 'Click to upload image',
-    		  previewTemplate: '<div class="dz-preview dz-file-preview">'
-				 + '<div class="dz-details">'
-				 + '<div class="dz-filename alert-box round">Uploading <span data-dz-name></span></div>'
-				 + '<div class="dz-size" data-dz-size></div>'
-				 + '<img data-dz-thumbnail />'
-				 + '</div>'
-				 + ' <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>'
-				+ '</div>',
-    		  init: function() {
-    			  var msgDiv = Dropzone.createElement('<div/>');
-    			  msgDiv.className = 'hidden'
-    			  this.element.append(msgDiv);
-    			  
-    			  this.on('error', function(file, errorMessage, blah) {
-			    	this.removeAllFiles();
-			    	
-			    	var errorText = 'Error uploading "' + file.name + '"';
-			    	
-			    	if (typeof errorMessage == 'string')
-		    		{
-			    		errorText += ':<br />' + errorMessage;
-		    		}
-			    	else if (typeof errorMessage.error == 'string')
-		    		{
-			    		errorText += ':<br />' + errorMessage.error;
-		    		}
-			    	msgDiv.innerHTML = errorText;
-			    	msgDiv.className = 'alert-box alert round';
-			      })
-			      .on('addedfile', function() {
-			    	  msgDiv.className = 'hidden';
-			    	  msgDiv.innerHTML = '';
-			      })
-			      .on('success', function(file) {
-			    	  this.destroy();
-			    	  
-			    	  msgDiv.innerHTML = '"' + file.name + '" uploaded'
-			    	  		+ '<br />Reloading page...'
-			    	  msgDiv.className = 'alert-box success round'
-			    	  
-		              location.reload();
-    		      })
-    		      .on("maxfilesexceeded", function(file) { 
-    		    	  this.removeFile(file); 
-    		      });
-    		   }
-    		};
 
+    Dropzone.options.imageUpload = {
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        createImageThumbnails: true,
+        thumbnailWidth: 120,
+        thumbnailHeight: 120,
+        resizeWidth: 1024,
+        maxFiles: 1,
+        acceptedFiles: 'image/*',
+        dictDefaultMessage: 'Click to upload image',
+        previewTemplate: '<div class="dz-preview dz-file-preview">'
+            + '<div class="dz-details">'
+            + '<div class="dz-filename alert-box round">Uploading <span data-dz-name></span></div>'
+            + '<div class="dz-size" data-dz-size></div>'
+            + '<img data-dz-thumbnail />'
+            + '</div>'
+            + ' <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>'
+            + '</div>',
+        init: function() {
+            var msgDiv = Dropzone.createElement('<div/>');
+            msgDiv.className = 'hidden'
+            this.element.append(msgDiv);
+
+            this.on('error', function(file, errorMessage, blah) {
+                this.removeAllFiles();
+
+                var errorText = 'Error uploading "' + file.name + '"';
+
+                if (typeof errorMessage == 'string') {
+                    errorText += ':<br />' + errorMessage;
+                } else if (typeof errorMessage.error == 'string') {
+                  errorText += ':<br />' + errorMessage.error;
+                }
+                msgDiv.innerHTML = errorText;
+                msgDiv.className = 'alert-box alert round';
+            }).on('addedfile', function() {
+                msgDiv.className = 'hidden';
+                msgDiv.innerHTML = '';
+            }).on('success', function(file) {
+                this.destroy();
+                msgDiv.innerHTML = '"' + file.name + '" uploaded'
+                        + '<br />Reloading page...'
+                msgDiv.className = 'alert-box success round'
+                location.reload();
+            }).on("maxfilesexceeded", function(file) {
+                this.removeFile(file);
+            });
+        }
+    };
 })(jQuery, window);

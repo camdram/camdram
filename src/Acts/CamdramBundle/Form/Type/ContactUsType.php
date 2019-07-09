@@ -50,8 +50,8 @@ class ContactUsType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) 
-        {    
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event)
+        {
             $user = $this->storage->getToken() ? $this->storage->getToken()->getUser() : null;
 
             if ($user instanceof User) {

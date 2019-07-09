@@ -33,7 +33,7 @@ class ShowAuditionsTypeTest extends TypeTestCase
 
         $this->assertEquals('Lorem ipsum', $show->getAudextra());
         $this->assertEquals(1, $show->getScheduledAuditions()->count());
-        
+
         $audition = $show->getScheduledAuditions()->first();
         $this->assertEquals(new \DateTime('2038-01-01 16:00'), $audition->getStartAt());
         $this->assertEquals(new \DateTime('2038-01-01 18:00'), $audition->getEndAt());
@@ -61,7 +61,7 @@ class ShowAuditionsTypeTest extends TypeTestCase
 
         $this->assertEquals('Lorem ipsum', $show->getAudextra());
         $this->assertEquals(1, $show->getScheduledAuditions()->count());
-        
+
         $audition = $show->getScheduledAuditions()->first();
         $this->assertEquals(new \DateTime('2025-08-03 09:00'), $audition->getStartAt());
         $this->assertEquals(new \DateTime('2025-08-03 14:00'), $audition->getEndAt());

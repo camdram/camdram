@@ -3,7 +3,7 @@ namespace Acts\CamdramBundle\Service;
 
 class Time
 {
-    
+
     private static $mockDateTime;
 
     public static function mockDateTime(\DateTime $time)

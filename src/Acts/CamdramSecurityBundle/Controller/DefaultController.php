@@ -26,19 +26,19 @@ class DefaultController extends Controller
     {
         return $this->render('account/toolbar.html.twig');
     }
-    
+
     public function loginAction(Request $request)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirect($this->generateUrl('acts_camdram_homepage'));
         }
-        
+
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError(false);
         if ($error instanceof AccountNotLinkedException) {
             return $this->forward('HWIOAuthBundle:Connect:connect');
         }
-        
+
         return $this->render('account/login.html.twig', ['error' => $error]);
     }
 
@@ -47,11 +47,11 @@ class DefaultController extends Controller
         $authenticationUtils = $this->get('security.authentication_utils');
         $last_email = $authenticationUtils->getLastUsername();
         $has_error = !is_null($authenticationUtils->getLastAuthenticationError());
-        
+
         if (!$last_email && $this->getUser() instanceof User) {
             $last_email = $this->getUser()->getEmail();
         }
-        
+
         return $this->render(
             'account/login_form.html.twig',
             ['last_email' => $last_email, 'error' => $has_error]

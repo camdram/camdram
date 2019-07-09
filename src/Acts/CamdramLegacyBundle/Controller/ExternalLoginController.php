@@ -13,44 +13,44 @@ class ExternalLoginController extends Controller
     public function defaultAction(Request $request)
     {
         $site = null;
-        
+
         if ($request->query->has('redirect')) {
             $redirectUri = $request->query->get('redirect');
             $redirect_parts = parse_url($redirectUri);
-            
+
             $repo = $this->getDoctrine()->getRepository('ActsCamdramLegacyBundle:ExternalSite');
             $site = $repo->findOneByUrl('http://' . $redirect_parts['host']);
-            
+
             if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
                 //Skip explanatory page if already fully logged in
                 return $this->forward('ActsCamdramLegacyBundle:ExternalLogin:auth', [], ['redirect' => $redirectUri]);
             }
         }
-        
+
         return $this->render(
-        
+
             "ActsCamdramLegacyBundle:ExternalLogin:default.html.twig",
             ['site' => $site, 'redirect' => $request->query->get('redirect')]
-        
+
         );
     }
-    
+
     public function authAction(Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        
+
         $redirectUri = $request->query->get('redirect');
         if ($redirectUri == "http://roombooking.adctheatre.complayroom") {
             $redirectUri = "http://roombooking.adctheatre.com/playroom";
         }
         $redirect_parts = parse_url($redirectUri);
-        
+
         $repo = $this->getDoctrine()->getRepository('ActsCamdramLegacyBundle:ExternalSite');
-        
+
         $site = $repo->findOneByUrl('http://' . $redirect_parts['host']);
-        
+
         $tokenId = md5(rand());
-        
+
         $token = new AuthToken();
         $token->setUser($this->getUser())
         ->setSite($site)
@@ -59,7 +59,7 @@ class ExternalLoginController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($token);
         $em->flush();
-        
+
         parse_str(isset($redirect_parts['query']) ? $redirect_parts['query'] : '', $query_parts);
         $query_parts['camdramauthtoken'] = $tokenId;
         $query_parts['finaldestination'] = $redirectUri;
@@ -69,7 +69,7 @@ class ExternalLoginController extends Controller
         $url .= '?'.$query_str;
         return $this->redirect($url);
     }
-    
+
     public function spendTokenAction(Request $request)
     {
         //Delete tokens > 60s old
@@ -78,15 +78,15 @@ class ExternalLoginController extends Controller
         $qb->delete()->where('t.issued < :threshold')
             ->setParameter('threshold', new \DateTime('-60sec'))
             ->getQuery()->execute();
-        
+
         if ($request->query->has('tokenid')) {
             $tokenId = $request->get('tokenid');
-            
+
             if ($token = $repo->findOneByToken($tokenId)) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($token);
                 $em->flush();
-                
+
                 if ($user = $token->getUser()) {
                     return new Response("OK\n"
                         .$user->getId()."\n"
@@ -95,7 +95,7 @@ class ExternalLoginController extends Controller
                 }
             }
         }
-        
+
         return new Response("ERROR");
     }
 }
