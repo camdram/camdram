@@ -90,6 +90,8 @@ class Role
 
     /**
      * @ORM\Column(name="tag", type="string", length=20, nullable=true)
+     * @Serializer\Expose()
+     * @Serializer\XmlElement(cdata=false)
      * @Gedmo\Versioned
      */
     private $tag;
