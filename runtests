@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-export SYMFONY_PHPUNIT_VERSION=6.5
+export SYMFONY_PHPUNIT_VERSION=8.2.4
 export SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 export SYMFONY_ENV=test
 

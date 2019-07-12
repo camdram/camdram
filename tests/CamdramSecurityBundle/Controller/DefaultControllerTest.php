@@ -23,7 +23,7 @@ class DefaultControllerTest extends WebTestCase
      */
     private $aclProvider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = self::createClient(['environment' => 'test']);
         $this->client->followRedirects(true);

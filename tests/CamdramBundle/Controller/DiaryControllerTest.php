@@ -13,7 +13,7 @@ use Acts\CamdramBundle\Service\Time;
 class DiaryControllerTest extends RestTestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

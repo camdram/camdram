@@ -12,7 +12,7 @@ class TextServiceTest extends TestCase
      */
     private $textService;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->textService = new TextService();
     }

@@ -29,7 +29,7 @@ class ContactEntityServiceTest extends TestCase
      */
     private $contactEntityService;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mailer = $this->getMockBuilder('\Swift_Mailer')
             ->disableOriginalConstructor()->disableOriginalClone()->getMock();

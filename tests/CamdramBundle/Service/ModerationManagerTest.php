@@ -60,7 +60,7 @@ class ModerationManagerTest extends TestCase
     private $venue;
     private $ownedShow;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->entityManager = $this->getMockBuilder('Doctrine\\ORM\\EntityManager')
             ->disableOriginalConstructor()->getMock();

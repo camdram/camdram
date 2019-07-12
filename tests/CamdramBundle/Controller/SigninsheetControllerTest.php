@@ -19,14 +19,14 @@ class SigninsheetControllerTest extends RestTestCase
         foreach (['', '.csv'] as $format) {
             $crawler = $this->client->request('GET', '/shows/non-existent-test/signinsheet'.$format);
             $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
-            $this->assertContains('That show does not exist', $this->client->getResponse()->getContent());
+            $this->assertStringContainsString('That show does not exist', $this->client->getResponse()->getContent());
         }
 
         // Test no performances
         foreach (['', '.csv'] as $format) {
             $crawler = $this->client->request('GET', '/shows/'.$show->getSlug().'/signinsheet' . $format);
             $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
-            $this->assertContains('There are no performances associated with this show', $this->client->getResponse()->getContent());
+            $this->assertStringContainsString('There are no performances associated with this show', $this->client->getResponse()->getContent());
         }
 
         // Test with a performance, spanning a timezone change for the UK.

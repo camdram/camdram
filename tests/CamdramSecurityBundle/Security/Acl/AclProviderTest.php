@@ -9,11 +9,13 @@ use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Camdram\Tests\RepositoryTestCase;
 
 class AclProviderTest extends RepositoryTestCase
 {
+    use ArraySubsetAsserts;
 
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -36,7 +38,7 @@ class AclProviderTest extends RepositoryTestCase
     private $user;
     private $user2;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->aclProvider = new AclProvider($this->em, new EventDispatcher());
@@ -140,19 +142,15 @@ class AclProviderTest extends RepositoryTestCase
         $this->assertSame($this->aclProvider->getOrganisationIdsByUser($this->user2), []);
     }
 
-    /**
-     * @expectedException \ReflectionException
-     */
     public function testGetEntityIdsByUser_InvalidClass()
     {
+        $this->expectException(\ReflectionException::class);
         $this->aclProvider->getEntityIdsByUser($this->user, '\AnInvalidClassName');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetEntityIdsByUser_NonOwnableClass()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->aclProvider->getEntityIdsByUser($this->user, '\\Acts\\CamdramBundle\\Entity\\News');
     }
 

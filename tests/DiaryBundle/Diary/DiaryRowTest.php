@@ -14,7 +14,7 @@ class DiaryRowTest extends TestCase
      */
     private $row;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->row = new DiaryRow(new \DateTime('2014-02-01'));
     }

@@ -46,7 +46,7 @@ class OAuthTest extends WebTestCase
 
     private static $db = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->userClient = static::createClient();
 

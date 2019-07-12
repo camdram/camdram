@@ -20,7 +20,7 @@ class MapDistanceValidatorTest extends ConstraintValidatorTestCase
         return new MapDistanceValidator();
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mapDistanceConstraint = new MapDistance();
         $this->mapDistanceConstraint->nearTo = array(52.1, 0.5);

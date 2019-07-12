@@ -33,6 +33,7 @@
     "minimum-stability": "stable",
     "name": "camdram/camdram",
     "replace": {
+        "phpunit/phpunit": "8.2.4",
         "symfony/polyfill-php56": "1.99",
         "symfony/polyfill-php70": "1.99",
         "symfony/polyfill-php71": "1.99",
@@ -75,7 +76,8 @@
         "zendframework/zend-feed": "2.12.*"
     },
     "require-dev": {
-        "dama/doctrine-test-bundle": "^5.0",
+        "dama/doctrine-test-bundle": "^6.0",
+        "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "sensio/generator-bundle": "^3.1",
         "symfony/phpunit-bridge": "^4.1",
         "symfony/web-server-bundle": "^3.4"

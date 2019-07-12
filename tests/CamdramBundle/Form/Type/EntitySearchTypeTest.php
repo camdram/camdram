@@ -20,7 +20,7 @@ class EntitySearchTypeTest extends TypeTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repo = $this->getMockBuilder('Acts\\CamdramBundle\\Entity\\SocietyRepository')
             ->disableOriginalConstructor()

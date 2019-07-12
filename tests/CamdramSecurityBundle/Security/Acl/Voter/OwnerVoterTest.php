@@ -27,7 +27,7 @@ class OwnerVoterTest extends TestCase
      */
     private $token;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->aclProvider = $this->getMockBuilder('\Acts\\CamdramSecurityBundle\\Security\\Acl\\AclProvider')
             ->disableOriginalConstructor()->getMock();

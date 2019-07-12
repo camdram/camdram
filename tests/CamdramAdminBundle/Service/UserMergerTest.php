@@ -15,7 +15,7 @@ class UserMergerTest extends RepositoryTestCase
     private $person;
     private $ace;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -11,6 +11,7 @@ composer.phar
 .*.swp
 bin
 .web-server-pid
+.phpunit.result.cache
 node_modules
 assets/js/fos_js_routes.json
 coverage.xml
