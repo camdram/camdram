@@ -140,7 +140,7 @@ The following wiki pages detail how to create a server set-up that's more simila
 
  * [Setting up for JS/CSS development](https://github.com/camdram/camdram/wiki/Webpack-setup-guide)
  * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
- * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide)
+ * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch-guide)
  * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
  * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
 
