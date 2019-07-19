@@ -282,6 +282,7 @@ class Show implements OwnableInterface
     /**
      * @var array
      *
+     * @Assert\Valid(traverse=true)
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_at" = "ASC"})
      * @Serializer\Expose()

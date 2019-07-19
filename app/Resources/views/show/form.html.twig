@@ -130,19 +130,56 @@ $(function() {
         }
     };
 
-    $('input[type=date]').live('change', function() {
-        var $self = $(this);
-        $self.parents('.performance').find('input[type=date]').each(function(key, input) {
-            if (!$(input).val()) {
-                $(input).val($self.val());
-            }
-        })
-    })
+    if ($('<input type="date" value="2000-01-01">')[0].valueAsDate) {
+        $('input[type=date]').live('change', function() {
+            var $self = $(this);
+            var $performance = $self.parents('.performance');
+            $performance.find('input[type=date]').each(function(key, input) {
+                // Avoid copying 0002, 0020, 0201 year while typing.
+                if (!$(input).val() && $self[0].valueAsDate.getFullYear() > 1950) {
+                    $(input).val($self.val());
+                }
+            });
 
-    $('#show_multi_venue input').change(update_date_fields)
+            $performance.find('small.error, small.warning').remove();
+            $performance.find('input.error').removeClass('error');
+            var startAt = $('input[id*="start_at_date"]', $performance)[0];
+            var endAt   = $('input[id*="repeat_until"]',  $performance)[0];
+
+            if (startAt.valueAsDate && endAt.valueAsDate) {
+                var message = '';
+                var isError = false;
+                var now = new Date();
+                var softMaxDate = new Date(now.getTime() + 86400000*182);
+                // hardMaxDate === PHP's new Date("+18 months")
+                var hardMaxDate = new Date(now.getFullYear() + 1 + (now.getMonth() > 5),
+                    (now.getMonth() + 6) % 12, now.getDate());
+                if (startAt.valueAsDate > endAt.valueAsDate) {
+                    message += 'The run can’t finish before it’s begun!<br>';
+                    isError = true;
+                }
+                if (startAt.valueAsDate > hardMaxDate || endAt.valueAsDate > hardMaxDate) {
+                    message += 'Shows may only be listed on Camdram up to 18 months in advance.<br>';
+                    isError = true;
+                } else if (startAt.valueAsDate > softMaxDate || endAt.valueAsDate > softMaxDate) {
+                    message += 'Note: one or both dates are more than six months in advance.<br>';
+                }
+                if (startAt.valueAsDate < now || endAt.valueAsDate < now) {
+                    message += 'Note: one or both dates are in the past.<br>';
+                }
+                if (!message) return;
+
+                message += isError ? "Check your dates!" : "Do check for typos, but you're free to post this if it's correct.";
+                $performance[0].insertAdjacentHTML('beforeend',
+                    (isError ? '<small class="error">' : '<small class="warning">') + message + '</span>');
+            }
+        });
+    }
+
+    $('#show_multi_venue input').change(update_date_fields);
     $('.main-venue-row select').change(function() {
         $('.performances .venue-row select').val($(this).val());
-    })
+    });
 
     update_date_fields();
     $('.performances').entityCollection({

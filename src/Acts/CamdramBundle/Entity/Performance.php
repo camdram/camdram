@@ -2,11 +2,13 @@
 
 namespace Acts\CamdramBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Acts\DiaryBundle\Model\EventInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Performance
@@ -325,5 +327,24 @@ class Performance implements EventInterface
         $startAt = clone $this->getStartAt();
         $startAt->setTimezone(new \DateTimezone('Europe/London'));
         return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
+    }
+
+    /**
+     * There is further validation client-side which generates warnings.
+     *
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        if ($this->getStartDate() > $this->getEndDate()) {
+            $context->buildViolation("The run can't finish before it's begun! Check your dates.")
+                    ->atPath('repeat_until')
+                    ->addViolation();
+        }
+        if ($this->getEndDate() > new \DateTime("+18 months")) {
+            $context->buildViolation("Shows may only be listed on Camdram up to 18 months in advance. Check your dates.")
+                    ->atPath('repeat_until')
+                    ->addViolation();
+        }
     }
 }

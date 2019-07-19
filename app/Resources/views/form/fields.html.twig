@@ -47,9 +47,9 @@
     {% if errors %}
             {% for error in errors %}
             <small class="error">{% if error.getMessagePluralization() is null %}
-                    {{ error.getMessageTemplate() | trans(error.getMessageParameters(), 'validators') }},
+                    {{ error.getMessageTemplate() | trans(error.getMessageParameters(), 'validators') }}
                 {% else %}
-                    {{ error.getMessageTemplate() | transchoice(error.getMessagePluralization(), error.getMessageParameters(), 'validators') }},
+                    {{ error.getMessageTemplate() | transchoice(error.getMessagePluralization(), error.getMessageParameters(), 'validators') }}
                 {% endif %}
                 </small>
             {% endfor %}

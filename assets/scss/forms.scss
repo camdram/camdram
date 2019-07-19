@@ -160,16 +160,23 @@ textarea {
 }
 
 .form-small-widget, .form-medium-widget, .form-large-row {
-  small.error {
+  small.error, small.warning {
+    display: inline-block;
     width: 100%;
     text-align: right;
     margin: 0.5em 1em;
+  }
 
-    &::before {
-      content: "\00f05a\002002";
-      font: 1.5em FontAwesome;
-      color: #e11;
-    }
+  small.error::before {
+    content: "\00f05a\002002";
+    font: 1.5em FontAwesome;
+    color: #e11;
+  }
+
+  small.warning::before {
+    content: "\00f059\002002";
+    font: 1.5em FontAwesome;
+    color: #f80;
   }
 }
 
