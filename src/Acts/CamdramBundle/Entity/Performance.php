@@ -336,6 +336,18 @@ class Performance implements EventInterface
      */
     public function validate(ExecutionContextInterface $context, $payload)
     {
+        if ($this->getStartAt() == null) {
+            $context->buildViolation("Invalid or blank time, or start date. Try a different web browser if the problem persists.")
+                    ->atPath('start_at')
+                    ->addViolation();
+            return;
+        }
+        if ($this->getRepeatUntil() == null) {
+            $context->buildViolation("Invalid or blank end date. Try a different web browser if the problem persists.")
+                    ->atPath('repeat_until')
+                    ->addViolation();
+            return;
+        }
         if ($this->getStartDate() > $this->getEndDate()) {
             $context->buildViolation("The run can't finish before it's begun! Check your dates.")
                     ->atPath('repeat_until')

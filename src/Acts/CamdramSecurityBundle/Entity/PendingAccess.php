@@ -3,6 +3,7 @@
 namespace Acts\CamdramSecurityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * PendingAccess
@@ -39,6 +40,8 @@ class PendingAccess
     /**
      * @var string
      *
+     * @Assert\NotBlank
+     * @Assert\Email
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     private $email;

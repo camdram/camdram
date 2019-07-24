@@ -203,6 +203,11 @@ class RoleController extends FOSRestController
                     );
                 }
             }
+        } else {
+            // Form not valid, hand back to user
+            return $this->view($form, 400)
+                ->setData(array('show' => $show, 'form' => $form->createView()))
+                ->setTemplate('show/roles-new.html.twig');
         }
 
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));

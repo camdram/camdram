@@ -63,7 +63,7 @@ class ApplicationController extends AbstractFOSRestController
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
         } else {
             return $this->view($form, 400)
-                ->setTemplateVar('form')
+                ->setData(array('show' => $show, 'form' => $form->createView()))
                 ->setTemplate('show/application-new.html.twig');
         }
     }
@@ -105,7 +105,7 @@ class ApplicationController extends AbstractFOSRestController
             return $this->routeRedirectView('edit_show_application', array('identifier' => $show->getSlug()));
         } else {
             return $this->view($form, 400)
-                ->setTemplateVar('form')
+                ->setData(array('show' => $show, 'form' => $form->createView()))
                 ->setTemplate('show/application-edit.html.twig');
         }
     }

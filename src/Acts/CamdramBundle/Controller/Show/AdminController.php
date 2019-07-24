@@ -32,15 +32,26 @@ class AdminController extends AbstractFOSRestController
      */
     public function editAdminAction($identifier, Helper $helper)
     {
+        return $this->createEditAdminResponse($identifier, null, $helper);
+    }
+
+    /**
+     * This method's contents were formerly included in editAdminAction
+     * directly. Splitting it off allows an alternative form to be passed.
+     */
+    private function createEditAdminResponse(string $identifier, $form, Helper $helper)
+    {
         $show = $this->getEntity($identifier);
         $helper->ensureGranted('EDIT', $show);
 
-        $ace = new PendingAccess();
-        $ace->setRid($show->getId());
-        $ace->setType('show');
-        $ace->setIssuer($this->getUser());
-        $form = $this->createForm(PendingAccessType::class, $ace, array(
-            'action' => $this->generateUrl('post_show_admin', array('identifier' => $identifier))));
+        if ($form == null) {
+            $ace = new PendingAccess();
+            $ace->setRid($show->getId());
+            $ace->setType('show');
+            $ace->setIssuer($this->getUser());
+            $form = $this->createForm(PendingAccessType::class, $ace, array(
+                'action' => $this->generateUrl('post_show_admin', array('identifier' => $identifier))));
+        }
 
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($show);
@@ -119,9 +130,11 @@ class AdminController extends AbstractFOSRestController
                     }
                 }
             }
+            return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
+        } else {
+            // Form not valid, return it to user.
+            return $this->createEditAdminResponse($show->getSlug(), $form, $helper);
         }
-
-        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**

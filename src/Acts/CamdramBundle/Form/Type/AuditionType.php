@@ -58,7 +58,18 @@ class AuditionType extends AbstractType
             'data_class' => 'Acts\CamdramBundle\Entity\Audition',
             'constraints' => [
                 new Constraints\Callback(function($audition, $context) {
-                    if ($this->generateEndAt($audition->getStartAt(), $audition->getEndAt()) < new \DateTime()) {
+                    $blanks = false;
+                    if ($audition->getStartAt() == null) {
+                        $blanks = true;
+                        $context->buildViolation('A start date and time must be provided.')
+                                ->atPath('start_at')->addViolation();
+                    }
+                    if ($audition->getEndAt() == null) {
+                        $blanks = true;
+                        $context->buildViolation('An end time must be provided.')
+                                ->atPath('end_at')->addViolation();
+                    }
+                    if (!$blanks && $this->generateEndAt($audition->getStartAt(), $audition->getEndAt()) < new \DateTime()) {
                         $context->buildViolation('The end of the audition slot must be in the future.')
                                 ->atPath('end_at')->addViolation();
                     }
@@ -67,7 +78,7 @@ class AuditionType extends AbstractType
         ));
     }
 
-    private function generateEndAt($startAt, $endAtTime): \DateTime
+    private function generateEndAt(\DateTime $startAt, \DateTime $endAtTime): \DateTime
     {
         $endAtTime = clone $endAtTime;
 
