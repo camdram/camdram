@@ -44,6 +44,6 @@
 {%- endfor -%}
 </div>
 {% if editable %}
-    {{ render(path('new_show_role', {identifier: show.slug, type: type})) }}
+    {{ render(controller('Acts\\CamdramBundle\\Controller\\Show\\RoleController::newRole', {identifier: show.slug, type: type})) }}
 {% endif %}
 {% endapply %}
