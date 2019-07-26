@@ -71,9 +71,10 @@ class AccountController extends AbstractFOSRestController
      */
     public function getOrganisationsAction(AclProvider $aclProvider)
     {
-        $orgs = $aclProvider->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Organisation');
+        return $this->view(array_merge(
+            $aclProvider->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Society'),
+            $aclProvider->getEntitiesByUser($this->getUser(), 'Acts\\CamdramBundle\\Entity\\Venue')));
 
-        return $this->view($orgs);
     }
 
     /**
