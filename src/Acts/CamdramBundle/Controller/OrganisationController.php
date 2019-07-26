@@ -175,7 +175,7 @@ abstract class OrganisationController extends AbstractRestController
             return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
         } else {
             return $this->view($form, 400)
-                ->setTemplateVar('form')
+                ->setData(array('org' => $org, 'form' => $form->createView()))
                 ->setTemplate($this->type.'/application-new.html.twig');
         }
     }
