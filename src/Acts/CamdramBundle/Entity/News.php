@@ -23,13 +23,13 @@ class News
 
     /** @var Entity
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="news")
-     * @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @ORM\JoinColumn(name="society_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
     private $society;
 
     /** @var Entity
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="news")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
     private $venue;
 

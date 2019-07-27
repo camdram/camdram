@@ -69,7 +69,7 @@ class Performance implements EventInterface
      * @var \Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="performances")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="SET NULL")
      * @Gedmo\Versioned
      * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
      */

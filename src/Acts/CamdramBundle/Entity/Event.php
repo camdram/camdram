@@ -68,10 +68,20 @@ class Event
      *
      * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
+     *   @ORM\JoinColumn(name="society_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      * })
      */
     private $society;
+
+    /**
+     * @var \Venue
+     *
+     * @ORM\ManyToOne(targetEntity="Venue")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * })
+     */
+    private $venue;
 
     /**
      * Get id

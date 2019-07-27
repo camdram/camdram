@@ -52,7 +52,7 @@ class Application
      *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="applications")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="socid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="society_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
      * @Api\Link(embed=true, route="get_society", params={"identifier": "object.getSociety().getSlug()"})
@@ -64,7 +64,7 @@ class Application
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="applications")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="venid", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="venue_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      * @Gedmo\Versioned
      * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
