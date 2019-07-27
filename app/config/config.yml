@@ -174,7 +174,7 @@ stof_doctrine_extensions:
             loggable: true
 
 fos_js_routing:
-    routes_to_expose: [ "get_[-a-z_]+", 'acts_camdram_.*', 'patch_roles_.*', 'search_entity' ]
+    routes_to_expose: [ "get_[-a-z_]+", 'acts_camdram_.*', 'patch_roles_.*', '.*search.*' ]
 
 ewz_recaptcha:
     public_key: "%recaptcha_site_key%"

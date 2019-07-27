@@ -204,7 +204,15 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
             // Add item into the page
             $("#search_form .results ul").append(item);
         }
-        Camdram.autocomplete.drawControl(true, (items.length * 40));
+        let allResultsItem = $('<li><a class="resultText"><span>See all results...</span></a></li>');
+        allResultsItem.find('a')
+            .attr('href', `${Routing.generate('acts_camdram_search_search')}?q=${encodeURIComponent(query)}`)
+            .click(function(e) {
+                e.preventDefault();
+                Camdram.autocomplete.chooseOption(e);
+            });
+        $("#search_form .results ul").append(allResultsItem);
+        Camdram.autocomplete.drawControl(true, (items.length + 1) * 40);
     } else if (error) {
         $("#search_form .error").show();
         Camdram.autocomplete.drawControl(true);
