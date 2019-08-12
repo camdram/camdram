@@ -42,8 +42,8 @@ class VenueController extends OrganisationController
         $venue = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('VIEW', $venue);
 
-        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
-            ->getContactableEntityOwners($venue) > 0;
+        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($venue));
 
         $view = $this->view($venue, 200)
             ->setTemplate('venue/show.html.twig')

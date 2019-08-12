@@ -42,8 +42,8 @@ class SocietyController extends OrganisationController
         $society = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('VIEW', $society);
 
-        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
-            ->getContactableEntityOwners($society) > 0;
+        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($society));
 
         $view = $this->view($society, 200)
             ->setTemplate('society/show.html.twig')

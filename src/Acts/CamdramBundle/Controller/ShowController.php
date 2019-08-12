@@ -81,8 +81,8 @@ class ShowController extends AbstractRestController
 
         $this->denyAccessUnlessGranted('VIEW', $show);
 
-        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
-            ->getContactableEntityOwners($show) > 0;
+        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($show));
 
         $view = $this->view($show, 200)
             ->setTemplate('show/show.html.twig')
