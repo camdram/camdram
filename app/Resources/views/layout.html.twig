@@ -5,7 +5,7 @@
     <div>
       <ul>
         <li class="opt-dropdown">
-          <a href="#!" tabindex="-1"><i class="fa fa-info-circle"></i></a>
+          <a href="#!" tabindex="-1" aria-label="About us dropdown"><i class="fa fa-info-circle"></i></a>
           <ul>
             {% include 'navigation/nav-items.html.twig'  with {items: {
                 'about': {'text': 'About', 'path': path('acts_camdram_about')},
@@ -34,7 +34,7 @@
           <i class="fa fa-search">
             <span>Tip: Press the 's' or forward-slash key to jump to search!</span>
           </i>
-          <input type="text" name="q" id="searchfield" data-hotkey="s,/" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
+          <input type="text" name="q" id="searchfield" data-hotkey="s,/" autocomplete="off" placeholder="Search for a person, venue, show or society..." aria-label="Search"/>
           <div class="results">
             <ul></ul>
             <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
