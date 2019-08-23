@@ -42,9 +42,9 @@
             "authors": [
                 {
                     "name": "Abraham Williams",
+                    "role": "Developer",
                     "email": "abraham@abrah.am",
-                    "homepage": "https://abrah.am",
-                    "role": "Developer"
+                    "homepage": "https://abrah.am"
                 }
             ],
             "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
@@ -1812,16 +1812,16 @@
         },
         {
             "name": "friendsofsymfony/elastica-bundle",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSElasticaBundle.git",
-                "reference": "3f2707d1d606a59527f74e88808b820a170d3f42"
+                "reference": "e79828ed011464b43e227503c8b1f983ea3c2855"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/3f2707d1d606a59527f74e88808b820a170d3f42",
-                "reference": "3f2707d1d606a59527f74e88808b820a170d3f42",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSElasticaBundle/zipball/e79828ed011464b43e227503c8b1f983ea3c2855",
+                "reference": "e79828ed011464b43e227503c8b1f983ea3c2855",
                 "shasum": ""
             },
             "require": {
@@ -1870,16 +1870,16 @@
             ],
             "authors": [
                 {
+                    "name": "FriendsOfSymfony Community",
+                    "homepage": "https://github.com/FriendsOfSymfony/FOSElasticaBundle/contributors"
+                },
+                {
                     "name": "Tim Nagel",
                     "email": "tim@nagel.com.au"
                 },
                 {
                     "name": "Richard Miller",
                     "email": "richard.miller@limethinking.co.uk"
-                },
-                {
-                    "name": "FriendsOfSymfony Community",
-                    "homepage": "https://github.com/FriendsOfSymfony/FOSElasticaBundle/contributors"
                 },
                 {
                     "name": "Jeremy Mikola",
@@ -1895,7 +1895,7 @@
                 "mongodb",
                 "search"
             ],
-            "time": "2019-05-03T10:13:56+00:00"
+            "time": "2019-08-23T17:24:33+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
