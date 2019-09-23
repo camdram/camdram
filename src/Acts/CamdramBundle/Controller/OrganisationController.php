@@ -69,17 +69,25 @@ abstract class OrganisationController extends AbstractRestController
      */
     public function getShowsAction(Request $request, $identifier)
     {
-        if ($request->query->has('from')) {
-            $from = new \DateTime($request->query->get('from'));
-        } else {
-            $from = new \DateTime;
+        try {
+            if ($request->query->has('from')) {
+                $from = new \DateTime($request->query->get('from'));
+            } else {
+                $from = new \DateTime;
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad from parameter, try YYYY-MM-DD format.");
         }
 
-        if ($request->query->has('to')) {
-            $to = new \DateTime($request->query->get('to'));
-        } else {
-            $to = clone $from;
-            $to->modify('+1 year');
+        try {
+            if ($request->query->has('to')) {
+                $to = new \DateTime($request->query->get('to'));
+            } else {
+                $to = clone $from;
+                $to->modify('+1 year');
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad to parameter, try YYYY-MM-DD format.");
         }
 
         $shows = $this->getShows($identifier, $from, $to);
@@ -98,17 +106,25 @@ abstract class OrganisationController extends AbstractRestController
     {
         $diary = new Diary;
 
-        if ($request->query->has('from')) {
-            $from = new \DateTime($request->query->get('from'));
-        } else {
-            $from = new \DateTime;
+        try {
+            if ($request->query->has('from')) {
+                $from = new \DateTime($request->query->get('from'));
+            } else {
+                $from = new \DateTime;
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad from parameter, try YYYY-MM-DD format.");
         }
 
-        if ($request->query->has('to')) {
-            $to = new \DateTime($request->query->get('to'));
-        } else {
-            $to = clone $from;
-            $to->modify('+1 year');
+        try {
+            if ($request->query->has('to')) {
+                $to = new \DateTime($request->query->get('to'));
+            } else {
+                $to = clone $from;
+                $to->modify('+1 year');
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad to parameter, try YYYY-MM-DD format.");
         }
 
         $performances = $this->getPerformances($identifier, $from, $to);
@@ -408,7 +424,9 @@ abstract class OrganisationController extends AbstractRestController
 
         $org = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('VIEW', $org);
-        $page = $request->query->has("p") ? (int) $request->query->get("p") : 1;
+        // Casting string→int in PHP always succeeds so no try/catch needed.
+        $page = $request->query->has("p") ? max(1, (int) $request->query->get("p")) : 1;
+
         $qb = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')
               ->queryByOrganisation($org, new \DateTime('1970-01-01'), new \DateTime('yesterday'))
               ->orderBy('p.start_at', 'DESC')->addOrderBy('s.id') // Make deterministic
