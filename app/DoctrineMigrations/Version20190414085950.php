@@ -73,11 +73,11 @@ final class Version20190414085950 extends AbstractMigration
         $this->addSql('CREATE INDEX log_user_lookup_idx ON ext_log_entries (username)');
         $this->addSql('CREATE INDEX log_class_lookup_idx ON ext_log_entries (object_class)');
         $this->addSql('CREATE INDEX log_version_lookup_idx ON ext_log_entries (object_id, object_class, version)');
-        $this->addSql('ALTER TABLE acts_applications RENAME INDEX idx_95ed3f0faf648a81 TO IDX_95ED3F0FE6389D24');
-        $this->addSql('ALTER TABLE acts_applications RENAME INDEX idx_95ed3f0fe176c6 TO IDX_95ED3F0F40A73EBA');
-        $this->addSql('ALTER TABLE acts_performances RENAME INDEX idx_e317f2d4e176c6 TO IDX_E317F2D440A73EBA');
-        $this->addSql('ALTER TABLE acts_news RENAME INDEX idx_e030b310af648a81 TO IDX_E030B310E6389D24');
-        $this->addSql('ALTER TABLE acts_news RENAME INDEX idx_e030b310e176c6 TO IDX_E030B31040A73EBA');
+        $this->addSql('ALTER TABLE acts_applications DROP INDEX idx_95ed3f0faf648a81, ADD INDEX IDX_95ED3F0FE6389D24 (society_id)');
+        $this->addSql('ALTER TABLE acts_applications DROP INDEX idx_95ed3f0fe176c6, ADD INDEX IDX_95ED3F0F40A73EBA (venue_id)');
+        $this->addSql('ALTER TABLE acts_performances DROP INDEX idx_e317f2d4e176c6, ADD INDEX IDX_E317F2D440A73EBA (venue_id)');
+        $this->addSql('ALTER TABLE acts_news DROP INDEX idx_e030b310af648a81, ADD INDEX IDX_E030B310E6389D24 (society_id)');
+        $this->addSql('ALTER TABLE acts_news DROP INDEX idx_e030b310e176c6, ADD INDEX IDX_E030B31040A73EBA (venue_id)');
     }
 
     /**
