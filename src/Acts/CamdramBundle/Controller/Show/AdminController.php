@@ -205,6 +205,8 @@ class AdminController extends AbstractFOSRestController
         $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
         if ($user != null) {
             $aclProvider->approveShowAccess($show, $user, $this->getUser());
+        } else {
+            $this->addFlash('error', "Cannot approve access: user ID not found. Try again or contact support.");
         }
 
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
@@ -228,6 +230,8 @@ class AdminController extends AbstractFOSRestController
         $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($uid);
         if ($user != null) {
             $aclProvider->revokeAccess($show, $user, $this->getUser());
+        } else {
+            $this->addFlash('error', "Cannot delete admin: user ID not found. Try again or contact support.");
         }
 
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
@@ -252,6 +256,8 @@ class AdminController extends AbstractFOSRestController
         if ($pending_admin != null) {
             $em->remove($pending_admin);
             $em->flush();
+        } else {
+            $this->addFlash('error', "Cannot delete pending admin: ID not found. Try again or contact support.");
         }
 
         return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));

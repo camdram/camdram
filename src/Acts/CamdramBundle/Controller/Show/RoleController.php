@@ -139,6 +139,8 @@ class RoleController extends AbstractFOSRestController
                 $this->get('logger')->warning('Failed to update search index during role entry',
                         ['role' => $role->getId()]);
             }
+        } else {
+            $this->addFlash('error', 'Cannot delete role: ID not found. It may already have been deleted.');
         }
 
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));

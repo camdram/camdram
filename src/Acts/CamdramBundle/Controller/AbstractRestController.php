@@ -267,19 +267,12 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Perform a search.
      */
     protected function entitySearch(Request $request) {
-        if (!$request->get('page')) {
-            $request->query->set('page', 1);
-        }
-        if (!$request->get('limit')) {
-            $request->query->set('limit', 10);
-        }
-
         $match = new MultiMatch;
         $match->setQuery($request->get('q'));
         $match->setFields(['name', 'short_name']);
 
-        $page = $request->get('page');
-        $limit = $request->get('limit');
+        $page = max(1, (int)($request->get('page', 1)));
+        $limit = max(1, (int)($request->get('limit', 10)));
         $query = new Query($match);
         $query->setFrom(($page-1)*$limit)->setSize($limit);
         //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
