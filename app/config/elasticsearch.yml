@@ -102,6 +102,7 @@ fos_elastica:
                     properties:
                         name: { analyzer: autocomplete, search_analyzer: search }
                         slug: ~
+                        show_count: ~
                         first_active: { type: date }
                         last_active:  { type: date }
                         rank: { type: integer }

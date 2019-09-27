@@ -177,27 +177,27 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
 
             $('<span/>').text(result.name).appendTo(link);
 
-            if (result.entity_type == 'person') {
+            if (result.entity_type == 'person' && result.show_count > 0) {
                 var from = moment(result.first_active);
                 var till = moment(result.last_active);
                 var now_ms = Date.now();
                 var fromString = from.format('MMM YYYY');
                 var tillString = till.format('MMM YYYY');
-                var string = '';
+                var string = ` (${result.show_count} ${result.show_count == 1 ? 'show' : 'shows'}, `;
                 const SIX_MONTHS = 180*86400*1000;
 
                 if (now_ms - from.valueOf() < SIX_MONTHS && now_ms - till.valueOf() < SIX_MONTHS) {
                     // All activity within past six months
-                    string = ' (active currently)';
+                    string += 'active currently)';
                 } else if (fromString === tillString) {
                     // All activity in same month
-                    string = ` (active ${fromString})`;
+                    string += `active ${fromString})`;
                 } else if (now_ms - till.valueOf() < SIX_MONTHS) {
                     // Active both within and before past six months
-                    string = ` (active ${fromString}–current)`;
+                    string += `active since ${fromString})`;
                 } else {
                     // Active only prior to past six months
-                    string = ` (active ${fromString}–${tillString})`;
+                    string += `active ${fromString}–${tillString})`;
                 }
 
                 $('<em/>').text(string).appendTo(link);
