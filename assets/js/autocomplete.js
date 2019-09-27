@@ -177,19 +177,28 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
 
             $('<span/>').text(result.name).appendTo(link);
 
-            if (result.entity_type == 'person' && result.show_count > 0) {
-                var string = ' (' + result.show_count + ' show';
-                if (parseInt(result.show_count) != 1) string += 's';
+            if (result.entity_type == 'person') {
+                var from = moment(result.first_active);
+                var till = moment(result.last_active);
+                var now_ms = Date.now();
+                var fromString = from.format('MMM YYYY');
+                var tillString = till.format('MMM YYYY');
+                var string = '';
+                const SIX_MONTHS = 180*86400*1000;
 
-                var date = moment(result.last_active);
-                if (date.isValid()) {
-                    if (date.isBefore(moment().subtract(6, 'months'))) {
-                        string += ' until ' + date.format('MMM YYYY');
-                    } else {
-                        string += ', still active';
-                    }
+                if (now_ms - from.valueOf() < SIX_MONTHS && now_ms - till.valueOf() < SIX_MONTHS) {
+                    // All activity within past six months
+                    string = ' (active currently)';
+                } else if (fromString === tillString) {
+                    // All activity in same month
+                    string = ` (active ${fromString})`;
+                } else if (now_ms - till.valueOf() < SIX_MONTHS) {
+                    // Active both within and before past six months
+                    string = ` (active ${fromString}–current)`;
+                } else {
+                    // Active only prior to past six months
+                    string = ` (active ${fromString}–${tillString})`;
                 }
-                string += ')';
 
                 $('<em/>').text(string).appendTo(link);
             }

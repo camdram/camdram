@@ -474,6 +474,18 @@ class Person
         return $counter;
     }
 
+    public function getFirstActive()
+    {
+        $first = null;
+        foreach ($this->getRoles() as $role) {
+            if ($role->getShow() && (!$first || $role->getShow()->getStartAt() < $first) && $role->getShow()->getStartAt()) {
+                $first = $role->getShow()->getStartAt();
+            }
+        }
+
+        return $first;
+    }
+
     public function getLastActive()
     {
         $latest = null;
