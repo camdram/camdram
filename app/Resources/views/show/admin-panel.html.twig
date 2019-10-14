@@ -39,7 +39,7 @@
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'edit_admin', path: path('edit_show_admin',{identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}
         {{ include('navigation/nav-item.html.twig',
-        {item: {id: 'show_add_many_roles', path: path('get_show_many_roles',{identifier:show.slug}), icon: 'users', text: "Add multiple roles"} }) }}
+        {item: {id: 'show_edit_roles', path: path('get_show_edit_roles',{identifier:show.slug}), icon: 'users', text: "Edit roles"} }) }}
     </ul>
 
     <p>

@@ -148,12 +148,12 @@ class RoleController extends AbstractFOSRestController
     }
 
     /**
-     * Get a form for adding multiple roles to a show.
+     * Open a role-editing interface
      *
      * @param $identifier
-     * @Rest\Get("/shows/{identifier}/many-roles")
+     * @Rest\Get("/shows/{identifier}/edit-roles")
      */
-    public function getManyRolesAction(Request $request, Helper $helper, $identifier)
+    public function getEditRolesAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
         $helper->ensureGranted('EDIT', $show);
@@ -163,7 +163,7 @@ class RoleController extends AbstractFOSRestController
 
         return $this->view($form, 200)
             ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/roles-new.html.twig');
+            ->setTemplate('show/roles-edit.html.twig');
     }
 
     /**

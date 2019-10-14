@@ -1,0 +1,45 @@
+{# Page for editing roles on a show. #}
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'shows' %}
+{% block title %}Roles for show “{{ show.name }}”{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'show_add_many_roles' %}
+{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
+
+<h3>Edit roles for <em>{{show.name}}</em></h3>
+
+<div class="panel">
+    <p> Adding people to a show’s credits list requires their consent. Please ask for your team members’ permission <em>before</em> adding them!
+
+    <p> You can add people to the show and edit them one-by-one, or copy-paste a list in bulk, e.g. from your programme or company spreadsheet. Please ensure that all names are spelt correctly and that you are following our <a href="{{ path('acts_camdram_userguidelines') }}">User Guidelines</a>.
+</div>
+
+<div class="tabbed-content">
+    {% for type in ['cast', 'band', 'prod'] %}
+        <a class="title {{ loop.index == 1 ? 'active' }}" href="#!">Edit {{ type }}</a>
+        <div class="content">
+            {% set roles = show.getRolesByType(type) %}
+            {% for role in roles %}
+                {{ _self.role_entry(role) }}
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <a class="title" href="#!">Bulk mode</a>
+    <div class="content">
+        <p>In bulk mode you can enter as many roles as you like in a text box, but for only one of cast, crew and band at a time. There must be a separator character bewteen the name and the role, e.g. a colon or comma.</p>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% endblock %}
+
+{% macro role_entry(role) %}
+    {{role.role}}: <a itemprop="url" href="{{ path('get_person', {identifier: role.person.slug}) }}"><span itemprop="name">{{ role.person.name }}</span></a><br>
+{% endmacro %}
