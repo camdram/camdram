@@ -7713,16 +7713,16 @@
     "packages-dev": [
         {
             "name": "dama/doctrine-test-bundle",
-            "version": "v6.0.0",
+            "version": "v6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
-                "reference": "2b7028e3748224921b42d23225bbb9016c8a303d"
+                "reference": "9739f058a1e3fcad370391cea7aa07ffed5b3dbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/2b7028e3748224921b42d23225bbb9016c8a303d",
-                "reference": "2b7028e3748224921b42d23225bbb9016c8a303d",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/9739f058a1e3fcad370391cea7aa07ffed5b3dbe",
+                "reference": "9739f058a1e3fcad370391cea7aa07ffed5b3dbe",
                 "shasum": ""
             },
             "require": {
@@ -7759,16 +7759,13 @@
             ],
             "description": "Symfony bundle to isolate doctrine database tests and improve test performance",
             "keywords": [
-                "Symfony 3",
-                "Symfony 4",
                 "doctrine",
                 "isolation",
                 "performance",
                 "symfony",
-                "symfony 2",
                 "tests"
             ],
-            "time": "2019-07-10T14:13:32+00:00"
+            "time": "2019-10-04T09:31:22+00:00"
         },
         {
             "name": "dms/phpunit-arraysubset-asserts",
