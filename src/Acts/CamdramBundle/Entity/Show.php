@@ -419,35 +419,6 @@ class Show implements OwnableInterface
     }
 
     /**
-     * DEPRECATED and going away eventually. Returns the first society, if it
-     * is registered.
-     * @Api\Link(embed=true, name="society", route="get_society", params={"identifier": "object.getSocietyLegacy().getSlug()"})
-     */
-    public function getSocietyLegacy()
-    {
-        $data = $this->getPrettySocData();
-        if (empty($data) || is_array($data[0])) { return; }
-        return $data[0];
-    }
-
-    /**
-     * DEPRECATED and going away eventually. Returns the first society name.
-     * Historically afaict this could differ from getSociety()->getName();
-     * as the other_society column has now been deleted, they now must be
-     * consistent.
-     * @Serializer\VirtualProperty()
-     * @Serializer\Type("string")
-     * @Serializer\XmlElement(cdata=false)
-     * @Serializer\SerializedName("other_society")
-     */
-    public function getOtherSocietyLegacy()
-    {
-        $data = $this->getPrettySocData();
-        return empty($data) ? NULL :
-            (is_array($data[0]) ? $data[0]["name"] : $data[0]->getName());
-    }
-
-    /**
      * The correct way to access societies in the API.
      * @Serializer\VirtualProperty()
      * @Serializer\XmlKeyValuePairs()

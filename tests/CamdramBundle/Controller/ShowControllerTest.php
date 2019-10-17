@@ -158,11 +158,11 @@ class ShowControllerTest extends RestTestCase
 
         $data = $this->doJsonRequest('/shows/2000-test-show.json');
         $this->assertEquals("Test Show", $data['name']);
-        $this->assertEquals("Test Society", $data['society']['name']);
+        $this->assertEquals("Test Society", $data['societies'][0]['name']);
 
         $data = $this->doXmlRequest('/shows/2000-test-show.xml');
         $this->assertEquals("Test Show", $data->name);
-        $this->assertEquals("Test Society", $data->society->name);
+        $this->assertEquals("Test Society", $data->societies->entry->name);
     }
 
     /**

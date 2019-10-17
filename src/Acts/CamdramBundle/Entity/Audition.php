@@ -316,40 +316,4 @@ class Audition implements EventInterface
     {
         return $this->getShow()->getTimestamp();
     }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getDate()
-    {
-        $date = clone $this->getStartAt();
-        $date->setTime(0, 0, 0);
-        return $date;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getStartTime()
-    {
-        $startAt = clone $this->getStartAt();
-        $startAt->setTimezone(new \DateTimezone('Europe/London'));
-        return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getEndTime()
-    {
-        $endAt = clone $this->getEndAt();
-        $endAt->setTimezone(new \DateTimezone('Europe/London'));
-        return \DateTime::createFromFormat('!H:i', $endAt->format('H').':'.$endAt->format('i'));
-    }
 }
