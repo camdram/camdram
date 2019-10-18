@@ -16,6 +16,7 @@ html, body {
 a {
   text-decoration: none;
   color: $primary-color;
+  color: var(--primary-color, $primary-color);
   cursor: pointer;
 }
 hr {
@@ -57,6 +58,13 @@ p {
   content: "";
   display: table;
   clear: both;
+}
+
+/**
+ * A generic class to position block elements inline.
+ */
+.inline-block {
+  display: inline-block !important;
 }
 
 
@@ -360,6 +368,17 @@ nav.sidenav > a.active {
   border-style: none none solid none;
   background: #ddd;
   color: #111;
+  outline: none;
+  position: relative;
+  &:focus::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #bbb;
+    height: 3px;
+  }
 }
 .tabbed-content .title.active {
   border-style: solid solid none solid;

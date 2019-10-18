@@ -5,7 +5,7 @@
     <div>
       <ul>
         <li class="opt-dropdown">
-          <a href="#!" tabindex="-1"><i class="fa fa-info-circle"></i></a>
+          <a href="#!" tabindex="-1" aria-label="About us dropdown"><i class="fa fa-info-circle"></i></a>
           <ul>
             {% include 'navigation/nav-items.html.twig'  with {items: {
                 'about': {'text': 'About', 'path': path('acts_camdram_about')},
@@ -26,13 +26,34 @@
     </div>
   </nav>
 
-  <header id="main-header">
+  {% if development_warning %}
+    {% set theme="DEV" %}
+    {% set imgtheme="-dev" %}
+  {% elseif "now"|date("m") == "06" %}
+    {% set theme="PRIDE" %}
+    {% set imgtheme="-pride" %}
+  {% elseif "now"|date("md") > 1205 %}
+    {% set theme="XMAS" %}
+    {% set imgtheme="-christmas" %}
+  {% else %}
+    {% set theme="" %}
+    {% set imgtheme="" %}
+  {% endif %}
+
+  <header id="main-header" data-theme="{{ theme }}">
     <div>
-      <h1 id="logo-block"><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{ asset('images/logo.png') }}, {{ asset('images/logo-1.5x.png') }} 1.5x, {{ asset('images/logo-2x.png') }} 2x, {{ asset('images/logo-4x.png') }} 4x" src="{{ asset('images/logo.png') }}" alt="Camdram" title="Camdram"/></a></h1>
+      <h1 id="logo-block"><a href="{{ path('acts_camdram_homepage') }}"><img srcset="{{
+            asset('images/logo' ~ imgtheme ~ '.png') }}, {{
+            asset('images/logo' ~ imgtheme ~ '-1.5x.png') }} 1.5x, {{
+            asset('images/logo' ~ imgtheme ~ '-2x.png') }} 2x, {{
+            asset('images/logo' ~ imgtheme ~ '-4x.png') }} 4x" src="{{
+            asset('images/logo' ~ imgtheme ~ '.png') }}" alt="Camdram" title="Camdram"/></a></h1>
       <div class="search">
         <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
-          <i class="fa fa-search"></i>
-          <input type="text" name="q" id="searchfield" autocomplete="off" placeholder="Search for a person, venue, show or society..." />
+          <i class="fa fa-search">
+            <span>Tip: Press the 's' or forward-slash key to jump to search!</span>
+          </i>
+          <input type="text" name="q" id="searchfield" data-hotkey="s,/" autocomplete="off" placeholder="Search for a person, venue, show or society..." aria-label="Search"/>
           <div class="results">
             <ul></ul>
             <div class="noresults">No results found for &quot;<span class="query"></span>&quot;</div>
@@ -116,4 +137,3 @@
     </div>
 
 {% endblock %}
-

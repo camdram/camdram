@@ -81,18 +81,9 @@ class TechieAdvert
     private $deadline;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="deadlinetime", type="time", nullable=false)
-     * @Gedmo\Versioned
-     * @Serializer\Expose
-     */
-    private $deadlineTime;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry", type="date", nullable=false)
+     * @ORM\Column(name="expiry", type="datetime", nullable=false)
      * @Assert\Date()
      * @Gedmo\Versioned
      * @Serializer\Expose
@@ -138,7 +129,6 @@ class TechieAdvert
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime());
-        $this->setDeadlineTime(new \DateTime('00:00'));
         $this->setExpiry(new \DateTime('+10 days'));
     }
 
@@ -227,30 +217,6 @@ class TechieAdvert
     public function getDeadline()
     {
         return $this->deadline;
-    }
-
-    /**
-     * Set deadline_time
-     *
-     * @param string $deadlineTime
-     *
-     * @return TechieAdvert
-     */
-    public function setDeadlineTime($deadlineTime)
-    {
-        $this->deadlineTime = $deadlineTime;
-
-        return $this;
-    }
-
-    /**
-     * Get deadline_time
-     *
-     * @return string
-     */
-    public function getDeadlineTime()
-    {
-        return $this->deadlineTime;
     }
 
     /**

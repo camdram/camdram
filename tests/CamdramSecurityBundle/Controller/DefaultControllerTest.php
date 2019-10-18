@@ -23,7 +23,7 @@ class DefaultControllerTest extends WebTestCase
      */
     private $aclProvider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = self::createClient(['environment' => 'test']);
         $this->client->followRedirects(true);
@@ -82,7 +82,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals($crawler->filter('#account-link:contains("John Smith")')->count(), 1);
         $this->assertEquals($crawler->filter('#admin-link:contains("Administration")')->count(), 1);
     }
-    
+
     public function testRememberSession()
     {
         $user = $this->createUser('John Smith', 'user1@camdram.net', 'password1');

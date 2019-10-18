@@ -12,7 +12,7 @@ class ApplicationRepositoryTest extends RepositoryTestCase
 
     private $show;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

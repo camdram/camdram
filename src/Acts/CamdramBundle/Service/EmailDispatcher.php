@@ -127,11 +127,15 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function sendShowVenueChangedEmail(Show $show, array $owners, array $moderators)
+    /**
+     * Email sent after the venue(s) for a show change.
+     */
+    public function sendShowVenueChangedEmail(Show $show, array $owners, array $moderators,
+        array $added, array $removed): void
     {
         $toEmails = $this->emailArrayFromUsers($moderators);
 
-        $message = (new \Swift_Message('Venue changed to '. $show->getVenue()->getName() .': '.$show->getName()))
+        $message = (new \Swift_Message('Venue(s) changed for '.$show->getName()))
             ->setFrom(array($this->from_address => 'camdram.net'))
             ->setTo($toEmails)
             ->setBody(
@@ -140,6 +144,8 @@ class EmailDispatcher
                     array(
                         'owners' => $owners,
                         'show' => $show,
+                        'added' => $added,
+                        'removed' => $removed,
                     )
                 )
             )

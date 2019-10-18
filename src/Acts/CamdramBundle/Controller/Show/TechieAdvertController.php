@@ -5,11 +5,12 @@ namespace Acts\CamdramBundle\Controller\Show;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 
-class TechieAdvertController extends FOSRestController
+class TechieAdvertController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
@@ -31,10 +32,10 @@ class TechieAdvertController extends FOSRestController
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/techie-advert/new")
      */
-    public function newTechieAdvertAction($identifier)
+    public function newTechieAdvertAction(Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $form = $this->getTechieAdvertForm($show);
 
@@ -47,10 +48,10 @@ class TechieAdvertController extends FOSRestController
      * @param $identifier
      * @Rest\Post("/shows/{identifier}/techie-advert")
      */
-    public function postTechieAdvertAction(Request $request, $identifier)
+    public function postTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $form = $this->getTechieAdvertForm($show);
         $form->handleRequest($request);
@@ -71,10 +72,10 @@ class TechieAdvertController extends FOSRestController
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/techie-advert/edit")
      */
-    public function editTechieAdvertAction($identifier)
+    public function editTechieAdvertAction(Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $techie_advert = $show->getTechieAdverts()->first();
         $form = $this->getTechieAdvertForm($show, $techie_advert, 'PUT');
@@ -88,10 +89,10 @@ class TechieAdvertController extends FOSRestController
      * @param $identifier
      * @Rest\Put("/shows/{identifier}/techie-advert")
      */
-    public function putTechieAdvertAction(Request $request, $identifier)
+    public function putTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $techie_advert = $show->getTechieAdverts()->first();
         $form = $this->getTechieAdvertForm($show, $techie_advert, 'PUT');
@@ -117,10 +118,10 @@ class TechieAdvertController extends FOSRestController
      *
      * @return \FOS\RestBundle\View\View
      */
-    public function expireTechieAdvertAction(Request $request, $identifier)
+    public function expireTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         /** @var TechieAdvert $techie_advert */
         $techie_advert = $show->getTechieAdverts()->first();
@@ -128,7 +129,7 @@ class TechieAdvertController extends FOSRestController
 
         $now = new \DateTime;
         $techie_advert->setDeadline(true);
-        $techie_advert->setExpiry($now)->setDeadlineTime($now);
+        $techie_advert->setExpiry($now);
         $em->flush();
 
         return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));
@@ -138,12 +139,13 @@ class TechieAdvertController extends FOSRestController
      * @param Request $request
      * @param $identifier
      *
+     * @Rest\Delete("/shows/{identifier}/techie/advert")
      * @return \FOS\RestBundle\View\View
      */
-    public function deleteTechieAdvertAction(Request $request, $identifier)
+    public function deleteTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $techie_advert = $show->getTechieAdverts()->first();
         $em = $this->getDoctrine()->getManager();

@@ -10,7 +10,7 @@
         {{ form_widget(form.multi_venue) }}
         {{ form_errors(form.multi_venue) }}
 
-        <div class="performances entity_collection" data-prototype="{% filter escape('html') %}{% include 'show/performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endfilter %}">
+        <div class="performances entity_collection" data-prototype="{% apply escape('html') %}{% include 'show/performance-form.html.twig' with {performance: form.performances.vars.prototype} %}{% endapply %}">
             {% for performance in form.performances %}
                 {% include 'show/performance-form.html.twig' %}
             {% endfor %}
@@ -40,9 +40,9 @@
             become registered with Camdram?</a>
             </small>
         {{ form_errors(form.societies) }}</p>
-        <div class="linked-societies" data-prototype="{% filter escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endfilter %}">
+        <div class="linked-societies" data-prototype="{% apply escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endapply %}">
             {% for society in form.societies %}
-		{% include 'show/society-form.html.twig' with {society: society} %}
+        {% include 'show/society-form.html.twig' with {society: society} %}
             {% endfor %}
         </div>
         <ul class="inline-list right">
@@ -55,11 +55,7 @@
 <div class="form-large-row">
     {{ form_label(form.description) }}
     <div>
-        <p><small>You can now format your show descriptions using Markdown.
-           Links just work, <strong>**bold**</strong>, <em>*italics*</em>,
-           and <b style="display: inline-block">## Headings</b> are also available.
-           See <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="_blank">this page</a>
-           for a rough guide, although not all features are available.</small></p>
+        <p><small>{{ include('markdown_notice.html.twig', { thing: 'show descriptions' }) }}</small></p>
 
         <p><small>Write this with the general public in mind – what is this show and why
             should somebody come to see it? Don't mention auditions or production
@@ -101,6 +97,8 @@
     </div>
 </div>
 
+{{ form_row(form.theme_color) }}
+
 {% if not is_granted('APPROVE', form.vars.data) %}
     <p class="panel">After you click 'Create', this show will not be public
     until moderators (normally the society and venue adminstrators) approve it.
@@ -115,6 +113,7 @@
 {{ form_rest(form) }}
 
 <script>
+{#- begin-CSP-permitted-script -#}
 $(function() {
 
     var update_date_fields = function() {
@@ -131,32 +130,70 @@ $(function() {
         }
     };
 
-    $('input[type=date]').live('change', function() {
-        var $self = $(this);
-        $self.parents('.performance').find('input[type=date]').each(function(key, input) {
-            if (!$(input).val()) {
-                $(input).val($self.val());
-            }
-        })
-    })
+    if ($('<input type="date" value="2000-01-01">')[0].valueAsDate) {
+        $('input[type=date]').live('change', function() {
+            var $self = $(this);
+            var $performance = $self.parents('.performance');
+            $performance.find('input[type=date]').each(function(key, input) {
+                // Avoid copying 0002, 0020, 0201 year while typing.
+                if (!$(input).val() && $self[0].valueAsDate.getFullYear() > 1950) {
+                    $(input).val($self.val());
+                }
+            });
 
-    $('#show_multi_venue input').change(update_date_fields)
+            $performance.find('small.error, small.warning').remove();
+            $performance.find('input.error').removeClass('error');
+            var startAt = $('input[id*="start_at_date"]', $performance)[0];
+            var endAt   = $('input[id*="repeat_until"]',  $performance)[0];
+
+            if (startAt.valueAsDate && endAt.valueAsDate) {
+                var message = '';
+                var isError = false;
+                var now = new Date();
+                var softMaxDate = new Date(now.getTime() + 86400000*182);
+                // hardMaxDate === PHP's new Date("+18 months")
+                var hardMaxDate = new Date(now.getFullYear() + 1 + (now.getMonth() > 5),
+                    (now.getMonth() + 6) % 12, now.getDate());
+                if (startAt.valueAsDate > endAt.valueAsDate) {
+                    message += 'The run can’t finish before it’s begun!<br>';
+                    isError = true;
+                }
+                if (startAt.valueAsDate > hardMaxDate || endAt.valueAsDate > hardMaxDate) {
+                    message += 'Shows may only be listed on Camdram up to 18 months in advance.<br>';
+                    isError = true;
+                } else if (startAt.valueAsDate > softMaxDate || endAt.valueAsDate > softMaxDate) {
+                    message += 'Note: one or both dates are more than six months in advance.<br>';
+                }
+                if (startAt.valueAsDate < now || endAt.valueAsDate < now) {
+                    message += 'Note: one or both dates are in the past.<br>';
+                }
+                if (!message) return;
+
+                message += isError ? "Check your dates!" : "Do check for typos, but you're free to post this if it's correct.";
+                $performance[0].insertAdjacentHTML('beforeend',
+                    (isError ? '<small class="error">' : '<small class="warning">') + message + '</span>');
+            }
+        });
+    }
+
+    $('#show_multi_venue input').change(update_date_fields);
     $('.main-venue-row select').change(function() {
         $('.performances .venue-row select').val($(this).val());
-    })
+    });
 
     update_date_fields();
     $('.performances').entityCollection({
         initialiseRow: update_date_fields
     });
+    $('#show_venue').entitySearch({route: 'get_venues'});
     $('.linked-societies').entityCollection({
         initialiseRow: function(index, row) {
             var input = $(row).find("input");
-            console.log(row);
             input.addClass("autocomplete_input");
             input.entitySearch({route: 'get_societies'});
         },
         min_items: 0
     });
 });
+{#- end-CSP-permitted-script -#}
 </script>

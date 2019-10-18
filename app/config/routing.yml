@@ -10,10 +10,6 @@ acts_camdram:
     resource: "@ActsCamdramBundle/Resources/config/routing.yml"
     prefix:   /
 
-acts_camdram_legacy:
-    resource: "@ActsCamdramLegacyBundle/Resources/config/routing.yml"
-    prefix:   /
-
 acts_camdram_security:
     resource: "@ActsCamdramSecurityBundle/Resources/config/routing.yml"
     prefix:   /auth
@@ -41,4 +37,4 @@ oneup_uploader:
     type: uploader
 
 liip_imagine:
-    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"

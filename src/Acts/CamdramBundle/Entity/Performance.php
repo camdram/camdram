@@ -2,11 +2,13 @@
 
 namespace Acts\CamdramBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 use Acts\DiaryBundle\Model\EventInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Performance
@@ -67,7 +69,7 @@ class Performance implements EventInterface
      * @var \Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="performances")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="SET NULL")
      * @Gedmo\Versioned
      * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
      */
@@ -132,7 +134,7 @@ class Performance implements EventInterface
         if ($this->isRepeating()) {
             $str .= ' - '.$this->getRepeatUntil()->format('D jS F Y');
         }
-        
+
         return $str;
     }
 
@@ -294,36 +296,33 @@ class Performance implements EventInterface
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
+     * There is further validation client-side which generates warnings.
+     *
+     * @Assert\Callback
      */
-    public function getStartDate()
+    public function validate(ExecutionContextInterface $context, $payload)
     {
-        $date = clone $this->getStartAt();
-        $date->setTime(0, 0, 0);
-        return $date;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getEndDate()
-    {
-        return $this->getRepeatUntil();
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getTime()
-    {
-        $startAt = clone $this->getStartAt();
-        $startAt->setTimezone(new \DateTimezone('Europe/London'));
-        return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
+        if ($this->getStartAt() == null) {
+            $context->buildViolation("Invalid or blank time, or start date. Try a different web browser if the problem persists.")
+                    ->atPath('start_at')
+                    ->addViolation();
+            return;
+        }
+        if ($this->getRepeatUntil() == null) {
+            $context->buildViolation("Invalid or blank end date. Try a different web browser if the problem persists.")
+                    ->atPath('repeat_until')
+                    ->addViolation();
+            return;
+        }
+        if ($this->getStartAt() > $this->getRepeatUntil()) {
+            $context->buildViolation("The run can't finish before it's begun! Check your dates.")
+                    ->atPath('repeat_until')
+                    ->addViolation();
+        }
+        if ($this->getRepeatUntil() > new \DateTime("+18 months")) {
+            $context->buildViolation("Shows may only be listed on Camdram up to 18 months in advance. Check your dates.")
+                    ->atPath('repeat_until')
+                    ->addViolation();
+        }
     }
 }

@@ -1,12 +1,29 @@
 {% autoescape false %}
-The main venue of the show "{{ show.name }}" has been changed to {{ show.venue.name }} by by {% for owner in owners %}{{ owner.name }} ({{ owner.email }}){% endfor %}.
+{%- if added -%}
+  {{- 'The venue' | plural(added|length) ~ ' ' -}}
+  {%- for venue in added -%}
+     {{- venue.name -}}
+     {{- list_sep_verb(loop, 'have', 'has') -}}
+  {%- endfor -%}
+  been added to {% if removed %}and {% endif -%}
+{%- endif -%}
+{%- if removed -%}
+  {{- (added ? 'the venue' : 'The venue') | plural(removed|length) ~ ' ' -}}
+  {%- for venue in removed -%}
+     {{- venue.name -}}
+     {{- list_sep_verb(loop, 'have', 'has') -}}
+  {%- endfor -%}
+  been removed from {% endif -%}
+the show {{ show.name }}, owned by {% for owner in owners -%}
+   {{- owner.name }} ({{ owner.email }}) {{- list_sep_verb(loop) -}}
+{%- endfor %}.
 
-The show has already been authorised, but you may wish to verify that the following details are correct:
+The show has already been authorized, but you may wish to verify that the following details are correct:
 * Dates
 * Venue
 * Start Time
 
-If this show is not taking place at {{ show.venue.name }}, please contact the show owners or support@camdram.net
+If this is not correct, please contact the show owners or support@camdram.net.
 
 A summary of the show is given below. You can view or edit the show by visiting:
 {{ url('get_show', {identifier: show.slug}) }}

@@ -1,13 +1,15 @@
+import './base.js'
 import L from 'leaflet'
+import "leaflet/dist/leaflet.css"
+import '../scss/venues.scss';
 
-//Hack to make marker images work with webpack versioning
-//https://github.com/PaulLeCam/react-leaflet/issues/255#issuecomment-269750542
-delete L.Icon.Default.prototype._getIconUrl;
-
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-    iconUrl: require('leaflet/dist/images/marker-icon.png'),
-    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+L.Marker.prototype.options.icon = L.divIcon({
+    className: 'custom-map-icon',
+    html: '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="40px"><path fill="#49c" fill-rule="even-odd" d="M1.1,17A12,12 0 1 1 22.9,17L12,40Z"/><circle cx="12" cy="12" r="4" fill="#fff"/></svg>',
+    iconSize:    [40, 40],
+    iconAnchor:  [12, 40],
+    popupAnchor: [0, -34],
+    tooltipAnchor: [16, -28]
 });
 
 $(function() {
@@ -27,7 +29,7 @@ $(function() {
 
             $self.data('map', map)
         }
-        
+
         switch(action) {
             case 'add-marker':
                 let marker = L.marker(opts.location)

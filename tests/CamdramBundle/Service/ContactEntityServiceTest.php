@@ -2,21 +2,17 @@
 
 namespace Camdram\Tests\CamdramBundle\Service;
 
+use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Service\ContactEntityService;
-use PHPUnit\Framework\TestCase;
+use Camdram\Tests\RestTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ContactEntityServiceTest extends TestCase
+class ContactEntityServiceTest extends RestTestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $aclProvider;
-
     /**
      * @var MockObject
      */
@@ -29,12 +25,12 @@ class ContactEntityServiceTest extends TestCase
      */
     private $contactEntityService;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
+
         $this->mailer = $this->getMockBuilder('\Swift_Mailer')
             ->disableOriginalConstructor()->disableOriginalClone()->getMock();
-        $this->aclProvider = $this->getMockBuilder('\Acts\\CamdramSecurityBundle\\Security\\Acl\\AclProvider')
-            ->disableOriginalConstructor()->getMock();
 
         $this->contactEntityService = new ContactEntityService($this->mailer, $this->aclProvider);
 
@@ -44,34 +40,38 @@ class ContactEntityServiceTest extends TestCase
             $user->setEmail("user".$i."@camdram.net");
             $user->setIsEmailVerified(!($i&1));
             $this->users[] = $user;
+            $this->entityManager->persist($user);
         }
     }
 
     public function testEmailEntity() {
-        $showA = new Show();
-        $showB = new Show();
-        $showC = new Show();
-        $showD = new Show();
-        $showE = new Show();
+        $showA = $this->createShow("Show A");
+        $showB = $this->createShow("Show B");
+        $showC = $this->createShow("Show C");
+        $showD = $this->createShow("Show D");
+        $showE = $this->createShow("Show E");
         $venue = new Venue();
         $society = new Society();
+        $this->entityManager->persist($venue);
+        $this->entityManager->persist($society);
 
         $society->setName("Society 1");
         $venue->setName("Venue 1");
-        $showA->setName("Show A")->setVenue($venue)->getSocieties()->add($society);
-        $showB->setName("Show B")->setVenue($venue)->getSocieties()->add($society);
-        $showC->setName("Show C")->getSocieties()->add($society);
-        $showD->setName("Show D")->setVenue($venue);
-        $showE->setName("Show E");
-        $this->aclProvider->method('getOwners')->will($this->returnValueMap([
-            [$showA, [$this->users[0], $this->users[1]]],
-            [$showB, []],
-            [$showC, []],
-            [$showD, []],
-            [$showE, []],
-            [$society, [$this->users[2], $this->users[3]]],
-            [$venue, [$this->users[4], $this->users[5]]],
-        ]));
+        $showA->getPerformances()->first()->setVenue($venue);
+        $showB->getPerformances()->first()->setVenue($venue);
+        $showD->getPerformances()->first()->setVenue($venue);
+        $showA->getSocieties()->add($society);
+        $showB->getSocieties()->add($society);
+        $showC->getSocieties()->add($society);
+        $this->entityManager->flush();
+
+        $this->aclProvider->grantAccess($showA,   $this->users[0]);
+        $this->aclProvider->grantAccess($showA,   $this->users[1]);
+        $this->aclProvider->grantAccess($society, $this->users[2]);
+        $this->aclProvider->grantAccess($society, $this->users[3]);
+        $this->aclProvider->grantAccess($venue,   $this->users[4]);
+        $this->aclProvider->grantAccess($venue,   $this->users[5]);
+
         $this->mailer->expects($this->exactly(7))->method("send")
              ->with($this->callback(function($msg) {
                  if ($msg->getFrom()['support@camdram.net'] != 'Camdram') return false;

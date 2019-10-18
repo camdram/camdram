@@ -1,6 +1,12 @@
 {% extends 'layout.html.twig' %}
 
 {% set current_navigation_id = 'societies' %}
+{% if society.themeColor %}
+    {% set colors = wcag_colors(society.themeColor) %}
+    {% set body_attribs_raw = ' style="--custom-color: '  ~ colors['raw'] ~
+                                    '; --color-text: ' ~ colors['smalltext'] ~ ';"' ~
+                              ' class="entity-has-theme-color"' %}
+{% endif %}
 {% block title %}Society: {{ society.name }}{% endblock %}
 
 {% block body %}
@@ -17,7 +23,7 @@
         <a href="{{ society.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
         {% if is_granted('EDIT', society) and is_granted("IS_AUTHENTICATED_FULLY") %}
         <ul class="inline-list">
-           {{ include('navigation/form-item.html.twig', {item: {id: 'delete_society_image', 
+           {{ include('navigation/form-item.html.twig', {item: {id: 'delete_society_image',
                     path: path('delete_society_image', {identifier:society.slug}), method: 'DELETE', text: 'Remove image', icon: 'eraser'},
                     destructive: {title: "Are you sure you want to delete the image for “" ~ society.name ~ "”?" }
                     }) }}

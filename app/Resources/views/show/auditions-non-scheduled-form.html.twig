@@ -2,6 +2,7 @@
     <div class="form-medium-widget">
         {{ form_label(audition.location) }}
         {{ form_widget(audition.location) }}
+        {{ form_errors(audition.location) }}
     </div>
 
     <div class="form-small-widget">
@@ -11,6 +12,7 @@
     <div class="form-small-widget">
         {{ form_label(audition.start_at.time, 'Advert expiry time') }}
         {{ form_widget(audition.start_at.time) }}
+        {{ form_errors(audition.start_at) }}
     </div>
 
     <ul class="inline-list">

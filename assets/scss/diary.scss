@@ -1,18 +1,28 @@
 @import "./vars.scss";
 
 .diary-nav {
-  /* This is a bit counter-intuitive: the items flow upward and leftward so
-     that the h3 gets its own line if the div and form fit together. */
   display: flex;
-  flex-flow: row-reverse wrap;
-  align-items: baseline;
   margin-bottom: 1em;
 
-  .split-header {
-    width: 100%;
+  @media only screen and (min-width: 500px) {
+    flex-flow: column;
+    > div {
+        display: flex;
+        justify-content: space-between;
+    }
   }
-  > :nth-child(2) {
-    order: 3;
+  @media not screen and (min-width: 500px) {
+    flex-flow: row;
+    justify-content: space-between;
+    > :nth-child(2) {
+      > div {
+        display: flex;
+        margin-bottom: 0.5em;
+        > :first-child { margin-right: 0.5em; }
+        > *            { flex: auto; }
+      }
+      > form > span { display: none; }
+    }
   }
   #diary_jump_form {
     flex: 1;

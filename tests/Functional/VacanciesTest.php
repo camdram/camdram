@@ -13,7 +13,7 @@ use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 class VacanciesTest extends WebTestCase
-{   
+{
     /**
      * @var Symfony\Bundle\FrameworkBundle\Client
      */
@@ -28,8 +28,8 @@ class VacanciesTest extends WebTestCase
      * @var User
      */
     private $user;
-    
-    public function setUp()
+
+    public function setUp(): void
     {
         $this->client = self::createClient(array('environment' => 'test'));
 
@@ -66,9 +66,9 @@ class VacanciesTest extends WebTestCase
         $response = $this->client->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode(), "URL: $url");
-        $this->assertContains('text/html', $response->headers->get('Content-Type'), "URL: $url");
-        $this->assertContains('<body>', $response->getContent(), "URL: $url");
-        $this->assertContains('</body>', $response->getContent(), "URL: $url");
+        $this->assertStringContainsString('text/html', $response->headers->get('Content-Type'), "URL: $url");
+        $this->assertStringContainsString('<body', $response->getContent(), "URL: $url");
+        $this->assertStringContainsString('</body>', $response->getContent(), "URL: $url");
         return $response;
     }
 
@@ -76,10 +76,10 @@ class VacanciesTest extends WebTestCase
     {
         $this->client->request('GET', $url);
         $response = $this->client->getResponse();
-        
+
         $this->assertEquals(200, $response->getStatusCode(), "URL: $url");
-        $this->assertContains('text/plain', $response->headers->get('Content-Type'), "URL: $url");
-        $this->assertNotContains('<html>', $response->getContent(), "URL: $url");
+        $this->assertStringContainsString('text/plain', $response->headers->get('Content-Type'), "URL: $url");
+        $this->assertStringNotContainsString('<html>', $response->getContent(), "URL: $url");
         return $response;
     }
 
@@ -89,8 +89,8 @@ class VacanciesTest extends WebTestCase
         $response = $this->client->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode(), "URL: $url");
-        $this->assertContains('application/rss+xml', $response->headers->get('Content-Type'), "URL: $url");
-        $this->assertContains('</rss>', $response->getContent(), 'URL: $url');
+        $this->assertStringContainsString('application/rss+xml', $response->headers->get('Content-Type'), "URL: $url");
+        $this->assertStringContainsString('</rss>', $response->getContent(), 'URL: $url');
         return $response;
     }
 
@@ -109,13 +109,13 @@ class VacanciesTest extends WebTestCase
         $this->entityManager->flush();
 
         $response = $this->fetchText('/vacancies/auditions.txt');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
 
         $response = $this->fetchHtml('/vacancies/auditions');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
 
         $response = $this->fetchRss('/vacancies/auditions.rss');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
     }
 
     public function testTechieAdverts()
@@ -133,13 +133,13 @@ class VacanciesTest extends WebTestCase
         $this->entityManager->flush();
 
         $response = $this->fetchText('/vacancies/techies.txt');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
 
         $response = $this->fetchHtml('/vacancies/techies');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
 
         $response = $this->fetchRss('/vacancies/techies.rss');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
     }
 
     public function testApplications()
@@ -157,13 +157,13 @@ class VacanciesTest extends WebTestCase
         $this->entityManager->flush();
 
         $response = $this->fetchText('/vacancies/applications.txt');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
 
         $response = $this->fetchHtml('/vacancies/applications');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
 
         $response = $this->fetchRss('/vacancies/applications.rss');
-        $this->assertContains('Test Show', $response->getContent());
+        $this->assertStringContainsString('Test Show', $response->getContent());
     }
-    
+
 }

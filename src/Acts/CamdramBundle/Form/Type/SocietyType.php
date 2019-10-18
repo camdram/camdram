@@ -23,6 +23,9 @@ class SocietyType extends AbstractType
             ->add('college', CollegeType::class)
             ->add('facebook_id', FacebookLinkType::class)
             ->add('twitter_id', TwitterLinkType::class)
+            ->add('theme_color', ThemeColorType::class, ['theme_color_message' =>
+                    'Setting a colour changes the site theme when viewing this page.',
+                    'required' => false])
         ;
     }
 

@@ -62,6 +62,7 @@
         </div>
 </div>
 <script>
+    {#- begin-CSP-permitted-script -#}
     $('#logTabs a.title').click(function(e) {
         var $self = $(this);
         $.get($self.attr('href'), function(response) {
@@ -71,5 +72,6 @@
         })
     });
     $('#logTabs a.title.active').click();
+    {#- end-CSP-permitted-script -#}
 </script>
 {% endblock %}

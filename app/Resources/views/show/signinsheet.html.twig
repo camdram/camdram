@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% set title = 'Sign In sheet for ' ~ show.name ~ ' (' ~ events[0].date|date('j/n/Y') ~ ' - ' ~ events[events|length -1].date|date('j/n/Y') ~ ')' %}
+{% set title = 'Sign In sheet for ' ~ show.name ~ ' (' ~ events[0].datetime|date('j/n/Y') ~ ' - ' ~ events[events|length -1].datetime|date('j/n/Y') ~ ')' %}
 {% set blank_cells = '' %}
 {%- for i in 0..events|length + 1 -%}
     {% set blank_cells = blank_cells ~ '<td> </td><td> </td>' %}
@@ -28,7 +28,7 @@ th, td {
 <tr>
 <th></th><th colspan=2>Tech</th><th colspan=2>Dress</th>
 {%- for event in events -%}
-    <th colspan=2>{{ event['date']|date(date_format) }} {{ event.time|date('H:i') }}</th>
+    <th colspan=2>{{ event['datetime']|date(date_format) }}</th>
 {%- endfor -%}
 </tr>
 <tr><td>&nbsp;</td>{%- for i in 0..events|length + 1 -%}<td>In</td><td>Out</td>{%- endfor -%}</tr>

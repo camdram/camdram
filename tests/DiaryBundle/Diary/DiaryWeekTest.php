@@ -10,7 +10,7 @@ class DiaryWeekTest extends TestCase
 {
     private $week;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->week = new Week(new \DateTime('2014-01-26'));
     }

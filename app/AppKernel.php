@@ -13,6 +13,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+            new Symfony\WebpackEncoreBundle\WebpackEncoreBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
@@ -31,7 +32,6 @@ class AppKernel extends Kernel
             new Liip\ImagineBundle\LiipImagineBundle(),
             new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
-            new Acts\CamdramLegacyBundle\ActsCamdramLegacyBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         ];

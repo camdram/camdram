@@ -21,24 +21,32 @@
     the show after they create an account on Camdram.
 {% elseif entity.entityType == 'society' %}
     {% set revoke_admin_route = 'delete_society_admin' %}
-    {% set revoke_pending_admin_route = 'revoke_society_pending_admin' %}
+    {% set revoke_pending_admin_route = 'delete_society_pending_admin' %}
     Society admins are able to edit the information listed on Camdram, authorise shows involving the society, and to open applications for new shows.
 {% elseif entity.entityType == 'venue' %}
     {% set revoke_admin_route = 'delete_venue_admin' %}
-    {% set revoke_pending_admin_route = 'deletevenue_pending_admin' %}
+    {% set revoke_pending_admin_route = 'delete_venue_pending_admin' %}
     Venue admins are able to edit the information listed on Camdram, authorise shows involving the venue, and to open applications for new shows.
 {% endif %}
 </p>
 
-<h4>Admin Requests</h4>
 {% if requested_admins is defined %}
+<h4>Admin Requests</h4>
 {% if requested_admins is empty %}
 <p>There are no requests to be an admin for this {{ entity.entityType }}.</p>
 {% endif %}
 {% for admin in requested_admins %}
     <div id="admin_{{ admin.id }}">
-    <span data-tooltip class="has-tip" title="Approve request."><a href="{{ path('approve_show_admin', {identifier: entity.slug, 'uid': admin.id}) }}" class="fa fa-check-circle"></a></span>&ensp;
-    <span data-tooltip class="has-tip" title="Deny request."><a href="{{ path((revoke_admin_route), {identifier: entity.slug, 'uid': admin.id}) }}" class="fa fa-times-circle"></a></span>&ensp;
+    <form action="{{ path('approve_show_admin', {identifier: entity.slug, uid: admin.id}) }}" method="post" class="inline-block">
+        <input type="hidden" name="_method" value="PATCH" />
+        <input type="hidden" name="_token" value="{{ csrf_token('approve_show_admin') }}" />
+        <button title="Approve request." class="fa fa-fw fa-check-circle text-button"></button>
+    </form>&ensp;
+    <form action="{{ path(revoke_admin_route, {identifier: entity.slug, uid: admin.id}) }}" method="post" id="revoke_admin_form_{{ admin.id }}" class="inline-block">
+        <input type="hidden" name="_method" value="DELETE" />
+        <input type="hidden" name="_token" value="{{ csrf_token('delete_admin') }}" />
+        <button title="Deny request." class="fa fa-fw fa-times-circle text-button"></button>
+    </form>&ensp;
     {%- if admin.person is defined -%}
         {%- if admin.person -%}
             <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
@@ -56,13 +64,12 @@
 {% endif %}
 {% for admin in admins %}
     <div id="admin_{{ admin.id }}">
-        <form action="{{ path(revoke_admin_route, {identifier: entity.slug, uid: admin.id}) }}" method="post" id="revoke_admin_form_{{ admin.id }}">
+        <form action="{{ path(revoke_admin_route, {identifier: entity.slug, uid: admin.id}) }}" method="post" id="revoke_admin_form_{{ admin.id }}" class="inline-block">
             <input type="hidden" name="_method" value="DELETE" />
             <input type="hidden" name="_token" value="{{ csrf_token('delete_admin') }}" />
+            <button title="Revoke this admin." class="fa fa-fw fa-trash-o text-button"></button>
         </form>
-    <span title="Revoke this admin.">
-        <a href="javascript:document.getElementById('revoke_admin_form_{{ admin.id }}').submit()" class="fa fa-fw fa-trash-o"></a></span>&ensp;
-    {%- if admin.person is defined -%}
+    {% if admin.person is defined -%}
         {%- if admin.person -%}
             <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
         {%- else -%}
@@ -78,13 +85,12 @@
 {% endif %}
 {% for pending in pending_admins %}
     <div id="pending_{{ pending.id }}">
-    <form action="{{ path(revoke_pending_admin_route, {identifier: entity.slug, uid: pending.id}) }}" method="post" id="revoke_pending_admin_form_{{ pending.id }}">
+    <form action="{{ path(revoke_pending_admin_route, {identifier: entity.slug, uid: pending.id}) }}" method="post" id="revoke_pending_admin_form_{{ pending.id }}" class="inline-block">
         <input type="hidden" name="_method" value="DELETE" />
         <input type="hidden" name="_token" value="{{ csrf_token('delete_pending_admin') }}" />
+        <button title="Revoke this pending admin." class="fa fa-fw fa-trash-o text-button"></button>
     </form>
 
-    <span title="Revoke this pending admin.">
-        <a href="javascript:document.getElementById('revoke_pending_admin_form_{{ pending.id }}').submit()" class="fa fa-fw fa-trash-o"></a></span>&ensp;
     {{ pending.email }}
     </div>
 {% endfor %}

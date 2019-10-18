@@ -30,7 +30,7 @@ class TokenUtilities
             }
         }
     }
-    
+
     /**
      * Is an API request
      *
@@ -41,8 +41,8 @@ class TokenUtilities
     {
         return $token instanceof OAuthToken;
     }
-    
-    
+
+
     /**
      * Is an interactive user request (i.e. not an API request)
      *

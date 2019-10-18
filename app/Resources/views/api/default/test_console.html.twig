@@ -53,6 +53,7 @@
     </div>
 
     <script>
+    {#- begin-CSP-permitted-script -#}
         $('#test_console_form').submit(function(e) {
             e.preventDefault();
             var method = $('#method').val();
@@ -88,6 +89,7 @@
             $('#url').val($(this).attr('href'));
             $('#test_console_form').submit();
         })
+    {#- end-CSP-permitted-script -#}
     </script>
 
 {% endblock %}

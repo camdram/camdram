@@ -2,14 +2,18 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\ElasticaBundle\Index\IndexManager;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Elastica\Query;
 use Elastica\Query\MultiMatch;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class AbstractRestController
@@ -17,7 +21,7 @@ use Elastica\Query\MultiMatch;
  * This controller is used as a base for show, venue, society and people pages, containing common functionality for
  * viewing, searching, creating, editing and deleting editities.
  */
-abstract class AbstractRestController extends FOSRestController
+abstract class AbstractRestController extends AbstractFOSRestController
 {
     /** @var string The fully qualified class name for the entity represented by the class */
     protected $class;
@@ -27,6 +31,16 @@ abstract class AbstractRestController extends FOSRestController
 
     /** @var string the plural form of the English word for the entity represented by the class  */
     protected $type_plural;
+
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+        $services['camdram.security.acl.helper'] = Helper::class;
+        $services['camdram.security.acl.provider'] = AclProvider::class;
+        $services['fos_elastica.index_manager'] = IndexManager::class;
+        $services['logger'] = LoggerInterface::class;
+        return $services;
+    }
 
     /**
      * @return string used to populate the namespace of the templates for this class
@@ -225,6 +239,7 @@ abstract class AbstractRestController extends FOSRestController
         $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
+        $name = $entity->getName();
 
         if (!$this->isCsrfTokenValid('delete_' . $this->type, $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
@@ -233,6 +248,8 @@ abstract class AbstractRestController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($entity);
         $em->flush();
+
+        $this->addFlash('success', "Deleted {$this->type} “{$name}”.");
 
         return $this->routeRedirectView('get_'.$this->type_plural);
     }
@@ -250,27 +267,19 @@ abstract class AbstractRestController extends FOSRestController
      * Perform a search.
      */
     protected function entitySearch(Request $request) {
-        if (!$request->get('page')) {
-            $request->query->set('page', 1);
-        }
-        if (!$request->get('limit')) {
-            $request->query->set('limit', 10);
-        }
-
         $match = new MultiMatch;
         $match->setQuery($request->get('q'));
         $match->setFields(['name', 'short_name']);
 
-        $page = $request->get('page');
-        $limit = $request->get('limit');
+        $page = max(1, (int)($request->get('page', 1)));
+        $limit = max(1, (int)($request->get('limit', 10)));
         $query = new Query($match);
         $query->setFrom(($page-1)*$limit)->setSize($limit);
         //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
         $query->setSort([
             'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => PHP_INT_MAX-1]
         ]);
-
-        $search = $this->get('fos_elastica.index.autocomplete_'.$this->type)->createSearch();
+        $search = $this->get('fos_elastica.index_manager')->getIndex('autocomplete_'.$this->type)->createSearch();
         $resultSet = $search->search($query);
 
         $data = [];

@@ -51,19 +51,57 @@ class AclProvider
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($entity);
     }
 
+    // user -> ace ->society -> (join table) -> show
+    //             ↳  venue  -> performance  ⮥
+    public function getOwnersOfOwningSocs(Show $show): array
+    {
+        return $this->getOwnersOfOwningOrgs($show, 'society');
+    }
+
+    public function getOwnersOfOwningVens(Show $show): array
+    {
+        return $this->getOwnersOfOwningOrgs($show, 'venue');
+    }
+
+    public function getOwnersOfOwningOrgs(Show $show, string $type = null): array
+    {
+        if ($type && $type !== 'society' && $type !== 'venue') {
+            throw new Exception("Type may not be ". $type);
+        }
+        $socs = ($type === 'venue') ? [] : $show->getSocieties()->map(
+            function($s) { return $s->getId(); })->toArray();
+
+        $query = $this->entityManager->createQuery(
+            "SELECT u FROM ActsCamdramSecurityBundle:User u WHERE EXISTS
+            (SELECT ace FROM ActsCamdramSecurityBundle:AccessControlEntry ace WHERE ace.user = u AND (
+                (ace.type = 'society' AND ace.entityId IN (:socs))"
+            . ($type === 'society' ? '))' :
+            "   OR (ace.type = 'venue' AND ace.entityId IN
+                (SELECT IDENTITY(perf.venue) FROM ActsCamdramBundle:Performance perf
+                 WHERE perf.show = :show AND perf.venue IS NOT NULL))))")
+            )->setParameter('socs', $socs);
+        if ($type !== 'society') $query->setParameter('show', $show);
+
+        return $query->getResult();
+    }
+
     public function getAdmins($min_level = AccessControlEntry::LEVEL_FULL_ADMIN)
     {
         return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findAdmins($min_level);
     }
 
-    public function getOrganisationIdsByUser(User $user)
+    public function getOrganisationsByUser(User $user): array
     {
-        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUserAndType($user, 'society');
-        $ids = array_map(function (AccessControlEntry $ace) {
-            return $ace->getEntityId();
-        }, $aces);
+        $socs = $this->entityManager->getRepository('ActsCamdramBundle:Society')->createQueryBuilder('s')
+            ->where("EXISTS (SELECT ace FROM \\Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry ace ".
+                    "WHERE ace.entityId = s.id AND ace.type = 'society' AND ace.user = :user)")
+            ->setParameter('user', $user)->getQuery()->getResult();
+        $vens = $this->entityManager->getRepository('ActsCamdramBundle:Venue')->createQueryBuilder('v')
+            ->where("EXISTS (SELECT ace FROM \\Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry ace ".
+                    "WHERE ace.entityId = v.id AND ace.type = 'venue' AND ace.user = :user)")
+            ->setParameter('user', $user)->getQuery()->getResult();
 
-        return $ids;
+        return array_merge($socs, $vens);
     }
 
     public function getEntityIdsByUser(User $user, $class)

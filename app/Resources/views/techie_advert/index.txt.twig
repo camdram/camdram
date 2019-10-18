@@ -23,11 +23,7 @@ Looking for:
 {% endif %}
 
 Contact: {{ a.contact|strip_camdram_markdown }}
-Deadline for applications: {{ a.expiry|date('l jS F') }}
-{%- if a.deadlinetime and a.deadlinetime | date('H:i', 'UTC') != '00:00' %}
-, {{ a.deadlinetime | date('H:i', 'UTC') }}
-{% endif %}
-
+Deadline for applications: {{ a.expiry|date('l jS F H:i')|replace({' 00:00': ''}) }}
 
 {% else -%}
     There are currently no vacancies listed - please check again later.

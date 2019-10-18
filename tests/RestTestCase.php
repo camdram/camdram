@@ -1,18 +1,22 @@
 <?php
 namespace Camdram\Tests;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use Sabre\VObject;
 
+use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 class RestTestCase extends WebTestCase
 {
-    
+    use ArraySubsetAsserts;
+
     /**
      * @var Symfony\Bundle\FrameworkBundle\Client
      */
@@ -27,8 +31,8 @@ class RestTestCase extends WebTestCase
      * @var AclProvider
      */
     protected $aclProvider;
-    
-    public function setUp()
+
+    public function setUp(): void
     {
         $this->client = self::createClient(array('environment' => 'test'));
         $this->client->followRedirects(true);
@@ -52,14 +56,45 @@ class RestTestCase extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    protected function createUser()
+    protected function logout(): void
+    {
+        $session = $this->client->getContainer()->get('session');
+        $session->invalidate();
+        $session->save();
+        $this->client->getCookieJar()->clear();
+    }
+
+    protected function createUser(
+        string $name = "Test User", string $email = "test@camdram.net",
+        int $admin_rank = 0): User
     {
         $user = new User();
-        $user->setName("Test User")->setEmail("test@camdram.net");
+        $user->setName($name)->setEmail($email);
         $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        if ($admin_rank) {
+            $this->aclProvider->grantAdmin($user, $admin_rank);
+        }
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    protected function createShow(string $name): Show
+    {
+        $show = new Show();
+        $show->setName($name);
+        $show->setCategory("drama");
+        $show->setAuthorised(true);
+        $this->entityManager->persist($show);
+        $performance = new Performance();
+        $performance->setStartAt(new \DateTime('Tuesday 19:45 next week'));
+        $performance->setRepeatUntil(new \DateTime('Saturday 19:45 next week'));
+        $show->addPerformance($performance);
+        $this->entityManager->persist($performance);
+        $this->entityManager->flush();
+
+        return $show;
     }
 
     protected function doJsonRequest($url, $params = [])
@@ -68,7 +103,7 @@ class RestTestCase extends WebTestCase
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('application/json', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('application/json', $response->headers->get('Content-Type'));
 
         return json_decode($response->getContent(), true);
     }
@@ -79,7 +114,7 @@ class RestTestCase extends WebTestCase
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('text/xml', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('text/xml', $response->headers->get('Content-Type'));
         return new \SimpleXMLElement($response->getContent());
     }
 
@@ -88,7 +123,7 @@ class RestTestCase extends WebTestCase
         $this->client->request('GET', $url);
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('text/calendar', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('text/calendar', $response->headers->get('Content-Type'));
         $vobj = VObject\Reader::read($response->getContent());
         $this->assertEquals(0, count($vobj->validate()));
         return $vobj;

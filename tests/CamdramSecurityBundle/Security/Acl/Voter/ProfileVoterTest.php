@@ -25,7 +25,7 @@ class ProfileVoterTest extends TestCase
      */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->voter = new ProfileVoter();
         $this->token = new UsernamePasswordToken('testuser', 'password', 'public');

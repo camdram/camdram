@@ -21,10 +21,10 @@ class ContactController extends Controller
     {
         $entity = $this->getEntity($type, $identifier);
         if (is_null($entity)) {
-            return $this->createNotFoundException();
+            throw $this->createNotFoundException("There is no $type called $identifier.");
         }
         $this->denyAccessUnlessGranted('VIEW', $entity);
-        
+
         $form = $this->createForm(ContactUsType::class);
 
         $form->handleRequest($request);
@@ -37,20 +37,20 @@ class ContactController extends Controller
                 $data['subject'],
                 $data['message']
             );
-            
+
             return $this->render('contact/sent.html.twig', [
                 'entity' => $entity,
                 'type' => $type
             ]);
         }
-        
+
         return $this->render('contact/index.html.twig', [
             'entity' => $entity,
             'type' => $type,
             'form' => $form->createView()
         ]);
     }
-    
+
     private function getEntity($type, $identifier)
     {
         switch ($type) {
@@ -64,7 +64,7 @@ class ContactController extends Controller
                 return $this->getDoctrine()->getRepository('ActsCamdramBundle:Venue')
                 ->findOneBySlug($identifier);
             default:
-                return null;
+                throw $this->createNotFoundException("No such entity type: $type.");
         }
     }
 }

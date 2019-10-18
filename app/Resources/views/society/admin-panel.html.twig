@@ -4,7 +4,7 @@
     <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_society', path: path('edit_society',{identifier:org.slug}), icon: 'pencil', text: 'Edit this society'} }) }}
         {% if is_granted('DELETE', org) %}
-             {{ include('navigation/form-item.html.twig', {item: {id: 'delete_society', 
+             {{ include('navigation/form-item.html.twig', {item: {id: 'delete_society',
                 path: path('delete_society', {identifier:org.slug}), method: 'DELETE', text: 'Delete this society', icon: 'eraser'},
                 destructive: {title: "Are you sure you want to delete the society “" ~ org.name ~ "”?", text: "This is a permanent action that cannot be undone" }
                 }) }}

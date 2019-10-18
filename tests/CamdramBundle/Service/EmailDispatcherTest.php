@@ -28,7 +28,7 @@ class EmailDispatcherTest extends TestCase
 
     private $from_address = 'from-address@camdram.net';
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mailer = $this->getMockBuilder('\Swift_Mailer')
             ->disableOriginalConstructor()->disableOriginalClone()->getMock();

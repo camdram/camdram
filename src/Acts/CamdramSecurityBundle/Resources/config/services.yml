@@ -24,7 +24,7 @@ services:
 
     camdram.security.listener.user:
         class: Acts\CamdramSecurityBundle\EventListener\UserListener
-        arguments: 
+        arguments:
             - '@doctrine.orm.entity_manager'
             - '@Acts\CamdramSecurityBundle\Service\EmailDispatcher'
             - '@Acts\CamdramSecurityBundle\Service\TokenGenerator'

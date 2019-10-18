@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Acts\CamdramBundle\EventListener;
 
 use Psr\Log\LogLevel;
@@ -16,7 +16,7 @@ class EmailLogger implements Swift_Events_SendListener
      * @var LoggerInterface
      */
     private $logger;
-    
+
     /**
      *
      * @var RequestStack
@@ -28,7 +28,7 @@ class EmailLogger implements Swift_Events_SendListener
      * @var TokenStorageInterface
      */
     private $tokenStorage;
-    
+
     /**
      * EmailLogger constructor.
      *
@@ -52,7 +52,7 @@ class EmailLogger implements Swift_Events_SendListener
     {
         $level = $this->getLogLevel($event);
         $message = $event->getMessage();
-        
+
         $token = $this->tokenStorage->getToken();
         $user = $token ? $token->getUser() : null;
         if ($user instanceof User) {
@@ -60,10 +60,10 @@ class EmailLogger implements Swift_Events_SendListener
         } else {
             $userInfo = null;
         }
-        
+
         $request = $this->requestStack->getCurrentRequest();
         $ip = $request ? $request->getClientIp() : null;
-        
+
         $this->logger->log(
             $level,
             $message->getSubject().' - '.$message->getId(),
@@ -78,7 +78,7 @@ class EmailLogger implements Swift_Events_SendListener
             ]
         );
     }
-    
+
     private function getResultString(Swift_Events_SendEvent $event)
     {
         switch ($event->getResult()) {
@@ -101,7 +101,7 @@ class EmailLogger implements Swift_Events_SendListener
                 return $event->getResult();
         }
     }
-    
+
     /**
      * @param Swift_Events_SendEvent $evt
      *

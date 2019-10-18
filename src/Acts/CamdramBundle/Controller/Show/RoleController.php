@@ -7,11 +7,12 @@ use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\RolesType;
 use Acts\CamdramBundle\Form\Type\RoleType;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 
-class RoleController extends FOSRestController
+class RoleController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
@@ -20,16 +21,17 @@ class RoleController extends FOSRestController
 
     /**
      * Get a form for adding a single role to a show.
+     * Not an Action, only rendered as part of another template.
      *
      * @param $identifier
      */
-    public function newRoleAction(Request $request, $identifier)
+    public function newRole(Request $request, Helper $helper, $identifier, $type)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
+        $helper->ensureGranted('EDIT', $show, false);
 
         $role = new Role();
-        $role->setType($request->query->get('type'));
+        $role->setType($type);
         $form = $this->createForm(RoleType::class, $role, array(
             'action' => $this->generateUrl('post_show_role', array('identifier' => $identifier))));
 
@@ -43,12 +45,13 @@ class RoleController extends FOSRestController
      *
      * Creates a new person if they're not already part of Camdram.
      *
+     * @Rest\Post("/shows/{identifier}/roles")
      * @param $identifier
      */
-    public function postRoleAction(Request $request, $identifier)
+    public function postRoleAction(Request $request, Helper $helper, $autocomplete_person, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $base_role = new Role();
         $form = $this->createForm(RoleType::class, $base_role);
@@ -80,12 +83,12 @@ class RoleController extends FOSRestController
 
                 try {
                     $em->flush();
-                    
+
                     //Attempt to update role count in people search index
-                    $this->get('fos_elastica.object_persister.autocomplete_person.person')->replaceOne($person);
+                    $autocomplete_person->replaceOne($person);
                 }
                 catch (\Elastica\Exception\ExceptionInterface $ex) {
-                    $this->get('logger')->warning('Failed to update search index during role entry', 
+                    $this->get('logger')->warning('Failed to update search index during role entry',
                             ['role' => $role->getId()]);
                 }
             }
@@ -96,11 +99,12 @@ class RoleController extends FOSRestController
 
     /**
      * Remove a role from a show.
+     * @Rest\Delete("/shows/{identifier}/role")
      */
-    public function deleteRoleAction(Request $request, $identifier)
+    public function deleteRoleAction(Request $request, Helper $helper, $autocomplete_person, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         if (!$this->isCsrfTokenValid('delete_show_role', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
@@ -116,7 +120,7 @@ class RoleController extends FOSRestController
             $role_repo->removeRoleFromOrder($role);
             $person->removeRole($role);
             $em->remove($role);
-            
+
             // Ensure the person is not an orphan.
             if ($person->getRoles()->isEmpty()) {
                 $em->remove($person);
@@ -124,17 +128,19 @@ class RoleController extends FOSRestController
 
             try {
                 $em->flush();
-                
+
                 if ($em->contains($person)) //person isn't deleted
                 {
                     //Attempt to update role count in people search index
-                    $this->get('fos_elastica.object_persister.autocomplete_person.person')->replaceOne($person);
+                    $autocomplete_person->replaceOne($person);
                 }
-            } 
+            }
             catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $this->get('logger')->warning('Failed to update search index during role entry', 
+                $this->get('logger')->warning('Failed to update search index during role entry',
                         ['role' => $role->getId()]);
             }
+        } else {
+            $this->addFlash('error', 'Cannot delete role: ID not found. It may already have been deleted.');
         }
 
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
@@ -146,10 +152,10 @@ class RoleController extends FOSRestController
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/many-roles")
      */
-    public function getManyRolesAction(Request $request, $identifier)
+    public function getManyRolesAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
+        $helper->ensureGranted('EDIT', $show);
 
         $form = $this->createForm(RolesType::class, array(
             array('identifier' => $identifier)));
@@ -170,13 +176,12 @@ class RoleController extends FOSRestController
      * @param $identifier
      * @Rest\Post("/shows/{identifier}/many-roles")
      */
-    public function postManyRolesAction(Request $request, $identifier)
+    public function postManyRolesAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show, false);
+        $helper->ensureGranted('EDIT', $show);
 
-        $form = $this->createForm(RolesType::class, array(
-            array('identifier' => $identifier)));
+        $form = $this->createForm(RolesType::class, [['identifier' => $identifier]]);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
@@ -203,6 +208,11 @@ class RoleController extends FOSRestController
                     );
                 }
             }
+        } else {
+            // Form not valid, hand back to user
+            return $this->view($form, 400)
+                ->setData(array('show' => $show, 'form' => $form->createView()))
+                ->setTemplate('show/roles-new.html.twig');
         }
 
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));

@@ -7,17 +7,12 @@ use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter;
+use Camdram\Tests\RestTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ShowVoterTest extends TestCase
+class ShowVoterTest extends RestTestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $aclProvider;
-
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter
      */
@@ -33,12 +28,11 @@ class ShowVoterTest extends TestCase
      */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->aclProvider = $this->getMockBuilder('\Acts\\CamdramSecurityBundle\\Security\\Acl\\AclProvider')
-            ->disableOriginalConstructor()->getMock();
+        parent::setUp();
         $this->voter = new ShowVoter($this->aclProvider);
-        $this->user = new User();
+        $this->user = $this->createUser();
         $this->token = new UsernamePasswordToken($this->user, 'password', 'public', $this->user->getRoles());
     }
 
@@ -48,9 +42,9 @@ class ShowVoterTest extends TestCase
         $society = new Society();
         $society->setName('Test Society');
         $show->getSocieties()->add($society);
-
-        $this->aclProvider->expects($this->any())->method('isOwner')
-            ->with($this->user, $society)->will($this->returnValue(true));
+        $this->entityManager->persist($society);
+        $this->entityManager->flush();
+        $this->aclProvider->grantAccess($society, $this->user);
 
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
@@ -70,9 +64,8 @@ class ShowVoterTest extends TestCase
         $society = new Society();
         $society->setName('Test Society');
         $show->getSocieties()->add($society);
-
-        $this->aclProvider->expects($this->atLeastOnce())->method('isOwner')
-            ->with($this->user, $society)->will($this->returnValue(false));
+        $this->entityManager->persist($society);
+        $this->entityManager->flush();
 
         $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,
@@ -88,13 +81,13 @@ class ShowVoterTest extends TestCase
 
     public function testVenueOwner()
     {
-        $show = new Show();
+        $show = $this->createShow("Little Shop of Horrors");
         $venue = new Venue();
         $venue->setName('Test Venue');
-        $show->setVenue($venue);
-
-        $this->aclProvider->expects($this->atLeastOnce())->method('isOwner')
-            ->with($this->user, $venue)->will($this->returnValue(true));
+        $show->getPerformances()->first()->setVenue($venue);
+        $this->entityManager->persist($venue);
+        $this->entityManager->flush();
+        $this->aclProvider->grantAccess($venue, $this->user);
 
         $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
@@ -110,13 +103,12 @@ class ShowVoterTest extends TestCase
 
     public function testNotVenueOwner()
     {
-        $show = new Show();
+        $show = $this->createShow("Little Shop of Horrors");
         $venue = new Venue();
         $venue->setName('Test Venue');
-        $show->setVenue($venue);
-
-        $this->aclProvider->expects($this->atLeastOnce())->method('isOwner')
-            ->with($this->user, $venue)->will($this->returnValue(false));
+        $show->getPerformances()->first()->setVenue($venue);
+        $this->entityManager->persist($venue);
+        $this->entityManager->flush();
 
         $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,

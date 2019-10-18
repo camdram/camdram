@@ -17,7 +17,7 @@ class AdminVoterTest extends TestCase
      */
     private $voter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->voter = new AdminVoter();
     }

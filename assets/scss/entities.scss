@@ -10,8 +10,17 @@
   border-radius:10px;
 }
 
+.entity-has-theme-color .panel,
+.entity-has-theme-color .vacancies-panel {
+  border-color: var(--custom-color);
+  border-width: 8px 1px 1px;
+  border-radius: 0;
+  background: none;
+}
+
 .admin-panel {
   @include panel(rgb(255,240,200), 1.5em 2em 1em);
+  --primary-color: #{$orange};
 
   li a.active {
     color: black;
@@ -169,4 +178,12 @@
     flex: 15rem;
     margin: 0.5em;
   }
+}
+
+.tag-container .tag {
+    background: lighten($orange, 35%);
+    padding: 0.4em 0.5em;
+    margin: 0.5em;
+    border: 1px solid $orange;
+    button { padding-left: 0.5em; }
 }

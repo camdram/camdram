@@ -61,7 +61,7 @@ class NewsFixtures extends Fixture implements DependentFixtureInterface
                 ' wants you to buy tickets for '][mt_rand(0, 3)] .
                 [ 'The Merchant of ', 'Three Men in ', 'The End of ', 'Surviving ', 'Much Ado About ',
                          'Waiting for ', 'Who\'s Afraid of ', 'Angels in ', 'Pirates of ', 'A Streetcar Named '][mt_rand(0, 9)] .
-                [ 'Oxford.', 'the Van of Life.', ' Philosophy.', ' Amsterdam.', 
+                [ 'Oxford.', 'the Van of Life.', ' Philosophy.', ' Amsterdam.',
                         'St John\'s.', 'Panto.', 'Cindies.', 'Addenbrooke\'s.', 'Week 5.'][mt_rand(0, 8)];
             $picture = ['https://placekitten.com/'.mt_rand(195, 210).'/200', null][mt_rand(0, 1)];
             $news->setEntity($org)
@@ -70,7 +70,7 @@ class NewsFixtures extends Fixture implements DependentFixtureInterface
                 ->setPicture($picture)
                 ->setPostedAt(clone $postedAt)
                 ;
-            
+
             $manager->persist($news);
         }
     }

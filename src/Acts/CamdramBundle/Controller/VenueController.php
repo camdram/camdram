@@ -2,11 +2,13 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
+use Acts\CamdramBundle\Service\ModerationManager;
 
 /**
  * Class VenueController
@@ -34,33 +36,33 @@ class VenueController extends OrganisationController
     {
         return $this->createForm(VenueType::class, $venue, ['method' => $method]);
     }
-    
+
     public function getAction($identifier)
     {
         $venue = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('VIEW', $venue);
-        
-        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
-            ->getContactableEntityOwners($venue) > 0;
-        
+
+        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($venue));
+
         $view = $this->view($venue, 200)
             ->setTemplate('venue/show.html.twig')
             ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
         ;
-        
+
         return $view;
     }
 
     /**
      * Action that allows querying by id. Redirects to slug URL
-     * 
+     *
      * @Rest\Get("/venues/by-id/{id}")
      */
     public function getByIdAction(Request $request, $id)
     {
         $this->checkAuthenticated();
         $venue = $this->getRepository()->findOneById($id);
-        
+
         if (!$venue)
         {
             throw $this->createNotFoundException('That venue id does not exist');
@@ -156,17 +158,27 @@ class VenueController extends OrganisationController
         $em->remove($venue->getImage());
         $venue->setImage(null);
         $em->flush();
-        
+
         return $this->redirectToRoute('get_venue', ['identifier' => $identifier]);
     }
 
     /**
      * Revoke a pending admin's access to an organisation.
-     * 
+     *
      * @Rest\Delete("/venues/{identifier}/pending-admins/{uid}")
      */
     public function deletePendingAdminAction(Request $request, $identifier, $uid)
     {
         return parent::deletePendingAdminAction($request, $identifier, $uid);
+    }
+
+    /**
+      * @Rest\Post("/venues/{identifier}/admins", name="post_venue_admin")
+      * @param $identifier
+      */
+    public function postAdminAction(Request $request, $identifier,
+        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
+    {
+        return parent::postAdmin($request, $identifier, $moderation_manager, $event_dispatcher);
     }
 }

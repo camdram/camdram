@@ -4,11 +4,12 @@ namespace Acts\CamdramBundle\Controller\Show;
 
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\ShowAuditionsType;
+use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 
-class AuditionController extends FOSRestController
+class AuditionController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
@@ -24,10 +25,10 @@ class AuditionController extends FOSRestController
      * @param $identifier
      * @Rest\Get("/shows/{identifier}/auditions/edit")
      */
-    public function editAuditionsAction($identifier)
+    public function editAuditionsAction(Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $form = $this->getAuditionsForm($show);
 
@@ -40,16 +41,22 @@ class AuditionController extends FOSRestController
      * @param $identifier
      * @Rest\Put("/shows/{identifier}/auditions")
      */
-    public function putAuditionsAction(Request $request, $identifier)
+    public function putAuditionsAction(Request $request, Helper $helper, $identifier)
     {
         $show = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $show);
+        $helper->ensureGranted('EDIT', $show);
 
         $form = $this->getAuditionsForm($show);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
+            $formData = $form->getData();
+            foreach ($formData->getAllAuditions() as $aud) {
+                if ($aud->getNonScheduled()) {
+                    $aud->setEndAt(clone ($aud->getStartAt()));
+                }
+            }
+            $em->persist($formData);
             $em->flush();
 
             return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));

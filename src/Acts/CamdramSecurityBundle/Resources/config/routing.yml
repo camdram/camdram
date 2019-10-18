@@ -32,7 +32,7 @@ acts_camdram_security_settings_res:
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
     prefix:   /oauth/connect
-    
+
 hwi_oauth_connect:
     resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
     prefix:   /oauth/connect
@@ -40,7 +40,7 @@ hwi_oauth_connect:
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /oauth/login
- 
+
 facebook_login:
     path: /oauth/check-facebook
 

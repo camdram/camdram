@@ -21,7 +21,7 @@ class Image
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var string
      *
@@ -58,12 +58,12 @@ class Image
      * @ORM\Column(name="type", type="string", length=100)
      */
     private $type;
-    
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
     }
-    
+
     /**
      * Get id
      *
@@ -73,7 +73,7 @@ class Image
     {
         return $this->id;
     }
-    
+
     /**
      * Set filename
      *
@@ -83,7 +83,7 @@ class Image
     public function setFilename($filename)
     {
         $this->filename = $filename;
-    
+
         return $this;
     }
     /**
@@ -104,7 +104,7 @@ class Image
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
-    
+
         return $this;
     }
     /**
@@ -125,7 +125,7 @@ class Image
     public function setWidth($width)
     {
         $this->width = $width;
-    
+
         return $this;
     }
     /**
@@ -146,7 +146,7 @@ class Image
     public function setHeight($height)
     {
         $this->height = $height;
-    
+
         return $this;
     }
     /**
@@ -167,7 +167,7 @@ class Image
     public function setExtension($extension)
     {
         $this->extension = $extension;
-    
+
         return $this;
     }
     /**
@@ -188,7 +188,7 @@ class Image
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
     /**

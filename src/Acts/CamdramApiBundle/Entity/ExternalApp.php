@@ -46,12 +46,6 @@ class ExternalApp extends BaseClient
     protected $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acts\CamdramBundle\Entity\Organisation")
-     * @ORM\JoinColumn(name="organisation_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     */
-    protected $organisation;
-
-    /**
      * @var bool
      * @ORM\Column(type="boolean")
      */
@@ -115,7 +109,6 @@ class ExternalApp extends BaseClient
     {
         $this->is_admin = true;
         $this->user = null;
-        $this->organisation = null;
 
         return $this;
     }
@@ -140,7 +133,6 @@ class ExternalApp extends BaseClient
     public function setUser(User $user)
     {
         $this->user = $user;
-        $this->organisation = null;
         $this->is_admin = false;
 
         return $this;
@@ -154,32 +146,6 @@ class ExternalApp extends BaseClient
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set organisation
-     *
-     * @param \Acts\CamdramBundle\Entity\Organisation $organisation
-     *
-     * @return ApiApp
-     */
-    public function setOrganisation(\Acts\CamdramBundle\Entity\Organisation $organisation)
-    {
-        $this->organisation = $organisation;
-        $this->user = null;
-        $this->is_admin = false;
-
-        return $this;
-    }
-
-    /**
-     * Get organisation
-     *
-     * @return \Acts\CamdramBundle\Entity\Organisation
-     */
-    public function getOrganisation()
-    {
-        return $this->organisation;
     }
 
     /**

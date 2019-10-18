@@ -18,7 +18,7 @@ class CreateVoterTest extends TestCase
      */
     private $token;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->voter = new CreateVoter();
         $this->token = new UsernamePasswordToken('testuser', 'password', 'public');

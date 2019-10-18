@@ -20,7 +20,7 @@ class ViewVoterTest extends TestCase
      */
     private $token;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->voter = new ViewVoter();
         $this->token = new UsernamePasswordToken('testuser', 'password', 'public');

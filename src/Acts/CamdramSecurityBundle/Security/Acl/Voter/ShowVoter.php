@@ -34,8 +34,8 @@ class ShowVoter extends Voter
             return false;
         }
 
-        if ($subject->getVenue()) {
-            if ($this->aclProvider->isOwner($token->getUser(), $subject->getVenue())) {
+        foreach ($subject->getVenues() as $venue) {
+            if ($this->aclProvider->isOwner($token->getUser(), $venue)) {
                 return true;
             }
         }

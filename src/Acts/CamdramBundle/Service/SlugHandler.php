@@ -3,13 +3,13 @@
 namespace Acts\CamdramBundle\Service;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Gedmo\Sluggable\Handler\SlugHandlerInterface;
+use Gedmo\Sluggable\Handler\SlugHandlerWithUniqueCallbackInterface;
 use Gedmo\Sluggable\Mapping\Event\SluggableAdapter;
 use Gedmo\Sluggable\SluggableListener;
 use Gedmo\Exception\InvalidMappingException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class DateSlugHandler implements SlugHandlerInterface
+class SlugHandler implements SlugHandlerWithUniqueCallbackInterface
 {
     /**
      * @var SluggableListener
@@ -39,17 +39,10 @@ class DateSlugHandler implements SlugHandlerInterface
         $om = $ea->getObjectManager();
         $isInsert = $om->getUnitOfWork()->isScheduledForInsert($object);
         $this->options = array_merge(
-            array('separator' => '-', 'dateField' => 'date', 'format' => 'Y',
-                'check_included' => true),
+            ['separator' => '-', 'format' => 'Y',
+                'check_included' => true, 'nameField' => 'name'],
             $config['handlers'][get_called_class()]
         );
-
-        if (!$isInsert && !$needToChangeSlug) {
-            $changeSet = $ea->getObjectChangeSet($om->getUnitOfWork(), $object);
-            if (isset($changeSet[$this->options['dateField']])) {
-                $needToChangeSlug = true;
-            }
-        }
     }
 
     /**
@@ -57,6 +50,8 @@ class DateSlugHandler implements SlugHandlerInterface
      */
     public function postSlugBuild(SluggableAdapter $ea, array &$config, $object, &$slug)
     {
+        if (!array_key_exists('dateField', $this->options)) return;
+
         $accessor = PropertyAccess::createPropertyAccessor();
         $date = $accessor->getValue($object, $this->options['dateField']);
         if ($date instanceof \DateTime) {
@@ -72,6 +67,19 @@ class DateSlugHandler implements SlugHandlerInterface
      */
     public static function validate(array $options, ClassMetadata $meta)
     {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function beforeMakingUnique(SluggableAdapter $ea, array &$config, $object, &$slug)
+    {
+        // Deal with cases of no slug, #448.
+        if ($slug === '' || preg_match("/^\d{4}-?$/", $slug)) {
+            $accessor = PropertyAccess::createPropertyAccessor();
+            $name = $accessor->getValue($object, $this->options['nameField']);
+            $slug .= substr(md5($name ?? ''), 0, 8);
+        }
     }
 
     /**

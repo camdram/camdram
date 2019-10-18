@@ -3,8 +3,23 @@
 {% block title %}Audit Log{% endblock %}
 
 {% block body %}
-<h3><a href="{{ path('acts_camdram_audit') }}">Audit Log</a></h3>
 
+<form action="{{ path('acts_camdram_audit') }}" method="GET">
+    <div class="split-header">
+        <h3><a href="{{ path('acts_camdram_audit') }}">Audit Log</a></h3>
+        <span><input type="submit" value="Search" class="button small"></span></div>
+    {% for i in queryParams %}
+    <div class="form-large-row">
+        <label for="search_{{i}}">{{ i | humanize}}</label>
+        <input name="{{ i }}" id="search_{{i}}" value="{{ app.request.query.get(i) }}"
+        {% if i starts with 'search' %}placeholder="SQL wildcard syntax"
+        {%- elseif i starts with 'time' %}placeholder="YYYY-MM-DD HH:MM:SS"{% endif %}>
+    </div>
+    {% endfor %}
+</form>
+
+{% include 'paginator.html.twig' %}
+<div style="overflow-x: auto; width: 100%">
 <table>
     <thead>
         <tr>
@@ -18,7 +33,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for result in results %}
+    {% for result in paginator %}
         <tr>
             <td>{{ result.loggedAt | date('Y-m-d H:i:s') }}</td>
             <td>
@@ -46,7 +61,13 @@
                 </small>
             </td>
         </tr>
+    {% else %}
+        <tr><td colspan="7" class="text-center">
+        No matching results in log; <a href="{{ path('acts_camdram_audit') }}">reset?</a>
+        </td></tr>
     {% endfor %}
     </tbody>
 </table>
+</div>
+{% include 'paginator.html.twig' %}
 {% endblock %}

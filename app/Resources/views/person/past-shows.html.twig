@@ -2,8 +2,7 @@
     <h4>{{ person.name }} has been involved with</h4>
     <ul class="large-block-list">
     {% for show in shows %}
-        <li itemscope itemtype="http://schema.org/TheaterEvent">
-            {{ include('person/show-header.html.twig') }}
+        <li {{ include('person/show-header.html.twig') }}
         </li>
     {% endfor %}
     </ul>

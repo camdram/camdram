@@ -8,25 +8,15 @@ use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
-use PHPUnit\Framework\TestCase;
+use Camdram\Tests\RestTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ModerationManagerTest extends TestCase
+class ModerationManagerTest extends RestTestCase
 {
     /**
      * @var MockObject
      */
-    private $entityManager;
-
-    /**
-     * @var MockObject
-     */
     private $dispatcher;
-
-    /**
-     * @var MockObject
-     */
-    private $aclProvider;
 
     /**
      * @var MockObject
@@ -60,13 +50,11 @@ class ModerationManagerTest extends TestCase
     private $venue;
     private $ownedShow;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->entityManager = $this->getMockBuilder('Doctrine\\ORM\\EntityManager')
-            ->disableOriginalConstructor()->getMock();
+        parent::setUp();
+
         $this->dispatcher = $this->getMockBuilder('\\Acts\\CamdramBundle\\Service\\EmailDispatcher')
-            ->disableOriginalConstructor()->getMock();
-        $this->aclProvider = $this->getMockBuilder('\\Acts\\CamdramSecurityBundle\\Security\\Acl\\AclProvider')
             ->disableOriginalConstructor()->getMock();
         $this->authorizationChecker = $this->getMockBuilder('\\Symfony\\Component\\Security\\Core\\Authorization\\AuthorizationCheckerInterface')
             ->disableOriginalConstructor()->getMock();
@@ -74,34 +62,27 @@ class ModerationManagerTest extends TestCase
             ->disableOriginalConstructor()->getMock();
         $this->logger = $this->getMockBuilder('\\Psr\\Log\\LoggerInterface')
             ->disableOriginalConstructor()->getMock();
-        $this->userRepo = $this->getMockBuilder('\\Acts\\CamdramSecurityBundle\\Entity\\UserRepository')
-            ->disableOriginalConstructor()->getMock();
 
         // Build mock entities
         for ($i = 0; $i < 6; $i++) {
-            $user = new User();
-            $user->setName("User ".$i);
-            $user->setEmail("user".$i."@camdram.net");
-            $this->users[] = $user;
+            $this->users[] = $this->createUser("User ".$i, "user".$i."@camdram.net");
         }
-        $this->admin = new User();
-        $this->admin->setName("Admin User");
-        $this->admin->setEmail("admin@camdram.net");
-        $this->admin->setIsEmailVerified(true);
+        $this->admin = $this->createUser("Admin User", "admin@camdram.net", AccessControlEntry::LEVEL_FULL_ADMIN);
         $this->society = new Society();
         $this->venue = new Venue();
-        $this->ownedShow = new Show();
-
-        // Any test should be able to retrieve the userRepo without further set-up.
-        $this->entityManager->expects($this->any())->method('getRepository')
-             ->will($this->returnValueMap([['ActsCamdramSecurityBundle:User', $this->userRepo]]));
-        $this->userRepo->method('findAdmins')->with(AccessControlEntry::LEVEL_FULL_ADMIN)
-             ->will($this->returnValue([$this->admin]));
-        $this->userRepo->method('getEntityOwners')->will($this->returnValueMap([
-            [$this->society, [$this->users[0], $this->users[1]]],
-            [$this->venue,   [$this->users[2], $this->users[3]]],
-            [$this->ownedShow, [$this->users[4]]]
-        ]));
+        $this->society->setName("Society X");
+        $this->venue->setName("Venue X");
+        $this->ownedShow = $this->createShow("Much Ado");
+        $this->entityManager->persist($this->society);
+        $this->entityManager->persist($this->venue);
+        $this->entityManager->persist($this->ownedShow);
+        $this->entityManager->flush();
+        $this->aclProvider->grantAccess($this->society, $this->users[0]);
+        $this->aclProvider->grantAccess($this->society, $this->users[1]);
+        $this->aclProvider->grantAccess($this->venue,   $this->users[2]);
+        $this->aclProvider->grantAccess($this->venue,   $this->users[3]);
+        $this->aclProvider->grantAccess($this->ownedShow, $this->users[4]);
+        $this->entityManager->flush();
 
         $this->moderationManager = new ModerationManager($this->entityManager, $this->dispatcher,
             $this->aclProvider, $this->authorizationChecker, $this->tokenStorage, $this->logger);
@@ -113,13 +94,15 @@ class ModerationManagerTest extends TestCase
      */
     public function testGetModerators()
     {
-        $show0 = new Show();
-        $showS = new Show();
-        $showV = new Show();
-        $showSV = new Show();
-        $showS->getSocieties()->add($this->society);
-        $showV->setVenue($this->venue);
-        $showSV->setVenue($this->venue)->getSocieties()->add($this->society);
+        $show0 = $this->createShow("Henry IV, Part I");
+        $showS = $this->createShow("Henry IV, Part II");
+        $showV = $this->createShow("Henry VI, Part I");
+        $showSV = $this->createShow("Henry VI, Part II");
+        $showS ->getSocieties()->add($this->society);
+        $showSV->getSocieties()->add($this->society);
+        $showV ->getPerformances()->first()->setVenue($this->venue);
+        $showSV->getPerformances()->first()->setVenue($this->venue);
+        $this->entityManager->flush();
 
         $this->assertSame($this->moderationManager->getModeratorAdmins(), [$this->admin]);
         $this->assertSame($this->moderationManager->getModeratorsForEntity($show0), [$this->admin]);

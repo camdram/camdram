@@ -1,9 +1,10 @@
 <div class="admin-panel">
-    <h6 class="split-header">Person Administration: {{ person.name}}<span>ID: {{person.id}}</span></h6>
+    <h6 class="split-header"><span>Person Administration: <a href="{{ path('get_person', {identifier: person.slug}) }}">{{ person.name}}</a></span><span>ID: {{person.id}}</span></h6>
     <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_person', path: path('edit_person',{identifier:person.slug}), icon: 'pencil', text: 'Edit profile'} }) }}
+        {{ include('navigation/nav-item.html.twig', {item: {id: 'get_person_edit_roles', path: path('get_person_edit_roles', {identifier: person.slug}), icon: 'edit', text: 'Manage roles'} }) }}
         {% if is_granted('DELETE', person) %}
-            {{ include('navigation/form-item.html.twig', {item: {id: 'delete_person', 
+            {{ include('navigation/form-item.html.twig', {item: {id: 'delete_person',
                 path: path('delete_person', {identifier:person.slug}), method: 'DELETE', text: 'Delete this person', icon: 'eraser'},
                 destructive: {title: "Are you sure you want to delete the person “" ~ person.name ~ "”?", text: "This is a permanent action that cannot be undone" }
                 }) }}

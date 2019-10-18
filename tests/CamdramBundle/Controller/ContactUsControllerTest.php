@@ -26,12 +26,12 @@ class ContactUsControllerTest extends WebTestCase
         $this->assertSame(1, $mailCollector->getMessageCount());
 
         $message = $mailCollector->getMessages()[0];
-        $this->assertContains('Test Message', $message->getSubject());
+        $this->assertStringContainsString('Test Message', $message->getSubject());
         $this->assertSame('john@domain.com', key($message->getReplyTo()));
         $recipient = $client->getKernel()->getContainer()->getParameter('support_email_address');
         $this->assertSame($recipient, key($message->getFrom()));
         $this->assertSame($recipient, key($message->getTo()));
-        $this->assertContains('Lorem ipsum', $message->getBody());
+        $this->assertStringContainsString('Lorem ipsum', $message->getBody());
     }
 
 }

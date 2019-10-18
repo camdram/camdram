@@ -15,19 +15,19 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 class RavenResourceOwner implements ResourceOwnerInterface
 {
     private $name;
-    
+
     private $httpClient;
-    
+
     public function __construct(HttpClient $httpClient)
     {
         $this->httpClient = $httpClient;
     }
-    
+
     public function setName($name)
     {
         $this->name = $name;
     }
-    
+
     public function getName()
     {
         return $this->name;
@@ -37,7 +37,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
     {
         return false;
     }
-    
+
     public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())
     {
         if (!$request->query->has('WLS-Response')) {
@@ -46,7 +46,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
 
         $wlsResponse = $request->query->get('WLS-Response');
         $request->query->remove('WLS-Response');
-        
+
         $parts = explode('!', $wlsResponse);
         $ver = array_shift($parts);
         if ($ver == 3) {
@@ -83,7 +83,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
                     throw new AuthenticationException('Raven error: Unknown '.$status);
             }
         }
-        
+
         $token = array(
             'principal' => $principal,
             'ver' => (int) $ver,
@@ -101,7 +101,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
             'sig' => (string) $sig,
             'access_token' => ''
         );
-        
+
         if (abs(time() - $token['issue']->getTimestamp()) > 30) {
             throw new AuthenticationException('Raven: log in timed out');
         }
@@ -139,7 +139,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
     {
         return $request->query->has('WLS-Response');
     }
-    
+
     public function isCsrfTokenValid($csrfToken)
     {
         return true;
@@ -162,7 +162,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
         $response->setResourceOwner($this);
         $response->setOAuthToken(new OAuthToken($token['ptags']));
         $response->setPaths(['identifier' => 'identifier', 'email' => 'email']);
-        
+
         return $response;
     }
 

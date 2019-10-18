@@ -1,95 +1,105 @@
 {
-	"name" : "camdram/camdram",
-	"description" : "Camdram - The portal website for student theatre in Cambridge",
-	"autoload" : {
-		"psr-4" : {
-			"" : "src/"
-		},
-		"classmap" : [
-			"app/AppKernel.php",
-			"app/AppCache.php"
-		]
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Camdram\\Tests\\": "tests/"
-		}
-	},
-	"license" : "GPL-2.0",
-	"require" : {
-		"php": ">=7.0.0",
-		"abraham/twitteroauth": "^1.0",
-		"doctrine/doctrine-bundle": "^1.9",
-		"doctrine/doctrine-fixtures-bundle": "~3.0",
-		"doctrine/doctrine-migrations-bundle": "2.0.*",
-		"doctrine/orm": "^2.5",
-		"erusev/parsedown": "^1.7",
-		"excelwebzone/recaptcha-bundle": "^1.5",
-		"facebook/graph-sdk": "^5.6",
-		"friendsofsymfony/elastica-bundle": "^5.0",
-		"friendsofsymfony/jsrouting-bundle": "2.3.*",
-		"friendsofsymfony/oauth-server-bundle": "^1.6",
-		"friendsofsymfony/rest-bundle": "^2.3",
-		"hwi/oauth-bundle": "^0.6",
-		"incenteev/composer-parameter-handler": "^2.1",
-		"jms/serializer-bundle": "^2.4",
-		"knplabs/github-api": "^2.8",
-		"liip/imagine-bundle": "~1.9",
-		"oneup/uploader-bundle": "^2.0",
-		"php-http/guzzle6-adapter": "^1.1",
-		"php-http/httplug-bundle": "^1.10",
-		"sabre/vobject": "~4.1",
-		"sensio/distribution-bundle": "^5.0",
-		"sensio/framework-extra-bundle": "^5.2",
-		"sentry/sentry-symfony": "^2.3",
-		"stof/doctrine-extensions-bundle": "1.3.*",
-		"symfony/monolog-bundle": "^3.3",
-		"symfony/swiftmailer-bundle": "^3.2.2",
-		"symfony/symfony": "3.4.*",
-		"twig/extensions": "~1.5",
-		"twig/twig": "^1.0||^2.0",
-		"zendframework/zend-feed": "2.11.*"
-	},
-	"require-dev" : {
-		"dama/doctrine-test-bundle": "^5.0",
-		"sensio/generator-bundle": "^3.1",
-		"symfony/phpunit-bridge": "^4.1",
-		"symfony/web-server-bundle": "^3.4"
-	},
-	"scripts" : {
-		"post-create-project-cmd": [
-			"Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::refreshDatabase",
-			"Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::downloadAssets",
-			"Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::welcomeMessage"
+    "autoload": {
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
         ],
-		 "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Camdram\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin/",
+        "sort-packages": true
+    },
+    "description": "Camdram - The portal website for student theatre in Cambridge",
+    "extra": {
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
+        "symfony-app-dir": "app",
+        "symfony-assets-install": "relative",
+        "symfony-bin-dir": "bin",
+        "symfony-tests-dir": "tests",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web"
+    },
+    "license": "GPL-2.0-only",
+    "minimum-stability": "stable",
+    "name": "camdram/camdram",
+    "replace": {
+        "phpunit/phpunit": "8.2.4",
+        "symfony/polyfill-php56": "1.99",
+        "symfony/polyfill-php70": "1.99",
+        "symfony/polyfill-php71": "1.99",
+        "symfony/polyfill-php72": "1.99",
+        "symfony/polyfill-php73": "1.99"
+    },
+    "require": {
+        "php": ">=7.3",
+        "abraham/twitteroauth": "^1.0",
+        "doctrine/doctrine-bundle": "^1.9",
+        "doctrine/doctrine-fixtures-bundle": "~3.0",
+        "doctrine/doctrine-migrations-bundle": "2.0.*",
+        "doctrine/orm": "^2.5",
+        "erusev/parsedown": "^1.7",
+        "excelwebzone/recaptcha-bundle": "^1.5",
+        "facebook/graph-sdk": "^5.6",
+        "friendsofsymfony/elastica-bundle": "^5.0",
+        "friendsofsymfony/jsrouting-bundle": "2.4.*",
+        "friendsofsymfony/oauth-server-bundle": "^1.6",
+        "friendsofsymfony/rest-bundle": "^2.3",
+        "hwi/oauth-bundle": "^0.6",
+        "incenteev/composer-parameter-handler": "^2.1",
+        "jms/serializer-bundle": "^3.4",
+        "knplabs/github-api": "^2.8",
+        "liip/imagine-bundle": "^2.1",
+        "oneup/uploader-bundle": "^2.0",
+        "php-http/guzzle6-adapter": "^1.1",
+        "php-http/httplug-bundle": "^1.10",
+        "sabre/vobject": "~4.1",
+        "sensio/distribution-bundle": "^5.0",
+        "sensio/framework-extra-bundle": "^5.2",
+        "sentry/sentry-symfony": "^2.3",
+        "stof/doctrine-extensions-bundle": "1.3.*",
+        "symfony/monolog-bundle": "^3.3",
+        "symfony/swiftmailer-bundle": "^3.2.2",
+        "symfony/symfony": "3.4.*",
+        "symfony/webpack-encore-bundle": "^1.6",
+        "twig/extensions": "~1.5",
+        "twig/twig": "^2.7",
+        "zendframework/zend-feed": "2.12.*"
+    },
+    "require-dev": {
+        "dama/doctrine-test-bundle": "^6.0",
+        "dms/phpunit-arraysubset-asserts": "^0.1.0",
+        "sensio/generator-bundle": "^3.1",
+        "symfony/phpunit-bridge": "^4.1",
+        "symfony/web-server-bundle": "^3.4"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::refreshDatabase",
+            "Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::downloadAssets",
+            "Acts\\CamdramAdminBundle\\Composer\\ScriptHandler::welcomeMessage"
         ],
         "post-install-cmd": [
             "@symfony-scripts"
         ],
         "post-update-cmd": [
             "@symfony-scripts"
+        ],
+        "symfony-scripts": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ]
-	},
-	"minimum-stability" : "stable",
-	"extra" : {
-		"symfony-app-dir" : "app",
-		"symfony-web-dir" : "web",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-tests-dir": "tests",
-		"incenteev-parameters" : {
-			"file" : "app/config/parameters.yml"
-		},
-		"symfony-assets-install" : "relative"
-	},
-	"config" : {
-                "bin-dir" : "bin/",
-                "sort-packages": true
-	}
+    }
 }

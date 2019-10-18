@@ -3,12 +3,11 @@
     <div class="form-small-widget">
         {{ form_label(audition.start_at.date) }}
         {{ form_widget(audition.start_at.date) }}
-        {{ form_errors(audition.start_at.date) }}
     </div>
     <div class="form-small-widget">
         {{ form_label(audition.start_at.time, 'Start time') }}
         {{ form_widget(audition.start_at.time) }}
-        {{ form_errors(audition.start_at.time) }}
+        {{ form_errors(audition.start_at) }}
     </div>
     <div class="form-small-widget">
         {{ form_label(audition.end_at, 'End time') }}

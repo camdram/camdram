@@ -59,8 +59,10 @@ class Person
     private $image;
 
     /**
-     * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\SlugHandler", options={})
+     * }, fields={"name"})
+     * @ORM\Column(name="slug", type="string", length=128, nullable=false)
      * @Serializer\Expose
      * @Serializer\XmlElement(cdata=false)
      */
@@ -288,6 +290,7 @@ class Person
      */
     public function setName($name)
     {
+        $name = preg_replace('/[\p{Cc}\p{Cf}]/u', '', $name);
         $this->name = $name;
 
         return $this;
@@ -469,6 +472,18 @@ class Person
         }
 
         return $counter;
+    }
+
+    public function getFirstActive()
+    {
+        $first = null;
+        foreach ($this->getRoles() as $role) {
+            if ($role->getShow() && (!$first || $role->getShow()->getStartAt() < $first) && $role->getShow()->getStartAt()) {
+                $first = $role->getShow()->getStartAt();
+            }
+        }
+
+        return $first;
     }
 
     public function getLastActive()

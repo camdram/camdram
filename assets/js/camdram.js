@@ -1,15 +1,11 @@
+import 'cookieconsent';
 import Dropzone from 'dropzone';
 import Routing from 'router';
-import Bloodhound from 'typeahead.js'
+
+// Leak Routing to the global scope so that inline scripts work.
+window.Routing = Routing;
 
 ;(function($, window) {
-    String.prototype.truncate = function(length) {
-        str = jQuery.trim(this).substring(0, length)
-            .trim(this);
-        if (this.length > length) str += '...';
-        return str;
-    }
-
     var doCookieConsent = function() {
         window.cookieconsent.initialise({
             "palette": {
@@ -39,7 +35,7 @@ import Bloodhound from 'typeahead.js'
 
     var showModalDialog = function(title, body) {
         $(body).prepend($('<h5/>').text(title))
-               .prepend($('<a/>').attr('aria-label', 'Close dialog')
+               .prepend($('<a/>').attr('aria-label', 'Close dialog')
                                  .attr('role', 'button')
                                  .addClass('close-reveal-modal')
                                  .html('&#215;').click(hideModalDialog))
@@ -66,6 +62,7 @@ import Bloodhound from 'typeahead.js'
     var fixHtml = function(elementsToFix){
         $('.news_media', elementsToFix).newsFeedMedia();
         $('.button-destructive').deleteLink();
+        $(elementsToFix).entitySearch({auto: 1});
         createTabContainers();
 
         if (!supportsDateInput()) {
@@ -100,6 +97,8 @@ import Bloodhound from 'typeahead.js'
                 },200);
             })
         });
+
+        $('.flash-messages').delay(2500).fadeOut(300);
     };
 
     $.fn.scrollTo = function(options) {
@@ -129,49 +128,26 @@ import Bloodhound from 'typeahead.js'
         });
     }
 
-    $.fn.formMap = function(map) {
-        $(this).each(function() {
-            var $self = $(this);
-            var $lat = $self.find('input').eq(0);
-            var $long = $self.find('input').eq(1);
-            $self.children().first().hide();
-
-            var marker = new google.maps.Marker({
-                map: map,
-                title:"Selected Location",
-                draggable: true
-            });;
-            if ($lat.val() && $long.val()) {
-                var pos = new google.maps.LatLng($lat.val(), $long.val());
-                marker.setPosition(pos);
-                map.setCenter(pos);
-                map.setZoom(17);
-            }
-
-            var updatePosition = function(animate) {
-                return function(e) {
-                    if (animate) marker.setMap(null);
-                    marker.setPosition(e.latLng);
-                    if (animate) {
-                        marker.setAnimation(google.maps.Animation.DROP);
-                        marker.setMap(map);
-                    }
-                    $lat.val(e.latLng.lat());
-                    $long.val(e.latLng.lng());
-                }
-            }
-
-            google.maps.event.addListener(map, 'click', updatePosition(true));
-            google.maps.event.addListener(marker, 'dragend', updatePosition(false));
-
-        })
-    }
-
     $.fn.entitySearch = function(options) {
-       var options = $.extend({
-           placeholder: 'start typing to search',
-           prefetch : true
-       }, options);
+        if (options['auto']) {
+           this.find('[data-entitysearch-route]').each(function() {
+               $(this).entitySearch({
+                   placeholder: 'start typing to search',
+                   prefetch: this.getAttribute('data-entitysearch-prefetch') == 'true',
+                   route: this.getAttribute('data-entitysearch-route')
+               });
+           });
+           // Ensure that entitySearch is fired only once per element,
+           // regardless of how many times entitySearch({auto}) is called.
+           this.find('[data-entitysearch-prefetch]').removeAttr('data-entitysearch-prefetch');
+           this.find('[data-entitysearch-route]').removeAttr('data-entitysearch-route');
+           return;
+        }
+
+        var options = $.extend({
+            placeholder: 'start typing to search',
+            prefetch : true
+        }, options);
         var $self = $(this);
 
         var tokenize = function(str) {
@@ -190,10 +166,9 @@ import Bloodhound from 'typeahead.js'
             $self.trigger('entitysearch:changed', [datum]);
         };
 
-        console.log(Routing.generate(options.route, {q: '%QUERY', _format: 'json'}))
 
         var engine = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
             remote: {
@@ -212,7 +187,6 @@ import Bloodhound from 'typeahead.js'
        }).on('typeahead:autocompleted', onValueSelect).on('typeahead:selected', onValueSelect);
 
        $(this).change(function() {
-           console.log($self.parent().siblings('input[type=hidden]').val())
            $self.parent().siblings('input[type=hidden]').val('');
        }).attr('placeholder', options.placeholder);
 
@@ -351,63 +325,54 @@ import Bloodhound from 'typeahead.js'
         fixHtml($(document));
         doCookieConsent();
     });
-    
-    Dropzone.options.imageUpload = {
-    		  paramName: "file", // The name that will be used to transfer the file
-    		  maxFilesize: 2, // MB
-    		  createImageThumbnails: true,
-    		  thumbnailWidth: 120,
-    		  thumbnailHeight: 120,
-    		  resizeWidth: 1024,
-    		  maxFiles: 1,
-    		  acceptedFiles: 'image/*',
-    		  dictDefaultMessage: 'Click to upload image',
-    		  previewTemplate: '<div class="dz-preview dz-file-preview">'
-				 + '<div class="dz-details">'
-				 + '<div class="dz-filename alert-box round">Uploading <span data-dz-name></span></div>'
-				 + '<div class="dz-size" data-dz-size></div>'
-				 + '<img data-dz-thumbnail />'
-				 + '</div>'
-				 + ' <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>'
-				+ '</div>',
-    		  init: function() {
-    			  var msgDiv = Dropzone.createElement('<div/>');
-    			  msgDiv.className = 'hidden'
-    			  this.element.append(msgDiv);
-    			  
-    			  this.on('error', function(file, errorMessage, blah) {
-			    	this.removeAllFiles();
-			    	
-			    	var errorText = 'Error uploading "' + file.name + '"';
-			    	
-			    	if (typeof errorMessage == 'string')
-		    		{
-			    		errorText += ':<br />' + errorMessage;
-		    		}
-			    	else if (typeof errorMessage.error == 'string')
-		    		{
-			    		errorText += ':<br />' + errorMessage.error;
-		    		}
-			    	msgDiv.innerHTML = errorText;
-			    	msgDiv.className = 'alert-box alert round';
-			      })
-			      .on('addedfile', function() {
-			    	  msgDiv.className = 'hidden';
-			    	  msgDiv.innerHTML = '';
-			      })
-			      .on('success', function(file) {
-			    	  this.destroy();
-			    	  
-			    	  msgDiv.innerHTML = '"' + file.name + '" uploaded'
-			    	  		+ '<br />Reloading page...'
-			    	  msgDiv.className = 'alert-box success round'
-			    	  
-		              location.reload();
-    		      })
-    		      .on("maxfilesexceeded", function(file) { 
-    		    	  this.removeFile(file); 
-    		      });
-    		   }
-    		};
 
+    Dropzone.options.imageUpload = {
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 2, // MB
+        createImageThumbnails: true,
+        thumbnailWidth: 120,
+        thumbnailHeight: 120,
+        resizeWidth: 1024,
+        maxFiles: 1,
+        acceptedFiles: 'image/*',
+        dictDefaultMessage: 'Click to upload image',
+        previewTemplate: '<div class="dz-preview dz-file-preview">'
+            + '<div class="dz-details">'
+            + '<div class="dz-filename alert-box round">Uploading <span data-dz-name></span></div>'
+            + '<div class="dz-size" data-dz-size></div>'
+            + '<img data-dz-thumbnail />'
+            + '</div>'
+            + ' <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>'
+            + '</div>',
+        init: function() {
+            var msgDiv = Dropzone.createElement('<div/>');
+            msgDiv.className = 'hidden'
+            this.element.append(msgDiv);
+
+            this.on('error', function(file, errorMessage, blah) {
+                this.removeAllFiles();
+
+                var errorText = 'Error uploading "' + file.name + '"';
+
+                if (typeof errorMessage == 'string') {
+                    errorText += ':<br />' + errorMessage;
+                } else if (typeof errorMessage.error == 'string') {
+                  errorText += ':<br />' + errorMessage.error;
+                }
+                msgDiv.innerHTML = errorText;
+                msgDiv.className = 'alert-box alert round';
+            }).on('addedfile', function() {
+                msgDiv.className = 'hidden';
+                msgDiv.innerHTML = '';
+            }).on('success', function(file) {
+                this.destroy();
+                msgDiv.innerHTML = '"' + file.name + '" uploaded'
+                        + '<br />Reloading page...'
+                msgDiv.className = 'alert-box success round'
+                location.reload();
+            }).on("maxfilesexceeded", function(file) {
+                this.removeFile(file);
+            });
+        }
+    };
 })(jQuery, window);

@@ -5,14 +5,14 @@ namespace Acts\CamdramBundle\Service;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class WeekManager
 {
     private $weekRepository;
     private $periodRepository;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->weekRepository = $entityManager->getRepository('ActsCamdramBundle:WeekName');
         $this->periodRepository = $entityManager->getRepository('ActsCamdramBundle:TimePeriod');
@@ -75,7 +75,7 @@ class WeekManager
             return $this->getWeekFromDate($date);
         }
     }
-    
+
     /**
      * Given any array of performances return a string version
      * of the performances datses in "Cambridge terms" e.g.
@@ -88,29 +88,25 @@ class WeekManager
      *
      * @return string
      */
-    public function getPerformancesWeeksAsString($performances)
+    public function getPerformancesWeeksAsString(\DateTime $startAt, \DateTime $endAt)
     {
         $res = "";
-        /* Guard condition. */
-        if (count($performances) > 0) {
-            $start_week = $this->findAt($performances[0]->getStartAt());
-            /* Assume performances are supplied in chronological order. */
-            $end_week = $this->findAt($performances[count($performances) - 1]->getRepeatUntil());
-            if ($start_week->getName() == $end_week->getName()) {
-                /* Any show that runs for less than a week, e.g. most
-                 * shows at the ADC Theatre.
-                 */
-                $res = $start_week->getName();
+        $start_week = $this->findAt($startAt);
+        $end_week   = $this->findAt($endAt);
+        if ($start_week->getName() == $end_week->getName()) {
+            /* Any show that runs for less than a week, e.g. most
+             * shows at the ADC Theatre.
+             */
+            $res = $start_week->getName();
+        } else {
+            /* Less common, perhaps a two week run. */
+            $res = $start_week->getName() . " to ";
+            if (explode(' ', $start_week->getName())[0] == explode(' ', $end_week->getName())[0]) {
+                /* Both weeks are in the same term. */
+                $res = $res . $end_week->getShortName();
             } else {
-                /* Less common, perhaps a two week run. */
-                $res = $start_week->getName() . " to ";
-                if (explode(' ', $start_week->getName())[0] == explode(' ', $end_week->getName())[0]) {
-                    /* Both weeks are in the same term. */
-                    $res = $res . $end_week->getShortName();
-                } else {
-                    /* The show spans multiple terms. */
-                    $res = $res . $end_week->getName();
-                }
+                /* The show spans multiple terms. */
+                $res = $res . $end_week->getName();
             }
         }
 

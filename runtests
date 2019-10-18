@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
-export SYMFONY_PHPUNIT_VERSION=6.5
-export SYMFONY_DEPRECATIONS_HELPER=weak_vendors
+export SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 export SYMFONY_ENV=test
 
+mkdir -p web/build
 php app/console lint:yaml app/config
 php app/console lint:twig app/Resources
 bin/simple-phpunit $@
-php app/console security:check --end-point=http://security.sensiolabs.org/check_lock
+php app/console security:check

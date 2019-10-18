@@ -12,7 +12,7 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
 
     private $show;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -39,7 +39,6 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show);
         $ad->setExpiry(new \DateTime('2014-03-12'));
         $ad->setDeadline(true);
-        $ad->setDeadlineTime(new \DateTime('00:00'));
         $ad->setPositions("Technical Director\nLighting Designer");
         $ad->setContact('Contact me');
         $ad->setTechExtra('Get involved with this show');
@@ -59,7 +58,6 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show);
         $ad->setExpiry(new \DateTime('2014-03-12'));
         $ad->setDeadline(true);
-        $ad->setDeadlineTime(new \DateTime('00:00'));
         $ad->setPositions("Technical Director\nLighting Designer");
         $ad->setContact('Contact me');
         $ad->setTechExtra('Get involved with this show');
@@ -75,9 +73,8 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
     {
         $ad = new TechieAdvert();
         $ad->setShow($this->show);
-        $ad->setExpiry(new \DateTime('2014-03-12'));
+        $ad->setExpiry(new \DateTime('2014-03-12 10:00'));
         $ad->setDeadline(true);
-        $ad->setDeadlineTime(new \DateTime('10:05'));
         $ad->setPositions("Technical Director\nLighting Designer");
         $ad->setContact('Contact me');
         $ad->setTechExtra('Get involved with this show');
@@ -85,7 +82,7 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $this->em->persist($ad);
         $this->em->flush();
 
-        $res = $this->getRepository()->findNotExpiredOrderedByDateName(new \DateTime('2014-03-12 10:00'));
+        $res = $this->getRepository()->findNotExpiredOrderedByDateName(new \DateTime('2014-03-12 09:59'));
         $this->assertEquals(1, count($res));
     }
 
@@ -93,9 +90,8 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
     {
         $ad = new TechieAdvert();
         $ad->setShow($this->show);
-        $ad->setExpiry(new \DateTime('2014-03-12'));
+        $ad->setExpiry(new \DateTime('2014-03-12 10:05'));
         $ad->setDeadline(true);
-        $ad->setDeadlineTime(new \DateTime('10:00'));
         $ad->setPositions("Technical Director\nLighting Designer");
         $ad->setContact('Contact me');
         $ad->setTechExtra('Get involved with this show');
@@ -113,7 +109,6 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show);
         $ad->setExpiry(new \DateTime('2014-03-12'));
         $ad->setDeadline(true);
-        $ad->setDeadlineTime(new \DateTime('00:00'));
         $ad->setPositions("Technical Director\nLighting Designer");
         $ad->setContact('Contact me');
         $ad->setTechExtra('Get involved with this show');
@@ -131,7 +126,6 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show);
         $ad->setExpiry(new \DateTime('2014-03-12'));
         $ad->setDeadline(true);
-        $ad->setDeadlineTime(new \DateTime('00:00'));
         $ad->setPositions("Technical Director\nLighting Designer");
         $ad->setContact('Contact me');
         $ad->setTechExtra('Get involved with this show');
@@ -149,7 +143,6 @@ class TechieAdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show);
         $ad->setExpiry(new \DateTime('2014-03-12'));
         $ad->setDeadline(true);
-        $ad->setDeadlineTime(new \DateTime('00:00'));
         $ad->setPositions("Technical Director\nLighting Designer");
         $ad->setContact('Contact me');
         $ad->setTechExtra('Get involved with this show');

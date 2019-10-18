@@ -74,7 +74,7 @@ class CamdramUserProvider implements
             'service' => $service,
             'username' => $username
         ));
-        
+
         if ($external) {
             $external->setToken($response->getAccessToken());
         } else {
@@ -87,10 +87,10 @@ class CamdramUserProvider implements
             $external->setToken($response->getAccessToken());
             $this->em->persist($external);
         }
-        
+
         return $external;
     }
-    
+
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $external = $this->loadOrCreateExternalUser($response);
@@ -98,20 +98,20 @@ class CamdramUserProvider implements
             $external->setUser($user);
         }
         $this->em->flush();
-        
+
         if (!$external->getUser()) {
             throw new AccountNotLinkedException(sprintf("User '%s' not found.", $response->getUsername()));
         }
-        
+
         return $external->getUser();
     }
-    
+
     public function connect(UserInterface $user, UserResponseInterface $response)
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Expected a Camdram User, but got "%s".', get_class($user)));
         }
-           
+
         $external = $this->loadOrCreateExternalUser($response);
         $external->setUser($user);
         $this->em->flush();

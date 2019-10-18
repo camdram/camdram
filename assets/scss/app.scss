@@ -96,11 +96,14 @@ nav.navbar {
 }
 
 #content {
+  --primary-color: var(--color-text, #{$orange});
   font-size: .875rem;
 
   ul {
-    list-style-position: inside;
+    list-style-position: outside;
     padding-left:20px;
+    margin-left: 1em;
+    margin-right: 1em;
   }
 
   .inline-list {
@@ -110,10 +113,22 @@ nav.navbar {
   img {
     margin-bottom:0.8em;
   }
+
+  a.icon-link {
+    > img {
+      &[src*="google"] {
+        /* The Google logo has a white background, the same as the main
+        content section of a page. Here we give it a dark grey inside
+        border in all such cases. Notably this doesn't include the site's
+        menu bar header which already has a dark background. */
+        box-shadow: inset 0px 0px 0px 1px $dark-grey;
+      }
+    }
+  }
 }
 
 footer {
-  background:$dark-grey;
+  background: #2B2B2B;
   color: $white;
   h5 {
     color: $white;
@@ -143,7 +158,8 @@ footer {
 }
 
 header#main-header {
-  background:$orange;
+  background: $orange;
+  background: var(--custom-color, $orange);
   clear: both;
   > div {
     max-width: $row-width;
@@ -176,11 +192,13 @@ header#main-header {
         bottom: 0;
         border-style: solid;
         border-color: white $orange;
+        border-color: white var(--custom-color, $orange);
         border-width: 40px 0 40px 9px;
       }
     }
 
     a {
+      color: transparent;
       height: 100%;
       display: flex;
       align-items: center;
@@ -212,18 +230,20 @@ header#main-header {
         bottom: 0;
         border-style: solid;
         border-color: $orange white;
+        border-color: var(--custom-color, $orange) white;
         border-width: 40px 0 40px 9px;
       }
     }
 
     @media not screen and (min-width: 768px) {
       background: $orange;
+      background: var(--custom-color, $orange);
       flex: 10 0 100%;
       padding: 20px 10px;
       transition: flex 500ms ease;
       /* .active is JS to make up for lack of :focus-within support */
       /* Supporting Edge and :focus-within at the same time involves excessive
-         faff and it's not unreasonable to expect clients to have JS. */
+         faff. */
       &:not(.active) /*:not(:focus-within)*/ {
         flex: 0 0 0;
         #search_form {
@@ -244,6 +264,16 @@ header#main-header {
       }
     }
   }
+
+  /* Theme variants */
+  &[data-theme="PRIDE"] #logo-block {
+    @media only screen and (min-width: 768px) {
+      min-width: 250px;
+    }
+  }
+  &[data-theme="XMAS"] #logo-block {
+    padding-bottom: 15px;
+  }
 }
 
 h1, h2, h3, h4, h5 {
@@ -262,7 +292,7 @@ h1, h2, h3, h4, h5 {
   margin-bottom:-4px;
 }
 
-a.icon-link {
+.icon-link {
   &.icon-link-textual {
     @include menubutton(white, bold, $dark-grey, $light-grey);
   }
@@ -306,6 +336,11 @@ table {
   width:100%;
 }
 
+table, th, td {
+  border: 1px solid $hr-color;
+  padding: 0.5em;
+}
+
 #nav-edit-link i {
   font-size: 1.5em;
   vertical-align: middle;
@@ -343,13 +378,19 @@ $panel-font-color-alt: #000;
 }
 
 #dev-warning {
-  background:#ffdddd;
+  background: #ffff00;
   text-align:center;
   padding:0.1em 1em;
   font-size:0.9em;
 
   h3 {
-    color:#a00;
+    /* a11y only text as the logo is changed instead of a big h3*/
+    display: block;
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 0;
+    height: 0;
   }
 }
 
@@ -399,4 +440,38 @@ _:-ms-input-placeholder, :root #home-diary-nav ul, :root body {
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
+}
+
+/**
+ * Messages that appear to the user once then fade away.
+ */
+.flash-messages {
+  position: fixed;
+  z-index: 99999;
+  max-width: 40rem;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  p {
+    margin: 1em;
+    padding: 1em;
+    background: white;
+    border: 1px solid grey;
+    border-left-width: 6px;
+    display: flex;
+    align-items: center;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    &::before {
+      font-family: FontAwesome;
+    }
+    &.flash-error {
+      border-color: #A20;
+      &::before { content: '\f06a\2003'; color: #a20; }
+    }
+    &.flash-success {
+      border-color: #0A0;
+      &::before { content: '\f00c\2003'; color: #0A0; }
+    }
+  }
 }

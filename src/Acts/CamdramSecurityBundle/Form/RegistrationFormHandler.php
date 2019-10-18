@@ -17,15 +17,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class RegistrationFormHandler implements RegistrationFormHandlerInterface
 {
     private $em;
-    
+
     private $encoderFactory;
-    
+
     private $formFactory;
 
     private $eventDispatcher;
-    
+
     public function __construct(
-    
+
         EntityManagerInterface $entityManager,
         EncoderFactoryInterface $encoderFactory,
         FormFactoryInterface $formFactory,
@@ -36,12 +36,12 @@ class RegistrationFormHandler implements RegistrationFormHandlerInterface
         $this->formFactory = $formFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
-    
+
     public function createForm()
     {
         return $this->formFactory->create(ExternalRegistrationType::class, new User());
     }
-    
+
     public function process(Request $request, Form $form, UserResponseInterface $userInformation)
     {
         if ($request->getMethod() == 'POST') {

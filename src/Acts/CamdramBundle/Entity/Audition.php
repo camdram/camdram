@@ -51,7 +51,7 @@ class Audition implements EventInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_at", type="datetime", nullable=true)
+     * @ORM\Column(name="end_at", type="datetime", nullable=false)
      * @Assert\DateTime()
      * @Gedmo\Versioned
      * @Serializer\Expose()
@@ -124,14 +124,15 @@ class Audition implements EventInterface
         if ($this->getEndAt()) {
             $endAt = clone $this->getEndAt();
             $endAt->setTimezone(new \DateTimeZone("Europe/London"));
+            if ($startAt == $endAt) return $str;
 
             $endDate = $endAt->format('D jS M');
             $endTime = $endAt->format('H:i');
-            $str .= ' - ';
+            $str .= '–';
             if ($endDate != $startDate) $str .= $endDate . ', ';
             $str .= $endTime;
         }
-        
+
         return $str;
     }
 
@@ -314,41 +315,5 @@ class Audition implements EventInterface
     public function getUpdatedAt()
     {
         return $this->getShow()->getTimestamp();
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getDate()
-    {
-        $date = clone $this->getStartAt();
-        $date->setTime(0, 0, 0);
-        return $date;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getStartTime()
-    {
-        $startAt = clone $this->getStartAt();
-        $startAt->setTimezone(new \DateTimezone('Europe/London'));
-        return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getEndTime()
-    {
-        $endAt = clone $this->getEndAt();
-        $endAt->setTimezone(new \DateTimezone('Europe/London'));
-        return \DateTime::createFromFormat('!H:i', $endAt->format('H').':'.$endAt->format('i'));
     }
 }

@@ -10,12 +10,22 @@ Encore
     // the public path used by the web server to access the previous directory
     .setPublicPath('/build')
 
-    // will create web/build/app.js and web/build/app.css
-    .addEntry('app', './assets/js/app.js')
+    // creates the possible entrypoints, ONLY ONE used per page
+    // If thinking of changing this reconsider .disableSingleRuntimeChunk()
+    // default
+    .addEntry('base', './assets/js/base.js')
+    // diary page
     .addEntry('diarypage', './assets/js/diarypage.js')
+    // venue pages, i.e. has a map on it.
+    .addEntry('venue', './assets/js/venues.js')
+    .disableSingleRuntimeChunk()
+    .splitEntryChunks()
 
-    // allow legacy applications to use $/jQuery as a global variable
-    .autoProvidejQuery()
+    // The Typeahead library is not compatible (it seems) with current Webpack
+    // so is just included directly in every page.
+    .copyFiles({from: './node_modules/typeahead.js/dist/',
+        pattern: /typeahead\.bundle\.min\.js/,
+        to: 'typeahead.[hash:8].js'})
 
     // enable source maps during development
     .enableSourceMaps(!Encore.isProduction())
@@ -28,15 +38,6 @@ Encore
 
     // create hashed filenames (e.g. app.abc123.css)
     .enableVersioning()
-
-    .createSharedEntry('vendor', [
-        'moment',
-        'typeahead.js',
-        'dropzone',
-        '@fancyapps/fancybox',
-        'cookieconsent',
-        'router',
-    ])
 
     // allow sass/scss files to be processed
     .enableSassLoader(function(options) {

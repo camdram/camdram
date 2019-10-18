@@ -160,16 +160,23 @@ textarea {
 }
 
 .form-small-widget, .form-medium-widget, .form-large-row {
-  small.error {
+  small.error, small.warning {
+    display: inline-block;
     width: 100%;
     text-align: right;
     margin: 0.5em 1em;
+  }
 
-    &::before {
-      content: "\00f05a\002002";
-      font: 1.5em FontAwesome;
-      color: #e11;
-    }
+  small.error::before {
+    content: "\00f05a\002002";
+    font: 1.5em FontAwesome;
+    color: #e11;
+  }
+
+  small.warning::before {
+    content: "\00f059\002002";
+    font: 1.5em FontAwesome;
+    color: #f80;
   }
 }
 
@@ -197,18 +204,30 @@ textarea {
 
 button, .button {
   background: $primary-color;
+  background: var(--primary-color, #{$primary-color});
   cursor: pointer;
-  border: 1px solid darken($primary-color, 10%);
+  border: 1px solid rgba(0, 0, 0, 0.25);
   color: white;
   font-weight: 700;
   padding: 0.75em 1.5em 0.8em;
+  text-align: center;
   display: inline-block;
   &.small {
     padding: 0.6em 1.1em;
     font-size: 0.81em;
   }
-  &:hover:not(:disabled), &:focus:not(:disabled) {
-    background: darken($primary-color, 15%);
+  &.text-button {
+    background: none;
+    color: $primary-color;
+    color: var(--primary-color, #{$primary-color});
+    font-weight: normal;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  &:hover:not(:disabled):not(.text-button), &:focus:not(:disabled):not(.text-button) {
+    /* Darken while preserving white text. */
+    filter: invert(100%) brightness(120%) invert(100%);
   }
   &:disabled {
     opacity: .6;

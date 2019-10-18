@@ -5,7 +5,7 @@ use Composer\Script\Event;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler as SensioScriptHandler;
 
-class ScriptHandler extends SensioScriptHandler 
+class ScriptHandler extends SensioScriptHandler
 {
     /**
      * Create/refresh the development database
@@ -56,7 +56,7 @@ class ScriptHandler extends SensioScriptHandler
     public static function welcomeMessage(Event $event)
     {
         static::writeHeader($event, "Complete!");
-        
+
         $event->getIO()->write(<<<'EOF'
 Welcome to your Camdram checkout!
 
@@ -65,7 +65,7 @@ The homepage can then be viewed at <options=bold;fg=yellow>http://127.0.0.1:8000
 
 <options=bold;fg=yellow>Database</>
 A local SQLite database has been created automatically.
-If you are planning on making changes to Camdram's data model however, it is recommended to set up a 
+If you are planning on making changes to Camdram's data model however, it is recommended to set up a
 dedicated MySQL database instead.
 Visit https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database to find out more
 

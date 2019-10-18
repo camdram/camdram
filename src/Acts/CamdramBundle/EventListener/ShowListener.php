@@ -24,21 +24,16 @@ class ShowListener
         $this->weekManager = $weekManager;
     }
 
-    private function updateFields(Show $show, EntityManager $om)
-    {
-        //ensure the venue attached to the show and to the performances are consistent
-        $show->updateVenues();
-    }
-
     public function prePersist(Show $show, LifecycleEventArgs $event)
     {
-        $this->updateFields($show, $event->getObjectManager());
     }
 
     public function postLoad(Show $show, LifecycleEventArgs $event)
     {
-        $weeks = $this->weekManager->getPerformancesWeeksAsString($show->getPerformances());
-        $show->setWeeks($weeks);
+        // Looking up week names whenever any show is loaded is expensive.
+        // Instead injecting the weekManager into $show (despite this being
+        // considered an "antipattern")
+        $show->setWeekManager($this->weekManager);
     }
 
     public function postPersist(Show $show, LifecycleEventArgs $event)
@@ -48,8 +43,6 @@ class ShowListener
 
     public function preUpdate(Show $show, PreUpdateEventArgs $event)
     {
-        $this->updateFields($show, $event->getObjectManager());
-
         $em = $event->getObjectManager();
         $uow  = $em->getUnitOfWork();
         $meta = $em->getClassMetadata(get_class($show));
@@ -88,60 +81,6 @@ class ShowListener
                     }
                 }
             }
-        }
-
-        if ($event->hasChangedField('venue') && $show->getVenue() instanceof Venue) {
-            if ($show->getAuthorised()) {
-                $this->moderationManager->notifyVenueChanged($show);
-            } elseif (!$authorisationEmailSent) {
-                $this->moderationManager->autoApproveOrEmailModerators($show);
-            }
-        }
-    }
-
-    private function updateVenues(Show $show)
-    {
-        switch ($show->getMultiVenue()) {
-            case 'single':
-                foreach ($show->getPerformances() as $performance) {
-                    $performance->setVenue($show->getVenue());
-                    $performance->setVenueName($show->getVenueName());
-                }
-                break;
-            case 'multi':
-                //Try to work out the 'main' venue
-                //First count venue objects and venue names
-                $venues = array();
-                $venue_counts = array();
-                $name_counts = array();
-                foreach ($show->getPerformances() as $performance) {
-                    if ($performance->getVenue()) {
-                        $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) {
-                            $venue_counts[$key] = 1;
-                        } else {
-                            $venue_counts[$key]++;
-                        }
-                        $venues[$key] = $performance->getVenue();
-                    }
-                    if ($performance->getVenueName()) {
-                        $key = $performance->getVenueName();
-                        if (!isset($name_counts[$key])) {
-                            $name_counts[$key] = 1;
-                        } else {
-                            $name_counts[$key]++;
-                        }
-                    }
-                    //Favour a venue object over a venue name
-                    if (count($venue_counts) > 0) {
-                        $venue_id = array_search(max($venue_counts), $venue_counts);
-                        $show->setVenue($venues[$venue_id]);
-                    } else {
-                        $venue_name = array_search(max($name_counts), $name_counts);
-                        $show->setVenueName($venue_name);
-                    }
-                }
-                break;
         }
     }
 

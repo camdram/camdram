@@ -6,7 +6,7 @@
     <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier:show.slug}), icon: 'pencil', text: 'Edit this show'} }) }}
         {% if is_granted('DELETE', show) %}
-            {{ include('navigation/form-item.html.twig', {item: {id: 'delete_show', 
+            {{ include('navigation/form-item.html.twig', {item: {id: 'delete_show',
                 path: path('delete_show', {identifier:show.slug}), method: 'DELETE', text: 'Delete this show', icon: 'eraser'},
                 destructive: {title: "Are you sure you want to delete the show “" ~ show.name ~ "”?", text: "This is a permanent action that cannot be undone" }
                 }) }}

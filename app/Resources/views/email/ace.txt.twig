@@ -1,10 +1,9 @@
 {% autoescape false %}
-{%- if (ace.type == 'show') or (ace.type == 'society') -%}
+{%- if ace.type in ['show', 'society', 'venue'] -%}
     You have been granted {{ is_pending ? 'pending ' }}access to edit '{{ entity.name }}' on Camdram.
 {%- if ace.type == 'show' %}
  This will allow you to change the show description people see when visiting the site, and to add other information such as production team/cast lists and production team adverts.
-{%- elseif ace.type == 'society' %}
-{# this could be a society or venue, as Camdram v1 doesn't distinguish. #}
+{%- elseif ace.type in ['society', 'venue'] %}
  This will allow you to change the description people see when visiting the site, and to add shows.
 {%- endif -%}
 {%- elseif ace.type == 'security' -%}

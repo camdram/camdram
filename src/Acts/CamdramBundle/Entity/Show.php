@@ -97,11 +97,11 @@ class Show implements OwnableInterface
      * The 'slug' of the show (used to generate the URL)
      *
      * @Gedmo\Slug(handlers={
-     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\DateSlugHandler", options={
+     *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\SlugHandler", options={
      *          @Gedmo\SlugHandlerOption(name="dateField", value="start_at"),
      *      })
      * }, fields={"name"})
-     * @ORM\Column(name="slug", type="string", length=128, nullable=true)
+     * @ORM\Column(name="slug", type="string", length=128, nullable=false)
      * @Serializer\Expose
      * @Serializer\Type("string")
      * @Serializer\XmlElement(cdata=false)
@@ -149,19 +149,6 @@ class Show implements OwnableInterface
     private $photo_url = '';
 
     /**
-     * The show's main venue, if it is not linked to a venue resource
-     *
-     * @var string
-     *
-     * @ORM\Column(name="venue", type="string", length=255, nullable=true)
-     * @Gedmo\Versioned
-     * @Serializer\Expose()
-     * @Serializer\Type("string")
-     * @Serializer\XmlElement(cdata=false)
-     */
-    private $other_venue = '';
-
-    /**
      * A JSON representation of how the show's societies should be displayed,
      * for the purpose of storing unregistered societies and how they are
      * ordered with registered societies.
@@ -205,16 +192,6 @@ class Show implements OwnableInterface
      * @ORM\JoinTable(name="acts_show_soc_link")
      */
     private $societies;
-
-    /**
-     * @var Venue
-     *
-     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="shows")
-     * @ORM\JoinColumn(name="venid", referencedColumnName="id", onDelete="SET NULL")
-     * @Gedmo\Versioned
-     * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
-     */
-    private $venue;
 
     /**
      * @var bool
@@ -282,21 +259,13 @@ class Show implements OwnableInterface
     /**
      * @var array
      *
+     * @Assert\Valid(traverse=true)
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_at" = "ASC"})
      * @Serializer\Expose()
      * @Serializer\XmlList(entry = "performance")
      */
     private $performances;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="freebase_id", type="string", nullable=true)
-     */
-    private $freebase_id;
-
-    private $multi_venue;
 
     /**
      * @var string
@@ -308,6 +277,17 @@ class Show implements OwnableInterface
      * @ORM\Column(name="otherurl", type="string", length=2083, nullable=true)
      */
     private $other_url;
+
+    /**
+     * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
+     * @var string
+     * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
+     *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
+     * @ORM\Column(name="colour", type="string", length=7, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     */
+    private $theme_color;
 
     /**
      * A URL from which tickets for the show can be bought
@@ -324,6 +304,7 @@ class Show implements OwnableInterface
     private $online_booking_url;
 
     private $weeks = array();
+    private $weekManager;
 
     private $entity_type = 'show';
 
@@ -428,43 +409,6 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set other_venue
-     *
-     * @param string $venueName
-     *
-     * @return Show
-     */
-    public function setOtherVenue($venueName)
-    {
-        $this->other_venue = $venueName;
-
-        return $this;
-    }
-
-    public function getOtherVenue()
-    {
-        if (!$this->venue) {
-            return $this->other_venue;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Get venue_name
-     *
-     * @return string
-     */
-    public function getVenueName()
-    {
-        if ($this->other_venue) {
-            return $this->other_venue;
-        } elseif ($this->venue) {
-            return $this->venue->getName();
-        }
-    }
-
-    /**
      * It's advisable to use getPrettySocData instead as it has the definitive
      * handling of inconsistencies between societies (i.e. the join table) and
      * this.
@@ -472,35 +416,6 @@ class Show implements OwnableInterface
     public function getSocietiesDisplayList()
     {
         return $this->societies_display_list;
-    }
-
-    /**
-     * DEPRECATED and going away eventually. Returns the first society, if it
-     * is registered.
-     * @Api\Link(embed=true, name="society", route="get_society", params={"identifier": "object.getSocietyLegacy().getSlug()"})
-     */
-    public function getSocietyLegacy()
-    {
-        $data = $this->getPrettySocData();
-        if (empty($data) || is_array($data[0])) { return; }
-        return $data[0];
-    }
-
-    /**
-     * DEPRECATED and going away eventually. Returns the first society name.
-     * Historically afaict this could differ from getSociety()->getName();
-     * as the other_society column has now been deleted, they now must be
-     * consistent.
-     * @Serializer\VirtualProperty()
-     * @Serializer\Type("string")
-     * @Serializer\XmlElement(cdata=false)
-     * @Serializer\SerializedName("other_society")
-     */
-    public function getOtherSocietyLegacy()
-    {
-        $data = $this->getPrettySocData();
-        return empty($data) ? NULL :
-            (is_array($data[0]) ? $data[0]["name"] : $data[0]->getName());
     }
 
     /**
@@ -560,6 +475,32 @@ class Show implements OwnableInterface
             }
         }
         return $out;
+    }
+
+    /**
+     * Gets all registered venues referenced in this show's performances.
+     */
+    public function getVenues(): array
+    {
+        $venids = []; // Not returned, used to check for duplication.
+        $venues = []; // Returned
+        foreach ($this->performances as $p) {
+            if (($v = $p->getVenue()) && !in_array($v->getId(), $venids, true)) {
+                $venues[] = $v;
+                $venids[] = $v->getId();
+            }
+        }
+        return $venues;
+    }
+
+    /**
+     * Returns a list of all venue names for this show.
+     */
+    public function getVenueNames(): array
+    {
+        return array_unique($this->performances->map(function($p) {
+            return $p->getVenueName();
+        })->toArray());
     }
 
     /**
@@ -707,30 +648,6 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set venue
-     *
-     * @param \Acts\CamdramBundle\Entity\Venue $venue
-     *
-     * @return Show
-     */
-    public function setVenue(\Acts\CamdramBundle\Entity\Venue $venue = null)
-    {
-        $this->venue = $venue;
-
-        return $this;
-    }
-
-    /**
-     * Get venue
-     *
-     * @return \Acts\CamdramBundle\Entity\Venue
-     */
-    public function getVenue()
-    {
-        return $this->venue;
-    }
-
-    /**
      * Add roles
      *
      * @param \Acts\CamdramBundle\Entity\Role $roles
@@ -816,13 +733,6 @@ class Show implements OwnableInterface
     {
         $this->performances->add($performance);
         $performance->setShow($this);
-        if (!($performance->getOtherVenue())) {
-            if ($this->getVenue()) {
-                $performance->setVenue($this->getVenue());
-            } else {
-                $performance->setOtherVenue($this->getOtherVenue());
-            }
-        }
 
         return $this;
     }
@@ -896,16 +806,11 @@ class Show implements OwnableInterface
 
     public function getMultiVenue()
     {
-        if ($this->multi_venue) {
-            return $this->multi_venue;
-        }
-
         if (count($this->getPerformances()) == 0) {
             return 'single';
         }
 
         $venue = null;
-        $same = true;
         foreach ($this->getPerformances() as $performance) {
             if ($performance->getVenue()) {
                 $cur_venue = $performance->getVenue()->getName();
@@ -915,102 +820,25 @@ class Show implements OwnableInterface
             if ($venue == null) {
                 $venue = $cur_venue;
             } elseif ($venue != $cur_venue) {
-                $same = false;
-                break;
+                return 'multi';
             }
         }
 
-        return $same ? 'single' : 'multi';
-    }
-
-    public function setMultiVenue($value)
-    {
-        $this->multi_venue = $value;
-        $this->updateVenues();
-    }
-
-    public function updateVenues()
-    {
-        switch ($this->getMultiVenue()) {
-            case 'single':
-                foreach ($this->getPerformances() as $performance) {
-                    $performance->setVenue($this->getVenue());
-                    $performance->setOtherVenue($this->getOtherVenue());
-                }
-                break;
-            case 'multi':
-                //Try to work out the 'main' venue
-                //First count venue objects and venue names
-                $venues = array();
-                $venue_counts = array();
-                $name_counts = array();
-                foreach ($this->getPerformances() as $performance) {
-                    if ($performance->getVenue()) {
-                        $key = $performance->getVenue()->getId();
-                        if (!isset($venue_counts[$key])) {
-                            $venue_counts[$key] = 1;
-                        } else {
-                            $venue_counts[$key]++;
-                        }
-                        $venues[$key] = $performance->getVenue();
-                    }
-                    if ($performance->getOtherVenue()) {
-                        $key = $performance->getOtherVenue();
-                        if (!isset($name_counts[$key])) {
-                            $name_counts[$key] = 1;
-                        } else {
-                            $name_counts[$key]++;
-                        }
-                    }
-                    //Favour a venue object over a venue name
-                    if (count($venue_counts) > 0) {
-                        $venue_id = array_search(max($venue_counts), $venue_counts);
-                        $this->setVenue($venues[$venue_id]);
-                    } else {
-                        $venue_name = array_search(max($name_counts), $name_counts);
-                        $this->setOtherVenue($venue_name);
-                    }
-                }
-                break;
-        }
+        return 'single';
     }
 
     /**
-        * A ranking used by the autocomplete index
-        * For shows, return the Unix timestamp of the show's start date
-        *
-        * @return int
-        */
+     * A ranking used by the autocomplete index
+     * For shows, return the Ymd timestamp of the show's start date
+     *
+     * @return int
+     */
     public function getRank()
     {
         $startAt = $this->getStartAt();
         return $startAt ? (int) $startAt->format('Ymd') : 0;
     }
 
-
-    /**
-     * Set freebase_id
-     *
-     * @param string $freebaseId
-     *
-     * @return Show
-     */
-    public function setFreebaseId($freebaseId)
-    {
-        $this->freebase_id = $freebaseId;
-
-        return $this;
-    }
-
-    /**
-     * Get freebase_id
-     *
-     * @return string
-     */
-    public function getFreebaseId()
-    {
-        return $this->freebase_id;
-    }
 
     public function isIndexable()
     {
@@ -1051,13 +879,8 @@ class Show implements OwnableInterface
     public function getActiveTechieAdvert()
     {
         $now = new \DateTime();
-        $today = new \DateTime($now->format('Y-m-d'));
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->gt('expiry', $today))
-            ->orWhere(Criteria::expr()->andX(
-                Criteria::expr()->gte('expiry', $today),
-                Criteria::expr()->gt('deadlineTime', $now)
-            ));
+            ->where(Criteria::expr()->gt('expiry', $now));
 
         return $this->techie_adverts->matching($criteria)->first();
     }
@@ -1114,7 +937,16 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Get auditions
+     * Get all auditions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAllAuditions() {
+        return $this->auditions;
+    }
+
+    /**
+     * Get auditions that are upcoming.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -1515,53 +1347,61 @@ class Show implements OwnableInterface
         return $this->online_booking_url;
     }
 
-    /**
-
-     */
-    public function getAllPerformances()
+    public function setThemeColor(?string $theme_color): self
     {
+        $this->theme_color = $theme_color;
+
+        return $this;
+    }
+
+    public function getThemeColor(): ?string
+    {
+        return $this->theme_color;
+    }
+
+    /**
+     * Returns an array of arrays
+     *   ["datetime" => a DateTime object, "venue" => string]
+     * for every performance, i.e. 1 or many per Performance object.
+     * null if there are too many (>1000). This is due to #617.
+     */
+    public function getAllPerformances(): ?array
+    {
+        // Time zone problems: we have to set all hours to be the same as the
+        // first after converting to "Europe/London".
+        // $current_day holds the current day of the iteration at noon, London time
+        // $time is an array of [hour, minute, second], London time
+        // $dateTimeOut is a combination of these and is what we actually return.
         $ret = array();
         foreach ($this->getPerformances() as $performance) {
-            $current_day = clone $performance->getStartAt(); //ate'] . " " . $perf['time']);
-            $end_day = $performance->getRepeatUntil(); //ate'] . " " . $perf['time']);
-            $time = $performance->getStartAt();
+            $first_day = clone $performance->getStartAt();
+            $first_day->setTimezone(new \DateTimeZone("Europe/London"));
+            $time = explode(':', $first_day->format('H:i:s'));
+            $current_day = clone $first_day;
+            $current_day->setTime(12, 0, 0);
+
+            $end_day = clone $performance->getRepeatUntil();
+            $end_day->setTime(23, 59, 59);
+            if ($first_day->diff($end_day, true)->days > 1000) {
+                return null;
+            }
             if ($performance->getVenue() != null) {
                 $venue = $performance->getVenue()->getName();
             } else {
                 $venue = $performance->getOtherVenue();
             }
             while ($current_day <= $end_day) {
-                $datetime = clone $current_day;
-
-                $datetime->setTime($time->format('G'), $time->format('i'), $time->format('s')); //  Eugh. PHP doesn't seem to give a better way
-                array_push($ret, array('date' => $current_day, 'time' => $time, 'datetime' => $datetime, 'venue' => $venue));
-                $current_day = clone $current_day;
+                $dateTimeOut = clone $current_day;
+                $dateTimeOut->setTime(...$time);
+                array_push($ret, ['datetime' => $dateTimeOut, 'venue' => $venue]);
                 $current_day->modify('+1 day');
             }
         }
-        usort($ret, array($this, 'cmpPerformances'));
+        usort($ret, function($a, $b) {
+          return ($a['datetime']) <=> ($b['datetime']);
+        });
 
         return $ret;
-    }
-
-    /**
-     * compare two performance objects, returning -1 if $a is before $b, 1 if
-     * it's after, or 0 if they're at the same time.
-     * Used by getAllPerformances()
-     */
-    private function cmpPerformances($a, $b)
-    {
-        if ($a['date'] < $b['date']) {
-            return -1;
-        } elseif ($a['date'] > $b['date']) {
-            return 1;
-        } elseif ($a['time'] < $b['time']) {
-            return -1;
-        } elseif ($a['time'] > $b['time']) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     public static function getAceType()
@@ -1624,11 +1464,14 @@ class Show implements OwnableInterface
 
     public function getWeeks()
     {
+        if (!$this->weeks && $this->getStartAt() && $this->weekManager) {
+            $this->weeks = $this->weekManager->getPerformancesWeeksAsString($this->getStartAt(), $this->getEndAt());
+        }
         return $this->weeks;
     }
 
-    public function setWeeks($weeks)
+    public function setWeekManager($manager)
     {
-        $this->weeks = $weeks;
+        $this->weekManager = $manager;
     }
 }

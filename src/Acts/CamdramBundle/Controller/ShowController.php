@@ -7,6 +7,7 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Form\Type\ShowType;
+use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,6 +58,7 @@ class ShowController extends AbstractRestController
             return $this->view($shows);
         } else {
             $shows = $this->getRepository()->createQueryBuilder('s')
+                          ->where('s.authorised = TRUE')
                           ->orderBy('s.id', 'DESC')->setMaxResults(10)
                           ->getQuery()->getResult();
             return $this->view(['shows' => $shows])
@@ -79,26 +81,26 @@ class ShowController extends AbstractRestController
 
         $this->denyAccessUnlessGranted('VIEW', $show);
 
-        $can_contact = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
-            ->getContactableEntityOwners($show) > 0;
-        
+        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+            ->getContactableEntityOwners($show));
+
         $view = $this->view($show, 200)
             ->setTemplate('show/show.html.twig')
             ->setTemplateData(['show' => $show, 'can_contact' => $can_contact]);
         ;
         return $view;
     }
-    
+
     /**
      * Action that allows querying by id. Redirects to slug URL
-     * 
+     *
      * @Rest\Get("/shows/by-id/{id}")
      */
     public function getByIdAction(Request $request, $id)
     {
         $this->checkAuthenticated();
         $show = $this->getRepository()->findOneById($id);
-        
+
         if (!$show)
         {
             throw $this->createNotFoundException('That show id does not exist');
@@ -124,6 +126,13 @@ class ShowController extends AbstractRestController
             $soc = $soc instanceof Society ? $soc->getName() : $soc["name"];
         }
         $form->get('societies')->setData($socs);
+
+        // Venues
+        $form->get('multi_venue')->setData($show->getMultiVenue());
+        $performances = $show->getPerformances();
+        if (!$performances->isEmpty()) {
+            $form->get('venue')->setData($performances->first()->getVenueName());
+        }
     }
 
     /**
@@ -133,6 +142,7 @@ class ShowController extends AbstractRestController
         $em   = $this->getDoctrine()->getManager();
         $show = $this->getEntity($identifier);
 
+        // Societies
         $socRepo = $em->getRepository('ActsCamdramBundle:Society');
         $newSocs = [];   // Array of [string, Society]
         $newSocIds = [];
@@ -166,6 +176,25 @@ class ShowController extends AbstractRestController
             }
         }
         $show->setSocietiesDisplayList($displayList);
+
+        // Adding an EventListener to Performance to check for changed dates
+        // would be overkill to ensure slugs get regenerated. Just invalidating
+        // here and always regenerating.
+        $show->setSlug(null);
+
+        // Venues
+        if ($form->get('multi_venue')->getData() == 'single') {
+            $venRepo = $em->getRepository('ActsCamdramBundle:Venue');
+            $venueName = $form->get('venue')->getData();
+            $venue = $venRepo->findOneByName($venueName);
+            if (empty(trim($venueName))) {
+                $venueName = null;
+            }
+            foreach ($show->getPerformances() as $p) {
+                $p->setVenue($venue);
+                $p->setOtherVenue($venueName);
+            }
+        }
     }
 
     private function getTechieAdvertForm(Show $show, $obj = null)
@@ -180,6 +209,7 @@ class ShowController extends AbstractRestController
 
     /**
      * Render the Admin Panel
+     * @Rest\NoRoute()
      */
     public function adminPanelAction(Show $show)
     {
@@ -189,10 +219,7 @@ class ShowController extends AbstractRestController
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
         $errors = $this->getValidationErrors($show);
         $admins = array_merge($admins, $show->getSocieties()->toArray());
-
-        if ($show->getVenue()) {
-            $admins[] = $show->getVenue();
-        }
+        $admins = array_merge($admins, $show->getVenues());
 
         return $this->render(
             'show/admin-panel.html.twig',
@@ -225,7 +252,7 @@ class ShowController extends AbstractRestController
 
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
-    
+
     public function deleteImageAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
@@ -234,18 +261,19 @@ class ShowController extends AbstractRestController
         if (!$this->isCsrfTokenValid('delete_show_image', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
         }
-        
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($show->getImage());
         $show->setImage(null);
         $em->flush();
-        
+
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
-    public function approveAction(Request $request, $identifier)
+    public function approveAction(Request $request, $identifier, ModerationManager $moderation_manager)
     {
         $show = $this->getEntity($identifier);
+        $em = $this->getDoctrine()->getManager();
         $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
 
         $token = $request->request->get('_token');
@@ -253,8 +281,8 @@ class ShowController extends AbstractRestController
             throw new BadRequestHttpException('Invalid CSRF token');
         }
 
-        $this->get('acts.camdram.moderation_manager')->approveEntity($show);
-        $this->get('doctrine.orm.entity_manager')->flush();
+        $moderation_manager->approveEntity($show);
+        $em->flush();
 
         return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }

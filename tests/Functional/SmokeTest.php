@@ -24,7 +24,7 @@ class SmokeTest extends WebTestCase
      */
     private $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = self::createClient(array('environment' => 'test'));
     }
@@ -36,9 +36,9 @@ class SmokeTest extends WebTestCase
             $response = $this->client->getResponse();
 
             $this->assertEquals(200, $response->getStatusCode(), "URL: $url");
-            $this->assertContains('text/html', $response->headers->get('Content-Type'), "URL: $url");
-            $this->assertContains('<body>', $response->getContent(), "URL: $url");
-            $this->assertContains('</body>', $response->getContent(), "URL: $url");
+            $this->assertStringContainsString('text/html', $response->headers->get('Content-Type'), "URL: $url");
+            $this->assertStringContainsString('<body', $response->getContent(), "URL: $url");
+            $this->assertStringContainsString('</body>', $response->getContent(), "URL: $url");
         }
     }
 

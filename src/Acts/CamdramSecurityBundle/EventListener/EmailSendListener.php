@@ -5,7 +5,9 @@ namespace Acts\CamdramSecurityBundle\EventListener;
 use Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Event\UserEvent;
+use Acts\CamdramSecurityBundle\Event\VenueChangeEvent;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
+use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use HWI\Bundle\OAuthBundle\HWIOAuthEvents;
@@ -22,11 +24,14 @@ class EmailSendListener implements EventSubscriberInterface
 {
     private $dispatcher;
     private $generator;
+    private $moderationManager;
 
-    public function __construct(EmailDispatcher $dispatcher, TokenGenerator $generator)
+    public function __construct(EmailDispatcher $dispatcher, TokenGenerator $generator,
+            ModerationManager $moderationManager)
     {
         $this->dispatcher = $dispatcher;
         $this->generator = $generator;
+        $this->moderationManager = $moderationManager;
     }
 
     public static function getSubscribedEvents()
@@ -35,6 +40,7 @@ class EmailSendListener implements EventSubscriberInterface
             HWIOAuthEvents::REGISTRATION_COMPLETED => 'onRegistrationEvent',
             CamdramSecurityEvents::ACE_CREATED => 'onAceCreatedEvent',
             CamdramSecurityEvents::PENDING_ACCESS_CREATED => 'onPendingAccessCreatedEvent',
+            CamdramSecurityEvents::VENUES_CHANGED => 'onVenuesChangedEvent',
         ];
     }
 
@@ -66,6 +72,7 @@ class EmailSendListener implements EventSubscriberInterface
         switch ($ace->getType()) {
             case 'show':
             case 'society':
+            case 'venue':
                 $this->dispatcher->sendAceEmail($ace);
                 break;
             case 'request-show':
@@ -82,5 +89,18 @@ class EmailSendListener implements EventSubscriberInterface
     {
         $pending_ace = $event->getPendingAccess();
         $this->dispatcher->sendPendingAceEmail($pending_ace);
+    }
+
+    /**
+     * If already authorized, notify that venues have changed. Otherwise
+     * re-do the approval checks.
+     */
+    public function onVenuesChangedEvent(VenueChangeEvent $event): void
+    {
+        if ($event->show->getAuthorised()) {
+            $this->moderationManager->notifyVenueChanged($event->show, $event->addedVenues, $event->removedVenues);
+        } else {
+            $this->moderationManager->autoApproveOrEmailModerators($event->show);
+        }
     }
 }

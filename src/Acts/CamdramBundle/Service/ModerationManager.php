@@ -7,7 +7,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Acts\CamdramBundle\Entity\Show;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,13 +32,13 @@ class ModerationManager
     private $aclProvider;
 
     private $authorizationChecker;
-    
+
     private $tokenStorage;
 
     private $logger;
 
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         EmailDispatcher $dispatcher,
                                 AclProvider $aclProvider,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -64,8 +64,7 @@ class ModerationManager
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $show_repo->findUnauthorised();
         } elseif ($this->authorizationChecker->isGranted('ROLE_USER')) {
-            $ids = $this->aclProvider->getOrganisationIdsByUser($this->tokenStorage->getToken()->getUser());
-            $orgs = $this->entityManager->getRepository('ActsCamdramBundle:Organisation')->findById($ids);
+            $orgs = $this->aclProvider->getOrganisationsByUser($this->tokenStorage->getToken()->getUser());
             $entities = array();
             foreach ($orgs as $org) {
                 if ($org instanceof Society) {
@@ -86,18 +85,12 @@ class ModerationManager
      *
      * @return Users[] an array of Camdram Users.
      */
-    public function getModeratorsForEntity($entity)
+    public function getModeratorsForEntity($entity): array
     {
         $users = array();
-        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
         if ($entity instanceof Show) {
-            foreach ($entity->getSocieties() as $society) {
-                $users = array_merge($users, $repo->getEntityOwners($society));
-            }
-            if ($entity->getVenue()) {
-                $users = array_merge($users, $repo->getEntityOwners($entity->getVenue()));
-            }
+            $users = $this->aclProvider->getOwnersOfOwningOrgs($entity);
         }
         if (count($users) == 0) {
             //If there is no venue/society or both have zero admins, then the Camdram admins become the moderators
@@ -107,7 +100,7 @@ class ModerationManager
         return $users;
     }
 
-    public function getModeratorAdmins()
+    public function getModeratorAdmins(): array
     {
         $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
 
@@ -178,10 +171,8 @@ class ModerationManager
     {
         if ($entity instanceof Show) {
             $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
-            $moderators = [];
-            foreach ($entity->getSocieties() as $society) {
-                $moderators = array_merge($moderators, $repo->getEntityOwners($society));
-            }
+            $moderators = $repo->getOwnersOfEntities($entity->getSocieties());
+
             if (count($moderators) > 0) {
                 if ($this->tokenStorage->getToken()) {
                     $owners = array($this->tokenStorage->getToken()->getUser());
@@ -195,21 +186,19 @@ class ModerationManager
         }
     }
 
-    public function notifyVenueChanged($entity)
+    public function notifyVenueChanged(Show $show, array $addedVenIds, array $removedVenIds): void
     {
-        if ($entity instanceof Show) {
-            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
-            $moderators = $repo->getEntityOwners($entity->getVenue());
-            if (count($moderators) > 0) {
-                if ($this->tokenStorage->getToken()) {
-                    $owners = array($this->tokenStorage->getToken()->getUser());
-                } else {
-                    $owners = $repo->getEntityOwners($entity);
-                }
-
-                $this->dispatcher->sendShowVenueChangedEmail($entity, $owners, $moderators);
-                $this->logger->info('Venue changed e-mail sent', array('id' => $entity->getId(), 'name' => $entity->getName()));
-            }
-        }
+        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+        $addedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')
+            ->setParameter(1, $addedVenIds)->getResult();
+        $removedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')
+            ->setParameter(1, $removedVenIds)->getResult();
+        $modOrgs = array_merge($addedVenues, $removedVenues, iterator_to_array($show->getSocieties(), false));
+        $moderators = $repo->getOwnersOfEntities($modOrgs);
+        $owners = $repo->getEntityOwners($show);
+        if (count($moderators) > 0) {
+            $this->dispatcher->sendShowVenueChangedEmail($show, $owners, $moderators, $addedVenues, $removedVenues);
+            $this->logger->info('Venue changed e-mail sent', array('id' => $show->getId(), 'name' => $show->getName()));
+       }
     }
 }

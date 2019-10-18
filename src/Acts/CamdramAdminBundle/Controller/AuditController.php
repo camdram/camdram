@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramAdminBundle\Controller;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -14,6 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AuditController extends Controller
 {
+    private $queryParams = [
+        'time_from'   => 'e.loggedAt >= ',
+        'time_until'  => 'e.loggedAt <= ',
+        'class'       => 'e.objectClass = ',
+        'id'          => 'e.objectId = ',
+        'action'      => 'e.action = ',
+        'search_data' => 'e.data LIKE ',
+        'search_user' => 'e.username LIKE '
+    ];
+
     /**
      * @Route("/audit", name="acts_camdram_audit")
      *
@@ -24,17 +35,27 @@ class AuditController extends Controller
     {
         $repo = $this->get('doctrine.orm.entity_manager')->getRepository('Gedmo\Loggable\Entity\LogEntry');
         $qb = $repo->createQueryBuilder('e')->orderBy('e.loggedAt', 'DESC')->setMaxResults(100);
-        if ($request->query->has('class')) {
-            $qb->andWhere('e.objectClass = :class')
-                ->setParameter('class', $request->query->get('class'));
-        }
-        if ($request->query->has('id')) {
-            $qb->andWhere('e.objectId = :id')
-                ->setParameter('id', $request->query->get('id'));
+
+        foreach ($request->query as $param => $value) {
+            if (array_key_exists($param, $this->queryParams) && !empty($value)) {
+                $qb->andWhere("{$this->queryParams[$param]} :$param")
+                   ->setParameter(":$param", $value);
+            }
         }
 
-        $results = $qb->getQuery()->getResult();
+        $page = (int)($request->query->get('p', 1));
+        $qb->setMaxResults(50);
+        $qb->setFirstResult(50 * ($page - 1));
+        $allqueries = $request->query->all();
+        unset($allqueries['p']);
+        $allqueries['p'] = '';
 
-        return $this->render('admin/audit/index.html.twig', array('results' => $results));
+        return $this->render('admin/audit/index.html.twig', [
+            'paginator' => new Paginator($qb->getQuery()),
+            'page_num' => $page,
+            'page_urlprefix' => explode('?', $request->getRequestUri())[0] .
+                 '?' . http_build_query($allqueries),
+            'queryParams' => array_keys($this->queryParams)
+            ]);
     }
 }

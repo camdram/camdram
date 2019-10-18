@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Form\Type;
 
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,8 +18,12 @@ class AuditionNonScheduledType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('start_at', DateTimeType::class, ['date_widget' => 'single_text', 'time_widget' => 'single_text'])
-            ->add('location', TextType::class, ['label' => 'Contact details'])
+            ->add('start_at', DateTimeType::class, ['date_widget' => 'single_text',
+                 'time_widget' => 'single_text',
+                 'constraints' => [new Constraints\NotBlank(), new Constraints\GreaterThanOrEqual("now")]])
+            ->add('location', TextType::class, [
+                 'label' => 'Contact details',
+                 'constraints' => [new Constraints\NotBlank()]])
         ;
     }
 

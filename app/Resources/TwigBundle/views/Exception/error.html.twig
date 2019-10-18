@@ -18,7 +18,8 @@
 
 {% else %}
 {% set title = "Sorry, something's gone wrong." %}
-{% set subtitle = "The server returned the error " ~ status_code ~ " " ~ status_text %}
+{% set subtitle = (status_code // 100 == 4) ? exception.message ~ ' (' ~ status_code ~ ': ' ~ status_text ~ ')' :
+          "The server returned the error " ~ status_code ~ " " ~ status_text %}
 {% set message = (status_code // 100 == 5 ?
           "Something is broken. It's likely that we've already been notified, but if you need help now" :
           "Something may be broken. This doesn't appear to be a server error so we haven't been notified, however if this seems wrong") ~

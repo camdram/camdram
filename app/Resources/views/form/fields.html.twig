@@ -1,20 +1,10 @@
 {% block entity_search_widget %}
-    {% spaceless %}
-        {% set text = attribute(form.children, text_id) %}
-        {% set hidden = attribute(form.children, hidden_id) %}
-        {{ form_widget(text) }}
-        {{ form_widget(hidden) }}
-
-        <script>
-            $(function(){
-                $('#{{ text.vars.id }}').entitySearch({
-                    route: '{{ route }}',
-                    prefetch: {% if prefetch %}true{% else %}false{% endif %}
-                });
-            })
-        </script>
-
-    {% endspaceless %}
+    {%- set text = attribute(form.children, text_id) -%}
+    {%- set hidden = attribute(form.children, hidden_id) -%}
+    {{- form_widget(text, {'attr': {
+       'data-entitysearch-prefetch': (prefetch ? 'true' : 'false'),
+       'data-entitysearch-route': route } }) -}}
+    {{- form_widget(hidden) -}}
 {% endblock %}
 
 {% block form_option_box %}
@@ -57,9 +47,9 @@
     {% if errors %}
             {% for error in errors %}
             <small class="error">{% if error.getMessagePluralization() is null %}
-                    {{ error.getMessageTemplate() | trans(error.getMessageParameters(), 'validators') }},
+                    {{ error.getMessageTemplate() | trans(error.getMessageParameters(), 'validators') }}
                 {% else %}
-                    {{ error.getMessageTemplate() | transchoice(error.getMessagePluralization(), error.getMessageParameters(), 'validators') }},
+                    {{ error.getMessageTemplate() | transchoice(error.getMessagePluralization(), error.getMessageParameters(), 'validators') }}
                 {% endif %}
                 </small>
             {% endfor %}
@@ -85,4 +75,21 @@
          {{ form_row(child) }}
         </div>
     {% endfor %}
+{% endblock %}
+
+{% block theme_color_widget %}
+    <div>
+        <div class="color-swatch"></div>
+        <p><small>{{ theme_color_message }} (If you pick a pale colour it will be darkened in some places for legibility.)</small></p>
+        <div class="form-small-widget">
+            <span>Code:</span>
+            <input type="text" id="show_theme_color" name="{{ full_name }}"
+                   pattern="#[0-9A-Fa-f]{6}" value="{{ value }}">
+        </div>
+        <div id="color-sliders">
+            <label><span>Hue:</span><input type="range" id="h-slider" min="0" max="360" step="any"></label>
+            <label><span>Saturation:</span><input type="range" id="s-slider" min="0" max="100" step="any"></label>
+            <label><span>Lightness:</span><input type="range" id="l-slider" min="0" max="80" step="any"></label>
+        </div>
+    </div>
 {% endblock %}

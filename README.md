@@ -19,7 +19,7 @@ You will need to install the necessary package dependencies required to run Camd
 
 ### Debian/Ubuntu and Derivatives
 
-The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)). 
+The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)).
 
 ```
 sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json php-mbstring php-xml php-zip
@@ -140,7 +140,7 @@ The following wiki pages detail how to create a server set-up that's more simila
 
  * [Setting up for JS/CSS development](https://github.com/camdram/camdram/wiki/Webpack-setup-guide)
  * [Setting up a MySQL database](https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database)
- * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide)
+ * [Elasticsearch setup guide](https://github.com/camdram/camdram/wiki/Elasticsearch-guide)
  * [External API registration](https://github.com/camdram/camdram/wiki/API-registration)
  * [Setting up an Apache virtual host](https://github.com/camdram/camdram/wiki/Setting-up-an-Apache-virtual-host)
 

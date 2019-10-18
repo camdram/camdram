@@ -45,7 +45,7 @@ class DownloadAssetsCommand extends Command
     protected static $defaultDomain = 'https://development.camdram.net';
     protected static $outputDirectory = __DIR__.'/../../../../web/';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Download latest assets from camdram.net')
@@ -54,7 +54,7 @@ class DownloadAssetsCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $domain = $input->getOption('domain');
         if (substr($domain, -1) == '/') $domain = substr($domain, 0, -1);
@@ -72,19 +72,23 @@ class DownloadAssetsCommand extends Command
         if ($this->fileSystem->exists($outputPath)) {
             $existingManifest = json_decode(file_get_contents($outputPath), true);
         }
-        
+
         $forceDownload = $input->getOption('force') !== false;
 
         //Redownload files only if manifest has changed, or --force flag is set
         if ($forceDownload || $manifest != $existingManifest) {
             $this->fileSystem->dumpFile($outputPath, $stream);
-        
+
+            // Alway need the entrypoints file
+            $manifest['build/entrypoints.json'] = '/build/entrypoints.json';
+
             //Check each file in manifest. Only download if doesn't exist
             foreach ($manifest as $path => $realPath) {
                 $url = $domain.$realPath;
                 $outputPath = self::$outputDirectory.$realPath;
-    
-                if ($forceDownload || !$this->fileSystem->exists($outputPath)) {
+
+                if ($forceDownload || !$this->fileSystem->exists($outputPath)
+                      || $path === 'build/entrypoints.json') {
                     $output->writeln('Downloading <fg=cyan>'.$url.'</>');
                     $stream = $this->downloadFile($url);
                     $this->fileSystem->dumpFile($outputPath, $stream);
@@ -98,13 +102,12 @@ class DownloadAssetsCommand extends Command
 
             $output->writeln('<info>All assets downloaded</info>');
         }
-        else
-        {
+        else {
             $output->writeln('<info>Assets already to date</info>');
         }
     }
-    
-    private function deleteFiles(array $manifest, array $existingManifest, OutputInterface $output)
+
+    private function deleteFiles(array $manifest, array $existingManifest, OutputInterface $output): void
     {
         $changedFiles = array_diff($existingManifest, $manifest);
 
@@ -117,7 +120,7 @@ class DownloadAssetsCommand extends Command
         }
     }
 
-    private function downloadFile($url)
+    private function downloadFile(string $url): string
     {
         $response = $this->httpClient->sendRequest(
             $this->messageFactory->createRequest('GET', $url)

@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Controller;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Acts\CamdramAdminBundle\Service\PeopleMerger;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Form\Type\PersonType;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -53,8 +54,14 @@ class PersonController extends AbstractRestController
     }
 
     /**
+     * People are created by adding them to shows. No form.
+     * @Rest\NoRoute()
+     */
+    public function newAction() { throw $this->createNotFoundException(); }
+
+    /**
      * Action that allows querying by id. Redirects to slug URL
-     * 
+     *
      * @Rest\Get("/people/by-id/{id}")
      */
     public function getByIdAction(Request $request, $id)
@@ -196,14 +203,41 @@ class PersonController extends AbstractRestController
             ->setTemplate('person/current-shows.html.twig');
     }
 
-    public function getMergeAction($identifier)
+    /**
+     * @Rest\Get("/people/{identifier}/edit-roles", requirements={"_format"="html"})
+     */
+    public function getEditRolesAction($identifier)
+    {
+        $person = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $person);
+
+        $roles = $this->getDoctrine()->getManager()->createQuery(
+            'SELECT r, s FROM ActsCamdramBundle:Role r JOIN r.show s WHERE r.person = :p ORDER BY s.id')
+            ->setParameter('p', $person)->getResult();
+        $roles = array_filter($roles, function($r) {
+            return $this->get('camdram.security.acl.helper')->isGranted('VIEW', $r->getShow());
+        });
+
+        return $this->render('person/edit-roles.html.twig', array(
+            'person' => $person,
+            'roles' => $roles
+        ));
+    }
+
+    /**
+     * @param $identifier
+     * @param $request Request
+     *
+     * @Rest\Get("/people/{identifier}/merge", requirements={"_format"="html"})
+     */
+    public function getMergeAction($identifier, PeopleMerger $merger)
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
         $person = $this->getEntity($identifier);
 
         return $this->render('person/merge.html.twig', array(
             'person' => $person,
-            'form' => $this->get('acts_camdram_admin.people_merger')->createForm()->createView()
+            'form' => $merger->createForm()->createView()
         ));
     }
 
@@ -212,13 +246,12 @@ class PersonController extends AbstractRestController
      * @param $request Request
      *
      * @return $this
-     * @Rest\Post("/people/{identifier}/merge")
+     * @Rest\Post("/people/{identifier}/merge", requirements={"_format"="html"})
      */
-    public function mergeAction($identifier, Request $request)
+    public function mergeAction($identifier, Request $request, PeopleMerger $merger)
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('ROLE_ADMIN');
         $person = $this->getEntity($identifier);
-        $merger = $this->get('acts_camdram_admin.people_merger');
 
         $form = $merger->createForm();
         $form->handleRequest($request);

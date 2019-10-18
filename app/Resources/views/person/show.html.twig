@@ -27,8 +27,71 @@
     {% endif %}
 </div>
 
-{{ render(url('get_person_current_roles', {identifier: person.slug})) }}
-{{ render(url('get_person_upcoming_roles', {identifier: person.slug})) }}
-{{ render(url('get_person_past_roles', {identifier: person.slug})) }}
+<div class="tabbed-content">
+    <a href="#!" class="title active">All</a>
+    <div id="person-role-tabs"></div>
+    <div class="content">
+    {{ render(url('get_person_current_roles', {identifier: person.slug})) }}
+    {{ render(url('get_person_upcoming_roles', {identifier: person.slug})) }}
+    {{ render(url('get_person_past_roles', {identifier: person.slug})) }}
+    </div>
+</div>
+{% endblock %}
 
+{% block javascripts %}
+{% if person.norobots %}
+<meta name="robots" content="noindex" />
+{% endif %}
+<script>
+{#- begin-CSP-permitted-script -#}
+$(function() {
+    var shows = document.querySelectorAll('[data-roletypes]');
+    var aftertabs = document.querySelector('#person-role-tabs');
+    var tags = {};
+    for (var show of shows) {
+        for (var tag of JSON.parse(show.dataset.roletypes)) {
+            if (!tags[tag]) tags[tag] = [];
+            tags[tag].push(show);
+        }
+    }
+
+    if (Object.keys(tags).length <= 1) {
+        // Swap out .tabbed-content for its .content changed to a regular div.
+        var tabbedcontent = document.querySelector('.tabbed-content');
+        var content = tabbedcontent.querySelector('.content');
+        tabbedcontent.insertAdjacentElement('beforebegin', content);
+        tabbedcontent.parentNode.removeChild(tabbedcontent);
+        content.className = '';
+    }
+
+    for (var tagName of Object.keys(tags).sort()) {
+        aftertabs.insertAdjacentHTML('beforebegin', '<a href="#!" class="title"></a>');
+        aftertabs.previousElementSibling.href = '#!tab-' + tagName.replace(/[^A-Za-z0-9]/,'');
+        aftertabs.previousElementSibling.innerText = tagName;
+        aftertabs.previousElementSibling.addEventListener('click', (function(x) { return function(e) {
+            for (var show of shows) show.setAttribute('hidden', 'hidden');
+            for (var show of x)     show.removeAttribute('hidden');
+            e.target.parentNode.querySelector('.active').classList.remove('active');
+            e.target.classList.add('active');
+            for (var heading of document.querySelectorAll('.content h4')) {
+                if (heading.nextElementSibling.querySelector('[itemtype*="TheaterEvent"]:not([hidden])')) {
+                    heading.removeAttribute('hidden');
+                } else {
+                    heading.setAttribute('hidden', 'hidden');
+                }
+            }
+        }})(tags[tagName]));
+        if (aftertabs.previousElementSibling.href == window.location.href) {
+            aftertabs.previousElementSibling.click();
+        }
+    }
+    aftertabs.parentNode.firstElementChild.addEventListener('click', function(e) {
+        for (var show of shows) show.removeAttribute('hidden');
+        for (var heading of document.querySelectorAll('.content h4')) heading.removeAttribute('hidden');
+        e.target.parentNode.querySelector('.active').classList.remove('active');
+        e.target.classList.add('active');
+    });
+});
+{#- end-CSP-permitted-script -#}
+</script>
 {% endblock %}

@@ -15,7 +15,7 @@
 </div>
 
 {% if output.not_verified | length > 0 %}
-<p>The message was not sent to the following users because their e-mail address is not verified</p> 
+<p>The message was not sent to the following users because their e-mail address is not verified</p>
 <div class="panel" style="max-height: 200px; overflow-y:auto;">
 <ul>
 {% for user in output.not_verified %}
@@ -26,7 +26,7 @@
 {% endif %}
 
 {% if output.not_active | length > 0 %}
-<p>The message was not sent to the following users because they have not logged in recently.</p> 
+<p>The message was not sent to the following users because they have not logged in recently.</p>
 <div class="panel" style="max-height: 200px; overflow-y:auto;">
 <ul>
 {% for user in output.not_active %}

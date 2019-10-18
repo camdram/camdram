@@ -6,6 +6,7 @@ use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Form\Type\OrganisationApplicationType;
 use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
@@ -13,6 +14,7 @@ use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use Acts\DiaryBundle\Diary\Diary;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\Query;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -27,6 +29,7 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * Render the Admin Panel
+     * @Rest\NoRoute
      */
     public function adminPanelAction(Organisation $org)
     {
@@ -66,17 +69,25 @@ abstract class OrganisationController extends AbstractRestController
      */
     public function getShowsAction(Request $request, $identifier)
     {
-        if ($request->query->has('from')) {
-            $from = new \DateTime($request->query->get('from'));
-        } else {
-            $from = new \DateTime;
+        try {
+            if ($request->query->has('from')) {
+                $from = new \DateTime($request->query->get('from'));
+            } else {
+                $from = new \DateTime;
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad from parameter, try YYYY-MM-DD format.");
         }
 
-        if ($request->query->has('to')) {
-            $to = new \DateTime($request->query->get('to'));
-        } else {
-            $to = clone $from;
-            $to->modify('+1 year');
+        try {
+            if ($request->query->has('to')) {
+                $to = new \DateTime($request->query->get('to'));
+            } else {
+                $to = clone $from;
+                $to->modify('+1 year');
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad to parameter, try YYYY-MM-DD format.");
         }
 
         $shows = $this->getShows($identifier, $from, $to);
@@ -95,17 +106,25 @@ abstract class OrganisationController extends AbstractRestController
     {
         $diary = new Diary;
 
-        if ($request->query->has('from')) {
-            $from = new \DateTime($request->query->get('from'));
-        } else {
-            $from = new \DateTime;
+        try {
+            if ($request->query->has('from')) {
+                $from = new \DateTime($request->query->get('from'));
+            } else {
+                $from = new \DateTime;
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad from parameter, try YYYY-MM-DD format.");
         }
 
-        if ($request->query->has('to')) {
-            $to = new \DateTime($request->query->get('to'));
-        } else {
-            $to = clone $from;
-            $to->modify('+1 year');
+        try {
+            if ($request->query->has('to')) {
+                $to = new \DateTime($request->query->get('to'));
+            } else {
+                $to = clone $from;
+                $to->modify('+1 year');
+            }
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException("Bad to parameter, try YYYY-MM-DD format.");
         }
 
         $performances = $this->getPerformances($identifier, $from, $to);
@@ -132,7 +151,11 @@ abstract class OrganisationController extends AbstractRestController
     {
         if (!$obj) {
             $obj = new Application();
-            $obj->setSociety($org);
+            if ($org instanceof Society) {
+                $obj->setSociety($org);
+            } else {
+                $obj->setVenue($org);
+            }
         }
         $form = $this->createForm(OrganisationApplicationType::class, $obj, ['method' => $method]);
 
@@ -172,7 +195,7 @@ abstract class OrganisationController extends AbstractRestController
             return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
         } else {
             return $this->view($form, 400)
-                ->setTemplateVar('form')
+                ->setData(array('org' => $org, 'form' => $form->createView()))
                 ->setTemplate($this->type.'/application-new.html.twig');
         }
     }
@@ -285,7 +308,8 @@ abstract class OrganisationController extends AbstractRestController
      *
      * @param $identifier
      */
-    public function postAdminAction(Request $request, $identifier)
+    public function postAdmin(Request $request, $identifier,
+        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
@@ -297,8 +321,7 @@ abstract class OrganisationController extends AbstractRestController
             /* Check if the ACE doesn't need to be created for various reasons. */
             /* Is this person already an admin? */
             $already_admin = false;
-            $admins = $this->get('acts.camdram.moderation_manager')
-                        ->getModeratorsForEntity($org);
+            $admins = $moderation_manager->getModeratorsForEntity($org);
             foreach ($admins as $admin) {
                 if ($admin->getEmail() == $pending_ace->getEmail()) {
                     $already_admin = true;
@@ -324,7 +347,7 @@ abstract class OrganisationController extends AbstractRestController
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
                         $em->flush();
-                        $this->get('event_dispatcher')->dispatch(
+                        $event_dispatcher->dispatch(
                             CamdramSecurityEvents::PENDING_ACCESS_CREATED,
                             new PendingAccessEvent($pending_ace)
                         );
@@ -343,7 +366,7 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * Revoke an admin's access to an organisation.
-     * 
+     *
      * @Rest\Delete
      */
     public function deleteAdminAction(Request $request, $identifier, $uid)
@@ -398,13 +421,16 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * View a list of the organisation's last shows.
+     * @Rest\Get(requirements={"_format"="html"})
      */
     public function getHistoryAction(Request $request, $identifier) {
         $showsPerPage = 36;
 
         $org = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('VIEW', $org);
-        $page = $request->query->has("p") ? (int) $request->query->get("p") : 1;
+        // Casting string→int in PHP always succeeds so no try/catch needed.
+        $page = $request->query->has("p") ? max(1, (int) $request->query->get("p")) : 1;
+
         $qb = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')
               ->queryByOrganisation($org, new \DateTime('1970-01-01'), new \DateTime('yesterday'))
               ->orderBy('p.start_at', 'DESC')->addOrderBy('s.id') // Make deterministic

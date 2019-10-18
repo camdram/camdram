@@ -19,11 +19,10 @@ class TechieAdvertRepository extends EntityRepository
         $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:TechieAdvert');
         $qb = $query_res->createQueryBuilder('a');
         $query = $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
+            ->where('a.expiry > :expiry')
             ->andWhere('s.authorised = true')
             ->orderBy('a.expiry, s.name')
-            ->setParameter('expiry', $date, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('time', $date, \Doctrine\DBAL\Types\Type::TIME)
+            ->setParameter('expiry', $date)
             ->getQuery();
 
         return $query->getResult();
@@ -34,11 +33,10 @@ class TechieAdvertRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a');
 
         return $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
+            ->where('a.expiry > :expiry')
             ->andWhere('s.authorised = true')
             ->orderBy('a.last_updated')
-            ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->setParameter('expiry', $now)
             ->setMaxResults($limit);
     }
 
@@ -57,7 +55,8 @@ class TechieAdvertRepository extends EntityRepository
     public function findLatestByVenue(Venue $venue, $limit, \DateTime $now)
     {
         return $this->getLatestQuery($limit, $now)
-            ->leftJoin('s.venue', 'v')->andWhere('v = :venue')->setParameter('venue', $venue)
+            ->andWhere('EXISTS (SELECT p FROM \Acts\CamdramBundle\Entity\Performance p WHERE p.show = s AND p.venue = :venue)')
+            ->setParameter('venue', $venue)
             ->getQuery()->getResult();
     }
 
@@ -66,12 +65,11 @@ class TechieAdvertRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a');
 
         return $qb->leftJoin('a.show', 's')
-            ->where($qb->expr()->orX('a.expiry > :expiry', $qb->expr()->andX('a.expiry = :expiry', 'a.deadlineTime >= :time')))
+            ->where('a.expiry > :expiry')
             ->andWhere('s.slug = :slug')
             ->andWhere('s.authorised = true')
             ->setParameter('slug', $slug)
-            ->setParameter('expiry', $now, \Doctrine\DBAL\Types\Type::DATE)
-            ->setParameter('time', $now, \Doctrine\DBAL\Types\Type::TIME)
+            ->setParameter('expiry', $now)
             ->getQuery()->getOneOrNullResult();
     }
 }

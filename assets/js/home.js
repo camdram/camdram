@@ -1,5 +1,4 @@
 import Routing from 'router';
-import $ from 'jquery';
 
 $(function() {
 

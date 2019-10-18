@@ -13,13 +13,13 @@ set('application', 'camdram');
 set('repository', 'git@github.com:camdram/camdram.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', false); 
+set('git_tty', false);
 
-// Shared files/dirs between deploys 
+// Shared files/dirs between deploys
 add('shared_files', []);
 add('shared_dirs', ['app/data']);
 
-// Writable dirs by web server 
+// Writable dirs by web server
 add('writable_dirs', ['app/data', 'web/media']);
 set('allow_anonymous_stats', false);
 set('http_group', 'www-data');
@@ -39,7 +39,7 @@ host('development')
     ->stage('development')
     ->set('deploy_path', '/var/www/camdram/dev/master')
     ->set('keep_releases', 1);
-    
+
 // Yarn tasks
 set('bin/yarn', function () {
     return run('which yarn');

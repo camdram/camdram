@@ -16,7 +16,7 @@ abstract class RepositoryTestCase extends KernelTestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $kernel = self::bootKernel();
         $this->em = $kernel->getContainer()->get('doctrine')->getManager();
@@ -25,7 +25,7 @@ abstract class RepositoryTestCase extends KernelTestCase
     /**
      * {@inheritDoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

@@ -4,21 +4,24 @@
   "repository": "git@github.com:camdram/camdram.git",
   "license": "GPL-2.0",
   "devDependencies": {
-    "@fancyapps/fancybox": "^3.3.0",
-    "@symfony/webpack-encore": "^0.20.1",
-    "cookieconsent": "^3.0.6",
+    "@fancyapps/fancybox": "^3.5.7",
+    "@symfony/webpack-encore": "^0.28.0",
+    "cookieconsent": "^3.1.1",
     "dropzone": "^5.5.1",
     "imports-loader": "^0.8.0",
-    "leaflet": "^1.3.4",
-    "moment": "^2.22.2",
-    "node-sass": "^4.9.2",
-    "sass-loader": "^7.0.3",
+    "leaflet": "^1.5.1",
+    "moment": "^2.24.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.3.1",
     "typeahead.js": "^0.11.1",
-    "webpack-notifier": "^1.6.0"
+    "webpack-notifier": "^1.8.0"
   },
   "scripts": {
     "js-routing": "php app/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json",
-    "build": "SYMFONY_ENV=prod yarn js-routing && yarn encore production",
-    "dev": "SYMFONY_ENV=dev yarn js-routing && yarn encore dev"
+    "build": "SYMFONY_ENV=prod yarn js-routing && yarn encore production && python3 gen-csp-hashes.py",
+    "dev": "SYMFONY_ENV=dev yarn js-routing && yarn encore dev && python3 gen-csp-hashes.py"
+  },
+  "dependencies": {
+    "@github/hotkey": "^1.2.4"
   }
 }

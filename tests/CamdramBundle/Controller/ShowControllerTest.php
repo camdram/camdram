@@ -15,7 +15,7 @@ class ShowControllerTest extends RestTestCase
      */
     private $show;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -74,6 +74,28 @@ class ShowControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 1);
     }
 
+    public function testAuthorizeShow()
+    {
+        $this->show->setAuthorised(false);
+        $this->entityManager->flush();
+
+        $user = $this->createUser();
+        $this->aclProvider->grantAdmin($user);
+        $this->login($user);
+
+        $crawler = $this->client->request('GET', '/shows/test-show');
+        $form = $crawler->selectButton('Approve this show')->form();
+        $crawler = $this->client->submit($form);
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 0);
+
+        $this->logout();
+        $crawler = $this->client->request('GET', '/shows/test-show');
+        $this->assertEquals($crawler->filter('#content:contains("Test Show")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content .admin-panel')->count(), 0);
+    }
+
     public function testEditShow()
     {
         $user = $this->createUser();
@@ -109,6 +131,10 @@ class ShowControllerTest extends RestTestCase
 
         $data = $this->doJsonRequest('/shows/by-id/' . $show->getId() . '.json');
         $this->assertEquals("Test Show", $data['name']);
+
+        // Check that by-id can generate 404s
+        $crawler = $this->client->request('GET', '/shows/by-id/28934');
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
     public function testShowWithSociety()
@@ -132,11 +158,11 @@ class ShowControllerTest extends RestTestCase
 
         $data = $this->doJsonRequest('/shows/2000-test-show.json');
         $this->assertEquals("Test Show", $data['name']);
-        $this->assertEquals("Test Society", $data['society']['name']);
+        $this->assertEquals("Test Society", $data['societies'][0]['name']);
 
         $data = $this->doXmlRequest('/shows/2000-test-show.xml');
         $this->assertEquals("Test Show", $data->name);
-        $this->assertEquals("Test Society", $data->society->name);
+        $this->assertEquals("Test Society", $data->societies->entry->name);
     }
 
     /**

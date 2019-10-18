@@ -30,7 +30,7 @@ class SearchControllerTest extends WebTestCase
      */
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = self::createClient(array('environment' => 'test'));
 
@@ -77,7 +77,7 @@ class SearchControllerTest extends WebTestCase
     {
         $person = new Person;
         $person->setName($name);
-        
+
         //People must have >= 1 role to be indexed
         $show = new Show;
         $show->setName('Test Show')
@@ -122,7 +122,7 @@ class SearchControllerTest extends WebTestCase
 
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('application/json', $response->headers->get('Content-Type'));
+        $this->assertStringContainsString('application/json', $response->headers->get('Content-Type'));
 
         return json_decode($response->getContent(), true);
     }

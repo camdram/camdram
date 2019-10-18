@@ -13,38 +13,36 @@
 {% endblock %}
 
 {% block vacancies_body %}
-    {% spaceless %}
-    {% set current = null %}
-    {% for a in applications %}
-        {% set entity = a.society ? a.society : a.show %}
-        {% if entity.name != current%}
-            {% if current != null %}
+    {%- set current = null -%}
+    {%- for a in applications -%}
+        {%- set entity = a.society ?? a.show ?? a.venue -%}
+        {%- if entity.name != current-%}
+            {%- if current != null -%}
                 </div>
-            {% endif %}
-            {% set current = entity.name %}
+            {%- endif -%}
+            {%- set current = entity.name -%}
             <div>
-        {% endif %}
+        {%- endif -%}
         <hr>
-        <div id="{{ a.show ? a.show.slug : a.society.slug }}">
-        {% if a.show %}
-            {% include 'show/advert_header.html.twig' with {'show': a.show} %}
-        {% else %}
-            <h4><a href="{{ path('get_society', {identifier: entity.slug}) }}">{{ current }}</a></h4>
-        {% endif %}
+        <div id="{{ entity.slug -}}">
+        {%- if a.show -%}
+            {%- include 'show/advert_header.html.twig' with {'show': a.show} -%}
+        {%- else -%}
+            <h4><a href="{{ path('get_' ~ entity.organisationtype, {identifier: entity.slug}) }}">{{ current }}</a></h4>
+        {%- endif -%}
         <h5>{{ a.text }}</h5>
-        {% if a.furtherinfo %}
-            <p>{{ a.furtherinfo|nl2br|detect_links }}</p>
-        {% endif %}
-        <p><strong>Deadline:</strong> {{ a.deadlinedate|date('l jS F') }}
-        {% if a.deadlinetime %}
-            {{ a.deadlinetime|date('H:i', 'UTC') }}
-        {% endif %}
+        {%- if a.furtherinfo -%}
+            <p>{{ a.furtherinfo|camdram_markdown }}</p>
+        {%- endif -%}
+        <p><strong>Deadline:</strong> {{ a.deadlinedate|date('l jS F') -}}
+        {%- if a.deadlinetime -%}
+            {{- a.deadlinetime|date(' H:i', 'UTC') -}}
+        {%- endif -%}
         </p>
         </div>
 
-    {% else %}
+    {%- else -%}
         <p>There are currently no vacancies or show applications listed - please check again later.</p>
-    {% endfor %}
-    {% endspaceless %}
+    {%- endfor -%}
 
 {% endblock %}

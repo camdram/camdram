@@ -2,7 +2,8 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\ElasticaBundle\Index\IndexManager;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,18 +13,14 @@ use Elastica\Query\BoolQuery;
 use Elastica\Query\QueryString;
 
 /**
- * Class ShowController
- *
- * Controller for REST actions for shows. Inherits from AbstractRestController.
- *
  * @RouteResource("Entity")
  */
-class SearchController extends FOSRestController
+class SearchController extends AbstractFOSRestController
 {
     /**
      * @Rest\Get("/search")
      */
-    public function searchAction(Request $request)
+    public function searchAction(Request $request, IndexManager $indexManager)
     {
         $limit = (int) $request->get('limit', 10);
         $page = (int) $request->get('page', 1);
@@ -39,7 +36,6 @@ class SearchController extends FOSRestController
             'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => '_first']
         ]);
 
-        $indexManager = $this->get('fos_elastica.index_manager');
         $search = $indexManager->getIndex('autocomplete_show')->createSearch();
         $search->addIndex($indexManager->getIndex('autocomplete_person')->getName());
         $search->addIndex($indexManager->getIndex('autocomplete_society')->getName());
