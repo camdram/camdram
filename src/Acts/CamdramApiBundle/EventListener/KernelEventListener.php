@@ -38,13 +38,25 @@ class KernelEventListener
         }
 
         /**
+         * In this section we attempt to prevent programatic HTML screen scraping.
+         * We allow all requests in testing and requests to OAuth2 endpoints in
+         * order to make our lives easier.
+         */
+        $path_info = $request->getPathInfo();
+        if (getenv("SYMFONY_ENV") !== 'test' && strpos($path_info, '/oauth/v2') === false) {
+            if (strpos($path_info, '.xml') === false && strpos($path_info, '.json') === false) {
+                $this->preventScreenScraping($event, $request);
+            }
+        }
+
+        /**
          * In this section we attempt to prevent common programming libraries
          * and software development tools from making requests unless they are
          * using a unique User-Agent string. We allow all requests in testing
          * in order to make our lives easier.
          */
         if (getenv("SYMFONY_ENV") !== 'test') {
-            $this->checkUserAgentHeader($event, $request);
+            $this->ensureUniqueUserAgent($event, $request);
         }
     }
 
@@ -59,7 +71,22 @@ class KernelEventListener
         }
     }
 
-    private function checkUserAgentHeader($event, $request) {
+    private function preventScreenScraping($event, $request) {
+        $headers = $request->headers;
+        $user_agent = $headers->get('User-Agent');
+        $known_agents = array("Mozilla", "Gecko", "Chrome", "Safari", "AppleWebKit", "KHTML", "Edge", "Firefox", "Konqueror", "Trident", "Opera", "SeaMonkey");
+        foreach ($known_agents as $agent_stub) {
+            if (strpos($user_agent, $agent_stub) !== false) {
+                return;
+            }
+        }
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        $response->setContent("Bad Request. Programatic access is restricted to XML and JSON endpoints only.");
+        $event->setResponse($response);
+    }
+
+    private function ensureUniqueUserAgent($event, $request) {
         $headers = $request->headers;
         $user_agent = $headers->get('User-Agent');
         $known_agents = array("AdobeAIR", "TALWinInetHTTPClient", "android-async-http", "Dalvik", "Anemone", "AngleSharp", "Apache-HttpClient", "Apache-HttpAsyncClient", "AHC", "axios", "BinGet", "CFNetwork", "Chilkat", "CsQuery", "cssutils", "curl", "libcurl", "EventMachine", "HttpClient", "Faraday", "Feed::Find", "Go-http-client", "http-client", "Go http package", "Goose", "got", "GStreamer", "souphttpsrc", "libsoup", "Guzzle", "GuzzleHttp", "hackney", "htmlayout", "http-kit", "HTTP_Request", "HTTP_Request2", "Indy Library", "Incutio", "Jakarta Commons-HttpClient", "Java", "libsoup", "libwww-perl", "lua-resty-http", "lwp-trivial", "LWP::Simple", "Manticore", "Mechanize", "Microsoft BITS", "Mojolicious", "okhttp", "PEAR", "HTTP_Request", "PECL::HTTP", "PHP-Curl-Class", "PHPCrawl", "Poe-Component-Client", "PycURL", "python-requests", "Python-urllib", "Python-webchecker", "longurl-r-package", "RestSharp", "RPT-HTTPClient", "eat", "Snoopy", "libsummer", "Symfony", "BrowserKit", "Typhoeus", "unirest-net", "urlgrabber", "WLMHttpTransport", "WinHttp", "WinInet", "WWW-Mechanize", "xine", "Zend_Http_Client");
