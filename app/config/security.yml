@@ -16,6 +16,13 @@ security:
             pattern:    ^/oauth/v2/token
             security:   false
 
+        api:
+            pattern: ^/.*\.(json|xml)
+            host: ^(?!(localhost)$)(\w*)$
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  false
+
         public:
             pattern: ^/.*
             anonymous: true
@@ -54,7 +61,7 @@ security:
             security: false
 
     access_control:
-#        - { path ^/.*\.(json|xml)$, roles: ROLE_API }
+        - { path ^/.*\.(json|xml), roles: IS_AUTHENTICATED_FULLY }
 
     encoders:
         Acts\CamdramSecurityBundle\Entity\User:
