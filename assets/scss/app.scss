@@ -264,6 +264,16 @@ header#main-header {
       }
     }
   }
+
+  /* Theme variants */
+  &[data-theme="PRIDE"] #logo-block {
+    @media only screen and (min-width: 768px) {
+      min-width: 250px;
+    }
+  }
+  &[data-theme="XMAS"] #logo-block {
+    padding-bottom: 15px;
+  }
 }
 
 h1, h2, h3, h4, h5 {
@@ -368,13 +378,19 @@ $panel-font-color-alt: #000;
 }
 
 #dev-warning {
-  background:#ffdddd;
+  background: #ffff00;
   text-align:center;
   padding:0.1em 1em;
   font-size:0.9em;
 
   h3 {
-    color:#a00;
+    /* a11y only text as the logo is changed instead of a big h3*/
+    display: block;
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 0;
+    height: 0;
   }
 }
 

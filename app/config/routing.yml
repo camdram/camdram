@@ -10,10 +10,6 @@ acts_camdram:
     resource: "@ActsCamdramBundle/Resources/config/routing.yml"
     prefix:   /
 
-acts_camdram_legacy:
-    resource: "@ActsCamdramLegacyBundle/Resources/config/routing.yml"
-    prefix:   /
-
 acts_camdram_security:
     resource: "@ActsCamdramSecurityBundle/Resources/config/routing.yml"
     prefix:   /auth

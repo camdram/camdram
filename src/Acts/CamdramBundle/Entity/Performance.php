@@ -296,40 +296,6 @@ class Performance implements EventInterface
     }
 
     /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getStartDate()
-    {
-        $date = clone $this->getStartAt();
-        $date->setTime(0, 0, 0);
-        return $date;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getEndDate()
-    {
-        return $this->getRepeatUntil();
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\XmlElement(cdata=false)
-     * @deprecated
-     */
-    public function getTime()
-    {
-        $startAt = clone $this->getStartAt();
-        $startAt->setTimezone(new \DateTimezone('Europe/London'));
-        return \DateTime::createFromFormat('!H:i', $startAt->format('H').':'.$startAt->format('i'));
-    }
-
-    /**
      * There is further validation client-side which generates warnings.
      *
      * @Assert\Callback
@@ -348,12 +314,12 @@ class Performance implements EventInterface
                     ->addViolation();
             return;
         }
-        if ($this->getStartDate() > $this->getEndDate()) {
+        if ($this->getStartAt() > $this->getRepeatUntil()) {
             $context->buildViolation("The run can't finish before it's begun! Check your dates.")
                     ->atPath('repeat_until')
                     ->addViolation();
         }
-        if ($this->getEndDate() > new \DateTime("+18 months")) {
+        if ($this->getRepeatUntil() > new \DateTime("+18 months")) {
             $context->buildViolation("Shows may only be listed on Camdram up to 18 months in advance. Check your dates.")
                     ->atPath('repeat_until')
                     ->addViolation();
