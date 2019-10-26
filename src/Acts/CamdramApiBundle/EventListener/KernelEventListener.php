@@ -6,10 +6,12 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Acts\CamdramApiBundle\Entity\RateLimitEntry;
 
 class KernelEventListener
 {
     private $entityManager;
+    private $tokenStorage;
 
     public function __construct(EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage)
     {
@@ -46,6 +48,16 @@ class KernelEventListener
         if (getenv("SYMFONY_ENV") !== 'test') {
             $this->checkUserAgentHeader($event, $request);
         }
+
+        /**
+         * In this section we rate limit and log incoming requests. Each
+         * individual public IP address is limited to a maximum of 200 requests
+         * per minute. Currently this limit is applied equally to all endpoints
+         * without differentiation between web browsers and API client apps,
+         * although this may change in the future.
+         */
+        $this->checkRateLimit($event, $request);
+        $this->logRateLimitEntry($request);
     }
 
     private function incrementAppRequestCounter($id, $clientId, $clientSecret) {
@@ -71,5 +83,29 @@ class KernelEventListener
                 $event->setResponse($response);
             }
         }
+    }
+
+    private function checkRateLimit($event, $request) {
+        $ip_address = $request->getClientIp();
+        $rateLimitEntryRepo = $this->entityManager->getRepository('ActsCamdramApiBundle:RateLimitEntry');
+        $numOfRequests = $rateLimitEntryRepo->count($ip_address);
+        if ($numOfRequests > 200) {
+            $response = new Response();
+            $response->setStatusCode(Response::HTTP_TOO_MANY_REQUESTS);
+            $response->setContent("You have been rate limited. Try again later.");
+            $event->setResponse($response);
+        }
+    }
+
+    private function logRateLimitEntry($request) {
+        $ip_address = $request->getClientIp();
+        $path_info = $request->getPathInfo();
+        $now = new \DateTime;
+        $rateLimitEntry = new RateLimitEntry();
+        $rateLimitEntry->setIpAddress($ip_address);
+        $rateLimitEntry->setEndpoint($path_info);
+        $rateLimitEntry->setOccurredAt($now);
+        $this->entityManager->persist($rateLimitEntry);
+        $this->entityManager->flush();
     }
 }
