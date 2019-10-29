@@ -1,0 +1,42 @@
+---
+version: '3'
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/usr/src/camdram
+    networks:
+      - backend
+    environment:
+      - "APACHE_DOCUMENT_ROOT=/var/www/html/web"
+    depends_on:
+      - db
+      - search
+  db:
+    image: mariadb:10.1
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - backend
+    environment:
+      - "MYSQL_ROOT_PASSWORD=c4mdrAm"
+  search:
+    image: elasticsearch:6.8.0
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - backend
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+volumes:
+  esdata:
+    driver: local
+  dbdata:
+    driver: local
+networks:
+  backend:
+    driver: bridge
