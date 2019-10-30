@@ -7,7 +7,7 @@ import re
 import sys
 
 # These tags use {#- -#} to strip whitespace in the generated HTML, and so the
-# strip() method is used corrospondingly here.
+# strip() method is used correspondingly here.
 # Non-greedy matching used to allow multiple script tags per file.
 regex = re.compile('(?<={#- begin-CSP-permitted-script -#}).*?(?={#- end-CSP-permitted-script -#})', flags=re.DOTALL | re.MULTILINE)
 sha256 = hashlib.sha256()
