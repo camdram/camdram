@@ -12,7 +12,7 @@ services:
     networks:
       - backend
     environment:
-      - "APACHE_DOCUMENT_ROOT=/var/www/html/web"
+      - "DATABASE_URL=mysql://root:c4mdrAm@db/camdram_dev"
     depends_on:
       - db
       - search
