@@ -1,0 +1,17 @@
+acts_camdram_removed_externallogin:
+    path: /extlogin
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: 'static/removed/extlogin.html.twig'
+
+acts_camdram_removed_externallogin_auth:
+    path: /extlogin/auth
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: 'static/removed/extlogin.html.twig'
+
+acts_camdram_removed_externallogin_spend:
+    path: /spendtoken.php
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: 'static/removed/extlogin.html.twig'

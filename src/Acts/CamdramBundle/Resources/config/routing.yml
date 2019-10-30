@@ -48,6 +48,9 @@ acts_camdram_faq:
         _controller: FrameworkBundle:Template:template
         template: 'static/faq.html.twig'
 
+acts_camdram_removed:
+    resource: "routing/removed_paths.yml"
+
 camdram_annotation:
     resource: "@ActsCamdramBundle/Controller/"
     type:     annotation
