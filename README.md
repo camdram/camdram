@@ -13,11 +13,23 @@ New releases are made on the `master` branch every so often using the GitHub int
 
 If you encounter any problems with the instructions below, please [create a GitHub issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to support@camdram.net. We also have a [live chat hosted on Gitter](https://gitter.im/camdram/development) which you can use to quickly and informally get in touch with the development team.
 
-## 1) Install programs
+## Docker Installation
+[Docker](https://www.docker.com/get-started) is a virtualization service that acts as a platform for running containerised application. It's a great way to get a development environment setup with minimal hassle and should work cross-platform on Windows, macOS and Linux. First you will need to install Docker using the link above, then clone the Camdram repository and build the necessary Docker images:
+
+1. `git clone git@github.com:camdram/camdram.git && cd camdram`
+2. `docker-compose build`
+3. `docker-compose up`
+
+This will automatically create and configure the full Camdram stack and start the server locally on port 8000.
+
+## Native Installation
+The native installation is a lot more complicated than the Docker installation procedure and so we've broken it down into several steps.
+
+### 1) Install programs
 
 You will need to install the necessary package dependencies required to run Camdram. **PHP version 7.3 or greater is required**.
 
-### Debian/Ubuntu and Derivatives
+#### Debian/Ubuntu and Derivatives
 
 The command below can be run on recent Debian-based distros (including Ubuntu and the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)).
 
@@ -25,7 +37,7 @@ The command below can be run on recent Debian-based distros (including Ubuntu an
 sudo apt-get install git-core php php-cli composer php-curl php-intl php-sqlite3 php-gd php-json php-mbstring php-xml php-zip
 ```
 
-### macOS
+#### macOS
 
 You will need to have [Homebrew](https://brew.sh/) installed. The following command _appears_ (from minimal testing) to install everything required on recent versions of macOS.
 
@@ -35,7 +47,7 @@ brew install git php composer
 
 Installation methods on other distros and operating systems will vary.
 
-## 2) Create a local version of Camdram
+### 2) Create a local version of Camdram
 
 The steps below assume that the Composer PHP package manager is installed globally on your system. If it is not available in your distro's repositories, alternate installation methods can be found at https://getcomposer.org/download/.
 
@@ -60,7 +72,7 @@ php app/console server:run
 
 You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your web browser to see your personal version of Camdram's homepage.
 
-## 3) Run test suite
+### 3) Run test suite
 
 Camdram has a limited but growing [automated test suite](https://github.com/camdram/camdram/wiki/Running-and-creating-tests), which can be used to ensure your checkout is working and check for certain regressions after making changes. It can be executed by running:
 
@@ -68,7 +80,7 @@ Camdram has a limited but growing [automated test suite](https://github.com/camd
 ./runtests
 ```
 
-## 4) Create a fork
+### 4) Create a fork
 
 Camdram's development model follows the standard idioms used by FOSS projects hosted on GitHub. If you are just interested in experimenting with the codebase, no further steps are necessary, but if you'd like to contribute then you will need to [create a fork](https://help.github.com/articles/fork-a-repo).
 
@@ -81,7 +93,7 @@ git remote add origin git@github.com:your-github-username/camdram.git
 
 We run Camdram as a meritocracy: anyone who has a reasonable number of pull requests accepted will be given access rights to commit straight to the Camdram repository
 
-## 5) Write some code
+### 5) Write some code
 
 It is a good idea to create a "feature branch" before starting development, so that the pull request will be named appropriately:
 
@@ -103,7 +115,7 @@ Depending on the type of change, ensure it works as a logged-in and/or non-logge
 php app/console camdram:admins --grant=youremail@domain.com
 ```
 
-## 6) Submit your changes
+### 6) Submit your changes
 
  * Run `git add file1.php file2.php` for each file you wish to include in the commit
  * Run `git commit` and enter a message describing the changes you have made
@@ -115,7 +127,7 @@ Once your changes are pushed to your Camdram fork on GitHub, you can [submit a p
 
 **Please note:** we automatically display the names of some contributors on our [development page](https://www.camdram.net/development/) as a way of saying thanks! By submitting your changes you are acknowledging that you are happy for this to happen.
 
-## 7) Pull in other people's changes
+### 7) Pull in other people's changes
 
 At a later date, once your local repository has become out of sync with Github (because other people have make changes), you can run the following commands to pull in other people's changes and update your checkout:
 
@@ -132,7 +144,7 @@ php app/console camdram:database:refresh
 php app/console camdram:assets:download
 ```
 
-## 8) Read the Wiki
+### 8) Read the Wiki
 
 [The Wiki](http://github.com/camdram/camdram/wiki) has various pieces of information about both the current and in-development versions of Camdram. Reading through those pages can give insight into the more esoteric parts of the system. You can suggest ideas for new articles using the contact details above.
 
