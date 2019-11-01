@@ -2,12 +2,12 @@
 
 namespace Acts\CamdramSecurityBundle\DataFixtures;
 
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\DataFixtures\ShowFixtures;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Acts\CamdramSecurityBundle\Entity\User;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class AccessControlEntryFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -16,21 +16,25 @@ class AccessControlEntryFixtures extends Fixture implements DependentFixtureInte
      */
     public function load(ObjectManager $manager)
     {
-        //Make the admin user an admin
-        $e = new AccessControlEntry();
-        $e->setUser($this->getReference('adminuser'));
-        $e->setGrantedBy($this->getReference('testuser1'));
-        $e->setEntityId('-2');
-        $e->setCreatedAt(new \DateTime('2001-01-01'));
-        $e->setType('security');
-        $manager->persist($e);
+        // Make the admin users admins
+        // Note that as the admins are now actual people they get SUPER_ADMIN
+        // status out of the box rather than mere adminship.
+        for ($i = 0; $this->hasReference("adminuser[$i]"); $i++) {
+            $e = new AccessControlEntry();
+            $e->setUser($this->getReference("adminuser[$i]"));
+            $e->setGrantedBy($this->getReference('testuser1'));
+            $e->setEntityId('-1');
+            $e->setCreatedAt(new \DateTime());
+            $e->setType('security');
+            $manager->persist($e);
+        }
 
         //Make user2 owner of all shows
         $shows = $manager->getRepository('ActsCamdramBundle:Show')->findAll();
         foreach ($shows as $show) {
             $e = new AccessControlEntry();
             $e->setUser($this->getReference('testuser2'));
-            $e->setGrantedBy($this->getReference('adminuser'));
+            $e->setGrantedBy($this->getReference('testuser1'));
             $e->setEntityId($show->getId());
             $e->setCreatedAt(new \DateTime('2001-01-01'));
             $e->setType('show');

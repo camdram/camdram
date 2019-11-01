@@ -26,3 +26,5 @@ parameters:
 
     env(SEARCH_NAMESPACE): camdram
     search_enable_listeners: false
+
+    default_admin_idents: "[]"
