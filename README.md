@@ -72,6 +72,18 @@ php app/console server:run
 
 You should then be able to visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in your web browser to see your personal version of Camdram's homepage.
 
+You'll need to create an administrator account in order to get access to most of the site's features. To make this happen automatically whenever you reset the database, open `app/config/parameters.yml` and replace the line setting `default_admin_idents` with:
+```yaml
+    default_admin_idents: "[ { \"name\": \"Your Name\", \"email\": \"yourcrsid@cam.ac.uk\" } ]"
+```
+
+then run
+```
+php app/console doctrine:fixtures:load --no-interaction
+```
+
+You should then be able to log in with Raven and have full administrator access.
+
 ### 3) Run test suite
 
 Camdram has a limited but growing [automated test suite](https://github.com/camdram/camdram/wiki/Running-and-creating-tests), which can be used to ensure your checkout is working and check for certain regressions after making changes. It can be executed by running:
