@@ -314,7 +314,11 @@ class Performance implements EventInterface
                     ->addViolation();
             return;
         }
-        if ($this->getStartAt() > $this->getRepeatUntil()) {
+        // As the start date has a time associated but the end doesn't the time
+        // must be removed.
+        $startDateOnly = $this->getStartAt()->format("Ymd");
+        $endDateOnly = $this->getRepeatUntil()->format("Ymd");
+        if ($startDateOnly > $endDateOnly) {
             $context->buildViolation("The run can't finish before it's begun! Check your dates.")
                     ->atPath('repeat_until')
                     ->addViolation();

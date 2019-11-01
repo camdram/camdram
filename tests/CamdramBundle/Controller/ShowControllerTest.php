@@ -56,22 +56,42 @@ class ShowControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter('#content:contains("Show Administration")')->count(), 1);
     }
 
-    public function testCreateShow()
+    private function doCreateShow(string $name, \DateTime $startDate, \DateTime $endDate, bool $shouldPass = true)
     {
         $user = $this->createUser();
         $this->login($user);
 
         $crawler = $this->client->request('GET', '/shows/new');
         $form = $crawler->selectButton('Create')->form();
-        $form['show[name]'] = 'Test Show';
-        $form['show[performances][0][start_at][date]'] = '2001-03-02';
+        $form['show[name]'] = $name;
+        $form['show[performances][0][start_at][date]'] = $startDate->format('Y-m-d');
         $form['show[performances][0][start_at][time]'] = '19:45';
-        $form['show[performances][0][repeat_until]'] = '2001-03-05';
+        $form['show[performances][0][repeat_until]'] = $endDate->format('Y-m-d');
         $crawler = $this->client->submit($form);
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals($crawler->filter('#content:contains("Test Show")')->count(), 1);
-        $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 1);
+        if ($shouldPass) {
+            $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+            $this->assertEquals($crawler->filter("#content:contains(\"$name\")")->count(), 1);
+            $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 1);
+        } else {
+            $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+            $this->assertTrue($crawler->filter('small.error')->count() > 0);
+        }
+    }
+
+    public function testCreateShowsAllowed()
+    {
+        // Create shows at different dates to test the validator.
+        $this->doCreateShow("Historic show", new \DateTime("2001-05-06"), new \DateTime("2001-05-11"));
+        $this->doCreateShow("Current show", new \DateTime(), new \DateTime("+3 days"));
+        $this->doCreateShow("One-night stand", new \DateTime("+3 days"), new \DateTime("+3 days"));
+    }
+
+    public function testCreateShowsDisallowed()
+    {
+        // Policy at time of writing: shows may be no more than 18 months ahead
+        $this->doCreateShow("Future show", new \DateTime("+19 months"), new \DateTime("+19 months"), false);
+        $this->doCreateShow("Backwards show", new \DateTime("+4 days"), new \DateTime("+2 days"), false);
     }
 
     public function testAuthorizeShow()
