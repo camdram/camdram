@@ -3985,39 +3985,39 @@
         },
         {
             "name": "knplabs/github-api",
-            "version": "2.11.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "7e67b4ccf9ef62fbd6321a314c61d3202c07b855"
+                "reference": "d947eabdf9fcfa4a40509ec2361404c53e673efc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/7e67b4ccf9ef62fbd6321a314c61d3202c07b855",
-                "reference": "7e67b4ccf9ef62fbd6321a314c61d3202c07b855",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/d947eabdf9fcfa4a40509ec2361404c53e673efc",
+                "reference": "d947eabdf9fcfa4a40509ec2361404c53e673efc",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0",
+                "php": "^7.1",
                 "php-http/cache-plugin": "^1.4",
-                "php-http/client-common": "^1.6",
+                "php-http/client-common": "^1.6 || ^2.0",
                 "php-http/client-implementation": "^1.0",
                 "php-http/discovery": "^1.0",
-                "php-http/httplug": "^1.1",
+                "php-http/httplug": "^1.1 || ^2.0",
                 "psr/cache": "^1.0",
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
                 "cache/array-adapter": "^0.4",
                 "guzzlehttp/psr7": "^1.2",
-                "php-http/guzzle6-adapter": "^1.0",
-                "php-http/mock-client": "^1.0",
-                "phpunit/phpunit": "^5.5 || ^6.0"
+                "php-http/guzzle6-adapter": "^1.0 || ^2.0",
+                "php-http/mock-client": "^1.2",
+                "phpunit/phpunit": "^7.0 || ^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.11.x-dev"
+                    "dev-master": "2.12.x-dev"
                 }
             },
             "autoload": {
@@ -4031,13 +4031,13 @@
             ],
             "authors": [
                 {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
                     "name": "Thibault Duplessis",
                     "email": "thibault.duplessis@gmail.com",
                     "homepage": "http://ornicar.github.com"
-                },
-                {
-                    "name": "KnpLabs Team",
-                    "homepage": "http://knplabs.com"
                 }
             ],
             "description": "GitHub API v3 client",
@@ -4048,7 +4048,7 @@
                 "gist",
                 "github"
             ],
-            "time": "2019-01-28T19:31:35+00:00"
+            "time": "2019-11-03T13:49:41+00:00"
         },
         {
             "name": "liip/imagine-bundle",
@@ -5009,21 +5009,21 @@
         },
         {
             "name": "php-http/message",
-            "version": "1.7.2",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "b159ffe570dffd335e22ef0b91a946eacb182fa1"
+                "reference": "ce8f43ac1e294b54aabf5808515c3554a19c1e1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/b159ffe570dffd335e22ef0b91a946eacb182fa1",
-                "reference": "b159ffe570dffd335e22ef0b91a946eacb182fa1",
+                "url": "https://api.github.com/repos/php-http/message/zipball/ce8f43ac1e294b54aabf5808515c3554a19c1e1c",
+                "reference": "ce8f43ac1e294b54aabf5808515c3554a19c1e1c",
                 "shasum": ""
             },
             "require": {
                 "clue/stream-filter": "^1.4",
-                "php": "^5.4 || ^7.0",
+                "php": "^7.1",
                 "php-http/message-factory": "^1.0.2",
                 "psr/http-message": "^1.0"
             },
@@ -5049,7 +5049,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.8-dev"
                 }
             },
             "autoload": {
@@ -5077,7 +5077,7 @@
                 "message",
                 "psr-7"
             ],
-            "time": "2018-11-01T09:32:41+00:00"
+            "time": "2019-08-05T06:55:08+00:00"
         },
         {
             "name": "php-http/message-factory",
