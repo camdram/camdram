@@ -60,7 +60,7 @@ class EntitiesNewsCommand extends Command
                     $attempts++;
                     $output->writeln('Twitter API error: ' . $e->getMessage());
                     $output->writeln('Retrying with exponential backoff up to three times...');
-                    $seconds = pow(3, $attempts)
+                    $seconds = pow(3, $attempts);
                     sleep($seconds);
                     continue;
                 }
