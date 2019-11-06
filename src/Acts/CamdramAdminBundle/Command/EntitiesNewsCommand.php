@@ -38,9 +38,7 @@ class EntitiesNewsCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setDescription('Automatically pull in news for linked Twitter accounts')
-        ;
+        $this->setDescription('Automatically pull in news for linked Twitter accounts');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -51,30 +49,47 @@ class EntitiesNewsCommand extends Command
     private function executeForTwitter(OutputInterface $output)
     {
         $this->twitter->setDecodeJsonAsArray(true);
-
         $news_repo = $this->entityManager->getRepository('ActsCamdramBundle:News');
         $entities = $this->getOrganisationsWithService('twitter');
         foreach ($entities as $entity) {
-            $response = $this->twitter->get(
-                'statuses/user_timeline', [
-                    'user_id' => $entity->getTwitterId(),
-                    'count' => 50,
-                    'trim_user' => true,
-                    'include_rts' => false,
-                    'tweet_mode' => 'extended',
-                    'exclude_replies' => true,
-                    'include_rts' => false,
-                ]
-            );
-            if ($this->twitter->getLastHttpCode() == 200) {
-                foreach ($response as $tweet) {
-                    if (!$news_repo->itemExists('twitter', $tweet['id'])) {
-                        $this->addNews('twitter', $tweet, $entity, $output);
-                    }
+            $attempts = 0;
+            do {
+                try {
+                    $this->executeForEntity($entity, $news_repo, $output);
+                } catch (Exception $e) {
+                    $attempts++;
+                    $output->writeln('Twitter API error: ' . $e->getMessage());
+                    $output->writeln('Retrying with exponential backoff up to three times...');
+                    $seconds = pow(3, $attempts)
+                    sleep($seconds);
+                    continue;
                 }
-            } else {
-                $output->writeln('Twitter API error');
+                break;
+            } while($attempts < 4);
+        }
+    }
+
+    private function executeForEntity($entity, $news_repo, $output)
+    {
+        $response = $this->twitter->get(
+            'statuses/user_timeline', [
+                'user_id' => $entity->getTwitterId(),
+                'count' => 50,
+                'trim_user' => true,
+                'include_rts' => false,
+                'tweet_mode' => 'extended',
+                'exclude_replies' => true,
+                'include_rts' => false,
+            ]
+        );
+        if ($this->twitter->getLastHttpCode() == 200) {
+            foreach ($response as $tweet) {
+                if (!$news_repo->itemExists('twitter', $tweet['id'])) {
+                    $this->addNews('twitter', $tweet, $entity, $output);
+                }
             }
+        } else {
+            throw new Exception('Did not receive HTTP 200 OK from Twitter API');
         }
     }
 
