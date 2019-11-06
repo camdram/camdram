@@ -17,6 +17,7 @@ import '../scss/framework.scss';
 import '../scss/home.scss';
 import '../scss/news.scss';
 
+import '@fancyapps/fancybox';
 import "@fancyapps/fancybox/dist/jquery.fancybox.css";
 import "../scss/jquery-ui.custom.css"
 
