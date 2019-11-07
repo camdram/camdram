@@ -1,17 +1,19 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
+    {# Global site tag (gtag.js) - Google Analytics #}
+    {% if app.request.headers.get('DNT', '0', true) != "1" %}
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37770738-2"></script>
     <script>
-                {#- begin-CSP-permitted-script -#}
+    {#- begin-CSP-permitted-script -#}
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'UA-37770738-2');
-            {#- end-CSP-permitted-script -#}
-        </script>
+    {#- end-CSP-permitted-script -#}
+    </script>
+    {% endif %}
 
     <meta charset="utf-8" />
 
