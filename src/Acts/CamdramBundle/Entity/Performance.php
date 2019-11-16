@@ -187,6 +187,21 @@ class Performance implements EventInterface
     }
 
     /**
+     * Returns a DateTime with both date and time filled in of the final
+     * performance.
+     *
+     * Maintains UK time across a daylight saving change.
+     */
+    public function getFinalDateTime(): ?\DateTime
+    {
+        $tz = new \DateTimeZone('Europe/London');
+        $dateStr = $this->repeat_until->format("Y-m-d ");
+        $startAtClone = clone $this->start_at;
+        $startAtClone->setTimezone($tz);
+        return new \DateTime($dateStr . $startAtClone->format("H:i:s"), $tz);
+    }
+
+    /**
      * @return bool
      */
     public function isRepeating()

@@ -1439,7 +1439,7 @@ class Show implements OwnableInterface
         $future = false;
         $now = new \DateTime();
         foreach ($this->getPerformances() as $performance) {
-            if ($performance->getRepeatUntil() >= $now) {
+            if ($performance->getFinalDateTime() >= $now) {
                 $future = true;
                 break;
             }
