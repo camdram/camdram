@@ -45,7 +45,7 @@
         "abraham/twitteroauth": "^1.0",
         "doctrine/doctrine-bundle": "^1.9",
         "doctrine/doctrine-fixtures-bundle": "~3.0",
-        "doctrine/doctrine-migrations-bundle": "2.0.*",
+        "doctrine/doctrine-migrations-bundle": "2.1.*",
         "doctrine/orm": "^2.5",
         "erusev/parsedown": "^1.7",
         "excelwebzone/recaptcha-bundle": "^1.5",
