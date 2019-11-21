@@ -79,7 +79,7 @@
         "dama/doctrine-test-bundle": "^6.0",
         "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "sensio/generator-bundle": "^3.1",
-        "symfony/phpunit-bridge": "^4.1",
+        "symfony/phpunit-bridge": "^5.0",
         "symfony/web-server-bundle": "^3.4"
     },
     "scripts": {
