@@ -10,6 +10,7 @@ use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use PSR\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends AbstractFOSRestController
@@ -48,7 +49,7 @@ class RoleController extends AbstractFOSRestController
      * @Rest\Post("/shows/{identifier}/roles")
      * @param $identifier
      */
-    public function postRoleAction(Request $request, Helper $helper, $autocomplete_person, $identifier)
+    public function postRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person, $identifier)
     {
         $show = $this->getEntity($identifier);
         $helper->ensureGranted('EDIT', $show);
@@ -88,7 +89,7 @@ class RoleController extends AbstractFOSRestController
                     $autocomplete_person->replaceOne($person);
                 }
                 catch (\Elastica\Exception\ExceptionInterface $ex) {
-                    $this->get('logger')->warning('Failed to update search index during role entry',
+                    $logger->warning('Failed to update search index during role entry',
                             ['role' => $role->getId()]);
                 }
             }
