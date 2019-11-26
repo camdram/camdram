@@ -5,6 +5,11 @@
 {% block body %}
 <h4>Register with Camdram</h4>
 <p>Please enter your name and e-mail address to create a Camdram account.</p>
+<p>
+    You must read and agree to our <a href="{{ path('acts_camdram_userguidelines') }}">User Guidelines</a>.
+    By continuing, you confirm that you will abide by the Guidelines and that, specifically, your account
+    will be limited to a single individual and not shared between a group, society or organisation.
+</p>
 {{ form_start(form, {'action': path('hwi_oauth_connect_registration', {'key': key}), 'attr': {'class': 'hwi_oauth_registration_register'}}) }}
     {{ form_errors(form) }}
     {{ form_row(form.name, {value: userInformation.realName}) }}
