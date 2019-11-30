@@ -52,15 +52,6 @@
   }
 }
 
-.approve-panel {
-  @include panel(rgb(255,255,100), 0.6em);
-  display: flex;
-  em {
-    margin: auto;
-    padding: 0.4em;
-  }
-}
-
 .news-link {
   @include panel(rgb(230,230,230), 1em);
   margin-bottom:10px;

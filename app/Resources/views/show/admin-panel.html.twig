@@ -87,17 +87,18 @@
 {% endif %}
 {% if not show.authorised %}
     {% if is_granted('APPROVE', show) %}
-        <form action="{{ path('approve_show', {identifier: show.slug}) }}" method="post" class="approve-panel">
+        <form action="{{ path('approve_show', {identifier: show.slug}) }}" method="post" class="panel text-center" style="display: flex">
             <input type="hidden" name="_method" value="PATCH"/>
             <input type="hidden" name="_token" value="{{ csrf_token('approve_show') }}"/>
-            <em>This show is not yet visible to the public.</em>
+            <p style="margin: auto; padding: 0.4em">This show is not yet visible to the public.</p>
             <button class="button right small"><i class="fa fa-check"></i> Approve this show</button>
         </form>
     {% else %}
-        <div class="approve-panel"><em>
-            This show is not yet visible to the public – it is awaiting approval
+        <div class="panel text-center">
+            <p>This show is not yet visible to the public – it is awaiting approval
             from a society/venue owner or a Camdram administrator.
-        </em></div>
+            <p>If this show is funded by a society or is at a venue that you haven't yet added, please <strong><a href="{{ path('edit_show',{identifier:show.slug}) }}">click here to add them</a></strong> so they can approve your show.
+        </div>
     {% endif %}
 {% endif %}
 {%- if errors -%}

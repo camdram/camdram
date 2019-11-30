@@ -72,7 +72,7 @@ class ShowControllerTest extends RestTestCase
         if ($shouldPass) {
             $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
             $this->assertEquals($crawler->filter("#content:contains(\"$name\")")->count(), 1);
-            $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 1);
+            $this->assertEquals($crawler->filter('#content:contains("This show is not yet visible to the public")')->count(), 1);
         } else {
             $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
             $this->assertTrue($crawler->filter('small.error')->count() > 0);
@@ -108,7 +108,7 @@ class ShowControllerTest extends RestTestCase
         $crawler = $this->client->submit($form);
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals($crawler->filter('#content .approve-panel')->count(), 0);
+        $this->assertEquals($crawler->filter('#content:contains("This show is not yet visible to the public")')->count(), 0);
 
         $this->logout();
         $crawler = $this->client->request('GET', '/shows/test-show');
