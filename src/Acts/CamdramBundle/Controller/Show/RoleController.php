@@ -10,7 +10,7 @@ use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
-use PSR\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends AbstractFOSRestController
