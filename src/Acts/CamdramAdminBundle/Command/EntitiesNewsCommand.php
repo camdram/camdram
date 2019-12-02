@@ -89,7 +89,7 @@ class EntitiesNewsCommand extends Command
                 }
             }
         } else {
-            throw new Exception('Did not receive HTTP 200 OK from Twitter API');
+            throw new \Exception('Did not receive HTTP 200 OK from Twitter API');
         }
     }
 
