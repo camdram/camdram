@@ -33,6 +33,7 @@
     "minimum-stability": "stable",
     "name": "camdram/camdram",
     "replace": {
+        "paragonie/random_compat": "2.99",
         "phpunit/phpunit": "8.2.4",
         "symfony/polyfill-php56": "1.99",
         "symfony/polyfill-php70": "1.99",
