@@ -1,13 +1,13 @@
 <h5>Get Involved</h5>
 <ul>
 {% for audition in auditions %}
-    <li><a href="{{ path('get_show', {identifier: audition.show.slug}) }}">{{ audition.show.name }}</a> is holding auditions:
+    <li>{{ link_entity(audition.show) }} is holding auditions:
         in {{ audition.location }} from {{ audition.startAt | date('H:i') }} to {{ audition.endAt | date('H:i') }} on {{ audition.startAt | date('D jS M') }}
         - <a href="{{ path('get_audition', {identifier: audition.show.slug}) }}">more details</a>
     </li>
 {% endfor %}
 {% for ad in techie_ads %}
-    <li><a href="{{ path('get_show', {identifier: ad.show.slug}) }}">{{ ad.show.name }}</a> is looking for:
+    <li>{{ link_entity(ad.show) }} is looking for:
         {{ ad.getPositionsOneLine() }}
         - <a href="{{ path('get_techie', {identifier: ad.slug}) }}">more details</a>
     </li>
@@ -15,11 +15,11 @@
 {% for ad in app_ads %}
     <li>
         {% if ad.show %}
-            <a href="{{ path('get_show', {identifier: ad.show.slug}) }}">{{ ad.show.name }}</a> has announced:
+            {{ link_entity(ad.show) }} has announced:
             {{ ad.text() }} -
             <a href="{{ path('get_application', {identifier: ad.show.slug}) }}">more details</a>
         {% elseif ad.society %}
-            <a href="{{ path('get_society', {identifier: ad.society.slug}) }}">{{ ad.society.name }}</a> has announced:
+            {{ link_entity(ad.society) }} has announced:
             {{ ad.text() }} -
             <a href="{{ path('get_application', {identifier: ad.society.slug}) }}">more details</a>
         {% endif %}

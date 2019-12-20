@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Twig;
 
 use Acts\CamdramBundle\Service\TextService;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 
 /**
@@ -17,10 +18,12 @@ class CamdramExtension extends AbstractExtension
      * @var \Acts\CamdramBundle\Service\TextService
      */
     private $textService;
+    private $router;
 
-    public function __construct(TextService $textService)
+    public function __construct(TextService $textService, UrlGeneratorInterface $router)
     {
         $this->textService = $textService;
+        $this->router = $router;
     }
 
     /**
@@ -43,9 +46,10 @@ class CamdramExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('wcag_colors', [$this, 'genWcagColors']),
+            new \Twig_SimpleFunction('link_entity', [$this, 'link_entity'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('list_sep_verb', [$this, 'list_sep_verb']),
-            new \Twig_SimpleFunction('requires_article', [$this, 'requiresArticle'])
+            new \Twig_SimpleFunction('requires_article', [$this, 'requiresArticle']),
+            new \Twig_SimpleFunction('wcag_colors', [$this, 'genWcagColors'])
         );
     }
 
@@ -101,6 +105,28 @@ class CamdramExtension extends AbstractExtension
         return ($loop['length'] == 1) ?
             ' '.($verb_sing ?? ($verb_pl.'s')).' ' :
             " $verb_pl ";
+    }
+
+    /**
+     * Create a link to an entity which implements getEntityType(), getName()
+     * and getSlug().
+     * Options:
+     *  - innerhtml
+     *  - innertext
+     */
+    public function link_entity(object $entity, array $options = []): string
+    {
+        $url = $this->router->generate("get_{$entity->getEntityType()}", [
+            'identifier' => $entity->getSlug() ]);
+        // Escape all non-alphabetic <= 0xFF.
+        $url = mb_encode_numericentity($url, [
+            [0x00, 0x40, 0, 0],
+            [0x5B, 0x60, 0, 0],
+            [0x7B, 0xFF, 0, 0]
+        ]);
+        $content = $options['innerhtml'] ??
+            htmlspecialchars($options['innertext'] ?? $entity->getName());
+        return "<a href=\"$url\">$content</a>";
     }
 
     public function getName()

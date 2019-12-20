@@ -2,26 +2,25 @@
     <h5>{% block vacancies_panel_title %}Get involved:{% endblock %}</h5>
     <ul>
     {% for audition in auditions %}
-        <li><a href="{{ path('get_show', {identifier: audition.show.slug}) }}">{{ audition.show.name }}</a> is holding auditions:
+        <li>{{ link_entity(audition.show) }} is holding auditions:
             in {{ audition.location }} from {{ audition.startAt | date('H:i') }} to {{ audition.startAt | date('H:i') }} on {{ audition.startAt | date('D jS M') }}
             - <a href="{{ path('get_audition', {identifier: audition.show.slug}) }}">more details</a>
         </li>
     {% endfor %}
     {% for audition in nonscheduled_auditions %}
-    <li><a href="{{path('get_show', {identifier: audition.show.slug}) }}">{{audition.show.name }}</a> is holding auditions, contact {{audition.location}} - <a href="{{ path('get_auditions') }}#auditions-{{ audition.show.id }}">more details</a>
+        <li>{{ link_entity(audition.show) }} is holding auditions, contact {{audition.location}} - <a href="{{ path('get_auditions') }}#auditions-{{ audition.show.id }}">more details</a>
         </li>
     {% endfor %}
     {% for ad in techie_ads %}
-        <li><a href="{{ path('get_show', {identifier: ad.show.slug}) }}">{{ ad.show.name }}</a> is looking for:
+        <li>{{ link_entity(ad.show) }} is looking for:
             {{ ad.getPositionsOneLine() }}
             - <a href="{{ path('get_techie', {identifier: ad.slug}) }}">more details</a>
         </li>
     {% endfor %}
     {% for ad in app_ads %}
         <li>
-            <a href="{{ path('get_' ~ ad.owningEntity.entityType, {identifier: ad.owningEntity.slug})
-                }}">{{ ad.owningEntity.name }}</a> has announced:
-            {{ ad.text() }} -
+            {{ link_entity(ad.owningEntity) }} has announced:
+            {{ ad.text() }} –
             <a href="{{ path('get_application', {identifier: ad.slug}) }}">more details</a>
         </li>
     {% endfor %}

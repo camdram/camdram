@@ -11,7 +11,7 @@
 {% for show in shows %}
     <li>
         <div class="panel" itemscope itemtype="http://schema.org/TheaterEvent">
-            <h5><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h5>
+            <h5>{{ link_entity(show) }}</h5>
             {% include 'performance/show.html.twig' with {'performances': show.performances } %}
             <p>{{ show.description | truncate(200) | strip_new_lines | camdram_markdown }}</p>
         </div>

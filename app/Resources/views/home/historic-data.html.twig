@@ -9,7 +9,7 @@
             <ul>
                 {% for show in shows %}
                     <li>
-                        <h6><a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></h6>
+                        <h6>{{ link_entity(show) }}</h6>
                         <div class="show_info">{{ show.venuenames|join(', ')|truncate(50) }}</div>
                         {{ show.description | truncate(100) }}
                     </li>

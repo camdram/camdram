@@ -34,7 +34,7 @@
 {%- for role in roles -%}
 <tr>
 <td>
-<a href="{{ path('get_show', { identifier: role.show.slug }) }}">{{ role.show.name }}</a>
+{{ link_entity(role.show) }}
 {%- if not role.show.authorised %} <abbr title="This show is not publicly visible yet" class="fa fa-eye-slash"></abbr>{%- endif -%}
 <span class="fa roles-status-icon"></span>
 </td>

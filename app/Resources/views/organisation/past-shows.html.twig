@@ -8,7 +8,9 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-<a href="{{ path('get_' ~ org.entitytype, { identifier: org.slug }) }}"><i class="fa fa-chevron-left"></i>&ensp;Back to {{ org.name }}</a>
+{{ link_entity(org, {'innerhtml':
+    '<i class="fa fa-chevron-left"></i>&ensp;Back to ' ~ (org.name | escape('html'))
+}) }}
 
 <h2>{{title}}</h2>
 
@@ -16,7 +18,8 @@
 
 <ul class="historic-show-list">
     {% for show in paginator %}
-    <li {% if show.themeColor %}style="--primary-color: {{ wcag_colors(show.themeColor)['smalltext'] }}"{% endif %}><h4><a href="{{ path('get_show', { identifier: show.slug }) }}">{{ show.name }}</a></h4>
+    <li {% if show.themeColor %}style="--primary-color: {{ wcag_colors(show.themeColor)['smalltext'] }}"{% endif
+    %}><h4>{{ link_entity(show) }}</h4>
         {%- set start = show.startat | date('F Y') | split(' ') -%}
         {%- set end   = show.endat   | date('F Y') | split(' ') -%}
         {%- if start[0] == end[0] and start[1] == end[1] -%}

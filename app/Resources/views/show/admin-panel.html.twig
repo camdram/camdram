@@ -1,7 +1,7 @@
 {% if is_granted('EDIT', show) %}
 <div class="admin-panel">
     <h6 class="split-header">
-        <span>Show Administration: <a href="{{ path('get_show', {identifier: show.slug}) }}">{{ show.name }}</a></span>
+        <span>Show Administration: {{ link_entity(show) }}</span>
         <span>ID: {{ show.id}}</span></h6>
     <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier:show.slug}), icon: 'pencil', text: 'Edit this show'} }) }}
@@ -111,7 +111,7 @@ found in this show's listing. This may be a result of your show or another show;
   {%- if err[0] == 'clashwithother' -%}
      Clash (at {{ err[1].venuename }}) between this show's performance at {{ err[1].datestring }} and<ul>
      {%- for perf in err[2:] -%}
-        <li><a href="{{ path('get_show', {identifier: perf.show.slug}) }}">{{ perf.show.name }}</a>
+        <li>{{ link_entity(perf.show) }}
             <em>(ID={{ perf.show.id ~ (perf.show.authorised ? '' : ', not authorized') }})</em>: {{ perf.datestring }}</li>
      {%- endfor -%}</ul>
   {%- elseif err[0] == 'noperformances' -%}
