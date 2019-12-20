@@ -38,7 +38,7 @@ class CamdramExtension extends AbstractExtension
             new \Twig_SimpleFilter('strip_camdram_markdown', [$this, 'stripCamdramMarkdown']),
             new \Twig_SimpleFilter('detect_links', [$this, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig_SimpleFilter('strip_new_lines', [$this, 'stripNewLines']),
-            new \Twig_SimpleFilter('truncate', [$this, 'truncate'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig_SimpleFilter('truncate', [$this, 'truncate']),
             new \Twig_SimpleFilter('plural', [$this, 'pluralize']),
         );
     }
