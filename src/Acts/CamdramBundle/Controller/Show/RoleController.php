@@ -6,7 +6,6 @@ use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\RolesType;
-use Acts\CamdramBundle\Form\Type\RoleType;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -28,84 +27,6 @@ class RoleController extends AbstractFOSRestController
     protected function getEntity($identifier)
     {
         return $this->em->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
-    }
-
-    /**
-     * Get a form for adding a single role to a show.
-     * Not an Action, only rendered as part of another template.
-     *
-     * @param $identifier
-     */
-    public function newRole(Request $request, Helper $helper, $identifier, $type)
-    {
-        $show = $this->getEntity($identifier);
-        $helper->ensureGranted('EDIT', $show, false);
-
-        $role = new Role();
-        $role->setType($type);
-        $form = $this->createForm(RoleType::class, $role, array(
-            'action' => $this->generateUrl('post_show_role', array('identifier' => $identifier))));
-
-        return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/role-new.html.twig');
-    }
-
-    /**
-     * Create a new role associated with this show.
-     *
-     * Creates a new person if they're not already part of Camdram.
-     *
-     * @Rest\Post("/shows/{identifier}/roles")
-     * @param $identifier
-     */
-    public function postRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person, $identifier)
-    {
-        $show = $this->getEntity($identifier);
-        $helper->ensureGranted('EDIT', $show);
-
-        $base_role = new Role();
-        $form = $this->createForm(RoleType::class, $base_role);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            /* Try and find the person. Add a new person if they don't exist. */
-            $names = explode(',', $form->get('name')->getData());
-            foreach ($names as $name) {
-                $role = clone $base_role;
-                $name = trim($name);
-                $person_repo = $em->getRepository('ActsCamdramBundle:Person');
-                $person = $person_repo->findCanonicalPerson($name);
-                if ($person == null) {
-                    $person = new Person();
-                    $person->setName($name);
-                    $em->persist($person);
-                }
-                $role->setPerson($person);
-                $order = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')
-                    ->getMaxOrderByShowType($show, $role->getType());
-                $role->setOrder(++$order);
-                $role->setShow($show);
-                $em->persist($role);
-
-                $person->addRole($role);
-                $show->addRole($role);
-
-                try {
-                    $em->flush();
-
-                    //Attempt to update role count in people search index
-                    $autocomplete_person->replaceOne($person);
-                }
-                catch (\Elastica\Exception\ExceptionInterface $ex) {
-                    $logger->warning('Failed to update search index during role entry',
-                            ['role' => $role->getId()]);
-                }
-            }
-        }
-
-        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
     }
 
     /**
