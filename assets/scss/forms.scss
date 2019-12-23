@@ -225,6 +225,12 @@ button, .button {
     padding: 0;
     margin: 0;
   }
+  &.tiny-button {
+    background: white;
+    color: $primary-color;
+    color: var(--primary-color, #{$primary-color});
+    padding: 7px;
+  }
   &:hover:not(:disabled):not(.text-button), &:focus:not(:disabled):not(.text-button) {
     /* Darken while preserving white text. */
     filter: invert(100%) brightness(120%) invert(100%);
