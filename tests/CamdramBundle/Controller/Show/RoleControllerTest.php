@@ -21,11 +21,12 @@ class RoleControllerTest extends RestTestCase
         //Get CSRF token
         $crawler = $this->client->request('GET', '/shows/test-show/edit-roles');
         $delete_token = $crawler->filter('[data-csrf-delete]')->attr('data-csrf-delete');
+        $patch_token  = $crawler->filter('[data-csrf-patch]')->attr('data-csrf-patch');
 
         //Add role
         $crawler = $this->client->request('PATCH', '/shows/test-show/roles', [
             'id' => 'new', 'role' => 'Romeo', 'person' => 'Richard O\'Brien',
-            'role_type' => 'cast'
+            'role_type' => 'cast', '_token' => $patch_token
         ]);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $response1 = json_decode($this->client->getResponse()->getContent());
@@ -33,7 +34,7 @@ class RoleControllerTest extends RestTestCase
         //Add another role for same person with curly apostrophe and extra whitespace
         $crawler = $this->client->request('PATCH', '/shows/test-show/roles', [
             'id' => 'new', 'role' => 'Mercutio', 'person' => ' Richard O’Brien ',
-            'role_type' => 'cast'
+            'role_type' => 'cast', '_token' => $patch_token
         ]);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $response2 = json_decode($this->client->getResponse()->getContent());

@@ -35,6 +35,6 @@ with open('web/build/csp_hashes.txt', 'w', encoding='utf-8', newline='') as outf
                         print()
                     print('\'sha256-' + base64.b64encode(hashlib.sha256(match).digest()).decode('utf-8'), end='\' ', file=outfile)
             except Exception as e:
-                print(f"WARNING: Failed to process {root}/{name}");
+                print("WARNING: Failed to process %s/%s" % (root, name));
                 print(e);
 
