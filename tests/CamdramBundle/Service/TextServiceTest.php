@@ -21,8 +21,8 @@ class TextServiceTest extends TestCase
     {
         $text = 'A quick brown fox';
 
-        $this->assertEquals('A quick br&hellip;', $this->textService->truncate($text, 10));
-        $this->assertEquals('A quick brown fo&hellip;', $this->textService->truncate($text, 16));
+        $this->assertEquals('A quick br…', $this->textService->truncate($text, 10));
+        $this->assertEquals('A quick brown fo…', $this->textService->truncate($text, 16));
         $this->assertEquals('A quick brown fox', $this->textService->truncate($text, 17));
         $this->assertEquals('A quick brown fox', $this->textService->truncate($text, 20));
     }
