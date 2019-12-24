@@ -116,10 +116,11 @@ function close_editor(row, saveChanges) {
     var role_type = row.parentNode.dataset.roleType;
 
     doAjaxWithIcon("PATCH",
-        Routing.generate('acts_camdram_show_role_patchrole', {identifier: show_slug}),
+        Routing.generate('patch_show_role', {identifier: show_slug}),
         icon, {
             'id': id, 'role': role_field.value, 'role_type': role_type,
-            'person': person_field.value
+            'person': person_field.value,
+            '_token': row.parentNode.dataset.csrfPatch
         }, (xhr) => {
             var response = JSON.parse(xhr.response)
             if (!row.id) {
@@ -147,7 +148,7 @@ function close_editor(row, saveChanges) {
 }
 function set_role_deleted(row, willDelete) {
   if (willDelete) {
-    doAjaxWithIcon("DELETE", Routing.generate("acts_camdram_show_role_deleterole"),
+    doAjaxWithIcon("DELETE", Routing.generate("delete_show_role"),
         row.querySelector('.roles-status-icon'), {
             '_token': row.parentNode.dataset.csrfDelete,
             'role': row.id.substring(5)
@@ -166,10 +167,11 @@ function set_role_deleted(row, willDelete) {
     var person_a  = row.querySelector(`a.${CLASS_PERSON}`);
 
     doAjaxWithIcon("PATCH",
-        Routing.generate('acts_camdram_show_role_patchrole', {identifier: show_slug}),
+        Routing.generate('patch_show_role', {identifier: show_slug}),
         icon, {
             'id': 'new', 'role': role_span.innerText, 'role_type': role_type,
-            'person': person_a.innerText
+            'person': person_a.innerText,
+            '_token': row.parentNode.dataset.csrfPatch
         }, (xhr) => {
             var response = JSON.parse(xhr.response)
             row.id = 'role_' + response.id;

@@ -28,7 +28,8 @@
         <a class="title {{ loop.index == 1 ? 'active' }}" href="#!">Edit {{ type }}</a>
         <div class="content">
             <div class="editable-role-container" data-show-slug="{{ show.slug }}" data-role-type="{{ type }}"
-                data-csrf-delete="{{ csrf_token('delete_show_role') }}">
+                data-csrf-delete="{{ csrf_token('delete_show_role') }}"
+                data-csrf-patch="{{ csrf_token('patch_show_role') }}">
             {% set roles = show.getRolesByType(type) %}
             {% for role in roles %}
                 {{ _self.role_entry(role) }}

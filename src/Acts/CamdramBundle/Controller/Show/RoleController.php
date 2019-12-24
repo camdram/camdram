@@ -8,14 +8,14 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\RolesType;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class RoleController extends AbstractFOSRestController
+class RoleController extends AbstractController
 {
     private $em;
 
@@ -34,13 +34,17 @@ class RoleController extends AbstractFOSRestController
      *
      * Creates a new person if they're not already part of Camdram.
      *
-     * @Rest\Patch("/shows/{identifier}/roles")
+     * @Route("/shows/{identifier}/roles", methods={"PATCH"}, name="patch_show_role")
      * @param $identifier
      */
     public function patchRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person, $identifier)
     {
         $show = $this->getEntity($identifier);
         $helper->ensureGranted('EDIT', $show);
+
+        if (!$this->isCsrfTokenValid('patch_show_role', $request->request->get('_token'))) {
+            throw new HttpException(400, 'Invalid CSRF token');
+        }
 
         if ($request->request->get('id') == 'new') {
             $role = $this->addRoleToShow($show, $request->request->get('role_type'),
@@ -96,7 +100,7 @@ class RoleController extends AbstractFOSRestController
 
     /**
      * Remove a role from a show. We don't need to be told the show id.
-     * @Rest\Delete("/delete-role")
+     * @Route("/delete-role", methods={"DELETE"}, name="delete_show_role")
      */
     public function deleteRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person)
     {
@@ -144,7 +148,7 @@ class RoleController extends AbstractFOSRestController
      * Open a role-editing interface
      *
      * @param $identifier
-     * @Rest\Get("/shows/{identifier}/edit-roles")
+     * @Route("/shows/{identifier}/edit-roles", methods={"GET"}, name="get_show_edit_roles")
      */
     public function getEditRolesAction(Request $request, Helper $helper, $identifier)
     {
@@ -154,9 +158,8 @@ class RoleController extends AbstractFOSRestController
         $form = $this->createForm(RolesType::class, array(
             array('identifier' => $identifier)));
 
-        return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/roles-edit.html.twig');
+        return $this->render('show/roles-edit.html.twig',
+            ['show' => $show, 'form' => $form->createView()]);
     }
 
     /**
@@ -168,7 +171,7 @@ class RoleController extends AbstractFOSRestController
      * against badly formatted input-however.
      *
      * @param $identifier
-     * @Rest\Post("/shows/{identifier}/many-roles")
+     * @Route("/shows/{identifier}/many-roles", methods={"POST"}, name="post_show_many_roles")
      */
     public function postManyRolesAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person, $identifier)
     {
