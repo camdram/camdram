@@ -18,6 +18,7 @@ Encore
     .addEntry('diarypage', './assets/js/diarypage.js')
     // venue pages, i.e. has a map on it.
     .addEntry('venue', './assets/js/venues.js')
+    .addEntry('ajax-forms', './assets/js/ajax-forms.js')
     .disableSingleRuntimeChunk()
     .splitEntryChunks()
 

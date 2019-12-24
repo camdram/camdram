@@ -72,6 +72,9 @@ window.Routing = Routing;
                 dateFormat: 'yy-mm-dd',
                 constrainInput: true
             });
+            if (!document.getElementById('jquery-ui-theme')) {
+                $('head').append($('<link rel="stylesheet" href="/jquery-ui.custom.css" type="text/css" id="jquery-ui-theme">'));
+            }
         }
 
         $('.dropdown-link', elementsToFix).each(function() {

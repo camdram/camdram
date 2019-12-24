@@ -19,7 +19,6 @@ import '../scss/news.scss';
 
 import '@fancyapps/fancybox';
 import "@fancyapps/fancybox/dist/jquery.fancybox.css";
-import "../scss/jquery-ui.custom.css"
 
 import {install} from '@github/hotkey'
 
