@@ -5,7 +5,6 @@
 {% block title %}Roles for show “{{ show.name }}”{% endblock %}
 
 {%- block compiled_assets -%}
- <script src="/jquery-ui-plus-touch.js"></script>
 {{- encore_entry_link_tags('ajax-forms') -}}
 {{- encore_entry_script_tags('ajax-forms') -}}
 {%- endblock -%}
@@ -50,26 +49,36 @@
 
 <style>
 .editable-role-container {
-    max-width: 50em;
+    max-width: 40em;
     margin: 0 auto;
 }
 .editable-role {
     background: white;
-    margin: 7px 3px;
+    margin: 7px 5px;
     border: solid 1px #ccc;
     border-radius: 2px;
     padding: 0.5em;
     position: relative;
+    display: flex;
+    align-items: center;
 }
-.editable-role > input[type=checkbox] {
-    margin: auto 0.25em;
+.editable-role > input[type=text] {
+    margin: 0 0.25em;
+    flex: 1;
+    /* override useragent value to avoid overspilling the bounds of the row element. */
+    min-width: 5em;
 }
 .editable-role > span, .editable-role > a {
-    display: inline-block;
-    min-width: 10em;
+    flex: 1;
 }
 .editable-role > button.fa {
     margin: 0 0.25em;
+}
+@media (max-width: 500px) {
+    .editable-role { flex-flow: row wrap; }
+    .editable-role > input[type=text].editable-role-role {
+        flex: 100%;
+    }
 }
 .editable-role.deleted {
     filter: grayscale(50%);
@@ -114,6 +123,12 @@ button.new-role-button {
     top: -17px;
     left: 50%;
     transform: translateX(-50%);
+}
+.roles-status-icon {
+    padding: 8px 0;
+}
+.sortable-ghost {
+    box-shadow: 0 0 5px 1px #999;
 }
 </style>
 {% endblock %}

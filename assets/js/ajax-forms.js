@@ -1,4 +1,5 @@
-import './base.js'
+import './base.js';
+import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 
 const CLASS_ROLE     = 'editable-role-role';
 const CLASS_PERSON   = 'editable-role-person';
@@ -10,7 +11,7 @@ const CLASS_PERSON   = 'editable-role-person';
  * Sends data as x-www-form-urlencoded.
  */
 function doAjaxWithIcon(method, url, status_icon, data, on_success) {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     status_icon.classList.add('fa-spinner');
     status_icon.classList.add('fa-spin');
     status_icon.classList.remove('fa-exclamation-circle');
@@ -27,18 +28,24 @@ function doAjaxWithIcon(method, url, status_icon, data, on_success) {
             status_icon.classList.remove('fa-spinner');
             status_icon.classList.remove('fa-spin');
             status_icon.classList.add('fa-exclamation-circle');
-            status_icon.title = 'Unable to save changes (error ' + xhr.status + ')';
+            status_icon.title = 'Unable to save changes (error ' + xhr.status + '). Try refreshing the page.';
         }
     });
     xhr.addEventListener("error", function() {
         status_icon.classList.remove('fa-spinner');
         status_icon.classList.remove('fa-spin');
         status_icon.classList.add('fa-exclamation-circle');
-        status_icon.title = 'Unable to save changes';
+        status_icon.title = 'Unable to save changes. Try refreshing the page.';
     });
-    var body = ''
-    for (let key of Object.keys(data)) {
-        body += `&${key}=${encodeURIComponent(data[key])}`;
+    let body = '';
+    for (const key of Object.keys(data)) {
+        if (Array.isArray(data[key])) {
+            for (const el of data[key]) {
+                body += `&${key}[]=${encodeURIComponent(el)}`;
+            }
+        } else {
+            body += `&${key}=${encodeURIComponent(data[key])}`;
+        }
     }
     body = body.substring(1);
     xhr.open(method, url);
@@ -54,13 +61,13 @@ function doAjaxWithIcon(method, url, status_icon, data, on_success) {
  *   id: <int> }
  */
 function buildrow(data) {
-  var row = document.createElement('div');
+  let row = document.createElement('div');
   row.className = 'editable-role';
-  if (data) row.id = 'role_' + data.id;
+  if (data) row.dataset.roleId = data.id;
 
   row.insertAdjacentHTML('beforeend', `<span class="${CLASS_ROLE}"></span>`);
   if (data) row.lastChild.innerText = data.role;
-  row.insertAdjacentHTML('beforeend', `<input class="${CLASS_ROLE}" placeholder="Role, e.g. Director, Romeo">`);
+  row.insertAdjacentHTML('beforeend', `<input class="${CLASS_ROLE}" placeholder="Role, e.g. Director, Romeo" type="text">`);
   row.lastChild.style.display = 'none';
 
   row.insertAdjacentHTML('beforeend', `<a itemprop="url" href="" class="${CLASS_PERSON}"><span></span></a>`);
@@ -68,7 +75,7 @@ function buildrow(data) {
     row.lastChild.href = Routing.generate('get_person', {"identifier": data.person.slug});
     row.lastChild.firstChild.innerText = data.person.name;
   }
-  row.insertAdjacentHTML('beforeend', `<input class="${CLASS_PERSON}" placeholder="Name">`);
+  row.insertAdjacentHTML('beforeend', `<input class="${CLASS_PERSON}" placeholder="Name" type="text">`);
   row.lastChild.style.display = 'none';
 
   row.insertAdjacentHTML('beforeend', '<button class="fa fa-pencil tiny-button" title="Edit role"></button>');
@@ -88,15 +95,17 @@ function buildrow(data) {
 }
 
 function open_editor(row) {
-  var role_span = row.querySelector(`span.${CLASS_ROLE}`);
-  var person_a  = row.querySelector(`a.${CLASS_PERSON}`);
-  var role_field   = row.querySelector(`input.${CLASS_ROLE}`);
-  var person_field = row.querySelector(`input.${CLASS_PERSON}`);
+  let role_span = row.querySelector(`span.${CLASS_ROLE}`);
+  let person_a  = row.querySelector(`a.${CLASS_PERSON}`);
+  let role_field   = row.querySelector(`input.${CLASS_ROLE}`);
+  let person_field = row.querySelector(`input.${CLASS_PERSON}`);
   role_field.value   = role_span.innerText;
   person_field.value = person_a.innerText;
 
   role_span.style.display = person_a.style.display = 'none';
   role_field.style.display = person_field.style.display = null;
+
+  row.classList.add('unsortable');
 
   row_setbuttons(row, {
     'fa-undo': close_editor_nosave_e,
@@ -104,16 +113,18 @@ function open_editor(row) {
   });
 }
 function close_editor(row, saveChanges) {
-  var role_span = row.querySelector(`span.${CLASS_ROLE}`);
-  var person_a  = row.querySelector(`a.${CLASS_PERSON}`);
-  var role_field   = row.querySelector(`input.${CLASS_ROLE}`);
-  var person_field = row.querySelector(`input.${CLASS_PERSON}`);
+  let role_span = row.querySelector(`span.${CLASS_ROLE}`);
+  let person_a  = row.querySelector(`a.${CLASS_PERSON}`);
+  let role_field   = row.querySelector(`input.${CLASS_ROLE}`);
+  let person_field = row.querySelector(`input.${CLASS_PERSON}`);
+
+  row.classList.remove('unsortable');
 
   if (saveChanges) {
-    var icon = row.querySelector('.roles-status-icon');
-    var id = row.id ? parseInt(row.id.substring(5), 10) : 'new';
-    var show_slug = row.parentNode.dataset.showSlug;
-    var role_type = row.parentNode.dataset.roleType;
+    let icon = row.querySelector('.roles-status-icon');
+    let id = row.dataset.roleId === undefined ? 'new' : parseInt(row.dataset.roleId);
+    let show_slug = row.parentNode.dataset.showSlug;
+    let role_type = row.parentNode.dataset.roleType;
 
     doAjaxWithIcon("PATCH",
         Routing.generate('patch_show_role', {identifier: show_slug}),
@@ -122,16 +133,13 @@ function close_editor(row, saveChanges) {
             'person': person_field.value,
             '_token': row.parentNode.dataset.csrfPatch
         }, (xhr) => {
-            var response = JSON.parse(xhr.response)
-            if (!row.id) {
-                row.id = 'role_' + response.id;
+            let response = JSON.parse(xhr.response);
+            if (row.dataset.roleId === undefined) {
+                row.dataset.roleId = response.id;
             }
             person_a.href = Routing.generate("get_person", {identifier: response.person_slug});
-            jQuery.ajax({
-                url: Routing.generate('patch_roles_reorder'),
-                type: 'PATCH',
-                data: $(row.parentNode).sortable('serialize')
-            });
+
+            row_save_order(row);
     });
 
     role_span.innerText = role_field.value;
@@ -144,60 +152,64 @@ function close_editor(row, saveChanges) {
   row_setbuttons(row, {
     'fa-pencil': open_editor_e,
     'fa-trash-o': delete_role_e
-  })
+  });
 }
 function set_role_deleted(row, willDelete) {
-  if (willDelete) {
-    doAjaxWithIcon("DELETE", Routing.generate("delete_show_role"),
-        row.querySelector('.roles-status-icon'), {
-            '_token': row.parentNode.dataset.csrfDelete,
-            'role': row.id.substring(5)
-        }, function() {
-            row.classList.add('deleted');
-    });
+    if (willDelete) {
+        // Don't allow user to do anything until the Ajax completes as this could
+        // lead to errors.
+        row_setbuttons(row, {});
 
-    row_setbuttons(row, {
-      'fa-undo': undelete_role_e
-    });
-  } else {
-    var icon = row.querySelector('.roles-status-icon');
-    var show_slug = row.parentNode.dataset.showSlug;
-    var role_type = row.parentNode.dataset.roleType;
-    var role_span = row.querySelector(`span.${CLASS_ROLE}`);
-    var person_a  = row.querySelector(`a.${CLASS_PERSON}`);
+        doAjaxWithIcon("DELETE", Routing.generate("delete_show_role"),
+            row.querySelector('.roles-status-icon'), {
+                '_token': row.parentNode.dataset.csrfDelete,
+                'role': row.dataset.roleId
+            }, function() {
+                row.classList.add('deleted');
 
-    doAjaxWithIcon("PATCH",
-        Routing.generate('patch_show_role', {identifier: show_slug}),
-        icon, {
-            'id': 'new', 'role': role_span.innerText, 'role_type': role_type,
-            'person': person_a.innerText,
-            '_token': row.parentNode.dataset.csrfPatch
-        }, (xhr) => {
-            var response = JSON.parse(xhr.response)
-            row.id = 'role_' + response.id;
-            person_a.href = Routing.generate("get_person", {identifier: response.person_slug});
-            row.classList.remove('deleted');
-
-            jQuery.ajax({
-                url: Routing.generate('patch_roles_reorder'),
-                type: 'PATCH',
-                data: $(row.parentNode).sortable('serialize')
+                row_setbuttons(row, {
+                    'fa-undo': undelete_role_e
+                });
             });
-    });
 
-    row_setbuttons(row, {
-      'fa-pencil': open_editor_e,
-      'fa-trash-o': delete_role_e
-    })
-  }
+        delete row.dataset.roleId;
+    } else {
+        let icon = row.querySelector('.roles-status-icon');
+        let show_slug = row.parentNode.dataset.showSlug;
+        let role_type = row.parentNode.dataset.roleType;
+        let role_span = row.querySelector(`span.${CLASS_ROLE}`);
+        let person_a  = row.querySelector(`a.${CLASS_PERSON}`);
+
+        row_setbuttons(row, {});
+
+        doAjaxWithIcon("PATCH",
+            Routing.generate('patch_show_role', {identifier: show_slug}),
+            icon, {
+                'id': 'new', 'role': role_span.innerText, 'role_type': role_type,
+                'person': person_a.innerText,
+                '_token': row.parentNode.dataset.csrfPatch
+            }, (xhr) => {
+                let response = JSON.parse(xhr.response);
+                row.dataset.roleId = response.id;
+                person_a.href = Routing.generate("get_person", {identifier: response.person_slug});
+                row.classList.remove('deleted');
+
+                row_setbuttons(row, {
+                  'fa-pencil': open_editor_e,
+                  'fa-trash-o': delete_role_e
+                });
+
+                row_save_order(row);
+            });
+    }
 }
 function delete_row(row) {
   row.parentNode.removeChild(row);
 }
 
 function add_row(row_or_button, isAtBottom) {
-  var parent = isAtBottom ? row_or_button.previousElementSibling : row_or_button.parentNode;
-  var newRow = buildrow(null);
+  let parent = isAtBottom ? row_or_button.previousElementSibling : row_or_button.parentNode;
+  let newRow = buildrow(null);
   parent.insertBefore(newRow, isAtBottom ? null : row_or_button);
   open_editor(newRow);
   row_setbuttons(newRow, {
@@ -218,7 +230,7 @@ var add_row_bottom_e = make_evt_handler(add_row, true);
 function make_evt_handler(fn_on_row, ...args) {
   return function(event) {
     fn_on_row(event.currentTarget.parentNode, ...args);
-  }
+  };
 }
 
 /**
@@ -231,9 +243,9 @@ function make_evt_handler(fn_on_row, ...args) {
  */
 function row_setbuttons(row, handlers) {
   outerloop:
-  for (var ele of row.children) {
+  for (let ele of row.children) {
     if (ele.tagName.toLowerCase() !== 'button' || !ele.classList.contains('fa')) continue;
-    for (var className in handlers) {
+    for (let className in handlers) {
       if (ele.classList.contains(className)) {
         ele.onclick = handlers[className];
         ele.style.display = null;
@@ -246,25 +258,33 @@ function row_setbuttons(row, handlers) {
   }
 }
 
-window.addEventListener('DOMContentLoaded', (e) => {
-  for (var row of document.querySelectorAll('.editable-role')) {
-    row.parentNode.replaceChild(
-      buildrow(JSON.parse(row.dataset.roleJson)), row);
-  }
-
-  $('.editable-role-container').each(function(i) {
-    this.insertAdjacentHTML('afterend',
-      '<div class="text-center" style="margin-top: -17px; z-index: 5; position: relative;"><button class="text-button new-role-button"><span>Add new role</span></button></div>');
-    this.nextElementSibling.lastChild.addEventListener("click", add_row_bottom_e);
-  }).sortable({
-    axis: "y",
-    items: ".editable-role",
-    stop: function(event, ui) {
-      jQuery.ajax({
-        url: Routing.generate('patch_roles_reorder'),
-        type: 'PATCH',
-        data: $(this).sortable('serialize')
-      });
+function row_save_order(row) {
+    let roles = [];
+    for (let i = 0; i < row.parentNode.children.length; i++) {
+        let roleId = row.parentNode.children[i].dataset.roleId;
+        if (roleId !== undefined) roles.push(roleId);
     }
-  });
+    doAjaxWithIcon('PATCH', Routing.generate('patch_roles_reorder'),
+        row.querySelector('.roles-status-icon'),
+        { 'role': roles }, function () {});
+}
+
+window.addEventListener('DOMContentLoaded', (e) => {
+    for (const row of document.querySelectorAll('.editable-role')) {
+        row.parentNode.replaceChild(
+            buildrow(JSON.parse(row.dataset.roleJson)), row);
+    }
+
+    for (const container of document.querySelectorAll('.editable-role-container')) {
+        container.insertAdjacentHTML('afterend',
+            '<div class="text-center" style="margin-top: -17px; z-index: 5; position: relative;"><button class="text-button new-role-button"><span>Add new role</span></button></div>');
+        container.nextElementSibling.lastChild.addEventListener("click", add_row_bottom_e);
+        let sortable = Sortable.create(container, {
+            filter: '.unsortable',
+            preventOnFilter: false,
+            onSort: (evt) => {
+                row_save_order(evt.item);
+            }
+        });
+    }
 });
