@@ -1679,25 +1679,25 @@
         },
         {
             "name": "excelwebzone/recaptcha-bundle",
-            "version": "v1.5.15",
+            "version": "v1.5.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
-                "reference": "4e8e2b610b4e9260b3015b7e4bb9e64e6c5f6305"
+                "reference": "7163b221de7dd8bdd2bcfe5b64376bd0e48bee23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/4e8e2b610b4e9260b3015b7e4bb9e64e6c5f6305",
-                "reference": "4e8e2b610b4e9260b3015b7e4bb9e64e6c5f6305",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/7163b221de7dd8bdd2bcfe5b64376bd0e48bee23",
+                "reference": "7163b221de7dd8bdd2bcfe5b64376bd0e48bee23",
                 "shasum": ""
             },
             "require": {
                 "google/recaptcha": "^1.1",
                 "php": ">=5.6 || ^7.0",
-                "symfony/form": "^2.8 || ^3.0 || ^4.0",
-                "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0",
-                "symfony/security-bundle": "^2.8 || ^3.0 || ^4.0",
-                "symfony/validator": "^2.8 || ^3.0 || ^4.0",
+                "symfony/form": "^2.8 || ^3.0 || ^4.0 || ^5.0",
+                "symfony/framework-bundle": "^2.8 || ^3.0 || ^4.0 || ^5.0",
+                "symfony/security-bundle": "^2.8 || ^3.0 || ^4.0 || ^5.0",
+                "symfony/validator": "^2.8 || ^3.0 || ^4.0 || ^5.0",
                 "twig/twig": "^1.40 || ^2.9"
             },
             "require-dev": {
@@ -1730,7 +1730,7 @@
             "keywords": [
                 "recaptcha"
             ],
-            "time": "2019-07-08T23:11:07+00:00"
+            "time": "2019-12-25T15:00:11+00:00"
         },
         {
             "name": "facebook/graph-sdk",
