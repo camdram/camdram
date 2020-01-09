@@ -412,36 +412,6 @@ _:-ms-input-placeholder, :root #home-diary-nav ul, :root body {
   display: block; /* replace flex */
 }
 
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-
-   .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: rgb(58, 57, 58);
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-  }
-
-  .tooltiptext-left {
-    top: -5px;
-    right: 105%;
-  }
-
-}
-
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-}
-
 /**
  * Messages that appear to the user once then fade away.
  */
