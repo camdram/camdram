@@ -94,48 +94,48 @@ class AdminController extends AbstractFOSRestController
         $pending_ace = new PendingAccess();
         $form = $this->createForm(PendingAccessType::class, $pending_ace);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            /* Check if the ACE doesn't need to be created for various reasons. */
-            /* Is this person already an admin? */
-            $already_admin = false;
-            /* Changed to only check for explicit admins of the show. */
-            $admins = $aclProvider->getOwners($show);
-            foreach ($admins as $admin) {
-                if ($admin->getEmail() == $pending_ace->getEmail()) {
-                    $already_admin = true;
-                    break;
-                }
-            }
-            if ($already_admin == false) {
-                /* If this person is already a Camdram user then grant access immediately. */
-                $em = $this->getDoctrine()->getManager();
-                $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
-                    ->findOneByEmail($pending_ace->getEmail());
-
-                if ($existing_user != null) {
-                    $aclProvider->grantAccess($show, $existing_user, $this->getUser());
-                } else {
-                    /* This is an unknown email address. Check if they've already
-                     * got a pending access token for this resource, otherwise
-                     * create the pending access token.
-                     */
-                    $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
-                    if ($pending_repo->isDuplicate($pending_ace) == false) {
-                        $pending_ace->setIssuer($this->getUser());
-                        $em->persist($pending_ace);
-                        $em->flush();
-                        $event_dispatcher->dispatch(
-                            CamdramSecurityEvents::PENDING_ACCESS_CREATED,
-                            new PendingAccessEvent($pending_ace)
-                        );
-                    }
-                }
-            }
-            return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
-        } else {
+        if (!$form->isValid()) {
             // Form not valid, return it to user.
             return $this->createEditAdminResponse($show->getSlug(), $form, $helper);
         }
+        /* Check if the ACE doesn't need to be created for various reasons. */
+
+        /* Is this person already an admin? */
+        /* Changed to only check for explicit admins of the show. */
+        $admins = $aclProvider->getOwners($show);
+        foreach ($admins as $admin) {
+            if ($admin->getEmail() == $pending_ace->getEmail()) {
+                $this->addFlash('error', "The user {$admin->getName()} " .
+                   "<{$admin->getEmail()}> is already an admin so they weren't added again.");
+                return $this->createEditAdminResponse($show->getSlug(), $form, $helper);
+            }
+        }
+
+        /* If this person is already a Camdram user then grant access immediately. */
+        $em = $this->getDoctrine()->getManager();
+        $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
+            ->findOneByEmail($pending_ace->getEmail());
+
+        if ($existing_user != null) {
+            $aclProvider->grantAccess($show, $existing_user, $this->getUser());
+        } else {
+            /* This is an unknown email address. Check if they've already
+             * got a pending access token for this resource, otherwise
+             * create the pending access token.
+             */
+            $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
+            if ($pending_repo->isDuplicate($pending_ace) == false) {
+                $pending_ace->setIssuer($this->getUser());
+                $em->persist($pending_ace);
+                $em->flush();
+                $event_dispatcher->dispatch(
+                    CamdramSecurityEvents::PENDING_ACCESS_CREATED,
+                    new PendingAccessEvent($pending_ace)
+                );
+            }
+        }
+        // Success
+        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**
