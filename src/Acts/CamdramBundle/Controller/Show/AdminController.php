@@ -98,7 +98,8 @@ class AdminController extends AbstractFOSRestController
             /* Check if the ACE doesn't need to be created for various reasons. */
             /* Is this person already an admin? */
             $already_admin = false;
-            $admins = $moderation_manager->getModeratorsForEntity($show);
+            /* Changed to only check for explicit admins of the show. */
+            $admins = $aclProvider->getOwners($show);
             foreach ($admins as $admin) {
                 if ($admin->getEmail() == $pending_ace->getEmail()) {
                     $already_admin = true;
