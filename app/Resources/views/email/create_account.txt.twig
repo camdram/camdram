@@ -3,9 +3,18 @@ Thank you for creating a Camdram account.
 
 {% if not user.isEmailVerified %}
 We ask that you click the link below to confirm your e-mail address.
+You will not recieve show confirmation emails until you have verified your email.
 
 {{ url('acts_camdram_security_confirm_email', {email: user.email, token: email_confirmation_token}) }}
 {% endif %}
+
+You must abide by our User Guidelines at all times while using Camdram.
+
+{{ url('acts_camdram_userguidelines') }}
+
+Please take the time to read the Camdram privacy policy to understand how we process your data and how it is made available to others.
+
+{{ url('acts_camdram_privacy') }}
 
 {% include 'email/signature.txt.twig' %}
 {% endautoescape %}
