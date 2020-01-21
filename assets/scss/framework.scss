@@ -36,6 +36,21 @@ p {
   line-height: 1.6;
   margin-bottom: 1.25em;
 }
+ul.prose-list, ol.prose-list {
+  /** This has its own class to avoid affecting menus etc that use lists */
+  line-height: 1.4;
+  list-style-position: outside;
+  padding-left: 20px;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-bottom: 1.25em;
+  li {
+    margin-bottom: 0.2em;
+  }
+  ul, ol {
+    margin: 0.2em 0 0 0 !important;
+  }
+}
 * {
   box-sizing: border-box;
   margin: 0;

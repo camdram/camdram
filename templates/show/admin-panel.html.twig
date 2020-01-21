@@ -103,9 +103,11 @@
 {% endif %}
 {%- if errors -%}
 <div class="error_panel">
-<h3 class="text-center" aria-label="Warning"><i class="fa fa-warning"></i></h3>
-{{ errors|length == 1 ? 'An error was' : 'Errors were' }}
-found in this show's listing. This may be a result of your show or another show; if you think another show is at fault, you should attempt to contact them to rectify it. These errors don't necessarily prevent your show from appearing—and are only shown to admins.<ul>
+<h3 class="text-center" aria-label="Warning"><i class="fa fa-info-circle"></i></h3>
+<p>{{ errors|length == 1 ? 'A problem was' : 'Problems were' }}
+found in this show's listing. This may be a result of your show or another show; if you think another show is at fault, you should attempt to contact them to rectify it. These problems don't necessarily prevent your show from appearing, and are only shown to admins.
+
+<ul class="prose-list">
 {%- for err in errors -%}
   <li>
   {%- if err[0] == 'clashwithother' -%}

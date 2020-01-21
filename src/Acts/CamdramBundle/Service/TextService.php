@@ -51,7 +51,16 @@ class TextService
 
     public function __construct()
     {
-        $this->parsedown = new Parsedown();
+        $this->parsedown = new class() extends Parsedown {
+            protected function sanitiseElement(array $Element) {
+                // This is called on all elements in safe mode
+                if (isset($Element['name']) &&
+                    ($Element['name'] == 'ul' || $Element['name'] == 'ol')) {
+                    $Element['attributes']['class'] = 'prose-list';
+                }
+                return parent::sanitiseElement($Element);
+            }
+        };
         $this->parsedown->setSafeMode(true);
         $this->parsedown->setBreaksEnabled(true);
     }
