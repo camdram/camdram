@@ -17,6 +17,7 @@ use Doctrine\ORM\Query;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
 /**
@@ -69,6 +70,9 @@ abstract class OrganisationController extends AbstractRestController
      */
     public function getShowsAction(Request $request, $identifier)
     {
+        if ($request->getRequestFormat() == 'html') {
+            throw new NotFoundHttpException("This is part of our API, add a .json or .xml suffix.");
+        }
         try {
             if ($request->query->has('from')) {
                 $from = new \DateTime($request->query->get('from'));
