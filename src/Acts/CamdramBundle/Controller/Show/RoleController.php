@@ -227,7 +227,7 @@ class RoleController extends AbstractController
                 ->setTemplate('show/roles-new.html.twig');
         }
 
-        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));
     }
 
     /**
