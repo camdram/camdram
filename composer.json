@@ -17,6 +17,9 @@
         "bin-dir": "bin/",
         "sort-packages": true
     },
+    "conflict" : {
+        "liip/imagine-bundle": ">2.2.0"
+    },
     "description": "Camdram - The portal website for student theatre in Cambridge",
     "extra": {
         "incenteev-parameters": {
@@ -59,7 +62,7 @@
         "incenteev/composer-parameter-handler": "^2.1",
         "jms/serializer-bundle": "^3.4",
         "knplabs/github-api": "^2.8",
-        "liip/imagine-bundle": "^2.1 <2.2.0 || ^2.1 >2.2.0",
+        "liip/imagine-bundle": "2.1.0",
         "oneup/uploader-bundle": "^2.0",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.10",
