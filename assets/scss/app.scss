@@ -11,7 +11,6 @@
 html, body {
   height: 100%;
 }
-
 #wrapper {
   flex-grow: 1;
 
@@ -159,9 +158,6 @@ footer {
 }
 
 header#main-header {
-  &[data-theme="EU"] {
-    --custom-color: #003399;
-  }
   background: $orange;
   background: var(--custom-color, $orange);
   clear: both;
