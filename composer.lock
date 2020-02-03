@@ -1946,7 +1946,7 @@
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "v2.5.3",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
@@ -2004,7 +2004,7 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2020-01-12T22:12:55+00:00"
+            "time": "2020-01-13T14:06:12+00:00"
         },
         {
             "name": "friendsofsymfony/oauth-server-bundle",
@@ -6268,16 +6268,16 @@
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "3.4.2",
+            "version": "3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "afb01cce2e803b463e1a59e44dc2c3caf4781cbc"
+                "reference": "2190ea77c522eabce0ab63b9179376432b5d2f5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/afb01cce2e803b463e1a59e44dc2c3caf4781cbc",
-                "reference": "afb01cce2e803b463e1a59e44dc2c3caf4781cbc",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/2190ea77c522eabce0ab63b9179376432b5d2f5d",
+                "reference": "2190ea77c522eabce0ab63b9179376432b5d2f5d",
                 "shasum": ""
             },
             "require": {
@@ -6346,7 +6346,7 @@
                 "sentry",
                 "symfony"
             ],
-            "time": "2020-01-29T09:32:19+00:00"
+            "time": "2020-02-03T08:58:56+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -8102,6 +8102,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
+            "abandoned": true,
             "time": "2017-12-07T15:36:41+00:00"
         },
         {
