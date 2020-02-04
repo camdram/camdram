@@ -32,5 +32,6 @@ sentry:
     dsn: "%sentry_dsn%"
     options:
         excluded_exceptions:
+            - Symfony\Component\HttpKernel\Exception\BadRequestHttpException
             - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
             - Symfony\Component\Security\Core\Exception\AccessDeniedException

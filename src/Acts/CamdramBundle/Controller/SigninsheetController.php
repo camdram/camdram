@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Acts\CamdramBundle\Entity\Show;
 
 /**
@@ -29,7 +29,7 @@ class SigninsheetController extends Controller
         }
         $events = $show->getAllPerformances();
         if ($events === null) {
-            throw new HttpException(400, 'Too many performances to generate a sign-in sheet. Check your performance dates.');
+            throw new BadRequestHttpException('Too many performances to generate a sign-in sheet. Check your performance dates.');
         }
         if (!$events) {
             throw $this->createNotFoundException('There are no performances associated with this show.');

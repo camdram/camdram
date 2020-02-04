@@ -10,7 +10,8 @@ use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +44,7 @@ class RoleController extends AbstractController
         $helper->ensureGranted('EDIT', $show);
 
         if (!$this->isCsrfTokenValid('patch_show_role', $request->request->get('_token'))) {
-            throw new HttpException(400, 'Invalid CSRF token');
+            throw new BadRequestHttpException('Invalid CSRF token');
         }
 
         if ($request->request->get('id') == 'new') {
@@ -63,10 +64,10 @@ class RoleController extends AbstractController
             $role = $this->em->getRepository('ActsCamdramBundle:Role')
                              ->findOneById($id);
             if (!$role) {
-                throw new HttpException(404, 'Role not found');
+                throw new NotFoundHttpException('Role not found');
             }
             if ($role->getShow()->getId() != $show->getId()) {
-                throw new HttpException(400, 'That role is not part of that show');
+                throw new BadRequestHttpException('That role is not part of that show');
             }
             $role->setRole($request->request->get('role'));
 
@@ -105,7 +106,7 @@ class RoleController extends AbstractController
     public function deleteRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person)
     {
         if (!$this->isCsrfTokenValid('delete_show_role', $request->request->get('_token'))) {
-            throw new HttpException(400, 'Invalid CSRF token');
+            throw new BadRequestHttpException('Invalid CSRF token');
         }
 
         $id = $request->request->get('role');
@@ -113,7 +114,7 @@ class RoleController extends AbstractController
         $role = $role_repo->findOneById($id);
 
         if (!$role) {
-            throw new HttpException(404, "Role not found");
+            throw new NotFoundHttpException("Role not found");
         }
 
         $show = $role->getShow();
@@ -247,7 +248,7 @@ class RoleController extends AbstractController
     private function addRoleToShow(Show $show, $role_type, $role_name, $person_name): Role
     {
         if (!in_array($role_type, ['cast', 'band', 'prod'])) {
-            throw new HttpException(400, "Bad value of role_type");
+            throw new BadRequestHttpException("Bad value of role_type");
         }
         $role = new Role();
         $role->setType($role_type);
