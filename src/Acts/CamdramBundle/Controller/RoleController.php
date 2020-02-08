@@ -4,21 +4,21 @@ namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-class RoleController extends AbstractFOSRestController
+class RoleController extends AbstractController
 {
     /**
      * reorderRolesAction
      *
      * Reorder the display ordering for the array of Roles identified by their ID.
      *
-     * @Rest\Patch("/roles/reorder", name="patch_roles_reorder")
+     * @Route("/roles/reorder", methods={"PATCH"}, name="patch_roles_reorder")
      */
     public function patchRolesReorderAction(Request $request, Helper $_helper): Response
     {
@@ -54,7 +54,7 @@ class RoleController extends AbstractFOSRestController
      *    role,   int (role id)
      *    newtag, string. (If blank, interpret as null)
      *    _token  CSRF token
-     * @Rest\Patch("/roles/settag", name="patch_roles_settag")
+     * @Route("/roles/settag", methods={"PATCH"}, name="patch_roles_settag")
      */
     public function patchRolesSetTagAction(Request $request, Helper $_helper): Response
     {
