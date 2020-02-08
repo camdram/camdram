@@ -52,16 +52,17 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body {{ (body_attribs_raw ?? '') | raw }}>
+        <div class="flash-messages">
+        {%- for type, messages in app.flashes() -%}
+            {%- for message in messages -%}
+                <p class="flash-{{type}}" role="alert">{{ message }}</p>
+            {%- endfor -%}
+        {%- endfor -%}
+        </div>
+
         <div id="wrapper">
             {% if development_warning %}{% include 'dev-warning.html.twig' %}{% endif %}
             {% if show_site_notice %}{% include 'site-notice.html.twig' %}{% endif %}
-            {%- for type, messages in app.flashes() -%}
-                {%- if loop.first -%}<div class="flash-messages">{%- endif -%}
-                {%- for message in messages -%}
-                    <p class="flash-{{type}}" role="alert">{{ message }}</p>
-                {%- endfor -%}
-                {%- if loop.last -%}</div>{%- endif -%}
-            {%- endfor -%}
             {% block main %}{% endblock %}
         </div>
 

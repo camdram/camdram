@@ -7,11 +7,10 @@ use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- */
 class RoleController extends AbstractFOSRestController
 {
     /**
@@ -26,20 +25,27 @@ class RoleController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('ActsCamdramBundle:Role');
         $role_ids = $request->request->get('role');
+        if (!is_array($role_ids)) {
+            return new Response("role must be array", 400);
+        }
+        $failed = [];
         $i = 0;
         foreach ($role_ids as $id) {
             $role = $repo->findOneById($id);
-            $can_reorder = $_helper->isGranted('EDIT', $role->getShow());
-            if (($role->getOrder() != $i) && $can_reorder) {
-                $role->setOrder($i);
+            $can_reorder = $role !== null && $_helper->isGranted('EDIT', $role->getShow());
+
+            if (!$can_reorder) {
+                $failed[] = $id;
+            } else {
+                if ($role->getOrder() != $i) $role->setOrder($i);
+                ++$i;
             }
-            ++$i;
         }
         $em->flush();
         $em->clear();
-        $response = new Response();
-        $response->setStatusCode(204); // Success no content
-        return $response;
+        return new JsonResponse(array_filter([
+            'failures' => $failed
+        ]));
     }
 
     /**

@@ -2,7 +2,8 @@ import Routing from 'router';
 //Regenerate fos_js_routes.js by running `yarn js-routing`
 Routing.setRoutingData(require('./fos_js_routes.json'));
 
-import './camdram.js';
+import Camdram from './camdram.js';
+export default Camdram;
 import './autocomplete.js';
 import './color-picker.js';
 import './home.js';

@@ -5,6 +5,9 @@ import Routing from 'router';
 // Leak Routing to the global scope so that inline scripts work.
 window.Routing = Routing;
 
+const Camdram = {};
+export default Camdram;
+
 ;(function($, window) {
     var doCookieConsent = function() {
         window.cookieconsent.initialise({
@@ -101,8 +104,19 @@ window.Routing = Routing;
             })
         });
 
-        $('.flash-messages').delay(2500).fadeOut(300);
+        $('.flash-messages p').delay(2500).slideUp(300, function() {
+            this.parentNode && this.parentNode.removeChild(this);
+        });
     };
+
+    Camdram.flashMessage = function (status, text) {
+        const div = document.querySelector('.flash-messages');
+        const message = document.createElement('p');
+        message.className = status === 'success' ? 'flash-success' : 'flash-error';
+        message.textContent = text;
+        div.insertBefore(message, null);
+        fixHtml(div);
+    }
 
     $.fn.scrollTo = function(options) {
         var options = $.extend({

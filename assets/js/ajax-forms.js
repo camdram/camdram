@@ -1,4 +1,4 @@
-import './base.js';
+import Camdram from './base.js';
 import Sortable from 'sortablejs/modular/sortable.core.esm.js';
 
 const CLASS_ROLE     = 'editable-role-role';
@@ -266,7 +266,13 @@ function row_save_order(row) {
     }
     doAjaxWithIcon('PATCH', Routing.generate('patch_roles_reorder'),
         row.querySelector('.roles-status-icon'),
-        { 'role': roles }, function () {});
+        { 'role': roles }, xhr => {
+            let response = (xhr.responseType === 'json') ?
+                xhr.response : JSON.parse(xhr.response);
+            if (response.failures) {
+                Camdram.flashMessage('error', 'An error occured when re-ordering roles. Try refreshing the page.');
+            }
+        });
 }
 
 window.addEventListener('DOMContentLoaded', (e) => {

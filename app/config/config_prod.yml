@@ -33,5 +33,6 @@ sentry:
     options:
         excluded_exceptions:
             - Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+            - Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
             - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
             - Symfony\Component\Security\Core\Exception\AccessDeniedException
