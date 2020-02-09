@@ -59,7 +59,7 @@ class DevelopmentController extends Controller
             $github->authenticate(
                 $this->getParameter('github_id'),
                 $this->getParameter('github_secret'),
-                \Github\Client::AUTH_URL_CLIENT_ID
+                \Github\Client::AUTH_HTTP_TOKEN
             );
             $owner = 'camdram';
             $repoName = 'camdram';
