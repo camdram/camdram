@@ -27,6 +27,20 @@ class TextServiceTest extends TestCase
         $this->assertEquals('A quick brown fox', $this->textService->truncate($text, 20));
     }
 
+    public function testTruncateHTML()
+    {
+        $lipsum = "<h3>Lorem ιπσυμ dolor</h3>sit amet, <b>consectetur adipiscing elit</b>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut <i>aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</i>";
+        $lipsum10 = "<h3>Lorem &iota;&pi;&sigma;&upsilon;&mu;…</h3>";
+        $lipsum50 = "<h3>Lorem &iota;&pi;&sigma;&upsilon;&mu; dolor</h3>sit amet, <b>consectetur adipiscing…</b>";
+        $lipsum449 = $lipsum;
+        $lipsum500 = $lipsum;
+
+        $this->assertEquals($this->textService->truncateHTML($lipsum, 10), $lipsum10);
+        $this->assertEquals($this->textService->truncateHTML($lipsum, 50), $lipsum50);
+        $this->assertEquals($this->textService->truncateHTML($lipsum, 449), $lipsum449);
+        $this->assertEquals($this->textService->truncateHTML($lipsum, 500), $lipsum500);
+    }
+
     public function testStripNewLines()
     {
         $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\r brown fox"));

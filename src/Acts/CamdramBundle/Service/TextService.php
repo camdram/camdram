@@ -114,20 +114,111 @@ class TextService
     }
 
     /**
-     * Truncate a string to a certain length, adding an ellipsis only if the string was long enough to be truncated.
-     *
-     * @param $text
-     * @param $length
-     *
-     * @return string
+     * Truncate a string to a certain length, adding an ellipsis only if the string
+     * was long enough to be truncated.
      */
-    public function truncate($text, $length)
+    public function truncate($text, $length): string
     {
-        if (strlen($text) <= $length) {
+        if (mb_strlen($text, "UTF-8") <= $length) {
             return $text;
         } else {
             return mb_substr($text, 0, $length, "UTF-8").'…';
         }
+    }
+
+    /**
+     * Truncate HTML to a certain length, adding an ellipsis only if the string
+     * was long enough to be truncated.
+     */
+    public function truncateHTML(string $html, int $targetLength): string {
+        // There's a huge number of ways to do this. This is a state machine
+        // parsing the HTML constructs normally found in the body.
+        $opts = LIBXML_NOERROR | LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD;
+        // escape multibyte characters
+        $html_ascii = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+        // A length *estimator* for HTML.
+        $truncated = false;
+        $len = 0;
+        $state = 0; // text, whitespace, entity, <, tag, attr", attr', comment (7-11)
+        $totlen = strlen($html_ascii);
+        for ($i = 0; $i < $totlen; $i++) {
+            $char = $html_ascii[$i];
+            reconsume:
+            switch ($state) {
+            case 0:   // data state i.e. normal text
+                if (ctype_space($char)) {
+                    $len++;
+                    $state = 1;
+                } else if ($char === '&') {
+                    $len++;
+                    $state = 2;
+                } else if ($char === '<') {
+                    $state = 3;
+                } else {
+                    $len++;
+                }
+                break;
+            case 1:   // whitespace folding
+                if (ctype_space($char)) break;
+                $state = 0;
+                goto reconsume;
+                break;
+            case 2:   // entity
+                if ($char === ';') $state = 0;
+                break;
+            case 3:   // <
+                if (ctype_alpha($char) || $char = '/') {
+                    $state = 4;
+                } else if ($char === '!') {
+                    $state = 7;
+                } else {
+                    $len++; // Count the < as text
+                    $state = 0;
+                    goto reconsume;
+                }
+            case 4:   // in tag, doubles as bogus comment state
+                if ($char === '>') $state = 0;
+                if ($char === '"') $state = 5;
+                if ($char === "'") $state = 6;
+                break;
+            case 5:   // in double-quoted attribute
+                if ($char === '"') $state = 4;
+                break;
+            case 6:   // in single-quoted attribute
+                if ($char === "'") $state = 4;
+                break;
+            case 7:   // <!
+            case 8:   // <!-
+                if ($char === '-') $state++;
+                else $state = 4;
+                break;
+            case 9:   // <!-- comment
+            case 10:  // <!-- comment -
+                if ($char === '-') $state++;
+                else $state = 9;
+                break;
+            case 11:  // <!-- comment --
+                $state = ($char === '>') ? 0 : 9;
+                break;
+            }
+
+            // Aim to keep whole words.
+            if (($len > $targetLength - 2 && $state == 1) || $len > $targetLength + 2) {
+                $truncated = true;
+                break;
+            }
+        }
+        if (!$truncated) return $html;
+
+        // Get libxml2 to close all our open tags, etc.
+        $doc = new \DOMDocument();
+        $doc->loadHTML("<div>".substr($html_ascii, 0, $i), $opts);
+        $result = trim($doc->saveHTML());
+        if (mb_substr($result, 0, 5, 'UTF-8') === '<div>' && mb_substr($result, -6, NULL, 'UTF-8') === '</div>') {
+            $result = mb_substr($result, 5, mb_strlen($result, 'UTF-8') - 11, 'UTF-8');
+        }
+        // Put the … to the left of any closing tags.
+        return preg_replace('/(<\/\s*[A-Za-z0-9]*\s*>|\s)*$/', '…\0', $result, 1);
     }
 
     public function pluralize($word)

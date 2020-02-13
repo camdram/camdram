@@ -13,7 +13,7 @@
         <div class="panel" itemscope itemtype="http://schema.org/TheaterEvent">
             <h5>{{ link_entity(show) }}</h5>
             {% include 'performance/show.html.twig' with {'performances': show.performances } %}
-            <p>{{ show.description | truncate(200) | strip_new_lines | camdram_markdown }}</p>
+            <p>{{ show.description | camdram_markdown | truncateHTML(200) }}</p>
         </div>
     </li>
 {% endfor %}

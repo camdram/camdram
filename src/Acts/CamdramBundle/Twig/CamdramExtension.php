@@ -39,6 +39,7 @@ class CamdramExtension extends AbstractExtension
             new \Twig_SimpleFilter('detect_links', [$this, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig_SimpleFilter('strip_new_lines', [$this, 'stripNewLines']),
             new \Twig_SimpleFilter('truncate', [$this, 'truncate']),
+            new \Twig_SimpleFilter('truncateHTML', [$this, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig_SimpleFilter('plural', [$this, 'pluralize']),
         );
     }
@@ -76,6 +77,11 @@ class CamdramExtension extends AbstractExtension
     public function truncate($text, $length)
     {
         return $this->textService->truncate($text, $length);
+    }
+
+    public function truncateHTML($html, $length)
+    {
+        return $this->textService->truncateHTML($html, $length);
     }
 
     public function requiresArticle($string)

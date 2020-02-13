@@ -16,7 +16,7 @@
         <div class="panel">
             <h5>{{ link_entity(show) }}</h5>
             <p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}</p>
-            <p>{{ show.description | truncate(200) | strip_new_lines | camdram_markdown }}</p>
+            <p>{{ show.description | camdram_markdown | truncateHTML(200) }}</p>
             {% if not show.authorised %}
                 <em>Not yet visible to the public – awaiting approval.</em>
             {% endif %}

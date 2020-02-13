@@ -11,7 +11,7 @@
                     <li>
                         <h6>{{ link_entity(show) }}</h6>
                         <div class="show_info">{{ show.venuenames|join(', ')|truncate(50) }}</div>
-                        {{ show.description | truncate(100) }}
+                        {{ show.description | strip_camdram_markdown | truncate(100) }}
                     </li>
                 {% endfor %}
             </ul>
