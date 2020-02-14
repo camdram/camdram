@@ -133,4 +133,19 @@ class UserRepository extends EntityRepository
         return $qb->where($condition)
             ->setParameter('query', '%' . $query . '%');
     }
+
+    /**
+     * Find user by external user details
+     */
+    public function findByExternalUser($service, $username)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->join('u.external_users', 'e')
+            ->where('e.service = :service')
+            ->andWhere('e.username = :username')
+            ->setParameter('service', $service)
+            ->setParameter('username', $username)
+            ;
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

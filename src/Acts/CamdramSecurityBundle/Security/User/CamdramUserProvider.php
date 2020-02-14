@@ -93,17 +93,24 @@ class CamdramUserProvider implements
 
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
-        $external = $this->loadOrCreateExternalUser($response);
-        if ($user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($response->getEmail())) {
-            $external->setUser($user);
-        }
-        $this->em->flush();
+        $service = $response->getResourceOwner()->getName();
+        $username = $response->getUsername();
 
-        if (!$external->getUser()) {
+        // First try an exact match
+        $user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findByExternalUser($service, $username);
+        // Attempt to auto-link using an email match
+        if (!$user && $response->getEmail()) {
+            $user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($response->getEmail());
+            $external = $this->loadOrCreateExternalUser($response);
+            $external->setUser($user);
+            $this->em->flush();
+        }
+
+        if (!$user) {
             throw new AccountNotLinkedException(sprintf("User '%s' not found.", $response->getUsername()));
         }
 
-        return $external->getUser();
+        return $user;
     }
 
     public function connect(UserInterface $user, UserResponseInterface $response)
