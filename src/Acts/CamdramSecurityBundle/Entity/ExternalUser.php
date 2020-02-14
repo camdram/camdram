@@ -30,6 +30,7 @@ class ExternalUser implements \Serializable
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="external_users")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
@@ -74,13 +75,6 @@ class ExternalUser implements \Serializable
      * @ORM\Column(name="profile_picture_url", type="string", length=255, nullable=true)
      */
     private $profile_picture_url;
-
-    /**
-     * @var \Acts\CamdramBundle\Entity\Person
-     *
-     * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="externalUsers")
-     */
-    private $person;
 
     /**
      * @var \DateTime
@@ -281,30 +275,6 @@ class ExternalUser implements \Serializable
     public function getProfilePictureUrl()
     {
         return $this->profile_picture_url;
-    }
-
-    /**
-     * Set person
-     *
-     * @param \Acts\CamdramBundle\Entity\Person $person
-     *
-     * @return ExternalUser
-     */
-    public function setPerson(\Acts\CamdramBundle\Entity\Person $person = null)
-    {
-        $this->person = $person;
-
-        return $this;
-    }
-
-    /**
-     * Get person
-     *
-     * @return \Acts\CamdramBundle\Entity\Person
-     */
-    public function getPerson()
-    {
-        return $this->person;
     }
 
     public function __toString()
