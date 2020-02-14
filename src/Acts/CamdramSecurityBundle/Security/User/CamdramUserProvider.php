@@ -98,12 +98,15 @@ class CamdramUserProvider implements
 
         // First try an exact match
         $user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findByExternalUser($service, $username);
+
         // Attempt to auto-link using an email match
         if (!$user && $response->getEmail()) {
             $user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($response->getEmail());
-            $external = $this->loadOrCreateExternalUser($response);
-            $external->setUser($user);
-            $this->em->flush();
+            if ($user) {
+                $external = $this->loadOrCreateExternalUser($response);
+                $external->setUser($user);
+                $this->em->flush();
+            }
         }
 
         if (!$user) {
