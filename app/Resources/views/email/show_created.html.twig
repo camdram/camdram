@@ -39,7 +39,7 @@ before authorizing.</p>
 
 {% include 'show/advert_header.html.twig' with { full_urls: true } %}
 <p>
-    {{ show.description }}
+    {{ show.description | camdram_markdown }}
 </p>
 </body>
 </html>
