@@ -102,14 +102,6 @@ class Person
     private $users;
 
     /**
-     * @var \Acts\CamdramSecurityBundle\Entity\ExternalUser
-     *
-     * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="person")
-     * @Serializer\Exclude
-     */
-    private $externalUsers;
-
-    /**
      * @Serializer\Expose
      * @Serializer\XmlElement(cdata=false)
      */
@@ -424,40 +416,6 @@ class Person
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * Add externalUsers
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
-     *
-     * @return Person
-     */
-    public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
-    {
-        $this->externalUsers[] = $externalUsers;
-
-        return $this;
-    }
-
-    /**
-     * Remove externalUsers
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
-     */
-    public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers)
-    {
-        $this->externalUsers->removeElement($externalUsers);
-    }
-
-    /**
-     * Get externalUsers
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getExternalUsers()
-    {
-        return $this->externalUsers;
     }
 
     public function getShowCount()
