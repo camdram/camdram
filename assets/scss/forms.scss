@@ -241,3 +241,15 @@ button, .button {
     cursor: default;
   }
 }
+
+/**
+ * Dropzone button
+ */
+button.dz-button {
+  background: none;
+  color: black;
+  font-weight: normal;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
