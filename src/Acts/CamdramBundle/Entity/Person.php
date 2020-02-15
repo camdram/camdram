@@ -14,7 +14,8 @@ use Hateoas\Configuration\Annotation as Hateoas;
 /**
  * Person
  *
- * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="people_slugs",columns={"slug"})})
+ * @ORM\Table(name="acts_people_data", uniqueConstraints={@ORM\UniqueConstraint(name="people_slugs",columns={"slug"})},
+ *      indexes={@ORM\Index(name="idx_person_fulltext", columns={"name"}, flags={"fulltext"})})
  * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="PersonRepository")
  * @Serializer\XmlRoot("person")

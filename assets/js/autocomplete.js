@@ -217,7 +217,7 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
         }
         let allResultsItem = $('<li><a class="resultText"><span>See all results...</span></a></li>');
         allResultsItem.find('a')
-            .attr('href', `${Routing.generate('acts_camdram_search_search')}?q=${encodeURIComponent(query)}`)
+            .attr('href', Routing.generate('search_entity', {q: query}))
             .click(function(e) {
                 e.preventDefault();
                 Camdram.autocomplete.chooseOption(e);

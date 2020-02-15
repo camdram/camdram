@@ -2,14 +2,14 @@
     page_num        current page number, 1-based
     page_urlprefix  url to which target page numbers are appended
     paginator       * a Doctrine paginator
-    resultset       * an Elastica\ResultSet
+    resultset       * array from SearchController
 
     * Only provide one of these
 -#}
 {%- set total_count = paginator is defined ? paginator.count : resultset.totalhits -%}
-{%- set count = paginator is defined ? paginator.iterator.count : resultset.count  -%}
+{%- set count = paginator is defined ? paginator.iterator.count : (resultset.data|length)  -%}
 {%- if total_count != count -%}
-{%- set limit = paginator is defined ? paginator.query.maxresults : resultset.query.getParam('size') -%}
+{%- set limit = paginator is defined ? paginator.query.maxresults : resultset.limit -%}
 {%- set lastpage = (total_count / limit)|round(0, 'ceil') -%}
 <div style="display: flex">
     <ul class="inline-list" style="flex: 25%">

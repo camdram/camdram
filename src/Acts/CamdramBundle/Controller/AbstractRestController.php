@@ -9,10 +9,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use FOS\ElasticaBundle\Index\IndexManager;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
-use Elastica\Query;
-use Elastica\Query\MultiMatch;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -132,13 +129,9 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $form = $this->getForm();
         $form->handleRequest($request);
         if ($form->isValid()) {
-            try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($form->getData());
-                $em->flush();
-            } catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $this->get('logger')->warning('Failed to add new entity to search index', ['type' => $this->type]);
-            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
             $this->afterEditFormSubmitted($form, $form->getData()->getSlug());
             $em->flush();
@@ -181,11 +174,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
         if ($form->isValid()) {
             $this->afterEditFormSubmitted($form, $identifier);
             $em = $this->getDoctrine()->getManager();
-            try {
-                $em->flush();
-            } catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $this->get('logger')->warning('Failed to update search index', ['type' => $this->type, 'id' => $entity->getId()]);
-            }
+            $em->flush();
             return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
         } else {
             return $this->view($form, 400)
@@ -256,8 +245,8 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /**
      * Action which returns a list of entities.
      *
-     * If a search term 'q' is provided, then a text search is performed against Elasticsearch. Otherwise, a paginated
-     * collection of all entities is returned.
+     * If a search term 'q' is provided, then a text search is performed.
+     * Otherwise a home page of some sort is shown.
      */
     abstract public function cgetAction(Request $request);
 

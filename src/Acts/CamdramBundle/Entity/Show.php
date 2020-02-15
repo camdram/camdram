@@ -15,7 +15,8 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 /**
  * Show
  *
- * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="show_slugs",columns={"slug"})})
+ * @ORM\Table(name="acts_shows", uniqueConstraints={@ORM\UniqueConstraint(name="show_slugs",columns={"slug"})},
+ *      indexes={@ORM\Index(name="idx_show_fulltext", columns={"title"}, flags={"fulltext"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\ShowRepository")
  * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\ShowListener"})
  * @Serializer\ExclusionPolicy("all")

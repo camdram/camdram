@@ -10,9 +10,8 @@ use Acts\DiaryBundle\Model\VenueInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Society
- *
- * @ORM\Table(name="acts_venues", uniqueConstraints={@ORM\UniqueConstraint(name="ven_slugs",columns={"slug"})})
+ * @ORM\Table(name="acts_venues", uniqueConstraints={@ORM\UniqueConstraint(name="ven_slugs",columns={"slug"})},
+ *      indexes={@ORM\Index(name="idx_venue_fulltext", columns={"name", "shortname"}, flags={"fulltext"})})
  * @ORM\Entity(repositoryClass="VenueRepository")
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")

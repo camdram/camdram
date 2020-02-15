@@ -6,20 +6,19 @@
     {%- if query is empty -%}
         <div class="error_panel">No search string given! Use the search bar above.</div>
     {%- else -%}
-        <h3>{{ resultset.totalhits }} results for “{{ query }}”.</h3>
+        <h3>{{ resultset.totalhits }} {{ 'result'|plural(resultset.totalhits) }} for “{{ query }}”.</h3>
     {%- endif -%}
 
-    {%- for result in resultset -%}
-        {%- set entity = result.source -%}
-        {% if result.type == 'show' %}
-            {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : entity.slug})) }}
+    {%- for result in resultset.data -%}
+        {% if result.entity_type == 'show' %}
+            {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : result.slug})) }}
         {% else %}
         <div class="panel">
-            <h5>{{ result.type | capitalize }}<br>
-                <a href="{%- if result.type == 'person' %}{{ path('get_person', {identifier: entity.slug}) }}
-    {%- elseif result.type == 'society' %}{{ path('get_society', {identifier: entity.slug}) }}
-    {%- elseif result.type == 'venue' %}{{ path('get_venue', {identifier: entity.slug}) }}
-    {%- endif %}">{{ entity.name }}</a>
+            <h5>{{ result.entity_type | capitalize }}<br>
+                <a href="{%- if result.entity_type == 'person' %}{{ path('get_person', {identifier: result.slug}) }}
+    {%- elseif result.entity_type == 'society' %}{{ path('get_society', {identifier: result.slug}) }}
+    {%- elseif result.entity_type == 'venue' %}{{ path('get_venue', {identifier: result.slug}) }}
+    {%- endif %}">{{ result.name }}</a>
             </h5>
         </div>
         {% endif %}

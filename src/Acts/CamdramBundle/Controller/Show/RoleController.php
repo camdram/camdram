@@ -38,7 +38,7 @@ class RoleController extends AbstractController
      * @Route("/shows/{identifier}/roles", methods={"PATCH"}, name="patch_show_role")
      * @param $identifier
      */
-    public function patchRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person, $identifier)
+    public function patchRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $identifier)
     {
         $show = $this->getEntity($identifier);
         $helper->ensureGranted('EDIT', $show);
@@ -51,14 +51,7 @@ class RoleController extends AbstractController
             $role = $this->addRoleToShow($show, $request->request->get('role_type'),
                 $request->request->get('role'), $request->request->get('person'));
 
-            try {
-                $this->em->flush();
-                $autocomplete_person->replaceOne($role->getPerson());
-            } catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $logger->warning('Failed to update search index during role edit',
-                        ['role' => $role->getId()]);
-            }
-
+            $this->em->flush();
         } else {
             $id = $request->request->get('id');
             $role = $this->em->getRepository('ActsCamdramBundle:Role')
@@ -79,18 +72,7 @@ class RoleController extends AbstractController
                 $newPerson->addRole($role);
             }
 
-            try {
-                $this->em->flush();
-                $autocomplete_person->replaceOne($newPerson);
-                if ($this->em->contains($oldPerson)) //person isn't deleted
-                {
-                    //Attempt to update role count in people search index
-                    $autocomplete_person->replaceOne($oldPerson);
-                }
-            } catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $logger->warning('Failed to update search index during role edit',
-                        ['role' => $role->getId()]);
-            }
+            $this->em->flush();
         }
 
         return new Response(json_encode([
@@ -103,7 +85,7 @@ class RoleController extends AbstractController
      * Remove a role from a show. We don't need to be told the show id.
      * @Route("/delete-role", methods={"DELETE"}, name="delete_show_role")
      */
-    public function deleteRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person)
+    public function deleteRoleAction(Request $request, Helper $helper, LoggerInterface $logger)
     {
         if (!$this->isCsrfTokenValid('delete_show_role', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
@@ -125,20 +107,7 @@ class RoleController extends AbstractController
         $role_repo->removeRoleFromOrder($role);
         $this->removeRoleFromPerson($role, $person);
         $this->em->remove($role);
-
-        try {
-            $this->em->flush();
-
-            if ($this->em->contains($person)) //person isn't deleted
-            {
-                //Attempt to update role count in people search index
-                $autocomplete_person->replaceOne($person);
-            }
-        }
-        catch (\Elastica\Exception\ExceptionInterface $ex) {
-            $logger->warning('Failed to update search index during role entry',
-                    ['role' => $role->getId()]);
-        }
+        $this->em->flush();
 
         $response = new Response("");
         $response->setStatusCode(Response::HTTP_NO_CONTENT);
@@ -174,7 +143,7 @@ class RoleController extends AbstractController
      * @param $identifier
      * @Route("/shows/{identifier}/many-roles", methods={"POST"}, name="post_show_many_roles")
      */
-    public function postManyRolesAction(Request $request, Helper $helper, LoggerInterface $logger, $autocomplete_person, $identifier)
+    public function postManyRolesAction(Request $request, Helper $helper, LoggerInterface $logger, $identifier)
     {
         $show = $this->getEntity($identifier);
         $helper->ensureGranted('EDIT', $show);
@@ -208,19 +177,7 @@ class RoleController extends AbstractController
                     )->getPerson();
                 }
             }
-            try {
-                $this->em->flush();
-
-                foreach ($people as $person) {
-                    if ($this->em->contains($person)) {//person isn't deleted
-                        //Attempt to update role count in people search index
-                        $autocomplete_person->replaceOne($person);
-                    }
-                }
-            }
-            catch (\Elastica\Exception\ExceptionInterface $ex) {
-                $logger->warning('Failed to update search index during bulk role entry');
-            }
+            $this->em->flush();
         } else {
             // Form not valid, hand back to user
             return $this->view($form, 400)
@@ -235,8 +192,7 @@ class RoleController extends AbstractController
      * Utility function for adding a person to this show. A new person
      * record is created if they don't already exist.
      *
-     * After this the calling function must call $em->flush, and
-     * $autocomplete_person->replaceOne($person) on each person.
+     * After this the calling function must call $em->flush.
      *
      * @param Show   $show        This show.
      * @param string $role_type   The type of role ('cast', 'band', 'prod')
