@@ -73,11 +73,6 @@ task('database:update', function() {
     }
 })->desc('Refresh development database');
 
-// Elasticsearch tasks
-task('search:populate_index', function() {
-    run('{{bin/php}} {{bin/console}} fos:elastica:populate {{console_options}}');
-})->desc('Update Elasticsearch index');
-
 // Deployment Tasks
 
 task('deploy:validate', function() {

@@ -40,17 +40,6 @@ class SearchControllerTest extends WebTestCase
         }
 
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
-        $container->get('fos_elastica.resetter')->resetAllIndexes();
-    }
-
-    private function refreshIndexes()
-    {
-        //Elasticsearch ordinarily takes a few secs to update its indexes after a change.
-        //This ensures they're up to date before making assertions
-        $indexManager = $this->client->getKernel()->getContainer()->get('fos_elastica.index_manager');
-        foreach ($indexManager->getAllIndexes() as $index) {
-            $index->refresh();
-        };
     }
 
     private function createShow($name, $startDate, $flush = true)

@@ -2,15 +2,10 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\ElasticaBundle\Index\IndexManager;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
-use Elastica\Query;
-use Elastica\Query\MultiMatch;
-use Elastica\Query\BoolQuery;
-use Elastica\Query\QueryString;
 
 /**
  * @RouteResource("Entity")
@@ -20,7 +15,7 @@ class SearchController extends AbstractFOSRestController
     /**
      * @Rest\Get("/search")
      */
-    public function searchAction(Request $request, IndexManager $indexManager)
+    public function searchAction(Request $request)
     {
         $limit = (int) $request->get('limit', 10);
         $page = (int) $request->get('page', 1);

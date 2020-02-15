@@ -37,7 +37,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $services = parent::getSubscribedServices();
         $services['camdram.security.acl.helper'] = Helper::class;
         $services['camdram.security.acl.provider'] = AclProvider::class;
-        $services['fos_elastica.index_manager'] = IndexManager::class;
         $services['logger'] = LoggerInterface::class;
         return $services;
     }
@@ -279,7 +278,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $query->setSort([
             'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => PHP_INT_MAX-1]
         ]);
-        $search = $this->get('fos_elastica.index_manager')->getIndex('autocomplete_'.$this->type)->createSearch();
+        //$search = $this->get('fos_elastica.index_manager')->getIndex('autocomplete_'.$this->type)->createSearch();
         $resultSet = $search->search($query);
 
         $data = [];

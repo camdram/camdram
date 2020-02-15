@@ -30,7 +30,6 @@ class AppKernel extends Kernel
             new Http\HttplugBundle\HttplugBundle(),
             new Oneup\UploaderBundle\OneupUploaderBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
-            new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Acts\CamdramApiBundle\ActsCamdramApiBundle(),
             new Acts\CamdramAdminBundle\ActsCamdramAdminBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
