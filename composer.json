@@ -19,7 +19,8 @@
     },
     "conflict" : {
         "friendsofsymfony/jsrouting-bundle": "2.5.*",
-        "liip/imagine-bundle": ">2.2.0"
+        "liip/imagine-bundle": ">2.2.0",
+        "symfony/symfony": "*"
     },
     "description": "Camdram - The portal website for student theatre in Cambridge",
     "extra": {
@@ -67,23 +68,38 @@
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.10",
         "sabre/vobject": "~4.1",
-        "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^5.2",
         "sentry/sentry-symfony": "^3.2",
         "stof/doctrine-extensions-bundle": "1.3.*",
+        "symfony/asset": "*",
+        "symfony/console": "*",
+        "symfony/dotenv": "*",
+        "symfony/expression-language": "*",
+        "symfony/form": "*",
+        "symfony/framework-bundle": "^4.4",
+        "symfony/intl": "*",
         "symfony/monolog-bundle": "^3.3",
+        "symfony/polyfill-intl-messageformatter": "^1.12",
+        "symfony/polyfill-php72": "^1.8",
+        "symfony/security-bundle": "*",
         "symfony/swiftmailer-bundle": "^3.2.2",
-        "symfony/symfony": "3.4.*",
+        "symfony/translation": "*",
+        "symfony/twig-bundle": "*",
+        "symfony/validator": "*",
         "symfony/webpack-encore-bundle": "^1.6",
         "twig/extensions": "~1.5",
         "twig/twig": "^2.7",
-        "zendframework/zend-feed": "2.12.*"
+        "laminas/laminas-feed": "2.12.*"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.0",
         "dms/phpunit-arraysubset-asserts": "^0.1.0",
-        "sensio/generator-bundle": "^3.1",
+        "symfony/browser-kit": "*",
+        "symfony/css-selector": "*",
+        "symfony/debug-bundle": "*",
+        "symfony/maker-bundle": "^1.11",
         "symfony/phpunit-bridge": "^5.0",
+        "symfony/web-profiler-bundle": "*",
         "symfony/web-server-bundle": "^3.4"
     },
     "scripts": {

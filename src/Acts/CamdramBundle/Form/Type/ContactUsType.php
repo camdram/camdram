@@ -35,7 +35,7 @@ class ContactUsType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['constraints' => [new NotBlank()]])
-            ->add('email', EmailType::class, ['constraints' => [new NotBlank(), new Email(['checkMX' => true])]])
+            ->add('email', EmailType::class, ['constraints' => [new NotBlank(), new Email([])]])
             ->add('subject', TextType::class)
             ->add('message', TextareaType::class)
             ->add('captcha', EWZRecaptchaType::class, [

@@ -19,9 +19,9 @@ class CamdramFormTypeExtension extends AbstractTypeExtension
      *
      * @return string The name of the type being extended
      */
-    public function getExtendedType()
+    public static function getExtendedTypes()
     {
-        return FormType::class;
+        return [FormType::class];
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
