@@ -25,7 +25,7 @@ class ExternalRegistrationType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Preferred e-mail',
-                'constraints' => [new NotBlank(), new Email(['checkMX' => true])]
+                'constraints' => [new NotBlank(), new Email()]
             ])
         ;
     }

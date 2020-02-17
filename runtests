@@ -7,4 +7,3 @@ mkdir -p web/build
 php app/console lint:yaml app/config
 php app/console lint:twig app/Resources
 bin/simple-phpunit $@
-php app/console security:check

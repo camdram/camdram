@@ -37,9 +37,8 @@ class AppKernel extends Kernel
 
         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
+            $bunldes[] = new \Symfony\Bundle\MakerBundle\MakerBundle();
 
             if ($this->getEnvironment() === 'test') {
                 $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
@@ -56,5 +55,15 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+    }
+
+    public function getCacheDir()
+    {
+        return __DIR__.'/cache/'.$this->environment;
+    }
+
+    public function getLogDir()
+    {
+        return __DIR__.'/logs/'.$this->environment;
     }
 }

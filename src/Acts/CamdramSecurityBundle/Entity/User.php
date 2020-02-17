@@ -48,7 +48,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
-     * @Assert\Email(checkMX = true)
+     * @Assert\Email()
      * @Serializer\Groups({"user_email"})
      */
     private $email;
