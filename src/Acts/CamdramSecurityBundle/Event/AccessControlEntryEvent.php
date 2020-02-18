@@ -3,7 +3,7 @@
 namespace Acts\CamdramSecurityBundle\Event;
 
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AccessControlEntryEvent extends Event
 {

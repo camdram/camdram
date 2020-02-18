@@ -6,9 +6,9 @@ use Acts\CamdramBundle\Form\Type\ContactUsType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ContactController extends Controller
+class ContactController extends AbstractController
 {
 
     /**
