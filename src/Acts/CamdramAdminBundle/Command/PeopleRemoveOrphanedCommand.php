@@ -3,12 +3,23 @@
 namespace Acts\CamdramAdminBundle\Command;
 
 use Acts\CamdramBundle\Entity\Person;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
-class PeopleRemoveOrphanedCommand extends ContainerAwareCommand
+class PeopleRemoveOrphanedCommand extends Command
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     protected function configure()
     {
         $this
@@ -21,8 +32,7 @@ class PeopleRemoveOrphanedCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Removing people with no associated user or role on a show</info>');
 
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $people_res = $em->getRepository('ActsCamdramBundle:Person');
+        $people_res = $this->entityManager->getRepository('ActsCamdramBundle:Person');
         $query = $people_res->createQueryBuilder('p')
             ->leftJoin('p.roles', 'r')
             ->where('p.mapped_to is null')
@@ -38,8 +48,7 @@ class PeopleRemoveOrphanedCommand extends ContainerAwareCommand
 
     private function deletePerson(Person $person, OutputInterface $output)
     {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $people_res = $em->getRepository('ActsCamdramBundle:Person');
+        $people_res = $this->entityManager->getRepository('ActsCamdramBundle:Person');
 
         $mapped_people = $people_res->findBy(array('mapped_to' => $person));
         foreach ($mapped_people as $mapped_person) {

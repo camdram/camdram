@@ -3,7 +3,7 @@
 namespace Acts\CamdramSecurityBundle\Event;
 
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PendingAccessEvent extends Event
 {

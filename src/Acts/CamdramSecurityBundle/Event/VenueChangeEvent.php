@@ -3,7 +3,7 @@
 namespace Acts\CamdramSecurityBundle\Event;
 
 use Acts\CamdramBundle\Entity\Show;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class VenueChangeEvent extends Event
 {

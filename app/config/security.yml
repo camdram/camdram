@@ -21,7 +21,6 @@ security:
             anonymous: true
             switch_user: { role: ROLE_ADMIN, parameter: _switch_to_user }
             fos_oauth: true
-            logout_on_user_change: true
             logout:
                 path: /logout
                 target: /

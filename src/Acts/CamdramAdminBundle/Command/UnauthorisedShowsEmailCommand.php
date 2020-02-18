@@ -2,7 +2,8 @@
 
 namespace Acts\CamdramAdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -11,8 +12,18 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * This console command sends an e-mail for each show that is still unauthorised
  */
-class UnauthorisedShowsEmailCommand extends ContainerAwareCommand
+class UnauthorisedShowsEmailCommand extends Command
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @inheritdoc
      */
@@ -26,8 +37,7 @@ class UnauthorisedShowsEmailCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $unauthorised_shows = $em->getRepository('ActsCamdramBundle:Show')->findUnauthorised();
+        $unauthorised_shows = $this->entityManager->getRepository('ActsCamdramBundle:Show')->findUnauthorised();
 
         $moderation_manager = $this->getContainer()->get('acts.camdram.moderation_manager');
 
