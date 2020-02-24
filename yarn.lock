@@ -660,10 +660,10 @@
   resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-1.3.0.tgz#283ff3efd18ec35e8146154ebf4d81ad8bf2e97c"
   integrity sha512-8bszqQdjX7nnE7GyKUIuoIywDAnehxG9uGCxSNI3ZruWKVqT7+J7CxTsTH3n2AiIt+IiwglnBaa9OIwz1Q5PtA==
 
-"@symfony/webpack-encore@^0.28.2":
-  version "0.28.2"
-  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-0.28.2.tgz#0d661b19c33c43d320dea1636cbbfeb6d583d982"
-  integrity sha512-gGC0dBIoiH6rOtJwMQx+wT7uhRhFt3OIRZ1ml9E0mmXsqpHw9pUTtPmFP8vTE6hPkaw2F/ozqejXKUlZ1hcaBA==
+"@symfony/webpack-encore@^0.28.3":
+  version "0.28.3"
+  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-0.28.3.tgz#45b590f7b86beb7bb6918a95df89f42f72b796d0"
+  integrity sha512-ZXnwU6uobDCRMbZhT99c42/6j9yIM9aGWgT/we6fdaEGgJJmO1dXl4heq+flL61K3wztQqW6G54N8Q6aPcz1Xw==
   dependencies:
     "@babel/core" "^7.4.0"
     "@babel/plugin-syntax-dynamic-import" "^7.0.0"
