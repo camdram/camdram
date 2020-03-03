@@ -322,9 +322,6 @@ class User implements UserInterface, \Serializable
     public function setPerson(Person $person = null)
     {
         $this->person = $person;
-        foreach ($this->getExternalUsers() as $external_user) {
-            $external_user->setPerson($person);
-        }
 
         return $this;
     }

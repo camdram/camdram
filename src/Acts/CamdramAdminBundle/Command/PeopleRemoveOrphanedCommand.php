@@ -45,7 +45,7 @@ class PeopleRemoveOrphanedCommand extends ContainerAwareCommand
         foreach ($mapped_people as $mapped_person) {
             $this->deletePerson($mapped_person, $output);
         }
-        if (count($person->getUsers()) == 0 && count($person->getExternalUsers()) == 0) {
+        if (count($person->getUsers()) == 0) {
             $em->remove($person);
             $output->writeln('Deleted '.$person->getName());
         } else {
