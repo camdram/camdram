@@ -437,6 +437,7 @@ abstract class OrganisationController extends AbstractRestController
 
         $qb = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')
               ->queryByOrganisation($org, new \DateTime('1970-01-01'), new \DateTime('yesterday'))
+              ->select('s, perf')->leftJoin('s.performances', 'perf')
               ->orderBy('p.start_at', 'DESC')->addOrderBy('s.id') // Make deterministic
               ->setFirstResult($showsPerPage * ($page - 1))
               ->setMaxResults($showsPerPage);
