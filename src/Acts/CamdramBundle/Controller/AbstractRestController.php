@@ -255,32 +255,8 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Perform a search.
      */
     protected function entitySearch(Request $request) {
-        $match = new MultiMatch;
-        $match->setQuery($request->get('q'));
-        $match->setFields(['name', 'short_name']);
-
-        $page = max(1, (int)($request->get('page', 1)));
-        $limit = max(1, (int)($request->get('limit', 10)));
-        $query = new Query($match);
-        $query->setFrom(($page-1)*$limit)->setSize($limit);
-        //PHP_INT_MAX used because '_first' triggers an integer overflow in json_decode on 32 bit...
-        $query->setSort([
-            'rank' => ['order' => 'desc', 'unmapped_type' => 'long', 'missing' => PHP_INT_MAX-1]
-        ]);
-        //$search = $this->get('fos_elastica.index_manager')->getIndex('autocomplete_'.$this->type)->createSearch();
-        $resultSet = $search->search($query);
-
-        $data = [];
-        foreach ($resultSet as $result) {
-            $row = $result->getSource();
-            $row['id'] = $result->getId();
-            $row['entity_type'] = $result->getType();
-            $data[] = $row;
-        }
-
-        return $this->view($data, 200)
-            ->setTemplateVar('result')
-            ->setTemplate($this->type.'/index.html.twig');
+        return $this->forward('Acts\CamdramBundle\Controller\SearchController::search',
+            ['types' => [$this->type]]);
     }
 
     /**

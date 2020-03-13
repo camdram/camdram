@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SearchController extends AbstractController
 {
     private $em;
+    private static $entityTypes = ['show', 'person', 'society', 'venue'];
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -32,33 +33,51 @@ class SearchController extends AbstractController
         $query = $this->em->createNativeQuery(<<<'ENDSQL'
             SELECT
             (SELECT COUNT(*) FROM acts_shows s
-                WHERE MATCH (`title`) AGAINST (? IN BOOLEAN MODE)) +
+                WHERE ? AND MATCH (`title`) AGAINST (? IN BOOLEAN MODE)) +
             (SELECT COUNT(*) FROM acts_people_data p
-                WHERE MATCH (`name`) AGAINST (? IN BOOLEAN MODE)) +
+                WHERE ? AND MATCH (`name`) AGAINST (? IN BOOLEAN MODE)) +
             (SELECT COUNT(*) FROM acts_societies soc
-                WHERE MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE)) +
+                WHERE ? AND MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE)) +
             (SELECT COUNT(*) FROM acts_venues ven
-                WHERE MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE))
+                WHERE ? AND MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE))
             AS n_results
 ENDSQL
         , $this->makeArrayRSM(['n_results']));
 
-        $query->setParameter(1, $search);
-        $query->setParameter(2, $search);
-        $query->setParameter(3, $search);
-        $query->setParameter(4, $search);
+        $i = 0;
+        foreach (self::$entityTypes as $type) {
+            $query->setParameter($i++, in_array($type, $entities));
+            $query->setParameter($i++, $search);
+        }
         return $query->getResult()[0]['n_results'];
     }
 
+    /**
+     * This function carries out a native SQL query of a natural language
+     * search on up to all four entity types and paginates it. Because of this
+     * pagination it must use a UNION query to count the different types of
+     * result in turn, which precludes it from being a DQL query.
+     */
     public function doSearch(string $search, array $entities, int $start_at, int $limit): array
     {
-        $query = $this->em->createNativeQuery(<<<'ENDSQL'
-            (SELECT 'show' AS entity_type, s.id, s.slug, s.title as name,
-                    MIN(acts_performances.start_at) AS start_at, NULL AS last_active, NULL as show_count
+        if ($start_at < 0) throw new \InvalidArgumentException('start_at < 0');
+        if ($limit <= 0)   throw new \InvalidArgumentException('limit <= 0');
+
+        // Name columns irrespective of what entities are chosen
+        $prefixSQL = <<<'ENDSQL'
+            (SELECT NULL AS entity_type, NULL AS id, NULL AS slug, NULL AS name,
+                NULL AS start_at, NULL AS last_active, NULL AS show_count FROM DUAL WHERE FALSE) UNION
+ENDSQL;
+
+        $fragments = [];
+        $fragments['show'] = <<<'ENDSQL'
+            (SELECT 'show', s.id, s.slug, s.title, MIN(acts_performances.start_at), NULL, NULL
                 FROM acts_shows s
                 LEFT JOIN acts_performances ON s.id = acts_performances.sid
                 WHERE MATCH (`title`) AGAINST (? IN BOOLEAN MODE)
-                GROUP BY s.id) UNION
+                GROUP BY s.id)
+ENDSQL;
+        $fragments['person'] = <<<'ENDSQL'
             (SELECT 'person', p.id, p.slug, p.name,
                     MIN(acts_performances.start_at), MAX(acts_performances.repeat_until),
                     COUNT(DISTINCT acts_shows_people_link.sid)
@@ -66,25 +85,35 @@ ENDSQL
                 LEFT JOIN acts_shows_people_link ON acts_shows_people_link.pid = p.id
                 LEFT JOIN acts_performances ON acts_performances.sid = acts_shows_people_link.sid
                 WHERE MATCH (`name`) AGAINST (? IN BOOLEAN MODE)
-                GROUP BY p.id) UNION
+                GROUP BY p.id)
+ENDSQL;
+        $fragments['society'] = <<<'ENDSQL'
             (SELECT 'society', soc.id, soc.slug, soc.name, NULL, NULL, NULL
                 FROM acts_societies soc
-                WHERE MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE)) UNION
+                WHERE MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE))
+ENDSQL;
+        $fragments['venue'] = <<<'ENDSQL'
             (SELECT 'venue', ven.id, ven.slug, ven.name, NULL, NULL, NULL
                 FROM acts_venues ven
                 WHERE MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE))
+ENDSQL;
+        $suffixSQL = sprintf(<<<ENDSQL
             ORDER BY (entity_type IN ('society', 'venue')) DESC,
                 IF(entity_type = 'show', start_at, last_active) DESC,
                 id, entity_type
-            LIMIT ?,?
+            LIMIT %d,%d
 ENDSQL
-        , $this->makeArrayRSM(['name', 'slug', 'start_at', 'id', 'entity_type', 'last_active', 'show_count']));
-        $query->setParameter(1, $search);
-        $query->setParameter(2, $search);
-        $query->setParameter(3, $search);
-        $query->setParameter(4, $search);
-        $query->setParameter(5, $start_at);
-        $query->setParameter(6, $limit);
+        , $start_at, $limit);
+
+        $parts = [];
+        foreach ($entities as $idx) $parts[] = $fragments[$idx];
+        if (empty($parts)) throw new \InvalidArgumentException("No entity types specified");
+
+        $query = $this->em->createNativeQuery($prefixSQL . implode(' UNION ', $parts) . $suffixSQL,
+            $this->makeArrayRSM(['name', 'slug', 'start_at', 'id', 'entity_type', 'last_active', 'show_count']));
+        for ($i = 0; $i < count($parts); $i++) {
+            $query->setParameter($i, $search);
+        }
 
         $rawResult = $query->getResult();
         foreach ($rawResult as &$result) {
@@ -111,16 +140,29 @@ ENDSQL
         return $rawResult;
     }
 
+    private static function clampParam($param, int $min, int $default, int $max = PHP_INT_MAX): int
+    {
+        if (is_array($param) || is_null($param) || !ctype_digit($param)) return $default;
+        else return max($min, min($max, (int)$param));
+    }
+
     /**
      * @Route("/search.{_format}", methods={"GET"}, name="search_entity")
      */
     public function search(Request $request, $_format = 'html')
     {
-        $limit = (int) $request->get('limit', 10);
-        $page = (int) $request->get('page', 1);
-        $searchText = $request->get('q', '');
+        // Since this can be forwarded to from AbstractRestController, have to
+        // re-parse the query string ourselves.
+        parse_str($request->server->get('QUERY_STRING'), $queryParams);
+        $limit = static::clampParam($queryParams['limit'] ?? 10, 1, 10, 100);
+        $page  = static::clampParam($queryParams['page'] ?? 1, 1, 1);
+        $searchText = ($queryParams['q'] ?? '');
+        if (is_array($searchText)) $searchText = '';
+        // This parameter is never passed to AbstractRestController
+        $types = $request->get('types', self::$entityTypes);
+        if (!is_array($types)) $types = self::$entityTypes;
 
-        $data = $this->doSearch($searchText, [], ($page-1)*$limit, $limit);
+        $data = $this->doSearch($searchText, $types, ($page-1)*$limit, $limit);
         if ($_format == 'json') {
             return new JsonResponse($data);
         } else if ($_format == 'xml') {
@@ -132,12 +174,16 @@ END
             , 410);
         }
 
+        // Bring a blank page= to the end of the URL
+        unset($queryParams['page']);
+        $queryParams['page'] = '';
         return $this->render('search/index.html.twig', [
             'page_num' => $page,
-            'page_urlprefix' => "search?limit={$limit}&q=".urlencode($searchText).'&page=',
+            'page_urlprefix' => $request->getBaseUrl().$request->getPathInfo().
+                '?'.http_build_query($queryParams),
             'query' => $searchText,
             'resultset' => [
-                'totalhits' => $this->countResults($searchText, []),
+                'totalhits' => $this->countResults($searchText, $types),
                 'limit' => $limit,
                 'data' => $data
             ]
