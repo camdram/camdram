@@ -158,11 +158,24 @@ ENDSQL
         $page  = static::clampParam($queryParams['page'] ?? 1, 1, 1);
         $searchText = ($queryParams['q'] ?? '');
         if (is_array($searchText)) $searchText = '';
-        // This parameter is never passed to AbstractRestController
         $types = $request->get('types', self::$entityTypes);
         if (!is_array($types)) $types = self::$entityTypes;
 
-        $data = $this->doSearch($searchText, $types, ($page-1)*$limit, $limit);
+        // Intended behaviour for default search is all terms required, final
+        // term may be an incomplete word, syntax errors not possible.
+        // So 'john smi' -> '+john +smi*', '@@~~blah' -> '+blah*'
+        $enhancedSearchText = trim(preg_replace('/[-+@<>()~*" ]+/', ' ',
+            $searchText)) . '*';
+        $enhancedSearchText = '+'.implode(' +',explode(' ', $enhancedSearchText));
+        error_log($enhancedSearchText);
+
+        if ($enhancedSearchText == '+*') {
+            $data = [];
+            $hits = 0;
+        } else {
+            $data = $this->doSearch($enhancedSearchText, $types, ($page-1)*$limit, $limit);
+            $hits = $this->countResults($enhancedSearchText, $types);
+        }
         if ($_format == 'json') {
             return new JsonResponse($data);
         } else if ($_format == 'xml') {
@@ -183,7 +196,7 @@ END
                 '?'.http_build_query($queryParams),
             'query' => $searchText,
             'resultset' => [
-                'totalhits' => $this->countResults($searchText, $types),
+                'totalhits' => $hits,
                 'limit' => $limit,
                 'data' => $data
             ]
