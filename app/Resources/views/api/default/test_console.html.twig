@@ -23,12 +23,8 @@
         <h5>Example queries:</h5>
         <ul id="example_queries">
             <li>
-                <a href="{{ url('search_entity', {_format: 'json', q: 'Fitzwilliam'}) }}">
+                <a href="{{ url('search_entity', {mode: '.json', q: 'Fitzwilliam'}) }}">
                     Search for the term &quot;Fitzwilliam&quot; (JSON)</a>
-            </li>
-            <li>
-                <a href="{{ url('search_entity', {_format: 'xml', q: 'Fitzwilliam'}) }}">
-                    Search for the term &quot;Fitzwilliam&quot; (XML)</a>
             </li>
             <li>
                 <a href="{{ url('get_show', {_format: 'json', identifier: '2007-return-to-the-forbidden-planet'}) }}">

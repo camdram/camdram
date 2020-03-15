@@ -147,54 +147,77 @@ ENDSQL
     }
 
     /**
-     * @Route("/search.{_format}", methods={"GET"}, name="search_entity")
+     * @Route("/search{mode}", methods={"GET"},
+     *     name="search_entity", requirements={"mode":"(\/advanced|\.json|\.xml|\.html)"})
      */
-    public function search(Request $request, $_format = 'html')
+    public function search(Request $request, $mode = '')
     {
+        $_format = $request->getRequestFormat();
+
         // Since this can be forwarded to from AbstractRestController, have to
         // re-parse the query string ourselves.
         parse_str($request->server->get('QUERY_STRING'), $queryParams);
         $limit = static::clampParam($queryParams['limit'] ?? 10, 1, 10, 100);
         $page  = static::clampParam($queryParams['page'] ?? 1, 1, 1);
+
         $searchText = ($queryParams['q'] ?? '');
         if (is_array($searchText)) $searchText = '';
+
         $types = $request->get('types', self::$entityTypes);
         if (!is_array($types)) $types = self::$entityTypes;
+        $queryParams['types'] = $types;
 
         // Intended behaviour for default search is all terms required, final
         // term may be an incomplete word, syntax errors not possible.
         // So 'john smi' -> '+john +smi*', '@@~~blah' -> '+blah*'
-        $enhancedSearchText = trim(preg_replace('/[-+@<>()~*" ]+/', ' ',
-            $searchText)) . '*';
-        $enhancedSearchText = '+'.implode(' +',explode(' ', $enhancedSearchText));
-        error_log($enhancedSearchText);
+        if (($queryParams['parse'] ?? '') !== 'boolean') {
+            $queryParams['parse'] = 'normal';
+            $enhancedSearchText = trim(preg_replace('/[-+@<>()~*" ]+/', ' ',
+                $searchText)) . '*';
+            $enhancedSearchText = '+'.implode(' +',explode(' ', $enhancedSearchText));
+        } else {
+            $enhancedSearchText = $searchText;
+        }
 
-        if ($enhancedSearchText == '+*') {
+        if (empty($enhancedSearchText) || $enhancedSearchText == '+*') {
             $data = [];
             $hits = 0;
+        } else if ('mysql' != $this->em->getConnection()->getDatabasePlatform()->getName()) {
+            $data = [ 'error' => 'This development deployment of Camdram does not support search.' ];
+            $hits = 0;
         } else {
-            $data = $this->doSearch($enhancedSearchText, $types, ($page-1)*$limit, $limit);
-            $hits = $this->countResults($enhancedSearchText, $types);
+            try {
+                $data = $this->doSearch($enhancedSearchText, $types, ($page-1)*$limit, $limit);
+                $hits = $this->countResults($enhancedSearchText, $types);
+            } catch (\Doctrine\DBAL\DBALException $ex) {
+                if ($queryParams['parse'] !== 'normal') {
+                    // Probably the user's fault due to a misformed query.
+                    $data = ['error' => 'Try setting "Interpret search" back to normal.'];
+                    $hits = 0;
+                } else throw $ex;
+            }
         }
-        if ($_format == 'json') {
+        if ($mode == '.json' || $_format == 'json') {
             return new JsonResponse($data);
-        } else if ($_format == 'xml') {
+        } else if ($mode == '.xml' || $_format == 'xml') {
             return new Response(<<<'END'
 <err>XML search results have been removed as they were offered in an odd,
 hard-to-parse format, which had previously been accidentally changed without
 us receiving complaints. Consider a switch to JSON or contact us if needed.</err>
 END
-            , 410);
+            , 410, ['Content-Type' => 'text/xml']);
         }
 
         // Bring a blank page= to the end of the URL
         unset($queryParams['page']);
         $queryParams['page'] = '';
-        return $this->render('search/index.html.twig', [
+        return $this->render(
+            $mode == '/advanced' ? 'search/advanced.html.twig' : 'search/index.html.twig', [
             'page_num' => $page,
             'page_urlprefix' => $request->getBaseUrl().$request->getPathInfo().
                 '?'.http_build_query($queryParams),
             'query' => $searchText,
+            'queryParams' => $queryParams,
             'resultset' => [
                 'totalhits' => $hits,
                 'limit' => $limit,

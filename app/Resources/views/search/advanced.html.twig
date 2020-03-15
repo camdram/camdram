@@ -1,0 +1,67 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Search{% endblock %}
+
+{%- macro input_value_selected(name, type, value, selected, text) -%}
+    <label style="margin: 0 auto 0 0.5em"><input name="{{name}}" type="{{type}}" value="{{value}}" {% if value in selected %}checked{% endif %}>{{ text | raw }}</label>
+{%- endmacro -%}
+
+{% block body %}
+    {%- if query is empty -%}
+        <div class="error_panel">No search string given! Use the search bar above.</div>
+    {%- else -%}
+        <form class="panel" method="get" action="{{ path('search_entity', {'mode': '/advanced'}) }}">
+            <div class="split-header">
+                <h4>Advanced search</h4>
+                <span style="align-self:flex-start"><button type="submit" class="small">Search</button></span>
+            </div>
+            <div class="form-large-row">
+                <label for="search_q">Search text</label>
+                <input id="search_q" name="q" type="text" required="true" value="{{ query }}">
+            </div>
+            <div class="form-large-row">
+                <span>Interpret search</span>
+                <div><div class="form-checkbox-row" style="flex-flow: row wrap;">
+                    {{ _self.input_value_selected('parse', 'radio', 'normal', queryParams['parse'], 'Normally (recommended)') }}
+                    {{ _self.input_value_selected('parse', 'radio', 'boolean', queryParams['parse'],
+                        'As a <a target="_blank" href="https://dev.mysql.com/doc/refman/8.0/en/fulltext-boolean.html">MySQL Boolean full-text search <i class="fa fa-external-link"></i></a>') }}
+                </div></div>
+            </div>
+            <div class="form-large-row">
+                <span>Entity types</span>
+                <div><div class="form-checkbox-row" style="flex-flow: row wrap;">
+                    {{ _self.input_value_selected('types[]', 'checkbox', 'show', queryParams['types'], 'Shows') }}
+                    {{ _self.input_value_selected('types[]', 'checkbox', 'person', queryParams['types'], 'People') }}
+                    {{ _self.input_value_selected('types[]', 'checkbox', 'society', queryParams['types'], 'Societies') }}
+                    {{ _self.input_value_selected('types[]', 'checkbox', 'venue', queryParams['types'], 'Venues') }}
+                </div></div>
+            </div>
+        </form>
+    {%- endif -%}
+
+    {%- if resultset.data.error is defined -%}
+        <div class="error_panel">
+            An error occured. {{ resultset.data.error }}
+        </div>
+    {%- elseif resultset.data is empty -%}
+        <div class="panel">No results.</div>
+    {%- else -%}
+        {%- for result in resultset.data -%}
+            {% if result.entity_type == 'show' %}
+                {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : result.slug})) }}
+            {% else %}
+            <div class="panel">
+                <h5>{{ result.entity_type | capitalize }}<br>
+                    <a href="{%- if result.entity_type == 'person' %}{{ path('get_person', {identifier: result.slug}) }}
+    {%- elseif result.entity_type == 'society' %}{{ path('get_society', {identifier: result.slug}) }}
+    {%- elseif result.entity_type == 'venue' %}{{ path('get_venue', {identifier: result.slug}) }}
+    {%- endif %}">{{ result.name }}</a>
+                </h5>
+            </div>
+            {% endif %}
+        {%- endfor -%}
+
+        {%- include 'paginator.html.twig' -%}
+    {%- endif -%}
+
+{% endblock %}

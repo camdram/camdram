@@ -123,7 +123,7 @@ Camdram.autocomplete.requestOptions = function() {
     else {
         $("#search_form .fa-spinner").fadeIn(100);
         // Activate the field
-        var url = Routing.generate('search_entity', {_format: 'json', q: typed, limit: 10});
+        var url = Routing.generate('search_entity', {mode: '.json', q: typed, limit: 10});
         $.getJSON(url, function(data) {
             Camdram.autocomplete.displayResults(typed, data, false);
             Camdram.autocomplete.cache[typed] = data;
@@ -224,8 +224,10 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
             });
         $("#search_form .results ul").append(allResultsItem);
         Camdram.autocomplete.drawControl(true, (items.length + 1) * 40);
-    } else if (error) {
-        $("#search_form .error").show();
+    } else if (error || items.error) {
+        $("#search_form .error").text(items.error ?
+            'An error occured. ' + items.error :
+            'Search is not available at the moment').show();
         Camdram.autocomplete.drawControl(true);
     } else {
         $("#search_form .noresults").show();
