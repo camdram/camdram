@@ -79,8 +79,9 @@ class DownloadAssetsCommand extends Command
         if ($forceDownload || $manifest != $existingManifest) {
             $this->fileSystem->dumpFile($outputPath, $stream);
 
-            // Alway need the entrypoints file
+            // Alway need the entrypoints and CSP hashes files
             $manifest['build/entrypoints.json'] = '/build/entrypoints.json';
+            $manifest['build/csp_hashes.txt'] = '/build/csp_hashes.txt';
 
             //Check each file in manifest. Only download if doesn't exist
             foreach ($manifest as $path => $realPath) {
