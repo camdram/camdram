@@ -4090,16 +4090,16 @@
         },
         {
             "name": "knplabs/github-api",
-            "version": "2.12.1",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "2665eb80831054d403464c922c9935741af90dc6"
+                "reference": "d493c8f4aa84e04629b38d1487407e1c6c9d90d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/2665eb80831054d403464c922c9935741af90dc6",
-                "reference": "2665eb80831054d403464c922c9935741af90dc6",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/d493c8f4aa84e04629b38d1487407e1c6c9d90d1",
+                "reference": "d493c8f4aa84e04629b38d1487407e1c6c9d90d1",
                 "shasum": ""
             },
             "require": {
@@ -4122,7 +4122,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.12.x-dev"
+                    "dev-master": "2.13.x-dev"
                 }
             },
             "autoload": {
@@ -4153,7 +4153,7 @@
                 "gist",
                 "github"
             ],
-            "time": "2019-11-07T17:18:26+00:00"
+            "time": "2020-03-16T19:57:05+00:00"
         },
         {
             "name": "liip/imagine-bundle",
