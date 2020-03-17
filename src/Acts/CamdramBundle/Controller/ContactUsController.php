@@ -29,7 +29,7 @@ class ContactUsController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
-            $emailDispatcher->sendContactUsEmail($data['email'], $data['subject'], $data['message']);
+            $emailDispatcher->sendContactUsEmail($data['email'], $data['name'], $data['subject'], $data['message']);
 
             return $this->redirect($this->generateUrl('acts_camdram_contact_us_sent'));
         } else {

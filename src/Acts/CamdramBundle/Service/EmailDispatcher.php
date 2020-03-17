@@ -95,11 +95,11 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function sendContactUsEmail($from, $subject, $message)
+    public function sendContactUsEmail($from, $name, $subject, $message)
     {
         $message = (new \Swift_Message($subject))
             ->setFrom([$this->from_address => 'camdram.net Contact Form'])
-            ->setReplyTo($from)
+            ->setReplyTo($from, $name)
             ->setTo($this->from_address)
             ->setBody($message)
         ;
