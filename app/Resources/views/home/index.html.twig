@@ -6,6 +6,11 @@
 {% block body %}
 <h3>Welcome to Camdram&emsp;<small>The portal website for student theatre in Cambridge</small></h3>
 
+{% if shutdown_notice %}
+<div class="row" style="border: 1px solid black; padding: 1em; margin-bottom: 1em;">
+    {{ shutdown_notice | camdram_markdown }}
+</div>
+{% else %}
 <div class="row" id="home-diary-container">
    <div id="home-diary-nav">
        <ul>
@@ -48,13 +53,16 @@
        {{ render(url('acts_camdram_diary_single_week', {fragment: true, date: current_week.startAt | date('Y-m-d')}) , { 'strategy': 'esi'}) }}
    </div>
 </div>
+{% endif %}
 
 <div class="row" id="home_news_container">
     <div class="newsfeed-left-aside">
+        {% if not shutdown_notice %}
         <div id="home_statistics">
             {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
         </div>
         <hr />
+        {% endif %}
 
         <div id="home_vacancies">
             {{ render(controller('ActsCamdramBundle:Default:vacancies'), {'strategy': 'esi'}) }}

@@ -43,6 +43,7 @@ twig:
         development_warning: "%env(bool:DEVELOPMENT_WARNING)%"
         show_site_notice: "%env(bool:SHOW_SITE_NOTICE)%"
         site_notice_content: "%env(SITE_NOTICE_CONTENT)%"
+        shutdown_notice: "%env(SHUTDOWN_NOTICE)%"
         facebook_id: "%facebook_id%"
 
 monolog:

@@ -23,6 +23,7 @@ parameters:
     env(DEVELOPMENT_WARNING): false
     env(SHOW_SITE_NOTICE): false
     env(SITE_NOTICE_CONTENT): "Camdram will be unavailable for scheduled maintenance from 00:00:00 on 1 January 1970 for approximately 1 hour."
+    env(SHUTDOWN_NOTICE): false
 
     env(SEARCH_NAMESPACE): camdram
     search_enable_listeners: false
