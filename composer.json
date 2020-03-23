@@ -18,6 +18,7 @@
         "sort-packages": true
     },
     "conflict" : {
+        "friendsofsymfony/jsrouting-bundle": "2.5.3",
         "liip/imagine-bundle": ">2.2.0"
     },
     "description": "Camdram - The portal website for student theatre in Cambridge",
