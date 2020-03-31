@@ -24,6 +24,8 @@ $(function() {
             document.querySelector('header .search').classList.remove('active');
         }, 100)
     }).keyup(function(e) {
+        const contents = $("#searchfield")[0].value.toLowerCase();
+        if (contents === 'zz' || contents === 'rr') spinTheWorld();
         if(e.keyCode == 38 || e.keyCode == 40)
             Camdram.autocomplete.shiftOption(this, (e.keyCode == 40));
         else if(e.keyCode == 13)

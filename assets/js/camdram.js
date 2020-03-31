@@ -8,6 +8,20 @@ window.Routing = Routing;
 const Camdram = {};
 export default Camdram;
 
+let spun = false;
+window["spinTheWorld"] = function() {
+    const element = document.getElementsByTagName('body')[0];
+    element.style['transition-duration'] = '1.5s';
+    element.style['transition-timing-function'] = 'ease-in-out';
+    if (spun) {
+        element.style.transform = 'rotate(0deg)';
+        spun = false;
+    } else {
+        element.style.transform = 'rotate(360deg)';
+        spun = true;
+    }
+};
+
 ;(function($, window) {
     var doCookieConsent = function() {
         window.cookieconsent.initialise({
