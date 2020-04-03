@@ -2,12 +2,12 @@
 set -e
 export SYMFONY_ENV=test
 
-# Test fixutre generation and search index population
+# Test fixture generation
 php app/console camdram:database:refresh
 
 #Create a mysql database and test migrations using MySQL
 export DATABASE_URL="mysql://travis@localhost/camdram_test"
-mysql -e 'CREATE DATABASE camdram_test;'
+mysql --user=travis -e 'CREATE DATABASE camdram_test;'
 php app/console doctrine:migrations:migrate --no-interaction
 php app/console doctrine:schema:validate || {
   echo "Schema difference:"
@@ -15,3 +15,10 @@ php app/console doctrine:schema:validate || {
   exit 1
 }
 php app/console doctrine:fixtures:load --no-interaction
+
+# Tests requiring MySQL
+mysql --user=travis -e 'DROP DATABASE camdram_test;CREATE DATABASE camdram_test;'
+php app/console doctrine:migrations:migrate --no-interaction
+mysql --user=travis < tests/SearchController.sql
+./runtests tests/CamdramBundle/Controller/SearchControllerTest.php
+mysql --user=travis -e 'DROP DATABASE camdram_test;'
