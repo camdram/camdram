@@ -7,37 +7,33 @@
 {%- endmacro -%}
 
 {% block body %}
-    {%- if query is empty -%}
-        <div class="error_panel">No search string given! Use the search bar above.</div>
-    {%- else -%}
-        <form class="panel" method="get" action="{{ path('search_entity', {'mode': '/advanced'}) }}">
-            <div class="split-header">
-                <h4>Advanced search</h4>
-                <span style="align-self:flex-start"><button type="submit" class="small">Search</button></span>
-            </div>
-            <div class="form-large-row">
-                <label for="search_q">Search text</label>
-                <input id="search_q" name="q" type="text" required="true" value="{{ query }}">
-            </div>
-            <div class="form-large-row">
-                <span>Interpret search</span>
-                <div><div class="form-checkbox-row" style="flex-flow: row wrap;">
-                    {{ _self.input_value_selected('parse', 'radio', 'normal', queryParams['parse'], 'Normally (recommended)') }}
-                    {{ _self.input_value_selected('parse', 'radio', 'boolean', queryParams['parse'],
-                        'As a <a target="_blank" href="https://dev.mysql.com/doc/refman/8.0/en/fulltext-boolean.html">MySQL Boolean full-text search <i class="fa fa-external-link"></i></a>') }}
-                </div></div>
-            </div>
-            <div class="form-large-row">
-                <span>Entity types</span>
-                <div><div class="form-checkbox-row" style="flex-flow: row wrap;">
-                    {{ _self.input_value_selected('types[]', 'checkbox', 'show', queryParams['types'], 'Shows') }}
-                    {{ _self.input_value_selected('types[]', 'checkbox', 'person', queryParams['types'], 'People') }}
-                    {{ _self.input_value_selected('types[]', 'checkbox', 'society', queryParams['types'], 'Societies') }}
-                    {{ _self.input_value_selected('types[]', 'checkbox', 'venue', queryParams['types'], 'Venues') }}
-                </div></div>
-            </div>
-        </form>
-    {%- endif -%}
+    <form class="panel" method="get" action="{{ path('search_entity', {'mode': '/advanced'}) }}">
+        <div class="split-header">
+            <h4>Advanced search</h4>
+            <span style="align-self:flex-start"><button type="submit" class="small">Search</button></span>
+        </div>
+        <div class="form-large-row">
+            <label for="search_q">Search text</label>
+            <input id="search_q" name="q" type="text" required="true" value="{{ query }}">
+        </div>
+        <div class="form-large-row">
+            <span>Interpret search</span>
+            <div><div class="form-checkbox-row" style="flex-flow: row wrap;">
+                {{ _self.input_value_selected('parse', 'radio', 'normal', queryParams['parse'], 'Normally (recommended)') }}
+                {{ _self.input_value_selected('parse', 'radio', 'boolean', queryParams['parse'],
+                    'As a <a target="_blank" href="https://dev.mysql.com/doc/refman/8.0/en/fulltext-boolean.html">MySQL Boolean full-text search <i class="fa fa-external-link"></i></a>') }}
+            </div></div>
+        </div>
+        <div class="form-large-row">
+            <span>Entity types</span>
+            <div><div class="form-checkbox-row" style="flex-flow: row wrap;">
+                {{ _self.input_value_selected('types[]', 'checkbox', 'show', queryParams['types'], 'Shows') }}
+                {{ _self.input_value_selected('types[]', 'checkbox', 'person', queryParams['types'], 'People') }}
+                {{ _self.input_value_selected('types[]', 'checkbox', 'society', queryParams['types'], 'Societies') }}
+                {{ _self.input_value_selected('types[]', 'checkbox', 'venue', queryParams['types'], 'Venues') }}
+            </div></div>
+        </div>
+    </form>
 
     {%- if resultset.data.error is defined -%}
         <div class="error_panel">

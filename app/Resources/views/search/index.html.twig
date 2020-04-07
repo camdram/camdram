@@ -4,7 +4,9 @@
 
 {% block body %}
     {%- if query is empty -%}
-        <div class="error_panel">No search string given! Use the search bar above.</div>
+        <div class="error_panel">No search string given! Use the search bar above, or
+            <span><a href="{{ path('search_entity', {'mode': '/advanced', 'q': query}) }}">» advanced search</a></span>.
+        </div>
     {%- else -%}
         <div class="split-header">
             <h3>{{ resultset.totalhits }} {{ 'result'|plural(resultset.totalhits) }} for “{{ query }}”.</h3>
