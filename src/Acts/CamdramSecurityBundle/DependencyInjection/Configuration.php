@@ -17,8 +17,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('acts_camdram_security');
+        $treeBuilder = new TreeBuilder('acts_camdram_security');
 
         return $treeBuilder;
     }

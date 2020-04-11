@@ -17,9 +17,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('acts_camdram');
-        $rootNode->children()
+        $treeBuilder = new TreeBuilder('acts_camdram');
+        $treeBuilder->getRootNode()->children()
                 ->scalarNode('techies_advert_default_days')->isRequired()->end()
                 ->scalarNode('techies_advert_max_days')->isRequired()->end()
                 ->scalarNode('data_dir')->isRequired()->end()

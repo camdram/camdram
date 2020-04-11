@@ -32,7 +32,7 @@ class EmailDispatcherTest extends TestCase
     {
         $this->mailer = $this->getMockBuilder('\Swift_Mailer')
             ->disableOriginalConstructor()->disableOriginalClone()->getMock();
-        $this->twig = $this->getMockBuilder('\Twig_Environment')
+        $this->twig = $this->getMockBuilder('\Twig\Environment')
             ->disableOriginalClone()->disableOriginalConstructor()->getMock();
 
         $this->emailDispatcher = new EmailDispatcher($this->mailer, $this->twig, $this->from_address);

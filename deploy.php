@@ -20,7 +20,7 @@ add('shared_files', []);
 add('shared_dirs', ['app/data']);
 
 // Writable dirs by web server
-add('writable_dirs', ['app/data', 'web/media']);
+add('writable_dirs', ['app/data', 'public/media']);
 set('allow_anonymous_stats', false);
 set('http_group', 'www-data');
 
@@ -106,7 +106,6 @@ task('deploy', [
     'deploy:writable',
     'database:update',
     'deploy:symlink',
-    'search:populate_index',
     'deploy:unlock',
     'cleanup',
 ])->desc('Deploy Camdram');

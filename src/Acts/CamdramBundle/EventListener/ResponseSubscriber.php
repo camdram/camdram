@@ -39,7 +39,7 @@ class ResponseSubscriber implements EventSubscriberInterface
 
     private function generatePolicy()
     {
-        $script_hashes = file_get_contents(__DIR__ . '/../../../../web/build/csp_hashes.txt');
+        $script_hashes = file_get_contents(__DIR__ . '/../../../../public/build/csp_hashes.txt');
         // The global $kernel can be an actual kernel, a cache object, or undefined.
         $kernel = $GLOBALS['kernel'] ?? null;
         if ($kernel instanceof HttpCache) {

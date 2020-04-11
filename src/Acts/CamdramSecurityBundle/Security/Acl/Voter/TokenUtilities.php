@@ -2,7 +2,6 @@
 namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Role\Role;
 use Acts\ExternalLoginBundle\Security\Authentication\Token\ExternalLoginToken;
 use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 
@@ -16,15 +15,10 @@ class TokenUtilities
      * @param $role
      * @return bool
      */
-    public static function hasRole(TokenInterface $token, $role)
+    public static function hasRole(TokenInterface $token, string $role)
     {
-        if (is_string($role)) {
-            $role = new Role($role);
-        }
-
-
-        foreach ($token->getRoles() as $tokenRole) {
-            if ($role->getRole() == $tokenRole->getRole()) {
+        foreach ($token->getRoleNames() as $tokenRole) {
+            if ($role == $tokenRole) {
                 return true;
             }
         }

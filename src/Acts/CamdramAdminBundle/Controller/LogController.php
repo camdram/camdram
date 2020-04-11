@@ -2,9 +2,10 @@
 
 namespace Acts\CamdramAdminBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\KernelInterface as Kernel;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -12,28 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class LogController extends Controller
+class LogController extends AbstractController
 {
     /**
      * @Route("/logs", name="acts_camdram_logs")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->render('admin/log/index.html.twig');
     }
 
     /**
      * @Route("/logs/get/{file}", name="acts_camdram_logs_get")
-     *
-     * @param unknown $file
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getAction($file)
+    public function getAction(Kernel $kernel, $file): Response
     {
-        $log_dir = $this->get('kernel')->getRootDir().'/logs/';
-        $env = $this->get('kernel')->getEnvironment();
+        $log_dir = $kernel->getRootDir().'/logs/';
+        $env = $kernel->getEnvironment();
 
         switch ($file) {
             case 'action.log':

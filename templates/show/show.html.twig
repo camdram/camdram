@@ -25,7 +25,7 @@
 {% block body %}
 
 {% if is_granted('EDIT', show) %}
-{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
 {% endif %}
 
 {% if not is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', show) %}

@@ -5,7 +5,7 @@ namespace Acts\CamdramBundle\Controller;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Show;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @RouteResource("My-Show")
  */
-class ShowAdminController extends Controller
+class ShowAdminController extends AbstractController
 {
     /**
      * Lists all the user's shows.

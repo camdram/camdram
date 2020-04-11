@@ -20,12 +20,11 @@ class DiaryExtension extends AbstractExtension
 
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('render_diary', array($this, 'renderDiary'), array('is_safe' => array('html'), 'needs_environment' => true))
-        );
+        return [new \Twig\TwigFunction('render_diary', [$this, 'renderDiary'],
+            ['is_safe' => ['html'], 'needs_environment' => true])];
     }
 
-    public function renderDiary(\Twig_Environment $env, Diary $diary)
+    public function renderDiary(\Twig\Environment $env, Diary $diary)
     {
         return $env->render('ActsDiaryBundle:Diary:index.html.twig', array('diary' => $diary->createView()));
     }

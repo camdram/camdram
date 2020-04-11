@@ -24,7 +24,8 @@ framework:
         gc_maxlifetime: 1800
     fragments: { path: /_fragment }
     assets:
-        json_manifest_path: '%kernel.project_dir%/web/build/manifest.json'
+        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
+    error_controller: 'twig.controller.exception::showAction'
 
 sensio_framework_extra:
     router:
@@ -34,6 +35,7 @@ sensio_framework_extra:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    exception_controller: ~
     date:
         timezone: "Europe/London"
     form_themes:
@@ -182,4 +184,4 @@ ewz_recaptcha:
     locale_key: "%kernel.default_locale%"
 
 webpack_encore:
-    output_path: "%kernel.root_dir%/../web/build/"
+    output_path: "%kernel.root_dir%/../public/build/"

@@ -3,9 +3,8 @@ namespace Acts\CamdramAdminBundle\Composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Process\PhpExecutableFinder;
-use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler as SensioScriptHandler;
 
-class ScriptHandler extends SensioScriptHandler
+class ScriptHandler
 {
     /**
      * Create/refresh the development database
@@ -14,20 +13,11 @@ class ScriptHandler extends SensioScriptHandler
      */
     public static function refreshDatabase(Event $event)
     {
-        if (!$event->isDevMode()){
-            return;
-        }
-
-        $options = self::getOptions($event);
-        $consoleDir = self::getConsoleDir($event, 'refresh the database');
-
-        if (null === $consoleDir) {
-            return;
-        }
+        if (!$event->isDevMode()) return;
 
         static::writeHeader($event, "Creating SQLite database for development with test fixtures");
 
-        static::executeCommand($event, $consoleDir, 'camdram:database:refresh', $options['process-timeout']);
+        system('app/console camdram:database:refresh');
     }
 
     /**
@@ -37,20 +27,11 @@ class ScriptHandler extends SensioScriptHandler
      */
     public static function downloadAssets(Event $event)
     {
-        if (!$event->isDevMode()){
-            return;
-        }
-
-        $options = self::getOptions($event);
-        $consoleDir = self::getConsoleDir($event, 'download assets');
-
-        if (null === $consoleDir) {
-            return;
-        }
+        if (!$event->isDevMode()) return;
 
         static::writeHeader($event, "Downloading compiled JS/CSS assets");
 
-        static::executeCommand($event, $consoleDir, 'camdram:assets:download', $options['process-timeout']);
+        system('app/console camdram:assets:download');
     }
 
     public static function welcomeMessage(Event $event)
@@ -75,8 +56,7 @@ If you are planning on doing frontend development you will need to configure the
 Visit https://github.com/camdram/camdram/wiki/Webpack-setup-guide to find out more
 
 <options=bold;fg=yellow>Search</>
-Search functionality is currently disabled - additional steps are required to set up a search index.
-Visit https://github.com/camdram/camdram/wiki/Elasticsearch-setup-guide to find out more.
+Search functionality is currently disabled – MySQL is required for search (see above).
 
 <options=bold;fg=yellow>Tests</>
 You can execute <options=bold;fg=yellow>./runtests</> to run the automated test suite.
@@ -84,7 +64,7 @@ You can execute <options=bold;fg=yellow>./runtests</> to run the automated test 
 <options=bold;fg=yellow>Useful resources</>
  * https://gitter.im/camdram/development - Chat with a developer
  * https://github.com/camdram/camdram/wiki - Information about the codebase
- * https://symfony.com/doc/3.4/ - Find out more about the Symfony web framework
+ * https://symfony.com/doc/4.4/ - Find out more about the Symfony web framework
 
 Break a leg!
 

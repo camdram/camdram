@@ -2,11 +2,11 @@
 
 namespace Acts\CamdramAdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UsersPeopleMapCommand extends ContainerAwareCommand
+class UsersPeopleMapCommand extends Command
 {
     protected function configure()
     {

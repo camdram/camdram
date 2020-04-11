@@ -12,12 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class HtmlRenderer
 {
-    /**
-     * @var \Symfony\Bridge\Twig\TwigEngine
-     */
     private $twig;
 
-    public function __construct(\Twig_Environment $twig)
+    public function __construct(\Twig\Environment $twig)
     {
         $this->twig = $twig;
     }

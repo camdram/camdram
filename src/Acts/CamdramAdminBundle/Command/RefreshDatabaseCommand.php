@@ -2,13 +2,23 @@
 
 namespace Acts\CamdramAdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\DBAL\Driver\Connection;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class RefreshDatabaseCommand extends ContainerAwareCommand
+class RefreshDatabaseCommand extends Command
 {
+    private $conn;
+    private $dev_warning;
+
+    public function __construct(Connection $conn, $development_warning) {
+        $this->conn = $conn;
+        $this->dev_warning = $development_warning;
+        parent::__construct();
+    }
+
     protected function configure()
     {
         $this
@@ -19,9 +29,8 @@ class RefreshDatabaseCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $conn = $this->getContainer()->get('doctrine.dbal.default_connection');
-        if ($conn->getDatabasePlatform()->getName() != 'sqlite'
-            && !$this->getContainer()->getParameter('env(DEVELOPMENT_WARNING)'))
+        if ($this->conn->getDatabasePlatform()->getName() != 'sqlite'
+            && !$this->dev_warning)
         {
             //Precaution to avoid running this on the real database, as it drops the DB
             $output->writeln("camdram:database:refresh requires either a SQLite database or the development_warning flag to be set");

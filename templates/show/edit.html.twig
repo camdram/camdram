@@ -5,7 +5,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'edit_show' %}
-{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: form.vars.value})) }}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: form.vars.value})) }}
 
 <div class="row">
     <h3>Edit Show</h3>

@@ -19,7 +19,7 @@ class CamdramFormTypeExtension extends AbstractTypeExtension
      *
      * @return string The name of the type being extended
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [FormType::class];
     }

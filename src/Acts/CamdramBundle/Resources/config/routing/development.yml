@@ -1,3 +1,0 @@
-acts_camdram_development:
-    path: /
-    defaults: { _controller: ActsCamdramBundle:Development:index }

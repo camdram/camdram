@@ -20,9 +20,9 @@ parameters:
     recaptcha_secret_key:       s3cr3t
     sentry_dsn:                 https://123dsn789@sentry.io/1234567
 
-    env(DEVELOPMENT_WARNING): false
-    env(SHOW_SITE_NOTICE): false
+    env(DEVELOPMENT_WARNING): 'false'
+    env(SHOW_SITE_NOTICE): 'false'
     env(SITE_NOTICE_CONTENT): "Camdram will be unavailable for scheduled maintenance from 00:00:00 on 1 January 1970 for approximately 1 hour."
-    env(SHUTDOWN_NOTICE): false
+    env(SHUTDOWN_NOTICE): ''
 
     default_admin_idents: "[]"

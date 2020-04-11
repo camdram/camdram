@@ -2,8 +2,9 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class DevelopmentController
@@ -11,8 +12,11 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  * Very basic controller used by the small 'Development' section, which contains information about contributing to
  * Camdram.
  */
-class DevelopmentController extends Controller
+class DevelopmentController extends AbstractController
 {
+    /**
+     * @Route("/development/", methods={"GET"}, name="acts_camdram_development")
+     */
     public function indexAction(\Github\Client $github)
     {
         $cache = new FilesystemAdapter();

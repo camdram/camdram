@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'new_techie_advert' %}
-{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: form.vars.value.show})) }}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: form.vars.value.show})) }}
 
 <h3>Add Technical Team Advert</h3>
 

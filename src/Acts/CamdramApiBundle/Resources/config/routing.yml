@@ -1,10 +1,10 @@
 acts_camdram_api_homepage:
     path:  /
-    defaults: { _controller: ActsCamdramApiBundle:Default:index }
+    defaults: { _controller: Acts\CamdramApiBundle\Controller\DefaultController::indexAction }
 
 acts_camdram_api_test_console:
     path:  /test-console
-    defaults: { _controller: ActsCamdramApiBundle:Default:testConsole }
+    defaults: { _controller: Acts\CamdramApiBundle\Controller\DefaultController::testConsoleAction }
 
 acts_camdram_api_apps:
     type: rest

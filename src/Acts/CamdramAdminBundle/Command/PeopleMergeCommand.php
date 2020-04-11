@@ -2,13 +2,13 @@
 
 namespace Acts\CamdramAdminBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Acts\CamdramBundle\Entity\Person;
 
-class PeopleMergeCommand extends ContainerAwareCommand
+class PeopleMergeCommand extends Command
 {
     protected function configure()
     {

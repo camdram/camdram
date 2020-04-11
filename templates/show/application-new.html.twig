@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'new_application' %}
-{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: show})) }}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
 
 <h3>Add Director/Producer Advert</h3>
 

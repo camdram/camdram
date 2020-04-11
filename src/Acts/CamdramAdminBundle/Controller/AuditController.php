@@ -2,8 +2,9 @@
 
 namespace Acts\CamdramAdminBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class AuditController extends Controller
+class AuditController extends AbstractController
 {
     private $queryParams = [
         'time_from'   => 'e.loggedAt >= ',
@@ -31,9 +32,9 @@ class AuditController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, EntityManagerInterface $em)
     {
-        $repo = $this->get('doctrine.orm.entity_manager')->getRepository('Gedmo\Loggable\Entity\LogEntry');
+        $repo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
         $qb = $repo->createQueryBuilder('e')->orderBy('e.loggedAt', 'DESC')->setMaxResults(100);
 
         foreach ($request->query as $param => $value) {

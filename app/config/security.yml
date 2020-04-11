@@ -53,7 +53,7 @@ hwi_oauth:
     target_path_parameter: _destination
     connect:
         account_connector: Acts\CamdramSecurityBundle\Security\User\CamdramUserProvider
-        registration_form: camdram.security.registration.form
+        registration_form: Acts\CamdramSecurityBundle\Form\RegistrationFormHandler
         registration_form_handler: Acts\CamdramSecurityBundle\Form\RegistrationFormHandler
     resource_owners:
         facebook:
