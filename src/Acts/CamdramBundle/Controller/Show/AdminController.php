@@ -129,8 +129,8 @@ class AdminController extends AbstractFOSRestController
                 $em->persist($pending_ace);
                 $em->flush();
                 $event_dispatcher->dispatch(
-                    CamdramSecurityEvents::PENDING_ACCESS_CREATED,
-                    new PendingAccessEvent($pending_ace)
+                    new PendingAccessEvent($pending_ace),
+                    CamdramSecurityEvents::PENDING_ACCESS_CREATED
                 );
             }
         }
@@ -177,8 +177,8 @@ class AdminController extends AbstractFOSRestController
             $em->persist($ace);
             $em->flush();
             $event_dispatcher->dispatch(
-                CamdramSecurityEvents::ACE_CREATED,
-                new AccessControlEntryEvent($ace)
+                new AccessControlEntryEvent($ace),
+                CamdramSecurityEvents::ACE_CREATED
             );
 
             $this->addFlash('success', 'Your request for access to this show has been sent.');

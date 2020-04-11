@@ -2,9 +2,9 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class NewsController extends Controller
+class NewsController extends AbstractController
 {
     public function indexAction()
     {

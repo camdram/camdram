@@ -1,6 +1,6 @@
 acts_camdram_security_confirm_email:
     path:   /confirm-email/{email}/{token}
-    defaults: { _controller: ActsCamdramSecurityBundle:Default:confirmEmail }
+    defaults: { _controller: Acts\CamdramSecurityBundle\Controller\DefaultController::confirmEmailAction }
 
 acts_camdram_security_account:
     type:     rest

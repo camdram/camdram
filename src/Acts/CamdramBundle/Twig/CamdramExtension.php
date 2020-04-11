@@ -34,23 +34,23 @@ class CamdramExtension extends AbstractExtension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('camdram_markdown', [$this, 'camdramMarkdown'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('strip_camdram_markdown', [$this, 'stripCamdramMarkdown']),
-            new \Twig_SimpleFilter('detect_links', [$this, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
-            new \Twig_SimpleFilter('strip_new_lines', [$this, 'stripNewLines']),
-            new \Twig_SimpleFilter('truncate', [$this, 'truncate']),
-            new \Twig_SimpleFilter('truncateHTML', [$this, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
-            new \Twig_SimpleFilter('plural', [$this, 'pluralize']),
+            new \Twig\TwigFilter('camdram_markdown', [$this, 'camdramMarkdown'], ['is_safe' => ['html']]),
+            new \Twig\TwigFilter('strip_camdram_markdown', [$this, 'stripCamdramMarkdown']),
+            new \Twig\TwigFilter('detect_links', [$this, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig\TwigFilter('strip_new_lines', [$this, 'stripNewLines']),
+            new \Twig\TwigFilter('truncate', [$this, 'truncate']),
+            new \Twig\TwigFilter('truncateHTML', [$this, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig\TwigFilter('plural', [$this, 'pluralize']),
         );
     }
 
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('link_entity', [$this, 'link_entity'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('list_sep_verb', [$this, 'list_sep_verb']),
-            new \Twig_SimpleFunction('requires_article', [$this, 'requiresArticle']),
-            new \Twig_SimpleFunction('wcag_colors', [$this, 'genWcagColors'])
+            new \Twig\TwigFunction('link_entity', [$this, 'link_entity'], ['is_safe' => ['html']]),
+            new \Twig\TwigFunction('list_sep_verb', [$this, 'list_sep_verb']),
+            new \Twig\TwigFunction('requires_article', [$this, 'requiresArticle']),
+            new \Twig\TwigFunction('wcag_colors', [$this, 'genWcagColors'])
         );
     }
 

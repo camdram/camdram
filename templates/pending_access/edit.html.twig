@@ -4,7 +4,7 @@
 {% block body %}
 
 {% if entity.entityType == 'show' %}
-    {{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: entity})) }}
+    {{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: entity})) }}
 {% elseif entity.entityType == 'society' %}
     {{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: entity})) }}
 {% elseif entity.entityType == 'venue' %}

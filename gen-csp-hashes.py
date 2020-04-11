@@ -13,16 +13,16 @@ import sys
 regex = re.compile('(?<={#- begin-CSP-permitted-script -#}).*?(?={#- end-CSP-permitted-script -#})', flags=re.DOTALL | re.MULTILINE)
 sha256 = hashlib.sha256()
 
-parser = argparse.ArgumentParser(description='Generate part of CSP header from app/Resources/views.')
+parser = argparse.ArgumentParser(description='Generate part of CSP header from templates/.')
 parser.add_argument('--debug-mode', action='store_true', help='Print lots of info (use a pager!)')
 parser.add_argument('--set-unsafe', action='store_true', help='Allow any inline JS, don\'t generate hashes.')
 args = parser.parse_args()
 
-with open('web/build/csp_hashes.txt', 'w', encoding='utf-8', newline='') as outfile:
+with open('public/build/csp_hashes.txt', 'w', encoding='utf-8', newline='') as outfile:
     if args.set_unsafe:
         print("'unsafe-inline'", end='', file=outfile)
         sys.exit(0)
-    for root, dirs, files in os.walk('app/Resources/views'):
+    for root, dirs, files in os.walk('templates'):
         for name in files:
             try:
                 with open(os.path.join(root, name), encoding='utf-8', newline='') as f:

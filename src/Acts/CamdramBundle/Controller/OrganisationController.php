@@ -352,8 +352,8 @@ abstract class OrganisationController extends AbstractRestController
                         $em->persist($pending_ace);
                         $em->flush();
                         $event_dispatcher->dispatch(
-                            CamdramSecurityEvents::PENDING_ACCESS_CREATED,
-                            new PendingAccessEvent($pending_ace)
+                            new PendingAccessEvent($pending_ace),
+                            CamdramSecurityEvents::PENDING_ACCESS_CREATED
                         );
                     }
                 }

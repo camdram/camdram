@@ -49,7 +49,7 @@ class DownloadAssetsCommand extends Command
     {
         $this
             ->setDescription('Download latest assets from camdram.net')
-            ->addOption('domain', 'd', InputOption::VALUE_REQUIRED, '', self::$defaultDomain)
+            ->addOption('domain', 'd', InputOption::VALUE_REQUIRED, 'Domain to download from', self::$defaultDomain)
             ->addOption('force', 'f', InputOption::VALUE_NONE)
         ;
     }

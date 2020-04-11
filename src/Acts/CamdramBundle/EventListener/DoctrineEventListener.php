@@ -78,10 +78,10 @@ class DoctrineEventListener
             }
             $oldVenues = array_keys(array_filter($venueCount));
             $this->eventDispatcher->dispatch(
-                    CamdramSecurityEvents::VENUES_CHANGED,
                     new VenueChangeEvent($show,
                     /*  added  */ array_diff($currentVenues, $oldVenues),
-                    /* removed */ array_diff($oldVenues, $currentVenues))
+                    /* removed */ array_diff($oldVenues, $currentVenues)),
+                    CamdramSecurityEvents::VENUES_CHANGED
                 );
         }
     }

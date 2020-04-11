@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Security\Acl;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -24,8 +24,8 @@ class AclProvider
     private $entityManager;
 
     /**
-         * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-         */
+     * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
+     */
     private $eventDispatcher = null;
 
     public function __construct(
@@ -158,8 +158,8 @@ class AclProvider
                  * notification.
                  */
         $this->eventDispatcher->dispatch(
-            CamdramSecurityEvents::ACE_CREATED,
-            new AccessControlEntryEvent($ace)
+            new AccessControlEntryEvent($ace),
+            CamdramSecurityEvents::ACE_CREATED
         );
     }
 
@@ -267,8 +267,8 @@ class AclProvider
                              * notification.
                              */
             $this->eventDispatcher->dispatch(
-                    CamdramSecurityEvents::ACE_CREATED,
-                    new AccessControlEntryEvent($ace)
+                    new AccessControlEntryEvent($ace),
+                    CamdramSecurityEvents::ACE_CREATED
                 );
         }
     }

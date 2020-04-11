@@ -22,7 +22,7 @@ class FeedViewHandler
 
     private $authorAddress;
 
-    public function __construct(AnnotationReader $reader, \Twig_Environment $twig, EntityUrlGenerator $urlGen, $adminEmail)
+    public function __construct(AnnotationReader $reader, \Twig\Environment $twig, EntityUrlGenerator $urlGen, $adminEmail)
     {
         $this->reader = $reader;
         $this->twig = $twig;

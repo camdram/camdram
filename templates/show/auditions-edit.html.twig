@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'edit_auditions' %}
-{{ render(controller('ActsCamdramBundle:Show:adminPanel', {show: form.vars.value})) }}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: form.vars.value})) }}
 
 <h3>Add/Edit Auditions</h3>
 
@@ -36,7 +36,7 @@
 <div class="form-large-row">
     {{ form_label(form.scheduled_auditions) }}
     <div>
-        <div class="scheduled_auditions entity_collection" data-prototype="{% filter escape('html') %}{% include 'show/auditions-form.html.twig' with {audition: form.scheduled_auditions.vars.prototype} %}{% endfilter %}">
+        <div class="scheduled_auditions entity_collection" data-prototype="{% apply escape('html') %}{% include 'show/auditions-form.html.twig' with {audition: form.scheduled_auditions.vars.prototype} %}{% endapply %}">
             {% for audition in form.scheduled_auditions %}
                 {% include 'show/auditions-form.html.twig' %}
             {% endfor %}
@@ -51,7 +51,7 @@
 <div class="form-large-row">
     {{ form_label(form.non_scheduled_auditions) }}
     <div>
-        <div class="non_scheduled_auditions" data-prototype="{% filter escape('html') %}{% include 'show/auditions-non-scheduled-form.html.twig' with {audition: form.non_scheduled_auditions.vars.prototype} %}{% endfilter %}">
+        <div class="non_scheduled_auditions" data-prototype="{% apply escape('html') %}{% include 'show/auditions-non-scheduled-form.html.twig' with {audition: form.non_scheduled_auditions.vars.prototype} %}{% endapply %}">
             {% for audition in form.non_scheduled_auditions %}
                 {% include 'show/auditions-non-scheduled-form.html.twig' %}
             {% endfor %}

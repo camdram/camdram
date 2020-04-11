@@ -4,48 +4,39 @@ acts_camdram_entities_res:
 acts_camdram_diary:
     path: diary.{_format}
     defaults:
-        _controller: ActsCamdramBundle:Diary:index
+        _controller: Acts\CamdramBundle\Controller\DiaryController::indexAction
         _format: html
 acts_camdram_diary_res:
     resource: "routing/diary.yml"
     prefix: /diary
-acts_camdram_development:
-    resource: "routing/development.yml"
-    prefix: /development
 acts_camdram_homepage:
     path:  /
-    defaults: { _controller: ActsCamdramBundle:Default:index }
+    defaults:
+        _controller: Acts\CamdramBundle\Controller\DefaultController::indexAction
 
-acts_camdram_contact:
-    resource: "routing/contact_us.yml"
 acts_camdram_privacy:
     path: /privacy
     defaults:
-        _controller: FrameworkBundle:Template:template
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
         template: 'static/privacy.html.twig'
 acts_camdram_userguidelines:
     path: /user-guidelines
     defaults:
-        _controller: FrameworkBundle:Template:template
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
         template: 'static/user-guidelines.html.twig'
 acts_camdram_roles:
     type:     rest
     prefix:   /
     resource: Acts\CamdramBundle\Controller\RoleController
-acts_camdram_signinsheet:
-    path: /shows/{slug}/signinsheet.{_format}
-    defaults: { _controller: ActsCamdramBundle:Signinsheet:index, slug: ~, _format: html }
-    requirements: { _format: (csv|html) }
-    methods: [GET]
 acts_camdram_about:
     path: /about
     defaults:
-        _controller: FrameworkBundle:Template:template
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
         template: 'static/about.html.twig'
 acts_camdram_faq:
     path: /faq
     defaults:
-        _controller: FrameworkBundle:Template:template
+        _controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
         template: 'static/faq.html.twig'
 
 acts_camdram_removed:

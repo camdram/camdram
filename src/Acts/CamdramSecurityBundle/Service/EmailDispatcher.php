@@ -22,7 +22,7 @@ class EmailDispatcher
     private $twig;
     private $from_address;
 
-    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, \Twig_Environment $twig, $adminEmail)
+    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, \Twig\Environment $twig, $adminEmail)
     {
         $this->em = $em;
         $this->mailer = $mailer;

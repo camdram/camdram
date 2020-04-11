@@ -14,6 +14,8 @@ services:
             # that's defined in this file (including controller arguments)
             $adminEmail: "%support_email_address%"
             $appSecret: "%env(APP_SECRET)%"
+            $autocomplete_person: '@fos_elastica.object_persister.autocomplete_person.person'
+            $development_warning: "%env(DEVELOPMENT_WARNING)%"
 
     Acts\CamdramBundle\:
         resource: '../../src/Acts/CamdramBundle/*'

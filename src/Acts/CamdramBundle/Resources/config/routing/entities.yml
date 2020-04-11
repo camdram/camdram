@@ -56,4 +56,4 @@ acts_camdram_timeperiods:
 
 acts_camdram_show_admin:
     path: /show-admin
-    defaults: { _controller: ActsCamdramBundle:ShowAdmin:cget }
+    defaults: { _controller: Acts\CamdramBundle\Controller\ShowAdminController::cgetAction }

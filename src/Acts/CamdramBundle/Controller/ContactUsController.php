@@ -4,16 +4,21 @@ namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Form\Type\ContactUsType;
 use Acts\CamdramBundle\Service\EmailDispatcher;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ContactUsController
  *
  * Very basic controller used by the Contact Us page
  */
-class ContactUsController extends Controller
+class ContactUsController extends AbstractController
 {
+
+    /**
+     * @Route("/contact-us", methods={"GET"}, name="acts_camdram_contact_us")
+     */
     public function indexAction()
     {
         $form = $this->createForm(ContactUsType::class);
@@ -23,6 +28,9 @@ class ContactUsController extends Controller
         ));
     }
 
+    /**
+     * @Route("/contact-us", methods={"POST"}, name="acts_camdram_contact_us_send")
+     */
     public function sendAction(Request $request, EmailDispatcher $emailDispatcher)
     {
         $form = $this->createForm(ContactUsType::class);
@@ -39,6 +47,9 @@ class ContactUsController extends Controller
         }
     }
 
+    /**
+     * @Route("/contact-us/sent", name="acts_camdram_contact_us_sent")
+     */
     public function sentAction()
     {
         return $this->render('contact_us/sent.html.twig');

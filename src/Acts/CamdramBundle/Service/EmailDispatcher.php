@@ -11,7 +11,7 @@ class EmailDispatcher
     private $twig;
     private $from_address;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig, $adminEmail)
+    public function __construct(\Swift_Mailer $mailer, \Twig\Environment $twig, $adminEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

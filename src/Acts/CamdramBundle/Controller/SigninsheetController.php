@@ -2,11 +2,12 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Acts\CamdramBundle\Entity\Show;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Acts\CamdramBundle\Entity\Show;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class SigninsheetController
@@ -14,13 +15,13 @@ use Acts\CamdramBundle\Entity\Show;
  * Very basic controller used for generating sign in sheets. Currently the two
  * forms supported are a basic HTML table and a CSV format for downloading.
  */
-class SigninsheetController extends Controller
+class SigninsheetController extends AbstractController
 {
-    /*
-     * @param null|string $slug
-     * @return \Symfony\Component\HttpFoundation\Response
+    /**
+     * @Route("/shows/{slug}/signinsheet.{_format}", name="acts_camdram_signinsheet",
+     *      requirements={ "_format"="(csv|html)" }, methods={"GET"})
      */
-    public function indexAction(Request $request, $slug = null, $_format)
+    public function indexAction(Request $request, $slug = null, $_format = 'html'): Response
     {
         $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
         $show = $repo->findOneBySlug($slug);

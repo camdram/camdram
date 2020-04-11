@@ -2,7 +2,8 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Acts\CamdramBundle\Service\WeekManager;
 use Acts\DiaryBundle\Diary\Diary;
 
 /**
@@ -11,7 +12,7 @@ use Acts\DiaryBundle\Diary\Diary;
  * Controlled for the home page. Most areas of the home page are split up into sub-actions which are triggered
  * individually from the main template.
  */
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     /**
      * The home page.
@@ -20,7 +21,7 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(WeekManager $week_manager)
     {
         $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
         $news = $news_repo->getRecent(20);
@@ -30,7 +31,6 @@ class DefaultController extends Controller
         $start->modify('-4 weeks');
         $end = clone $now;
         $end->modify('+10 weeks');
-        $week_manager = $this->get('acts.camdram.week_manager');
         $weeks = $week_manager->findBetween($start, $end);
         $current_week = $week_manager->findAt($now);
 
@@ -103,7 +103,7 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function historicDataAction()
+    public function historicDataAction(WeekManager $week_manager)
     {
         $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
         $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
@@ -113,7 +113,7 @@ class DefaultController extends Controller
         foreach (array(1, 2, 5) as $years) {
             $date = clone $now;
             $date->modify('-'.$years.' years');
-            $week = $this->get('acts.camdram.week_manager')->findAt($date);
+            $week = $week_manager->findAt($date);
             if ($week) {
                 $shows = $show_repo->findMostInterestingByWeek($week, 5);
                 if (count($shows) > 0) {

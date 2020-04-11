@@ -21,9 +21,8 @@ class AdminVoter extends Voter
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        foreach ($token->getRoles() as $role) {
-            if ($role->getRole() == 'ROLE_ADMIN'
-                || $role->getRole() == 'ROLE_SUPER_ADMIN') {
+        foreach ($token->getRoleNames() as $role) {
+            if ($role == 'ROLE_ADMIN' || $role == 'ROLE_SUPER_ADMIN') {
                 return true;
             }
         }
