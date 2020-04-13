@@ -19,7 +19,7 @@
     },
     "conflict" : {
         "friendsofsymfony/jsrouting-bundle": "2.5.*",
-        "liip/imagine-bundle": ">2.2.0",
+        "liip/imagine-bundle": "^2.2.0",
         "symfony/symfony": "*"
     },
     "description": "Camdram - The portal website for student theatre in Cambridge",
