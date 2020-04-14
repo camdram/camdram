@@ -4,24 +4,24 @@
 
 {% block body %}
 
-{% if is_granted('EDIT', person) %}
+{%- if is_granted('EDIT', person) -%}
     {{ include('person/admin-panel.html.twig') }}
-{% endif %}
+{%- endif -%}
 
 <div id="entity-header">
     <h2>
-      {{ person.name }}
-      {% if person.users | length != 0 %}
+      {{- person.name -}}
+      {%- if person.users | length != 0 -%}
           {% for role in person.users.0.roles %}
-              {% if role == 'ROLE_SUPER_ADMIN' %}
+              {%- if role == 'ROLE_SUPER_ADMIN' -%}
                   <abbr title="This user is a Camdram administrator." style="float: right; cursor: help;"><i style="color: #fe5c1f;" class="fa fa-cogs"></i></abbr>
-              {% endif %}
-          {% endfor %}
-      {% endif %}
+              {%- endif -%}
+          {%- endfor -%}
+      {%- endif -%}
     </h2>
-    {% if person.description %}
-    <p>{{ person.description }}</p>
-    {% endif %}
+    {%- if person.description -%}
+        {{ person.description | camdram_markdown }}
+    {%- endif -%}
 </div>
 
 <div class="tabbed-content">

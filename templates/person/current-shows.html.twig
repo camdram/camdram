@@ -1,10 +1,10 @@
-{% if shows | length > 0 %}
+{%- if shows | length > 0 -%}
     <h4>{{ person.name }} is currently involved with</h4>
     <div>
-    {% for show in shows %}
+    {%- for show in shows -%}
         <div {{ include('person/show-header.html.twig') }}
-            <p>{{ show.description | camdram_markdown }}</p>
+            {{- show.description | camdram_markdown -}}
         </div>
-    {% endfor %}
+    {%- endfor -%}
     </div>
-{% endif %}
+{%- endif -%}
