@@ -59,3 +59,7 @@ services:
         arguments: ['']
         tags:
             - { name: 'liip_imagine.binary.loader', loader: 'url_data_loader' }
+
+    hwi_oauth.registration.form.factory:
+        class: Acts\CamdramSecurityBundle\Form\RegistrationFormHandler
+        public: true
