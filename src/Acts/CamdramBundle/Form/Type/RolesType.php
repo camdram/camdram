@@ -49,7 +49,7 @@ class RolesType extends AbstractType
                     ),
                 'constraints' => [new Constraints\NotBlank()]
                 ))
-            ->add('Add roles', SubmitType::class)
+            ->add('add_roles', SubmitType::class)
         ;
     }
 
