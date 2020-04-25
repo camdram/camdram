@@ -15,7 +15,6 @@ services:
       - "DATABASE_URL=mysql://root:c4mdrAm@db/camdram_dev"
     depends_on:
       - db
-      - search
   db:
     image: mariadb:10.1
     volumes:
@@ -24,17 +23,7 @@ services:
       - backend
     environment:
       - "MYSQL_ROOT_PASSWORD=c4mdrAm"
-  search:
-    image: elasticsearch:6.8.0
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-    networks:
-      - backend
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 volumes:
-  esdata:
-    driver: local
   dbdata:
     driver: local
 networks:
