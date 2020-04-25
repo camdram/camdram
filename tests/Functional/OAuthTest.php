@@ -12,7 +12,6 @@ use Symfony\Component\BrowserKit\Cookie;
 
 class OAuthTest extends WebTestCase
 {
-
     /**
      * @var EntityManager
      */
@@ -47,8 +46,10 @@ class OAuthTest extends WebTestCase
 
     public function setUp(): void
     {
+        self::ensureKernelShutdown();
         $this->userClient = static::createClient();
 
+        self::ensureKernelShutdown();
         $this->client = static::createClient();
         $this->createApiApp();
     }

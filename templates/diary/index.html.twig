@@ -5,7 +5,7 @@
 
 {% block body %}
 
-{{ render(controller('ActsCamdramBundle:Diary:toolbar', {start_date: diary.startDate})) }}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\DiaryController::toolbarAction', {start_date: diary.startDate})) }}
 
 <div id="diary">
     {{ render_diary(diary) }}
