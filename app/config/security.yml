@@ -60,7 +60,7 @@ hwi_oauth:
             type: facebook
             client_id: "%facebook_id%"
             client_secret: "%facebook_secret%"
-            scope: "email user_friends"
+            scope: "email"
             options:
                 csrf: true
         google:
