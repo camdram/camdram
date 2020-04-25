@@ -1,6 +1,7 @@
+os: linux
 language: php
 dist: xenial
-matrix:
+jobs:
   include:
     - php: 7.3
   fast_finish: true
@@ -16,6 +17,7 @@ before_script:
 - cp app/config/parameters.travis.yml app/config/parameters.yml
   # Install deps. `--no-interaction` causes paramters.yml to be populated with default values
 - travis_retry composer install --no-interaction
+- nvm install 10.15
 - yarn install
 script:
 - "yarn build"
