@@ -59,18 +59,18 @@
     <div class="newsfeed-left-aside">
         {% if not shutdown_notice %}
         <div id="home_statistics">
-            {{ render(controller('ActsCamdramBundle:Default:statistics'), {'strategy': 'esi'}) }}
+            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::statisticsAction'), {'strategy': 'esi'}) }}
         </div>
         <hr />
         {% endif %}
 
         <div id="home_vacancies">
-            {{ render(controller('ActsCamdramBundle:Default:vacancies'), {'strategy': 'esi'}) }}
+            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::vacanciesAction'), {'strategy': 'esi'}) }}
         </div>
         <hr />
 
         <div id="home_historic">
-            {{ render(controller('ActsCamdramBundle:Default:historicData'), {'strategy': 'esi'}) }}
+            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::historicDataAction'), {'strategy': 'esi'}) }}
         </div>
         <hr />
     </div>
