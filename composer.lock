@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c5325273acc5b03b9541ffd2e98fb50",
+    "content-hash": "34949422f0f5096568fd415e1e0282c2",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -4414,40 +4414,43 @@
         },
         {
             "name": "oneup/uploader-bundle",
-            "version": "2.2.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
-                "reference": "8bd74b2d5f07f9ee6280f0b90ed8199471f57f52"
+                "reference": "4c954cd2baf5531b91317bbe72f00f904d47e51d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/8bd74b2d5f07f9ee6280f0b90ed8199471f57f52",
-                "reference": "8bd74b2d5f07f9ee6280f0b90ed8199471f57f52",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/4c954cd2baf5531b91317bbe72f00f904d47e51d",
+                "reference": "4c954cd2baf5531b91317bbe72f00f904d47e51d",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1",
-                "symfony/asset": "^3.0|^4.0",
-                "symfony/finder": "^3.0|^4.0",
-                "symfony/framework-bundle": "^3.0|^4.0",
-                "symfony/http-foundation": "^3.0|^4.0",
-                "symfony/templating": "^3.0|^4.0",
-                "symfony/translation": "^3.0|^4.0",
-                "symfony/yaml": "^3.0|^4.0",
-                "twig/twig": "^1.41|^2.10|^3.0"
+                "php": "^7.2.5",
+                "symfony/asset": "^4.4|^5.0",
+                "symfony/event-dispatcher-contracts": "^1.0|^2.0",
+                "symfony/finder": "^4.4|^5.0",
+                "symfony/framework-bundle": "^4.4|^5.0",
+                "symfony/templating": "^4.4|^5.0",
+                "symfony/translation": "^4.4|^5.0",
+                "symfony/translation-contracts": "^1.0|^2.0",
+                "symfony/yaml": "^4.4|^5.0",
+                "twig/twig": "^2.4|^3.0"
             },
             "require-dev": {
                 "amazonwebservices/aws-sdk-for-php": "1.5.*",
+                "doctrine/common": "^2.12",
+                "friendsofphp/php-cs-fixer": "^2.16",
                 "knplabs/gaufrette": "^0.9",
                 "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
-                "phpunit/phpunit": "^7.5",
+                "phpstan/phpstan": "^0.12.10",
+                "phpunit/phpunit": "^8.5",
                 "sensio/framework-extra-bundle": "^5.0",
-                "symfony/browser-kit": "^3.0|^4.0",
-                "symfony/class-loader": "^3.0|^4.0",
+                "symfony/browser-kit": "^4.4|^5.0",
                 "symfony/phpunit-bridge": "^5.0",
-                "symfony/security-bundle": "^3.0|^4.0",
-                "symfony/var-dumper": "^3.0|^4.0",
+                "symfony/security-bundle": "^4.4|^5.0",
+                "symfony/var-dumper": "^4.4|^5.0",
                 "twistor/flysystem-stream-wrapper": "^1.0"
             },
             "suggest": {
@@ -4458,11 +4461,8 @@
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "Oneup\\UploaderBundle\\": ""
-                },
-                "classmap": [
-                    "Tests/App/AppKernel.php"
-                ]
+                    "Oneup\\UploaderBundle\\": "src"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4472,18 +4472,18 @@
                 {
                     "name": "Jim Schmid",
                     "email": "js@1up.io",
-                    "homepage": "http://1up.io",
+                    "homepage": "https://1up.io",
                     "role": "Developer"
                 },
                 {
                     "name": "David Greminger",
                     "email": "dg@1up.io",
-                    "homepage": "http://1up.io",
+                    "homepage": "https://1up.io",
                     "role": "Developer"
                 }
             ],
             "description": "Handles multi file uploads in Symfony2. Features included: Chunked upload, Orphans management, Gaufrette support.",
-            "homepage": "http://1up.io",
+            "homepage": "https://1up.io",
             "keywords": [
                 "FancyUpload",
                 "FineUploader",
@@ -4497,7 +4497,7 @@
                 "plupload",
                 "upload"
             ],
-            "time": "2020-02-06T09:12:03+00:00"
+            "time": "2020-03-27T15:56:10+00:00"
         },
         {
             "name": "php-http/cache-plugin",
@@ -8923,20 +8923,20 @@
         },
         {
             "name": "symfony/templating",
-            "version": "v4.4.7",
+            "version": "v5.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/templating.git",
-                "reference": "d65ba8cd13339b692f709ea36625851de218c4dc"
+                "reference": "b56005834b101ca8253292bbd23917e81883f8cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/templating/zipball/d65ba8cd13339b692f709ea36625851de218c4dc",
-                "reference": "d65ba8cd13339b692f709ea36625851de218c4dc",
+                "url": "https://api.github.com/repos/symfony/templating/zipball/b56005834b101ca8253292bbd23917e81883f8cd",
+                "reference": "b56005834b101ca8253292bbd23917e81883f8cd",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3",
+                "php": "^7.2.5",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "require-dev": {
@@ -8948,7 +8948,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.4-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -8975,7 +8975,7 @@
             ],
             "description": "Symfony Templating Component",
             "homepage": "https://symfony.com",
-            "time": "2020-03-27T16:54:36+00:00"
+            "time": "2020-03-27T16:56:45+00:00"
         },
         {
             "name": "symfony/translation",
@@ -9514,27 +9514,27 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.7",
+            "version": "v5.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "ef166890d821518106da3560086bfcbeb4fadfec"
+                "reference": "ad5e9c83ade5bbb3a96a3f30588a0622708caefd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/ef166890d821518106da3560086bfcbeb4fadfec",
-                "reference": "ef166890d821518106da3560086bfcbeb4fadfec",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/ad5e9c83ade5bbb3a96a3f30588a0622708caefd",
+                "reference": "ad5e9c83ade5bbb3a96a3f30588a0622708caefd",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3",
+                "php": "^7.2.5",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "conflict": {
-                "symfony/console": "<3.4"
+                "symfony/console": "<4.4"
             },
             "require-dev": {
-                "symfony/console": "^3.4|^4.0|^5.0"
+                "symfony/console": "^4.4|^5.0"
             },
             "suggest": {
                 "symfony/console": "For validating YAML files using the lint command"
@@ -9542,7 +9542,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.4-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -9569,7 +9569,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2020-03-30T11:41:10+00:00"
+            "time": "2020-03-30T11:42:42+00:00"
         },
         {
             "name": "twig/twig",
@@ -10385,6 +10385,5 @@
     "platform": {
         "php": ">=7.3"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
