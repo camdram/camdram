@@ -103,7 +103,7 @@
         "symfony/maker-bundle": "^1.11",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/web-profiler-bundle": "*",
-        "symfony/web-server-bundle": "^3.4"
+        "symfony/web-server-bundle": "^4.4"
     },
     "scripts": {
         "post-create-project-cmd": [
