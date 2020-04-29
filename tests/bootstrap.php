@@ -16,7 +16,7 @@ if (!file_exists($testDbPath) || filesize($testDbPath) == 0) {
         throw new \RuntimeException('The php executable could not be found');
     }
 
-    $process = new Process($phpPath.' app/console doctrine:schema:create');
+    $process = new Process([$phpPath, 'app/console', 'doctrine:schema:create']);
     $process->run();
     if (!$process->isSuccessful()) {
         throw new \RuntimeException('An error occurred generate the test DB schema');
