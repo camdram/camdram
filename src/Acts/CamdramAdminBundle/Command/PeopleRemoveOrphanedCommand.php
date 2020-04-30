@@ -44,7 +44,7 @@ class PeopleRemoveOrphanedCommand extends Command
         foreach ($people as $person) {
             $this->deletePerson($person, $output);
         }
-        $em->flush();
+        $this->entityManager->flush();
     }
 
     private function deletePerson(Person $person, OutputInterface $output)
@@ -56,7 +56,7 @@ class PeopleRemoveOrphanedCommand extends Command
             $this->deletePerson($mapped_person, $output);
         }
         if (count($person->getUsers()) == 0) {
-            $em->remove($person);
+            $this->entityManager->remove($person);
             $output->writeln('Deleted '.$person->getName());
         } else {
             $person->setMappedTo(null);
