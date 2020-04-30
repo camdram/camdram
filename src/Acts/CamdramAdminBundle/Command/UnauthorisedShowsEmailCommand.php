@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramAdminBundle\Command;
 
+use Acts\CamdramBundle\Service\ModerationManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,11 +19,13 @@ class UnauthorisedShowsEmailCommand extends Command
      * @var EntityManagerInterface
      */
     private $entityManager;
+    private $moderationManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, ModerationManager $mm)
     {
         parent::__construct();
         $this->entityManager = $entityManager;
+        $this->moderationManager = $mm;
     }
 
     /**
@@ -32,7 +35,7 @@ class UnauthorisedShowsEmailCommand extends Command
     {
         $this
             ->setName('camdram:unauthorised-shows:email')
-            ->setDescription('Send e-mail to all those ')
+            ->setDescription('Send e-mail to all moderators of unauthorised shows.')
         ;
     }
 
@@ -40,11 +43,9 @@ class UnauthorisedShowsEmailCommand extends Command
     {
         $unauthorised_shows = $this->entityManager->getRepository('ActsCamdramBundle:Show')->findUnauthorised();
 
-        $moderation_manager = $this->getContainer()->get('acts.camdram.moderation_manager');
-
         foreach ($unauthorised_shows as $show) {
             $output->writeln('Sending authorisation reminder email for show "'.$show->getName().'"');
-            $moderation_manager->emailEntityModerators($show);
+            $this->moderationManager->emailEntityModerators($show);
         }
     }
 }
