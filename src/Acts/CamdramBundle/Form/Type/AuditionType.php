@@ -30,8 +30,6 @@ class AuditionType extends AbstractType
             ])
             ->add('end_at', TimeType::class, [
                 'widget' => 'single_text',
-                'model_timezone' => 'UTC',
-                'view_timezone' => 'Europe/London',
                 'constraints' => new Constraints\NotBlank()
             ])
             ->add('location', TextType::class, ['constraints' => new Constraints\NotBlank()])
@@ -80,11 +78,6 @@ class AuditionType extends AbstractType
 
     private function generateEndAt(\DateTime $startAt, \DateTime $endAtTime): \DateTime
     {
-        $endAtTime = clone $endAtTime;
-
-        // Reverse model transform -> UTC to retrieve original time
-        $endAtTime->setTimezone(new \DateTimezone('Europe/London'));
-
         $endAt = clone $startAt;
         // Reverse model transform -> UTC before setting date
         $endAt->setTimezone(new \DateTimezone('Europe/London'));
