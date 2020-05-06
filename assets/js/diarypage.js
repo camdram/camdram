@@ -1,10 +1,5 @@
 import './base.js';
-import moment from 'moment';
 import Routing from 'router';
-
-var Camdram = Camdram || {};
-
-Camdram.diary_date_format = 'YYYY-MM-DD';
 
 Camdram.diary_server = {};
 Camdram.diary_server.queue = [];
@@ -33,8 +28,8 @@ Camdram.diary_server.get_content_for_today = function(cb) {
 }
 Camdram.diary_server.get_content_by_dates = function(start, end, cb) {
     Camdram.diary_server.get_content(Routing.generate('acts_camdram_diary_date', {
-        start: start.format('YYYY-MM-DD'),
-        end: end.format(Camdram.diary_date_format),
+        start: Camdram.formatISODate(start),
+        end: Camdram.formatISODate(end),
         fragment: true
     }), cb);
 }
@@ -42,7 +37,7 @@ Camdram.diary_server.get_content_by_period = function(year, period, end, cb) {
     Camdram.diary_server.get_content(Routing.generate('acts_camdram_diary_period', {
         year: year,
         period: period,
-        end: end ? end.format(Camdram.diary_date_format) : null,
+        end: end ? Camdram.formatISODate(end) : null,
         fragment: true
     }), cb);
 }
@@ -54,21 +49,20 @@ Camdram.diary = function() {
     this.state = {}
 };
 Camdram.diary.prototype.get_first_date = function() {
-    return moment(this.$diary.children('.diary-week').first().attr('data-start') + ' 00:00');
+    return Camdram.parseISODate(this.$diary.children('.diary-week').first().attr('data-start'));
 };
 Camdram.diary.prototype.get_last_date = function() {
-    return moment(this.$diary.children('.diary-week').last().attr('data-end') + ' 00:00');
+    return Camdram.parseISODate(this.$diary.children('.diary-week').last().attr('data-end'));
 }
 Camdram.diary.prototype.insert_content = function(html, cb) {
     var self = this;
 
-    var new_start_at = new Date(html.filter('.diary-week').first().attr('data-start') + 'T00:00');
-    var start_at = new Date(self.$diary.children().last().attr('data-start') + 'T00:00');
+    var new_start_at = Camdram.parseISODate(html.filter('.diary-week').first().attr('data-start'));
+    var start_at = Camdram.parseISODate(self.$diary.children().last().attr('data-start'));
 
     if (new_start_at >= start_at) {
         self.$diary.append(html);
-    }
-    else {
+    } else {
         self.$diary.prepend(html);
     }
 
@@ -89,7 +83,7 @@ Camdram.diary.prototype.load_from_state = function(state) {
     if (state.year && state.period) {
         self.is_loading = true;
         self.$diary.empty();
-        var end = state.end ? moment(state.end+ ' 00:00') : null;
+        var end = state.end ? Camdram.parseISODate(state.end) : null;
         Camdram.diary_server.get_content_by_period(state.year, state.period, end, function(data) {
             self.insert_content(data, function() {
                 self.is_loading = false;
@@ -99,7 +93,7 @@ Camdram.diary.prototype.load_from_state = function(state) {
     else if (state.start && state.end) {
         self.is_loading = true;
         self.$diary.empty();
-        Camdram.diary_server.get_content_by_dates(moment(state.start+ ' 00:00'), moment(state.end+ ' 00:00'), function(data) {
+        Camdram.diary_server.get_content_by_dates(Camdram.parseISODate(state.start), Camdram.parseISODate(state.end), function(data) {
             self.insert_content(data, function() {
                 self.is_loading = false;
             });
@@ -141,7 +135,7 @@ Camdram.diary.prototype.load_previous_weeks = function(num_weeks) {
     var self = this;
     if (self.is_loading) return;
     self.is_loading = true;
-    var start = this.get_first_date().subtract(7*num_weeks, 'days');
+    var start = Camdram.datePlusDays(this.get_first_date(), -7*num_weeks);
     var end = this.get_first_date();
     Camdram.diary_server.get_content_by_dates(start, end, function(data) {
         self.insert_content(data, function() {
@@ -149,8 +143,8 @@ Camdram.diary.prototype.load_previous_weeks = function(num_weeks) {
         });
     })
     this.change_state({
-        start: start.format(Camdram.diary_date_format),
-        end: this.get_last_date().format(Camdram.diary_date_format)
+        start: Camdram.formatISODate(start),
+        end: Camdram.formatISODate(this.get_last_date())
     }, true);
 }
 Camdram.diary.prototype.load_next_weeks = function(num_weeks) {
@@ -158,13 +152,13 @@ Camdram.diary.prototype.load_next_weeks = function(num_weeks) {
     if (self.is_loading) return;
     self.is_loading = true;
     var start = this.get_last_date();
-    var end = this.get_last_date().add(7*num_weeks, 'days');
+    var end = Camdram.datePlusDays(this.get_last_date(), +7*num_weeks);
     Camdram.diary_server.get_content_by_dates(start, end, function(data) {
         self.is_loading = false;
         self.insert_content(data);
     })
     var state = this.state;
-    state.end = end.format(Camdram.diary_date_format);
+    state.end = Camdram.formatISODate(end);
     this.change_state(state, true);
 }
 
@@ -233,10 +227,9 @@ $(function() {
 
             }
 
-            history.replaceState(
-                {start: diary.get_first_date().format(Camdram.diary_date_format)},
-                document.title, document.location
-            );
+            history.replaceState({
+                start: Camdram.formatISODate(diary.get_first_date())
+            }, document.title, document.location);
         }
     }
 

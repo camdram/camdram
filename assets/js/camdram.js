@@ -2,11 +2,35 @@ import 'cookieconsent';
 import Dropzone from 'dropzone';
 import Routing from 'router';
 
-// Leak Routing to the global scope so that inline scripts work.
-window.Routing = Routing;
-
 const Camdram = {};
 export default Camdram;
+
+// Leaks to the global scope
+window.Routing = Routing;
+window.Camdram = Camdram;
+
+// Basic date handling, rather than a 150 KB library.
+Camdram.short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+Camdram.parseISODate = function(yyyy_mm_dd) {
+    if (yyyy_mm_dd == null) return null;
+    const match = yyyy_mm_dd.match(/(\d{4,})-(\d\d)-(\d\d)/);
+    const date = new Date();
+    if (match === null) return null;
+    date.setUTCFullYear(+match[1], match[2] - 1, +match[3]);
+    return date;
+};
+Camdram.formatISODate = date => date.getUTCFullYear() +
+    (date.getUTCMonth() < 9 ? '-0' : '-') +
+    (date.getUTCMonth() + 1) +
+    (date.getUTCDate() < 10 ? '-0' : '-') +
+    date.getUTCDate();
+Camdram.formatMMMYYYY = date =>
+    Camdram.short_months[date.getUTCMonth()] + ' ' + date.getUTCFullYear();
+Camdram.datePlusDays = function(date, days) {
+    const result = new Date(date.valueOf());
+    result.setUTCDate(result.getUTCDate() + days);
+    return result;
+}
 
 let spun = false;
 window["spinTheWorld"] = function() {

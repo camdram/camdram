@@ -1,8 +1,6 @@
 import Routing from 'router';
-import moment from 'moment';
 
 // Register the autocomplete system
-var Camdram = Camdram || {};
 Camdram.autocomplete = {};
 // Stored result items
 Camdram.autocomplete.items = [];
@@ -10,8 +8,6 @@ Camdram.autocomplete.items = [];
 Camdram.autocomplete.timeout;
 //Cache, for storing previous results
 Camdram.autocomplete.cache = {}
-//Short month strings (used for displaying show dates)
-Camdram.autocomplete.short_months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 // On load register all requirements into views
 $(function() {
     $("#searchfield").focus(function(e) {
@@ -180,11 +176,11 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
             $('<span/>').text(result.name).appendTo(link);
 
             if (result.entity_type == 'person' && result.show_count > 0) {
-                var from = moment(result.first_active);
-                var till = moment(result.last_active);
+                var from = Camdram.parseISODate(result.first_active);
+                var till = Camdram.parseISODate(result.last_active);
                 var now_ms = Date.now();
-                var fromString = from.format('MMM YYYY');
-                var tillString = till.format('MMM YYYY');
+                var fromString = Camdram.formatMMMYYYY(from);
+                var tillString = Camdram.formatMMMYYYY(till);
                 var string = ` (${result.show_count} ${result.show_count == 1 ? 'show' : 'shows'}, `;
                 const SIX_MONTHS = 180*86400*1000;
 
@@ -206,9 +202,9 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
             }
 
             if (result.entity_type == 'show' && result.start_at != '') {
-                var date = moment(result.start_at);
-                if (date.isValid()) {
-                    $('<em/>').text(' (' + date.format('MMM YYYY') + ')').appendTo(link);
+                var date = Camdram.parseISODate(result.start_at);
+                if (date) {
+                    $('<em/>').text(' (' + Camdram.formatMMMYYYY(date) + ')').appendTo(link);
                 }
             }
 
