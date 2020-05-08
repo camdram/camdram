@@ -86,7 +86,7 @@ class Application
      *
      * @ORM\Column(name="deadlinedate", type="date", nullable=false)
      * @Assert\NotBlank()
-     * @Assert\Date()
+     * @Assert\Type("\DateTimeInterface")
      * @Gedmo\Versioned
      * @Serializer\Expose
      * @Serializer\XmlElement(cdata=false)
@@ -108,7 +108,7 @@ class Application
      *
      * @ORM\Column(name="deadlinetime", type="time", nullable=false)
      * @Assert\NotBlank()
-     * @Assert\Time()
+     * @Assert\Type("\DateTimeInterface")
      * @Gedmo\Versioned
      * @Serializer\Expose
      * @Serializer\XmlElement(cdata=false)

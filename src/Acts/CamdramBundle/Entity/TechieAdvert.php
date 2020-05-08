@@ -84,7 +84,7 @@ class TechieAdvert
      * @var \DateTime
      *
      * @ORM\Column(name="expiry", type="datetime", nullable=false)
-     * @Assert\Date()
+     * @Assert\Type("\DateTimeInterface")
      * @Gedmo\Versioned
      * @Serializer\Expose
      */
