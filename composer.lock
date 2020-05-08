@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "54a3322e9a6e52f82995f702babc5108",
+    "content-hash": "4a4e2145a659f105da0dcec38fd6cebb",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -925,33 +925,38 @@
         },
         {
             "name": "doctrine/inflector",
-            "version": "1.3.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "ec3a55242203ffa6a4b27c58176da97ff0a7aec1"
+                "reference": "ab5de36233a1995f9c776c741b803eb8207aebef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/ec3a55242203ffa6a4b27c58176da97ff0a7aec1",
-                "reference": "ec3a55242203ffa6a4b27c58176da97ff0a7aec1",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/ab5de36233a1995f9c776c741b803eb8207aebef",
+                "reference": "ab5de36233a1995f9c776c741b803eb8207aebef",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": "^7.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.2"
+                "doctrine/coding-standard": "^7.0",
+                "phpstan/phpstan": "^0.11",
+                "phpstan/phpstan-phpunit": "^0.11",
+                "phpstan/phpstan-strict-rules": "^0.11",
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
+                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector",
+                    "Doctrine\\Inflector\\": "lib/Doctrine/Inflector"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -980,15 +985,35 @@
                     "email": "schmittjoh@gmail.com"
                 }
             ],
-            "description": "Common String Manipulations with regard to casing and singular/plural rules.",
-            "homepage": "http://www.doctrine-project.org",
+            "description": "PHP Doctrine Inflector is a small library that can perform string manipulations with regard to upper/lowercase and singular/plural forms of words.",
+            "homepage": "https://www.doctrine-project.org/projects/inflector.html",
             "keywords": [
                 "inflection",
-                "pluralize",
-                "singularize",
-                "string"
+                "inflector",
+                "lowercase",
+                "manipulation",
+                "php",
+                "plural",
+                "singular",
+                "strings",
+                "uppercase",
+                "words"
             ],
-            "time": "2019-10-30T19:59:35+00:00"
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Finflector",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-05-06T11:01:57+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -1716,42 +1741,43 @@
         },
         {
             "name": "friendsofsymfony/oauth-server-bundle",
-            "version": "1.6.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git",
-                "reference": "fcaa25cc49474bdb0db7894f880976fe76ffed23"
+                "reference": "e12b077855b278579f97b293184eed2f1cea1acb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/fcaa25cc49474bdb0db7894f880976fe76ffed23",
-                "reference": "fcaa25cc49474bdb0db7894f880976fe76ffed23",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/e12b077855b278579f97b293184eed2f1cea1acb",
+                "reference": "e12b077855b278579f97b293184eed2f1cea1acb",
                 "shasum": ""
             },
             "require": {
                 "friendsofsymfony/oauth2-php": "~1.1",
-                "paragonie/random_compat": "^1|^2",
-                "php": "^5.5|^7.0",
-                "symfony/dependency-injection": "^2.8|~3.0|^4.0",
-                "symfony/framework-bundle": "~2.8|~3.0|^4.0",
-                "symfony/security-bundle": "~2.8|~3.0|^4.0"
+                "php": "^7.1",
+                "symfony/dependency-injection": "~3.0|~4.0",
+                "symfony/framework-bundle": "~3.0|~4.0",
+                "symfony/security-bundle": "~3.0|~4.0"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.0",
                 "doctrine/mongodb-odm": "~1.0",
                 "doctrine/orm": "~2.2",
                 "phing/phing": "~2.4",
-                "php-mock/php-mock-phpunit": "^1.1",
-                "phpunit/phpunit": "~4.8|~5.0",
-                "propel/propel1": "^1.6.5",
-                "symfony/class-loader": "~2.8|~3.0|^4.0",
-                "symfony/console": "~2.8|~3.0|^4.0",
-                "symfony/form": "~2.8|~3.0|^4.0",
-                "symfony/phpunit-bridge": "~2.8|~3.0|^4.0",
-                "symfony/templating": "~2.8|~3.0|^4.0",
-                "symfony/twig-bundle": "~2.8|~3.0|^4.0",
-                "symfony/yaml": "~2.8|~3.0|^4.0",
-                "willdurand/propel-typehintable-behavior": "^1.0.4"
+                "php-mock/php-mock-phpunit": "~1.0|~2.0",
+                "phpstan/phpstan-phpunit": "~0.9",
+                "phpstan/phpstan-shim": "~0.9",
+                "phpunit/phpunit": "~5.0|~6.0",
+                "propel/propel1": "~1.6",
+                "symfony/class-loader": "~3.0|~4.0",
+                "symfony/console": "~3.0|~4.0",
+                "symfony/form": "~3.0|~4.0",
+                "symfony/phpunit-bridge": "~3.0|~4.0",
+                "symfony/templating": "~3.0|~4.0",
+                "symfony/twig-bundle": "~3.0|^4.0",
+                "symfony/yaml": "~3.0|~4.0",
+                "willdurand/propel-typehintable-behavior": "~1.0"
             },
             "suggest": {
                 "doctrine/doctrine-bundle": "*",
@@ -1764,7 +1790,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "2.0-dev"
                 }
             },
             "autoload": {
@@ -1796,7 +1822,7 @@
                 "oauth2",
                 "server"
             ],
-            "time": "2019-01-23T15:23:04+00:00"
+            "time": "2018-05-01T06:24:45+00:00"
         },
         {
             "name": "friendsofsymfony/oauth2-php",
@@ -5921,16 +5947,16 @@
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "6a4664c83f6a71717d45fcf8f30e067fa8da5cc0"
+                "reference": "b5d6407d4127b0be5b315768ee197e086b71f234"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/6a4664c83f6a71717d45fcf8f30e067fa8da5cc0",
-                "reference": "6a4664c83f6a71717d45fcf8f30e067fa8da5cc0",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/b5d6407d4127b0be5b315768ee197e086b71f234",
+                "reference": "b5d6407d4127b0be5b315768ee197e086b71f234",
                 "shasum": ""
             },
             "require": {
@@ -6003,7 +6029,17 @@
                 "sentry",
                 "symfony"
             ],
-            "time": "2020-05-04T08:36:42+00:00"
+            "funding": [
+                {
+                    "url": "https://sentry.io/",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://sentry.io/pricing/",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-05-07T13:11:22+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -10273,22 +10309,22 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "c8b36ce2aac3635603b4ffc58fbc26717e0a7317"
+                "reference": "0b5fd0e13eedc88727b47a11edbcf68bc6b797ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/c8b36ce2aac3635603b4ffc58fbc26717e0a7317",
-                "reference": "c8b36ce2aac3635603b4ffc58fbc26717e0a7317",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/0b5fd0e13eedc88727b47a11edbcf68bc6b797ed",
+                "reference": "0b5fd0e13eedc88727b47a11edbcf68bc6b797ed",
                 "shasum": ""
             },
             "require": {
-                "doctrine/inflector": "^1.2",
+                "doctrine/inflector": "^1.2 || ^2.0",
                 "nikic/php-parser": "^4.0",
-                "php": "^7.0.8",
+                "php": "^7.1.3",
                 "symfony/config": "^3.4|^4.0|^5.0",
                 "symfony/console": "^3.4|^4.0|^5.0",
                 "symfony/dependency-injection": "^3.4|^4.0|^5.0",
@@ -10337,7 +10373,21 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2020-05-05T14:21:24+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-05-08T13:53:05+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
@@ -10533,6 +10583,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "friendsofsymfony/oauth-server-bundle": 20,
         "liip/imagine-bundle": 20
     },
     "prefer-stable": false,
@@ -10540,5 +10591,6 @@
     "platform": {
         "php": ">=7.3"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

@@ -62,7 +62,7 @@
         "excelwebzone/recaptcha-bundle": "^1.5",
         "facebook/graph-sdk": "^5.6",
         "friendsofsymfony/jsrouting-bundle": "2.4.0",
-        "friendsofsymfony/oauth-server-bundle": "^1.6",
+        "friendsofsymfony/oauth-server-bundle": "^2.0@dev",
         "friendsofsymfony/rest-bundle": "^2.3",
         "hwi/oauth-bundle": "^1.1",
         "incenteev/composer-parameter-handler": "^2.1",
