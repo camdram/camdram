@@ -23,6 +23,10 @@
 #h-slider {
     @include gradient-slider(to right, #ff0000,#ff9900,#ccff00,#33ff00,#00ff66,#00ffff,#0066ff,#3300ff,#cc00ff,#ff0099,#ff0000);
 }
+.color-unset #s-slider, .color-unset #l-slider {
+    /* fallback if --hue etc. not set */
+    @include gradient-slider(to right, #aaa, #ddd);
+}
 #s-slider {
     @include gradient-slider(to right, hsl(var(--hue), 0%, var(--light)), hsl(var(--hue), 50%, var(--light)), hsl(var(--hue), 100%, var(--light)));
 }
