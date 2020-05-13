@@ -8070,16 +8070,16 @@
         },
         {
             "name": "symfony/polyfill-intl-messageformatter",
-            "version": "v1.16.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-messageformatter.git",
-                "reference": "149a6c926e335cbb1272682e3827b1a3ebfefe13"
+                "reference": "318cc1255d90bd9a14f8293e3398d9e3f8c90261"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-messageformatter/zipball/149a6c926e335cbb1272682e3827b1a3ebfefe13",
-                "reference": "149a6c926e335cbb1272682e3827b1a3ebfefe13",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-messageformatter/zipball/318cc1255d90bd9a14f8293e3398d9e3f8c90261",
+                "reference": "318cc1255d90bd9a14f8293e3398d9e3f8c90261",
                 "shasum": ""
             },
             "require": {
@@ -8091,7 +8091,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16-dev"
+                    "dev-master": "1.17-dev"
                 }
             },
             "autoload": {
@@ -8129,7 +8129,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-02T14:56:09+00:00"
+            "time": "2020-05-12T16:14:59+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
