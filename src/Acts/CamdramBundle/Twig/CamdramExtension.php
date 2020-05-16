@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Twig;
 
+use Acts\CamdramBundle\Entity\Audition;
+use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Service\TextService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
@@ -122,8 +124,16 @@ class CamdramExtension extends AbstractExtension
      */
     public function link_entity(object $entity, array $options = []): string
     {
-        $url = $this->router->generate("get_{$entity->getEntityType()}", [
-            'identifier' => $entity->getSlug() ]);
+        if ($entity instanceof Audition) {
+            $url = $this->router->generate("get_audition",
+                ["identifier" => $entity->getShow()->getSlug()]);
+        } else if ($entity instanceof Performance) {
+            $url = $this->router->generate("get_show",
+                ["identifier" => $entity->getShow()->getSlug()]);
+        } else {
+            $url = $this->router->generate("get_{$entity->getEntityType()}",
+                ['identifier' => $entity->getSlug()]);
+        }
         // Escape all non-alphabetic <= 0xFF.
         $url = mb_encode_numericentity($url, [
             [0x00, 0x40, 0, 0],
@@ -132,7 +142,8 @@ class CamdramExtension extends AbstractExtension
         ]);
         $content = $options['innerhtml'] ??
             htmlspecialchars($options['innertext'] ?? $entity->getName());
-        return "<a href=\"$url\">$content</a>";
+        $attrs = isset($options['attr']) ? ' '.$options['attr'] : '';
+        return "<a href=\"$url\" $attrs>$content</a>";
     }
 
     public function getName()

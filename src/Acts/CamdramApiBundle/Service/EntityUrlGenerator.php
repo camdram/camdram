@@ -6,10 +6,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Doctrine\Common\Inflector\Inflector;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
 
-class EntityUrlGenerator extends AbstractExtension
+class EntityUrlGenerator
 {
     private $router;
 
@@ -23,14 +21,6 @@ class EntityUrlGenerator extends AbstractExtension
     {
         $this->router = $router;
         $this->accessor = PropertyAccess::createPropertyAccessor();
-    }
-
-    public function getFunctions()
-    {
-        return array(
-            new TwigFunction('entity_url', array($this, 'generateUrl')),
-            new TwigFunction('has_entity_url', array($this, 'hasUrl')),
-        );
     }
 
     private function getRouteResourceName($class)
@@ -63,13 +53,6 @@ class EntityUrlGenerator extends AbstractExtension
         else if ($show = $this->accessor->getValue($entity, 'show')) {
             return ['get_show', $show];
         }
-    }
-
-    public function hasUrl($entity)
-    {
-        $route = 'get_' . $this->getRouteResourceName($entity);
-        return $this->router->getRouteCollection()->get($route) !== null
-            || $this->accessor->isReadable($entity, 'show');
     }
 
     public function getIdentifier($entity)
