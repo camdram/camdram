@@ -5,13 +5,13 @@ namespace Acts\CamdramApiBundle\Service;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Rules\English\InflectorFactory;
 
 class EntityUrlGenerator
 {
-    private $router;
-
     private $accessor;
+    private $inflector;
+    private $router;
 
     private static $class_map = array(
         'TechieAdvert' => 'techie'
@@ -19,8 +19,9 @@ class EntityUrlGenerator
 
     public function __construct(RouterInterface $router)
     {
-        $this->router = $router;
         $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->inflector = (new InflectorFactory())->build();
+        $this->router = $router;
     }
 
     private function getRouteResourceName($class)
@@ -36,7 +37,7 @@ class EntityUrlGenerator
 
     public function getCollectionRoute($class)
     {
-        $route = 'get_' . Inflector::pluralize($this->getRouteResourceName($class));
+        $route = 'get_' . $this->inflector->pluralize($this->getRouteResourceName($class));
         if ($this->router->getRouteCollection()->get($route) === null) {
             throw new \InvalidArgumentException('That entity does not have a corresponding collection route: ' . $route);
         }

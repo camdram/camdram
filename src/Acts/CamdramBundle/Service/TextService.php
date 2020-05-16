@@ -2,7 +2,6 @@
 
 namespace Acts\CamdramBundle\Service;
 
-use Doctrine\Common\Inflector\Inflector;
 use Parsedown;
 
 /**
@@ -219,10 +218,5 @@ class TextService
         }
         // Put the … to the left of any closing tags.
         return preg_replace('/(<\/\s*[A-Za-z0-9]*\s*>|\s)*$/', '…\0', $result, 1);
-    }
-
-    public function pluralize($word)
-    {
-        return Inflector::pluralize($word);
     }
 }

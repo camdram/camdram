@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Twig;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Service\TextService;
+use Doctrine\Inflector\Rules\English\InflectorFactory;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 
@@ -16,14 +17,13 @@ use Twig\Extension\AbstractExtension;
  */
 class CamdramExtension extends AbstractExtension
 {
-    /**
-     * @var \Acts\CamdramBundle\Service\TextService
-     */
+    private $inflector;
     private $textService;
     private $router;
 
     public function __construct(TextService $textService, UrlGeneratorInterface $router)
     {
+        $this->inflector = (new InflectorFactory())->build();
         $this->textService = $textService;
         $this->router = $router;
     }
@@ -100,7 +100,7 @@ class CamdramExtension extends AbstractExtension
         if ($number == 1) {
             return $word;
         } else {
-            return $this->textService->pluralize($word);
+            return $this->inflector->pluralize($word);
         }
     }
 
