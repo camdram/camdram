@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="acts_venues", uniqueConstraints={@ORM\UniqueConstraint(name="ven_slugs",columns={"slug"})},
- *      indexes={@ORM\Index(name="idx_venue_fulltext", columns={"name", "shortname"}, flags={"fulltext"})})
+ *      indexes={@ORM\Index(name="idx_venue_fulltext", columns={"name", "shortname", "slug"}, flags={"fulltext"})})
  * @ORM\Entity(repositoryClass="VenueRepository")
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")

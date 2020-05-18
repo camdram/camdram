@@ -33,13 +33,13 @@ class SearchController extends AbstractController
         $query = $this->em->createNativeQuery(<<<'ENDSQL'
             SELECT
             (SELECT COUNT(*) FROM acts_shows s
-                WHERE ? AND MATCH (`title`) AGAINST (? IN BOOLEAN MODE)) +
+                WHERE ? AND MATCH (`title`, `slug`) AGAINST (? IN BOOLEAN MODE)) +
             (SELECT COUNT(*) FROM acts_people_data p
-                WHERE ? AND MATCH (`name`) AGAINST (? IN BOOLEAN MODE)) +
+                WHERE ? AND MATCH (`name`, `slug`) AGAINST (? IN BOOLEAN MODE)) +
             (SELECT COUNT(*) FROM acts_societies soc
-                WHERE ? AND MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE)) +
+                WHERE ? AND MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE)) +
             (SELECT COUNT(*) FROM acts_venues ven
-                WHERE ? AND MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE))
+                WHERE ? AND MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE))
             AS n_results
 ENDSQL
         , $this->makeArrayRSM(['n_results']));
@@ -74,7 +74,7 @@ ENDSQL;
             (SELECT 'show', s.id, s.slug, s.title, MIN(acts_performances.start_at), NULL, NULL
                 FROM acts_shows s
                 LEFT JOIN acts_performances ON s.id = acts_performances.sid
-                WHERE MATCH (`title`) AGAINST (? IN BOOLEAN MODE)
+                WHERE MATCH (`title`, `slug`) AGAINST (? IN BOOLEAN MODE)
                 GROUP BY s.id)
 ENDSQL;
         $fragments['person'] = <<<'ENDSQL'
@@ -84,18 +84,18 @@ ENDSQL;
                 FROM acts_people_data p
                 LEFT JOIN acts_shows_people_link ON acts_shows_people_link.pid = p.id
                 LEFT JOIN acts_performances ON acts_performances.sid = acts_shows_people_link.sid
-                WHERE MATCH (`name`) AGAINST (? IN BOOLEAN MODE)
+                WHERE MATCH (`name`, `slug`) AGAINST (? IN BOOLEAN MODE)
                 GROUP BY p.id)
 ENDSQL;
         $fragments['society'] = <<<'ENDSQL'
             (SELECT 'society', soc.id, soc.slug, soc.name, NULL, NULL, NULL
                 FROM acts_societies soc
-                WHERE MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE))
+                WHERE MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE))
 ENDSQL;
         $fragments['venue'] = <<<'ENDSQL'
             (SELECT 'venue', ven.id, ven.slug, ven.name, NULL, NULL, NULL
                 FROM acts_venues ven
-                WHERE MATCH (`name`, `shortname`) AGAINST (? IN BOOLEAN MODE))
+                WHERE MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE))
 ENDSQL;
         $suffixSQL = sprintf(<<<ENDSQL
             ORDER BY (entity_type IN ('society', 'venue')) DESC,

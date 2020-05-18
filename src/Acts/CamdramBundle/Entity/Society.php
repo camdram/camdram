@@ -12,7 +12,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * Society
  *
  * @ORM\Table(name="acts_societies", uniqueConstraints={@ORM\UniqueConstraint(name="org_slugs",columns={"slug"})},
- *      indexes={@ORM\Index(name="idx_society_fulltext", columns={"name", "shortname"}, flags={"fulltext"})})
+ *      indexes={@ORM\Index(name="idx_society_fulltext", columns={"name", "shortname", "slug"}, flags={"fulltext"})})
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\SocietyRepository")
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
