@@ -1,17 +1,9 @@
-@mixin clearfix {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-}
-
 #search_form {
   border: 1px solid black;
   border-radius: 20px;
   box-shadow: 0px 0px 4px #888;
   background:#fff;
-  z-index:50;
+  z-index:100;
   position:relative;
 
   > i {
@@ -22,6 +14,7 @@
     &.fa-search {
       left:10px;
 
+      /* Keyboard shortcut mouseover text */
       span {
         visibility: hidden;
         background-color: rgb(58, 57, 58);
@@ -46,8 +39,15 @@
     }
 
     &.fa-spinner {
-      right:10px;
-      display:none;
+      right: 10px;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s linear 100ms, opacity 100ms linear;
+    }
+    &.fa-spinner.show {
+      visibility: visible;
+      opacity: 1;
+      transition-delay: 0s;
     }
   }
 
@@ -87,10 +87,24 @@
   color: #900;
 }
 
+/* Animation control */
+#search_form .results > ul > li, #search_form .results > ul ~ * {
+  transition-property: max-height, opacity, padding;
+  transition-duration: 400ms;
+  max-height: 4em;
+}
+#search_form .results.hidden > ul > li,
+#search_form .results.hidden > ul ~ *,
+#search_form .results > ul > li.hidden {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding: 0;
+}
+
 #search_form .results {
-    display:none;
-    z-index:100;
-    margin-bottom:1em;
+    color: #666;
+
 
     ul {
       list-style:none;
@@ -100,25 +114,23 @@
 
     ul li {
       a {
-        display:block;
+        min-height: 1.6em;
+        display: flex;
+        align-items: center;
         border-top:1px solid #CCC;
-        @include clearfix;
-        color:#666;
-        padding-left: 35px;
-
+        color: #666;
         i {
-          float:left;
-          color:#666;
-          margin:4px 0;
-          margin-left:-24px;
+          display: inline-block;
+          width: 1em;
+          margin: 0 8px;
         }
-      }
-      &:nth-child(even) {
-        background-color:#FAFAFA;
       }
 
       &.active {
-        background-color:#ffa;
+        background-color:#feb;
+      }
+      &:last-child {
+        border-radius: 0 0 18px 18px;
       }
     }
   }
@@ -154,10 +166,6 @@
     color:#666;
     margin:4px 0;
     margin-left:-24px;
-  }
-
-  &:nth-child(even) {
-    background-color:#F3F3F3;
   }
 
   &.tt-cursor, &:hover {

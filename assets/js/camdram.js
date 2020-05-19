@@ -32,6 +32,21 @@ Camdram.datePlusDays = function(date, days) {
     return result;
 };
 
+// Ajax wrapper
+Camdram.get = function(url, success, failure) {
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", function() {
+        if (this.status >= 200 && this.status < 300) {
+            success.call(this, this.responseText);
+        } else if (failure) {
+            failure.call(this);
+        }
+    });
+    if (failure) xhr.addEventListener("error", failure);
+    xhr.open("GET", url);
+    xhr.send();
+};
+
 let spun = false;
 window.spinTheWorld = function() {
     const element = document.getElementsByTagName('body')[0];
