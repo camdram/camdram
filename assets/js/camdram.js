@@ -170,7 +170,7 @@ Camdram.flashMessage = function (status, text) {
     fixHtml(div);
 };
 
-$.fn.scrollTo = function(options) {
+Camdram.scrollTo = function(el, options) {
     options = $.extend({
         speed: 500,
         threshold: 0.7,
@@ -178,9 +178,9 @@ $.fn.scrollTo = function(options) {
     }, options);
 
     var top = $('html').scrollTop();
-    var max = $(this).offset().top + options.threshold * $(this).height();
+    var max = $(el).offset().top + options.threshold * $(el).height();
     if (top > max) {
-        $('html, body').animate({scrollTop: $(this).offset().top - options.overshoot}, options.speed);
+        $('html, body').animate({scrollTop: $(el).offset().top - options.overshoot}, options.speed);
     }
 };
 

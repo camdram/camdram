@@ -16,8 +16,8 @@ $(function() {
             if (diary_queue.length == 1) {
                 service_queue();
             }
-        }
-        function service_queue() {
+        };
+        var service_queue = function() {
             if (diary_queue.length == 0) return;
             var opts = diary_queue[0];
 
@@ -48,7 +48,7 @@ $(function() {
                     $diary.hide().delay(50).show('slide', {direction: show_dir}, 200, function() {
                         if (typeof cb !== 'undefined') cb();
                     });
-                }
+                };
 
                 $overlay.height($diary.height()).hide();
                 if (new_height > old_height) {
@@ -65,10 +65,10 @@ $(function() {
                             diary_queue.shift();
                             service_queue();
                         });
-                    })
+                    });
                 }
-            })
-        }
+            });
+        };
 
         $('li.week-link', $nav).click(function() {
             if ($(this).hasClass('current')) return;
@@ -86,4 +86,4 @@ $(function() {
             document.querySelector('#home-diary-nav').classList.add('expanded');
         });
     }
-})
+});

@@ -1,7 +1,11 @@
-import './base.js'
-import L from 'leaflet'
-import "leaflet/dist/leaflet.css"
+import './base.js';
+import L from 'leaflet';
+import "leaflet/dist/leaflet.css";
 import '../scss/venues.scss';
+
+const q = document.querySelector.bind(document);
+const qq = document.querySelectorAll.bind(document);
+const maps = {};
 
 L.Marker.prototype.options.icon = L.divIcon({
     className: 'custom-map-icon',
@@ -12,39 +16,68 @@ L.Marker.prototype.options.icon = L.divIcon({
     tooltipAnchor: [16, -28]
 });
 
-$(function() {
-    $.fn.venueMap = function(action, opts) {
-        opts = opts || {}
-        var $self = $(this)
-        var map = $self.data('map')
+function venueMap(elId, action, opts) {
+    opts = opts || {};
+    let map = maps[elId];
 
-        if (!map) {
-            var centre = opts.location || [52.20531, 0.12279]
-            var zoom = opts.location ? 16 : 14
-            map = L.map($(this).attr('id')).setView(centre, zoom);
+    if (!map) {
+        const centre = opts.location || [52.20531, 0.12279];
+        const zoom = opts.location ? 16 : 14;
+        map = L.map(elId).setView(centre, zoom);
 
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-            }).addTo(map);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+        }).addTo(map);
 
-            $self.data('map', map)
+        maps[elId] = map;
+    }
+
+    switch (action) {
+        case 'add-marker':
+            const marker = L.marker(opts.location)
+                .addTo(map).bindPopup(opts.content);
+            if (opts.open) {
+                marker.openPopup();
+            }
+            return marker;
+        case 'select-marker':
+            if (opts.marker) {
+                Camdram.scrollTo(document.getElementById(elId));
+                map.setView(opts.marker.getLatLng(), 17);
+                opts.marker.openPopup();
+            }
+            break;
+    }
+}
+
+window.addEventListener('DOMContentLoaded', event => {
+    const mapMainId = 'map-main';
+    if (document.getElementById(mapMainId)) {
+        venueMap(mapMainId);
+
+        for (const el of qq('.venue')) {
+            const marker = venueMap(mapMainId, 'add-marker', {
+                'location': [el.dataset.latitude, el.dataset.longitude],
+                'content': el.querySelector('.venue-name').innerHTML,
+            });
+            el.querySelector('.marker').addEventListener('click', e => {
+                venueMap(mapMainId, 'select-marker', {marker: marker});
+            });
         }
+    }
 
-        switch(action) {
-            case 'add-marker':
-                let marker = L.marker(opts.location)
-                    .addTo(map).bindPopup(opts.content)
-                if (opts.open) {
-                    marker.openPopup()
-                }
-                return marker
-            case 'select-marker':
-                if (opts.marker) {
-                    $self.scrollTo()
-                    map.setView(opts.marker.getLatLng(), 17)
-                    opts.marker.openPopup()
-                }
-                break
-        }
+    const venueMapId = 'venue-map';
+    if (document.getElementById(venueMapId)) {
+        const item = q('[itemtype="http://schema.org/PerformingArtsTheater"]');
+        // Specifically using HTML we already trust, not innerText.
+        const nameHTML = item.querySelector('[itemprop="name"]').innerHTML;
+        const latitude = item.querySelector('[itemprop="latitude"]').getAttribute('content');
+        const longitude = item.querySelector('[itemprop="longitude"]').getAttribute('content');
+
+        venueMap(venueMapId, 'add-marker', {
+            'location': [latitude, longitude],
+            'content': nameHTML,
+            'open': true,
+        });
     }
 });

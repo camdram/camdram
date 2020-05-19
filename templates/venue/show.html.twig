@@ -102,24 +102,6 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
-<script>
-{#- begin-CSP-permitted-script -#}
-$(function() {
-    var item = document.querySelector('[itemtype="http://schema.org/PerformingArtsTheater"]');
-    // Specifically using HTML we already trust, not innerText.
-    var nameHTML = item.querySelector('[itemprop="name"]').innerHTML;
-    var latitude = item.querySelector('[itemprop="latitude"]').getAttribute('content');
-    var longitude = item.querySelector('[itemprop="longitude"]').getAttribute('content');
-    $('.map-small').venueMap('add-marker', {
-        'location': [latitude, longitude],
-        'content': nameHTML,
-        'open': true,
-    })
-})
-{#- end-CSP-permitted-script -#}
-</script>
-{% endblock %}
 {% block compiled_assets -%}
     {{ encore_entry_link_tags('venue') }}
     {{ encore_entry_script_tags('venue') }}

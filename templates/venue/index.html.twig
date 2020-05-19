@@ -32,28 +32,6 @@
 
 {% endblock %}
 
-{% block javascripts %}
-<script>
-    {#- begin-CSP-permitted-script -#}
-    $(function() {
-        var map = $('#map-main')
-        map.venueMap()
-        var markerUrl = map.venueMap('marker-url')
-
-        $('.venue').each(function() {
-            var $self = $(this)
-            var marker = map.venueMap('add-marker', {
-                'location': [$self.attr('data-latitude'), $self.attr('data-longitude')],
-                'content': $self.find('.venue-name').html(),
-            })
-            $self.find('.marker').click(function() {
-                map.venueMap('select-marker', {marker: marker})
-            })
-        })
-    })
-    {#- end-CSP-permitted-script -#}
-</script>
-{% endblock %}
 {% block compiled_assets -%}
     {{ encore_entry_link_tags('venue') }}
     {{ encore_entry_script_tags('venue') }}
