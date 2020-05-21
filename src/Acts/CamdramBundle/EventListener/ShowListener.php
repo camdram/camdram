@@ -88,9 +88,13 @@ class ShowListener
      * Saves the old and new slugs after renaming.
      */
     private function manageSlugChange($show, $event) {
+        // These values can disappear so caching them here.
+        $slugs = [$event->getOldValue("slug"), $event->getNewValue("slug")];
+        if ($slugs[0] == $slugs[1]) return;
+
         $em = $event->getEntityManager();
         $slugRepo = $em->getRepository('ActsCamdramBundle:ShowSlug');
-        $oldSlug = $slugRepo->findOneBySlug($event->getOldValue("slug"));
+        $oldSlug = $slugRepo->findOneBySlug($slugs[0]);
         if (!$oldSlug) {
             // Make new slug for outgoing URL.
             $oldSlug = new ShowSlug();
@@ -101,7 +105,7 @@ class ShowListener
             $em->flush();
         }
 
-        $newSlug = $slugRepo->findOneBySlug($event->getNewValue("slug"));
+        $newSlug = $slugRepo->findOneBySlug($slugs[1]);
         if (!$newSlug) {
             // Make new slug for new URL.
             $newSlug = new ShowSlug();
