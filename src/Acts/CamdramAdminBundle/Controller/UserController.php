@@ -4,34 +4,24 @@ namespace Acts\CamdramAdminBundle\Controller;
 
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
-use Acts\CamdramAdminBundle\Form\Type\AddAclType;
 use Acts\CamdramAdminBundle\Service\UserMerger;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
-use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Rest\RouteResource("User")
  * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class UserController extends AbstractFOSRestController
+class UserController extends AbstractController
 {
-    protected function getRouteParams($user)
+    private function getEntity($identifier)
     {
-        return array('identifier' => $user->getId());
-    }
-
-    protected function getEntity($identifier)
-    {
-        $entity = $this->getRepository()->findOneBy(array('id' => $identifier));
+        $entity = $this->getRepository()->findOneBy(['id' => $identifier]);
 
         if (!$entity) {
             throw $this->createNotFoundException('That user does not exist');
@@ -40,7 +30,7 @@ class UserController extends AbstractFOSRestController
         return $entity;
     }
 
-    protected function getRepository()
+    private function getRepository()
     {
         return $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User');
     }
@@ -50,6 +40,7 @@ class UserController extends AbstractFOSRestController
      *
      * If a search term 'q' is provided, then a text search is performed. Otherwise, a paginated
      * collection of all entities is returned.
+     * @Route("/users", methods={"GET"}, name="get_users")
      */
     public function cgetAction(Request $request)
     {
@@ -69,17 +60,17 @@ class UserController extends AbstractFOSRestController
         $qb->setMaxResults(25);
         $qb->setFirstResult(25 * ($page - 1));
 
-        return $this->view([
+        return $this->render('admin/user/index.html.twig', [
             'paginator' => new Paginator($qb->getQuery()),
             'page_num' => $page,
             'page_urlprefix' => explode('?', $request->getRequestUri())[0] .
                  '?sort='.$sort . '&order='.$order . '&q='.urlencode($q).'&p=',
             'query' => $q
-            ], 200)->setTemplate('admin/user/index.html.twig');
+            ]);
     }
 
     /**
-     * @Rest\Get("/users/{identifier}")
+     * @Route("/users/{identifier}", methods={"GET"}, name="get_user")
      */
     public function getAction(AclProvider $aclProvider, $identifier)
     {
@@ -88,18 +79,16 @@ class UserController extends AbstractFOSRestController
         $orgs = $aclProvider->getOrganisationsByUser($entity);
         $ids = $aclProvider->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
         $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
-        $view = $this->view(array(
+        return $this->render('admin/user/show.html.twig', [
             'user' => $entity,
             'organisations' => $orgs,
             'shows' => $shows
-            ), 200)
-            ->setTemplate('admin/user/show.html.twig')
-            ->setTemplateVar('user')
-        ;
-
-        return $view;
+        ]);
     }
 
+    /**
+     * @Route("/users/{identifier}/edit", methods={"GET"}, name="edit_user")
+     */
     public function editAction($identifier)
     {
         $entity = $this->getEntity($identifier);
@@ -107,11 +96,12 @@ class UserController extends AbstractFOSRestController
 
         $form = $this->createForm(UserType::class, $entity, ['method' => 'PUT']);
 
-        return $this->view($form, 200)
-            ->setTemplateVar('form')
-            ->setTemplate('admin/user/edit.html.twig');
+        return $this->render('admin/user/edit.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @Route("/users/{identifier}", methods={"PUT"}, name="put_user")
+     */
     public function putAction(Request $request, $identifier)
     {
         $entity = $this->getEntity($identifier);
@@ -124,14 +114,16 @@ class UserController extends AbstractFOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            return $this->routeRedirectView('get_user', $this->getRouteParams($form->getData()));
+            return $this->redirectToRoute('get_user', ['identifier' => $form->getData()->getId()]);
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate('admin/user/edit.html.twig');
+            return $this->render('admin/user/edit.html.twig', ['form' => $form])
+                ->setStatusCode(400);
         }
     }
 
+    /**
+     * @Route("/users/{identifier}", methods={"DELETE"}, name="delete_user")
+     */
     public function deleteAction(Request $request, $identifier)
     {
         $entity = $this->getEntity($identifier);
@@ -145,27 +137,24 @@ class UserController extends AbstractFOSRestController
         $em->remove($entity);
         $em->flush();
 
-        return $this->routeRedirectView('get_users');
+        return $this->redirectToRoute('get_users');
     }
 
     /**
-     * @Rest\Get("/users/{identifier}/merge")
+     * @Route("/users/{identifier}/merge", methods={"GET"}, name="get_user_merge")
      */
     public function getMergeAction($identifier, UserMerger $merger)
     {
         $user = $this->getEntity($identifier);
 
-        return $this->render('admin/user/merge.html.twig', array(
+        return $this->render('admin/user/merge.html.twig', [
             'user' => $user,
             'form' => $merger->createForm(true)->createView()
-        ));
+        ]);
     }
 
     /**
-     * @param $identifier
-     * @param $request Request
-     *
-     * @return $this
+     * @Route("/users/{identifier}/merge", methods={"PATCH"}, name="merge_user")
      */
     public function mergeAction($identifier, Request $request, UserMerger $merger)
     {
@@ -183,16 +172,16 @@ class UserController extends AbstractFOSRestController
                 } else {
                     $newUser = $merger->mergeUsers($user, $otherUser, $data['keep_user'] == 'this');
 
-                    return $this->redirectToRoute('get_user', array('identifier' => $newUser->getId()));
+                    return $this->redirectToRoute('get_user', ['identifier' => $newUser->getId()]);
                 }
             } else {
                 $form->addError(new FormError('User not found'));
             }
         }
 
-        return $this->render('admin/user/merge.html.twig', array(
+        return $this->render('admin/user/merge.html.twig', [
             'user' => $user,
             'form' => $form->createView()
-        ));
+        ]);
     }
 }

@@ -1,7 +1,0 @@
-acts_camdram_annotation:
-    resource: '@ActsCamdramAdminBundle/Controller/'
-    type: annotation
-
-acts_camdram_users:
-    type:     rest
-    resource: Acts\CamdramAdminBundle\Controller\UserController
