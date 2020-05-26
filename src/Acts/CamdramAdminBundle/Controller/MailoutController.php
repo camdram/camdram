@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  *
- * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
+ * @Security("is_granted('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class MailoutController extends AbstractController
 {

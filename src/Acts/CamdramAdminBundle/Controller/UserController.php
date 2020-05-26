@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Security("has_role('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
+ * @Security("is_granted('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class UserController extends AbstractController
 {

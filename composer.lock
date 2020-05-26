@@ -380,16 +380,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "2.12.0",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "2053eafdf60c2172ee1373d1b9289ba1db7f1fc6"
+                "reference": "308728eae8d90412d850c155d40b1cfbede549da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/2053eafdf60c2172ee1373d1b9289ba1db7f1fc6",
-                "reference": "2053eafdf60c2172ee1373d1b9289ba1db7f1fc6",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/308728eae8d90412d850c155d40b1cfbede549da",
+                "reference": "308728eae8d90412d850c155d40b1cfbede549da",
                 "shasum": ""
             },
             "require": {
@@ -399,7 +399,7 @@
                 "doctrine/event-manager": "^1.0",
                 "doctrine/inflector": "^1.0",
                 "doctrine/lexer": "^1.0",
-                "doctrine/persistence": "^1.1",
+                "doctrine/persistence": "^1.3.3",
                 "doctrine/reflection": "^1.0",
                 "php": "^7.1"
             },
@@ -459,7 +459,7 @@
                 "doctrine",
                 "php"
             ],
-            "time": "2020-01-10T15:49:25+00:00"
+            "time": "2020-05-15T05:51:54+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -621,23 +621,23 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.0.8",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "b0e0deb6e700438401ede433a15a6372d2285202"
+                "reference": "0fb513842c78b43770597ef3c487cdf79d944db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/b0e0deb6e700438401ede433a15a6372d2285202",
-                "reference": "b0e0deb6e700438401ede433a15a6372d2285202",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/0fb513842c78b43770597ef3c487cdf79d944db3",
+                "reference": "0fb513842c78b43770597ef3c487cdf79d944db3",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^2.9.0",
                 "doctrine/persistence": "^1.3.3",
-                "jdorn/sql-formatter": "^1.2.16",
-                "php": "^7.1",
+                "doctrine/sql-formatter": "^1.0.1",
+                "php": "^7.1 || ^8.0",
                 "symfony/cache": "^4.3.3|^5.0",
                 "symfony/config": "^4.3.3|^5.0",
                 "symfony/console": "^3.4.30|^4.3.3|^5.0",
@@ -671,7 +671,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -709,7 +709,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2020-04-23T10:52:09+00:00"
+            "time": "2020-05-25T19:56:00+00:00"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -1445,6 +1445,59 @@
                 "static"
             ],
             "time": "2020-03-27T11:06:43+00:00"
+        },
+        {
+            "name": "doctrine/sql-formatter",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/sql-formatter.git",
+                "reference": "490ed58757f1af4cf13b3285287ff960533acb83"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/sql-formatter/zipball/490ed58757f1af4cf13b3285287ff960533acb83",
+                "reference": "490ed58757f1af4cf13b3285287ff960533acb83",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.4"
+            },
+            "bin": [
+                "bin/sql-formatter"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\SqlFormatter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Dorn",
+                    "email": "jeremy@jeremydorn.com",
+                    "homepage": "http://jeremydorn.com/"
+                }
+            ],
+            "description": "a PHP SQL highlighting library",
+            "homepage": "https://github.com/doctrine/sql-formatter/",
+            "keywords": [
+                "highlight",
+                "sql"
+            ],
+            "time": "2020-05-22T11:49:26+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -3396,56 +3449,6 @@
             "time": "2020-03-17T21:10:00+00:00"
         },
         {
-            "name": "jdorn/sql-formatter",
-            "version": "v1.2.17",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jdorn/sql-formatter.git",
-                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/64990d96e0959dff8e059dfcdc1af130728d92bc",
-                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "lib"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeremy Dorn",
-                    "email": "jeremy@jeremydorn.com",
-                    "homepage": "http://jeremydorn.com/"
-                }
-            ],
-            "description": "a PHP SQL highlighting library",
-            "homepage": "https://github.com/jdorn/sql-formatter/",
-            "keywords": [
-                "highlight",
-                "sql"
-            ],
-            "time": "2014-01-12T16:20:24+00:00"
-        },
-        {
             "name": "jean85/pretty-package-versions",
             "version": "1.2",
             "source": {
@@ -4065,16 +4068,16 @@
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9"
+                "reference": "fcd87520e4943d968557803919523772475e8ea3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9",
-                "reference": "bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9",
+                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/fcd87520e4943d968557803919523772475e8ea3",
+                "reference": "fcd87520e4943d968557803919523772475e8ea3",
                 "shasum": ""
             },
             "require": {
@@ -4113,7 +4116,7 @@
                 "laminas",
                 "zf"
             ],
-            "time": "2020-04-03T16:01:00+00:00"
+            "time": "2020-05-20T16:45:56+00:00"
         },
         {
             "name": "liip/imagine-bundle",
@@ -4220,20 +4223,20 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.0.2",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8"
+                "reference": "38914429aac460e8e4616c8cb486ecb40ec90bb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c861fcba2ca29404dc9e617eedd9eff4616986b8",
-                "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/38914429aac460e8e4616c8cb486ecb40ec90bb1",
+                "reference": "38914429aac460e8e4616c8cb486ecb40ec90bb1",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": ">=7.2",
                 "psr/log": "^1.0.1"
             },
             "provide": {
@@ -4244,11 +4247,11 @@
                 "doctrine/couchdb": "~1.0@dev",
                 "elasticsearch/elasticsearch": "^6.0",
                 "graylog2/gelf-php": "^1.4.2",
-                "jakub-onderka/php-parallel-lint": "^0.9",
                 "php-amqplib/php-amqplib": "~2.4",
                 "php-console/php-console": "^3.1.3",
+                "php-parallel-lint/php-parallel-lint": "^1.0",
                 "phpspec/prophecy": "^1.6.1",
-                "phpunit/phpunit": "^8.3",
+                "phpunit/phpunit": "^8.5",
                 "predis/predis": "^1.1",
                 "rollbar/rollbar": "^1.3",
                 "ruflin/elastica": ">=0.90 <3.0",
@@ -4297,7 +4300,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2019-12-20T14:22:59+00:00"
+            "time": "2020-05-22T08:12:19+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -5849,16 +5852,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "2.3.2",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "b3e71feb32f1787b66a3b4fdb8686972e9c7ba94"
+                "reference": "e44561875e0d724bac3d9cdb705bf58847acd425"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/b3e71feb32f1787b66a3b4fdb8686972e9c7ba94",
-                "reference": "b3e71feb32f1787b66a3b4fdb8686972e9c7ba94",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/e44561875e0d724bac3d9cdb705bf58847acd425",
+                "reference": "e44561875e0d724bac3d9cdb705bf58847acd425",
                 "shasum": ""
             },
             "require": {
@@ -5873,7 +5876,9 @@
                 "php-http/discovery": "^1.6.1",
                 "php-http/httplug": "^1.1|^2.0",
                 "php-http/message": "^1.5",
+                "psr/http-factory": "^1.0",
                 "psr/http-message-implementation": "^1.0",
+                "psr/log": "^1.0",
                 "symfony/options-resolver": "^2.7|^3.0|^4.0|^5.0",
                 "symfony/polyfill-uuid": "^1.13.1"
             },
@@ -5882,12 +5887,12 @@
                 "raven/raven": "*"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.13",
+                "friendsofphp/php-cs-fixer": "^2.16",
                 "monolog/monolog": "^1.3|^2.0",
                 "php-http/mock-client": "^1.3",
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^0.11",
-                "phpstan/phpstan-phpunit": "^0.11",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-phpunit": "^0.12",
                 "phpunit/phpunit": "^7.5.18",
                 "symfony/phpunit-bridge": "^4.3|^5.0",
                 "vimeo/psalm": "^3.4"
@@ -5898,7 +5903,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.4-dev"
                 }
             },
             "autoload": {
@@ -5930,7 +5935,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2020-03-06T09:24:53+00:00"
+            "time": "2020-05-20T20:49:38+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
@@ -9994,6 +9999,56 @@
             "time": "2019-02-17T14:29:58+00:00"
         },
         {
+            "name": "jdorn/sql-formatter",
+            "version": "v1.2.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jdorn/sql-formatter.git",
+                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jdorn/sql-formatter/zipball/64990d96e0959dff8e059dfcdc1af130728d92bc",
+                "reference": "64990d96e0959dff8e059dfcdc1af130728d92bc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Dorn",
+                    "email": "jeremy@jeremydorn.com",
+                    "homepage": "http://jeremydorn.com/"
+                }
+            ],
+            "description": "a PHP SQL highlighting library",
+            "homepage": "https://github.com/jdorn/sql-formatter/",
+            "keywords": [
+                "highlight",
+                "sql"
+            ],
+            "time": "2014-01-12T16:20:24+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v4.4.0",
             "source": {
@@ -10554,5 +10609,6 @@
     "platform": {
         "php": ">=7.3"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

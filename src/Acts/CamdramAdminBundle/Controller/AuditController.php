@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Controller for viewing Camdram's log files
  *
- * @Security("has_role('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
+ * @Security("is_granted('ROLE_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class AuditController extends AbstractController
 {

@@ -51,7 +51,7 @@ class AccountController extends AbstractFOSRestController
     }
 
     /**
-     * @Security("has_role('ROLE_USER_SHOWS')")
+     * @Security("is_granted('ROLE_USER_SHOWS')")
      * @Rest\Get("/account/shows")
      * @return \FOS\RestBundle\View\View
      */
@@ -63,7 +63,7 @@ class AccountController extends AbstractFOSRestController
     }
 
     /**
-     * @Security("has_role('ROLE_USER_ORGS')")
+     * @Security("is_granted('ROLE_USER_ORGS')")
      *
      * @Rest\Get("/account/organisations")
      * @return \FOS\RestBundle\View\View
