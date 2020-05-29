@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Form\Type\ContactUsType;
+use Acts\CamdramBundle\Service\ContactEntityService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class ContactController extends AbstractController
      * @param Request $request
      * @param string $identifier
      */
-    public function indexAction(Request $request, $type, $identifier)
+    public function indexAction(Request $request, ContactEntityService $ces, $type, $identifier)
     {
         $entity = $this->getEntity($type, $identifier);
         if (is_null($entity)) {
@@ -30,7 +31,7 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $this->get('acts.camdram.contact_entity_service')->emailEntity(
+            $ces->emailEntity(
                 $entity,
                 $data['name'],
                 $data['email'],
