@@ -75,6 +75,10 @@ doctrine:
                 alias: GedmoLoggable
                 is_bundle: false
 
+doctrine_migrations:
+    migrations_paths:
+        'Application\Migrations': '%kernel.project_dir%/app/DoctrineMigrations'
+
 # Swiftmailer Configuration
 swiftmailer:
     url: "%env(MAILER_URL)%"
