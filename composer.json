@@ -15,7 +15,10 @@
     },
     "config": {
         "bin-dir": "bin/",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.3.19"
+        }
     },
     "conflict" : {
         "friendsofsymfony/jsrouting-bundle": "2.5.*",
