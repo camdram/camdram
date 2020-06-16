@@ -143,25 +143,40 @@ class OAuthTest extends WebTestCase
         $this->assertEquals($data['name'], "Test User 2");
     }
 
-// Temporarily removed by Charlie Jonas <charlie@charliejonas.co.uk> to bodge a fix for #622
-//
-//    public function testRememberAuthorization()
-//    {
-//        $this->login('user1@camdram.net');
-//        $token = $this->performOAuthUserLogin('');
-//        $this->assertTrue(is_string($token));
-//
-//        //Go to auth page a second time
-//       $params = array(
-//            'client_id' => $this->app->getPublicId(),
-//            'response_type' => 'code',
-//            'redirect_uri' => '/authenticate',
-//            'scope' => '',
-//        );
-//        $this->userClient->request('GET', '/oauth/v2/auth', $params);
-//        $this->assertEquals(302, $this->userClient->getResponse()->getStatusCode());
-//    }
 
+    public function testRememberAuthorization()
+    {
+        $this->login('user1@camdram.net');
+        $token = $this->performOAuthUserLogin('');
+        $this->assertTrue(is_string($token));
+
+        //Go to auth page a second time
+       $params = array(
+            'client_id' => $this->app->getPublicId(),
+            'response_type' => 'code',
+            'redirect_uri' => '/authenticate',
+            'scope' => '',
+        );
+        $this->userClient->request('GET', '/oauth/v2/auth', $params);
+        $this->assertEquals(302, $this->userClient->getResponse()->getStatusCode());
+    }
+
+    public function testAuthorizationButNewScope()
+    {
+        $this->login('user1@camdram.net');
+        $token = $this->performOAuthUserLogin('api_write');
+        $this->assertTrue(is_string($token));
+
+        //Go to auth page a second time
+       $params = array(
+            'client_id' => $this->app->getPublicId(),
+            'response_type' => 'code',
+            'redirect_uri' => '/authenticate',
+            'scope' => 'api_write user_email',
+        );
+        $this->userClient->request('GET', '/oauth/v2/auth', $params);
+        $this->assertNotEquals(302, $this->userClient->getResponse()->getStatusCode());
+    }
 
     public function testCreateShowNoScope()
     {

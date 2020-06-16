@@ -4,12 +4,13 @@ namespace Acts\CamdramApiBundle\EventListener;
 
 use Acts\CamdramApiBundle\Entity\Authorization;
 use Acts\CamdramSecurityBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\OAuthServerBundle\Event\OAuthEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class OAuthEventListener
+class OAuthEventListener implements EventSubscriberInterface
 {
     /**
      * @var \Acts\CamdramApiBundle\Entity\AuthorizationRepository
@@ -21,10 +22,18 @@ class OAuthEventListener
      */
     private $requestStack;
 
-    public function __construct(EntityManager $em, RequestStack $requestStack)
+    public function __construct(EntityManagerInterface $em, RequestStack $requestStack)
     {
         $this->entityManager = $em;
         $this->requestStack = $requestStack;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            OAuthEvent::PRE_AUTHORIZATION_PROCESS => 'onPreAuthorizationProcess',
+            OAuthEvent::POST_AUTHORIZATION_PROCESS => 'onPostAuthorizationProcess',
+        ];
     }
 
     /**
@@ -37,10 +46,13 @@ class OAuthEventListener
     {
         $request = $this->requestStack->getMasterRequest();
 
-        $scope_str = $request->query->get(
-            'scope',
-            $request->request->get('fos_oauth_server_authorize_form' . '[scope]', '', true)
-        );
+        $scope_str = $request->query->get('scope');
+        if (!$scope_str) {
+            $form = $request->request->get('fos_oauth_server_authorize_form');
+            if ($form) {
+                $scope_str = $form['scope'];
+            }
+        }
         return explode(' ', $scope_str);
     }
 
