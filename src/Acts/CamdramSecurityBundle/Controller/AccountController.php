@@ -128,4 +128,29 @@ class AccountController extends AbstractFOSRestController
 
         return $this->redirect($this->generateUrl('get_account'));
     }
+
+    /**
+     * @Route("/account/authorizations", name="get_account_authorizations")
+     */
+    public function getAuthorizationsAction()
+    {
+        return $this->render('account/authorizations.html.twig',
+                ['authorizations' => $this->getUser()->getAuthorizations()]);
+    }
+
+    /**
+     * @Route("/account/authorizations/{id}/revoke", name="revoke_account_authorization", methods={"DELETE"})
+     */
+    public function revokeAuthorization($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('ActsCamdramApiBundle:Authorization');
+        $auth = $repo->findOneByClientId($this->getUser(), $id);
+        if ($auth) {
+            $em->remove($auth);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('get_account');
+    }
 }
