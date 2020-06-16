@@ -1,0 +1,14 @@
+<h5>API Authorizations</h5>
+<p>The following websites/apps have access to your Camdram data:</p>
+
+{% for authorization in authorizations %}
+<hr />
+<div class="right">
+<form action="{{ path("revoke_account_authorization", {id: authorization.client.id}) }}" method="POST">
+<input type="hidden" name="_method" value="delete"/>
+<input type="submit" value="Revoke" class="button small"/>
+</form>
+</div>
+<h6>{{ authorization.client.name }}</h6>
+<p>{{ authorization.client.description | nl2br }}</p>
+{% endfor %}

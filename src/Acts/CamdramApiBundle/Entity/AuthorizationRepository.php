@@ -26,4 +26,15 @@ class AuthorizationRepository extends EntityRepository
             ->setParameter('app', $app)
             ->getQuery()->getOneOrNullResult();
     }
+
+    public function findOneByClientId(UserInterface $user, $clientId)
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.client', 'c')
+            ->where('c.id = :clientId')
+            ->andWhere('a.user = :user')
+            ->setParameter('clientId', $clientId)
+            ->setParameter('user', $user)
+            ->getQuery()->getOneOrNullResult();
+    }
 }
