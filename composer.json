@@ -87,6 +87,7 @@
         "symfony/form": "*",
         "symfony/framework-bundle": "^4.4",
         "symfony/intl": "*",
+        "symfony/mime": "^5.1",
         "symfony/monolog-bundle": "^3.3",
         "symfony/polyfill-intl-messageformatter": "^1.12",
         "symfony/security-bundle": "*",
