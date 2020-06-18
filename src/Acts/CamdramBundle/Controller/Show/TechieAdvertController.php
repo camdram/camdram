@@ -6,9 +6,9 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramBundle\Form\Type\TechieAdvertType;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TechieAdvertController extends AbstractFOSRestController
 {
@@ -29,8 +29,7 @@ class TechieAdvertController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
-     * @Rest\Get("/shows/{identifier}/techie-advert/new")
+     * @Route("/shows/{identifier}/techie-advert/new", methods={"GET"}, name="new_show_techie_advert")
      */
     public function newTechieAdvertAction(Helper $helper, $identifier)
     {
@@ -39,14 +38,12 @@ class TechieAdvertController extends AbstractFOSRestController
 
         $form = $this->getTechieAdvertForm($show);
 
-        return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/techie-advert-new.html.twig');
+        return $this->render('show/techie-advert-new.html.twig',
+            ['show' => $show, 'form' => $form->createView()]);
     }
 
     /**
-     * @param $identifier
-     * @Rest\Post("/shows/{identifier}/techie-advert")
+     * @Route("/shows/{identifier}/techie-advert", methods={"POST"}, name="post_show_techie_advert")
      */
     public function postTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
@@ -60,17 +57,15 @@ class TechieAdvertController extends AbstractFOSRestController
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+            return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate('show/techie-advert-new.html.twig');
+            return $this->render('show/techie-advert-new.html.twig',
+                ['show' => $show, 'form' => $form->createView()])->setStatusCode(400);
         }
     }
 
     /**
-     * @param $identifier
-     * @Rest\Get("/shows/{identifier}/techie-advert/edit")
+     * @Route("/shows/{identifier}/techie-advert/edit", methods={"GET"}, name="edit_show_techie_advert")
      */
     public function editTechieAdvertAction(Helper $helper, $identifier)
     {
@@ -80,14 +75,13 @@ class TechieAdvertController extends AbstractFOSRestController
         $techie_advert = $show->getTechieAdverts()->first();
         $form = $this->getTechieAdvertForm($show, $techie_advert, 'PUT');
 
-        return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/techie-advert-edit.html.twig');
+        return $this->render('show/techie-advert-edit.html.twig',
+            ['show' => $show, 'form' => $form->createView()]);
     }
 
     /**
      * @param $identifier
-     * @Rest\Put("/shows/{identifier}/techie-advert")
+     * @Route("/shows/{identifier}/techie-advert", methods={"PUT"}, name="put_show_techie_advert")
      */
     public function putTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
@@ -102,21 +96,15 @@ class TechieAdvertController extends AbstractFOSRestController
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));
+            return $this->redirectToRoute('edit_show_techie_advert', array('identifier' => $show->getSlug()));
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate('show/techie-advert-edit.html.twig');
+            return $this->render('show/techie-advert-edit.html.twig',
+                ['show' => $show, 'form' => $form->createView()])->setStatusCode(400);
         }
     }
 
     /**
-     * @Rest\Patch("/shows/{identifier}/techie-advert/expire")
-     *
-     * @param Request $request
-     * @param $identifier
-     *
-     * @return \FOS\RestBundle\View\View
+     * @Route("/shows/{identifier}/techie-advert/expire", methods={"PATCH"}, name="expire_show_techie_advert")
      */
     public function expireTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
@@ -132,15 +120,11 @@ class TechieAdvertController extends AbstractFOSRestController
         $techie_advert->setExpiry($now);
         $em->flush();
 
-        return $this->routeRedirectView('edit_show_techie_advert', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_show_techie_advert', array('identifier' => $show->getSlug()));
     }
 
     /**
-     * @param Request $request
-     * @param $identifier
-     *
-     * @Rest\Delete("/shows/{identifier}/techie/advert")
-     * @return \FOS\RestBundle\View\View
+     * @Route("/shows/{identifier}/techie/advert", methods={"DELETE"}, name="delete_show_techie_advert")
      */
     public function deleteTechieAdvertAction(Request $request, Helper $helper, $identifier)
     {
@@ -152,6 +136,6 @@ class TechieAdvertController extends AbstractFOSRestController
         $em->remove($techie_advert);
         $em->flush();
 
-        return $this->routeRedirectView('new_show_techie_advert', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('new_show_techie_advert', array('identifier' => $show->getSlug()));
     }
 }

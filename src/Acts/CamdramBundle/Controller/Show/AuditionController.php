@@ -5,9 +5,9 @@ namespace Acts\CamdramBundle\Controller\Show;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\ShowAuditionsType;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AuditionController extends AbstractFOSRestController
 {
@@ -23,7 +23,7 @@ class AuditionController extends AbstractFOSRestController
 
     /**
      * @param $identifier
-     * @Rest\Get("/shows/{identifier}/auditions/edit")
+     * @Route("/shows/{identifier}/auditions/edit", methods={"GET"}, name="edit_show_auditions")
      */
     public function editAuditionsAction(Helper $helper, $identifier)
     {
@@ -32,14 +32,13 @@ class AuditionController extends AbstractFOSRestController
 
         $form = $this->getAuditionsForm($show);
 
-        return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/auditions-edit.html.twig');
+        return $this->render('show/auditions-edit.html.twig',
+            ['show' => $show, 'form' => $form->createView()]);
     }
 
     /**
      * @param $identifier
-     * @Rest\Put("/shows/{identifier}/auditions")
+     * @Route("/shows/{identifier}/auditions", methods={"POST"}, name="put_show_auditions")
      */
     public function putAuditionsAction(Request $request, Helper $helper, $identifier)
     {
@@ -59,11 +58,10 @@ class AuditionController extends AbstractFOSRestController
             $em->persist($formData);
             $em->flush();
 
-            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+            return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate('show/auditions-edit.html.twig');
+        return $this->render('show/auditions-edit.html.twig',
+            ['show' => $show, 'form' => $form->createView()])->setStatusCode(400);
         }
     }
 }

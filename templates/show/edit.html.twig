@@ -9,7 +9,7 @@
 
 <div class="row">
     <h3>Edit Show</h3>
-    {{ form_start(form, {'action': path("put_show", {identifier: form.vars.value.slug} )}) }}
+    {{ form_start(form, {'action': path("acts_camdram_show_put", {identifier: form.vars.value.slug} )}) }}
 
     {% include 'show/form.html.twig' %}
 

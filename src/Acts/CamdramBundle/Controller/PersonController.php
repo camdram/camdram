@@ -2,20 +2,19 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\Request;
 use Acts\CamdramAdminBundle\Service\PeopleMerger;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Form\Type\PersonType;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * Class PersonController
  *
  * Controller for REST actions for people. Inherits from AbstractRestController.
- *
- * @Rest\RouteResource("Person")
+ * @Route("/people")
  */
 class PersonController extends AbstractRestController
 {
@@ -37,32 +36,31 @@ class PersonController extends AbstractRestController
         return $this->createForm(PersonType::class, $person, ['method' => $method]);
     }
 
+    /**
+     * @Route("/{identifier}.{_format}", format="html", methods={"GET"}, name="get_person")
+     */
     public function getAction($identifier)
     {
         $person = $this->getEntity($identifier);
 
         //If person is mapped to a different person, redirect to the canonical person
         if ($person->getMappedTo()) {
-            return $this->redirectToRoute(
-                'get_person',
-                array('identifier' => $person->getMappedTo()->getSlug()),
-                301
-            );
+            return $this->redirectToRoute('get_person',
+                ['identifier' => $person->getMappedTo()->getSlug()], 301);
         }
 
-        return parent::getAction($identifier);
+        return parent::doGetAction($person);
     }
 
     /**
      * People are created by adding them to shows. No form.
-     * @Rest\NoRoute()
      */
     public function newAction() { throw $this->createNotFoundException(); }
 
     /**
      * Action that allows querying by id. Redirects to slug URL
      *
-     * @Rest\Get("/people/by-id/{id}")
+     * @Route("/by-id/{id}.{_format}", format="html", methods={"GET"}, name="get_person_by_id")
      */
     public function getByIdAction(Request $request, $id)
     {
@@ -80,6 +78,7 @@ class PersonController extends AbstractRestController
     /**
      * We don't want the default behaviour of paginated results - output an
      * interesting selection unless there's a query parameter specified.
+     * @Route(".{_format}", format="html", methods={"GET"}, name="get_people")
      */
     public function cgetAction(Request $request)
     {
@@ -99,17 +98,11 @@ class PersonController extends AbstractRestController
 
         $selectedPeople = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Person')
             ->getPeopleInDateRange($start, $end, 14);
-
-        $view = $this->view($selectedPeople, 200)
-            ->setTemplateVar('selectedPeople')
-            ->setTemplate('person/index.html.twig')
-        ;
-
-        return $view;
+        return $this->show('person/index.html.twig', 'selectedPeople', $selectedPeople);
     }
 
     /**
-     * * @Rest\Get("/people/{identifier}/link")
+     * * @Rest\Get("/{identifier}/link")
      */
     /*public function linkAction($identifier)
     {
@@ -127,10 +120,7 @@ class PersonController extends AbstractRestController
     }*/
 
     /**
-     * @param $identifier
-     *
-     * @return $this
-     * @Rest\Get("/people/{identifier}/roles")
+     * @Route("/{identifier}/roles.{_format}", format="html", methods={"GET"}, name="get_person_roles")
      */
     public function getRolesAction($identifier)
     {
@@ -147,10 +137,7 @@ class PersonController extends AbstractRestController
     }
 
     /**
-     * @param $identifier
-     *
-     * @return $this
-     * @Rest\Get("/people/{identifier}/past-roles")
+     * @Route("/{identifier}/past-roles.{_format}", format="html", methods={"GET"}, name="get_person_past_roles")
      */
     public function getPastRolesAction($identifier)
     {
@@ -160,16 +147,11 @@ class PersonController extends AbstractRestController
 
         $data = array('person' => $person, 'shows' => $shows);
 
-        return $this->view($data, 200)
-            ->setTemplateVar('data')
-            ->setTemplate('person/past-shows.html.twig');
+        return $this->show('person/past-shows.html.twig', 'data', $data);
     }
 
     /**
-     * @param $identifier
-     *
-     * @return $this
-     * @Rest\Get("/people/{identifier}/upcoming-roles")
+     * @Route("/{identifier}/upcoming-roles.{_format}", format="html", methods={"GET"}, name="get_person_upcoming_roles")
      */
     public function getUpcomingRolesAction($identifier)
     {
@@ -179,16 +161,11 @@ class PersonController extends AbstractRestController
 
         $data = array('person' => $person, 'shows' => $shows);
 
-        return $this->view($data, 200)
-            ->setTemplateVar('data')
-            ->setTemplate('person/upcoming-shows.html.twig');
+        return $this->show('person/upcoming-shows.html.twig', 'data', $data);
     }
 
     /**
-     * @param $identifier
-     *
-     * @return $this
-     * @Rest\Get("/people/{identifier}/current-roles")
+     * @Route("/{identifier}/current-roles.{_format}", format="html", methods={"GET"}, name="get_person_current_roles")
      */
     public function getCurrentRolesAction($identifier)
     {
@@ -198,13 +175,11 @@ class PersonController extends AbstractRestController
 
         $data = array('person' => $person, 'shows' => $shows);
 
-        return $this->view($data, 200)
-            ->setTemplateVar('data')
-            ->setTemplate('person/current-shows.html.twig');
+        return $this->show('person/current-shows.html.twig', 'data', $data);
     }
 
     /**
-     * @Rest\Get("/people/{identifier}/edit-roles", requirements={"_format"="html"})
+     * @Route("/{identifier}/edit-roles", methods={"GET"}, name="get_person_edit_roles")
      */
     public function getEditRolesAction($identifier)
     {
@@ -225,10 +200,7 @@ class PersonController extends AbstractRestController
     }
 
     /**
-     * @param $identifier
-     * @param $request Request
-     *
-     * @Rest\Get("/people/{identifier}/merge", requirements={"_format"="html"})
+     * @Route("/{identifier}/merge", methods={"GET"}, name="get_person_merge")
      */
     public function getMergeAction($identifier, PeopleMerger $merger)
     {
@@ -242,11 +214,7 @@ class PersonController extends AbstractRestController
     }
 
     /**
-     * @param $identifier
-     * @param $request Request
-     *
-     * @return $this
-     * @Rest\Post("/people/{identifier}/merge", requirements={"_format"="html"})
+     * @Route("/{identifier}/merge", methods={"POST"}, name="merge_person")
      */
     public function mergeAction($identifier, Request $request, PeopleMerger $merger)
     {

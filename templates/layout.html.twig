@@ -89,12 +89,12 @@
             {% endblock %}
             {% include 'navigation/nav-items.html.twig' with {items: {
               'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
-              'add_show': {text: 'Add a show', path: path('new_show'), icon: 'plus-circle'}
+              'add_show': {text: 'Add a show', path: path('acts_camdram_show_new'), icon: 'plus-circle'}
             }} %}
             {% if app.user and is_granted('ROLE_EDITOR') %}
             {% include 'navigation/nav-items.html.twig' with { items: {
-              'add_venue': {text: 'Add a venue', path: path('new_venue'), icon: 'plus-circle'},
-              'add_society': {text: 'Add a society', path: path('new_society'), icon: 'plus-circle'}
+              'add_venue': {text: 'Add a venue', path: path('acts_camdram_venue_new'), icon: 'plus-circle'},
+              'add_society': {text: 'Add a society', path: path('acts_camdram_society_new'), icon: 'plus-circle'}
             }} %}
             {% endif %}
           </ul>

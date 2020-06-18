@@ -11,7 +11,7 @@
 
 <div class="row">
     <h3>Edit Society</h3>
-    <form action="{{ path("put_society", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post">
+    <form action="{{ path("acts_camdram_society_put", {identifier: form.vars.value.slug, _method: 'put'}) }}" method="post">
         {{ form_widget(form) }}
         <div class="text-right">
             <input type="submit" value="Save" class="button"/>

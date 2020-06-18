@@ -22,7 +22,7 @@ class Society extends Organisation
 {
     /**
      * @ORM\ManyToMany(targetEntity="Show", mappedBy="societies")
-     * @Api\Link(route="get_society_shows", params={"identifier": "object.getSlug()"})
+     * @Api\Link(route="acts_camdram_society_getshows", params={"identifier": "object.getSlug()"})
      */
     private $shows;
 

@@ -3,17 +3,13 @@ acts_camdram_security_confirm_email:
     defaults: { _controller: Acts\CamdramSecurityBundle\Controller\DefaultController::confirmEmailAction }
 
 acts_camdram_security_account:
-    type:     rest
+    type:     annotation
     resource: Acts\CamdramSecurityBundle\Controller\AccountController
-
-acts_camdram_security_settings_res:
-    prefix: /settings
-    resource: routing/settings.yml
 
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
     prefix:   /connect
-    
+
 hwi_oauth_connect:
     resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
     prefix:   /connect
@@ -21,7 +17,7 @@ hwi_oauth_connect:
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix:   /login
- 
+
 facebook_login:
     path: /oauth/check-facebook
 

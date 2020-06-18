@@ -89,16 +89,16 @@
             <h3>Shows</h3>
             <ul>
                 <li>
-                    <a href="{{ path('get_venue_diary', {identifier: venue.slug, _format: 'ics'}) }}">
+                    <a href="{{ path('acts_camdram_venue_getdiary', {identifier: venue.slug, _format: 'ics'}) }}">
                         <i class="fa fa-calendar"></i> iCal
                     </a>
                 </li>
             </ul>
         </div>
-        {{ render(url('get_venue_diary', {identifier: venue.slug})) }}
+        {{ render(url('acts_camdram_venue_getdiary', {identifier: venue.slug})) }}
 
         <h4>Past shows</h4>
-        <p>See all the shows that have been performed here at <a href="{{ path('get_venue_history', {identifier: venue.slug}) }}"> the venue history page</a>.
+        <p>See all the shows that have been performed here at <a href="{{ path('acts_camdram_venue_gethistory', {identifier: venue.slug}) }}"> the venue history page</a>.
     </div>
 {% endblock %}
 

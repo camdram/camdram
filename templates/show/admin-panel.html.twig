@@ -4,10 +4,10 @@
         <span>Show Administration: {{ link_entity(show) }}</span>
         <span>ID: {{ show.id}}</span></h6>
     <ul role="menubar">
-        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_show',{identifier:show.slug}), icon: 'pencil', text: 'Edit this show'} }) }}
+        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('acts_camdram_show_edit',{identifier:show.slug}), icon: 'pencil', text: 'Edit this show'} }) }}
         {% if is_granted('DELETE', show) %}
             {{ include('navigation/form-item.html.twig', {item: {id: 'delete_show',
-                path: path('delete_show', {identifier:show.slug}), method: 'DELETE', text: 'Delete this show', icon: 'eraser'},
+                path: path('acts_camdram_show_delete', {identifier:show.slug}), method: 'DELETE', text: 'Delete this show', icon: 'eraser'},
                 destructive: {title: "Are you sure you want to delete the show “" ~ show.name ~ "”?", text: "This is a permanent action that cannot be undone" }
                 }) }}
         {% endif %}
@@ -97,7 +97,7 @@
         <div class="panel text-center">
             <p>This show is not yet visible to the public – it is awaiting approval
             from a society/venue owner or a Camdram administrator.
-            <p>If this show is funded by a society or is at a venue that you haven't yet added, please <strong><a href="{{ path('edit_show',{identifier:show.slug}) }}">click here to add them</a></strong> so they can approve your show.
+            <p>If this show is funded by a society or is at a venue that you haven't yet added, please <strong><a href="{{ path('acts_camdram_show_edit',{identifier:show.slug}) }}">click here to add them</a></strong> so they can approve your show.
         </div>
     {% endif %}
 {% endif %}

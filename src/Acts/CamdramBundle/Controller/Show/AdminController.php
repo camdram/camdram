@@ -58,16 +58,12 @@ class AdminController extends AbstractFOSRestController
         $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
 
-        return $this->view($form, 200)
-            ->setData(
-                array(
-                    'entity' => $show,
-                    'admins' => $admins,
-                    'requested_admins' => $requested_admins,
-                    'pending_admins' => $pending_admins,
-                    'form' => $form->createView())
-            )
-            ->setTemplate('pending_access/edit.html.twig');
+        return $this->render('pending_access/edit.html.twig', [
+            'entity' => $show,
+            'admins' => $admins,
+            'requested_admins' => $requested_admins,
+            'pending_admins' => $pending_admins,
+            'form' => $form->createView()]);
     }
 
     /**
@@ -135,7 +131,7 @@ class AdminController extends AbstractFOSRestController
             }
         }
         // Success
-        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**
@@ -154,7 +150,7 @@ class AdminController extends AbstractFOSRestController
         $show = $this->getEntity($identifier);
         if ($helper->isGranted('EDIT', $show)) {
             $this->addFlash('error', 'Cannot request admin rights on this show: you are already an admin.');
-            return $this->routeRedirectView('get_show', ['identifier' => $show->getSlug()]);
+            return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug()]);
         } else {
             // Check if there's already a matching request.
             $em = $this->getDoctrine()->getManager();
@@ -166,7 +162,7 @@ class AdminController extends AbstractFOSRestController
                 // A pre-existing request exists. Don't create another one.
                 $date = $request->getCreatedAt()->format('j F Y');
                 $this->addFlash('error', "Can't request admin rights again; you put in a request on $date which has not yet been answered.");
-                return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+                return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));
             }
 
             $ace = new AccessControlEntry();
@@ -182,7 +178,7 @@ class AdminController extends AbstractFOSRestController
             );
 
             $this->addFlash('success', 'Your request for access to this show has been sent.');
-            return $this->routeRedirectView('get_show', ['identifier' => $show->getSlug()]);
+            return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug()]);
         }
     }
 
@@ -210,7 +206,7 @@ class AdminController extends AbstractFOSRestController
             $this->addFlash('error', "Cannot approve access: user ID not found. Try again or contact support.");
         }
 
-        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**
@@ -235,13 +231,13 @@ class AdminController extends AbstractFOSRestController
             $this->addFlash('error', "Cannot delete admin: user ID not found. Try again or contact support.");
         }
 
-        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 
     /**
      * Revoke a pending admin's access to a show.
      *
-     * @Rest\Delete("/shows/{identifier}/pending-admins/{uid}")
+     * @Rest\Delete("/shows/{identifier}/pending-admins/{uid}", name="delete_show_pending_admin")
      */
     public function deletePendingAdminAction(Request $request, Helper $helper, $identifier, $uid)
     {
@@ -261,6 +257,6 @@ class AdminController extends AbstractFOSRestController
             $this->addFlash('error', "Cannot delete pending admin: ID not found. Try again or contact support.");
         }
 
-        return $this->routeRedirectView('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
     }
 }

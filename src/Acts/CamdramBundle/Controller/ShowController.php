@@ -2,23 +2,21 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ShowController
  *
  * Controller for REST actions for shows. Inherits from AbstractRestController.
- *
- * @RouteResource("Show")
+ * @Route("/shows")
  */
 class ShowController extends AbstractRestController
 {
@@ -43,6 +41,9 @@ class ShowController extends AbstractRestController
         return $this->createForm(ShowType::class, $show, ['method' => $method]);
     }
 
+    /**
+     * @Route(".{_format}", format="html", methods={"GET"}, name="get_shows")
+     */
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
@@ -61,11 +62,14 @@ class ShowController extends AbstractRestController
                           ->where('s.authorised = TRUE')
                           ->orderBy('s.id', 'DESC')->setMaxResults(10)
                           ->getQuery()->getResult();
-            return $this->view(['shows' => $shows])
-                ->setTemplate('show/index.html.twig');
+            return $this->show('show/index.html.twig', '', ['shows' => $shows]);
         }
     }
 
+    /**
+     * @Route("/{identifier}.{_format}", format="html", methods={"GET"}, name="get_show",
+     *      condition="request.getPathInfo() != '/shows/new'")
+     */
     public function getAction($identifier)
     {
         $show = $this->getRepository()->findOneBySlug($identifier);
@@ -79,39 +83,27 @@ class ShowController extends AbstractRestController
             }
         }
 
-        $this->denyAccessUnlessGranted('VIEW', $show);
-
         $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
             ->getContactableEntityOwners($show));
 
-        $view = $this->view($show, 200)
-            ->setTemplate('show/show.html.twig')
-            ->setTemplateData(['show' => $show, 'can_contact' => $can_contact]);
-        ;
-        return $view;
+        return $this->doGetAction($show, ['can_contact' => $can_contact]);
     }
 
     /**
      * Action that allows querying by id. Redirects to slug URL
      *
-     * @Rest\Get("/shows/by-id/{id}")
+     * @Route("/by-id/{id}.{_format}", format="html", methods={"GET"}, name="get_show_by_id")
      */
     public function getByIdAction(Request $request, $id)
     {
         $this->checkAuthenticated();
         $show = $this->getRepository()->findOneById($id);
 
-        if (!$show)
-        {
+        if (!$show) {
             throw $this->createNotFoundException('That show id does not exist');
         }
 
         return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug(), '_format' => $request->getRequestFormat()]);
-    }
-
-    public function postAction(Request $request)
-    {
-        return parent::postAction($request);
     }
 
     /**
@@ -209,7 +201,6 @@ class ShowController extends AbstractRestController
 
     /**
      * Render the Admin Panel
-     * @Rest\NoRoute()
      */
     public function adminPanelAction(Show $show)
     {
@@ -245,6 +236,9 @@ class ShowController extends AbstractRestController
             );
     }
 
+    /**
+     * @Route("/{identifier}/inline/edit", methods={"GET"}, name="edit_show_inline")
+     */
     public function editInlineAction($identifier)
     {
         $show = $this->getEntity($identifier);
@@ -253,6 +247,9 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
+    /**
+     * @Route("/{identifier}/image", methods={"DELETE"}, name="delete_show_image")
+     */
     public function deleteImageAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
@@ -270,6 +267,9 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
+    /**
+     * @Route("/{identifier}/approve", methods={"PATCH"}, name="approve_show")
+     */
     public function approveAction(Request $request, $identifier, ModerationManager $moderation_manager)
     {
         $show = $this->getEntity($identifier);
@@ -284,9 +284,12 @@ class ShowController extends AbstractRestController
         $moderation_manager->approveEntity($show);
         $em->flush();
 
-        return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));
     }
 
+    /**
+     * @Route("/{identifier}/unapprove", methods={"PATCH"}, name="unapprove_show")
+     */
     public function unapproveAction(Request $request, $identifier)
     {
         $show = $this->getEntity($identifier);
@@ -304,6 +307,10 @@ class ShowController extends AbstractRestController
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
 
+    /**
+     * @Route("/{identifier}/roles.{_format}", format="html", methods={"GET"}, name="get_show_roles")
+     * @Route("/{identifier}/people.{_format}", format="html", methods={"GET"}, name="get_show_people")
+     */
     public function getRolesAction($identifier)
     {
         $show = $this->getEntity($identifier);
@@ -311,11 +318,6 @@ class ShowController extends AbstractRestController
         $roles = $role_repo->findByShow($show);
 
         return $this->view($roles);
-    }
-
-    public function getPeopleAction($identifier)
-    {
-        return $this->getRolesAction($identifier);
     }
 
     /**

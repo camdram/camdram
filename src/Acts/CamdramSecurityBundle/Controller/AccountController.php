@@ -8,26 +8,28 @@ use Acts\CamdramSecurityBundle\Service\TokenGenerator;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * Class AccountController
  *
- * @Rest\RouteResource("Account")
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class AccountController extends AbstractFOSRestController
 {
     /**
-     * @Rest\Get("/account")
+     * @Route("/account.{_format}", format="html", methods={"GET"}, name="get_account")
      */
-    public function getAction(AuthorizationCheckerInterface $auth)
+    public function getAction(Request $request, AuthorizationCheckerInterface $auth)
     {
+        if ($request->getRequestFormat() == 'html') {
+            return $this->render('account/settings.html.twig');
+        }
         $context = new Context();
         $serializationGroups = ['all'];
         if ($auth->isGranted('ROLE_USER_EMAIL') || $auth->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -35,15 +37,11 @@ class AccountController extends AbstractFOSRestController
         }
         $context->setGroups($serializationGroups);
 
-        return $this->view($this->getUser())
-            ->setTemplate('account/settings.html.twig')
-            ->setContext($context)
-            ;
+        return $this->view($this->getUser())->setContext($context);
     }
 
     /**
      * The linked accounts block on the account settings page.
-     * @Rest\NoRoute()
      */
     public function linkedAccountsAction()
     {
@@ -52,8 +50,7 @@ class AccountController extends AbstractFOSRestController
 
     /**
      * @Security("is_granted('ROLE_USER_SHOWS')")
-     * @Rest\Get("/account/shows")
-     * @return \FOS\RestBundle\View\View
+     * @Route("/account/shows.{_format}", methods={"GET"}, name="get_account_shows")
      */
     public function getShowsAction(AclProvider $aclProvider)
     {
@@ -65,8 +62,7 @@ class AccountController extends AbstractFOSRestController
     /**
      * @Security("is_granted('ROLE_USER_ORGS')")
      *
-     * @Rest\Get("/account/organisations")
-     * @return \FOS\RestBundle\View\View
+     * @Route("/account/organisations.{_format}", methods={"GET"}, name="get_account_organisations")
      */
     public function getOrganisationsAction(AclProvider $aclProvider)
     {
@@ -77,7 +73,7 @@ class AccountController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/settings/change-email")
+     * @Route("/settings/change-email", methods={"POST"}, name="change_account_email")
      */
     public function changeEmailAction(Request $request)
     {
@@ -104,7 +100,7 @@ class AccountController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/settings/resend-verification")
+     * @Route("/settings/resend-verification", methods={"POST"}, name="resend_account_verification")
      */
     public function resendVerificationAction(TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
     {
@@ -116,7 +112,7 @@ class AccountController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/settings/unlink-account/{service}")
+     * @Route("/settings/unlink-account/{service}", methods={"POST"}, name="unlink_account_account")
      */
     public function unlinkAccountAction($service)
     {

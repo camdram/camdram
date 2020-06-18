@@ -1,9 +1,0 @@
-acts_camdram_security_change_email:
-    path: /change-email
-    defaults: { _controller: Acts\CamdramSecurityBundle\Controller\AccountController::ChangeEmailAction }
-acts_camdram_security_resend_verification:
-    path: /resend-verification
-    defaults: { _controller: Acts\CamdramSecurityBundle\Controller\AccountController::resendVerificationAction }
-acts_camdram_security_unlink_account:
-    path: /unlink-account/{service}
-    defaults: { _controller: Acts\CamdramSecurityBundle\Controller\AccountController::unlinkAccountAction }

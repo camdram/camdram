@@ -96,25 +96,15 @@ fos_rest:
         mime_types:
             ics: text/calendar
             txt: text/plain
-        templating_formats:
-            html: true
-            txt: true
-        force_redirects:
-            html: true
         view_response_listener: force
         failed_validation: HTTP_BAD_REQUEST
         jsonp_handler: ~
     service:
         view_handler: acts.camdram_api.view_handler
-    routing_loader:
-        default_format: html
     body_listener:
         decoders:
             json: fos_rest.decoder.jsontoform
     format_listener: true
-    access_denied_listener:
-        json: true
-        xml: true
     disable_csrf_role: ROLE_API
 
 jms_serializer:

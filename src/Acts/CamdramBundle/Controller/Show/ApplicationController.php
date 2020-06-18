@@ -6,9 +6,9 @@ use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\ApplicationType;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ApplicationController extends AbstractFOSRestController
 {
@@ -29,8 +29,7 @@ class ApplicationController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
-     * @Rest\Get("/shows/{identifier}/application/new")
+     * @Route("/shows/{identifier}/application/new", methods={"GET"}, name="new_show_application")
      */
     public function newApplicationAction($identifier, Helper $helper)
     {
@@ -39,14 +38,12 @@ class ApplicationController extends AbstractFOSRestController
 
         $form = $this->getApplicationForm($show);
 
-        return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/application-new.html.twig');
+        return $this->render('show/application-new.html.twig',
+            ['show' => $show, 'form' => $form->createView()]);
     }
 
     /**
-     * @param $identifier
-     * @Rest\Post("/shows/{identifier}/application")
+     * @Route("/shows/{identifier}/application", methods={"POST"}, name="post_show_application")
      */
     public function postApplicationAction(Request $request, Helper $helper, $identifier)
     {
@@ -60,17 +57,15 @@ class ApplicationController extends AbstractFOSRestController
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->routeRedirectView('get_show', array('identifier' => $show->getSlug()));
+            return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));
         } else {
-            return $this->view($form, 400)
-                ->setData(array('show' => $show, 'form' => $form->createView()))
-                ->setTemplate('show/application-new.html.twig');
+            return $this->render('show/application-new.html.twig',
+                ['show' => $show, 'form' => $form->createView()])->setStatusCode(400);
         }
     }
 
     /**
-     * @param $identifier
-     * @Rest\Get("/shows/{identifier}/application/edit")
+     * @Route("/shows/{identifier}/application/edit", methods={"GET"}, name="edit_show_application")
      */
     public function editApplicationAction($identifier, Helper $helper)
     {
@@ -80,14 +75,12 @@ class ApplicationController extends AbstractFOSRestController
         $application = $show->getApplications()->first();
         $form = $this->getApplicationForm($show, $application, 'PUT');
 
-        return $this->view($form, 200)
-            ->setData(array('show' => $show, 'form' => $form->createView()))
-            ->setTemplate('show/application-edit.html.twig');
+        return $this->render('show/application-edit.html.twig',
+            ['show' => $show, 'form' => $form->createView()]);
     }
 
     /**
-     * @param $identifier
-     * @Rest\Put("/shows/{identifier}/application")
+     * @Route("/shows/{identifier}/application", methods={"PUT"}, name="put_show_application")
      */
     public function putApplicationAction(Request $request, Helper $helper, $identifier)
     {
@@ -102,21 +95,15 @@ class ApplicationController extends AbstractFOSRestController
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->routeRedirectView('edit_show_application', array('identifier' => $show->getSlug()));
+            return $this->redirectToRoute('edit_show_application', array('identifier' => $show->getSlug()));
         } else {
-            return $this->view($form, 400)
-                ->setData(array('show' => $show, 'form' => $form->createView()))
-                ->setTemplate('show/application-edit.html.twig');
+            return $this->render('show/application-edit.html.twig',
+                ['show' => $show, 'form' => $form->createView()])->setStatusCode(400);
         }
     }
 
     /**
-     * @Rest\Patch("/shows/{identifier}/application/expire")
-     *
-     * @param Request $request
-     * @param $identifier
-     *
-     * @return \FOS\RestBundle\View\View
+     * @Route("/shows/{identifier}/application/expire", methods={"PATCH"}, name="expire_show_application")
      */
     public function expireApplicationAction(Request $request, Helper $helper, $identifier)
     {
@@ -131,15 +118,11 @@ class ApplicationController extends AbstractFOSRestController
         $application->setDeadlineDate($now)->setDeadlineTime($now);
         $em->flush();
 
-        return $this->routeRedirectView('edit_show_application', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_show_application', array('identifier' => $show->getSlug()));
     }
 
     /**
-     * @param Request $request
-     * @param $identifier
-     *
-     * @Rest\Delete("/shows/{identifier}/application")
-     * @return \FOS\RestBundle\View\View
+     * @Route("/shows/{identifier}/application", methods={"DELETE"}, name="delete_show_application")
      */
     public function deleteApplicationAction(Request $request, Helper $helper, $identifier)
     {
@@ -151,6 +134,6 @@ class ApplicationController extends AbstractFOSRestController
         $em->remove($application);
         $em->flush();
 
-        return $this->routeRedirectView('new_show_application', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('new_show_application', array('identifier' => $show->getSlug()));
     }
 }

@@ -4,25 +4,25 @@ namespace Acts\CamdramApiBundle\Controller;
 
 use Acts\CamdramApiBundle\Entity\ExternalApp;
 use Acts\CamdramApiBundle\Form\Type\ExternalAppType;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Routing\Annotation\Route;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use FOS\OAuthServerBundle\Util\Random;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
  * Class AppController
  *
- * @Rest\RouteResource("App")
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class AppController extends AbstractFOSRestController
+class AppController extends AbstractController
 {
-
+    /**
+     * @Route("/apps", methods={"GET"}, name="get_apps")
+     */
     public function cgetAction()
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramApiBundle:ExternalApp');
@@ -44,6 +44,21 @@ class AppController extends AbstractFOSRestController
         return $app;
     }
 
+    /**
+     * @Route("/apps/new", methods={"GET"}, name="new_app")
+     */
+    public function newAction()
+    {
+        $form = $this->createForm(ExternalAppType::class);
+
+        return $this->render('api/app/new.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * @Route("/apps/{app_id}", methods={"GET"}, name="get_app")
+     */
     public function getAction($app_id)
     {
         $app = $this->getApp($app_id);
@@ -55,17 +70,8 @@ class AppController extends AbstractFOSRestController
             ));
     }
 
-    public function newAction()
-    {
-        $form = $this->createForm(ExternalAppType::class);
-
-        return $this->render('api/app/new.html.twig', array(
-            'form' => $form->createView()
-        ));
-    }
-
     /**
-     * @Rest\Post("/api/apps")
+     * @Route("/apps", methods={"POST"}, name="post_app")
      */
     public function postAction(Request $request, ClientManagerInterface $clientManager)
     {
@@ -84,6 +90,9 @@ class AppController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Route("/apps/{app_id}", methods={"PUT"}, name="put_app")
+     */
     public function putAction(Request $request, $app_id)
     {
         $app = $this->getApp($app_id);
@@ -103,6 +112,9 @@ class AppController extends AbstractFOSRestController
         }
     }
 
+    /**
+     * @Route("/apps/{app_id}", methods={"DELETE"}, name="delete_app")
+     */
     public function deleteAction(Request $request, $app_id)
     {
         if (!$this->isCsrfTokenValid('delete_app', $request->request->get('_token'))) {
@@ -117,7 +129,7 @@ class AppController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Patch("/apps/{app_id}/regenerate-secret")
+     * @Route("/apps/{app_id}/regenerate-secret", methods={"PATCH"}, name="regenerate_app_secret")
      */
     public function regenerateSecretAction(Request $request, $app_id)
     {
@@ -129,6 +141,6 @@ class AppController extends AbstractFOSRestController
         $app->setSecret(Random::generateToken());
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirect($this->generateUrl('get_app', array('app_id' => $app->getRandomId())));
+        return $this->redirect($this->generateUrl('get_app', ['app_id' => $app->getRandomId()]));
     }
 }

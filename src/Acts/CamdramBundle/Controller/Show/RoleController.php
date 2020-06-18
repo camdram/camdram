@@ -180,9 +180,8 @@ class RoleController extends AbstractController
             $this->em->flush();
         } else {
             // Form not valid, hand back to user
-            return $this->view($form, 400)
-                ->setData(array('show' => $show, 'form' => $form->createView()))
-                ->setTemplate('show/roles-new.html.twig');
+            return $this->render('show/roles-new.html.twig', ['show' => $show, 'form' => $form->createView()])
+                ->setStatusCode(400);
         }
 
         return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));

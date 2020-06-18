@@ -20,11 +20,11 @@
     list show the current admins and the list of people who will be able to edit
     the show after they create an account on Camdram.
 {% elseif entity.entityType == 'society' %}
-    {% set revoke_admin_route = 'delete_society_admin' %}
+    {% set revoke_admin_route = 'acts_camdram_society_deleteadmin' %}
     {% set revoke_pending_admin_route = 'delete_society_pending_admin' %}
     Society admins are able to edit the information listed on Camdram, authorise shows involving the society, and to open applications for new shows.
 {% elseif entity.entityType == 'venue' %}
-    {% set revoke_admin_route = 'delete_venue_admin' %}
+    {% set revoke_admin_route = 'acts_camdram_venue_deleteadmin' %}
     {% set revoke_pending_admin_route = 'delete_venue_pending_admin' %}
     Venue admins are able to edit the information listed on Camdram, authorise shows involving the venue, and to open applications for new shows.
 {% endif %}

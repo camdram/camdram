@@ -7,8 +7,11 @@ use Acts\CamdramSecurityBundle\Security\Acl\Helper;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Psr\Log\LoggerInterface;
 
@@ -28,6 +31,12 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
     /** @var string the plural form of the English word for the entity represented by the class  */
     protected $type_plural;
+
+    protected $requestStack;
+
+    public function __construct(RequestStack $requestStack) {
+        $this->requestStack = $requestStack;
+    }
 
     public static function getSubscribedServices(): array
     {
@@ -104,22 +113,21 @@ abstract class AbstractRestController extends AbstractFOSRestController
     abstract protected function getForm($entity = null, $method = 'POST');
 
     /**
-     * Action for URL e.g. /shows/new
+     * @Route("/new", methods={"GET"})
      */
     public function newAction()
     {
         $this->checkAuthenticated();
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
 
-        $form = $this->getForm();
+        $form = $this->getForm()->createView();
 
-        return $this->view($form, 200)
-            ->setTemplateVar('form')
-            ->setTemplate($this->type.'/new.html.twig');
+        return $this->render($this->type.'/new.html.twig', ['form' => $form]);
     }
 
     /**
      * Action where POST request is submitted from new entity form
+     * @Route(".{_format}", format="html", methods={"POST"})
      */
     public function postAction(Request $request)
     {
@@ -128,23 +136,23 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
         $form = $this->getForm();
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
             $this->get('camdram.security.acl.provider')->grantAccess($form->getData(), $this->getUser(), $this->getUser());
             $this->afterEditFormSubmitted($form, $form->getData()->getSlug());
             $em->flush();
-            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
+            return $this->redirectIfHuman('get_'.$this->type, $this->getRouteParams($form->getData(), $request), 201);
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate($this->type.'/new.html.twig');
+            return $this->render($this->type.'/new.html.twig', ['form' => $form->createView()])
+                ->setStatusCode(400);
         }
     }
 
     /**
      * Action for URL e.g. /shows/the-lion-king/edit
+     * @Route("/{identifier}/edit")
      */
     public function editAction($identifier)
     {
@@ -155,13 +163,12 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $form = $this->getForm($entity, 'PUT');
         $this->modifyEditForm($form, $identifier);
 
-        return $this->view($form, 200)
-            ->setTemplateVar('form')
-            ->setTemplate($this->type.'/edit.html.twig');
+        return $this->show($this->type.'/edit.html.twig', 'form', $form->createView());
     }
 
     /**
      * Action where PUT request is submitted from edit entity form
+     * @Route("/{identifier}.{_format}", format="html", methods={"PUT"})
      */
     public function putAction(Request $request, $identifier)
     {
@@ -175,16 +182,16 @@ abstract class AbstractRestController extends AbstractFOSRestController
             $this->afterEditFormSubmitted($form, $identifier);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
+            return $this->redirectIfHuman('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate($this->type.'/edit.html.twig');
+            return $this->render($this->type.'/edit.html.twig',
+                ['form' => $form->createView()])->setStatusCode(400);
         }
     }
 
     /**
      * Action where PATCH request is submitted from edit entity form
+     * @Route("/{identifier}.{_format}", format="html", methods={"PATCH"})
      */
     public function patchAction(Request $request, $identifier)
     {
@@ -199,11 +206,10 @@ abstract class AbstractRestController extends AbstractFOSRestController
             $this->afterEditFormSubmitted($form, $identifier);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->routeRedirectView('get_'.$this->type, $this->getRouteParams($form->getData(), $request));
+            return $this->redirectIfHuman('get_'.$this->type, $this->getRouteParams($form->getData(), $request), 201);
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate($this->type.'/edit.html.twig');
+            return $this->render($this->type.'/edit.html.twig',
+                ['form' => $form->createView()])->setStatusCode(400);
         }
     }
 
@@ -221,6 +227,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
     /**
      * Action to delete entity
+     * @Route("/{identifier}", methods={"DELETE"})
      */
     public function deleteAction(Request $request, $identifier)
     {
@@ -239,7 +246,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
         $this->addFlash('success', "Deleted {$this->type} “{$name}”.");
 
-        return $this->routeRedirectView('get_'.$this->type_plural);
+        return $this->redirectToRoute('get_'.$this->type_plural);
     }
 
     /**
@@ -262,16 +269,34 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /**
      * Action for pages that represent a single entity - the entity in question is passed to the template
      */
-    public function getAction($identifier)
+    public function doGetAction($entity, array $extraData = [])
     {
         $this->checkAuthenticated();
-        $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
-        $view = $this->view($entity, 200)
-            ->setTemplate($this->type.'/show.html.twig')
-            ->setTemplateVar($this->type)
-        ;
 
-        return $view;
+        return $this->show($this->type.'/show.html.twig', $this->type, $entity, $extraData);
+    }
+
+    protected function show(string $template, string $templateVar, $data, array $templateData = [])
+    {
+        $format = $this->requestStack->getCurrentRequest()->getRequestFormat();
+        if ($format == 'html' || $format == 'txt') {
+            if (is_array($data)) {
+                $templateData += $data;
+            }
+            $templateData[$templateVar] = $data;
+            return $this->render($template, $templateData);
+        } else {
+            return $this->view($data);
+        }
+    }
+
+    protected function redirectIfHuman(string $route, array $routeParams, int $successCode = 200) {
+        $format = $this->requestStack->getCurrentRequest()->getRequestFormat();
+        if ($format == 'html' || $format == 'txt') {
+            return $this->redirectToRoute($route, $routeParams);
+        } else {
+            return new Response('', $successCode);
+        }
     }
 }

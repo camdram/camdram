@@ -80,16 +80,16 @@
         <h3>Shows</h3>
         <ul>
             <li>
-                <a href="{{ path('get_society_diary', {identifier: society.slug, _format: 'ics'}) }}">
+                <a href="{{ path('acts_camdram_society_getdiary', {identifier: society.slug, _format: 'ics'}) }}">
                     <i class="fa fa-calendar"></i> iCal
                 </a>
             </li>
         </ul>
     </div>
-    {{ render(url('get_society_diary', {identifier: society.slug})) }}
+    {{ render(url('acts_camdram_society_getdiary', {identifier: society.slug})) }}
 
     <h4>Past shows</h4>
-    <p>See all the shows this society has been previously involved in at <a href="{{ path('get_society_history', {identifier: society.slug}) }}"> the society history page</a>.
+    <p>See all the shows this society has been previously involved in at <a href="{{ path('acts_camdram_society_gethistory', {identifier: society.slug}) }}">the society history page</a>.
 </div>
 
 {% endblock %}

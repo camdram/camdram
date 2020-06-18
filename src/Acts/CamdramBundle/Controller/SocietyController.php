@@ -5,17 +5,16 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\SocietyType;
 use Acts\CamdramBundle\Service\ModerationManager;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class SocietyController
  *
  * Controller for REST actions for societies. Inherits from AbstractRestController.
- *
- * @Rest\RouteResource("Society")
+ * @Route("/societies")
  */
 class SocietyController extends OrganisationController
 {
@@ -37,26 +36,23 @@ class SocietyController extends OrganisationController
         return $this->createForm(SocietyType::class, $society, ['method' => $method]);
     }
 
+    /**
+     * @Route("/{identifier}.{_format}", format="html", methods={"GET"}, name="get_society",
+     *      condition="request.getPathInfo() != '/societies/new'")
+     */
     public function getAction($identifier)
     {
         $society = $this->getEntity($identifier);
-        $this->denyAccessUnlessGranted('VIEW', $society);
-
         $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
             ->getContactableEntityOwners($society));
 
-        $view = $this->view($society, 200)
-            ->setTemplate('society/show.html.twig')
-            ->setTemplateData(['society' => $society, 'can_contact' => $can_contact])
-        ;
-
-        return $view;
+        return $this->doGetAction($society, ['can_contact' => $can_contact]);
     }
 
     /**
      * Action that allows querying by id. Redirects to slug URL
      *
-     * @Rest\Get("/societies/by-id/{id}")
+     * @Route("/by-id/{id}.{_format}", format="html", methods={"GET"}, name="get_society_by_id")
      */
     public function getByIdAction(Request $request, $id)
     {
@@ -71,6 +67,9 @@ class SocietyController extends OrganisationController
         return $this->redirectToRoute('get_society', ['identifier' => $society->getSlug(), '_format' => $request->getRequestFormat()]);
     }
 
+    /**
+     * @Route(".{_format}", format="html", methods={"GET"}, name="get_societies")
+     */
     public function cgetAction(Request $request)
     {
         if ($request->query->has('q')) {
@@ -78,15 +77,12 @@ class SocietyController extends OrganisationController
         }
 
         $societies = $this->getRepository()->findAllOrderedByCollegeName();
-
-        $view = $this->view($societies, 200)
-            ->setTemplateVar('societies')
-            ->setTemplate('society/index.html.twig')
-        ;
-
-        return $view;
+        return $this->show('society/index.html.twig', 'societies', $societies);
     }
 
+    /**
+     * @Route("/{identifier}/vacancies.{_format}", methods={"GET"}, name="get_society_vacancies")
+     */
     public function getVacanciesAction($identifier)
     {
         $society = $this->getEntity($identifier);
@@ -95,18 +91,15 @@ class SocietyController extends OrganisationController
         $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
         $now = new \DateTime;
 
-        $data = array(
+        $data = [
             'society' => $society,
             'auditions' => $auditions_repo->findUpcomingBySociety($society, 10, $now),
             'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledBySociety($society, 10, $now),
             'techie_ads' => $techie_repo->findLatestBySociety($society, 10, $now),
             'app_ads' => $applications_repo->findLatestBySociety($society, 10, $now),
-        );
+        ];
 
-        return $this->view($data, 200)
-            ->setTemplateVar('vacancies')
-            ->setTemplate('society/vacancies.html.twig')
-            ;
+        return $this->show('society/vacancies.html.twig', 'data', $data);
     }
 
     /**
@@ -141,6 +134,9 @@ class SocietyController extends OrganisationController
         return $show_repo->getBySociety($this->getEntity($slug), $from, $to);
     }
 
+    /**
+     * @Route("/{identifier}/image", methods={"DELETE"}, name="delete_society_image")
+     */
     public function deleteImageAction(Request $request, $identifier)
     {
         $society = $this->getEntity($identifier);
@@ -161,7 +157,7 @@ class SocietyController extends OrganisationController
     /**
      * Revoke a pending admin's access to an organisation.
      *
-     * @Rest\Delete("/societies/{identifier}/pending-admins/{uid}")
+     * @Route("/{identifier}/pending-admins/{uid}", methods={"DELETE"}, name="delete_society_pending_admin")
      */
     public function deletePendingAdminAction(Request $request, $identifier, $uid)
     {
@@ -169,7 +165,7 @@ class SocietyController extends OrganisationController
     }
 
     /**
-      * @Rest\Post("/societies/{identifier}/admins", name="post_society_admin")
+      * @Route("/{identifier}/admins", methods={"POST"}, name="post_society_admin")
       * @param $identifier
       */
     public function postAdminAction(Request $request, $identifier,

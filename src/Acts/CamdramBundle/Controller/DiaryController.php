@@ -61,15 +61,13 @@ class DiaryController extends AbstractFOSRestController
 
     private function renderDiary(Request $request, Diary $diary)
     {
-        $view = $this->view($diary)
-            ->setTemplateVar('diary');
-        if ($request->get('fragment') || $request->isXmlHttpRequest()) {
-            $view->setTemplate('diary/fragment.html.twig');
+        if ($request->getRequestFormat() != 'html') {
+            return $this->view($diary);
+        } else if ($request->get('fragment') || $request->isXmlHttpRequest()) {
+            return $this->render('diary/fragment.html.twig', ['diary' => $diary]);
         } else {
-            $view->setTemplate('diary/index.html.twig');
+            return $this->render('diary/index.html.twig', ['diary' => $diary]);
         }
-
-        return $view;
     }
 
     public function yearAction(Request $request, WeekManager $week_manager, $year)

@@ -2,28 +2,27 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ShowAdminController
  *
  * Controller for site-wide show administration.
  *
- * @RouteResource("My-Show")
  * @IsGranted("ROLE_USER")
  */
 class ShowAdminController extends AbstractController
 {
     /**
      * Lists all the user's shows.
+     * @Route("/show-admin", methods={"GET"}, name="acts_camdram_show_admin")
      */
     public function cgetAction(Request $request, AclProvider $aclProvider, EntityManagerInterface $entityManager)
     {

@@ -2,31 +2,35 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Symfony\Component\HttpFoundation\Request;
-
-use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Entity\Audition;
+use Acts\CamdramBundle\Service\Time;
 use Acts\DiaryBundle\Diary\Diary;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @RouteResource("Audition")
- */
 class AuditionController extends AbstractFOSRestController
 {
+    /**
+     * @Route("/vacancies/auditions.{_format}", format="html", methods={"GET"}, name="get_auditions")
+     */
     public function cgetAction(Request $request)
     {
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(Time::now());
 
-        $view = $this->view($auditions, 200)
-                  ->setTemplate('audition/index.'.$request->getRequestFormat().'.twig')
-                   ->setTemplateVar('auditions')
-               ;
-
-        return $view;
+        switch ($request->getRequestFormat()) {
+        case 'html':
+        case 'txt':
+            return $this->render("audition/index.{$request->getRequestFormat()}.twig",
+                ['auditions' => $auditions]);
+        default:
+            return $this->view($auditions);
+        }
     }
 
+    /**
+     * @Route("/vacancies/auditions/diary.{_format}", format="html", methods={"GET"}, name="get_auditions_diary")
+     */
     public function cgetDiaryAction()
     {
         $diary = new Diary;
@@ -34,13 +38,12 @@ class AuditionController extends AbstractFOSRestController
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findUpcoming(null, Time::now());
         $diary->addEvents($auditions);
 
-        $view = $this->view($diary)
-            ->setTemplateVar('diary')
-            ->setTemplate('audition/diary.html.twig');
-
-        return $view;
+        return $this->show('audition/diary.html.twig', 'diary', $diary);
     }
 
+    /**
+     * @Route("/vacancies/auditions/{identifier}.{_format}", format="html", methods={"GET"}, name="get_audition")
+     */
     public function getAction($identifier)
     {
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')

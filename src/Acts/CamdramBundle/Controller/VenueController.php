@@ -2,20 +2,19 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
 use Acts\CamdramBundle\Service\ModerationManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class VenueController
  *
  * Controller for REST actions for venues. Inherits from AbstractRestController.
- *
- * @Rest\RouteResource("Venue")
+ * @Route("/venues")
  */
 class VenueController extends OrganisationController
 {
@@ -37,26 +36,23 @@ class VenueController extends OrganisationController
         return $this->createForm(VenueType::class, $venue, ['method' => $method]);
     }
 
+    /**
+     * @Route("/{identifier}.{_format}", format="html", methods={"GET"}, name="get_venue",
+     *      condition="request.getPathInfo() != '/venues/new'"))
+     */
     public function getAction($identifier)
     {
         $venue = $this->getEntity($identifier);
-        $this->denyAccessUnlessGranted('VIEW', $venue);
-
         $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
             ->getContactableEntityOwners($venue));
 
-        $view = $this->view($venue, 200)
-            ->setTemplate('venue/show.html.twig')
-            ->setTemplateData(['venue' => $venue, 'can_contact' => $can_contact])
-        ;
-
-        return $view;
+        return $this->doGetAction($venue, ['can_contact' => $can_contact]);
     }
 
     /**
      * Action that allows querying by id. Redirects to slug URL
      *
-     * @Rest\Get("/venues/by-id/{id}")
+     * @Route("/by-id/{id}.{_format}", format="html", methods={"GET"}, name="get_venue_by_id")
      */
     public function getByIdAction(Request $request, $id)
     {
@@ -74,6 +70,7 @@ class VenueController extends OrganisationController
     /**
      * We don't want the default behaviour of paginated results - just output all of them unless there's a query
      * parameter specified.
+     * @Route(".{_format}", format="html", methods={"GET"}, name="get_venues")
      */
     public function cgetAction(Request $request)
     {
@@ -82,13 +79,7 @@ class VenueController extends OrganisationController
         }
 
         $venues = $this->getRepository()->findAllOrderedByName();
-
-        $view = $this->view($venues, 200)
-            ->setTemplateVar('venues')
-            ->setTemplate('venue/index.html.twig')
-        ;
-
-        return $view;
+        return $this->show('venue/index.html.twig', 'venues', $venues);
     }
 
     public function getVacanciesAction($identifier)
@@ -107,10 +98,7 @@ class VenueController extends OrganisationController
             'app_ads' => $applications_repo->findLatestByVenue($venue, 10, $now),
         );
 
-        return $this->view($data, 200)
-            ->setTemplateVar('vacancies')
-            ->setTemplate('venue/vacancies.html.twig')
-        ;
+        return $this->show('venue/vacancies.html.twig', 'data', $data);
     }
 
     /**
@@ -145,6 +133,9 @@ class VenueController extends OrganisationController
         return $show_repo->getByVenue($this->getEntity($slug), $from, $to);
     }
 
+    /**
+     * @Route("/{identifier}/image", methods={"DELETE"}, name="delete_venue_image")
+     */
     public function deleteImageAction(Request $request, $identifier)
     {
         $venue = $this->getEntity($identifier);
@@ -165,7 +156,7 @@ class VenueController extends OrganisationController
     /**
      * Revoke a pending admin's access to an organisation.
      *
-     * @Rest\Delete("/venues/{identifier}/pending-admins/{uid}")
+     * @Route("/{identifier}/pending-admins/{uid}", methods={"DELETE"}, name="delete_venue_pending_admin")
      */
     public function deletePendingAdminAction(Request $request, $identifier, $uid)
     {
@@ -173,9 +164,8 @@ class VenueController extends OrganisationController
     }
 
     /**
-      * @Rest\Post("/venues/{identifier}/admins", name="post_venue_admin")
-      * @param $identifier
-      */
+     * @Route("/{identifier}/admins", methods={"POST"}, name="post_venue_admin")
+     */
     public function postAdminAction(Request $request, $identifier,
         ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
     {

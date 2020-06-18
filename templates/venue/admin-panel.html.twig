@@ -2,22 +2,22 @@
 <div class="admin-panel">
     <h6 class="split-header"><span>Venue Administration: <a href="{{ path('get_venue', {identifier: org.slug}) }}">{{ org.name }}</a></span><span>ID: {{org.id}}</span></h6>
     <ul role="menubar">
-        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_venue', path: path('edit_venue',{identifier:org.slug}), icon: 'pencil', text: 'Edit this venue'} }) }}
+        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_venue', path: path('acts_camdram_venue_edit',{identifier:org.slug}), icon: 'pencil', text: 'Edit this venue'} }) }}
         {% if is_granted('DELETE', org) %}
             {{ include('navigation/form-item.html.twig', {item: {id: 'delete_venue',
-                path: path('delete_venue', {identifier:org.slug}), method: 'DELETE', text: 'Delete this venue', icon: 'eraser'},
+                path: path('acts_camdram_venue_delete', {identifier:org.slug}), method: 'DELETE', text: 'Delete this venue', icon: 'eraser'},
                 destructive: {title: "Are you sure you want to delete the venue “" ~ org.name ~ "”?", text: "This is a permanent action that cannot be undone" }
                 }) }}
         {% endif %}
         {% if org.applications | length == 0 %}
             {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'new_application', path: path('new_venue_application',{identifier:org.slug}), icon: 'plus-circle', text: 'Show applications'} }) }}
+            {item: {id: 'new_application', path: path('acts_camdram_venue_newapplication',{identifier:org.slug}), icon: 'plus-circle', text: 'Show applications'} }) }}
         {% else %}
             {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_application', path: path('edit_venue_application',{identifier:org.slug}), icon: 'pencil', text: 'Show applications'} }) }}
+            {item: {id: 'edit_application', path: path('acts_camdram_venue_editapplication',{identifier:org.slug}), icon: 'pencil', text: 'Show applications'} }) }}
         {% endif %}
         {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_admin', path: path('edit_venue_admin',{identifier:org.slug}), icon: 'pencil', text: "Edit the venue's admins"} }) }}
+            {item: {id: 'edit_admin', path: path('acts_camdram_venue_editadmin',{identifier:org.slug}), icon: 'pencil', text: "Edit the venue's admins"} }) }}
     </ul>
     <p>
     The following people can edit this venue:

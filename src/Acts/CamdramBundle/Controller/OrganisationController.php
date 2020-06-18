@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class OrganisationController
@@ -27,10 +27,8 @@ use FOS\RestBundle\Controller\Annotations as Rest;
  */
 abstract class OrganisationController extends AbstractRestController
 {
-
     /**
      * Render the Admin Panel
-     * @Rest\NoRoute
      */
     public function adminPanelAction(Organisation $org)
     {
@@ -51,10 +49,7 @@ abstract class OrganisationController extends AbstractRestController
         $org = $this->getEntity($identifier);
         $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
 
-        return $this->view($news_repo->getRecentByOrganisation($org, 30), 200)
-            ->setTemplateVar('news')
-            ->setTemplate('organisation/news.html.twig')
-            ;
+        return $this->show('organisation/news.html.twig', 'news', $news_repo->getRecentByOrganisation($org, 30));
     }
 
     abstract protected function getPerformances($slug, \DateTime $from, \DateTime $to);
@@ -63,10 +58,7 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * Render a diary of the shows put on by this society.
-     *
-     * @param $identifier
-     *
-     * @return mixed
+     * @Route("/{identifier}/shows.{_format}", format="html", methods={"GET"})
      */
     public function getShowsAction(Request $request, $identifier)
     {
@@ -102,9 +94,7 @@ abstract class OrganisationController extends AbstractRestController
     /**
      * Render a diary of the shows put on by this society.
      *
-     * @param $identifier
-     *
-     * @return mixed
+     * @Route("/{identifier}/diary.{_format}", format="html")
      */
     public function getDiaryAction(Request $request, $identifier)
     {
@@ -134,16 +124,12 @@ abstract class OrganisationController extends AbstractRestController
         $performances = $this->getPerformances($identifier, $from, $to);
         $diary->addEvents($performances);
 
-        $view = $this->view($diary, 200)
-            ->setTemplateVar('diary')
-            ->setTemplate('organisation/diary.html.twig')
-        ;
-
-        return $view;
+        return $this->show('organisation/diary.html.twig', 'diary', $diary);
     }
 
     /**
      * Redirect from /events -> /diary for backwards compatibility
+     * @Route("/{identifier}/events.{_format}", format="html")
      */
     public function getEventsAction(Request $request, $identifier)
     {
@@ -168,6 +154,7 @@ abstract class OrganisationController extends AbstractRestController
 
     /**
      * @param $identifier
+     * @Route("/{identifier}/applications/new", methods={"GET"})
      */
     public function newApplicationAction($identifier)
     {
@@ -176,13 +163,13 @@ abstract class OrganisationController extends AbstractRestController
 
         $form = $this->getApplicationForm($org);
 
-        return $this->view($form, 200)
-            ->setData(array('org' => $org, 'form' => $form->createView()))
-            ->setTemplate($this->type.'/application-new.html.twig');
+        return $this->render($this->type.'/application-new.html.twig',
+            ['org' => $org, 'form' => $form->createView()]);
     }
 
     /**
      * @param $identifier
+     * @Route("/{identifier}/applications", methods={"POST"})
      */
     public function postApplicationAction(Request $request, $identifier)
     {
@@ -196,16 +183,16 @@ abstract class OrganisationController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
+            return $this->redirectToRoute('get_'.$this->type, array('identifier' => $org->getSlug()));
         } else {
-            return $this->view($form, 400)
-                ->setData(array('org' => $org, 'form' => $form->createView()))
-                ->setTemplate($this->type.'/application-new.html.twig');
+            return $this->render($this->type.'/application-new.html.twig',
+                ['org' => $org, 'form' => $form->createView()]);
         }
     }
 
     /**
      * @param $identifier
+     * @Route("/{identifier}/application/edit", methods={"GET"})
      */
     public function editApplicationAction($identifier)
     {
@@ -215,13 +202,12 @@ abstract class OrganisationController extends AbstractRestController
         $application = $org->getApplications()->first();
         $form = $this->getApplicationForm($org, $application, 'PUT');
 
-        return $this->view($form, 200)
-            ->setData(array('org' => $org, 'form' => $form->createView()))
-            ->setTemplate($this->type.'/application-edit.html.twig');
+        return $this->render($this->type.'/application-edit.html.twig',
+            ['org' => $org, 'form' => $form->createView()]);
     }
 
     /**
-     * @param $identifier
+     * @Route("/{identifier}/application", methods={"PUT"})
      */
     public function putApplicationAction(Request $request, $identifier)
     {
@@ -236,14 +222,16 @@ abstract class OrganisationController extends AbstractRestController
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
+            return $this->redirectToRoute('get_'.$this->type, array('identifier' => $org->getSlug()));
         } else {
-            return $this->view($form, 400)
-                ->setTemplateVar('form')
-                ->setTemplate($this->type.'/application-edit.html.twig');
+            return $this->render($this->type.'/application-edit.html.twig',
+               ['form' => $form->createView()])->setStatusCode(400);
         }
     }
 
+    /**
+     * @Route("/{identifier}/application", methods={"DELETE"})
+     */
     public function deleteApplicationAction(Request $request, $identifier)
     {
         $this->checkAuthenticated();
@@ -259,13 +247,14 @@ abstract class OrganisationController extends AbstractRestController
         $em->remove($application);
         $em->flush();
 
-        return $this->routeRedirectView('get_'.$this->type, array('identifier' => $org->getSlug()));
+        return $this->redirectToRoute('get_'.$this->type, array('identifier' => $org->getSlug()));
     }
 
     /**
      * Get a form for adding an admin to an organisation.
      *
      * @param $identifier
+     * @Route("/{identifier}/admin/edit")
      */
     public function editAdminAction($identifier)
     {
@@ -288,15 +277,11 @@ abstract class OrganisationController extends AbstractRestController
         $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($org);
         $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($org);
 
-        return $this->view($form, 200)
-            ->setData(
-                array(
-                'entity' => $org,
-                'admins' => $admins,
-                'pending_admins' => $pending_admins,
-                'form' => $form->createView())
-            )
-            ->setTemplate('pending_access/edit.html.twig');
+        return $this->render('pending_access/edit.html.twig', [
+            'entity' => $org,
+            'admins' => $admins,
+            'pending_admins' => $pending_admins,
+            'form' => $form->createView()]);
     }
 
     /**
@@ -365,13 +350,12 @@ abstract class OrganisationController extends AbstractRestController
             $route = 'get_venue';
         }
 
-        return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
+        return $this->redirectToRoute($route, array('identifier' => $org->getSlug()));
     }
 
     /**
      * Revoke an admin's access to an organisation.
-     *
-     * @Rest\Delete
+     * @Route("/{identifier}/admins/{uid}", methods={"DELETE"})
      */
     public function deleteAdminAction(Request $request, $identifier, $uid)
     {
@@ -388,12 +372,12 @@ abstract class OrganisationController extends AbstractRestController
             $this->get('camdram.security.acl.provider')->revokeAccess($org, $user, $this->getUser());
         }
         if ($org->getEntityType() == 'society') {
-            $route = 'edit_society_admin';
+            $route = 'acts_camdram_society_editadmin';
         } else {
-            $route = 'edit_venue_admin';
+            $route = 'acts_camdram_venue_editadmin';
         }
 
-        return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
+        return $this->redirectToRoute($route, array('identifier' => $org->getSlug()));
     }
 
     /**
@@ -415,17 +399,17 @@ abstract class OrganisationController extends AbstractRestController
             $em->flush();
         }
         if ($org->getEntityType() == 'society') {
-            $route = 'edit_society_admin';
+            $route = 'acts_camdram_society_editadmin';
         } else {
-            $route = 'edit_venue_admin';
+            $route = 'acts_camdram_venue_editadmin';
         }
 
-        return $this->routeRedirectView($route, array('identifier' => $org->getSlug()));
+        return $this->redirectToRoute($route, array('identifier' => $org->getSlug()));
     }
 
     /**
      * View a list of the organisation's last shows.
-     * @Rest\Get(requirements={"_format"="html"})
+     * @Route("/{identifier}/history.{_format}", format="html")
      */
     public function getHistoryAction(Request $request, $identifier) {
         $showsPerPage = 36;
@@ -444,11 +428,11 @@ abstract class OrganisationController extends AbstractRestController
         $paginator = new Paginator($qb->getQuery());
         $route = explode('?', $request->getRequestUri())[0] . '?p=';
 
-        return $this->view([
+        return $this->show('organisation/past-shows.html.twig', 'data', [
             'org' => $org,
             'paginator' => $paginator,
             'page_num' => $page,
             'page_urlprefix' => $route
-        ], 200)->setTemplate('organisation/past-shows.html.twig');
+        ]);
     }
 }

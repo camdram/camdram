@@ -2,22 +2,22 @@
 <div class="admin-panel">
     <h6 class="split-header"><span>Society Administration: <a href="{{ path('get_society', {identifier: org.slug}) }}">{{ org.name }}</a></span><span>ID: {{org.id}}</span></h6>
     <ul role="menubar">
-        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_society', path: path('edit_society',{identifier:org.slug}), icon: 'pencil', text: 'Edit this society'} }) }}
+        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_society', path: path('acts_camdram_society_edit',{identifier:org.slug}), icon: 'pencil', text: 'Edit this society'} }) }}
         {% if is_granted('DELETE', org) %}
              {{ include('navigation/form-item.html.twig', {item: {id: 'delete_society',
-                path: path('delete_society', {identifier:org.slug}), method: 'DELETE', text: 'Delete this society', icon: 'eraser'},
+                path: path('acts_camdram_society_delete', {identifier:org.slug}), method: 'DELETE', text: 'Delete this society', icon: 'eraser'},
                 destructive: {title: "Are you sure you want to delete the society “" ~ org.name ~ "”?", text: "This is a permanent action that cannot be undone" }
                 }) }}
         {% endif %}
         {% if org.applications | length == 0 %}
             {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'new_application', path: path('new_society_application',{identifier:org.slug}), icon: 'plus-circle', text: 'Show applications'} }) }}
+            {item: {id: 'new_application', path: path('acts_camdram_society_newapplication',{identifier:org.slug}), icon: 'plus-circle', text: 'Show applications'} }) }}
         {% else %}
             {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_application', path: path('edit_society_application',{identifier:org.slug}), icon: 'pencil', text: 'Show applications'} }) }}
+            {item: {id: 'edit_application', path: path('acts_camdram_society_editapplication',{identifier:org.slug}), icon: 'pencil', text: 'Show applications'} }) }}
         {% endif %}
         {{ include('navigation/nav-item.html.twig',
-        {item: {id: 'edit_admin', path: path('edit_society_admin',{identifier:org.slug}), icon: 'pencil', text: "Edit the society's admins"} }) }}
+        {item: {id: 'edit_admin', path: path('acts_camdram_society_editadmin',{identifier:org.slug}), icon: 'pencil', text: "Edit the society's admins"} }) }}
     </ul>
     <p>
     The following people can edit this society:
