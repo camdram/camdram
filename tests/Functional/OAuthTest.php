@@ -164,7 +164,7 @@ class OAuthTest extends WebTestCase
     public function testAuthorizationButNewScope()
     {
         $this->login('user1@camdram.net');
-        $token = $this->performOAuthUserLogin('api_write');
+        $token = $this->performOAuthUserLogin('write');
         $this->assertTrue(is_string($token));
 
         //Go to auth page a second time
@@ -172,10 +172,30 @@ class OAuthTest extends WebTestCase
             'client_id' => $this->app->getPublicId(),
             'response_type' => 'code',
             'redirect_uri' => '/authenticate',
-            'scope' => 'api_write user_email',
+            'scope' => 'write user_email',
         );
         $this->userClient->request('GET', '/oauth/v2/auth', $params);
         $this->assertNotEquals(302, $this->userClient->getResponse()->getStatusCode());
+    }
+
+    public function testEmailNoScope()
+    {
+        $this->login('user1@camdram.net');
+        $token = $this->performOAuthUserLogin('');
+
+        $this->client->request('GET', '/auth/account.json?access_token='.$token);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertFalse(isset($data['email']));
+    }
+
+    public function testEmailWithScope()
+    {
+        $this->login('user1@camdram.net');
+        $token = $this->performOAuthUserLogin('user_email');
+
+        $this->client->request('GET', '/auth/account.json?access_token='.$token);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals($data['email'], 'user1@camdram.net');
     }
 
     public function testCreateShowNoScope()
@@ -197,7 +217,7 @@ class OAuthTest extends WebTestCase
     public function testCreateShowWriteScope()
     {
         $this->login('user1@camdram.net');
-        $token = $this->performOAuthUserLogin('api_write');
+        $token = $this->performOAuthUserLogin('write');
 
         $data = array(
             'show' => array(
@@ -227,7 +247,7 @@ class OAuthTest extends WebTestCase
     {
         $this->login('user1@camdram.net', 'password');
         $this->createSocietyWithOwner();
-        $token = $this->performOAuthUserLogin('api_write');
+        $token = $this->performOAuthUserLogin('write');
 
         $this->client->request('PUT', '/societies/test-society.json?access_token='.$token);
         $data = json_decode($this->client->getResponse()->getContent(), true);
@@ -238,7 +258,7 @@ class OAuthTest extends WebTestCase
     {
         $this->login('user1@camdram.net', 'password');
         $this->createSocietyWithOwner();
-        $token = $this->performOAuthUserLogin('api_write_org');
+        $token = $this->performOAuthUserLogin('write_org');
 
         $params = array(
             'society' => array('name' => 'New name')

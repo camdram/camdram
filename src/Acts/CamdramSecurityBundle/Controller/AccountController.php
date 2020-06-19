@@ -32,7 +32,7 @@ class AccountController extends AbstractFOSRestController
         }
         $context = new Context();
         $serializationGroups = ['all'];
-        if ($auth->isGranted('ROLE_USER_EMAIL') || $auth->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($auth->isGranted('ROLE_USER_EMAIL')) {
             $serializationGroups[] = 'user_email';
         }
         $context->setGroups($serializationGroups);

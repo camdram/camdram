@@ -30,7 +30,7 @@ class ShowVoter extends Voter
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        if (TokenUtilities::isApiRequest($token) && !TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG')) {
+        if (TokenUtilities::isApiRequest($token) && !TokenUtilities::hasRole($token, 'ROLE_WRITE_ORG')) {
             return false;
         }
 

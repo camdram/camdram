@@ -34,11 +34,11 @@ class OwnerVoter extends Voter
     {
         if (TokenUtilities::isApiRequest($token)) {
             if ($subject instanceof Society || $object instanceof Venue) {
-                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG')) {
+                if (!TokenUtilities::hasRole($token, 'ROLE_WRITE_ORG')) {
                     return false;
                 }
             } else {
-                if (!TokenUtilities::hasRole($token, 'ROLE_API_WRITE')) {
+                if (!TokenUtilities::hasRole($token, 'ROLE_WRITE')) {
                     return false;
                 }
             }

@@ -35,8 +35,8 @@ class CreateVoter extends Voter
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         if (TokenUtilities::isApiRequest($token)) {
-            return TokenUtilities::hasRole($token, 'ROLE_API_WRITE')
-                || TokenUtilities::hasRole($token, 'ROLE_API_WRITE_ORG');
+            return TokenUtilities::hasRole($token, 'ROLE_WRITE')
+                || TokenUtilities::hasRole($token, 'ROLE_WRITE_ORG');
         } else {
             return true;
         }
