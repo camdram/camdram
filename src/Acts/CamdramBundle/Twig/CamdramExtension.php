@@ -39,10 +39,12 @@ class CamdramExtension extends AbstractExtension
             new \Twig\TwigFilter('camdram_markdown', [$this, 'camdramMarkdown'], ['is_safe' => ['html']]),
             new \Twig\TwigFilter('strip_camdram_markdown', [$this, 'stripCamdramMarkdown']),
             new \Twig\TwigFilter('detect_links', [$this, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig\TwigFilter('explain_oauth_scopes', [$this, 'explainOAuthScopes']),
             new \Twig\TwigFilter('strip_new_lines', [$this, 'stripNewLines']),
             new \Twig\TwigFilter('truncate', [$this, 'truncate']),
             new \Twig\TwigFilter('truncateHTML', [$this, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig\TwigFilter('plural', [$this, 'pluralize']),
+            new \Twig\TwigFilter('ucfirst', 'ucfirst'),
         );
     }
 
@@ -102,6 +104,30 @@ class CamdramExtension extends AbstractExtension
         } else {
             return $this->inflector->pluralize($word);
         }
+    }
+
+    /**
+     * Takes an array of scopes and returns a user-readable array
+     */
+    public function explainOAuthScopes($scopes): array
+    {
+        $out = [];
+        foreach ($scopes as $scope) {
+            if ($scope == 'write') {
+                $out[] = "act on your behalf to create new data or edit existing data on Camdram";
+            } else if ($scope == 'write_org') {
+                $out[] = "act on the behalf of societies or venues you are an admin for to create new data or edit existing data on Camdram";
+            } else if ($scope == 'user_email') {
+                $out[] = "read your e-mail address";
+            } else if ($scope == 'user_shows') {
+                $out[] = "read the list of the shows you administrate on Camdram";
+            } else if ($scope == 'user_orgs') {
+                $out[] = "read the list of the societies and venues you administrate on Camdram";
+            } else if ($scope != '') {
+                $out[] = "use the privilege “${scope}”";
+            }
+        }
+        return $out;
     }
 
     public function list_sep_verb(array $loop, string $verb_pl = null, string $verb_sing = null): string

@@ -130,15 +130,6 @@ class AccountController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/account/authorizations", name="get_account_authorizations")
-     */
-    public function getAuthorizationsAction()
-    {
-        return $this->render('account/authorizations.html.twig',
-                ['authorizations' => $this->getUser()->getAuthorizations()]);
-    }
-
-    /**
      * @Route("/account/authorizations/{id}/revoke", name="revoke_account_authorization", methods={"DELETE"})
      */
     public function revokeAuthorization($id)
