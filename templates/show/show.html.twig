@@ -104,35 +104,37 @@
     </div>
 </div>
 
-{%- if show.hasVacancies() -%}
-<div class="vacancies-panel row">
-    <h5>Get involved with <em>{{ show.name }}</em>:</h5>
-    {% if show.getScheduledAuditions() | length > 0 %}
-    <p>Auditions are being held at the times below – <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
-        <ul>
-            {% for a in show.getScheduledAuditions() %}
-            <li>{{ a.dateString }}, {{ a.location }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% if show.getNonScheduledAuditions() | length > 0 %}
-        {% for a in show.getNonScheduledAuditions() %}
-        <p>For auditions contact {{a.location}} by {{ a.dateString }} – <a href="{{ path('get_audition', {identifier: show.slug}) }}">more details</a></p>
-        {% endfor %}
-    {% endif %}
+{%- if show.hasActiveAdverts() -%}
+<h5>Get involved with <em>{{ show.name }}</em>:</h5>
+    {% for advert in show.activeAdverts %}
+        <div class="vacancies-panel" >
+            <h5><a href="{{ path('get_advert', {identifier: advert.id}) }}">{{ advert.title }}</a></h5>
+            <p>{{ advert.summary | camdram_markdown }}</p>
+            <ul>
+            {%- for audition in advert.auditions -%}
+                <li>{{ audition.dateString }}, {{ audition.location }}</li>
+            {%- endfor -%}
+            </ul>
+            <p></p>
+            <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+        </div>
+    {% endfor %}
     {% if show.activeTechieAdvert %}
-        <p>We are looking for:
-            {% for p in show.activeTechieAdvert.positions|split("\n") -%}
-                {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif -%}
-                {{- p | trim -}}
-            {%- endfor %}
-        – <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
+        <div class="vacancies-panel">
+            <p>We are looking for:
+                {% for p in show.activeTechieAdvert.positions|split("\n") -%}
+                    {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif -%}
+                    {{- p | trim -}}
+                {%- endfor %}
+            – <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
+        </div>
     {% endif %}
     {% if show.activeApplication %}
-        <p>{{ show.activeApplication.text() }} –
-        <a href="{{ path('get_application', {identifier: show.activeApplication.show.slug}) }}">more details</a></p>
+        <div class="vacancies-panel">
+            <p>{{ show.activeApplication.text() }} –
+            <a href="{{ path('get_application', {identifier: show.activeApplication.show.slug}) }}">more details</a></p>
+        </div>
     {% endif %}
-</div>
 {%- endif -%}
 
 {% if is_granted('EDIT', show) %}

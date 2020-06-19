@@ -73,7 +73,7 @@
           {% include 'navigation/nav-items.html.twig'  with {items: {
           'home': {'text': 'Home', 'path': path('acts_camdram_homepage'), icon: 'home'},
           'diary': {'text': 'Diary', 'path': path('acts_camdram_diary'), icon: 'calendar'},
-          'vacancies': {'text': 'Vacancies', 'path': path('get_auditions')},
+          'vacancies': {'text': 'Vacancies', 'path': path('get_adverts')},
           'societies': {'text': 'Societies', 'path': path('get_societies')},
           'venues': {'text': 'Venues', 'path': path('get_venues')},
           }, current_id: current_navigation_id} %}
@@ -115,7 +115,7 @@
             <h5>Site Map</h5>
             <a href="{{ path('acts_camdram_homepage') }}">Home</a><br/>
             <a href="{{ path('acts_camdram_diary') }}">Diary</a><br/>
-            <a href="{{ path('get_auditions') }}">Vacancies</a><br/>
+            <a href="{{ path('get_adverts') }}">Vacancies</a><br/>
             <a href="{{ path('get_societies') }}">Societies</a><br/>
             <a href="{{ path('get_venues') }}">Venues</a><br/>
             <a href="{{ path('get_people') }}">People</a><br/>
@@ -123,7 +123,7 @@
         <div>
             <h5>Vacant Positions</h5>
             <a href="{{ path('get_techies') }}">Technical</a><br/>
-            <a href="{{ path('get_auditions') }}">Actors</a><br/>
+            <a href="{{ path('get_adverts') }}">Actors</a><br/>
             <a href="{{ path('get_applications') }}">Directors/Producers</a><br/>
         </div>
         <div>

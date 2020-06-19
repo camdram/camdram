@@ -3,9 +3,10 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -152,28 +153,6 @@ class Show extends BaseEntity implements OwnableInterface
     private $societies_display_list = [];
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="techsend", type="boolean", nullable=false)
-     */
-    private $tech_send = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="actorsend", type="boolean", nullable=false)
-     */
-    private $actor_send = false;
-
-    /**
-     * @var ?string
-     *
-     * @ORM\Column(name="audextra", type="text", nullable=true)
-     * @Gedmo\Versioned
-     */
-    private $audextra;
-
-    /**
      * All the registered scieties involved with this show.
      * @ORM\ManyToMany(targetEntity="Society", inversedBy="shows")
      * @ORM\JoinTable(name="acts_show_soc_link")
@@ -187,13 +166,6 @@ class Show extends BaseEntity implements OwnableInterface
      * @Gedmo\Versioned
      */
     private $authorised = false;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="entryexpiry", type="date", nullable=false)
-     */
-    private $entry_expiry;
 
     /**
      * The show's genre (takes one of several predefined values)
@@ -221,9 +193,9 @@ class Show extends BaseEntity implements OwnableInterface
     private $techie_adverts;
 
     /**
-     * @ORM\OneToMany(targetEntity="Audition", mappedBy="show", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Advert", mappedBy="show", cascade={"all"}, orphanRemoval=true)
      */
-    private $auditions;
+    private $adverts;
 
     /**
      * @ORM\OneToMany(targetEntity="Application", mappedBy="show")
@@ -282,7 +254,7 @@ class Show extends BaseEntity implements OwnableInterface
      */
     private $online_booking_url;
 
-    private $weeks = array();
+    private $weeks = "";
     private $weekManager;
 
     private $entity_type = 'show';
@@ -479,102 +451,6 @@ class Show extends BaseEntity implements OwnableInterface
     }
 
     /**
-     * Set tech_send
-     *
-     * @param bool $techSend
-     *
-     * @return Show
-     */
-    public function setTechSend($techSend)
-    {
-        $this->tech_send = $techSend;
-
-        return $this;
-    }
-
-    /**
-     * Get tech_send
-     *
-     * @return bool
-     */
-    public function getTechSend()
-    {
-        return $this->tech_send;
-    }
-
-    /**
-     * Set actor_send
-     *
-     * @param bool $actorSend
-     *
-     * @return Show
-     */
-    public function setActorSend($actorSend)
-    {
-        $this->actor_send = $actorSend;
-
-        return $this;
-    }
-
-    /**
-     * Get actor_send
-     *
-     * @return bool
-     */
-    public function getActorSend()
-    {
-        return $this->actor_send;
-    }
-
-    /**
-     * Set audextra
-     *
-     * @param string $audextra
-     *
-     * @return Show
-     */
-    public function setAudextra($audextra)
-    {
-        $this->audextra = $audextra;
-
-        return $this;
-    }
-
-    /**
-     * Get audextra
-     *
-     * @return string
-     */
-    public function getAudextra()
-    {
-        return $this->audextra;
-    }
-
-    /**
-     * Set entry_expiry
-     *
-     * @param \DateTime $entryExpiry
-     *
-     * @return Show
-     */
-    public function setEntryExpiry($entryExpiry)
-    {
-        $this->entry_expiry = $entryExpiry;
-
-        return $this;
-    }
-
-    /**
-     * Get entry_expiry
-     *
-     * @return \DateTime
-     */
-    public function getEntryExpiry()
-    {
-        return $this->entry_expiry;
-    }
-
-    /**
      * Set category
      *
      * @param string $category
@@ -729,6 +605,7 @@ class Show extends BaseEntity implements OwnableInterface
      */
     public function __construct()
     {
+        $this->adverts      = new ArrayCollection();  
         $this->applications = new ArrayCollection();
         $this->auditions    = new ArrayCollection();
         $this->performances = new ArrayCollection();
@@ -736,7 +613,6 @@ class Show extends BaseEntity implements OwnableInterface
         $this->societies    = new ArrayCollection();
         $this->techie_adverts = new ArrayCollection();
 
-        $this->entry_expiry = new \DateTime();
         $this->timestamp    = new \DateTime();
 
         $this->setSocietiesDisplayList([]);
@@ -864,53 +740,35 @@ class Show extends BaseEntity implements OwnableInterface
     }
 
     /**
-     * Add auditions
+     * @return Collection|Advert[]
+     */
+    public function getAdverts(): Collection
+    {
+        return $this->adverts;
+    }
+
+    /**
+     * Add advert
      *
-     * @param \Acts\CamdramBundle\Entity\Audition $auditions
+     * @param \Acts\CamdramBundle\Entity\Advert $advert
      *
      * @return Show
      */
-    public function addAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
+    public function addAdvert(\Acts\CamdramBundle\Entity\Advert $advert)
     {
-        $this->auditions[] = $auditions;
+        $this->adverts[] = $advert;
 
         return $this;
     }
 
     /**
-     * Remove auditions
+     * Remove advert
      *
      * @param \Acts\CamdramBundle\Entity\Audition $auditions
      */
-    public function removeAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
+    public function removeAdvert(\Acts\CamdramBundle\Entity\Advert $advert)
     {
-        $this->auditions->removeElement($auditions);
-    }
-
-    public function mergeAuditions($auditions)
-    {
-        foreach ($auditions as $audition) {
-            $audition->setShow($this);
-            if (!$audition->getId()) {
-                $this->addAudition($audition);
-            } else {
-                foreach ($this->auditions as $k => $a) {
-                    if ($a->getId() == $audition->getId()) {
-                        $this->auditions[$k] = $audition;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Get all auditions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAllAuditions() {
-        return $this->auditions;
+        $this->advert->removeElement($advert);
     }
 
     /**
@@ -918,89 +776,13 @@ class Show extends BaseEntity implements OwnableInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAuditions()
+    public function getActiveAdverts()
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('display', 0))
-            ->andWhere(Criteria::expr()->orX(
-                Criteria::expr()->gte('start_at', new \DateTime()),
-                Criteria::expr()->gte('end_at', new \DateTime())
-            ));
+            ->where(Criteria::expr()->eq('display', true))
+            ->andWhere(Criteria::expr()->gte('expiresAt', new \DateTime()));
 
-        return $this->auditions->matching($criteria);
-    }
-
-    public function getScheduledAuditions()
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->gte('end_at', new \DateTime()))
-            ->andWhere(Criteria::expr()->eq('nonScheduled', false));
-
-        return $this->auditions->matching($criteria);
-    }
-
-    public function setScheduledAuditions($auditions)
-    {
-        foreach ($this->getScheduledAuditions() as $k => $audition) {
-            $found = false;
-            foreach ($auditions as $a) {
-                if ($audition->getId() == $a->getId()) {
-                    $this->auditions[$k] = $a;
-                    $found = true;
-                    break;
-                }
-            }
-            if (!$found) {
-                $this->auditions->remove($k);
-            }
-        }
-
-        foreach ($auditions as &$audition) {
-            if (!$audition->getId()) {
-                $audition->setShow($this);
-                $audition->setNonScheduled(false);
-                $this->addAudition($audition);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getNonScheduledAuditions()
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('nonScheduled', true))
-            ->andWhere(Criteria::expr()->gte('start_at', new \DateTime()))
-            ;
-
-        return $this->auditions->matching($criteria);
-    }
-
-    public function setNonScheduledAuditions($auditions)
-    {
-        foreach ($this->getNonScheduledAuditions() as $k => $audition) {
-            $found = false;
-            foreach ($auditions as $a) {
-                if ($audition->getId() == $a->getId()) {
-                    $this->auditions[$k] = $a;
-                    $found = true;
-                    break;
-                }
-            }
-            if (!$found) {
-                $this->auditions->remove($k);
-            }
-        }
-
-        foreach ($auditions as &$audition) {
-            if (!$audition->getId()) {
-                $audition->setShow($this);
-                $audition->setNonScheduled(true);
-                $this->addAudition($audition);
-            }
-        }
-
-        return $this;
+        return $this->adverts->matching($criteria);
     }
 
     /**
@@ -1058,10 +840,10 @@ class Show extends BaseEntity implements OwnableInterface
         return $this->applications->matching($criteria)->first();
     }
 
-    public function hasVacancies()
+    public function hasActiveAdverts()
     {
         return $this->getActiveTechieAdvert()
-                || count($this->getAuditions()) > 0
+                || count($this->getActiveAdverts()) > 0
                 || $this->getActiveApplication();
     }
 
@@ -1420,4 +1202,5 @@ class Show extends BaseEntity implements OwnableInterface
     {
         $this->weekManager = $manager;
     }
+
 }

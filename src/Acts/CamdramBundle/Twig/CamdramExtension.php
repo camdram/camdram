@@ -158,8 +158,8 @@ class CamdramExtension extends AbstractExtension
     public function link_entity(object $entity, array $options = []): string
     {
         if ($entity instanceof Audition) {
-            $url = $this->router->generate("get_audition",
-                ["identifier" => $entity->getShow()->getSlug()]);
+            $url = $this->router->generate("get_advert",
+                ["identifier" => $entity->getAdvert()->getId()]);
         } else if ($entity instanceof Performance) {
             $url = $this->router->generate("get_show",
                 ["identifier" => $entity->getShow()->getSlug()]);

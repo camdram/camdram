@@ -1,0 +1,35 @@
+
+{{ form_row(form.title)}}
+{{ form_row(form.summary)}}
+{{ form_row(form.body)}}
+
+<div class="form-large-row">
+
+    {{ form_label(form.auditions) }}
+    <div>
+        <div class="auditions entity_collection" data-prototype="{% apply escape('html') %}{% include 'show/auditions-form.html.twig' with {audition: form.auditions.vars.prototype} %}{% endapply %}">
+            {% for audition in form.auditions %}
+                {% include 'show/auditions-form.html.twig' %}
+            {% endfor %}
+        </div>
+        <ul class="inline-list">
+            <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add an audition session</a></li>
+        </ul>
+    </div>
+    {% do form.auditions.setRendered() %}
+</div>
+
+{{ form_row(form.contactDetails) }}
+{{ form_row(form.expiresAt) }}
+{{ form_row(form.display) }}
+
+<div class="text-right">
+    <input type="submit" value="Save" class="button"/>
+</div>
+{{ form_end(form) }}
+
+<script>
+    {#- begin-CSP-permitted-script -#}
+    $('.auditions').entityCollection({min_items: 0});
+    {#- end-CSP-permitted-script -#}
+</script>

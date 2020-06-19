@@ -1,0 +1,72 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Edit Auditions{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'edit_auditions' %}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
+
+<h3>Manage Auditions</h3>
+
+<div class="panel">
+    <p>
+        Use the form below modify or add auditions advertisements for your show. You can create multiple
+        concurrent adverts for different purposes.
+    </p>
+    <p>
+        The CUADC Actors' Reps aim to send out the Actors' mailing list with all the current
+        auditions on Camdram twice a week during Full Term. For more information they can be
+        contacted on <a href=mailto:actor@cuadc.org>actor@cuadc.org</a>.
+    </p>
+</div>
+
+<p>
+    <a href="{{ path('new_show_advert', {identifier: show.slug}) }}" class="button">
+        <i class="fa fa-plus-circle"></i> New advert
+    </a>
+</p>
+
+{% for advert in show.adverts %}
+<div class="vacancies-panel{% if not advert.visible %} hidden{% endif %}">
+    <div class="split-header">
+        <h5>{{ advert.title }}</h5>
+        <ul>
+            <li><a href="{{ path('edit_show_advert', {identifier: show.slug, advertId: advert.id}) }}" class="button small">
+                <i class="fa fa-pencil"></i> Edit</a>
+            </li>
+            <li>
+                {% if advert.expired %}
+                    <em><i class="fa fa-clock-o"></i> Expired</em>
+                {% elseif advert.display %}
+                <form action="{{ path('hide_show_advert', {identifier: show.slug, advertId: advert.id}) }}" method="POST">
+                    <input type="hidden" name="_method" value="PATCH"/>
+                    <button type="submit" class="button small">
+                        <i class="fa fa-eye"></i> Hide</a>
+                    </button>
+                </form>
+                {% else %}
+                <form action="{{ path('show_show_advert', {identifier: show.slug, advertId: advert.id}) }}" method="POST">
+                    <input type="hidden" name="_method" value="PATCH"/>
+                    <button type="submit" class="button small">
+                        <i class="fa fa-eye"></i> Show</a>
+                    </button>
+                </form>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+
+    <p>{{ advert.summary | camdram_markdown }}</p>
+    <ul>
+    {%- for audition in advert.auditions -%}
+        <li>{{ audition.dateString }}, {{ audition.location }}</li>
+    {%- endfor -%}
+    </ul>
+    <p></p>
+    <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+</div>
+{% endfor %}
+
+{% endblock %}

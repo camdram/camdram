@@ -5,10 +5,23 @@
 }
 
 /* Use the new feature panel to highlight new features on the site itself. */
-.new-feature-panel, .vacancies-panel {
-  @include panel(rgb(255,240,153), 1.5em 2em 1em);
-  border-radius:10px;
+.vacancies-panel {
+  @include panel(rgb(250, 237, 220), 1em 1em 1em);
+  border-radius:7px;
+
+  &.hidden {
+    background: rgb(240, 240, 240);
+  }
 }
+
+.vacancies-show-panel {
+  background: rgb(242, 242, 242);
+  border: solid rgb(255, 140, 0);
+  border-width: 8px 1px 1px;
+  padding: 0.5em;
+}
+
+
 
 .entity-has-theme-color .panel,
 .entity-has-theme-color .vacancies-panel {

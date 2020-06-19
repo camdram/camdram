@@ -5,6 +5,7 @@ namespace Camdram\Tests\Functional;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 use Acts\CamdramBundle\Service\Time;
+use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Audition;
@@ -97,14 +98,18 @@ class VacanciesTest extends WebTestCase
     public function testAuditions()
     {
         $show = $this->createShow('Test Show', '2000-02-01');
-        $show->setAudextra('blah');
+        $advert = new Advert;
+        $advert->setTitle('blah')
+            ->setSummary('Lorem ipsum')
+            ->setBody('Lorem ipsum')
+            ->setContactDetails('foo@bar.com')
+            ->setShow($show);
+        $this->entityManager->persist($advert);
         $audition = new Audition;
-        $audition->setDisplay(0)
-            ->setStartAt(new \Datetime('2000-01-15 10:00'))
+        $audition->setStartAt(new \Datetime('2000-01-15 10:00'))
             ->setEndAt(new \DateTime('2000-01-15 18:00'))
             ->setLocation('Somewhere')
-            ->setNonScheduled(false)
-            ->setShow($show);
+            ->setAdvert($advert);
         $this->entityManager->persist($audition);
         $this->entityManager->flush();
 

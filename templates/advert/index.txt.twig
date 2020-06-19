@@ -1,0 +1,24 @@
+{% for a in adverts %}
+{{ a.show.name }} ({{ a.show.weeks }})
+{% endfor %}
+
+{% for a in adverts %}
+****************************************************************
+{{ a.title }}
+****************************************************************
+{% include 'show/advert_header.txt.twig' with
+    {'show': a.show} %}
+****************************************************************
+{{ a.summary }}
+
+{% for audition in a.auditions -%}
+    {{- audition.dateString }}, {{ audition.location }}
+{% endfor %}
+
+Contact {{a.contactDetails}} before {{a.expiresAt | date('jS F Y H:i')}} for more details.
+
+{{ url('get_advert', {identifier: a.id}) }}
+
+{% else %}
+    There are currently no adverts listed - please check again later.
+{% endfor %}

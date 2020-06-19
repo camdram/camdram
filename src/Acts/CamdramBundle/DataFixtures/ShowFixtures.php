@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\DataFixtures;
 
+use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Performance;
@@ -345,9 +346,18 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
 
     private function addAuditions(ObjectManager $manager, Show $show)
     {
-        $numScheduledAuditions = mt_rand(1, 3);
+        $advert = new Advert();
+        $advert->setTitle('Auditions for '.$show->getName())
+                ->setSummary('Audition details')
+                ->setBody("# Audition extra text #\nLorem ipsum")
+                ->setContactDetails('abc123@cam.ac.uk')
+                ->setDisplay(mt_rand(0, 3) > 0)
+                ->setShow($show);
+        $manager->persist($advert);
+            
+        $numAuditions = mt_rand(1, 3);
 
-        for ($i = 0; $i < $numScheduledAuditions; $i++) {
+        for ($i = 0; $i < $numAuditions; $i++) {
             $audition = new Audition();
 
             $days = mt_rand(-5, 10);
@@ -360,14 +370,13 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             $endTime->add(\DateInterval::createFromDateString(mt_rand(2, 4). ' hours'));
             $audition->setEndAt($endTime);
 
+            if ($endTime > $advert->getExpiresAt()) {
+                $advert->setExpiresAt($endTime);
+            }
+
             $audition->setLocation('Random Location ' . mt_rand(1, 50));
 
-            $audition->setDisplay(mt_rand(0, 3) > 0);
-
-            $audition->setShow($show);
-            $show->setAudextra('Audition extra text');
-            $audition->setNonScheduled(false);
-
+            $advert->addAudition($audition);
             $manager->persist($audition);
         }
     }

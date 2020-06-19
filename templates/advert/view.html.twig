@@ -1,0 +1,36 @@
+{% extends 'vacancies.html.twig' %}
+
+{% block title %}Auditions{% endblock %}
+{% set current_vacancies_id='auditions' %}
+
+{% block vacancies_header %}
+    <h3>Auditions</h3>
+
+    <ul role="navigation">
+        <li><a href="{{ path('get_adverts') }}"><i class="fa fa-list"></i> List view</a></li>
+        <li><a href="{{ path('get_adverts_diary') }}"><i class="fa fa-calendar"></i> Diary View</a></li>
+        <li><a href="{{ path('get_adverts_diary', {_format: 'ics'}) }}"><i class="fa fa-calendar"></i> iCal</a></li>
+        <li><a href="{{ path('get_adverts', {_format: 'rss'}) }}"><i class="fa fa-rss"></i> RSS Feed</a></li>
+        <li><a href="{{ path('get_adverts', {_format: 'txt'}) }}"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
+    </ul>
+{% endblock %}
+
+{% block vacancies_body %}
+    <div class="vacancies-panel" id="{{ advert.show.slug }}">
+        <h4>{{ advert.title }}</h4>
+        <div class="vacancies-show-panel">
+            {%- include 'show/advert_header.html.twig' with {'show': advert.show} -%}
+        </div>
+        <p>{{ advert.summary | camdram_markdown }}</p>
+        <ul>
+        {%- for audition in advert.auditions -%}
+            <li>{{ audition.dateString }}, {{ audition.location }}</li>
+        {%- endfor -%}
+        </ul>
+        <p></p>
+        <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+    </div>
+    
+    <hr/>
+    <p>{{ advert.body | camdram_markdown }}</p>
+{% endblock %}

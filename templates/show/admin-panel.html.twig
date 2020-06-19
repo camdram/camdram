@@ -15,13 +15,10 @@
             {{ include('navigation/form-item.html.twig', {item: {id: 'unapprove_show', path: path('unapprove_show',{identifier:show.slug}), icon: 'lock', text: 'Deauthorize this show' },
                destructive: {title: "Are you sure you want to de-authorize this show?", text: "The show “" ~ show.name ~ "” will be hidden from public view, and returned to the awaiting-approval stage." }}) }}
         {% endif %}
-        {% if show.auditions | length == 0 %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_auditions', path: path('edit_show_auditions',{identifier:show.slug}), icon: 'plus-circle', text: 'Add an audition'} }) }}
-        {% else %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_auditions', path: path('edit_show_auditions',{identifier:show.slug}), icon: 'pencil', text: 'Edit auditions'} }) }}
-        {% endif %}
+    
+        {{ include('navigation/nav-item.html.twig',
+        {item: {id: 'get_show_adverts', path: path('get_show_adverts', {identifier:show.slug}), icon: 'list', text: 'Manage auditions'} }) }}
+    
         {% if show.techieAdverts | length == 0 %}
             {{ include('navigation/nav-item.html.twig',
                 {item: {id: 'new_techie_advert', path: path('new_show_techie_advert',{identifier:show.slug}), icon: 'plus-circle', text: 'Add technical team advert'} }) }}

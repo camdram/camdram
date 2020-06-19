@@ -1,0 +1,28 @@
+<p><a href="{{ url('get_advert', {identifier: entity.id }) }}">{{ entity.title }}</a></p>
+
+<p>{{ entity.show.name }}
+{% for society in entity.show.prettysocdata %}
+{{- loop.index == 1 ? " – " -}}
+{%- if society.id is defined -%}
+    <a href="{{ url('get_society', {identifier: society.slug}) }}">{{ society.shortname ?: society.name }}</a>
+{%- else -%}
+    {{ society.name }}
+{% endif %}
+{%- if loop.revindex > 2 -%}
+    ,
+{% elseif loop.revindex == 2 %}
+    and
+{% endif -%}
+{% endfor %}</p>
+
+<p>{{ entity.summary | camdram_markdown }}</p>
+
+<ul>
+{%- for audition in entity.auditions -%}
+    <li>{{ audition.dateString }}, {{ audition.location }}</li>
+{%- endfor -%}
+</ul>
+
+<p>Contact {{ entity.contactDetails | detect_links }} before {{ entity.expiresAt | date('jS M Y H:i')}} for more details.</p>
+
+<p><a href="{{ url('get_advert', {identifier: entity.id }) }}">more details</a></p>
