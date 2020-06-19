@@ -35,7 +35,7 @@ For any enquiries, please contact support@camdram.net.";
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(\Swift_Mailer $mailer, Request $request)
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
         $numActiveUsers = count($repo->findActiveUsersForMailOut());
@@ -57,7 +57,7 @@ For any enquiries, please contact support@camdram.net.";
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->sendEmails($form->getData());
+            return $this->sendEmails($mailer, $form->getData());
         }
 
         return $this->render('admin/mailout/index.html.twig',
@@ -65,7 +65,7 @@ For any enquiries, please contact support@camdram.net.";
         );
     }
 
-    private function sendEmails($data)
+    private function sendEmails(\Swift_Mailer $mailer, $data)
     {
         $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
 
@@ -81,7 +81,6 @@ For any enquiries, please contact support@camdram.net.";
                 break;
         }
 
-        $mailer = $this->get('mailer');
         $output = ['sent' => [], 'not_active' => [], 'not_verified' => []];
 
         foreach ($users as $user) {
