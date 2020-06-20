@@ -35,7 +35,8 @@ class ContactUsType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['constraints' => [new NotBlank()]])
-            ->add('email', EmailType::class, ['constraints' => [new NotBlank(), new Email([])]])
+            ->add('email', EmailType::class, ['constraints' => [new NotBlank(),
+                new Email(['mode' => 'strict'])]])
             ->add('subject', TextType::class)
             ->add('message', TextareaType::class)
             ->add('captcha', EWZRecaptchaType::class, [
@@ -55,7 +56,6 @@ class ContactUsType extends AbstractType
             $user = $this->storage->getToken() ? $this->storage->getToken()->getUser() : null;
 
             if ($user instanceof User) {
-
                 $event->setData(['name' => $user->getName(), 'email' => $user->getEmail()]);
             }
         });

@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Form\Type\EntitySearchType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Class UserType
@@ -20,6 +21,8 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
+            ->add('is_email_verified', ChoiceType::class, ['label' => 'Email verified',
+                'expanded' => true, 'choices' => ['Yes' => true, 'No' => false]])
             ->add('person', EntitySearchType::class, array('other_allowed' => false, 'prefetch' => false,
                 'required' => false, 'route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
         ;
