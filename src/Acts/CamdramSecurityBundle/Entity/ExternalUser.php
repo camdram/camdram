@@ -286,13 +286,13 @@ class ExternalUser implements \Serializable
     {
         return serialize(array(
                 $this->id, $this->name, $this->email, $this->service,
-                $this->remote_id, $this->username
+                $this->username
             ));
     }
     public function unserialize($serialized)
     {
         list($this->id, $this->name, $this->email, $this->service,
-            $this->remote_id, $this->username) = unserialize($serialized);
+            $this->username) = unserialize($serialized);
     }
 
     /**

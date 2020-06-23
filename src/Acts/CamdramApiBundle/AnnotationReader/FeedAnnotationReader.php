@@ -3,7 +3,7 @@
 namespace Acts\CamdramApiBundle\AnnotationReader;
 
 use Doctrine\Common\Annotations\Reader;
-use Acts\CamdramApiBundle\Annotation\Feed;
+use Acts\CamdramApiBundle\Configuration\Annotation\Feed;
 use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
 
 class FeedAnnotationReader

@@ -189,16 +189,6 @@ class ShowController extends AbstractRestController
         }
     }
 
-    private function getTechieAdvertForm(Show $show, $obj = null)
-    {
-        if (!$obj) {
-            $obj = new TechieAdvert();
-            $obj->setShow($show);
-        }
-        $form = $this->createForm(TechieAdvertType::class, $obj);
-        return $form;
-    }
-
     /**
      * Render the Admin Panel
      */

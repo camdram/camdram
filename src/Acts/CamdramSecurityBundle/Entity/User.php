@@ -512,40 +512,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add apps
-     *
-     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
-     *
-     * @return User
-     */
-    public function addApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
-    {
-        $this->apps[] = $apps;
-
-        return $this;
-    }
-
-    /**
-     * Remove apps
-     *
-     * @param \Acts\CamdramApiBundle\Entity\ExternalApp $apps
-     */
-    public function removeApp(\Acts\CamdramApiBundle\Entity\ExternalApp $apps)
-    {
-        $this->apps->removeElement($apps);
-    }
-
-    /**
-     * Get apps
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getApps()
-    {
-        return $this->apps;
-    }
-
-    /**
      * Add ace_grants
      *
      * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants

@@ -115,10 +115,8 @@ class Person
     {
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->aliases = new \Doctrine\Common\Collections\ArrayCollection();
 
-        $this->map_to = 0;
-        $this->no_robots = 0;
+        $this->no_robots = false;
     }
 
     /**
@@ -297,54 +295,6 @@ class Person
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set facebook_id
-     *
-     * @param string $facebookId
-     *
-     * @return Person
-     */
-    public function setFacebookId($facebookId)
-    {
-        $this->facebook_id = $facebookId;
-
-        return $this;
-    }
-
-    /**
-     * Get facebook_id
-     *
-     * @return string
-     */
-    public function getFacebookId()
-    {
-        return $this->facebook_id;
-    }
-
-    /**
-     * Set twitter_id
-     *
-     * @param string $twitterId
-     *
-     * @return Person
-     */
-    public function setTwitterId($twitterId)
-    {
-        $this->twitter_id = $twitterId;
-
-        return $this;
-    }
-
-    /**
-     * Get twitter_id
-     *
-     * @return string
-     */
-    public function getTwitterId()
-    {
-        return $this->twitter_id;
     }
 
     /**

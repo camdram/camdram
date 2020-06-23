@@ -66,7 +66,7 @@ class AclProvider
     public function getOwnersOfOwningOrgs(Show $show, string $type = null): array
     {
         if ($type && $type !== 'society' && $type !== 'venue') {
-            throw new Exception("Type may not be ". $type);
+            throw new \Exception("Type may not be ". $type);
         }
         $socs = ($type === 'venue') ? [] : $show->getSocieties()->map(
             function($s) { return $s->getId(); })->toArray();
@@ -148,7 +148,6 @@ class AclProvider
         $ace->setEntityId($entity->getId())
             ->setCreatedAt(new \DateTime())
             ->setGrantedBy($granter)
-            ->setGrantedAt(new \DateTime())
             ->setType($entity->getAceType());
 
         $this->entityManager->persist($ace);
@@ -210,7 +209,6 @@ class AclProvider
 
         $ace->setEntityId($level)
             ->setCreatedAt(new \DateTime())
-            ->setGrantedAt(new \DateTime())
             ->setType('security');
 
         $this->entityManager->persist($ace);
@@ -253,7 +251,6 @@ class AclProvider
             $ace = $ace_repo->findAceRequest($user, $show);
             if ($ace != null) {
                 $ace->setGrantedBy($granter)
-                    ->setGrantedAt(new \DateTime())
                     ->setType('show');
                 $persist = true;
             }

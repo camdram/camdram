@@ -40,7 +40,6 @@ class UserListener
                 ->setEntityId($pending->getRid())
                 ->setCreatedAt(new \DateTime())
                 ->setGrantedBy($pending->getIssuer())
-                ->setGrantedAt(new \DateTime())
                 ->setType($pending->getType());
 
             $this->entityManager->persist($ace);

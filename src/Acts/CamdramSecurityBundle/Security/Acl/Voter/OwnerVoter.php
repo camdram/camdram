@@ -33,7 +33,7 @@ class OwnerVoter extends Voter
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         if (TokenUtilities::isApiRequest($token)) {
-            if ($subject instanceof Society || $object instanceof Venue) {
+            if ($subject instanceof Society || $subject instanceof Venue) {
                 if (!TokenUtilities::hasRole($token, 'ROLE_WRITE_ORG')) {
                     return false;
                 }

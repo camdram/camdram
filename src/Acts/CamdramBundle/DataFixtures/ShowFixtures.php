@@ -25,6 +25,16 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
     /** @var \Acts\CamdramBundle\Entity\PersonRepository $repo */
     private $person_repo;
 
+    /** @var \Acts\CamdramBundle\Entity\SocietyRepository $repo */
+    private $society_repo;
+
+    /** @var \Acts\CamdramBundle\Entity\VenueRepository $repo */
+    private $venue_repo;
+
+    private $venue_ids = [];
+
+    private $society_ids = [];
+
     public function __construct()
     {
         $file = __DIR__.'/../Resources/data/roles.yml';

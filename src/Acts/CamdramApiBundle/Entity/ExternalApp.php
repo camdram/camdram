@@ -313,42 +313,7 @@ class ExternalApp extends BaseClient
     {
         return $this->updated_at;
     }
-
-    /**
-     * Add users
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $users
-     *
-     * @return ExternalApp
-     */
-    public function addUser(\Acts\CamdramSecurityBundle\Entity\User $users)
-    {
-        $this->users[] = $users;
-
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $users
-     */
-    public function removeUser(\Acts\CamdramSecurityBundle\Entity\User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-
+   
     /**
      * Set last_used
      *

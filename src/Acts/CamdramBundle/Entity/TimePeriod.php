@@ -74,7 +74,7 @@ class TimePeriod
 
     public function __construct()
     {
-        $this->weeks = new ArrayCollection();
+        $this->week_names = new ArrayCollection();
     }
 
     /**
@@ -181,40 +181,6 @@ class TimePeriod
     public function getEndAt()
     {
         return $this->end_at;
-    }
-
-    /**
-     * Add weeks
-     *
-     * @param \Acts\CamdramBundle\Entity\WeekName $weeks
-     *
-     * @return TimePeriod
-     */
-    public function addWeek(\Acts\CamdramBundle\Entity\WeekName $weeks)
-    {
-        $this->weeks[] = $weeks;
-
-        return $this;
-    }
-
-    /**
-     * Remove weeks
-     *
-     * @param \Acts\CamdramBundle\Entity\WeekName $weeks
-     */
-    public function removeWeek(\Acts\CamdramBundle\Entity\WeekName $weeks)
-    {
-        $this->weeks->removeElement($weeks);
-    }
-
-    /**
-     * Get weeks
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getWeeks()
-    {
-        return $this->weeks;
     }
 
     /**

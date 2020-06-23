@@ -167,7 +167,7 @@ class News
         } else if ($entity instanceof Venue) {
             $this->venue = $entity;
         } else {
-            throw new Exception('Expected Society or Venue.');
+            throw new \Exception('Expected Society or Venue.');
         }
 
         return $this;

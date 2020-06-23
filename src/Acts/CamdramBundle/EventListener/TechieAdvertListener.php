@@ -11,6 +11,8 @@ use Acts\CamdramBundle\Entity\TechieAdvert;
  */
 class TechieAdvertListener
 {
+    private $default_expiry_days;
+
     public function __construct($default_expiry_days)
     {
         $this->default_expiry_days = $default_expiry_days;

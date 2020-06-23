@@ -101,6 +101,7 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.0",
         "dms/phpunit-arraysubset-asserts": "^0.1.0",
+        "phpstan/phpstan": "^0.12.30",
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
         "symfony/debug-bundle": "*",

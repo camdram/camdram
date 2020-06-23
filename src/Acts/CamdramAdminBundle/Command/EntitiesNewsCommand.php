@@ -26,6 +26,11 @@ class EntitiesNewsCommand extends Command
      */
     private $twitter;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
     public function __construct(Twitter $twitter, EntityManagerInterface $entityManager)
     {
         $this->twitter = $twitter;
@@ -56,7 +61,7 @@ class EntitiesNewsCommand extends Command
             do {
                 try {
                     $this->executeForEntity($entity, $news_repo, $output);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $attempts++;
                     $output->writeln('Twitter API error: ' . $e->getMessage());
                     $output->writeln('Retrying with exponential backoff up to three times...');
@@ -79,7 +84,6 @@ class EntitiesNewsCommand extends Command
                 'include_rts' => false,
                 'tweet_mode' => 'extended',
                 'exclude_replies' => true,
-                'include_rts' => false,
             ]
         );
         if ($this->twitter->getLastHttpCode() == 200) {

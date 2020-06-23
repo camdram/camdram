@@ -31,14 +31,18 @@ class AuditionController extends AbstractFOSRestController
     /**
      * @Route("/vacancies/auditions/diary.{_format}", format="html", methods={"GET"}, name="get_auditions_diary")
      */
-    public function cgetDiaryAction()
+    public function cgetDiaryAction(Request $request)
     {
         $diary = new Diary;
 
         $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findUpcoming(null, Time::now());
         $diary->addEvents($auditions);
 
-        return $this->show('audition/diary.html.twig', 'diary', $diary);
+        if ($request->getRequestFormat() == 'html') {
+            return $this->render('audition/diary.html.twig', ['diary' => $diary]);
+        } else {
+            return $this->view($diary);
+        }
     }
 
     /**

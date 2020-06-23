@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\VenueChangeEvent;
 use Doctrine\ORM\Event\OnFlushEventArgs;

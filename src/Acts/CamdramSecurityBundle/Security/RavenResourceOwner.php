@@ -227,7 +227,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
                 return false;
                 break;
             default:
-                throw new Exception('OpenSSL error');
+                throw new \Exception('OpenSSL error');
                 break;
         }
     }

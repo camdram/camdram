@@ -42,7 +42,7 @@ class NewsRepository extends EntityRepository
             $qb = $qb->andWhere('n.society = :org');
         } else if ($org instanceof Venue) {
             $qb = $qb->andWhere('n.venue = :org');
-        } else throw new Exception('Expected Society or Venue.');
+        } else throw new \Exception('Expected Society or Venue.');
 
         return $qb->setParameter('org', $org)
             ->setMaxResults($count)

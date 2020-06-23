@@ -96,30 +96,6 @@ class Performance implements EventInterface
     }
 
     /**
-     * Set show_id
-     *
-     * @param int $showId
-     *
-     * @return Performance
-     */
-    public function setShowId($showId)
-    {
-        $this->show_id = $showId;
-
-        return $this;
-    }
-
-    /**
-     * Get show_id
-     *
-     * @return int
-     */
-    public function getShowId()
-    {
-        return $this->show_id;
-    }
-
-    /**
      * @Serializer\VirtualProperty
      * @Serializer\XmlElement(cdata=false)
      */

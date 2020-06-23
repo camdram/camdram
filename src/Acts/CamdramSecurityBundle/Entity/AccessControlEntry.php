@@ -102,30 +102,6 @@ class AccessControlEntry
     }
 
     /**
-     * Set granted_at
-     *
-     * @param \DateTime $grantedAt
-     *
-     * @return AccessControlEntry
-     */
-    public function setGrantedAt($grantedAt)
-    {
-        $this->grantedAt = $grantedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get granted_at
-     *
-     * @return \DateTime
-     */
-    public function getGrantedAt()
-    {
-        return $this->grantedAt;
-    }
-
-    /**
      * Set user
      *
      * @param User $user
