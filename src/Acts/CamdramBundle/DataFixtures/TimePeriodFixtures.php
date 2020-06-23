@@ -94,7 +94,7 @@ class TimePeriodFixtures extends Fixture
             ->setParameter('start', $start)->setParameter('end', $end)
             ->getQuery();
         foreach ($query->getResult() as $week) {
-            $p->addWeek($week);
+            $p->addWeekName($week);
             $week->setTimePeriod($p);
         }
         $manager->flush();
