@@ -13,16 +13,21 @@ class TokenGenerator
         $this->secret = $appSecret;
     }
 
-    public function generateEmailConfirmationToken(User $user)
+    public function generateEmailConfirmationToken(User $user): string
     {
-        return $this->generate($user, 'weiopfusidohjfg');
+        return $this->generate($user);
     }
 
-    protected function generate(User $user, $salt)
+    public function verifyEmailConfirmationToken(User $user, string $token): bool
     {
-        $string = $user->getEmail().$this->secret.$salt;
+        return hash_equals($this->generate($user), $token);
+    }
+
+    private function generate(User $user): string
+    {
+        $digest = $user->getEmail() . $this->secret . 'weiopfusidohjfg';
         for ($i = 1; $i < 100; $i++) {
-            $digest = hash('sha256', $string, true);
+            $digest = hash('sha256', $digest, true);
         }
 
         return bin2hex($digest);

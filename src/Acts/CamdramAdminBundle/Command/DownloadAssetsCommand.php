@@ -64,7 +64,7 @@ class DownloadAssetsCommand extends Command
         $url = $domain.'/build/manifest.json';
         $outputPath = self::$outputDirectory.'/build/manifest.json';
         $output->writeln('Downloading <fg=cyan>'.$url.'</>');
-        $stream = $this->downloadFile($url, $output);
+        $stream = $this->downloadFile($url);
         $manifest = json_decode($stream, true);
 
         //Read existing manifest file

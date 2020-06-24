@@ -79,6 +79,8 @@ For any enquiries, please contact support@camdram.net.";
             case 'me':
                 $users = [$this->getUser()];
                 break;
+            default:
+                throw new \LogicException("Invalid recipients parameter");
         }
 
         $output = ['sent' => [], 'not_active' => [], 'not_verified' => []];

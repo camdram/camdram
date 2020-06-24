@@ -2,15 +2,15 @@
 
 namespace Acts\CamdramApiBundle\View;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Zend\Feed\Writer\Feed;
+use Acts\CamdramApiBundle\Configuration\AnnotationReader;
+use Acts\CamdramApiBundle\Service\EntityUrlGenerator;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
-use Acts\CamdramApiBundle\Service\EntityUrlGenerator;
-use Acts\CamdramApiBundle\Configuration\AnnotationReader;
-use Acts\CamdramApiBundle\Exception\UnsupportedTypeException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Zend\Feed\Writer\Feed;
 
 class FeedViewHandler
 {
@@ -30,48 +30,28 @@ class FeedViewHandler
         $this->authorAddress = $adminEmail;
     }
 
-    /**
-     * Converts the viewdata to a RSS feed. Modify to suit your datastructure.
-     *
-     * @return Response
-     */
-    public function createResponse(ViewHandler $handler, View $view, Request $request)
-    {
-        try {
-            $content = $this->createFeed($view, $request);
-            $code = Response::HTTP_OK;
-        } catch (UnsupportedTypeException $e) {
-            $content = 'Unsupported entity';
-            $code = Response::HTTP_BAD_REQUEST;
-        }
-
-        return new Response($content, $code, $view->getHeaders());
-    }
-
-    /**
-     * @param $data array
-     * @param format string, either rss or atom
-     */
-    protected function createFeed(View $view, Request $request)
+    public function createResponse(ViewHandler $handler, View $view, Request $request): Response
     {
         $feed = new Feed();
 
         $data = $view->getData();
-        $item = current($data);
-
-        $annotationData = $this->reader->read($item);
-
-        if ($item && $feedData = $annotationData->getFeed()) {
-            $class = get_class($item);
-            $feed->setTitle($feedData->getName());
-            $feed->setDescription($feedData->getDescription());
-            $feed->setLink($this->urlGen->generateCollectionUrl($class));
-            $feed->setFeedLink($this->urlGen->generateCollectionUrl($class, $request->getRequestFormat()), $request->getRequestFormat());
-        } else {
-            $feed->setTitle('Camdram feed');
-            $feed->setDescription('Camdram feed');
+        if (!is_array($data)) throw new UnsupportedMediaTypeHttpException("There is no RSS feed here.");
+        if (empty($data)) {
+            $feed->setTitle('Camdram Feed');
+            $feed->setDescription('This feed from Camdram is currently empty.');
             $feed->setLink($this->urlGen->getDefaultUrl());
+            goto respond;
         }
+
+        $item = $data[array_key_first($data)];
+        $feedData = $this->reader->read($item)->getFeed();
+        if (!$feedData) throw new UnsupportedMediaTypeHttpException("There is no RSS feed here.");
+
+        $class = get_class($item);
+        $feed->setTitle($feedData->getName());
+        $feed->setDescription($feedData->getDescription());
+        $feed->setLink($this->urlGen->generateCollectionUrl($class));
+        $feed->setFeedLink($this->urlGen->generateCollectionUrl($class, $request->getRequestFormat()), $request->getRequestFormat());
 
         $lastModified = null;
         $accessor = PropertyAccess::createPropertyAccessor();
@@ -97,6 +77,7 @@ class FeedViewHandler
 
         $feed->setDateModified($lastModified);
 
-        return $feed->export($request->getRequestFormat());
+        respond:
+        return new Response($feed->export($request->getRequestFormat()), 200, $view->getHeaders());
     }
 }

@@ -27,8 +27,7 @@ class DefaultController extends AbstractController
     {
         $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
         if ($user && !$user->getIsEmailVerified()) {
-            $expected_token = $tokenGenerator->generateEmailConfirmationToken($user);
-            if ($token == $expected_token) {
+            if ($tokenGenerator->verifyEmailConfirmationToken($user, $token)) {
                 $user->setIsEmailVerified(true);
                 $this->getDoctrine()->getManager()->flush();
 

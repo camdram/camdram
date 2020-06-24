@@ -241,32 +241,26 @@ class AclProvider
      */
     public function approveShowAccess(Show $show, User $user, User $granter)
     {
-        $persist = false;
         $ace_repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
         $existing_ace = $ace_repo->findAce($user, $show);
         /* Don't add a new ACE if the user is already able to access
          * the resource.
          */
-        if ($existing_ace == null) {
-            $ace = $ace_repo->findAceRequest($user, $show);
-            if ($ace != null) {
-                $ace->setGrantedBy($granter)
-                    ->setType('show');
-                $persist = true;
-            }
-        }
+        if ($existing_ace != null) return;
 
-        if ($persist == true) {
-            $this->entityManager->persist($ace);
-            $this->entityManager->flush();
+        $ace = $ace_repo->findAceRequest($user, $show);
+        if ($ace == null) return;
 
-            /* Send a Camdram-specific event that should trigger an email
-                             * notification.
-                             */
-            $this->eventDispatcher->dispatch(
-                    new AccessControlEntryEvent($ace),
-                    CamdramSecurityEvents::ACE_CREATED
-                );
-        }
+        $ace->setGrantedBy($granter)->setType('show');
+        $this->entityManager->persist($ace);
+        $this->entityManager->flush();
+
+        /* Send a Camdram-specific event that should trigger an email
+         * notification.
+         */
+        $this->eventDispatcher->dispatch(
+                new AccessControlEntryEvent($ace),
+                CamdramSecurityEvents::ACE_CREATED
+            );
     }
 }

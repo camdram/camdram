@@ -104,6 +104,8 @@ class EmailDispatcher
             case 'venue':
                 $entity = $this->em->getRepository('ActsCamdramBundle:Venue')->findOneById($ace->getEntityId());
                 break;
+            default:
+                throw new \LogicException("Cannot send ACE email for {$ace->getType()}");
         }
 
         $message->setSubject('Access to '.$entity->getName().' on Camdram granted')
@@ -140,6 +142,8 @@ class EmailDispatcher
             case 'venue':
                 $entity = $this->em->getRepository('ActsCamdramBundle:Venue')->findOneById($ace->getRid());
                 break;
+            default:
+                throw new \LogicException("Cannot send ACE email for {$ace->getType()}");
         }
 
         $message->setSubject('Access to '.$entity->getName().' on Camdram granted')
