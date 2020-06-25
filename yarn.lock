@@ -748,10 +748,10 @@
   resolved "https://registry.yarnpkg.com/@fancyapps/fancybox/-/fancybox-3.5.7.tgz#12f8734663ec6eae7f9236b92ca236e6e07fdfd5"
   integrity sha512-rcEtu8t+WnmqIDV/Wfm1yvy/nDdwc7YV25j9HLxGC2/WOsUhk9rcWg2nB8g1BrjRt9zaoADdjHTU6ILYTJzBBg==
 
-"@github/hotkey@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-1.4.1.tgz#36a6892a36130ede1c85eceebc9a03578f46f774"
-  integrity sha512-71/hNVwD+KcbtpcokuI5q+CxqEu8lHfJnKGE5qxKKg7CTRvRKIkrzQ+B38rpYmB5Djg7oQu/hD0Rty/8l6Fk0g==
+"@github/hotkey@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-1.4.2.tgz#35369f0f525712765f78d287ed615f7cd014721d"
+  integrity sha512-JBIHoy8XUoAfMCwsm2PY7z4BrrbpFJTzs1dPtQnMYCc78SA3Fko9daMvMULrpDn3vu+NkIxKfI93Pklwl8sy4g==
 
 "@symfony/webpack-encore@^0.30.2":
   version "0.30.2"
