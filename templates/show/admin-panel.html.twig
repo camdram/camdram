@@ -17,22 +17,8 @@
         {% endif %}
     
         {{ include('navigation/nav-item.html.twig',
-        {item: {id: 'get_show_adverts', path: path('get_show_adverts', {identifier:show.slug}), icon: 'list', text: 'Manage auditions'} }) }}
+        {item: {id: 'get_show_adverts', path: path('get_show_adverts', {identifier:show.slug}), icon: 'list', text: 'Manage adverts'} }) }}
     
-        {% if show.techieAdverts | length == 0 %}
-            {{ include('navigation/nav-item.html.twig',
-                {item: {id: 'new_techie_advert', path: path('new_show_techie_advert',{identifier:show.slug}), icon: 'plus-circle', text: 'Add technical team advert'} }) }}
-        {% else %}
-            {{ include('navigation/nav-item.html.twig',
-                {item: {id: 'edit_techie_advert', path: path('edit_show_techie_advert',{identifier:show.slug}), icon: 'pencil', text: 'Edit/renew technical team advert'} }) }}
-        {% endif %}
-        {% if show.applications | length == 0 %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'new_application', path: path('new_show_application',{identifier:show.slug}), icon: 'plus-circle', text: 'Add director/​producer advert'} }) }}
-        {% else %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_application', path: path('edit_show_application',{identifier:show.slug}), icon: 'pencil', text: 'Edit director/​producer advert'} }) }}
-        {% endif %}
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'edit_admin', path: path('edit_show_admin',{identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}
         {{ include('navigation/nav-item.html.twig',

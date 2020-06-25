@@ -22,7 +22,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Serializer\XmlRoot("advert")
  * @Serializer\ExclusionPolicy("all")
  * @Gedmo\Loggable
- * @Api\Link(route="get_advert", params={"id": "object.getId()"})
+ * @Api\Link(route="get_advert", params={"identifier": "object.getId()"})
  */
 class Advert
 {
@@ -45,6 +45,20 @@ class Advert
      * @Gedmo\Versioned
      */
     private $title;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="type", type="string", length=255, nullable=false)
+     * @Serializer\Expose
+     */
+    private $type;
+
+    const TYPE_ACTORS = 'actors';
+    const TYPE_TECHNICAL = 'technical';
+    const TYPE_DESIGN = 'design';
+    const TYPE_APPLICATION = 'application';
+    const TYPE_OTHER = 'other';
 
     /**
      * @var \DateTime
@@ -115,12 +129,32 @@ class Advert
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="adverts")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="show_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="show_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      * })
      * @Gedmo\Versioned
      * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
     private $show;
+
+    /** 
+     * @var Society
+     * 
+     * @ORM\ManyToOne(targetEntity="Society", inversedBy="adverts")
+     * @ORM\JoinColumn(name="society_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_society", params={"identifier": "object.getSociety().getSlug()"})
+     */
+    private $society;
+
+    /** 
+     * @var Venue
+     * 
+     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="adverts")
+     * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @Gedmo\Versioned
+     * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
+     */
+    private $venue;
 
      /**
      * @var array
@@ -136,6 +170,7 @@ class Advert
         $this->auditions = new ArrayCollection();
         $this->display = true;
         $this->expiresAt = new \DateTime('+2 weeks');
+        $this->type = self::TYPE_ACTORS;
     }
 
     public function getId(): ?int
@@ -295,6 +330,42 @@ class Advert
     public function getFeedTitle()
     {
         return $this->getTitle(). ' - last updated '.$this->getUpdatedAt()->format('D, j M Y H:i T');
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSociety(): ?Society
+    {
+        return $this->society;
+    }
+
+    public function setSociety(?Society $society): self
+    {
+        $this->society = $society;
+
+        return $this;
+    }
+
+    public function getVenue(): ?Venue
+    {
+        return $this->venue;
+    }
+
+    public function setVenue(?Venue $venue): self
+    {
+        $this->venue = $venue;
+
+        return $this;
     }
 
 }

@@ -1,27 +1,24 @@
-{% extends 'vacancies.html.twig' %}
+{% extends 'advert/layout.html.twig' %}
 
 {% block title %}Auditions{% endblock %}
-{% set current_vacancies_id='auditions' %}
-
-{% block vacancies_header %}
-    <h3>Auditions</h3>
-
-    <ul role="navigation">
-        <li><i class="fa fa-list"></i> List view</li>
-        <li><a href="{{ path('get_adverts_diary') }}"><i class="fa fa-calendar"></i> Diary View</a></li>
-        <li><a href="{{ path('get_adverts_diary', {_format: 'ics'}) }}"><i class="fa fa-calendar"></i> iCal</a></li>
-        <li><a href="{{ path('get_adverts', {_format: 'rss'}) }}"><i class="fa fa-rss"></i> RSS Feed</a></li>
-        <li><a href="{{ path('get_adverts', {_format: 'txt'}) }}"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
-    </ul>
-{% endblock %}
 
 {% block vacancies_body %}
     {%- for a in adverts -%}
-        <div id="{{ a.show.slug }}" class="vacancies-panel">
+        <div class="vacancies-panel">
             <h5><a href="{{ path('get_advert', {identifier: a.id}) }}">{{ a.title }}</a></h5>
+            {% if a.show %}
             <div class="vacancies-show-panel">
                 {%- include 'show/advert_header.html.twig' with {'show': a.show} -%}
             </div>
+            {% elseif a.society %}
+            <div class="vacancies-show-panel">
+                <h5><a href="{{ path('get_society', {identifier: a.society.slug}) }}">{{ a.society.name }}</a></h5>
+            </div>
+            {% elseif a.venue %}
+            <div class="vacancies-show-panel">
+                <h5><a href="{{ path('get_venue', {identifier: a.venue.slug}) }}">{{ a.venue.name }}</a></h5>
+            </div>
+            {% endif %}
             <p>{{ a.summary | camdram_markdown }}</p>
             <ul>
             {%- for audition in a.auditions -%}

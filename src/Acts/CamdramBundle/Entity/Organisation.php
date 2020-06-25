@@ -190,25 +190,34 @@ abstract class Organisation extends BaseEntity implements OwnableInterface
     /**
      * Add applications
      *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @param \Acts\CamdramBundle\Entity\Advert $advert
      *
      * @return Organisation
      */
-    abstract public function addApplication(\Acts\CamdramBundle\Entity\Application $applications);
+    abstract public function addAdvert(Advert $advert);
 
     /**
      * Remove applications
      *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
+     * @param \Acts\CamdramBundle\Entity\Advert $advert
      */
-    abstract public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications);
+    abstract public function removeAdvert(Advert $advert);
 
     /**
      * Get applications
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    abstract public function getApplications();
+    abstract public function getAdverts();
+
+    public function getAdvertById($id)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('id', $id))
+        ;
+
+        return $this->getAdverts()->matching($criteria)->first();
+    }
 
     abstract public function getOrganisationType();
 }

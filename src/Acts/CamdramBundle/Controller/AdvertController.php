@@ -13,24 +13,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdvertController extends AbstractFOSRestController
 {
     /**
-     * @Route("/vacancies/auditions.{_format}", format="html", methods={"GET"}, name="get_adverts")
+     * @Route("/vacancies.{_format}", format="html", methods={"GET"}, name="get_adverts")
      */
     public function cgetAction(Request $request)
     {
-        $adverts = $this->getDoctrine()->getRepository(Advert::class)->findNotExpiredOrderedByDateName(Time::now());
+        $filter = $request->get('filter', null);
+        if (!in_array($filter, [
+            null, Advert::TYPE_ACTORS, Advert::TYPE_APPLICATION, Advert::TYPE_DESIGN, Advert::TYPE_OTHER, Advert::TYPE_TECHNICAL
+        ])) {
+            throw $this->createNotFoundException('Invalid filter');
+        }
+
+        $adverts = $this->getDoctrine()->getRepository(Advert::class)->findNotExpiredOrderedByDateName($filter, Time::now());
 
         switch ($request->getRequestFormat()) {
         case 'html':
         case 'txt':
             return $this->render("advert/index.{$request->getRequestFormat()}.twig",
-                ['adverts' => $adverts]);
+                ['filter' => $filter, 'adverts' => $adverts]);
         default:
             return $this->view($adverts);
         }
     }
 
     /**
-     * @Route("/vacancies/auditions/diary.{_format}", format="html", methods={"GET"}, name="get_adverts_diary")
+     * @Route("/vacancies/diary.{_format}", format="html", methods={"GET"}, name="get_adverts_diary")
      */
     public function cgetDiaryAction(Request $request)
     {
@@ -40,14 +47,53 @@ class AdvertController extends AbstractFOSRestController
         $diary->addEvents($auditions);
 
         if ($request->getRequestFormat() == 'html') {
-            return $this->render('advert/diary.html.twig', ['diary' => $diary]);
+            return $this->render('advert/diary.html.twig', ['filter' => Advert::TYPE_ACTORS, 'diary' => $diary]);
         } else {
             return $this->view($diary);
         }
     }
 
     /**
-     * @Route("/vacancies/auditions/{identifier}.{_format}", format="html", methods={"GET"}, name="get_advert")
+     * Backwards compatibility
+     * 
+     * @Route("/vacancies/auditions.{_format}", format="html", methods={"GET"})
+     */
+    public function getAuditionsAction(Request $request)
+    {
+        return $this->redirectToRoute('get_adverts', [
+            '_format' => $request->getRequestFormat(),
+            'filter' => Advert::TYPE_ACTORS,
+        ], 301);
+    }
+
+    /**
+     * Backwards compatibility
+     * 
+     * @Route("/vacancies/techies.{_format}", format="html", methods={"GET"})
+     */
+    public function getTechiesAction(Request $request)
+    {
+        return $this->redirectToRoute('get_adverts', [
+            '_format' => $request->getRequestFormat(),
+            'filter' => Advert::TYPE_TECHNICAL,
+        ], 301);
+    }
+
+    /**
+     * Backwards compatibility
+     * 
+     * @Route("/vacancies/applications.{_format}", format="html", methods={"GET"})
+     */
+    public function getApplicationsAction(Request $request)
+    {
+        return $this->redirectToRoute('get_adverts', [
+            '_format' => $request->getRequestFormat(),
+            'filter' => Advert::TYPE_APPLICATION,
+        ], 301);
+    }
+
+    /**
+     * @Route("/vacancies/{identifier}.{_format}", format="html", methods={"GET"}, name="get_advert")
      */
     public function getAction(Request $request, $identifier)
     {
@@ -58,7 +104,7 @@ class AdvertController extends AbstractFOSRestController
         }
 
         if ($request->getRequestFormat() == 'html') {
-            return $this->render('advert/view.html.twig', ['advert' => $advert]);
+            return $this->render('advert/view.html.twig', ['filter' => $advert->getType(), 'advert' => $advert]);
         } else {
             return $this->view($advert);
         }

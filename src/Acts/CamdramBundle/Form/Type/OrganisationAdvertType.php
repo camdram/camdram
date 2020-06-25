@@ -18,32 +18,14 @@ use Acts\CamdramBundle\Entity\Advert;
  *
  * The form that's presented when a user adds/edits a show
  */
-class AdvertType extends AbstractType
+class OrganisationAdvertType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title')
-            ->add('type', ChoiceType::class, [
-                'label' => 'Advert type',
-                'expanded' => true,
-                'choices'  => [
-                    'Auditions' => Advert::TYPE_ACTORS,
-                    'Technical Roles' => Advert::TYPE_TECHNICAL,
-                    'Designers' => Advert::TYPE_DESIGN,
-                    'Director/Producer' => Advert::TYPE_APPLICATION,
-                    'Other' => Advert::TYPE_OTHER,
-                ],
-            ])
             ->add('summary')
             ->add('body')
-            ->add('auditions', CollectionType::class, array(
-                'entry_type' => AuditionType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'label' => 'Sessions'
-            ))
             ->add('contactDetails')
             ->add('expiresAt', DateTimeType::class, [
                 'date_widget' => 'single_text',

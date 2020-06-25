@@ -188,19 +188,9 @@ class Show extends BaseEntity implements OwnableInterface
     private $timestamp;
 
     /**
-     * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
-     */
-    private $techie_adverts;
-
-    /**
      * @ORM\OneToMany(targetEntity="Advert", mappedBy="show", cascade={"all"}, orphanRemoval=true)
      */
     private $adverts;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Application", mappedBy="show")
-     */
-    private $applications;
 
     /**
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
@@ -606,13 +596,9 @@ class Show extends BaseEntity implements OwnableInterface
     public function __construct()
     {
         $this->adverts      = new ArrayCollection();  
-        $this->applications = new ArrayCollection();
-        $this->auditions    = new ArrayCollection();
         $this->performances = new ArrayCollection();
         $this->roles        = new ArrayCollection();
         $this->societies    = new ArrayCollection();
-        $this->techie_adverts = new ArrayCollection();
-
         $this->timestamp    = new \DateTime();
 
         $this->setSocietiesDisplayList([]);
@@ -690,56 +676,6 @@ class Show extends BaseEntity implements OwnableInterface
     }
 
     /**
-     * Add techie_adverts
-     *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
-     *
-     * @return Show
-     */
-    public function addTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
-    {
-        $this->techie_adverts[] = $techieAdverts;
-
-        return $this;
-    }
-
-    /**
-     * Remove techie_adverts
-     *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
-     */
-    public function removeTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
-    {
-        $this->techie_adverts->removeElement($techieAdverts);
-    }
-
-    /**
-     * Get techie_adverts
-     *
-     * @return ?TechieAdvert
-     * @Api\Link(route="get_techie", name="techie_advert", params={"identifier": "object.getSlug()"},
-     *      targetType="techie_advert")
-     */
-    public function getActiveTechieAdvert()
-    {
-        $now = new \DateTime();
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gt('expiry', $now));
-
-        return $this->techie_adverts->matching($criteria)->first();
-    }
-
-    /**
-     * Get techie_adverts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTechieAdverts()
-    {
-        return $this->techie_adverts;
-    }
-
-    /**
      * @return Collection|Advert[]
      */
     public function getAdverts(): Collection
@@ -785,66 +721,9 @@ class Show extends BaseEntity implements OwnableInterface
         return $this->adverts->matching($criteria);
     }
 
-    /**
-     * Add applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     *
-     * @return Show
-     */
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications[] = $applications;
-
-        return $this;
-    }
-
-    /**
-     * Remove applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     */
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications->removeElement($applications);
-    }
-
-    /**
-     * Get applications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getApplications()
-    {
-        return $this->applications;
-    }
-
-    /**
-     * Get active applications
-     *
-     * @return ?Application
-     * @Api\Link(route="get_application", name="application", params={"identifier": "object.getSlug()"},
-     *      targetType="application")
-     */
-    public function getActiveApplication()
-    {
-        $now = new \DateTime();
-        $today = new \DateTime($now->format('Y-m-d'));
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gt('deadlineDate', $today))
-            ->orWhere(Criteria::expr()->andX(
-                Criteria::expr()->gte('deadlineDate', $today),
-                Criteria::expr()->gt('deadlineTime', $now)
-            ));
-
-        return $this->applications->matching($criteria)->first();
-    }
-
     public function hasActiveAdverts()
     {
-        return $this->getActiveTechieAdvert()
-                || count($this->getActiveAdverts()) > 0
-                || $this->getActiveApplication();
+        return count($this->getActiveAdverts()) > 0;
     }
 
     public function setAuthorised(bool $authorised): self
@@ -1201,6 +1080,24 @@ class Show extends BaseEntity implements OwnableInterface
     public function setWeekManager($manager)
     {
         $this->weekManager = $manager;
+    }
+
+    public function addSociety(Society $society): self
+    {
+        if (!$this->societies->contains($society)) {
+            $this->societies[] = $society;
+        }
+
+        return $this;
+    }
+
+    public function removeSociety(Society $society): self
+    {
+        if ($this->societies->contains($society)) {
+            $this->societies->removeElement($society);
+        }
+
+        return $this;
     }
 
 }

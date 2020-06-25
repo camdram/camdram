@@ -18,6 +18,10 @@ a {
   color: $primary-color;
   color: var(--primary-color, $primary-color);
   cursor: pointer;
+
+  &.active {
+    color: $dark-grey;
+  }
 }
 hr {
   border: solid $hr-color;
@@ -117,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: baseline;
-  > :nth-child(2) {
+  > :nth-child(n+2) {
     flex-grow: 1;
     text-align: right;
     padding: 0 !important;

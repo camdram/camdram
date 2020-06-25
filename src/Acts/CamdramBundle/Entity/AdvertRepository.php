@@ -14,18 +14,24 @@ use Doctrine\ORM\Query\Expr;
  */
 class AdvertRepository extends EntityRepository
 {
-    public function findNotExpiredOrderedByDateName(\DateTime $date)
+    public function findNotExpiredOrderedByDateName($filter, \DateTime $date)
     {
         $qb = $this->createQueryBuilder('a');
-        $query = $qb->leftJoin('a.show', 's')
+        $qb->leftJoin('a.show', 's')
             ->where('a.expiresAt > :expires')
             ->andWhere('a.display = true')
-            ->andWhere('s.authorised = true')
-            ->orderBy('a.expiresAt, s.name')
+            ->andWhere($qb->expr()->orX('s.authorised = true', 's IS NULL'))
+            ->orderBy('a.createdAt DESC, s.name')
             ->setParameter('expires', $date)
-            ->getQuery();
+            ;
+        
+        if ($filter) {
+            $qb->andWhere('a.type = :type')
+                ->setParameter('type', $filter)
+            ;
+        }
 
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     private function getLatestQuery($limit, \DateTime $now)
@@ -35,8 +41,8 @@ class AdvertRepository extends EntityRepository
         return $qb->leftJoin('a.show', 's')
             ->where('a.expiresAt > :expires')
             ->andWhere('a.display = true')
-            ->andWhere('s.authorised = true')
-            ->orderBy('a.updatedAt')
+            ->andWhere($qb->expr()->orX('s.authorised = true', 's IS NULL'))
+            ->orderBy('a.createdAt', 'DESC')
             ->setParameter('expires', $now)
             ->setMaxResults($limit);
     }
@@ -48,17 +54,20 @@ class AdvertRepository extends EntityRepository
 
     public function findLatestBySociety(Society $society, $limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit, $now)
-            ->andWhere(':society MEMBER OF s.societies')->setParameter('society', $society)
-            ->getQuery()->getResult();
+        $qb = $this->getLatestQuery($limit, $now);
+        $qb->andWhere($qb->expr()->orX('a.society = :society', ':society MEMBER OF s.societies')
+            )->setParameter('society', $society);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findLatestByVenue(Venue $venue, $limit, \DateTime $now)
     {
-        return $this->getLatestQuery($limit, $now)
-            ->andWhere('EXISTS (SELECT p FROM \Acts\CamdramBundle\Entity\Performance p WHERE p.show = s AND p.venue = :venue)')
-            ->setParameter('venue', $venue)
-            ->getQuery()->getResult();
+        $qb = $this->getLatestQuery($limit, $now);
+
+        return $qb->andWhere($qb->expr()->orX('a.venue = :venue',
+            'EXISTS (SELECT p FROM \Acts\CamdramBundle\Entity\Performance p WHERE p.show = s AND p.venue = :venue)'))
+            ->setParameter('venue', $venue)->getQuery()->getResult();
     }
 
     public function findOneById($id, \DateTime $now)
@@ -68,7 +77,7 @@ class AdvertRepository extends EntityRepository
         return $qb->leftJoin('a.show', 's')
             ->where('a.expiresAt > :expires')
             ->andWhere('a.id = :id')
-            ->andWhere('s.authorised = true')
+            ->andWhere($qb->expr()->orX('s.authorised = true', 's IS NULL'))
             ->setParameter('id', $id)
             ->setParameter('expires', $now)
             ->getQuery()->getOneOrNullResult();

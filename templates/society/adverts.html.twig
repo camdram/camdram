@@ -1,0 +1,59 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Adverts{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'manage_adverts' %}
+{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: org})) }}
+
+<h3>Manage adverts</h3>
+
+<div class="panel">
+    <p>Below are all active and hidden show application advertisements. You can create multiple
+        concurrent adverts for different purposes.</p>
+</div>
+
+<p>
+    <a href="{{ path('acts_camdram_society_newadvert', {identifier: org.slug}) }}" class="button">
+        <i class="fa fa-plus-circle"></i> New advert
+    </a>
+</p>
+
+{% for advert in org.adverts %}
+<div class="vacancies-panel{% if not advert.visible %} hidden{% endif %}">
+    <div class="split-header">
+        <h5><a href="{{ path('get_advert', {identifier: advert.id}) }}">{{ advert.title }}</a></h5>
+        <ul>
+            <li><a href="{{ path('acts_camdram_society_editadvert', {identifier: org.slug, advertId: advert.id}) }}" class="button small">
+                <i class="fa fa-pencil"></i> Edit</a>
+            </li>
+            <li>
+                {% if advert.expired %}
+                    <em><i class="fa fa-clock-o"></i> Expired</em>
+                {% elseif advert.display %}
+                <form action="{{ path('acts_camdram_society_hideadvert', {identifier: org.slug, advertId: advert.id}) }}" method="POST">
+                    <input type="hidden" name="_method" value="PATCH"/>
+                    <button type="submit" class="button small">
+                        <i class="fa fa-eye"></i> Hide</a>
+                    </button>
+                </form>
+                {% else %}
+                <form action="{{ path('acts_camdram_society_showadvert', {identifier: org.slug, advertId: advert.id}) }}" method="POST">
+                    <input type="hidden" name="_method" value="PATCH"/>
+                    <button type="submit" class="button small">
+                        <i class="fa fa-eye"></i> Show</a>
+                    </button>
+                </form>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+
+    <p>{{ advert.summary | camdram_markdown }}</p>
+    <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+</div>
+{% endfor %}
+
+{% endblock %}

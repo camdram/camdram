@@ -8,20 +8,13 @@
 {% set current_subnav_id = 'manage_adverts' %}
 {{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
 
-<h3>New Auditions Advert</h3>
+<h3>New Advert</h3>
 
 <div class="panel">
     <p>
-        Use the form below add a new auditions advertisement for your show.
-    </p>
-    <p>
-        You can add one or more audition sessions and/or leave contact details for people to get
-        in touch about auditioning.
-    </p>
-    <p>
-        The CUADC Actors' Reps aim to send out the Actors' mailing list with all the current
-        auditions on Camdram twice a week during Full Term. For more information they can be
-        contacted on <a href=mailto:actor@cuadc.org>actor@cuadc.org</a>.
+        Use the form below add a new advertisement for your show.
+        You can add one or more audition sessions (if applicable) and/or 
+        leave contact details for people to get in touch.
     </p>
     <p>{{ include('markdown_notice.html.twig', { thing: 'advertisement' }) }}</p>
     <p>

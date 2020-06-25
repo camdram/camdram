@@ -12,10 +12,11 @@
 
 <div class="panel">
     <p>Use the form below to create an advertisement for show applications. The advert will be displayed until
-        the deadline date.</p>
+        the expiry date.</p>
+    <p>{{ include('markdown_notice.html.twig', { thing: 'advertisement' }) }}</p>
 </div>
 
-{{ form_start(form, {'action': path("acts_camdram_society_postapplication", {identifier: org.slug} )}) }}
+{{ form_start(form, {'action': path("acts_camdram_society_postadvert", {identifier: org.slug} )}) }}
 {{ include('organisation/application-form.html.twig') }}
 
 <div class="text-right">

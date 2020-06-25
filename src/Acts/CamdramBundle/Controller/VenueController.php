@@ -79,17 +79,12 @@ class VenueController extends OrganisationController
     public function getVacanciesAction($identifier)
     {
         $venue = $this->getEntity($identifier);
-        $auditions_repo = $this->getDoctrine()->getRepository(Entity\Audition::class);
-        $techie_repo = $this->getDoctrine()->getRepository(Entity\TechieAdvert::class);
-        $applications_repo = $this->getDoctrine()->getRepository(Entity\Application::class);
+        $repo = $this->getDoctrine()->getRepository(Entity\Advert::class);
         $now = new \DateTime();
 
         $data = array(
             'venue' => $venue,
-            'auditions' => $auditions_repo->findUpcomingByVenue($venue, 10, $now),
-            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledByVenue($venue, 10, $now),
-            'techie_ads' => $techie_repo->findLatestByVenue($venue, 10, $now),
-            'app_ads' => $applications_repo->findLatestByVenue($venue, 10, $now),
+            'adverts' => $repo->findLatestByVenue($venue, 10, $now),
         );
 
         return $this->show('venue/vacancies.html.twig', 'data', $data);

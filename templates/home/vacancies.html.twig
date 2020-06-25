@@ -1,28 +1,8 @@
 <h5>Get Involved</h5>
-<ul>
 {% for advert in adverts %}
-    <li>
+    <div class="vacancies-panel">
         <a href="{{ path('get_advert', {identifier: advert.id}) }}">{{ advert.title }}</a>
-    </li>
+        <br/>{{ advert.summary }}
+    </div>
 {% endfor %}
-{% for ad in techie_ads %}
-    <li>{{ link_entity(ad.show) }} is looking for:
-        {{ ad.getPositionsOneLine() }}
-        - <a href="{{ path('get_techie', {identifier: ad.slug}) }}">more details</a>
-    </li>
-{% endfor %}
-{% for ad in app_ads %}
-    <li>
-        {% if ad.show %}
-            {{ link_entity(ad.show) }} has announced:
-            {{ ad.text() }} -
-            <a href="{{ path('get_application', {identifier: ad.show.slug}) }}">more details</a>
-        {% elseif ad.society %}
-            {{ link_entity(ad.society) }} has announced:
-            {{ ad.text() }} -
-            <a href="{{ path('get_application', {identifier: ad.society.slug}) }}">more details</a>
-        {% endif %}
-
-    </li>
-{% endfor %}
-</ul>
+<p class="text-right"><a href="{{ path('get_adverts') }}">More vacancies &gt;&gt;</a></p>

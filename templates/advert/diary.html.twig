@@ -1,19 +1,10 @@
-{% extends 'vacancies.html.twig' %}
+{% extends 'advert/layout.html.twig' %}
 
 {% block title %}Auditions Diary{% endblock %}
 {% set current_vacancies_id='auditions' %}
 
 {% block vacancies_body %}
-    <ul class="inline-list right">
-        <li><a href="{{ path('get_adverts') }}">List View</a></li>
-        <li>Diary view</li>
-        <li><a href="{{ path('get_adverts_diary', {_format: 'ics'}) }}"><i class="fa fa-calendar"></i> iCal</a></li>
-        <li><a href="{{ path('get_adverts', {_format: 'rss'}) }}"><i class="fa fa-rss"></i> RSS Feed</a></li>
-        <li><a href="{{ path('get_adverts', {_format: 'txt'}) }}"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
-    </ul>
-
-<h3>Auditions</h3>
-
+  
 <div id="diary">
     {{ render_diary(diary) }}
 </div>

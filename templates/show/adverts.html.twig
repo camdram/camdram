@@ -8,17 +8,36 @@
 {% set current_subnav_id = 'edit_auditions' %}
 {{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
 
-<h3>Manage Auditions</h3>
+<h3>Manage Adverts</h3>
 
 <div class="panel">
     <p>
-        Use the form below modify or add auditions advertisements for your show. You can create multiple
-        concurrent adverts for different purposes.
+        Below are all active and hidden advertisements for your show. You can create multiple
+        concurrent adverts for different purposes (e.g. principals, chorus, designers, technical team).
     </p>
     <p>
-        The CUADC Actors' Reps aim to send out the Actors' mailing list with all the current
-        auditions on Camdram twice a week during Full Term. For more information they can be
-        contacted on <a href=mailto:actor@cuadc.org>actor@cuadc.org</a>.
+        The CUADC committee send out mailings lists for all active advertisements on the following schedules:
+    </p>
+    <ul>
+        <li>
+            The CUADC Actors' Reps (<a href=mailto:actor@cuadc.org>actor@cuadc.org</a>) aim to send out the 
+            Actors' mailing list twice a week during Full Term.
+        </li>
+        <li>
+            The CUADC Technical Director (<a href=mailto:td@cuadc.org>td@cuadc.org</a>),
+            Technicians' Rep (<a href=mailto:technician@cuadc.org>technician@cuadc.org</a>)
+            and Stage Managers' Rep (<a href=mailto:sm@cuadc.org>sm@cuadc.org</a>) 
+            aim to send out the Techies' mailing list once a week during Full Term.
+        </li>
+        <li>
+            The Designers' Rep (<a href=mailto:designer@cuadc.org> desginer@cuadc.org</a>) aims to send the 
+            Designers' mailing list once a week during Full Term.
+        </li>
+        <li>
+            The CUADC Directors' Rep (<a href="mailto:director@cuadc.org">director@cuadc.org</a>) 
+            and Producers' Rep (<a href="mailto:producer@cuadc.org">producer@cuadc.org</a>)
+            aim to send out the Production mailing list once a week during Full Term.
+        </li>
     </p>
 </div>
 
@@ -31,7 +50,7 @@
 {% for advert in show.adverts %}
 <div class="vacancies-panel{% if not advert.visible %} hidden{% endif %}">
     <div class="split-header">
-        <h5>{{ advert.title }}</h5>
+        <h5><a href="{{ path('get_advert', {identifier: advert.id}) }}">{{ advert.title }}</a></h5>
         <ul>
             <li><a href="{{ path('edit_show_advert', {identifier: show.slug, advertId: advert.id}) }}" class="button small">
                 <i class="fa fa-pencil"></i> Edit</a>

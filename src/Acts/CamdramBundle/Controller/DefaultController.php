@@ -85,14 +85,10 @@ class DefaultController extends AbstractController
     public function vacanciesAction()
     {
         $adverts_repo = $this->getDoctrine()->getRepository(Entity\Advert::class);
-        $techie_repo = $this->getDoctrine()->getRepository(Entity\TechieAdvert::class);
-        $applications_repo = $this->getDoctrine()->getRepository(Entity\Application::class);
         $now = new \DateTime();
 
         $response = $this->render('home/vacancies.html.twig', array(
-            'adverts' => $adverts_repo->findLatest(3, $now),
-            'techie_ads' => $techie_repo->findLatest(3, $now),
-            'app_ads' => $applications_repo->findLatest(3, $now),
+            'adverts' => $adverts_repo->findLatest(10, $now),
         ));
         $response->setSharedMaxAge(60);
 

@@ -119,22 +119,6 @@
             <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
         </div>
     {% endfor %}
-    {% if show.activeTechieAdvert %}
-        <div class="vacancies-panel">
-            <p>We are looking for:
-                {% for p in show.activeTechieAdvert.positions|split("\n") -%}
-                    {%- if not loop.first and loop.last %} and {% elseif not loop.first %}, {% endif -%}
-                    {{- p | trim -}}
-                {%- endfor %}
-            – <a href="{{ path('get_techie', {identifier: show.activeTechieAdvert.slug}) }}">more details</a></p>
-        </div>
-    {% endif %}
-    {% if show.activeApplication %}
-        <div class="vacancies-panel">
-            <p>{{ show.activeApplication.text() }} –
-            <a href="{{ path('get_application', {identifier: show.activeApplication.show.slug}) }}">more details</a></p>
-        </div>
-    {% endif %}
 {%- endif -%}
 
 {% if is_granted('EDIT', show) %}
