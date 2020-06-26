@@ -21,7 +21,7 @@ class MapLocation
 
     /**
      * @var float
-     * @Assert\Range(min=-90, max=90,
+     * @Assert\Range(min=-180, max=180,
      *      invalidMessage="The longitude must be a valid number",
      *      minMessage="The longitude must be greater than -180",
      *      maxMessage="The longitude must be less than 180"
