@@ -71,7 +71,7 @@ class Audition implements EventInterface
     private $location;
 
     /**
-     * @var \Show
+     * @var Show
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="auditions")
      * @ORM\JoinColumns({

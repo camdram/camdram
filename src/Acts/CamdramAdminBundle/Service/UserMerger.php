@@ -41,14 +41,7 @@ class UserMerger
             ->getForm();
     }
 
-    /**
-     * @param Person $person1
-     * @param Person $person2
-     * @param $keepFirst
-     *
-     * @return Person
-     */
-    public function mergeUsers(User $user1, User $user2, $keepFirst)
+    public function mergeUsers(User $user1, User $user2, bool $keepFirst): User
     {
         if (!$keepFirst) {
             $tempUser = $user2;

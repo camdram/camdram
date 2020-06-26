@@ -36,7 +36,7 @@ class Application
     private $id;
 
     /**
-     * @var \Show
+     * @var Show
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="applications")
      * @ORM\JoinColumns({
@@ -48,7 +48,7 @@ class Application
     private $show;
 
     /**
-     * @var \Society
+     * @var Society
      *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="applications")
      * @ORM\JoinColumns({
@@ -60,7 +60,7 @@ class Application
     private $society;
 
     /**
-     * @var \Venue
+     * @var Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="applications")
      * @ORM\JoinColumns({

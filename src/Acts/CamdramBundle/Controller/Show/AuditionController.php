@@ -22,7 +22,6 @@ class AuditionController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/shows/{identifier}/auditions/edit", methods={"GET"}, name="edit_show_auditions")
      */
     public function editAuditionsAction(Helper $helper, $identifier)
@@ -37,7 +36,6 @@ class AuditionController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/shows/{identifier}/auditions", methods={"POST"}, name="put_show_auditions")
      */
     public function putAuditionsAction(Request $request, Helper $helper, $identifier)

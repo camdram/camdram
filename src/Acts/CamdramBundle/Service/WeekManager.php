@@ -35,7 +35,7 @@ class WeekManager
     {
         //Move start date to next Sunday at midnight
         $date = clone $date;
-        $day = $date->format('N');
+        $day = (int)($date->format('N'));
         if ($day < 7) {
             $date->modify('+'.(7 - $day).' days');
         }
@@ -83,12 +83,8 @@ class WeekManager
      *
      * This function is used when advertising show vacancies, for
      * example.
-     *
-     * @param performances
-     *
-     * @return string
      */
-    public function getPerformancesWeeksAsString(\DateTime $startAt, \DateTime $endAt)
+    public function getPerformancesWeeksAsString(\DateTime $startAt, \DateTime $endAt): ?string
     {
         $res = "";
         $start_week = $this->findAt($startAt);

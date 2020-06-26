@@ -66,8 +66,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /**
      * Returns the route parameters used to identity a particular entity. Used when generating URLs for redirects
      *
-     * @param $entity the entity to use
-     *
      * @return array the parameters to pass to the router
      */
     protected function getRouteParams($entity, Request $request)
@@ -79,13 +77,10 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Load an entity given its identifier (normally its slug, but this method could be overridden to use a different
      * parameter).
      *
-     * @param $identifier the identifier given (normally as part of the URL)
-     *
-     * @return mixed The entity object corresponding to the identifier
-     *
+     * @param string $identifier the identifier given (normally as part of the URL)
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    protected function getEntity($identifier)
+    protected function getEntity($identifier): object
     {
         $entity = $this->getRepository()->findOneBySlug($identifier);
 
@@ -105,10 +100,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Return a Form type object corresponding to the entity type represented by the child class.
      * The Type objects are defined in src\CamdramBundle\Form\Type, which define what a form looks like for each class,
      * including validation rules.
-     *
-     * @param null $entity
-     *
-     * @return Symfony\Component\Form\AbstractType
+     * @return \Symfony\Component\Form\FormInterface
      */
     abstract protected function getForm($entity = null, $method = 'POST');
 

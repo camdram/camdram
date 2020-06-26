@@ -45,6 +45,7 @@ class PeopleRemoveOrphanedCommand extends Command
             $this->deletePerson($person, $output);
         }
         $this->entityManager->flush();
+        return 0;
     }
 
     private function deletePerson(Person $person, OutputInterface $output)

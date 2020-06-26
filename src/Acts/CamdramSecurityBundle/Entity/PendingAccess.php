@@ -150,14 +150,7 @@ class PendingAccess
         return $this->type;
     }
 
-    /**
-     * Set issuer_id
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $owner
-     *
-     * @return PendingAccess
-     */
-    public function setIssuer(\Acts\CamdramSecurityBundle\Entity\User $issuer = null)
+    public function setIssuer(\Acts\CamdramSecurityBundle\Entity\User $issuer = null): self
     {
         $this->issuer = $issuer;
 

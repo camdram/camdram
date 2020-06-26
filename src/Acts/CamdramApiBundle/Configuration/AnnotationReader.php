@@ -25,11 +25,9 @@ class AnnotationReader
     }
 
     /**
-     * @param $object
-     * @return \Acts\CamdramApiBundle\Configuration\ApiData
      * @throws \Acts\CamdramApiBundle\Exception\UnsupportedTypeException
      */
-    public function read($object)
+    public function read($object): ApiData
     {
         $data = new ApiData();
 
@@ -91,11 +89,7 @@ class AnnotationReader
         return $data;
     }
 
-    /**
-     * @param Link $annotation
-     * @return LinkMetadata
-     */
-    private function createLinkMetadataFromAnnoation(Link $annotation)
+    private function createLinkMetadataFromAnnoation(Link $annotation): LinkMetadata
     {
         $link = new LinkMetadata();
         $link->setName($annotation->getName());

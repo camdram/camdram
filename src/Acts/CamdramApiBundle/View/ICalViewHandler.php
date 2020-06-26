@@ -17,10 +17,8 @@ class ICalViewHandler
 
     /**
      * Converts the viewdata to a RSS feed. Modify to suit your datastructure.
-     *
-     * @return Response
      */
-    public function createResponse(ViewHandler $handler, View $view, Request $request)
+    public function createResponse(ViewHandler $handler, View $view, Request $request): Response
     {
         if ($view->getData() instanceof Diary) {
             return new Response($this->createFeed($view->getData()), Response::HTTP_OK, $view->getHeaders());
@@ -29,10 +27,6 @@ class ICalViewHandler
         }
     }
 
-    /**
-     * @param $data array
-     * @param format string, either rss or atom
-     */
     protected function createFeed(Diary $diary)
     {
         $renderer = new ICalRenderer();

@@ -30,17 +30,13 @@ class CamdramUserProvider implements
     }
 
     /**
-     * Actually loads by id...but has to comply with the Symfony interface
-     *
-     * @param string $username
+     * Actually loads by email...but has to comply with the Symfony interface
      *
      * @return \Symfony\Component\Security\Core\User\UserInterface
-     *
-     * @throws
      */
-    public function loadUserByUsername($id)
+    public function loadUserByUsername($email)
     {
-        return $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($id);
+        return $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
     }
 
     public function updateAccessToken(User $user, $service, $access_token)

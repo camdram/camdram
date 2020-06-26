@@ -43,9 +43,6 @@ class ApiData
         return $this->selfLink;
     }
 
-    /**
-     * @param Annotation\Link $selfLink
-     */
     public function setSelfLink(LinkMetadata $selfLink)
     {
         $this->selfLink = $selfLink;

@@ -15,7 +15,7 @@ class Event implements EventInterface
     private $name;
 
     /**
-     * @var VenueInterface\null
+     * @var VenueInterface|null
      */
     private $venue;
 
@@ -89,25 +89,13 @@ class Event implements EventInterface
         return $this->venue;
     }
 
-    /**
-     * Set the venue name
-     *
-     * @param string $venue
-     * @return Event
-     */
-    public function setVenueName($venueName)
+    public function setVenueName(?string $venueName): self
     {
         $this->venue_name = $venueName;
         return $this;
     }
 
-    /**
-     * Get the venue name
-     *
-     * @param string $venue
-     * @return string
-     */
-    public function getVenueName()
+    public function getVenueName(): ?string
     {
         return $this->venue_name;
     }
@@ -163,10 +151,7 @@ class Event implements EventInterface
         $this->repeat_until = $repeatUntil;
     }
 
-    /**
-     * @param int $uid
-     */
-    public function setId($id)
+    public function setId(?string $id)
     {
         $this->id = $id;
     }

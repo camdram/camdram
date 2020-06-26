@@ -102,13 +102,7 @@ class VenueController extends OrganisationController
     }
 
     /**
-     * Finds all performances in the selected venue (used by OrgansiationController).
-     *
-     * @param $slug
-     * @param \DateTime $from
-     * @param \DateTime $to
-     *
-     * @return mixed
+     * Finds all performances in the selected venue (used by OrganisationController).
      */
     protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
@@ -118,13 +112,7 @@ class VenueController extends OrganisationController
     }
 
     /**
-     * Finds all shows in the selected venue (used by OrgansiationController).
-     *
-     * @param $slug
-     * @param \DateTime $from
-     * @param \DateTime $to
-     *
-     * @return mixed
+     * Finds all shows in the selected venue (used by OrganisationController).
      */
     protected function getShows($slug, \DateTime $from, \DateTime $to)
     {

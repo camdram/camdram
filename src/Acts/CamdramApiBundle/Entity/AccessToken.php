@@ -44,26 +44,14 @@ class AccessToken extends BaseAccessToken
         return $this->id;
     }
 
-    /**
-     * Set client
-     *
-     * @param \Acts\CamdramApiBundle\Entity\ApiApp $client
-     *
-     * @return AccessToken
-     */
-    public function setClient(ClientInterface $client)
+    public function setClient(ClientInterface $client): self
     {
         $this->client = $client;
 
         return $this;
     }
 
-    /**
-     * Get client
-     *
-     * @return \Acts\CamdramApiBundle\Entity\ApiApp
-     */
-    public function getClient()
+    public function getClient(): ?ClientInterface
     {
         return $this->client;
     }

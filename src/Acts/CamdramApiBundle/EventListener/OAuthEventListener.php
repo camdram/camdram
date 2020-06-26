@@ -76,7 +76,6 @@ class OAuthEventListener implements EventSubscriberInterface
                 $auth->addScopes($this->getScopes());
                 $this->entityManager->flush();
             } else {
-                /** @var User $user */
                 $auth = new Authorization();
                 $auth
                     ->setClient($event->getClient())

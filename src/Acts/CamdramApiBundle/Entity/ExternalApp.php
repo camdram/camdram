@@ -98,14 +98,7 @@ class ExternalApp extends BaseClient
         return $this->id;
     }
 
-    /**
-     * Set is_admin
-     *
-     * @param bool $isAdmin
-     *
-     * @return ApiApp
-     */
-    public function setIsAdmin()
+    public function setIsAdmin(): self
     {
         $this->is_admin = true;
         $this->user = null;
@@ -123,14 +116,7 @@ class ExternalApp extends BaseClient
         return $this->is_admin;
     }
 
-    /**
-     * Set user
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\User $user
-     *
-     * @return ApiApp
-     */
-    public function setUser(User $user)
+    public function setUser(User $user): self
     {
         $this->user = $user;
         $this->is_admin = false;

@@ -101,9 +101,7 @@ class DiaryController extends AbstractFOSRestController
      * Renders a single week.
      *
      * @param Request $request
-     * @param $date \DateTime Start date of the week to be rendered
-     *
-     * @return \Acts\DiaryBundle\Diary\Diary
+     * @param \DateTime $date Start date of the week to be rendered
      */
     public function singleWeekAction(Request $request, WeekManager $week_manager, $date)
     {

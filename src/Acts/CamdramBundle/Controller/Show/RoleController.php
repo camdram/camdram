@@ -36,7 +36,6 @@ class RoleController extends AbstractController
      * Creates a new person if they're not already part of Camdram.
      *
      * @Route("/shows/{identifier}/roles", methods={"PATCH"}, name="patch_show_role")
-     * @param $identifier
      */
     public function patchRoleAction(Request $request, Helper $helper, LoggerInterface $logger, $identifier)
     {
@@ -117,7 +116,6 @@ class RoleController extends AbstractController
     /**
      * Open a role-editing interface
      *
-     * @param $identifier
      * @Route("/shows/{identifier}/edit-roles", methods={"GET"}, name="get_show_edit_roles")
      */
     public function getEditRolesAction(Request $request, Helper $helper, $identifier)
@@ -140,7 +138,6 @@ class RoleController extends AbstractController
      * responsibility of the form validation. This function should be robust
      * against badly formatted input-however.
      *
-     * @param $identifier
      * @Route("/shows/{identifier}/many-roles", methods={"POST"}, name="post_show_many_roles")
      */
     public function postManyRolesAction(Request $request, Helper $helper, LoggerInterface $logger, $identifier)

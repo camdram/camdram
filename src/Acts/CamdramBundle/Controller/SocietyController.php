@@ -103,13 +103,7 @@ class SocietyController extends OrganisationController
     }
 
     /**
-     * Finds all performances by the selected society (used by OrgansiationController).
-     *
-     * @param $slug
-     * @param \DateTime $from
-     * @param \DateTime $to
-     *
-     * @return mixed
+     * Finds all performances by the selected society (used by OrganisationController).
      */
     protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
@@ -119,13 +113,7 @@ class SocietyController extends OrganisationController
     }
 
     /**
-     * Finds all shows by the selected society (used by OrgansiationController).
-     *
-     * @param $slug
-     * @param \DateTime $from
-     * @param \DateTime $to
-     *
-     * @return mixed
+     * Finds all shows by the selected society (used by OrganisationController).
      */
     protected function getShows($slug, \DateTime $from, \DateTime $to)
     {
@@ -166,7 +154,6 @@ class SocietyController extends OrganisationController
 
     /**
       * @Route("/{identifier}/admins", methods={"POST"}, name="post_society_admin")
-      * @param $identifier
       */
     public function postAdminAction(Request $request, $identifier,
         ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)

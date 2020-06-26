@@ -106,7 +106,7 @@ class User implements UserInterface, \Serializable
     private $profile_picture_url;
 
     /**
-     * @var array
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="user")
      * @Serializer\Exclude()
@@ -124,7 +124,7 @@ class User implements UserInterface, \Serializable
     private $organisations;
 
     /**
-     * @var array
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
      * @Serializer\Exclude()
@@ -204,7 +204,7 @@ class User implements UserInterface, \Serializable
     /**
      * Set registered
      *
-     * @param \DateTime $registered
+     * @param \DateTime $registered_at
      *
      * @return User
      */
@@ -225,14 +225,7 @@ class User implements UserInterface, \Serializable
         return $this->registered_at;
     }
 
-    /**
-     * Set login
-     *
-     * @param \DateTime $login
-     *
-     * @return User
-     */
-    public function setLastLoginAt($last_login_at)
+    public function setLastLoginAt(?\DateTime $last_login_at): self
     {
         $this->last_login_at = $last_login_at;
 
@@ -249,14 +242,7 @@ class User implements UserInterface, \Serializable
         return $this->last_login_at;
     }
 
-    /**
-     * Set last_session_at
-     *
-     * @param \DateTime $login
-     *
-     * @return User
-     */
-    public function setLastSessionAt($last_session_at)
+    public function setLastSessionAt(?\DateTime $last_session_at): self
     {
         $this->last_session_at = $last_session_at;
 
@@ -312,14 +298,7 @@ class User implements UserInterface, \Serializable
     {
     }
 
-    /**
-     * Set person
-     *
-     * @param \Acts\CamdramBundle\Entity\Person $person
-     *
-     * @return User
-     */
-    public function setPerson(Person $person = null)
+    public function setPerson(Person $person = null): self
     {
         $this->person = $person;
 
@@ -364,14 +343,7 @@ class User implements UserInterface, \Serializable
         return $this->getName().' ('.$this->getEmail().')';
     }
 
-    /**
-     * Add external_users
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
-     *
-     * @return User
-     */
-    public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser)
+    public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser): self
     {
         $this->external_users[] = $externalUser;
 
@@ -382,11 +354,6 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * Remove external_users
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUsers
-     */
     public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser)
     {
         $this->external_users->removeElement($externalUser);
@@ -421,73 +388,35 @@ class User implements UserInterface, \Serializable
         return 'native';
     }
 
-    /**
-     * Set is_email_verified
-     *
-     * @param bool $isEmailVerified
-     *
-     * @return User
-     */
-    public function setIsEmailVerified($isEmailVerified)
+    public function setIsEmailVerified(bool $isEmailVerified): self
     {
         $this->is_email_verified = $isEmailVerified;
 
         return $this;
     }
 
-    /**
-     * Get is_email_verified
-     *
-     * @return bool
-     */
-    public function getIsEmailVerified()
+    public function getIsEmailVerified(): bool
     {
         return $this->is_email_verified;
     }
 
-    /**
-     * Set profile_picture_url
-     *
-     * @param string $profilePictureUrl
-     *
-     * @return User
-     */
-    public function setProfilePictureUrl($profilePictureUrl)
+    public function setProfilePictureUrl(?string $profilePictureUrl): self
     {
         $this->profile_picture_url = $profilePictureUrl;
-
         return $this;
     }
 
-    /**
-     * Get profile_picture_url
-     *
-     * @return string
-     */
-    public function getProfilePictureUrl()
+    public function getProfilePictureUrl(): ?string
     {
         return $this->profile_picture_url;
     }
 
-    /**
-     * Add aces
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
-     *
-     * @return User
-     */
-    public function addAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
+    public function addAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces): self
     {
         $this->aces[] = $aces;
-
         return $this;
     }
 
-    /**
-     * Remove aces
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces
-     */
     public function removeAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
     {
         $this->aces->removeElement($aces);
@@ -511,17 +440,9 @@ class User implements UserInterface, \Serializable
         return $this->getAces()->matching($criteria);
     }
 
-    /**
-     * Add ace_grants
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants
-     *
-     * @return User
-     */
-    public function addAceGrant(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants)
+    public function addAceGrant(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants): self
     {
         $this->ace_grants[] = $aceGrants;
-
         return $this;
     }
 

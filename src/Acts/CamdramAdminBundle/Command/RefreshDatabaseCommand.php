@@ -50,5 +50,6 @@ class RefreshDatabaseCommand extends Command
         $input = new ArrayInput($arguments);
         $input->setInteractive(false);
         $command->run($input, $output);
+        return 0;
     }
 }

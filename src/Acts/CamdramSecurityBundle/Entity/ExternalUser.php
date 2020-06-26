@@ -224,14 +224,7 @@ class ExternalUser implements \Serializable
         }
     }
 
-    /**
-     * Set linked_user
-     *
-     * @param User $linkedUser
-     *
-     * @return ExternalUser
-     */
-    public function setUser(User $user = null)
+    public function setUser(User $user = null): self
     {
         $this->user = $user;
 

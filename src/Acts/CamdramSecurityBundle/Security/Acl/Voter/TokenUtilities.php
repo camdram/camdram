@@ -10,27 +10,21 @@ class TokenUtilities
 
     /**
      * Utility function to find role in token
-     *
-     * @param TokenInterface $token
-     * @param $role
-     * @return bool
      */
-    public static function hasRole(TokenInterface $token, string $role)
+    public static function hasRole(TokenInterface $token, string $role): bool
     {
         foreach ($token->getRoleNames() as $tokenRole) {
             if ($role == $tokenRole) {
                 return true;
             }
         }
+        return false;
     }
 
     /**
      * Is an API request
-     *
-     * @param TokenInterface $token
-     * @return bool
      */
-    public static function isApiRequest(TokenInterface $token)
+    public static function isApiRequest(TokenInterface $token): bool
     {
         return $token instanceof OAuthToken;
     }
@@ -38,11 +32,8 @@ class TokenUtilities
 
     /**
      * Is an interactive user request (i.e. not an API request)
-     *
-     * @param TokenInterface $token
-     * @return bool
      */
-    public static function isInteractiveRequest(TokenInterface $token)
+    public static function isInteractiveRequest(TokenInterface $token): bool
     {
         return $token instanceof \HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
     }

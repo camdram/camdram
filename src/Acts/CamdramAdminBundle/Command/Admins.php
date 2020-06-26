@@ -73,6 +73,7 @@ class Admins extends Command
         }
 
         $table->render();
+        return 0;
     }
 
     private function grantAccess($idOrEmail)

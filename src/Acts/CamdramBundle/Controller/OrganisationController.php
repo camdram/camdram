@@ -153,7 +153,6 @@ abstract class OrganisationController extends AbstractRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/{identifier}/applications/new", methods={"GET"})
      */
     public function newApplicationAction($identifier)
@@ -168,7 +167,6 @@ abstract class OrganisationController extends AbstractRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/{identifier}/applications", methods={"POST"})
      */
     public function postApplicationAction(Request $request, $identifier)
@@ -191,7 +189,6 @@ abstract class OrganisationController extends AbstractRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/{identifier}/application/edit", methods={"GET"})
      */
     public function editApplicationAction($identifier)
@@ -253,7 +250,6 @@ abstract class OrganisationController extends AbstractRestController
     /**
      * Get a form for adding an admin to an organisation.
      *
-     * @param $identifier
      * @Route("/{identifier}/admin/edit")
      */
     public function editAdminAction($identifier)
@@ -294,8 +290,6 @@ abstract class OrganisationController extends AbstractRestController
      * An explicit ACE will be created if the user doesn't already have access
      * to the organisation by some other means, e.g. they have
      * suitable site-wide privileges.
-     *
-     * @param $identifier
      */
     public function postAdmin(Request $request, $identifier,
         ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)

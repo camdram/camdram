@@ -173,7 +173,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
      *
      * @return bool true if the token is valid, false otherwise.
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function validateToken($token)
     {

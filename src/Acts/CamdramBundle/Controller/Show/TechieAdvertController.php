@@ -80,7 +80,6 @@ class TechieAdvertController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/shows/{identifier}/techie-advert", methods={"PUT"}, name="put_show_techie_advert")
      */
     public function putTechieAdvertAction(Request $request, Helper $helper, $identifier)

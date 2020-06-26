@@ -101,14 +101,7 @@ class TextService
         return preg_replace(array_keys($this->link_regexes), array_values($this->link_regexes), $text);
     }
 
-    /**
-     * Strip new lines
-     *
-     * @param $text
-     *
-     * @return mixed
-     */
-    public function stripNewLines($text)
+    public function stripNewLines(string $text): string
     {
         return preg_replace("/[\r\n]+/", '', $text);
     }

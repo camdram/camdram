@@ -62,14 +62,7 @@ class PeopleMerger
         }
     }
 
-    /**
-     * @param Person $person1
-     * @param Person $person2
-     * @param $keepFirst
-     *
-     * @return Person
-     */
-    public function mergePeople(Person $person1, Person $person2, $keepFirst)
+    public function mergePeople(Person $person1, Person $person2, bool $keepFirst): Person
     {
         if (!$keepFirst) {
             $tempPerson = $person2;

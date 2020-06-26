@@ -5,6 +5,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Acts\CamdramBundle\Entity\TimePeriod;
+use Acts\CamdramBundle\Entity\TimePeriodRepository;
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
 
@@ -67,7 +68,7 @@ class TimePeriodFixtures extends Fixture
 
     private function createPeriod(ObjectManager $manager, $short, $name, $long, $start, $end)
     {
-        /** @var $repo TimePeriodRepository */
+        /** @var TimePeriodRepository $repo */
         $repo = $manager->getRepository('ActsCamdramBundle:TimePeriod');
         $qb = $repo->createQueryBuilder('p');
         $query = $qb
@@ -102,7 +103,6 @@ class TimePeriodFixtures extends Fixture
 
     private function createWeek(ObjectManager $manager, $short_name, $name, $start)
     {
-        /** @var $repo TimePeriodRepository */
         $repo = $manager->getRepository('ActsCamdramBundle:WeekName');
         $qb = $repo->createQueryBuilder('w');
         $query = $qb->select('count(w.id) AS c')

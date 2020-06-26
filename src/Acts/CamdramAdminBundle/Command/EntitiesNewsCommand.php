@@ -48,7 +48,7 @@ class EntitiesNewsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->executeForTwitter($output);
+        return $this->executeForTwitter($output);
     }
 
     private function executeForTwitter(OutputInterface $output)
@@ -56,6 +56,7 @@ class EntitiesNewsCommand extends Command
         $this->twitter->setDecodeJsonAsArray(true);
         $news_repo = $this->entityManager->getRepository('ActsCamdramBundle:News');
         $entities = $this->getOrganisationsWithService('twitter');
+        $returnVal = 0;
         foreach ($entities as $entity) {
             $attempts = 0;
             do {
@@ -71,7 +72,9 @@ class EntitiesNewsCommand extends Command
                 }
                 break;
             } while($attempts < 4);
+            if ($attempts >= 4) $returnVal = 1;
         }
+        return $returnVal;
     }
 
     private function executeForEntity($entity, $news_repo, $output)

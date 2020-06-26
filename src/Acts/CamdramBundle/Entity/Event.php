@@ -64,7 +64,7 @@ class Event
     private $link_id;
 
     /**
-     * @var \Society
+     * @var Society
      *
      * @ORM\ManyToOne(targetEntity="Society")
      * @ORM\JoinColumns({

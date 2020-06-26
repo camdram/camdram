@@ -47,5 +47,6 @@ class UnauthorisedShowsEmailCommand extends Command
             $output->writeln('Sending authorisation reminder email for show "'.$show->getName().'"');
             $this->moderationManager->emailEntityModerators($show);
         }
+        return 0;
     }
 }

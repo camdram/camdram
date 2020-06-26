@@ -16,13 +16,9 @@ class FeedAnnotationReader
     }
 
     /**
-     * @param $object
-     *
-     * @return \Acts\CamdramApiBundle\Annotation\Feed
-     *
      * @throws \Acts\CamdramApiBundle\Exception\UnsupportedTypeException
      */
-    public function read($object)
+    public function read($object): Feed
     {
         $reflection = new \ReflectionObject($object);
 

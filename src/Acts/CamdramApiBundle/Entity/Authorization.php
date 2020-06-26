@@ -48,25 +48,14 @@ class Authorization
         return $this->id;
     }
 
-    /**
-     * Set client
-     *
-     * @param \Acts\CamdramApiBundle\Entity\ApiApp $client
-     * @return AccessToken
-     */
-    public function setClient(ClientInterface $client)
+    public function setClient(ClientInterface $client): self
     {
         $this->client = $client;
 
         return $this;
     }
 
-    /**
-     * Get client
-     *
-     * @return \Acts\CamdramApiBundle\Entity\ApiApp
-     */
-    public function getClient()
+    public function getClient(): ?ClientInterface
     {
         return $this->client;
     }
@@ -117,11 +106,7 @@ class Authorization
         return $this->scopes;
     }
 
-    /**
-     * @param $scope
-     * @return bool
-     */
-    public function hasScope($scope)
+    public function hasScope($scope): bool
     {
         return in_array($scope, $this->scopes);
     }
@@ -140,10 +125,7 @@ class Authorization
         return true;
     }
 
-    /**
-     * @param $scope
-     */
-    public function addScope($scope)
+    public function addScope($scope): self
     {
         if (!in_array($scope, $this->scopes)) {
             $this->scopes[] = $scope;
@@ -152,11 +134,7 @@ class Authorization
         return $this;
     }
 
-    /**
-     * @param array $scopes
-     * @return $this
-     */
-    public function addScopes(array $scopes)
+    public function addScopes(array $scopes): self
     {
         foreach ($scopes as $scope) {
             $this->addScope($scope);

@@ -28,7 +28,6 @@ class AdminController extends AbstractFOSRestController
      * Get a form for adding an admin to a show.
      *
      * @Rest\Get("/shows/{identifier}/admin/edit", name="edit_show_admin")
-     * @param $identifier
      */
     public function editAdminAction($identifier, Helper $helper)
     {
@@ -79,7 +78,6 @@ class AdminController extends AbstractFOSRestController
      * suitable site-wide privileges.
      *
      * @Rest\Post("/shows/{identifier}/admins", name="post_show_admin")
-     * @param $identifier
      */
     public function postAdminAction(Request $request, AclProvider $aclProvider, Helper $helper,
         ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher, $identifier)
@@ -138,7 +136,6 @@ class AdminController extends AbstractFOSRestController
      * Request to be an admin associated with this show.
      *
      * @Rest\Post("/shows/{identifier}/admin/request", name="request_show_admin")
-     * @param $identifier
      */
     public function requestAdminAction(Request $request, Helper $helper, EventDispatcherInterface $event_dispatcher, $identifier)
     {
@@ -186,7 +183,6 @@ class AdminController extends AbstractFOSRestController
      * Approve a request to be an admin for this show.
      *
      * @Rest\Patch("/shows/{identifier}/admin/approve", name="approve_show_admin")
-     * @param $identifier
      */
     public function approveAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $identifier)
     {
