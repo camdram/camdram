@@ -2,17 +2,17 @@
 
 namespace Acts\CamdramSecurityBundle\Security\User;
 
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Acts\CamdramSecurityBundle\Entity\ExternalUser;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Exception\IdentityNotFoundException;
+use Doctrine\ORM\EntityManagerInterface;
 use HWI\Bundle\OAuthBundle\Connect\AccountConnectorInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\Exception\AccountNotLinkedException;
 use HWI\Bundle\OAuthBundle\Security\Core\User\OAuthAwareUserProviderInterface;
-use Acts\CamdramSecurityBundle\Entity\ExternalUser;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class CamdramUserProvider implements
     UserProviderInterface,
@@ -36,16 +36,7 @@ class CamdramUserProvider implements
      */
     public function loadUserByUsername($email)
     {
-        return $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
-    }
-
-    public function updateAccessToken(User $user, $service, $access_token)
-    {
-        $s = $user->getIdentityByServiceName($service);
-        if ($s) {
-            $s->loadAccessToken($access_token);
-            $this->em->flush();
-        }
+        return $this->em->getRepository(User::class)->findOneByEmail($email);
     }
 
     public function refreshUser(UserInterface $user)
@@ -66,7 +57,7 @@ class CamdramUserProvider implements
     {
         $service = $response->getResourceOwner()->getName();
         $username = $response->getUsername();
-        $external = $this->em->getRepository('ActsCamdramSecurityBundle:ExternalUser')->findOneBy(array(
+        $external = $this->em->getRepository(ExternalUser::class)->findOneBy(array(
             'service' => $service,
             'username' => $username
         ));
@@ -93,11 +84,11 @@ class CamdramUserProvider implements
         $username = $response->getUsername();
 
         // First try an exact match
-        $user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findByExternalUser($service, $username);
+        $user = $this->em->getRepository(User::class)->findByExternalUser($service, $username);
 
         // Attempt to auto-link using an email match
         if (!$user && $response->getEmail()) {
-            $user = $this->em->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($response->getEmail());
+            $user = $this->em->getRepository(User::class)->findOneByEmail($response->getEmail());
             if ($user) {
                 $external = $this->loadOrCreateExternalUser($response);
                 $external->setUser($user);
