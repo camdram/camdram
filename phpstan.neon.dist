@@ -1,6 +1,8 @@
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
     - vendor/phpstan/phpstan-doctrine/rules.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
     - phpstan-baseline.neon
 parameters:
     bootstrapFiles:
@@ -11,8 +13,8 @@ parameters:
         # This error is the result of a backwards-compatibility trick Symfony is using
         - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required.#'
         - '#Call to an undefined method Github\\Api\\ApiInterface.*#'
-    level: 2
-    scanDirectories:
-        - /usr/share/php/Composer
+    level: 3
     paths:
         - src
+    scanDirectories:
+        - /usr/share/php/Composer

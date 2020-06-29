@@ -46,6 +46,7 @@ class AuthCode extends BaseAuthCode
         return $this->id;
     }
 
+    /** @param ExternalApp $client */
     public function setClient(ClientInterface $client): self
     {
         $this->client = $client;

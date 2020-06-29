@@ -65,7 +65,7 @@ class EntityCollectionTransformer implements DataTransformerInterface
 
             foreach ($value as $item) {
                 if (is_numeric($item)) {
-                    $entity = $repo->findOneById($item);
+                    $entity = $repo->find($item);
                     if ($entity) {
                         $entities[] = $entity;
                     }

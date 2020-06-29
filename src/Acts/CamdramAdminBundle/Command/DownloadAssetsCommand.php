@@ -42,14 +42,14 @@ class DownloadAssetsCommand extends Command
     }
 
     protected static $defaultName = 'camdram:assets:download';
-    protected static $defaultDomain = 'https://development.camdram.net';
-    protected static $outputDirectory = __DIR__.'/../../../../web/';
+    private const defaultDomain = 'https://development.camdram.net';
+    private const outputDirectory = __DIR__.'/../../../../web/';
 
     protected function configure(): void
     {
         $this
             ->setDescription('Download latest assets from camdram.net')
-            ->addOption('domain', 'd', InputOption::VALUE_REQUIRED, 'Domain to download from', self::$defaultDomain)
+            ->addOption('domain', 'd', InputOption::VALUE_REQUIRED, 'Domain to download from', self::defaultDomain)
             ->addOption('force', 'f', InputOption::VALUE_NONE)
         ;
     }
@@ -62,7 +62,7 @@ class DownloadAssetsCommand extends Command
         //Always download manifset
         $output->writeln('<info>Downloading assets from ' . $domain . '</info>');
         $url = $domain.'/build/manifest.json';
-        $outputPath = self::$outputDirectory.'/build/manifest.json';
+        $outputPath = self::outputDirectory.'/build/manifest.json';
         $output->writeln('Downloading <fg=cyan>'.$url.'</>');
         $stream = $this->downloadFile($url);
         $manifest = json_decode($stream, true);
@@ -86,7 +86,7 @@ class DownloadAssetsCommand extends Command
             //Check each file in manifest. Only download if doesn't exist
             foreach ($manifest as $path => $realPath) {
                 $url = $domain.$realPath;
-                $outputPath = self::$outputDirectory.$realPath;
+                $outputPath = self::outputDirectory.$realPath;
 
                 if ($forceDownload || !$this->fileSystem->exists($outputPath)
                       || $path === 'build/entrypoints.json') {
@@ -114,10 +114,10 @@ class DownloadAssetsCommand extends Command
         $changedFiles = array_diff($existingManifest, $manifest);
 
         foreach ($changedFiles as $file) {
-            $path = self::$outputDirectory.$file;
+            $path = self::outputDirectory.$file;
             if ($this->fileSystem->exists($path)) {
                 $output->writeln('Deleting <fg=yellow>'.$file.'</>');
-                $this->fileSystem->remove(self::$outputDirectory.$file);
+                $this->fileSystem->remove(self::outputDirectory.$file);
             }
         }
     }

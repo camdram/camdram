@@ -103,6 +103,7 @@
         "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "phpstan/phpstan": "^0.12.30",
         "phpstan/phpstan-doctrine": "^0.12.17",
+        "phpstan/phpstan-symfony": "^0.12.6",
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
         "symfony/debug-bundle": "*",
