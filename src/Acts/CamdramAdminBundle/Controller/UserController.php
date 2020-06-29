@@ -2,9 +2,10 @@
 
 namespace Acts\CamdramAdminBundle\Controller;
 
-use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramAdminBundle\Form\Type\UserType;
 use Acts\CamdramAdminBundle\Service\UserMerger;
+use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -32,7 +33,7 @@ class UserController extends AbstractController
 
     private function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User');
+        return $this->getDoctrine()->getManager()->getRepository(User::class);
     }
 
     /**
@@ -77,8 +78,8 @@ class UserController extends AbstractController
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
         $orgs = $aclProvider->getOrganisationsByUser($entity);
-        $ids = $aclProvider->getEntitiesByUser($entity, '\\Acts\\CamdramBundle\\Entity\\Show');
-        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
+        $ids = $aclProvider->getEntitiesByUser($entity, Show::class);
+        $shows = $this->getDoctrine()->getRepository(Show::class)->findIdsByDate($ids);
         return $this->render('admin/user/show.html.twig', [
             'user' => $entity,
             'organisations' => $orgs,
@@ -164,7 +165,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isValid()) {
             $data = $form->getData();
-            $otherUser = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')
+            $otherUser = $this->getDoctrine()->getManager()->getRepository(User::class)
                 ->findOneByEmail($data['email']);
             if ($otherUser) {
                 if ($otherUser == $user) {

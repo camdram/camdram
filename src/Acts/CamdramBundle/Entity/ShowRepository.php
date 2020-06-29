@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * ShowRepository
+ * @extends EntityRepository<Show>
  */
 class ShowRepository extends EntityRepository
 {

@@ -25,7 +25,7 @@ class DefaultController extends AbstractController
 
     public function confirmEmailAction($email, $token, TokenGenerator $tokenGenerator)
     {
-        $user = $this->getDoctrine()->getManager()->getRepository('ActsCamdramSecurityBundle:User')->findOneByEmail($email);
+        $user = $this->getDoctrine()->getManager()->getRepository(User::class)->findOneByEmail($email);
         if ($user && !$user->getIsEmailVerified()) {
             if ($tokenGenerator->verifyEmailConfirmationToken($user, $token)) {
                 $user->setIsEmailVerified(true);

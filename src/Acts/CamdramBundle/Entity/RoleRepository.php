@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * RoleRepository
+ * @extends EntityRepository<Role>
  */
 class RoleRepository extends EntityRepository
 {

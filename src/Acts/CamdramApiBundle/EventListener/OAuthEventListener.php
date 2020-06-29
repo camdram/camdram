@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class OAuthEventListener implements EventSubscriberInterface
 {
     /**
-     * @var \Acts\CamdramApiBundle\Entity\AuthorizationRepository
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -58,7 +58,7 @@ class OAuthEventListener implements EventSubscriberInterface
 
     public function onPreAuthorizationProcess(OAuthEvent $event)
     {
-        $repo = $this->entityManager->getRepository('ActsCamdramApiBundle:Authorization');
+        $repo = $this->entityManager->getRepository(Authorization::class);
 
         if ($auth = $repo->findOne($event->getUser(), $event->getClient())) {
             if ($auth->hasScopes($this->getScopes())) {
@@ -70,7 +70,7 @@ class OAuthEventListener implements EventSubscriberInterface
     public function onPostAuthorizationProcess(OAuthEvent $event)
     {
         if ($event->isAuthorizedClient() && null !== $client = $event->getClient()) {
-            $repo = $this->entityManager->getRepository('ActsCamdramApiBundle:Authorization');
+            $repo = $this->entityManager->getRepository(Authorization::class);
 
             if ($auth = $repo->findOne($event->getUser(), $event->getClient())) {
                 $auth->addScopes($this->getScopes());

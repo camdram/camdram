@@ -16,7 +16,7 @@ class AuditionController extends AbstractFOSRestController
      */
     public function cgetAction(Request $request)
     {
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findCurrentOrderedByNameDate(Time::now());
+        $auditions = $this->getDoctrine()->getRepository(Audition::class)->findCurrentOrderedByNameDate(Time::now());
 
         switch ($request->getRequestFormat()) {
         case 'html':
@@ -35,7 +35,7 @@ class AuditionController extends AbstractFOSRestController
     {
         $diary = new Diary;
 
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')->findUpcoming(null, Time::now());
+        $auditions = $this->getDoctrine()->getRepository(Audition::class)->findUpcoming(null, Time::now());
         $diary->addEvents($auditions);
 
         if ($request->getRequestFormat() == 'html') {
@@ -50,7 +50,7 @@ class AuditionController extends AbstractFOSRestController
      */
     public function getAction($identifier)
     {
-        $auditions = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition')
+        $auditions = $this->getDoctrine()->getRepository(Audition::class)
             ->findOneByShowSlug($identifier, Time::now());
         if ($auditions) {
             return $this->redirect($this->generateUrl('get_auditions').'#'.$auditions->getShow()->getSlug());

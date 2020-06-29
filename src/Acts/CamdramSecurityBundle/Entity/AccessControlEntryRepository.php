@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityRepository;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
+/**
+ * @extends EntityRepository<AccessControlEntry>
+ */
 class AccessControlEntryRepository extends EntityRepository
 {
     public function aceExists(User $user, OwnableInterface $entity)

@@ -50,7 +50,7 @@ class WeekName
     private $start_at;
 
     /**
-     * @var TimePeriod
+     * @var ?TimePeriod
      * @ORM\ManyToOne(targetEntity="TimePeriod", inversedBy="week_names")
      */
     private $time_period;
@@ -66,13 +66,9 @@ class WeekName
     }
 
     /**
-     * Set name
-     *
      * @param string $name
-     *
-     * @return TimePeriod
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -90,13 +86,9 @@ class WeekName
     }
 
     /**
-     * Set start_at
-     *
      * @param \DateTime $startAt
-     *
-     * @return TimePeriod
      */
-    public function setStartAt($startAt)
+    public function setStartAt($startAt): self
     {
         $this->start_at = $startAt;
 
@@ -113,14 +105,7 @@ class WeekName
         return $this->start_at;
     }
 
-    /**
-     * Set time_period
-     *
-     * @param \Acts\CamdramBundle\Entity\TimePeriod $timePeriod
-     *
-     * @return Week
-     */
-    public function setTimePeriod(\Acts\CamdramBundle\Entity\TimePeriod $timePeriod = null)
+    public function setTimePeriod(\Acts\CamdramBundle\Entity\TimePeriod $timePeriod = null): self
     {
         $this->time_period = $timePeriod;
 

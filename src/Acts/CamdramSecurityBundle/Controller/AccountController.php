@@ -135,7 +135,7 @@ class AccountController extends AbstractFOSRestController
     public function revokeAuthorization($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('ActsCamdramApiBundle:Authorization');
+        $repo = $em->getRepository(\Acts\CamdramApiBundle\Entity\Authorization::class);
         $auth = $repo->findOneByClientId($this->getUser(), $id);
         if ($auth) {
             $em->remove($auth);

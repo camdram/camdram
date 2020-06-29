@@ -18,9 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
  */
 class EntityCollectionType extends AbstractType
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
+    /** @var EntityManagerInterface */
     private $em;
 
     public function __construct(EntityManagerInterface $em)

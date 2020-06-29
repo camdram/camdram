@@ -2,8 +2,8 @@
 
 namespace Acts\CamdramBundle\Service;
 
+use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class LogProcessor
 {
@@ -12,25 +12,15 @@ class LogProcessor
      */
     private $tokenStorage;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
 
-    private function getUser()
-    {
-        $token = $this->tokenStorage->getToken();
-        if ($token && $token->getUser() instanceof UserInterface) {
-            return $token->getUser();
-        }
-    }
-
     public function processRecord(array $record)
     {
-        if (($user = $this->getUser()) instanceof UserInterface) {
+        $token = $this->tokenStorage->getToken();
+        if ($token && ($user = $token->getUser()) instanceof User) {
             $record['extra']['user'] = array(
                 'id' => $user->getId(),
                 'name' => $user->getName(),

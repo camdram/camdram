@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 class EntitySearchType extends AbstractType
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 

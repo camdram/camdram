@@ -23,7 +23,7 @@ class SigninsheetController extends AbstractController
      */
     public function indexAction(Request $request, $slug = null, $_format = 'html'): Response
     {
-        $repo = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
+        $repo = $this->getDoctrine()->getManager()->getRepository(Show::class);
         $show = $repo->findOneBySlug($slug);
         if (!$show) {
             throw $this->createNotFoundException('That show does not exist.');

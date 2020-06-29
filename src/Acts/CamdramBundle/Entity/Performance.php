@@ -33,7 +33,7 @@ class Performance implements EventInterface
     private $id;
 
     /**
-     * @var \Show
+     * @var Show
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="performances")
      * @ORM\JoinColumns({
@@ -66,7 +66,7 @@ class Performance implements EventInterface
     private $repeat_until;
 
     /**
-     * @var \Venue
+     * @var ?Venue
      *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="performances")
      * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="SET NULL")
@@ -76,7 +76,7 @@ class Performance implements EventInterface
     private $venue;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="venue", type="string", length=255, nullable=true)
      * @Serializer\Expose

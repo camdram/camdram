@@ -40,7 +40,7 @@ class TechieAdvert
     private $id;
 
     /**
-     * @var \Show
+     * @var Show
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="techie_adverts")
      * @ORM\JoinColumns({
@@ -348,17 +348,9 @@ class TechieAdvert
         return $this->last_updated;
     }
 
-    /**
-     * Set show
-     *
-     * @param \Acts\CamdramBundle\Entity\Show $showId
-     *
-     * @return TechieAdvert
-     */
-    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
+    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null): self
     {
         $this->show = $show;
-
         return $this;
     }
 

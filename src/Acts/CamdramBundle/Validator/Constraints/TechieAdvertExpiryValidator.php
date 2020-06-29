@@ -19,6 +19,9 @@ class TechieAdvertExpiryValidator extends ConstraintValidator
         $this->expiry_max_days = $expiry_max_days;
     }
 
+    /**
+     * @param TechieAdvertExpiry $constraint
+     */
     public function validate($value, Constraint $constraint)
     {
         /** @var $value \Acts\CamdramBundle\Entity\TechieAdvert */
@@ -33,9 +36,9 @@ class TechieAdvertExpiryValidator extends ConstraintValidator
             $expiry_date = $value->getExpiry();
 
             if ($expiry_date < $now) {
-                $this->context->addViolation($constraint->too_early_message, array(), $value);
+                $this->context->addViolation($constraint->too_early_message, []);
             } elseif ($expiry_date  > $max_expires) {
-                $this->context->addViolation($constraint->too_late_message, array('%days%' => $this->expiry_max_days), $value);
+                $this->context->addViolation($constraint->too_late_message, ['%days%' => $this->expiry_max_days]);
             }
         }
     }

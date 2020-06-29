@@ -54,7 +54,7 @@ class DownloadAssetsCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $domain = $input->getOption('domain');
         if (substr($domain, -1) == '/') $domain = substr($domain, 0, -1);
@@ -106,6 +106,7 @@ class DownloadAssetsCommand extends Command
         else {
             $output->writeln('<info>Assets already to date</info>');
         }
+        return 0;
     }
 
     private function deleteFiles(array $manifest, array $existingManifest, OutputInterface $output): void

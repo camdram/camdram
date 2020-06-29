@@ -93,7 +93,7 @@ class ShowListener
         if ($slugs[0] == $slugs[1]) return;
 
         $em = $event->getEntityManager();
-        $slugRepo = $em->getRepository('ActsCamdramBundle:ShowSlug');
+        $slugRepo = $em->getRepository(ShowSlug::class);
         $oldSlug = $slugRepo->findOneBySlug($slugs[0]);
         if (!$oldSlug) {
             // Make new slug for outgoing URL.

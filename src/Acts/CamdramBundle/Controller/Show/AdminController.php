@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Controller\Show;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Event\AccessControlEntryEvent;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
@@ -21,7 +22,7 @@ class AdminController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
-        return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
+        return $this->getDoctrine()->getRepository(\Acts\CamdramBundle\Entity\Show::class)->findOneBy(['slug' => $identifier]);
     }
 
     /**
@@ -53,9 +54,9 @@ class AdminController extends AbstractFOSRestController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($show);
-        $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
-        $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
+        $admins = $em->getRepository(User::class)->getEntityOwners($show);
+        $requested_admins = $em->getRepository(User::class)->getRequestedShowAdmins($show);
+        $pending_admins = $em->getRepository(PendingAccess::class)->findByResource($show);
 
         return $this->render('pending_access/edit.html.twig', [
             'entity' => $show,
@@ -107,7 +108,7 @@ class AdminController extends AbstractFOSRestController
 
         /* If this person is already a Camdram user then grant access immediately. */
         $em = $this->getDoctrine()->getManager();
-        $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
+        $existing_user = $em->getRepository(User::class)
             ->findOneByEmail($pending_ace->getEmail());
 
         if ($existing_user != null) {
@@ -117,7 +118,7 @@ class AdminController extends AbstractFOSRestController
              * got a pending access token for this resource, otherwise
              * create the pending access token.
              */
-            $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
+            $pending_repo = $em->getRepository(PendingAccess::class);
             if ($pending_repo->isDuplicate($pending_ace) == false) {
                 $pending_ace->setIssuer($this->getUser());
                 $em->persist($pending_ace);
@@ -151,7 +152,7 @@ class AdminController extends AbstractFOSRestController
         } else {
             // Check if there's already a matching request.
             $em = $this->getDoctrine()->getManager();
-            $ace_repo = $em->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+            $ace_repo = $em->getRepository(AccessControlEntry::class);
             $user = $this->getUser();
             $em = $this->getDoctrine()->getManager();
             $request = $ace_repo->findAceRequest($user, $show);
@@ -195,7 +196,7 @@ class AdminController extends AbstractFOSRestController
 
         $em = $this->getDoctrine()->getManager();
         $id = $request->query->get('uid');
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($id);
+        $user = $em->getRepository(User::class)->findOneById($id);
         if ($user != null) {
             $aclProvider->approveShowAccess($show, $user, $this->getUser());
         } else {
@@ -220,7 +221,7 @@ class AdminController extends AbstractFOSRestController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($uid);
+        $user = $em->getRepository(User::class)->findOneById($uid);
         if ($user != null) {
             $aclProvider->revokeAccess($show, $user, $this->getUser());
         } else {
@@ -245,7 +246,7 @@ class AdminController extends AbstractFOSRestController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($uid);
+        $pending_admin = $em->getRepository(PendingAccess::class)->findOneById($uid);
         if ($pending_admin != null) {
             $em->remove($pending_admin);
             $em->flush();

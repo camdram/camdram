@@ -34,7 +34,7 @@ class AclProvider
     ) {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->repository = $entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $this->repository = $entityManager->getRepository(AccessControlEntry::class);
     }
 
     public function isOwner($user, OwnableInterface $entity)
@@ -48,7 +48,7 @@ class AclProvider
 
     public function getOwners(OwnableInterface $entity)
     {
-        return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($entity);
+        return $this->entityManager->getRepository(User::class)->getEntityOwners($entity);
     }
 
     // user -> ace ->society -> (join table) -> show
@@ -87,7 +87,7 @@ class AclProvider
 
     public function getAdmins($min_level = AccessControlEntry::LEVEL_FULL_ADMIN)
     {
-        return $this->entityManager->getRepository('ActsCamdramSecurityBundle:User')->findAdmins($min_level);
+        return $this->entityManager->getRepository(User::class)->findAdmins($min_level);
     }
 
     public function getOrganisationsByUser(User $user): array
@@ -111,7 +111,7 @@ class AclProvider
             throw new \InvalidArgumentException(sprintf('"%s" is not an ownable class - it must implement OwnableInterface', $class));
         }
 
-        $aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry')->findByUserAndType($user, $class::getAceType());
+        $aces = $this->entityManager->getRepository(AccessControlEntry::class)->findByUserAndType($user, $class::getAceType());
         $ids = array_map(function (AccessControlEntry $ace) {
             return $ace->getEntityId();
         }, $aces);
@@ -119,6 +119,11 @@ class AclProvider
         return $ids;
     }
 
+    /**
+     * @phpstan-template T
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T[]
+     */
     public function getEntitiesByUser(User $user, $class)
     {
         $ids = $this->getEntityIdsByUser($user, $class);
@@ -167,7 +172,7 @@ class AclProvider
      */
     public function revokeAccess(OwnableInterface $entity, User $user, User $revoker = null)
     {
-        $ace_repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $ace_repo = $this->repository;
 
         if ($ace = $ace_repo->findAce($user, $entity)) {
             $this->entityManager->remove($ace);
@@ -186,7 +191,7 @@ class AclProvider
 
     public function grantAdmin(User $user, $level = AccessControlEntry::LEVEL_FULL_ADMIN)
     {
-        $aceRepo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $aceRepo = $this->repository;
         $qb = $aceRepo->createQueryBuilder('a');
         $aces = $qb->where('a.type = :type')
             ->andWhere('a.user = :user')
@@ -217,7 +222,7 @@ class AclProvider
 
     public function revokeAdmin(User $user)
     {
-        $aceRepo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $aceRepo = $this->repository;
         $qb = $aceRepo->createQueryBuilder('a');
         $aces = $qb->where('a.type = :type')
             ->andWhere('a.user = :user')
@@ -241,7 +246,7 @@ class AclProvider
      */
     public function approveShowAccess(Show $show, User $user, User $granter)
     {
-        $ace_repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $ace_repo = $this->repository;
         $existing_ace = $ace_repo->findAce($user, $show);
         /* Don't add a new ACE if the user is already able to access
          * the resource.

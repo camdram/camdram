@@ -25,7 +25,7 @@ class AppController extends AbstractController
      */
     public function cgetAction()
     {
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramApiBundle:ExternalApp');
+        $repo = $this->getDoctrine()->getRepository(ExternalApp::class);
         $user_apps = $repo->findByUser($this->getUser());
 
         return $this->render('api/app/index.html.twig', array(
@@ -35,7 +35,7 @@ class AppController extends AbstractController
 
     private function getApp($app_id)
     {
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramApiBundle:ExternalApp');
+        $repo = $this->getDoctrine()->getRepository(ExternalApp::class);
         $app = $repo->getByUserAndId($this->getUser(), $app_id);
         if (!$app) {
             throw $this->createNotFoundException("You do not own an app with ID $app_id.");

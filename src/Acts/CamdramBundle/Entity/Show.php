@@ -6,6 +6,7 @@ use Acts\CamdramBundle\Search\SearchableInterface;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -27,22 +28,8 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *   template="show/rss.html.twig")
  * @Api\Link(route="get_show", params={"identifier": "object.getSlug()"})
  */
-class Show implements OwnableInterface
+class Show extends BaseEntity implements OwnableInterface
 {
-    /**
-     * The show's ID
-     *
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Serializer\XmlAttribute
-     * @Serializer\Expose()
-     * @Serializer\Type("integer")
-     */
-    private $id;
-
     /**
      * The show's name
      *
@@ -60,7 +47,7 @@ class Show implements OwnableInterface
     /**
      * A description of the show
      *
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Gedmo\Versioned
@@ -70,7 +57,7 @@ class Show implements OwnableInterface
     private $description;
 
     /**
-     * @var Image
+     * @var ?Image
      *
      * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
@@ -79,7 +66,7 @@ class Show implements OwnableInterface
     private $image;
 
     /**
-     * @var int
+     * @var ?string
      *
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      * @Gedmo\Versioned
@@ -87,7 +74,7 @@ class Show implements OwnableInterface
     private $facebook_id;
 
     /**
-     * @var int
+     * @var ?string
      *
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      * @Gedmo\Versioned
@@ -119,7 +106,7 @@ class Show implements OwnableInterface
     /**
      * The show's author (free text string, which may be blank or contain one or more author names)
      *
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=true)
      * @Gedmo\Versioned
@@ -132,7 +119,7 @@ class Show implements OwnableInterface
     /**
      * A string representing the ticket price options
      *
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="prices", type="string", length=255, nullable=true)
      * @Gedmo\Versioned
@@ -143,7 +130,7 @@ class Show implements OwnableInterface
     private $prices = '';
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="photourl", type="text", nullable=true)
      */
@@ -180,7 +167,7 @@ class Show implements OwnableInterface
     private $actor_send = false;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="audextra", type="text", nullable=true)
      * @Gedmo\Versioned
@@ -230,22 +217,16 @@ class Show implements OwnableInterface
     private $timestamp;
 
     /**
-     * @var array
-     *
      * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
      */
     private $techie_adverts;
 
     /**
-     * @var array
-     *
      * @ORM\OneToMany(targetEntity="Audition", mappedBy="show", cascade={"all"}, orphanRemoval=true)
      */
     private $auditions;
 
     /**
-     * @var array
-     *
      * @ORM\OneToMany(targetEntity="Application", mappedBy="show")
      */
     private $applications;
@@ -258,8 +239,6 @@ class Show implements OwnableInterface
     private $roles;
 
     /**
-     * @var array
-     *
      * @Assert\Valid(traverse=true)
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="show", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"start_at" = "ASC"})
@@ -269,19 +248,19 @@ class Show implements OwnableInterface
     private $performances;
 
     /**
-     * @var string
+     * @var ?string
      * @ORM\Column(name="facebookurl", type="string", length=2083, nullable=true)
      */
     private $facebook_url;
     /**
-     * @var string
+     * @var ?string
      * @ORM\Column(name="otherurl", type="string", length=2083, nullable=true)
      */
     private $other_url;
 
     /**
      * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
-     * @var string
+     * @var ?string
      * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
      *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
      * @ORM\Column(name="colour", type="string", length=7, nullable=true)
@@ -293,7 +272,7 @@ class Show implements OwnableInterface
     /**
      * A URL from which tickets for the show can be bought
      *
-     * @var string
+     * @var ?string
      * @Assert\Url()
      * @Gedmo\Versioned
      * @Serializer\Expose
@@ -309,7 +288,7 @@ class Show implements OwnableInterface
 
     private $entity_type = 'show';
 
-    public function getEntityType()
+    public function getEntityType(): string
     {
         return $this->entity_type;
     }
@@ -434,13 +413,9 @@ class Show implements OwnableInterface
     }
 
     /**
-     * Set societies_display_list
-     *
-     * @param string $societiesList
-     *
-     * @return Show
+     * @param array $societiesList
      */
-    public function setSocietiesDisplayList($societiesList)
+    public function setSocietiesDisplayList($societiesList): self
     {
         $this->societies_display_list = $societiesList;
 
@@ -453,7 +428,7 @@ class Show implements OwnableInterface
      * Uses societies_display_list for ordering but gives priority to the info
      * in societies.
      */
-    public function getPrettySocData() {
+    public function getPrettySocData(): array {
         $data = $this->societies_display_list;
         $out = array();
         foreach ($data as $soc_basic) {
@@ -723,14 +698,7 @@ class Show implements OwnableInterface
         return $this->societies;
     }
 
-    /**
-     * Add performances
-     *
-     * @param \Acts\CamdramBundle\Entity\Performance $performances
-     *
-     * @return Show
-     */
-    public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performance)
+    public function addPerformance(\Acts\CamdramBundle\Entity\Performance $performance): self
     {
         $this->performances->add($performance);
         $performance->setShow($this);
@@ -762,12 +730,12 @@ class Show implements OwnableInterface
      */
     public function __construct()
     {
-        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->auditions    = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->performances = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->roles        = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->societies    = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->techie_adverts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->applications = new ArrayCollection();
+        $this->auditions    = new ArrayCollection();
+        $this->performances = new ArrayCollection();
+        $this->roles        = new ArrayCollection();
+        $this->societies    = new ArrayCollection();
+        $this->techie_adverts = new ArrayCollection();
 
         $this->entry_expiry = new \DateTime();
         $this->timestamp    = new \DateTime();
@@ -1098,14 +1066,7 @@ class Show implements OwnableInterface
                 || $this->getActiveApplication();
     }
 
-    /**
-     * Set authorised
-     *
-     * @param bool
-     *
-     * @return Show
-     */
-    public function setAuthorised(bool $authorised)
+    public function setAuthorised(bool $authorised): self
     {
         $this->authorised = $authorised;
 
@@ -1122,12 +1083,7 @@ class Show implements OwnableInterface
         return $this->authorised;
     }
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -1146,12 +1102,7 @@ class Show implements OwnableInterface
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -1266,12 +1217,7 @@ class Show implements OwnableInterface
         return $this;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }

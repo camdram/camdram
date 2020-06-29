@@ -37,7 +37,7 @@ For any enquiries, please contact support@camdram.net.";
      */
     public function indexAction(\Swift_Mailer $mailer, Request $request)
     {
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
+        $repo = $this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class);
         $numActiveUsers = count($repo->findActiveUsersForMailOut());
         $numAdmins = count($repo->findOrganisationAdmins());
 
@@ -67,7 +67,7 @@ For any enquiries, please contact support@camdram.net.";
 
     private function sendEmails(\Swift_Mailer $mailer, $data)
     {
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User');
+        $repo = $this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class);
 
         switch ($data['recipients']) {
             case 'active':

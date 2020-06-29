@@ -27,7 +27,7 @@ class RoleController extends AbstractController
 
     protected function getEntity($identifier)
     {
-        return $this->em->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
+        return $this->em->getRepository(Show::class)->findOneBy(array('slug' => $identifier));
     }
 
     /**
@@ -53,7 +53,7 @@ class RoleController extends AbstractController
             $this->em->flush();
         } else {
             $id = $request->request->get('id');
-            $role = $this->em->getRepository('ActsCamdramBundle:Role')
+            $role = $this->em->getRepository(Role::class)
                              ->findOneById($id);
             if (!$role) {
                 throw new NotFoundHttpException('Role not found');
@@ -91,7 +91,7 @@ class RoleController extends AbstractController
         }
 
         $id = $request->request->get('role');
-        $role_repo = $this->em->getRepository('ActsCamdramBundle:Role');
+        $role_repo = $this->em->getRepository(Role::class);
         $role = $role_repo->findOneById($id);
 
         if (!$role) {
@@ -209,7 +209,7 @@ class RoleController extends AbstractController
         $person = $this->findOrMakePerson($person_name);
         $role->setPerson($person);
         /* Append this role to the list of roles of this type. */
-        $order = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role')
+        $order = $this->getDoctrine()->getRepository(Role::class)
             ->getMaxOrderByShowType($show, $role->getType());
         $role->setOrder(++$order);
         $role->setShow($show);

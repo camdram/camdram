@@ -8,78 +8,37 @@ use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 /**
  * Organisation common features
  */
-abstract class Organisation implements OwnableInterface
+abstract class Organisation extends BaseEntity implements OwnableInterface
 {
     /**
-     * Set short_name
-     *
-     * @param string $shortName
-     *
-     * @return Society
-     */
-    abstract public function setShortName($shortName);
-
-    /**
-     * Get short_name
-     *
-     * @return string
-     */
-    abstract public function getShortName();
-
-    /**
-     * Set college
-     *
-     * @param string $college
-     *
-     * @return Society
-     */
-    abstract public function setCollege($college);
-
-    /**
-     * Get college
-     *
-     * @return string
-     */
-    abstract public function getCollege();
-
-    /**
-     * Set logo_url
-     *
-     * @param string $logoUrl
-     *
-     * @return Society
-     */
-    abstract public function setLogoUrl($logoUrl);
-
-    /**
-     * Get logo_url
-     *
-     * @return string
-     */
-    abstract public function getLogoUrl();
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    abstract public function getId();
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
      * @return Organisation
      */
-    abstract public function setName($name);
+    abstract public function setShortName(?string $shortName);
+
+    abstract public function getShortName(): ?string;
 
     /**
-     * Get name
-     *
-     * @return string
+     * @return Organisation
      */
-    abstract public function getName();
+    abstract public function setCollege(?string $college);
+
+    abstract public function getCollege(): ?string;
+
+    /**
+     * @return Organisation
+     */
+    abstract public function setLogoUrl(?string $logoUrl);
+
+    abstract public function getLogoUrl(): ?string;
+
+    abstract public function getId(): ?int;
+
+    /**
+     * @return Organisation
+     */
+    abstract public function setName(?string $name);
+
+    abstract public function getName(): ?string;
 
     /**
      * Set description
@@ -114,20 +73,11 @@ abstract class Organisation implements OwnableInterface
     abstract public function getFacebookId();
 
     /**
-     * Set twitter_id
-     *
-     * @param string $twitterId
-     *
      * @return Organisation
      */
-    abstract public function setTwitterId($twitterId);
+    abstract public function setTwitterId(?string $twitterId);
 
-    /**
-     * Get twitter_id
-     *
-     * @return string
-     */
-    abstract public function getTwitterId();
+    abstract public function getTwitterId(): ?string;
 
     public function setSocialId($service, $id)
     {
@@ -186,19 +136,11 @@ abstract class Organisation implements OwnableInterface
 
     /**
      * Set slug
-     *
-     * @param string $slug
-     *
      * @return Organisation
      */
-    abstract public function setSlug($slug);
+    abstract public function setSlug(?string $slug);
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    abstract public function getSlug();
+    abstract public function getSlug(): ?string;
 
     public function getRank()
     {

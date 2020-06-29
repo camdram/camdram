@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Form\Type\SocietyType;
 use Acts\CamdramBundle\Service\ModerationManager;
@@ -28,7 +29,7 @@ class SocietyController extends OrganisationController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Society');
+        return $this->getDoctrine()->getManager()->getRepository(Society::class);
     }
 
     protected function getForm($society = null, $method = 'POST')
@@ -43,7 +44,7 @@ class SocietyController extends OrganisationController
     public function getAction($identifier)
     {
         $society = $this->getEntity($identifier);
-        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+        $can_contact = !empty($this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class)
             ->getContactableEntityOwners($society));
 
         return $this->doGetAction($society, ['can_contact' => $can_contact]);
@@ -86,9 +87,9 @@ class SocietyController extends OrganisationController
     public function getVacanciesAction($identifier)
     {
         $society = $this->getEntity($identifier);
-        $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
-        $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
-        $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+        $auditions_repo = $this->getDoctrine()->getRepository(Entity\Audition::class);
+        $techie_repo = $this->getDoctrine()->getRepository(Entity\TechieAdvert::class);
+        $applications_repo = $this->getDoctrine()->getRepository(Entity\Application::class);
         $now = new \DateTime;
 
         $data = [
@@ -107,7 +108,7 @@ class SocietyController extends OrganisationController
      */
     protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
-        $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $performance_repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
 
         return $performance_repo->getBySociety($this->getEntity($slug), $from, $to);
     }
@@ -117,7 +118,7 @@ class SocietyController extends OrganisationController
      */
     protected function getShows($slug, \DateTime $from, \DateTime $to)
     {
-        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $show_repo = $this->getDoctrine()->getRepository(Entity\Show::class);
 
         return $show_repo->getBySociety($this->getEntity($slug), $from, $to);
     }

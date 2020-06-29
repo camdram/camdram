@@ -7,6 +7,9 @@ use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\ORM\EntityRepository;
 use Acts\CamdramBundle\Entity\Show;
 
+/**
+ * @extends EntityRepository<PendingAccess>
+ */
 class PendingAccessRepository extends EntityRepository
 {
     /**

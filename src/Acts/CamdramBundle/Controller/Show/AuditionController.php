@@ -13,7 +13,7 @@ class AuditionController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
-        return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
+        return $this->getDoctrine()->getRepository(Show::class)->findOneBy(array('slug' => $identifier));
     }
 
     private function getAuditionsForm(Show $show)

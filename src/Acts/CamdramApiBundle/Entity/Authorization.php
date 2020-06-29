@@ -61,12 +61,9 @@ class Authorization
     }
 
     /**
-     * Set user
-     *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
-     * @return AccessToken
      */
-    public function setUser(UserInterface $user = null)
+    public function setUser(UserInterface $user = null): self
     {
         $this->user = $user;
 

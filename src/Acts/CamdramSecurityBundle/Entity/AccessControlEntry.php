@@ -33,14 +33,14 @@ class AccessControlEntry
     private $entityId;
 
     /**
-     * @var int
+     * @var string
      *
      * @ORM\Column(name="type", type="string", length=20)
      */
     private $type;
 
     /**
-     * @var User
+     * @var ?User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="aces")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
@@ -48,7 +48,7 @@ class AccessControlEntry
     private $user;
 
     /**
-     * @var User
+     * @var ?User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="ace_grants")
      * @ORM\JoinColumn(name="granted_by_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
@@ -149,14 +149,7 @@ class AccessControlEntry
         return $this->grantedBy;
     }
 
-    /**
-     * Set type
-     *
-     * @param int $type
-     *
-     * @return AccessControlEntry
-     */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -166,7 +159,7 @@ class AccessControlEntry
     /**
      * Get type
      *
-     * @return int
+     * @return string
      */
     public function getType()
     {

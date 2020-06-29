@@ -27,20 +27,10 @@ class Society extends Organisation
     private $shows;
 
     private $entity_type = 'society';
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Serializer\XmlAttribute
-     * @Serializer\Expose
-     */
-    private $id;
 
     /**
      * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
-     * @var string
+     * @var ?string
      * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
      *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
      * @ORM\Column(name="colour", type="string", length=7, nullable=true)
@@ -61,7 +51,7 @@ class Society extends Organisation
     private $name;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Serializer\Expose
@@ -70,7 +60,7 @@ class Society extends Organisation
     private $description;
 
     /**
-     * @var Image
+     * @var ?Image
      *
      * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
@@ -79,7 +69,7 @@ class Society extends Organisation
     private $image;
 
     /**
-     * @var int
+     * @var ?string
      *
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
@@ -89,7 +79,7 @@ class Society extends Organisation
     private $facebook_id;
 
     /**
-     * @var int
+     * @var ?string
      *
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
@@ -99,7 +89,7 @@ class Society extends Organisation
     private $twitter_id;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="shortname", type="string", length=100, nullable=true)
      * @Serializer\Expose
@@ -109,7 +99,7 @@ class Society extends Organisation
     private $short_name;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="college", type="string", length=100, nullable=true)
      * @Serializer\Expose
@@ -119,7 +109,7 @@ class Society extends Organisation
     private $college;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="logourl", type="string", length=255, nullable=true)
      */
@@ -141,114 +131,57 @@ class Society extends Organisation
     private $news;
 
     /**
-     * @var Application[]
-     *
      * @ORM\OneToMany(targetEntity="Application", mappedBy="society")
      */
     private $applications;
 
-    /**
-     * Set short_name
-     *
-     * @param string $shortName
-     *
-     * @return Society
-     */
-    public function setShortName($shortName)
+    public function setShortName(?string $shortName): self
     {
         $this->short_name = $shortName;
-
         return $this;
     }
 
-    /**
-     * Get short_name
-     *
-     * @return string
-     */
-    public function getShortName()
+    public function getShortName(): ?string
     {
         return $this->short_name;
     }
 
-    /**
-     * Set college
-     *
-     * @param string $college
-     *
-     * @return Society
-     */
-    public function setCollege($college)
+    public function setCollege(?string $college): self
     {
         $this->college = $college;
-
         return $this;
     }
 
-    /**
-     * Get college
-     *
-     * @return string
-     */
-    public function getCollege()
+    public function getCollege(): ?string
     {
         return $this->college;
     }
 
-    /**
-     * Set logo_url
-     *
-     * @param string $logoUrl
-     *
-     * @return Society
-     */
-    public function setLogoUrl($logoUrl)
+    public function setLogoUrl(?string $logoUrl): self
     {
         $this->logo_url = $logoUrl;
 
         return $this;
     }
 
-    /**
-     * Get logo_url
-     *
-     * @return string
-     */
-    public function getLogoUrl()
+    public function getLogoUrl(): ?string
     {
         return $this->logo_url;
     }
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Organisation
-     */
-    public function setName($name)
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -301,26 +234,14 @@ class Society extends Organisation
         return $this->facebook_id;
     }
 
-    /**
-     * Set twitter_id
-     *
-     * @param string $twitterId
-     *
-     * @return Organisation
-     */
-    public function setTwitterId($twitterId)
+    public function setTwitterId(?string $twitterId): self
     {
         $this->twitter_id = $twitterId;
 
         return $this;
     }
 
-    /**
-     * Get twitter_id
-     *
-     * @return string
-     */
-    public function getTwitterId()
+    public function getTwitterId(): ?string
     {
         return $this->twitter_id;
     }
@@ -363,12 +284,7 @@ class Society extends Organisation
         return $this;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -459,14 +375,9 @@ class Society extends Organisation
         return $this;
     }
 
-    /**
-     * Remove applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     */
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    public function removeApplication(\Acts\CamdramBundle\Entity\Application $application)
     {
-        $this->applications->removeElement($applications);
+        $this->applications->removeElement($application);
     }
 
     /**
@@ -485,7 +396,7 @@ class Society extends Organisation
     }
 
 
-    public function getEntityType()
+    public function getEntityType(): string
     {
         return $this->entity_type;
     }

@@ -66,7 +66,6 @@ class TimePeriod
     private $end_at;
 
     /**
-     * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="WeekName", mappedBy="time_period")
      * @Serializer\Exclude
      */

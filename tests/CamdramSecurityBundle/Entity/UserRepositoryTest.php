@@ -12,7 +12,7 @@ class UserRepositoryTest extends RepositoryTestCase
      */
     private function getRepository()
     {
-        return $this->em->getRepository('ActsCamdramSecurityBundle:User');
+        return $this->em->getRepository(User::class);
     }
 
     public function testEmailSearchMultipleMatches()

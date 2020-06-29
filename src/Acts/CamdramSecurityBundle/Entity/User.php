@@ -54,7 +54,7 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @var \DateTime
+     * @var ?\DateTime
      *
      * @ORM\Column(name="registered_at", type="datetime", nullable=true)
      */
@@ -62,24 +62,22 @@ class User implements UserInterface, \Serializable
 
     /**
      * The last time the user underwent an explicit login flow
-     * 
-     * @var \DateTime
      *
+     * @var ?\DateTime
      * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
      */
     private $last_login_at;
 
     /**
      * The last time a session was created for the user
-     * 
-     * @var \DateTime
      *
+     * @var ?\DateTime
      * @ORM\Column(name="last_session_at", type="datetime", nullable=true)
      */
     private $last_session_at;
 
     /**
-     * @var Person
+     * @var ?Person
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramBundle\Entity\Person", inversedBy="users")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
@@ -99,15 +97,13 @@ class User implements UserInterface, \Serializable
     private $is_email_verified = false;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="profile_picture_url", type="string", nullable=true)
      */
     private $profile_picture_url;
 
     /**
-     * @var ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="user")
      * @Serializer\Exclude()
      */
@@ -124,11 +120,8 @@ class User implements UserInterface, \Serializable
     private $organisations;
 
     /**
-     * @var ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
      * @Serializer\Exclude()
-     *
      */
     private $ace_grants;
 

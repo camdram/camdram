@@ -68,7 +68,7 @@ class DiaryRow
      */
     public function canAccept(EventInterface $event)
     {
-        //First check if the time is the same (within a certain threshold)
+        //First check if the time is the same (within a certain threshold) @phpstan-ignore-next-line
         $eventStartTime = $event->getStartAt()->format('H') * 60 + $event->getStartAt()->format('i');
         if ($this->start_time && (
                 $eventStartTime <= $this->start_time - self::MAX_ROW_RANGE_MINUTES
@@ -87,6 +87,7 @@ class DiaryRow
     {
         $this->items[$item->getStartIndex()] = $item;
 
+        // @phpstan-ignore-next-line
         $eventStartTime = $item->getStartAt()->format('H') * 60 + $item->getStartAt()->format('i');
         if (!$this->start_time || $eventStartTime < $this->start_time) {
             $this->start_time = $eventStartTime;

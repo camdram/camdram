@@ -60,7 +60,7 @@ class ModerationManager
      */
     public function getEntitiesToModerate()
     {
-        $show_repo = $this->entityManager->getRepository('ActsCamdramBundle:Show');
+        $show_repo = $this->entityManager->getRepository(Show::class);
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $show_repo->findUnauthorised();
         } elseif ($this->authorizationChecker->isGranted('ROLE_USER')) {
@@ -83,7 +83,7 @@ class ModerationManager
     /**
      * Determine which Users are permitted to moderate the given Entity.
      *
-     * @return Users[] an array of Camdram Users.
+     * @return User[] an array of Camdram Users.
      */
     public function getModeratorsForEntity($entity): array
     {
@@ -102,7 +102,7 @@ class ModerationManager
 
     public function getModeratorAdmins(): array
     {
-        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+        $repo = $this->entityManager->getRepository(User::class);
 
         return $repo->findAdmins(AccessControlEntry::LEVEL_FULL_ADMIN);
     }
@@ -112,7 +112,7 @@ class ModerationManager
         if ($entity instanceof Show && !$entity->getAuthorised()) {
             $entity->setAuthorised(true);
 
-            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+            $repo = $this->entityManager->getRepository(User::class);
             $owners = $repo->getEntityOwners($entity);
             $authorisedBy = $this->tokenStorage->getToken()->getUser();
             $this->dispatcher->sendShowApprovedEmail($entity, $owners, $authorisedBy);
@@ -146,7 +146,7 @@ class ModerationManager
     {
         if ($entity instanceof Show) {
             $moderators = $this->getModeratorsForEntity($entity);
-            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+            $repo = $this->entityManager->getRepository(User::class);
             if ($this->tokenStorage->getToken()) {
                 $owners = array($this->tokenStorage->getToken()->getUser());
             } else {
@@ -170,7 +170,7 @@ class ModerationManager
     public function notifySocietyChanged($entity)
     {
         if ($entity instanceof Show) {
-            $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+            $repo = $this->entityManager->getRepository(User::class);
             $moderators = $repo->getOwnersOfEntities($entity->getSocieties());
 
             if (count($moderators) > 0) {
@@ -188,7 +188,7 @@ class ModerationManager
 
     public function notifyVenueChanged(Show $show, array $addedVenIds, array $removedVenIds): void
     {
-        $repo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+        $repo = $this->entityManager->getRepository(User::class);
         $addedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')
             ->setParameter(1, $addedVenIds)->getResult();
         $removedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')

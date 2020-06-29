@@ -151,15 +151,12 @@ class Event implements EventInterface
         $this->repeat_until = $repeatUntil;
     }
 
-    public function setId(?string $id)
+    public function setId(?int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

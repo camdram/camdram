@@ -2,9 +2,10 @@
 
 namespace Acts\CamdramBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Service\WeekManager;
 use Acts\DiaryBundle\Diary\Diary;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class DefaultController
@@ -23,7 +24,7 @@ class DefaultController extends AbstractController
      */
     public function indexAction(WeekManager $week_manager)
     {
-        $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
+        $news_repo = $this->getDoctrine()->getRepository(Entity\News::class);
         $news = $news_repo->getRecent(20);
 
         $now = new \DateTime;
@@ -59,11 +60,11 @@ class DefaultController extends AbstractController
         $end = clone $start;
         $end->add(new \DateInterval('P7D'));
 
-        $perf_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance')->getNumberInDateRange($start, $end);
-        $s_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getNumberInDateRange($start, $end);
-        $people_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Person')->getNumberInDateRange($start, $end);
-        $v_num = $this->getDoctrine()->getRepository('ActsCamdramBundle:Venue')->getNumberInDateRange($start, $end)
-            + $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance')->getNumberOfVenueNamesInDateRange($start, $end);
+        $perf_num = $this->getDoctrine()->getRepository(Entity\Performance::class)->getNumberInDateRange($start, $end);
+        $s_num = $this->getDoctrine()->getRepository(Entity\Show::class)->getNumberInDateRange($start, $end);
+        $people_num = $this->getDoctrine()->getRepository(Entity\Person::class)->getNumberInDateRange($start, $end);
+        $v_num = $this->getDoctrine()->getRepository(Entity\Venue::class)->getNumberInDateRange($start, $end)
+            + $this->getDoctrine()->getRepository(Entity\Performance::class)->getNumberOfVenueNamesInDateRange($start, $end);
 
         $response = $this->render('home/statistics.html.twig', array(
             'show_num' => $s_num,
@@ -83,9 +84,9 @@ class DefaultController extends AbstractController
      */
     public function vacanciesAction()
     {
-        $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
-        $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
-        $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+        $auditions_repo = $this->getDoctrine()->getRepository(Entity\Audition::class);
+        $techie_repo = $this->getDoctrine()->getRepository(Entity\TechieAdvert::class);
+        $applications_repo = $this->getDoctrine()->getRepository(Entity\Application::class);
         $now = new \DateTime();
 
         $response = $this->render('home/vacancies.html.twig', array(
@@ -105,8 +106,8 @@ class DefaultController extends AbstractController
      */
     public function historicDataAction(WeekManager $week_manager)
     {
-        $time_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
-        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $time_repo = $this->getDoctrine()->getRepository(Entity\TimePeriod::class);
+        $show_repo = $this->getDoctrine()->getRepository(Entity\Show::class);
         $data = array();
         $now = new \DateTime;
 

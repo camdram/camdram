@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Service\WeekManager;
 use Acts\DiaryBundle\Diary\Diary;
@@ -42,12 +43,12 @@ class DiaryController extends AbstractFOSRestController
         }
         $current_year = $start_date->format('Y');
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
         $first_date = $repo->getFirstDate();
         $last_date = $repo->getLastDate();
         $years = range($first_date->format('Y'), $last_date->format('Y'));
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
+        $repo = $this->getDoctrine()->getRepository(Entity\TimePeriod::class);
         $periods = $repo->findByYearBefore($current_year, $last_date);
         $current_period = $repo->findAt($start_date);
 
@@ -79,7 +80,7 @@ class DiaryController extends AbstractFOSRestController
 
     public function periodAction(Request $request, WeekManager $week_manager, $year, $period)
     {
-        $period = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod')->getBySlugAndYear($period, $year);
+        $period = $this->getDoctrine()->getRepository(Entity\TimePeriod::class)->getBySlugAndYear($period, $year);
         if ($period) {
             return $this->dateAction($request, $week_manager, $period->getStartAt());
         } else {
@@ -89,7 +90,7 @@ class DiaryController extends AbstractFOSRestController
 
     public function weekAction(Request $request, WeekManager $week_manager, $year, $period, $week)
     {
-        $week = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName')->getByYearPeriodAndSlug($year, $period, $week);
+        $week = $this->getDoctrine()->getRepository(Entity\WeekName::class)->getByYearPeriodAndSlug($year, $period, $week);
         if ($week) {
             return $this->dateAction($request, $week_manager, $week->getStartAt());
         } else {
@@ -111,7 +112,7 @@ class DiaryController extends AbstractFOSRestController
         $diary = new Diary;
         $diary->setDateRange($start_date, $end_date);
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
         $performances = $repo->findInDateRange($start_date, $end_date);
         $diary->addEvents($performances);
 
@@ -139,15 +140,15 @@ class DiaryController extends AbstractFOSRestController
 
         $diary = new Diary;
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
         $performances = $repo->findInDateRange($start, $end);
         $diary->addEvents($performances);
 
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:WeekName');
+        $repo = $this->getDoctrine()->getRepository(Entity\WeekName::class);
         foreach ($repo->findBetween($start, $end) as $name) {
             $diary->addLabel(Label::TYPE_WEEK, $name->getShortName(), $name->getStartAt());
         }
-        $repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TimePeriod');
+        $repo = $this->getDoctrine()->getRepository(Entity\TimePeriod::class);
         foreach ($repo->findIntersecting($start, $end) as $period) {
             $diary->addLabel(Label::TYPE_PERIOD, $period->getFullName(), $period->getStartAt(), $period->getEndAt());
         }

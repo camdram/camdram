@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramAdminBundle\Service\PeopleMerger;
 use Acts\CamdramBundle\Entity\Person;
+use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\PersonType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ class PersonController extends AbstractRestController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Person');
+        return $this->getDoctrine()->getManager()->getRepository(Person::class);
     }
 
     protected function getForm($person = null, $method = 'POST')
@@ -96,7 +97,7 @@ class PersonController extends AbstractRestController
         $end = clone $start;
         $end->add(new \DateInterval('P7D'));
 
-        $selectedPeople = $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Person')
+        $selectedPeople = $this->getDoctrine()->getManager()->getRepository(Person::class)
             ->getPeopleInDateRange($start, $end, 14);
         return $this->show('person/index.html.twig', 'selectedPeople', $selectedPeople);
     }
@@ -125,7 +126,7 @@ class PersonController extends AbstractRestController
     public function getRolesAction($identifier)
     {
         $person = $this->getEntity($identifier);
-        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getByPerson($person);
+        $shows = $this->getDoctrine()->getRepository(Show::class)->getByPerson($person);
         $data = [];
         foreach($shows as $show) {
             foreach($show->getRolesByPerson($person) as $role) {
@@ -143,7 +144,7 @@ class PersonController extends AbstractRestController
     {
         $now = new \DateTime;
         $person = $this->getEntity($identifier);
-        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getPastByPerson($now, $person);
+        $shows = $this->getDoctrine()->getRepository(Show::class)->getPastByPerson($now, $person);
 
         $data = array('person' => $person, 'shows' => $shows);
 
@@ -157,7 +158,7 @@ class PersonController extends AbstractRestController
     {
         $now = new \DateTime;
         $person = $this->getEntity($identifier);
-        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getUpcomingByPerson($now, $person);
+        $shows = $this->getDoctrine()->getRepository(Show::class)->getUpcomingByPerson($now, $person);
 
         $data = array('person' => $person, 'shows' => $shows);
 
@@ -171,7 +172,7 @@ class PersonController extends AbstractRestController
     {
         $now = new \DateTime;
         $person = $this->getEntity($identifier);
-        $shows = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->getCurrentByPerson($now, $person);
+        $shows = $this->getDoctrine()->getRepository(Show::class)->getCurrentByPerson($now, $person);
 
         $data = array('person' => $person, 'shows' => $shows);
 
@@ -186,7 +187,7 @@ class PersonController extends AbstractRestController
         $person = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $person);
 
-        $roles = $this->getDoctrine()->getManager()->createQuery(
+        $roles = $this->em->createQuery(
             'SELECT r, s FROM ActsCamdramBundle:Role r JOIN r.show s WHERE r.person = :p ORDER BY s.id')
             ->setParameter('p', $person)->getResult();
         $roles = array_filter($roles, function($r) {

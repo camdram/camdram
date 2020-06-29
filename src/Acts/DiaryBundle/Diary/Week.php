@@ -28,12 +28,12 @@ class Week
     private $end;
 
     /**
-     * @var string Some text describing this week
+     * @var Label Some text describing this week
      */
     private $label;
 
     /**
-     * @var string Some text describing a number of weeks, starting at this week
+     * @var Label Some text describing a number of weeks, starting at this week
      */
     private $period_label;
 
@@ -153,34 +153,22 @@ class Week
         return $this->end;
     }
 
-    /**
-     * @param \Acts\DiaryBundle\Diary\Label $label
-     */
-    public function setLabel($label)
+    public function setLabel(?Label $label)
     {
         $this->label = $label;
     }
 
-    /**
-     * @return \Acts\DiaryBundle\Diary\Label
-     */
-    public function getLabel()
+    public function getLabel(): ?Label
     {
         return $this->label;
     }
 
-    /**
-     * @param string $period_label
-     */
-    public function setPeriodLabel($period_label)
+    public function setPeriodLabel(?Label $period_label)
     {
         $this->period_label = $period_label;
     }
 
-    /**
-     * @return string
-     */
-    public function getPeriodLabel()
+    public function getPeriodLabel(): ?Label
     {
         return $this->period_label;
     }

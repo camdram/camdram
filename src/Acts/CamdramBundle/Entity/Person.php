@@ -20,18 +20,8 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @ORM\Entity(repositoryClass="PersonRepository")
  * @Serializer\XmlRoot("person")
  */
-class Person
+class Person extends BaseEntity
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Serializer\XmlAttribute
-     */
-    private $id;
-
     /**
      * @var string
      *
@@ -70,7 +60,7 @@ class Person
     private $slug;
 
     /**
-     * @var int
+     * @var Person|null
      *
      * @ORM\ManyToOne(targetEntity="Person")
      * @ORM\JoinColumn(name="mapto", nullable=true)
@@ -95,7 +85,7 @@ class Person
     private $roles;
 
     /**
-     * @var \Acts\CamdramSecurityBundle\Entity\User
+     * @var \Doctrine\Common\Collections\ArrayCollection<\Acts\CamdramSecurityBundle\Entity\User>
      *
      * @ORM\OneToMany(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", mappedBy="person")
      * @Serializer\Exclude
@@ -119,38 +109,19 @@ class Person
         $this->no_robots = false;
     }
 
-    /**
-     * Set map_to
-     *
-     * @param int $mapedTo
-     *
-     * @return Person
-     */
-    public function setMappedTo($mapTo)
+    public function setMappedTo(?Person $mapTo): self
     {
         $this->mapped_to = $mapTo;
 
         return $this;
     }
 
-    /**
-     * Get map_to
-     *
-     * @return int
-     */
-    public function getMappedTo()
+    public function getMappedTo(): ?Person
     {
         return $this->mapped_to;
     }
 
-    /**
-     * Set no_robots
-     *
-     * @param bool $noRobots
-     *
-     * @return Person
-     */
-    public function setNoRobots($noRobots)
+    public function setNoRobots(bool $noRobots): self
     {
         $this->no_robots = $noRobots;
 
@@ -238,7 +209,7 @@ class Person
         return $this->users;
     }
 
-    public function getEntityType()
+    public function getEntityType(): string
     {
         return $this->entity_type;
     }
@@ -262,12 +233,7 @@ class Person
         return !empty($this->getName()) && !$this->isMapped() && count($this->getRoles());
     }
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -287,12 +253,7 @@ class Person
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -359,12 +320,7 @@ class Person
         return $this;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }

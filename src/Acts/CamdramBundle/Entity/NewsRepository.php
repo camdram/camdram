@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * NewsRepository
+ * @extends EntityRepository<News>
  */
 class NewsRepository extends EntityRepository
 {

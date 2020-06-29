@@ -70,7 +70,7 @@ class ExternalApp extends BaseClient
     protected $updated_at;
 
     /**
-     * @var \DateTime
+     * @var ?\DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
     protected $last_used = null;

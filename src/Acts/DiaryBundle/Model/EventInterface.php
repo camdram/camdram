@@ -17,7 +17,7 @@ interface EventInterface
     /**
      * The venue where the event takes place
      *
-     * @return VenueInterface
+     * @return ?VenueInterface
      */
     public function getVenue();
 
@@ -61,7 +61,7 @@ interface EventInterface
     /**
      * A unique identifier for the event (as required by the iCal RFC)
      *
-     * @return string
+     * @return int|null
      */
     public function getId();
 

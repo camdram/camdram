@@ -27,7 +27,7 @@ class ShowAdminController extends AbstractController
     public function cgetAction(Request $request, AclProvider $aclProvider, EntityManagerInterface $entityManager)
     {
         $ids = $aclProvider->getEntitiesByUser($this->getUser(), '\\Acts\\CamdramBundle\\Entity\\Show');
-        $shows = $entityManager->getRepository('ActsCamdramBundle:Show')->findIdsByDate($ids);
+        $shows = $entityManager->getRepository(Show::class)->findIdsByDate($ids);
 
         return $this->render('show_admin/index.html.twig', array('shows' => $shows));
     }

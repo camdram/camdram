@@ -2,12 +2,15 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
-use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\ShowType;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +31,7 @@ class ShowController extends AbstractRestController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Show');
+        return $this->getDoctrine()->getManager()->getRepository(Show::class);
     }
 
     protected function getForm($show = null, $method = 'POST')
@@ -74,7 +77,7 @@ class ShowController extends AbstractRestController
     {
         $show = $this->getRepository()->findOneBySlug($identifier);
         if (!$show) {
-            $slugEntity = $this->getDoctrine()->getRepository('ActsCamdramBundle:ShowSlug')
+            $slugEntity = $this->getDoctrine()->getRepository(\Acts\CamdramBundle\Entity\ShowSlug::class)
                 ->findOneBySlug($identifier);
             if (!$slugEntity) {
                 throw $this->createNotFoundException('That '.$this->type.' does not exist');
@@ -83,7 +86,7 @@ class ShowController extends AbstractRestController
             }
         }
 
-        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+        $can_contact = !empty($this->getDoctrine()->getRepository(User::class)
             ->getContactableEntityOwners($show));
 
         return $this->doGetAction($show, ['can_contact' => $can_contact]);
@@ -111,7 +114,6 @@ class ShowController extends AbstractRestController
      */
     public function modifyEditForm($form, $identifier) {
         // List of societies is public knowledge, no ACL checks here.
-        $em = $this->getDoctrine()->getManager();
         $show = $this->getEntity($identifier);
         $socs = $show->getPrettySocData();
         foreach ($socs as &$soc) {
@@ -131,11 +133,10 @@ class ShowController extends AbstractRestController
      * Called by AbstractRestController after form sent by user.
      */
     public function afterEditFormSubmitted($form, $identifier) {
-        $em   = $this->getDoctrine()->getManager();
         $show = $this->getEntity($identifier);
 
         // Societies
-        $socRepo = $em->getRepository('ActsCamdramBundle:Society');
+        $socRepo = $this->em->getRepository(Society::class);
         $newSocs = [];   // Array of [string, Society]
         $newSocIds = [];
         $liveSocs = $show->getSocieties();
@@ -176,7 +177,7 @@ class ShowController extends AbstractRestController
 
         // Venues
         if ($form->get('multi_venue')->getData() == 'single') {
-            $venRepo = $em->getRepository('ActsCamdramBundle:Venue');
+            $venRepo = $this->em->getRepository(Venue::class);
             $venueName = $form->get('venue')->getData();
             $venue = $venRepo->findOneByName($venueName);
             if (empty(trim($venueName))) {
@@ -194,10 +195,9 @@ class ShowController extends AbstractRestController
      */
     public function adminPanelAction(Show $show)
     {
-        $em = $this->getDoctrine()->getManager();
         $admins = $this->get('camdram.security.acl.provider')->getOwners($show);
-        $requested_admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getRequestedShowAdmins($show);
-        $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($show);
+        $requested_admins = $this->em->getRepository(User::class)->getRequestedShowAdmins($show);
+        $pending_admins = $this->em->getRepository(PendingAccess::class)->findByResource($show);
         $errors = $this->getValidationErrors($show);
         $admins = array_merge($admins, $show->getSocieties()->toArray());
         $admins = array_merge($admins, $show->getVenues());
@@ -249,10 +249,9 @@ class ShowController extends AbstractRestController
             throw new BadRequestHttpException('Invalid CSRF token');
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($show->getImage());
+        $this->em->remove($show->getImage());
         $show->setImage(null);
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
@@ -263,7 +262,6 @@ class ShowController extends AbstractRestController
     public function approveAction(Request $request, $identifier, ModerationManager $moderation_manager)
     {
         $show = $this->getEntity($identifier);
-        $em = $this->getDoctrine()->getManager();
         $this->get('camdram.security.acl.helper')->ensureGranted('APPROVE', $show);
 
         $token = $request->request->get('_token');
@@ -272,7 +270,7 @@ class ShowController extends AbstractRestController
         }
 
         $moderation_manager->approveEntity($show);
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('get_show', array('identifier' => $show->getSlug()));
     }
@@ -290,9 +288,8 @@ class ShowController extends AbstractRestController
             throw new BadRequestHttpException('Invalid CSRF token');
         }
 
-        $em = $this->getDoctrine()->getManager();
         $show->setAuthorised(false);
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('get_show', ['identifier' => $identifier]);
     }
@@ -304,7 +301,7 @@ class ShowController extends AbstractRestController
     public function getRolesAction($identifier)
     {
         $show = $this->getEntity($identifier);
-        $role_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Role');
+        $role_repo = $this->getDoctrine()->getRepository(Role::class);
         $roles = $role_repo->findByShow($show);
 
         return $this->view($roles);
@@ -321,12 +318,11 @@ class ShowController extends AbstractRestController
      */
     public function getValidationErrors(Show $show): array {
         $errors = [];
-        $em = $this->getDoctrine()->getManager();
         $aclHelper = $this->get('camdram.security.acl.helper');
         if ($show->getPerformances()->isEmpty()) $errors[] = ["noperformances"];
         foreach ($show->getPerformances() as $p) {
-            $clashes = $em->createQueryBuilder()
-                 ->select(['p', 's'])->from('ActsCamdramBundle:Performance', 'p')
+            $clashes = $this->em->createQueryBuilder()
+                 ->select(['p', 's'])->from(Performance::class, 'p')
                  ->where('p.venue = :venue')->andWhere('p.venue IS NOT NULL')
                  // This sees if the time components are the same.
                  ->andWhere("p.start_at = DATE_ADD(:start_at, DATE_DIFF(p.start_at, :start_at), 'DAY')")

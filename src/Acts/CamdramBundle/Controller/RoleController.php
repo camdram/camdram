@@ -23,7 +23,7 @@ class RoleController extends AbstractController
     public function patchRolesReorderAction(Request $request, Helper $_helper): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('ActsCamdramBundle:Role');
+        $repo = $em->getRepository(Role::class);
         $role_ids = $request->request->get('role');
         if (!is_array($role_ids)) {
             return new Response("role must be array", 400);
@@ -63,7 +63,7 @@ class RoleController extends AbstractController
         }
 
         $em     = $this->getDoctrine()->getManager();
-        $repo   = $em->getRepository('ActsCamdramBundle:Role');
+        $repo   = $em->getRepository(Role::class);
         $id     = $request->request->get('role');
         $newtag = trim($request->request->get('newtag'));
         $role   = $repo->findOneById($id);

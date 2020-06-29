@@ -4,6 +4,7 @@ namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,9 +33,14 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /** @var string the plural form of the English word for the entity represented by the class  */
     protected $type_plural;
 
+    /** @var RequestStack */
     protected $requestStack;
 
-    public function __construct(RequestStack $requestStack) {
+    /** @var EntityManagerInterface */
+    protected $em;
+
+    public function __construct(EntityManagerInterface $em, RequestStack $requestStack) {
+        $this->em = $em;
         $this->requestStack = $requestStack;
     }
 

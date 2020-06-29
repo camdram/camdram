@@ -78,7 +78,7 @@ class Admins extends Command
 
     private function grantAccess($idOrEmail)
     {
-        $userRepo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+        $userRepo = $this->entityManager->getRepository(User::class);
         if (is_numeric($idOrEmail)) {
             $user = $userRepo->findOneById($idOrEmail);
         }
@@ -94,7 +94,7 @@ class Admins extends Command
 
     private function revokeAccess($idOrEmail)
     {
-        $userRepo = $this->entityManager->getRepository('ActsCamdramSecurityBundle:User');
+        $userRepo = $this->entityManager->getRepository(User::class);
         if (is_numeric($idOrEmail)) {
             $user = $userRepo->findOneById($idOrEmail);
         }

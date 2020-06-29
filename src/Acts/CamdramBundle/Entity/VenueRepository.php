@@ -4,6 +4,9 @@ namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * @extends EntityRepository<Venue>
+ */
 class VenueRepository extends EntityRepository
 {
     public function findAllOrderedByName()

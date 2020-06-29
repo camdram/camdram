@@ -25,7 +25,7 @@ class TechieAdvertController extends AbstractFOSRestController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
+        return $this->getDoctrine()->getRepository(TechieAdvert::class);
     }
 
     /**
@@ -36,7 +36,7 @@ class TechieAdvertController extends AbstractFOSRestController
      */
     public function cget(Request $request, string $_format = 'html')
     {
-        $techieAdverts = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
+        $techieAdverts = $this->getDoctrine()->getRepository(TechieAdvert::class)
             ->findNotExpiredOrderedByDateName(Time::now());
 
         $weeks = array();
@@ -59,7 +59,7 @@ class TechieAdvertController extends AbstractFOSRestController
      */
     public function getAction($identifier, Request $request)
     {
-        $techieAdvert = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert')
+        $techieAdvert = $this->getDoctrine()->getRepository(TechieAdvert::class)
             ->findOneByShowSlug($identifier, Time::now());
         if ($techieAdvert) {
             return $this->redirect($this->generateUrl('get_techies').'#'.$techieAdvert->getShow()->getSlug());

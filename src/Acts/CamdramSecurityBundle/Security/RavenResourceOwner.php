@@ -169,10 +169,8 @@ class RavenResourceOwner implements ResourceOwnerInterface
     /**
      * Validate RavenUserToken.
      *
-     * @param RavenUserToken $token Raven user token.
-     *
+     * @param array $token Raven user token.
      * @return bool true if the token is valid, false otherwise.
-     *
      * @throws \Exception
      */
     protected function validateToken($token)

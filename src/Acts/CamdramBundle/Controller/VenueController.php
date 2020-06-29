@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
 use Acts\CamdramBundle\Service\ModerationManager;
@@ -28,7 +29,7 @@ class VenueController extends OrganisationController
 
     protected function getRepository()
     {
-        return $this->getDoctrine()->getManager()->getRepository('ActsCamdramBundle:Venue');
+        return $this->getDoctrine()->getManager()->getRepository(Venue::class);
     }
 
     protected function getForm($venue = null, $method = 'POST')
@@ -43,7 +44,7 @@ class VenueController extends OrganisationController
     public function getAction($identifier)
     {
         $venue = $this->getEntity($identifier);
-        $can_contact = !empty($this->getDoctrine()->getRepository('ActsCamdramSecurityBundle:User')
+        $can_contact = !empty($this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class)
             ->getContactableEntityOwners($venue));
 
         return $this->doGetAction($venue, ['can_contact' => $can_contact]);
@@ -85,9 +86,9 @@ class VenueController extends OrganisationController
     public function getVacanciesAction($identifier)
     {
         $venue = $this->getEntity($identifier);
-        $auditions_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Audition');
-        $techie_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:TechieAdvert');
-        $applications_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application');
+        $auditions_repo = $this->getDoctrine()->getRepository(Entity\Audition::class);
+        $techie_repo = $this->getDoctrine()->getRepository(Entity\TechieAdvert::class);
+        $applications_repo = $this->getDoctrine()->getRepository(Entity\Application::class);
         $now = new \DateTime();
 
         $data = array(
@@ -106,7 +107,7 @@ class VenueController extends OrganisationController
      */
     protected function getPerformances($slug, \DateTime $from, \DateTime $to)
     {
-        $performance_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Performance');
+        $performance_repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
 
         return $performance_repo->getByVenue($this->getEntity($slug), $from, $to);
     }
@@ -116,7 +117,7 @@ class VenueController extends OrganisationController
      */
     protected function getShows($slug, \DateTime $from, \DateTime $to)
     {
-        $show_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show');
+        $show_repo = $this->getDoctrine()->getRepository(Entity\Show::class);
 
         return $show_repo->getByVenue($this->getEntity($slug), $from, $to);
     }

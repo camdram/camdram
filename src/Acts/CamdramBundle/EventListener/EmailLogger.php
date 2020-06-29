@@ -103,8 +103,6 @@ class EmailLogger implements Swift_Events_SendListener
     }
 
     /**
-     * @param Swift_Events_SendEvent $evt
-     *
      * @return string
      */
     private function getLogLevel(Swift_Events_SendEvent $event)

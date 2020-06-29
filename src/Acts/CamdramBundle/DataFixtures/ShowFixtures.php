@@ -2,17 +2,20 @@
 
 namespace Acts\CamdramBundle\DataFixtures;
 
-use Acts\CamdramBundle\Entity\Role;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\Yaml\Yaml;
-use Acts\CamdramBundle\Entity\Show;
-use Acts\CamdramBundle\Entity\Performance;
-use Acts\CamdramBundle\Entity\TechieAdvert;
-use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Application;
+use Acts\CamdramBundle\Entity\Audition;
+use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Entity\Person;
+use Acts\CamdramBundle\Entity\Role;
+use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\TechieAdvert;
+use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\DataFixtures\UserFixtures;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Yaml\Yaml;
 
 class ShowFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -46,6 +49,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
 
     /**
      * {@inheritDoc}
+     * @param \Doctrine\ORM\EntityManagerInterface $manager
      */
     public function load(ObjectManager $manager)
     {
@@ -59,7 +63,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $diff = $end_date->diff($start_date, true);
         $total_weeks = $diff->days / 7;
 
-        $this->person_repo = $manager->getRepository('ActsCamdramBundle:Person');
+        $this->person_repo = $manager->getRepository(Person::class);
         $this->people_ids = array_map(
             function ($val) {
                 return $val['id'];
@@ -67,7 +71,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
              $this->person_repo->createQueryBuilder('p')->select('p.id')->getQuery()->getArrayResult()
         );
 
-        $this->venue_repo = $manager->getRepository('ActsCamdramBundle:Venue');
+        $this->venue_repo = $manager->getRepository(Venue::class);
         $this->venue_ids = array_map(
             function ($val) {
                 return $val['id'];
@@ -75,7 +79,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             $this->venue_repo->createQueryBuilder('v')->select('v.id')->getQuery()->getArrayResult()
         );
 
-        $this->society_repo = $manager->getRepository('ActsCamdramBundle:Society');
+        $this->society_repo = $manager->getRepository(Society::class);
         $this->society_ids = array_map(
             function ($val) {
                 return $val['id'];

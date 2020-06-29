@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramAdminBundle\Command;
 
+use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -41,7 +42,7 @@ class UnauthorisedShowsEmailCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $unauthorised_shows = $this->entityManager->getRepository('ActsCamdramBundle:Show')->findUnauthorised();
+        $unauthorised_shows = $this->entityManager->getRepository(Show::class)->findUnauthorised();
 
         foreach ($unauthorised_shows as $show) {
             $output->writeln('Sending authorisation reminder email for show "'.$show->getName().'"');

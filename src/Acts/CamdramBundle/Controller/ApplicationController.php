@@ -17,7 +17,7 @@ class ApplicationController extends AbstractFOSRestController
      */
     public function cgetAction(Request $request)
     {
-        $applications = array_reverse($this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
+        $applications = array_reverse($this->getDoctrine()->getRepository(Application::class)
             ->findLatest(-1, Time::now()));
 
         switch ($request->getRequestFormat()) {
@@ -35,7 +35,7 @@ class ApplicationController extends AbstractFOSRestController
      */
     public function getAction($identifier, Request $request)
     {
-        $data = $this->getDoctrine()->getRepository('ActsCamdramBundle:Application')
+        $data = $this->getDoctrine()->getRepository(Application::class)
             ->findOneBySlug($identifier, Time::now());
 
         if (!$data) {

@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Venue extends Organisation implements VenueInterface
 {
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="address", type="text", nullable=true)
      * @Serializer\Expose
@@ -29,7 +29,7 @@ class Venue extends Organisation implements VenueInterface
     private $address;
 
     /**
-     * @var float
+     * @var ?float
      *
      * @ORM\Column(name="latitude", type="float", nullable=true)
      * @Serializer\Expose
@@ -38,7 +38,7 @@ class Venue extends Organisation implements VenueInterface
     private $latitude;
 
     /**
-     * @var float
+     * @var ?float
      *
      * @ORM\Column(name="longitude", type="float", nullable=true)
      * @Serializer\Expose
@@ -54,19 +54,8 @@ class Venue extends Organisation implements VenueInterface
     private $entity_type = 'venue';
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Serializer\XmlAttribute
-     * @Serializer\Expose
-     */
-    private $id;
-
-    /**
      * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
-     * @var string
+     * @var ?string
      * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
      *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
      * @ORM\Column(name="colour", type="string", length=7, nullable=true)
@@ -87,7 +76,7 @@ class Venue extends Organisation implements VenueInterface
     private $name;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Serializer\Expose
@@ -96,7 +85,7 @@ class Venue extends Organisation implements VenueInterface
     private $description;
 
     /**
-     * @var Image
+     * @var ?Image
      *
      * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
@@ -105,7 +94,7 @@ class Venue extends Organisation implements VenueInterface
     private $image;
 
     /**
-     * @var int
+     * @var ?string
      *
      * @ORM\Column(name="facebook_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
@@ -115,7 +104,7 @@ class Venue extends Organisation implements VenueInterface
     private $facebook_id;
 
     /**
-     * @var int
+     * @var ?string
      *
      * @ORM\Column(name="twitter_id", type="string", length=50, nullable=true)
      * @Serializer\Expose
@@ -125,7 +114,7 @@ class Venue extends Organisation implements VenueInterface
     private $twitter_id;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="shortname", type="string", length=100, nullable=true)
      * @Serializer\Expose
@@ -135,7 +124,7 @@ class Venue extends Organisation implements VenueInterface
     private $short_name;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="college", type="string", length=100, nullable=true)
      * @Serializer\Expose
@@ -145,7 +134,7 @@ class Venue extends Organisation implements VenueInterface
     private $college;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="logourl", type="string", length=255, nullable=true)
      */
@@ -167,90 +156,49 @@ class Venue extends Organisation implements VenueInterface
     private $news;
 
     /**
-     * @var Application[]
+     * @var \Doctrine\Common\Collections\ArrayCollection<Application>
      *
      * @ORM\OneToMany(targetEntity="Application", mappedBy="venue")
      */
     private $applications;
 
-    /**
-     * Set short_name
-     *
-     * @param string $shortName
-     *
-     * @return Society
-     */
-    public function setShortName($shortName)
+    public function setShortName(?string $shortName): self
     {
         $this->short_name = $shortName;
 
         return $this;
     }
 
-    /**
-     * Get short_name
-     *
-     * @return string
-     */
-    public function getShortName()
+    public function getShortName(): ?string
     {
         return $this->short_name;
     }
 
-    /**
-     * Set college
-     *
-     * @param string $college
-     *
-     * @return Society
-     */
-    public function setCollege($college)
+    public function setCollege(?string $college): self
     {
         $this->college = $college;
 
         return $this;
     }
 
-    /**
-     * Get college
-     *
-     * @return string
-     */
-    public function getCollege()
+    public function getCollege(): ?string
     {
         return $this->college;
     }
 
-    /**
-     * Set logo_url
-     *
-     * @param string $logoUrl
-     *
-     * @return Society
-     */
-    public function setLogoUrl($logoUrl)
+    public function setLogoUrl(?string $logoUrl): self
     {
         $this->logo_url = $logoUrl;
 
         return $this;
     }
 
-    /**
-     * Get logo_url
-     *
-     * @return string
-     */
-    public function getLogoUrl()
+    public function getLogoUrl(): ?string
     {
         return $this->logo_url;
     }
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -269,12 +217,7 @@ class Venue extends Organisation implements VenueInterface
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -327,74 +270,38 @@ class Venue extends Organisation implements VenueInterface
         return $this->facebook_id;
     }
 
-    /**
-     * Set twitter_id
-     *
-     * @param string $twitterId
-     *
-     * @return Organisation
-     */
-    public function setTwitterId($twitterId)
+    public function setTwitterId(?string $twitterId): self
     {
         $this->twitter_id = $twitterId;
 
         return $this;
     }
 
-    /**
-     * Get twitter_id
-     *
-     * @return string
-     */
-    public function getTwitterId()
+    public function getTwitterId(): ?string
     {
         return $this->twitter_id;
     }
 
-    /**
-     * Set image
-     *
-     * @param Image $image
-     *
-     * @return Organisation
-     */
-    public function setImage(Image $image = null)
+    public function setImage(Image $image = null): ?self
     {
         $this->image = $image;
 
         return $this;
     }
 
-    /**
-     * Get image
-     *
-     * @return Image
-     */
-    public function getImage()
+    public function getImage(): ?Image
     {
         return $this->image;
     }
 
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return Organisation
-     */
-    public function setSlug($slug)
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -404,14 +311,8 @@ class Venue extends Organisation implements VenueInterface
         return PHP_INT_MAX;
     }
 
-    /**
-     * Add news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     *
-     * @return Organisation
-     */
-    public function addNew(\Acts\CamdramBundle\Entity\News $news)
+
+    public function addNew(\Acts\CamdramBundle\Entity\News $news): self
     {
         $this->news[] = $news;
 
@@ -446,14 +347,7 @@ class Venue extends Organisation implements VenueInterface
         $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Add news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     *
-     * @return Organisation
-     */
-    public function addNews(\Acts\CamdramBundle\Entity\News $news)
+    public function addNews(\Acts\CamdramBundle\Entity\News $news): self
     {
         $this->news[] = $news;
 
@@ -470,14 +364,7 @@ class Venue extends Organisation implements VenueInterface
         $this->news->removeElement($news);
     }
 
-    /**
-     * Add applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     *
-     * @return Organisation
-     */
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
+    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications): self
     {
         $this->applications[] = $applications;
 
@@ -509,8 +396,7 @@ class Venue extends Organisation implements VenueInterface
         return 'venue';
     }
 
-
-    public function getEntityType()
+    public function getEntityType(): string
     {
         return $this->entity_type;
     }

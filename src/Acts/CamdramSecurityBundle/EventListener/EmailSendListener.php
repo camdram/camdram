@@ -46,6 +46,7 @@ class EmailSendListener implements EventSubscriberInterface
 
     public function onRegistrationEvent(FilterUserResponseEvent $event)
     {
+        /** @var \Acts\CamdramSecurityBundle\Entity\User $user */
         $user = $event->getUser();
         if (!$user->getIsEmailVerified())
         {

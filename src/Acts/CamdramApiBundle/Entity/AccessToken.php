@@ -23,12 +23,14 @@ class AccessToken extends BaseAccessToken
     protected $id;
 
     /**
+     * @var ExternalApp
      * @ORM\ManyToOne(targetEntity="ExternalApp")
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     protected $client;
 
     /**
+     * @var \Acts\CamdramSecurityBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */

@@ -30,7 +30,7 @@ class AccessControlEntryFixtures extends Fixture implements DependentFixtureInte
         }
 
         //Make user2 owner of all shows
-        $shows = $manager->getRepository('ActsCamdramBundle:Show')->findAll();
+        $shows = $manager->getRepository(\Acts\CamdramBundle\Entity\Show::class)->findAll();
         foreach ($shows as $show) {
             $e = new AccessControlEntry();
             $e->setUser($this->getReference('testuser2'));

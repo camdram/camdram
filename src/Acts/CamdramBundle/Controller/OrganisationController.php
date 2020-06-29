@@ -2,12 +2,14 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Form\Type\OrganisationApplicationType;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Event\CamdramSecurityEvents;
 use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
@@ -34,7 +36,7 @@ abstract class OrganisationController extends AbstractRestController
     {
         $em = $this->getDoctrine()->getManager();
         $admins = $this->get('camdram.security.acl.provider')->getOwners($org);
-        $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($org);
+        $pending_admins = $em->getRepository(PendingAccess::class)->findByResource($org);
 
         return $this->render(
             $this->type.'/admin-panel.html.twig',
@@ -47,7 +49,7 @@ abstract class OrganisationController extends AbstractRestController
     public function getNewsAction($identifier)
     {
         $org = $this->getEntity($identifier);
-        $news_repo = $this->getDoctrine()->getRepository('ActsCamdramBundle:News');
+        $news_repo = $this->getDoctrine()->getRepository(Entity\News::class);
 
         return $this->show('organisation/news.html.twig', 'news', $news_repo->getRecentByOrganisation($org, 30));
     }
@@ -270,8 +272,8 @@ abstract class OrganisationController extends AbstractRestController
             'action' => $this->generateUrl($route, array('identifier' => $identifier))));
 
         $em = $this->getDoctrine()->getManager();
-        $admins = $em->getRepository('ActsCamdramSecurityBundle:User')->getEntityOwners($org);
-        $pending_admins = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findByResource($org);
+        $admins = $em->getRepository(User::class)->getEntityOwners($org);
+        $pending_admins = $em->getRepository(PendingAccess::class)->findByResource($org);
 
         return $this->render('pending_access/edit.html.twig', [
             'entity' => $org,
@@ -314,7 +316,7 @@ abstract class OrganisationController extends AbstractRestController
             if ($already_admin == false) {
                 /* If this person is already a Camdram user then grant access immediately. */
                 $em = $this->getDoctrine()->getManager();
-                $existing_user = $em->getRepository('ActsCamdramSecurityBundle:User')
+                $existing_user = $em->getRepository(User::class)
                                     ->findOneByEmail($pending_ace->getEmail());
 
                 if ($existing_user != null) {
@@ -325,7 +327,7 @@ abstract class OrganisationController extends AbstractRestController
                      * got a pending access token for this resource, otherwise
                      * create the pending access token.
                      */
-                    $pending_repo = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess');
+                    $pending_repo = $em->getRepository(PendingAccess::class);
                     if ($pending_repo->isDuplicate($pending_ace) == false) {
                         $pending_ace->setIssuer($this->getUser());
                         $em->persist($pending_ace);
@@ -361,7 +363,7 @@ abstract class OrganisationController extends AbstractRestController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('ActsCamdramSecurityBundle:User')->findOneById($uid);
+        $user = $em->getRepository(User::class)->findOneById($uid);
         if ($user != null) {
             $this->get('camdram.security.acl.provider')->revokeAccess($org, $user, $this->getUser());
         }
@@ -387,7 +389,7 @@ abstract class OrganisationController extends AbstractRestController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $pending_admin = $em->getRepository('ActsCamdramSecurityBundle:PendingAccess')->findOneById($uid);
+        $pending_admin = $em->getRepository(PendingAccess::class)->findOneById($uid);
         if ($pending_admin != null) {
             $em->remove($pending_admin);
             $em->flush();
@@ -413,7 +415,7 @@ abstract class OrganisationController extends AbstractRestController
         // Casting string→int in PHP always succeeds so no try/catch needed.
         $page = $request->query->has("p") ? max(1, (int) $request->query->get("p")) : 1;
 
-        $qb = $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')
+        $qb = $this->getDoctrine()->getRepository(Entity\Show::class)
               ->queryByOrganisation($org, new \DateTime('1970-01-01'), new \DateTime('yesterday'))
               ->select('s, perf')->leftJoin('s.performances', 'perf')
               ->orderBy('p.start_at', 'DESC')->addOrderBy('s.id') // Make deterministic

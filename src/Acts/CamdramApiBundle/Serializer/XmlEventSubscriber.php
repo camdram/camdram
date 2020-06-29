@@ -76,7 +76,7 @@ class XmlEventSubscriber implements EventSubscriberInterface
                     $entryNode = $visitor->getDocument()->createElement($link->getName());
 
                     $visitor->getCurrentNode()->appendChild($entryNode);
-                    $visitor->setCurrentNode($entryNode);
+                    $visitor->setCurrentNode($entryNode); // @phpstan-ignore-next-line
                     $visitor->getCurrentNode()->setAttribute('rel', $link->getEntity());
 
                     foreach (array('id', 'name', 'slug') as $property) {

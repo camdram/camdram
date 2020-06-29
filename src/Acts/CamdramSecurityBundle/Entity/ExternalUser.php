@@ -42,42 +42,42 @@ class ExternalUser implements \Serializable
     private $service;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="username", type="string", length=255, nullable=true)
      */
     private $username;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="token", type="string", length=255, nullable=true)
      */
     private $token;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="profile_picture_url", type="string", length=255, nullable=true)
      */
     private $profile_picture_url;
 
     /**
-     * @var \DateTime
+     * @var ?\DateTime
      *
      * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
      */

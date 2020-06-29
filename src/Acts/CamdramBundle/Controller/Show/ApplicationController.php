@@ -14,7 +14,7 @@ class ApplicationController extends AbstractFOSRestController
 {
     protected function getEntity($identifier)
     {
-        return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBy(array('slug' => $identifier));
+        return $this->getDoctrine()->getRepository(Show::class)->findOneBy(array('slug' => $identifier));
     }
 
     private function getApplicationForm(Show $show, $obj = null, $method = 'POST')

@@ -2,11 +2,13 @@
 
 namespace Acts\CamdramSecurityBundle\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
-use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramBundle\Entity\Show;
+use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\Venue;
+use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Acts\CamdramSecurityBundle\Entity\PendingAccess;
+use Acts\CamdramSecurityBundle\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class for constructing and sending emails. Emails are typically sent as a
@@ -14,12 +16,13 @@ use Acts\CamdramBundle\Entity\Show;
  */
 class EmailDispatcher
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
+    /** @var EntityManagerInterface */
     private $em;
+    /** @var \Swift_Mailer */
     private $mailer;
+    /** @var \Twig\Environment */
     private $twig;
+    /** @var string */
     private $from_address;
 
     public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, \Twig\Environment $twig, $adminEmail)
@@ -96,13 +99,13 @@ class EmailDispatcher
 
         switch ($ace->getType()) {
             case 'show':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
+                $entity = $this->em->getRepository(Show::class)->findOneById($ace->getEntityId());
                 break;
             case 'society':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Society')->findOneById($ace->getEntityId());
+                $entity = $this->em->getRepository(Society::class)->findOneById($ace->getEntityId());
                 break;
             case 'venue':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Venue')->findOneById($ace->getEntityId());
+                $entity = $this->em->getRepository(Venue::class)->findOneById($ace->getEntityId());
                 break;
             default:
                 throw new \LogicException("Cannot send ACE email for {$ace->getType()}");
@@ -134,13 +137,13 @@ class EmailDispatcher
         /* Get the resource and pass it to the template. */
         switch ($ace->getType()) {
             case 'show':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getRid());
+                $entity = $this->em->getRepository(Show::class)->findOneById($ace->getRid());
                 break;
             case 'society':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Society')->findOneById($ace->getRid());
+                $entity = $this->em->getRepository(Society::class)->findOneById($ace->getRid());
                 break;
             case 'venue':
-                $entity = $this->em->getRepository('ActsCamdramBundle:Venue')->findOneById($ace->getRid());
+                $entity = $this->em->getRepository(Venue::class)->findOneById($ace->getRid());
                 break;
             default:
                 throw new \LogicException("Cannot send ACE email for {$ace->getType()}");
@@ -165,8 +168,8 @@ class EmailDispatcher
      */
     public function sendShowAdminReqEmail(AccessControlEntry $ace)
     {
-        $show = $this->em->getRepository('ActsCamdramBundle:Show')->findOneById($ace->getEntityId());
-        $owners = $this->em->getRepository('ActsCamdramSecurityBundle:User')
+        $show = $this->em->getRepository(Show::class)->findOneById($ace->getEntityId());
+        $owners = $this->em->getRepository(User::class)
                     ->getEntityOwners($show);
         $emails = array();
         foreach ($owners as $user) {

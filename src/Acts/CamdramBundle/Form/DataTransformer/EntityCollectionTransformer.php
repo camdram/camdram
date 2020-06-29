@@ -10,7 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Class EntityCollectionTransformer
  *
- * * Transforms an collection of linked entities into their names for when they are displayed in a form.
+ * Transforms an collection of linked entities into their names for when they are displayed in a form.
+ * @phpstan-template T of \Acts\CamdramBundle\Entity\BaseEntity
  */
 class EntityCollectionTransformer implements DataTransformerInterface
 {
@@ -20,16 +21,24 @@ class EntityCollectionTransformer implements DataTransformerInterface
     private $em;
 
     /**
-     * @var string
+     * @phpstan-var class-string<T>
      */
     private $repository_name;
 
+
+    /**
+     * @phpstan-param class-string<T> $repository_name
+     */
     public function __construct(EntityManager $em, $repository_name)
     {
         $this->em = $em;
         $this->repository_name = $repository_name;
     }
 
+    /**
+     * @phpstan-param Collection<T> $value
+     * @return array[]
+     */
     public function transform($value)
     {
         if ($value instanceof Collection) {
@@ -44,6 +53,10 @@ class EntityCollectionTransformer implements DataTransformerInterface
         }
     }
 
+    /**
+     * @param int[] $value
+     * @phpstan-return Collection<T>
+     */
     public function reverseTransform($value)
     {
         if (is_array($value)) {

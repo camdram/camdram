@@ -37,16 +37,12 @@ class DiaryView
 
     /**
      * Returns (and creates if necessary) the week in which a certain \DateTime belongs
-     *
-     * @param \DateTime $date
-     *
-     * @return Week
      */
-    private function getWeekForDate(\DateTime $date)
+    private function getWeekForDate(\DateTime $date): ?Week
     {
         if ($this->start_date && $this->end_date) {
             if ($date < $this->start_date || $date >= $this->end_date) {
-                return;
+                return null;
             }
         }
 

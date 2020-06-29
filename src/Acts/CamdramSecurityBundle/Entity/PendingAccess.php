@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Entity;
 
+use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -54,7 +55,7 @@ class PendingAccess
     private $type;
 
     /**
-     * @var int
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="\Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="issuerid", referencedColumnName="id", onDelete="CASCADE", nullable=false)
@@ -150,19 +151,14 @@ class PendingAccess
         return $this->type;
     }
 
-    public function setIssuer(\Acts\CamdramSecurityBundle\Entity\User $issuer = null): self
+    public function setIssuer(User $issuer = null): self
     {
         $this->issuer = $issuer;
 
         return $this;
     }
 
-    /**
-     * Get issuer
-     *
-     * @return \Acts\CamdramSecurityBundle\Entity\User $issuer
-     */
-    public function getIssuer()
+    public function getIssuer(): ?User
     {
         return $this->issuer;
     }

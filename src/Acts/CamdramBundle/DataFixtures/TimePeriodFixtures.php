@@ -13,6 +13,7 @@ class TimePeriodFixtures extends Fixture
 {
     /**
      * {@inheritDoc}
+     * @param \Doctrine\ORM\EntityManagerInterface $manager
      */
     public function load(ObjectManager $manager)
     {
@@ -69,7 +70,7 @@ class TimePeriodFixtures extends Fixture
     private function createPeriod(ObjectManager $manager, $short, $name, $long, $start, $end)
     {
         /** @var TimePeriodRepository $repo */
-        $repo = $manager->getRepository('ActsCamdramBundle:TimePeriod');
+        $repo = $manager->getRepository(TimePeriod::class);
         $qb = $repo->createQueryBuilder('p');
         $query = $qb
             ->where($qb->expr()->andX('p.start_at < :end', 'p.end_at > :start'))
@@ -88,7 +89,7 @@ class TimePeriodFixtures extends Fixture
             $p = current($result);
         }
 
-        $repo = $manager->getRepository('ActsCamdramBundle:WeekName');
+        $repo = $manager->getRepository(WeekName::class);
         $qb = $repo->createQueryBuilder('w');
         $query = $qb
             ->where($qb->expr()->andX('w.start_at >= :start', 'w.start_at < :end'))
@@ -103,7 +104,7 @@ class TimePeriodFixtures extends Fixture
 
     private function createWeek(ObjectManager $manager, $short_name, $name, $start)
     {
-        $repo = $manager->getRepository('ActsCamdramBundle:WeekName');
+        $repo = $manager->getRepository(WeekName::class);
         $qb = $repo->createQueryBuilder('w');
         $query = $qb->select('count(w.id) AS c')
             ->where($qb->expr()->andX('w.start_at = :start'))

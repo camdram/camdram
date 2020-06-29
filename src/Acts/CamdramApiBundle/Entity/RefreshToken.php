@@ -23,12 +23,14 @@ class RefreshToken extends BaseRefreshToken
     protected $id;
 
     /**
+     * @var ExternalApp
      * @ORM\ManyToOne(targetEntity="ExternalApp")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", nullable=false)
      */
     protected $client;
 
     /**
+     * @var \Acts\CamdramSecurityBundle\Entity\User
      * @ORM\ManyToOne(targetEntity="Acts\CamdramSecurityBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
@@ -57,13 +59,9 @@ class RefreshToken extends BaseRefreshToken
     }
 
     /**
-     * Set user
-     *
      * @param \Acts\CamdramSecurityBundle\Entity\User $user
-     *
-     * @return RefreshToken
      */
-    public function setUser(UserInterface $user = null)
+    public function setUser(UserInterface $user = null): self
     {
         $this->user = $user;
 
@@ -71,8 +69,6 @@ class RefreshToken extends BaseRefreshToken
     }
 
     /**
-     * Get user
-     *
      * @return \Acts\CamdramSecurityBundle\Entity\User
      */
     public function getUser()

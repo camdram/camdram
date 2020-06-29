@@ -7,6 +7,9 @@ use Doctrine\ORM\EntityRepository;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
+/**
+ * @extends EntityRepository<User>
+ */
 class UserRepository extends EntityRepository
 {
 

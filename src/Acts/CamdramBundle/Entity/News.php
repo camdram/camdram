@@ -21,20 +21,20 @@ class News
      */
     private $id;
 
-    /** @var Entity
+    /** @var Society|null
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="news")
      * @ORM\JoinColumn(name="society_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
     private $society;
 
-    /** @var Entity
+    /** @var Venue|null
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="news")
      * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      */
     private $venue;
 
     /**
-     * @var int
+     * @var ?string
      *
      * @ORM\Column(name="remote_id", type="string", length=255, nullable=true)
      */
@@ -48,14 +48,14 @@ class News
     private $source;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
      */
     private $picture;
 
     /**
-     * @var Name
+     * @var string
      *
      * @ORM\Column(name="body", type="text")
      */
@@ -82,13 +82,9 @@ class News
     }
 
     /**
-     * Set remote_id
-     *
      * @param string $remoteId
-     *
-     * @return News
      */
-    public function setRemoteId($remoteId)
+    public function setRemoteId($remoteId): self
     {
         $this->remote_id = (string) $remoteId;
 
@@ -96,8 +92,6 @@ class News
     }
 
     /**
-     * Get remote_id
-     *
      * @return string
      */
     public function getRemoteId()

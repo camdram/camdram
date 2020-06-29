@@ -3,6 +3,7 @@
 namespace Acts\CamdramSecurityBundle\EventListener;
 
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
+use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Service\EmailDispatcher;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
@@ -32,7 +33,7 @@ class UserListener
      */
     public function postPersist(User $user, LifecycleEventArgs $event)
     {
-        $pending_aces = $this->entityManager->getRepository('ActsCamdramSecurityBundle:PendingAccess')
+        $pending_aces = $this->entityManager->getRepository(PendingAccess::class)
                             ->findByEmail($user->getEmail());
         foreach ($pending_aces as $pending) {
             $ace = new AccessControlEntry();

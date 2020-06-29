@@ -38,7 +38,7 @@ class MapLocation
     }
 
     /**
-     * @param $latitude
+     * @param float $latitude
      */
     public function setLatitude($latitude)
     {
@@ -54,7 +54,7 @@ class MapLocation
     }
 
     /**
-     * @param $latitude
+     * @param float $longitude
      */
     public function setLongitude($longitude)
     {
@@ -62,8 +62,8 @@ class MapLocation
     }
 
     /**
-     * @param $latitude
-     * @param $longitude
+     * @param float $latitude
+     * @param float $longitude
      */
     public function __construct($latitude = null, $longitude = null)
     {
