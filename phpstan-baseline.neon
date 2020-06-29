@@ -1,0 +1,47 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method DOMNode\\:\\:setAttribute\\(\\)\\.$#"
+			count: 1
+			path: src/Acts/CamdramApiBundle/Serializer/XmlEventSubscriber.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<Acts\\\\CamdramBundle\\\\Entity\\\\WeekName\\>\\:\\:createQueryBuilder\\(\\)\\.$#"
+			count: 2
+			path: src/Acts/CamdramBundle/DataFixtures/TimePeriodFixtures.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/DependencyInjection/Configuration.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getUnitOfWork\\(\\)\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/EventListener/ShowListener.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<mixed\\>\\:\\:findOneByName\\(\\)\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Form/Type/EntitySearchType.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getUnitOfWork\\(\\)\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Service/SlugHandler.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\:\\:getResourceOwnerName\\(\\)\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/EventListener/LastLoginTimeListener.php
+
+		-
+			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<T\\>\\:\\:createQueryBuilder\\(\\)\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Security/Acl/AclProvider.php
+
+		-
+			message: "#^Variable \\$ptags might not be defined\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Security/RavenResourceOwner.php
+
