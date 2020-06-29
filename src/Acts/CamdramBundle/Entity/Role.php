@@ -34,7 +34,7 @@ class Role
     /**
      * @var int
      *
-     * @ORM\Column(name="sid", type="integer", nullable=true)
+     * @ORM\Column(name="sid", type="integer", nullable=false)
      */
     private $showId;
 

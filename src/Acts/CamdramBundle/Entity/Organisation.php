@@ -2,7 +2,6 @@
 
 namespace Acts\CamdramBundle\Entity;
 
-use Acts\CamdramBundle\Search\SearchableInterface;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
 /**

@@ -156,7 +156,7 @@ class Venue extends Organisation implements VenueInterface
     private $news;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection<Application>
+     * @var \Doctrine\Common\Collections\Collection<Application>
      *
      * @ORM\OneToMany(targetEntity="Application", mappedBy="venue")
      */

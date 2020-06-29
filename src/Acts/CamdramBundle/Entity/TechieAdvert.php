@@ -44,7 +44,7 @@ class TechieAdvert
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="techie_adverts")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * })
      * @Gedmo\Versioned
      * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})

@@ -37,7 +37,7 @@ class Performance implements EventInterface
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="performances")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * })
      * @Gedmo\Versioned
      * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
@@ -209,18 +209,13 @@ class Performance implements EventInterface
         return $this->other_venue;
     }
 
-    /**
-     * Get venue_name
-     *
-     * @return string
-     */
-    public function getVenueName()
+    public function getVenueName(): ?string
     {
         if ($this->venue) {
             return $this->venue->getName();
         } elseif ($this->other_venue) {
             return $this->other_venue;
-        }
+        } else return null;
     }
 
     /**

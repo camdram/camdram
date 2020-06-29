@@ -2,7 +2,6 @@
 
 namespace Acts\CamdramBundle\EventListener;
 
-use Acts\CamdramBundle\Search\SearchableInterface;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;

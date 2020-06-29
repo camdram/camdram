@@ -2,7 +2,6 @@
 
 namespace Acts\CamdramBundle\Entity;
 
-use Acts\CamdramBundle\Search\SearchableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,7 +32,7 @@ class Person extends BaseEntity
     private $name;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Gedmo\Versioned
@@ -41,7 +40,7 @@ class Person extends BaseEntity
     private $description;
 
     /**
-     * @var Image
+     * @var ?Image
      *
      * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
@@ -85,7 +84,7 @@ class Person extends BaseEntity
     private $roles;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection<\Acts\CamdramSecurityBundle\Entity\User>
+     * @var \Doctrine\Common\Collections\Collection<\Acts\CamdramSecurityBundle\Entity\User>
      *
      * @ORM\OneToMany(targetEntity="\Acts\CamdramSecurityBundle\Entity\User", mappedBy="person")
      * @Serializer\Exclude
