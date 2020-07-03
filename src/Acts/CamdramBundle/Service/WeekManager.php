@@ -10,7 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class WeekManager
 {
+    /** @var \Acts\CamdramBundle\Entity\WeekNameRepository */
     private $weekRepository;
+    /** @var \Acts\CamdramBundle\Entity\TimePeriodRepository */
     private $periodRepository;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -19,7 +21,7 @@ class WeekManager
         $this->periodRepository = $entityManager->getRepository(TimePeriod::class);
     }
 
-    public function previousSunday(\DateTime $date)
+    public function previousSunday(\DateTime $date): \DateTime
     {
         //Rewind start date to previous Sunday at midnight
         $date = clone $date;
@@ -32,7 +34,7 @@ class WeekManager
         return $date;
     }
 
-    public function nextSunday(\DateTime $date)
+    public function nextSunday(\DateTime $date): \DateTime
     {
         //Move start date to next Sunday at midnight
         $date = clone $date;
@@ -45,7 +47,8 @@ class WeekManager
         return $date;
     }
 
-    public function findBetween(\DateTime $start_date, \DateTime $end_date)
+    /** @return array<string,Week> */
+    public function findBetween(\DateTime $start_date, \DateTime $end_date): array
     {
         $weeks = array();
 
@@ -67,7 +70,7 @@ class WeekManager
         return $weeks;
     }
 
-    public function findAt(\DateTime $date)
+    public function findAt(\DateTime $date): Week
     {
         $date = $this->previousSunday($date);
         if (($week_name = $this->weekRepository->findAt($date))) {
@@ -110,7 +113,7 @@ class WeekManager
         return $res;
     }
 
-    private function getWeekFromWeekName(WeekName $week_name)
+    private function getWeekFromWeekName(WeekName $week_name): Week
     {
         $week = new Week();
         $week->setStartAt($week_name->getStartAt());
@@ -123,7 +126,7 @@ class WeekManager
         return $week;
     }
 
-    private function getWeekFromDate(\DateTime $date)
+    private function getWeekFromDate(\DateTime $date): Week
     {
         $date = clone $date;
         $week = new Week();

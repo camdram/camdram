@@ -33,7 +33,7 @@ class EmailDispatcher
         $this->from_address = $adminEmail;
     }
 
-    public function sendRegistrationEmail(User $user, $token): void
+    public function sendRegistrationEmail(User $user, string $token): void
     {
         $message = (new \Swift_Message('Welcome to Camdram'))
             ->setFrom($this->from_address)
@@ -51,7 +51,7 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function resendEmailVerifyEmail(User $user, $token): void
+    public function resendEmailVerifyEmail(User $user, string $token): void
     {
         $message = (new \Swift_Message('Verify your email address'))
             ->setFrom($this->from_address)
@@ -69,7 +69,7 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function sendEmailVerifyEmail(User $user, $token): void
+    public function sendEmailVerifyEmail(User $user, string $token): void
     {
         $message = (new \Swift_Message('Verify your new email address'))
             ->setFrom($this->from_address)

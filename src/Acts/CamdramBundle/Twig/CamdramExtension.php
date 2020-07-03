@@ -17,8 +17,11 @@ use Twig\Extension\AbstractExtension;
  */
 class CamdramExtension extends AbstractExtension
 {
+    /** @var \Doctrine\Inflector\Inflector */
     private $inflector;
+    /** @var TextService */
     private $textService;
+    /** @var UrlGeneratorInterface */
     private $router;
 
     public function __construct(TextService $textService, UrlGeneratorInterface $router)
@@ -31,7 +34,7 @@ class CamdramExtension extends AbstractExtension
     /**
      * Defines the custom Twig filters
      *
-     * @return array
+     * @return array<\Twig\TwigFilter>
      */
     public function getFilters()
     {
@@ -48,6 +51,7 @@ class CamdramExtension extends AbstractExtension
         );
     }
 
+    /** @return array<\Twig\TwigFunction> */
     public function getFunctions()
     {
         return array(
@@ -108,6 +112,8 @@ class CamdramExtension extends AbstractExtension
 
     /**
      * Takes an array of scopes and returns a user-readable array
+     * @param string[] $scopes
+     * @return string[]
      */
     public function explainOAuthScopes($scopes): array
     {
@@ -147,6 +153,7 @@ class CamdramExtension extends AbstractExtension
      * Options:
      *  - innerhtml
      *  - innertext
+     * @param array<string,string> $options
      */
     public function link_entity(object $entity, array $options = []): string
     {
@@ -172,7 +179,7 @@ class CamdramExtension extends AbstractExtension
         return "<a href=\"$url\" $attrs>$content</a>";
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'camdram_extension';
     }
@@ -182,6 +189,7 @@ class CamdramExtension extends AbstractExtension
      * of hex colors which are accessible. E.g.
      * offer a contrast ratio of 3:1 and 4.5:1 against white, as defined at
      * WCAG 2.0 § 1.4.3 (https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast).
+     * @return array<string,string>
      */
     public function genWcagColors(string $hexColor): array
     {
@@ -213,6 +221,7 @@ class CamdramExtension extends AbstractExtension
         return $result;
     }
 
+    /** @param float[] $rgb */
     private static function rgbToLum(array $rgb): float {
         $RGB = [];
         for ($i = 0; $i < 3; $i++) {

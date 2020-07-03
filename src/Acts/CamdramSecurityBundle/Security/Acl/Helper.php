@@ -21,7 +21,7 @@ class Helper
         $this->aclProvider = $aclProvider;
     }
 
-    public function isGranted($attributes, $object = null, $fully_authenticated = true)
+    public function isGranted($attributes, $object = null, bool $fully_authenticated = true): bool
     {
         if ($fully_authenticated) {
             if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -32,7 +32,7 @@ class Helper
         return $this->authorizationChecker->isGranted($attributes, $object);
     }
 
-    public function ensureGranted($attributes, $object = null, $fully_authenticated = true): void
+    public function ensureGranted($attributes, $object = null, bool $fully_authenticated = true): void
     {
         if (false === $this->isGranted($attributes, $object, $fully_authenticated)) {
             throw new AccessDeniedException();

@@ -12,8 +12,10 @@ use Symfony\Component\Validator\Constraint;
  */
 class TechieAdvertExpiryValidator extends ConstraintValidator
 {
+    /** @var int */
     private $expiry_max_days;
 
+    /** @param int $expiry_max_days */
     public function __construct($expiry_max_days)
     {
         $this->expiry_max_days = $expiry_max_days;
