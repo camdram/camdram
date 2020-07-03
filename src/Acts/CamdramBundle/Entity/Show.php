@@ -745,7 +745,7 @@ class Show extends BaseEntity implements OwnableInterface
     /**
      * Get first performance time
      *
-     * @return \DateTime
+     * @return ?\DateTime
      */
     public function getStartAt()
     {
@@ -760,7 +760,7 @@ class Show extends BaseEntity implements OwnableInterface
     /**
      * Get last performance time
      *
-     * @return \DateTime
+     * @return ?\DateTime
      */
     public function getEndAt()
     {
@@ -840,7 +840,7 @@ class Show extends BaseEntity implements OwnableInterface
     /**
      * Get techie_adverts
      *
-     * @return TechieAdvert
+     * @return ?TechieAdvert
      * @Api\Link(route="get_techie", name="techie_advert", params={"identifier": "object.getSlug()"},
      *      targetType="techie_advert")
      */
@@ -1040,7 +1040,7 @@ class Show extends BaseEntity implements OwnableInterface
     /**
      * Get active applications
      *
-     * @return Application
+     * @return ?Application
      * @Api\Link(route="get_application", name="application", params={"identifier": "object.getSlug()"},
      *      targetType="application")
      */
@@ -1350,7 +1350,7 @@ class Show extends BaseEntity implements OwnableInterface
         return $ret;
     }
 
-    public static function getAceType()
+    public static function getAceType(): string
     {
         return 'show';
     }

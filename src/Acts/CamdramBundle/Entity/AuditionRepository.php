@@ -24,8 +24,7 @@ class AuditionRepository extends EntityRepository
      */
     public function findCurrentOrderedByNameDate(\DateTime $now)
     {
-        $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:Audition');
-        $qb = $query_res->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('a');
         $qb->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
             ->where('a.end_at >= :now')
             ->andWhere('s.authorised = true')

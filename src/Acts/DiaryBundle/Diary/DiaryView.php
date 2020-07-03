@@ -14,21 +14,22 @@ use Acts\DiaryBundle\Model\EventInterface;
 class DiaryView
 {
     /**
-     * @var array Array of Week objects, keyed of the Unix timestamp of each week's start time for easy sorting.
+     * @var array<Week> Array of Week objects, keyed of the Unix timestamp of each week's start time for easy sorting.
      */
     private $weeks = array();
 
     /**
-     * @var \DateTime The earliest date that may appear in the diary view
+     * @var ?\DateTime The earliest date that may appear in the diary view
      */
     private $start_date;
 
     /**
-     * @var \DateTime The latest date that may appear in the diary view
+     * @var ?\DateTime The latest date that may appear in the diary view
      */
     private $end_date;
 
-    public function getWeeks()
+    /** @return array<Week> */
+    public function getWeeks(): array
     {
         ksort($this->weeks);
 
@@ -61,10 +62,8 @@ class DiaryView
     /**
      * Add an event to the DiaryView. Works out the week(s) to which the event should be added. Multi-day events
      * may need to be added to multiple weeks if they cross a week boundary.
-     *
-     * @param EventInterface $event
      */
-    public function addEvent(EventInterface $event)
+    public function addEvent(EventInterface $event): void
     {
         //If it's a multi-day event, we may well need to display it in multiple weeks
         $week_start = Week::getWeekStart($event->getStartAt());
@@ -79,17 +78,16 @@ class DiaryView
 
     /**
      * A quick way of adding lots of events to the view
-     *
-     * @param array $events
+     * @param EventInterface[] $events
      */
-    public function addEvents(array $events)
+    public function addEvents(array $events): void
     {
         foreach ($events as $event) {
             $this->addEvent($event);
         }
     }
 
-    public function addLabel(Label $label)
+    public function addLabel(Label $label): void
     {
         if ($label->getType() == Label::TYPE_WEEK) {
             $this->getWeekForDate($label->getStartAt())->setLabel($label);
@@ -110,7 +108,8 @@ class DiaryView
         }
     }
 
-    public function addLabels(array $labels)
+    /** @param Label[] $labels */
+    public function addLabels(array $labels): void
     {
         foreach ($labels as $label) {
             $this->addLabel($label);
@@ -123,7 +122,7 @@ class DiaryView
      * @param \DateTime $start_date
      * @param \DateTime $end_date
      */
-    public function setDateRange(\DateTime $start_date, \DateTime $end_date)
+    public function setDateRange(\DateTime $start_date, \DateTime $end_date): void
     {
         $this->start_date = $start_date;
         $this->end_date = $end_date;

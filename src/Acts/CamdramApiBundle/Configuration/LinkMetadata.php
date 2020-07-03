@@ -15,7 +15,7 @@ class LinkMetadata
     private $property;
 
     /**
-     * @var string
+     * @var bool
      */
     private $embed;
 
@@ -67,7 +67,7 @@ class LinkMetadata
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function getEmbed()
     {
@@ -75,7 +75,7 @@ class LinkMetadata
     }
 
     /**
-     * @param string $embed
+     * @param bool $embed
      */
     public function setEmbed($embed)
     {

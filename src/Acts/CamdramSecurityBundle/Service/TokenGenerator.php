@@ -6,9 +6,10 @@ use Acts\CamdramSecurityBundle\Entity\User;
 
 class TokenGenerator
 {
+    /** @var string */
     private $secret;
 
-    public function __construct($appSecret)
+    public function __construct(string $appSecret)
     {
         $this->secret = $appSecret;
     }

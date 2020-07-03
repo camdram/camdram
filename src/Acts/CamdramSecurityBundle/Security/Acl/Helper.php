@@ -12,6 +12,7 @@ class Helper
      */
     private $authorizationChecker;
 
+    /** @var AclProvider */
     private $aclProvider;
 
     public function __construct(AuthorizationCheckerInterface $authorizationChecker, AclProvider $aclProvider)
@@ -31,7 +32,7 @@ class Helper
         return $this->authorizationChecker->isGranted($attributes, $object);
     }
 
-    public function ensureGranted($attributes, $object = null, $fully_authenticated = true)
+    public function ensureGranted($attributes, $object = null, $fully_authenticated = true): void
     {
         if (false === $this->isGranted($attributes, $object, $fully_authenticated)) {
             throw new AccessDeniedException();

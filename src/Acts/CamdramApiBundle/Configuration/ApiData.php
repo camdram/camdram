@@ -35,10 +35,7 @@ class ApiData
         $this->feed = $feed;
     }
 
-    /**
-     * @return LinkMetadata
-     */
-    public function getSelfLink()
+    public function getSelfLink(): ?LinkMetadata
     {
         return $this->selfLink;
     }

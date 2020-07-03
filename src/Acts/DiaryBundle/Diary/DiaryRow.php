@@ -13,10 +13,13 @@ class DiaryRow
      */
     const MAX_ROW_RANGE_MINUTES = 30;
 
+    /** @var array<DiaryItem> */
     private $items = array();
 
+    /** @var int|null */
     private $start_time;
 
+    /** @var \DateTime */
     private $start_date;
 
     public function __construct(\DateTime $start_at)
@@ -25,7 +28,7 @@ class DiaryRow
         $this->start_date->setTime(0, 0, 0);
     }
 
-    private function calculateIndex(\DateTime $date)
+    private function calculateIndex(\DateTime $date): int
     {
         $diff = $this->start_date->diff($date, false);
         $days = $diff->days;
@@ -83,7 +86,7 @@ class DiaryRow
         return $this->rangeIsFree($start_index, $end_index);
     }
 
-    public function addItem(DiaryItem $item)
+    public function addItem(DiaryItem $item): void
     {
         $this->items[$item->getStartIndex()] = $item;
 
@@ -94,7 +97,7 @@ class DiaryRow
         }
     }
 
-    public function addEvent(EventInterface $event)
+    public function addEvent(EventInterface $event): void
     {
         $item = new DiaryItem();
         $item->setEvent($event);
@@ -112,6 +115,7 @@ class DiaryRow
         }
     }
 
+    /** @return array<DiaryItem> */
     public function getItems()
     {
         ksort($this->items);
@@ -119,12 +123,12 @@ class DiaryRow
         return $this->items;
     }
 
-    public function getStartTime()
+    public function getStartTime(): ?int
     {
         return $this->start_time;
     }
 
-    public function getStartDate()
+    public function getStartDate(): \DateTime
     {
         return $this->start_date;
     }

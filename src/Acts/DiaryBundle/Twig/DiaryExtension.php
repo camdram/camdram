@@ -13,12 +13,12 @@ use Twig\Extension\AbstractExtension;
  */
 class DiaryExtension extends AbstractExtension
 {
-    public function getName()
+    public function getName(): string
     {
         return 'acts_diary';
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [new \Twig\TwigFunction('render_diary', [$this, 'renderDiary'],
             ['is_safe' => ['html'], 'needs_environment' => true])];

@@ -10,12 +10,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  */
 class ApiVoter implements VoterInterface
 {
-    public function supportsAttribute($attribute)
+    public function supportsAttribute($attribute): bool
     {
         return $attribute == 'ROLE_API';
     }
 
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return true;
     }

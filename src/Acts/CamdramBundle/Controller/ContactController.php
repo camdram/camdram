@@ -56,13 +56,13 @@ class ContactController extends AbstractController
     {
         switch ($type) {
             case 'show':
-                return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')
+                return $this->getDoctrine()->getRepository('\Acts\CamdramBundle\Entity\Show')
                     ->findOneBySlug($identifier);
             case 'society':
-                return $this->getDoctrine()->getRepository('ActsCamdramBundle:Society')
+                return $this->getDoctrine()->getRepository('\Acts\CamdramBundle\Entity\Society')
                 ->findOneBySlug($identifier);
             case 'venue':
-                return $this->getDoctrine()->getRepository('ActsCamdramBundle:Venue')
+                return $this->getDoctrine()->getRepository('\Acts\CamdramBundle\Entity\Venue')
                 ->findOneBySlug($identifier);
             default:
                 throw $this->createNotFoundException("No such entity type: $type.");

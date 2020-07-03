@@ -44,7 +44,7 @@ class AuditController extends AbstractController
             }
         }
 
-        $page = (int)($request->query->get('p', 1));
+        $page = (int)($request->query->get('p', '1'));
         $qb->setMaxResults(50);
         $qb->setFirstResult(50 * ($page - 1));
         $allqueries = $request->query->all();

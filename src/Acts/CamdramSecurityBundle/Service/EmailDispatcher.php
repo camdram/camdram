@@ -25,7 +25,7 @@ class EmailDispatcher
     /** @var string */
     private $from_address;
 
-    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, \Twig\Environment $twig, $adminEmail)
+    public function __construct(EntityManagerInterface $em, \Swift_Mailer $mailer, \Twig\Environment $twig, string $adminEmail)
     {
         $this->em = $em;
         $this->mailer = $mailer;
@@ -33,7 +33,7 @@ class EmailDispatcher
         $this->from_address = $adminEmail;
     }
 
-    public function sendRegistrationEmail(User $user, $token)
+    public function sendRegistrationEmail(User $user, $token): void
     {
         $message = (new \Swift_Message('Welcome to Camdram'))
             ->setFrom($this->from_address)
@@ -51,7 +51,7 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function resendEmailVerifyEmail(User $user, $token)
+    public function resendEmailVerifyEmail(User $user, $token): void
     {
         $message = (new \Swift_Message('Verify your email address'))
             ->setFrom($this->from_address)
@@ -69,7 +69,7 @@ class EmailDispatcher
         $this->mailer->send($message);
     }
 
-    public function sendEmailVerifyEmail(User $user, $token)
+    public function sendEmailVerifyEmail(User $user, $token): void
     {
         $message = (new \Swift_Message('Verify your new email address'))
             ->setFrom($this->from_address)
@@ -91,7 +91,7 @@ class EmailDispatcher
      * Send an email informing someone that they've been granted access to a
      * resource (show, society, or venue).
      */
-    public function sendAceEmail(AccessControlEntry $ace)
+    public function sendAceEmail(AccessControlEntry $ace): void
     {
         $message = (new \Swift_Message)
             ->setFrom($this->from_address)
@@ -129,7 +129,7 @@ class EmailDispatcher
      * Send an email informing someone that they've been granted access to a
      * resource (show, society, or venue).
      */
-    public function sendPendingAceEmail(PendingAccess $ace)
+    public function sendPendingAceEmail(PendingAccess $ace): void
     {
         $message = (new \Swift_Message)
             ->setFrom($this->from_address)
@@ -166,7 +166,7 @@ class EmailDispatcher
     /**
      * Request administrator privileges for a show
      */
-    public function sendShowAdminReqEmail(AccessControlEntry $ace)
+    public function sendShowAdminReqEmail(AccessControlEntry $ace): void
     {
         $show = $this->em->getRepository(Show::class)->findOneById($ace->getEntityId());
         $owners = $this->em->getRepository(User::class)

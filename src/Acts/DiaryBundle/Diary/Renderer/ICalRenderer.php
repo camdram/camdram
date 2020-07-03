@@ -22,7 +22,7 @@ class ICalRenderer
             $start_time = $event->getStartAt();
             $rrule = null;
 
-            if ($event->getStartAt()->format('Y-m-d' != $event->getRepeatUntil()->format('Y-m-d'))) {
+            if ($event->getStartAt()->format('Y-m-d') != $event->getRepeatUntil()->format('Y-m-d')) {
                 $last_start_time = new \DateTime($event->getRepeatUntil()->format('Y-m-d').' '.$event->getStartAt()->format('H:i:s'));
                 $rrule = 'FREQ=DAILY;UNTIL='.$last_start_time->format('Ymd\\THis\\Z');
             }

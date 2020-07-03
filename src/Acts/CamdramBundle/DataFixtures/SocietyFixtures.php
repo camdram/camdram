@@ -13,8 +13,6 @@ class SocietyFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        mt_srand(microtime(true));
-
         for ($i = 1; $i <= 10; $i++) {
             $society = new Society();
             $society->setName("Society $i");

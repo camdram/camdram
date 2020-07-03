@@ -18,6 +18,7 @@ use JMS\Serializer\SerializationContext;
 use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class XmlEventSubscriber implements EventSubscriberInterface
@@ -117,7 +118,7 @@ class XmlEventSubscriber implements EventSubscriberInterface
 
         $linkNode->setAttribute('id', $link->getName());
         $linkNode->setAttribute('rel', $link->getEntity());
-        $linkNode->setAttribute('href', $this->router->generate($link->getRoute(), $compiledParams, true));
+        $linkNode->setAttribute('href', $this->router->generate($link->getRoute(), $compiledParams, UrlGeneratorInterface::ABSOLUTE_PATH));
 
         return $linkNode;
     }

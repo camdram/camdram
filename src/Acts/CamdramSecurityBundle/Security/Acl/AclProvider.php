@@ -92,11 +92,11 @@ class AclProvider
 
     public function getOrganisationsByUser(User $user): array
     {
-        $socs = $this->entityManager->getRepository('ActsCamdramBundle:Society')->createQueryBuilder('s')
+        $socs = $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Society')->createQueryBuilder('s')
             ->where("EXISTS (SELECT ace FROM \\Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry ace ".
                     "WHERE ace.entityId = s.id AND ace.type = 'society' AND ace.user = :user)")
             ->setParameter('user', $user)->getQuery()->getResult();
-        $vens = $this->entityManager->getRepository('ActsCamdramBundle:Venue')->createQueryBuilder('v')
+        $vens = $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Venue')->createQueryBuilder('v')
             ->where("EXISTS (SELECT ace FROM \\Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry ace ".
                     "WHERE ace.entityId = v.id AND ace.type = 'venue' AND ace.user = :user)")
             ->setParameter('user', $user)->getQuery()->getResult();
@@ -179,7 +179,7 @@ class AclProvider
             $this->entityManager->flush();
         }
 
-        if ($entity->getAceType() == 'show') {
+        if ($entity instanceof Show) {
             /* Also remove any requests to be a show admin, if they existed. */
             $request = $ace_repo->findAceRequest($user, $entity);
             if ($request != null) {

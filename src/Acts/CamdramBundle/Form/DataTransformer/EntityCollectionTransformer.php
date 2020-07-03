@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class EntityCollectionTransformer implements DataTransformerInterface
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
@@ -29,7 +29,7 @@ class EntityCollectionTransformer implements DataTransformerInterface
     /**
      * @phpstan-param class-string<T> $repository_name
      */
-    public function __construct(EntityManager $em, $repository_name)
+    public function __construct(EntityManagerInterface $em, $repository_name)
     {
         $this->em = $em;
         $this->repository_name = $repository_name;

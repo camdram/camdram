@@ -33,7 +33,7 @@ class PeopleRemoveOrphanedCommand extends Command
     {
         $output->writeln('<info>Removing people with no associated user or role on a show</info>');
 
-        $people_res = $this->entityManager->getRepository('ActsCamdramBundle:Person');
+        $people_res = $this->entityManager->getRepository(Person::class);
         $query = $people_res->createQueryBuilder('p')
             ->leftJoin('p.roles', 'r')
             ->where('p.mapped_to is null')
@@ -50,7 +50,7 @@ class PeopleRemoveOrphanedCommand extends Command
 
     private function deletePerson(Person $person, OutputInterface $output)
     {
-        $people_res = $this->entityManager->getRepository('ActsCamdramBundle:Person');
+        $people_res = $this->entityManager->getRepository(Person::class);
 
         $mapped_people = $people_res->findBy(array('mapped_to' => $person));
         foreach ($mapped_people as $mapped_person) {

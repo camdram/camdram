@@ -23,7 +23,7 @@ class AccessControlEntryFixtures extends Fixture implements DependentFixtureInte
             $e = new AccessControlEntry();
             $e->setUser($this->getReference("adminuser[$i]"));
             $e->setGrantedBy($this->getReference('testuser1'));
-            $e->setEntityId('-1');
+            $e->setEntityId(-1);
             $e->setCreatedAt(new \DateTime());
             $e->setType('security');
             $manager->persist($e);

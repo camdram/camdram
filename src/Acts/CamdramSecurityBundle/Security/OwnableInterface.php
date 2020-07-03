@@ -4,7 +4,7 @@ namespace Acts\CamdramSecurityBundle\Security;
 
 interface OwnableInterface
 {
-    public function getId();
+    public function getId(): ?int;
 
-    public static function getAceType();
+    public static function getAceType(): string;
 }

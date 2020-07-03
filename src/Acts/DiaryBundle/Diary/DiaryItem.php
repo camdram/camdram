@@ -46,10 +46,7 @@ class DiaryItem
         return $this->event;
     }
 
-    /**
-     * @param EventInterface $event
-     */
-    public function setEvent(EventInterface $event)
+    public function setEvent(EventInterface $event): void
     {
         $this->event = $event;
     }
@@ -62,10 +59,7 @@ class DiaryItem
         return $this->start_at;
     }
 
-    /**
-     * @param \DateTime $start_at
-     */
-    public function setStartAt(\DateTime $start_at)
+    public function setStartAt(\DateTime $start_at): void
     {
         $this->start_at = $start_at;
     }
@@ -81,7 +75,7 @@ class DiaryItem
     /**
      * @param \DateTime $end_at
      */
-    public function setEndAt($end_at)
+    public function setEndAt($end_at): void
     {
         $this->end_at = $end_at;
     }
@@ -97,7 +91,7 @@ class DiaryItem
     /**
      * @param int $days
      */
-    public function setNumberOfDays($days)
+    public function setNumberOfDays($days): void
     {
         if ($days < 1 || $days > 7) {
             throw new \InvalidArgumentException(sprintf('%s is not a valid diary item number of days', $days));
@@ -121,7 +115,7 @@ class DiaryItem
         return $this->index + $this->num_days - 1;
     }
 
-    public function setStartIndex(int $index)
+    public function setStartIndex(int $index): void
     {
         if ($index < 0 || $index > 6) {
             throw new \InvalidArgumentException(sprintf('%s is not a valid diary item start index', $index));

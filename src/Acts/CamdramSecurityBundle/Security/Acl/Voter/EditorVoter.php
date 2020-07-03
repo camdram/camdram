@@ -39,7 +39,5 @@ class EditorVoter extends Voter
     {
         return TokenUtilities::isInteractiveRequest($token)
             && TokenUtilities::hasRole($token, 'ROLE_EDITOR');
-
-        return false;
     }
 }

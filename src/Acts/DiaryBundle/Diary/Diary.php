@@ -18,21 +18,21 @@ use JMS\Serializer\Annotation as Serializer;
 class Diary
 {
     /**
-     * @var array An array of the events that have been added to the Diary.
+     * @var array<EventInterface> An array of the events that have been added to the Diary.
      *
      * @Serializer\XmlList(inline = true, entry = "event")
      */
     private $events = array();
 
     /**
-     * @var array An array of week names and time periods relevant to the diary
+     * @var array<Label> An array of week names and time periods relevant to the diary
      *
      * @Serializer\XmlList(inline = true, entry = "label")
      */
     private $labels = array();
 
     /**
-     * @var \DateTime
+     * @var ?\DateTime
      *
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\Type("DateTime<'Y-m-d'>")
@@ -40,7 +40,7 @@ class Diary
     private $start_date;
 
     /**
-     * @var \DateTime
+     * @var ?\DateTime
      *
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\Type("DateTime<'Y-m-d'>")
@@ -49,20 +49,17 @@ class Diary
 
     /**
      * Add a single event to the diary
-     *
-     * @param EventInterface $event
      */
-    public function addEvent(EventInterface $event)
+    public function addEvent(EventInterface $event): void
     {
         $this->events[] = $event;
     }
 
     /**
      * A quick way of adding lots of events to the diary
-     *
-     * @param array $events
+     * @param array<EventInterface> $events
      */
-    public function addEvents(array $events)
+    public function addEvents(array $events): void
     {
         foreach ($events as $event) {
             $this->addEvent($event);
@@ -72,17 +69,14 @@ class Diary
     /**
      * Set the range of dates that the diary should display. Events or parts of multi-day events outside this range
      * will not be displayed. Only tested for ranges that are a whole number of weeks starting on Sunday.
-     *
-     * @param \DateTime $start_date
-     * @param \DateTime $end_date
      */
-    public function setDateRange(\DateTime $start_date, \DateTime $end_date)
+    public function setDateRange(\DateTime $start_date, \DateTime $end_date): void
     {
         $this->start_date = $start_date;
         $this->end_date = $end_date;
     }
 
-    public function addLabel($type, $text, \DateTime $start_at, \DateTime $end_at = null)
+    public function addLabel(string $type, string $text, \DateTime $start_at, \DateTime $end_at = null): void
     {
         $this->labels[] = new Label($type, $text, $start_at, $end_at);
     }
@@ -107,7 +101,7 @@ class Diary
     /**
      * Return all events in the diary
      *
-     * @return array
+     * @return array<EventInterface>
      */
     public function getEvents()
     {

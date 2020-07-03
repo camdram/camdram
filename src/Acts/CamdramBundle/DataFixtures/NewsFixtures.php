@@ -16,13 +16,11 @@ class NewsFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        mt_srand(microtime(true));
-
-        foreach ($manager->getRepository('ActsCamdramBundle:Society')->findAll() as $society)
+        foreach ($manager->getRepository('\Acts\CamdramBundle\Entity\Society')->findAll() as $society)
         {
             $this->generateForOrganisation($manager, $society);
         }
-        foreach ($manager->getRepository('ActsCamdramBundle:Venue')->findAll() as $venue)
+        foreach ($manager->getRepository('\Acts\CamdramBundle\Entity\Venue')->findAll() as $venue)
         {
             $this->generateForOrganisation($manager, $venue);
         }

@@ -16,7 +16,6 @@ class VenueFixtures extends Fixture
     {
         $file = __DIR__.'/../Resources/data/venues.yml';
         $data = Yaml::parse(file_get_contents($file));
-        mt_srand(microtime(true));
 
         foreach ($data as $item) {
             $venue = new Venue();

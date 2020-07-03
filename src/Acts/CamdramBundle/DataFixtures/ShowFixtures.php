@@ -56,7 +56,6 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $file = __DIR__.'/../Resources/data/shows.yml';
         $plays = Yaml::parse(file_get_contents($file));
         $max = count($plays) - 1;
-        mt_srand(microtime(true));
 
         $start_date = new \DateTime('-18 months');
         $end_date = new \DateTime('+18 months');

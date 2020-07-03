@@ -391,7 +391,7 @@ class Venue extends Organisation implements VenueInterface
         return $this->applications;
     }
 
-    public static function getAceType()
+    public static function getAceType(): string
     {
         return 'venue';
     }

@@ -67,7 +67,7 @@ class Event implements EventInterface
      *
      * @param string $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -75,7 +75,7 @@ class Event implements EventInterface
     /**
      * Set the event's venue
      */
-    public function setVenue(VenueInterface $venue = null)
+    public function setVenue(VenueInterface $venue = null): self
     {
         $this->venue = $venue;
         return $this;
@@ -110,7 +110,7 @@ class Event implements EventInterface
      *
      * @param \DateTime $startAt
      */
-    public function setStartAt(\DateTime $startAt)
+    public function setStartAt(\DateTime $startAt): void
     {
         $this->start_at = $startAt;
     }
@@ -128,7 +128,7 @@ class Event implements EventInterface
      *
      * @param \DateTime $endAt
      */
-    public function setEndAt(\DateTime $endAt)
+    public function setEndAt(\DateTime $endAt): void
     {
         $this->end_at = $endAt;
     }
@@ -146,12 +146,12 @@ class Event implements EventInterface
      *
      * @param \DateTime $repeatUntil
      */
-    public function setRepeatUntil(\DateTime $repeatUntil)
+    public function setRepeatUntil(\DateTime $repeatUntil): void
     {
         $this->repeat_until = $repeatUntil;
     }
 
-    public function setId(?int $id)
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
@@ -164,7 +164,7 @@ class Event implements EventInterface
     /**
      * @param \DateTime $updated_at
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt($updated_at): void
     {
         $this->updated_at = $updated_at;
     }
@@ -180,7 +180,7 @@ class Event implements EventInterface
     /**
      * @param null|string $description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }

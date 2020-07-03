@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\Performance;
+use Acts\CamdramBundle\Entity\TimePeriod;
 use Acts\CamdramBundle\Entity\Week;
 use Acts\CamdramBundle\Entity\WeekName;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,8 +15,8 @@ class WeekManager
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->weekRepository = $entityManager->getRepository('ActsCamdramBundle:WeekName');
-        $this->periodRepository = $entityManager->getRepository('ActsCamdramBundle:TimePeriod');
+        $this->weekRepository = $entityManager->getRepository(WeekName::class);
+        $this->periodRepository = $entityManager->getRepository(TimePeriod::class);
     }
 
     public function previousSunday(\DateTime $date)

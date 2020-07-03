@@ -168,7 +168,7 @@ class TextService
                 if ($char === ';') $state = 0;
                 break;
             case 3:   // <
-                if (ctype_alpha($char) || $char = '/') {
+                if (ctype_alpha($char) || $char == '/') {
                     $state = 4;
                 } else if ($char === '!') {
                     $state = 7;

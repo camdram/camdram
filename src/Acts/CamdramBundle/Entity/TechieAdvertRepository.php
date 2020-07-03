@@ -17,8 +17,7 @@ class TechieAdvertRepository extends EntityRepository
 {
     public function findNotExpiredOrderedByDateName(\DateTime $date)
     {
-        $query_res = $this->getEntityManager()->getRepository('ActsCamdramBundle:TechieAdvert');
-        $qb = $query_res->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('a');
         $query = $qb->leftJoin('a.show', 's')
             ->where('a.expiry > :expiry')
             ->andWhere('s.authorised = true')

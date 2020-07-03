@@ -46,7 +46,7 @@ class UserController extends AbstractController
     public function cgetAction(Request $request)
     {
         $repo = $this->getRepository();
-        $page = max(1, (int)($request->query->get('p', 1)));
+        $page = max(1, (int)($request->query->get('p', '1')));
         // Can't use :parameter notation so manually sanitizing the input.
         $sort  = preg_replace('/[^A-Za-z_]+/', '', $request->query->get('sort', 'id'));
         $order = ($request->query->get('order') == 'DESC') ? 'DESC' : 'ASC';

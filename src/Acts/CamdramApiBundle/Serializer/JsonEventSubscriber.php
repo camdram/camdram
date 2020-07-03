@@ -19,6 +19,7 @@ use JMS\Serializer\Metadata\StaticPropertyMetadata;
 use Symfony\Component\DependencyInjection\ExpressionLanguage;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class JsonEventSubscriber implements EventSubscriberInterface
@@ -105,6 +106,6 @@ class JsonEventSubscriber implements EventSubscriberInterface
         foreach ($link->getParams() as $key => $expr) {
             $compiledParams[$key] = $language->evaluate($expr, array('object' => $object));
         }
-        return $this->router->generate($link->getRoute(), $compiledParams, true);
+        return $this->router->generate($link->getRoute(), $compiledParams, UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 }

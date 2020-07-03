@@ -390,11 +390,10 @@ class Society extends Organisation
         return $this->applications;
     }
 
-    public static function getAceType()
+    public static function getAceType(): string
     {
         return 'society';
     }
-
 
     public function getEntityType(): string
     {

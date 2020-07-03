@@ -53,7 +53,7 @@ class CamdramUserProvider implements
         return $class === 'Acts\CamdramSecurityBundle\Entity\User';
     }
 
-    private function loadOrCreateExternalUser(UserResponseInterface $response)
+    private function loadOrCreateExternalUser(UserResponseInterface $response): ExternalUser
     {
         $service = $response->getResourceOwner()->getName();
         $username = $response->getUsername();
@@ -103,7 +103,7 @@ class CamdramUserProvider implements
         return $user;
     }
 
-    public function connect(UserInterface $user, UserResponseInterface $response)
+    public function connect(UserInterface $user, UserResponseInterface $response): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Expected a Camdram User, but got "%s".', get_class($user)));

@@ -31,7 +31,7 @@ class Label
     private $start_at;
 
     /**
-     * @var \DateTime The end time of the period this label refers to
+     * @var ?\DateTime The end time of the period this label refers to
      *
      * @Serializer\XmlElement(cdata=false)
      * @Serializer\Type("DateTime<'Y-m-d'>")
@@ -45,7 +45,7 @@ class Label
      */
     private $text;
 
-    public function __construct($type, $text, \DateTime $start_at, \DateTime $end_at = null)
+    public function __construct(string $type, string $text, \DateTime $start_at, \DateTime $end_at = null)
     {
         if ($type == self::TYPE_PERIOD && is_null($end_at)) {
             throw new \InvalidArgumentException('And end time must be specified for a period label');
@@ -57,74 +57,46 @@ class Label
         $this->end_at = $end_at;
     }
 
-    /**
-     * @param string $text
-     *
-     * @return $this
-     */
-    public function setText($text)
+    public function setText(string $text): self
     {
         $this->text = $text;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return $this
-     */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param \DateTime $end_at
-     */
-    public function setEndAt($end_at)
+    public function setEndAt(?\DateTime $end_at): void
     {
         $this->end_at = $end_at;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getEndAt()
+    public function getEndAt(): ?\DateTime
     {
         return $this->end_at;
     }
 
-    /**
-     * @param \DateTime $start_at
-     */
-    public function setStartAt($start_at)
+    public function setStartAt(\DateTime $start_at): void
     {
         $this->start_at = $start_at;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getStartAt()
+    public function getStartAt(): \DateTime
     {
         return $this->start_at;
     }

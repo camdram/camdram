@@ -16,6 +16,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
 {
     private $name;
 
+    /** @var HttpClient */
     private $httpClient;
 
     public function __construct(HttpClient $httpClient)
@@ -23,7 +24,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
         $this->httpClient = $httpClient;
     }
 
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -38,7 +39,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
         return false;
     }
 
-    public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())
+    public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array()): array
     {
         if (!$request->query->has('WLS-Response')) {
             throw new AuthenticationException('Raven: No WLS_Response in request');
@@ -169,7 +170,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
     /**
      * Validate RavenUserToken.
      *
-     * @param array $token Raven user token.
+     * @param array<mixed> $token Raven user token.
      * @return bool true if the token is valid, false otherwise.
      * @throws \Exception
      */
@@ -220,17 +221,14 @@ class RavenResourceOwner implements ResourceOwnerInterface
         switch ($result) {
             case 1:
                 return true;
-                break;
             case 0:
                 return false;
-                break;
             default:
                 throw new \Exception('OpenSSL error');
-                break;
         }
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return 'https://raven.cam.ac.uk/auth/authenticate.html';
     }
@@ -238,7 +236,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
     /**
      * {@inheritdoc}
      */
-    public function getCertificate()
+    public function getCertificate(): string
     {
         return '-----BEGIN CERTIFICATE-----
 MIIDrTCCAxagAwIBAgIBADANBgkqhkiG9w0BAQQFADCBnDELMAkGA1UEBhMCR0Ix

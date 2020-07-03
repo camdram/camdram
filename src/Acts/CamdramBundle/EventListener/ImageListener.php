@@ -55,11 +55,11 @@ class ImageListener
     {
         switch ($type) {
             case 'show':
-                return $this->entityManager->getRepository('ActsCamdramBundle:Show');
+                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Show');
             case 'society':
-                return $this->entityManager->getRepository('ActsCamdramBundle:Society');
+                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Society');
             case 'venue':
-                return $this->entityManager->getRepository('ActsCamdramBundle:Venue');
+                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Venue');
             default:
                 return null;
         }

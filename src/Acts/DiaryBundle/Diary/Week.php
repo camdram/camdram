@@ -13,7 +13,7 @@ use Acts\DiaryBundle\Model\EventInterface;
 class Week
 {
     /**
-     * @var array An array of DiaryRow objects, keyed on the row's time for easy sorting
+     * @var array<DiaryRow> An array of DiaryRow objects, keyed on the row's time for easy sorting
      */
     private $rows = array();
 
@@ -82,23 +82,18 @@ class Week
 
     /**
      * Returns whether this week intersects a given time range
-     *
-     * @param \DateTime $start
-     * @param \DateTime $end
-     *
-     * @return bool
      */
-    public function intersects(\DateTime $start, \DateTime $end)
+    public function intersects(\DateTime $start, \DateTime $end): bool
     {
         return $this->start <= $end && $start < $this->end;
     }
 
-    protected function createRow(EventInterface $event)
+    protected function createRow(EventInterface $event): DiaryRow
     {
         return new DiaryRow($this->getStartAt());
     }
 
-    public function addEvent(EventInterface $event)
+    public function addEvent(EventInterface $event): void
     {
         //First work out if there is a row that has free space for the event, and represents a sufficiently similar time
         foreach ($this->rows as $row) {
@@ -128,7 +123,7 @@ class Week
     }
 
     /**
-     * @return array The array of DiaryRow objects
+     * @return array<DiaryRow>
      */
     public function getRows()
     {
@@ -153,7 +148,7 @@ class Week
         return $this->end;
     }
 
-    public function setLabel(?Label $label)
+    public function setLabel(?Label $label): void
     {
         $this->label = $label;
     }
@@ -163,7 +158,7 @@ class Week
         return $this->label;
     }
 
-    public function setPeriodLabel(?Label $period_label)
+    public function setPeriodLabel(?Label $period_label): void
     {
         $this->period_label = $period_label;
     }
@@ -177,7 +172,7 @@ class Week
      * Returns a array of 7 dates, representing the date of each day in the week. Used by the template to output the
      * column headers
      *
-     * @return array
+     * @return array<\DateTime>
      */
     public function getHeaderDates()
     {
