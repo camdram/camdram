@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * Controller for REST actions for venues. Inherits from AbstractRestController.
  * @Route("/venues")
+ * @extends OrganisationController<Venue>
  */
 class VenueController extends OrganisationController
 {
@@ -24,13 +25,6 @@ class VenueController extends OrganisationController
     protected $type = 'venue';
 
     protected $type_plural = 'venues';
-
-    protected $search_index = 'venue';
-
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getManager()->getRepository(Venue::class);
-    }
 
     protected function getForm($venue = null, $method = 'POST')
     {
@@ -57,7 +51,6 @@ class VenueController extends OrganisationController
      */
     public function getByIdAction(Request $request, $id)
     {
-        $this->checkAuthenticated();
         $venue = $this->getRepository()->findOneById($id);
 
         if (!$venue)

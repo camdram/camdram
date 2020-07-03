@@ -3,9 +3,11 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Organisation common features
+ * @ORM\MappedSuperclass
  */
 abstract class Organisation extends BaseEntity implements OwnableInterface
 {

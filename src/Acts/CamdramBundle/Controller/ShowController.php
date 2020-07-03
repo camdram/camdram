@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * Controller for REST actions for shows. Inherits from AbstractRestController.
  * @Route("/shows")
+ * @extends AbstractRestController<Show>
  */
 class ShowController extends AbstractRestController
 {
@@ -28,11 +29,6 @@ class ShowController extends AbstractRestController
     protected $type = 'show';
 
     protected $type_plural = 'shows';
-
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getManager()->getRepository(Show::class);
-    }
 
     protected function getForm($show = null, $method = 'POST')
     {
@@ -99,7 +95,6 @@ class ShowController extends AbstractRestController
      */
     public function getByIdAction(Request $request, $id)
     {
-        $this->checkAuthenticated();
         $show = $this->getRepository()->findOneById($id);
 
         if (!$show) {

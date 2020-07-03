@@ -21,10 +21,11 @@ use Psr\Log\LoggerInterface;
  *
  * This controller is used as a base for show, venue, society and people pages, containing common functionality for
  * viewing, searching, creating, editing and deleting editities.
+ * @template T of \Acts\CamdramBundle\Entity\BaseEntity
  */
 abstract class AbstractRestController extends AbstractFOSRestController
 {
-    /** @var string The fully qualified class name for the entity represented by the class */
+    /** @var class-string<T> The fully qualified class name for the entity represented by the class */
     protected $class;
 
     /** @var string the English word for the entity represented by the class  */
@@ -62,14 +63,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
     }
 
     /**
-     * Called on each page load. Default is to do nothing, but allows child classes to do stricter access checking
-     * (e.g. for user administration pages)
-     */
-    protected function checkAuthenticated()
-    {
-    }
-
-    /**
      * Returns the route parameters used to identity a particular entity. Used when generating URLs for redirects
      *
      * @return array the parameters to pass to the router
@@ -84,6 +77,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * parameter).
      *
      * @param string $identifier the identifier given (normally as part of the URL)
+     * @return T
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function getEntity($identifier): object
@@ -99,8 +93,12 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
     /**
      * Return the Doctrine repository corresponding to the entity type represented by the child class.
+     * @return \Doctrine\ORM\EntityRepository<T>
      */
-    abstract protected function getRepository();
+    protected function getRepository()
+    {
+        return $this->em->getRepository($this->class);
+    }
 
     /**
      * Return a Form type object corresponding to the entity type represented by the child class.
@@ -115,7 +113,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     public function newAction()
     {
-        $this->checkAuthenticated();
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
 
         $form = $this->getForm()->createView();
@@ -129,7 +126,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     public function postAction(Request $request)
     {
-        $this->checkAuthenticated();
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
 
         $form = $this->getForm();
@@ -154,7 +150,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     public function editAction($identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
@@ -170,7 +165,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     public function putAction(Request $request, $identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
@@ -193,7 +187,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     public function patchAction(Request $request, $identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
 
@@ -229,7 +222,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     public function deleteAction(Request $request, $identifier)
     {
-        $this->checkAuthenticated();
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
         $name = $entity->getName();
@@ -269,7 +261,6 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     public function doGetAction($entity, array $extraData = [])
     {
-        $this->checkAuthenticated();
         $this->get('camdram.security.acl.helper')->ensureGranted('VIEW', $entity, false);
 
         return $this->show($this->type.'/show.html.twig', $this->type, $entity, $extraData);

@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * Controller for REST actions for societies. Inherits from AbstractRestController.
  * @Route("/societies")
+ * @extends OrganisationController<Society>
  */
 class SocietyController extends OrganisationController
 {
@@ -24,13 +25,6 @@ class SocietyController extends OrganisationController
     protected $type = 'society';
 
     protected $type_plural = 'societies';
-
-    protected $search_index = 'society';
-
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getManager()->getRepository(Society::class);
-    }
 
     protected function getForm($society = null, $method = 'POST')
     {
@@ -57,7 +51,6 @@ class SocietyController extends OrganisationController
      */
     public function getByIdAction(Request $request, $id)
     {
-        $this->checkAuthenticated();
         $society = $this->getRepository()->findOneById($id);
 
         if (!$society)

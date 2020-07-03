@@ -8,8 +8,6 @@ use JMS\Serializer\Annotation as Serializer;
 /** @ORM\MappedSuperclass */
 abstract class BaseEntity {
     /**
-     * The show's ID
-     *
      * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)

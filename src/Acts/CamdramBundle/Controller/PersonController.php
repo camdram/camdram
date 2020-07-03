@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
  *
  * Controller for REST actions for people. Inherits from AbstractRestController.
  * @Route("/people")
+ * @extends AbstractRestController<Person>
  */
 class PersonController extends AbstractRestController
 {
@@ -24,13 +25,6 @@ class PersonController extends AbstractRestController
     protected $type = 'person';
 
     protected $type_plural = 'people';
-
-    protected $search_index = 'person';
-
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getManager()->getRepository(Person::class);
-    }
 
     protected function getForm($person = null, $method = 'POST')
     {
@@ -65,7 +59,6 @@ class PersonController extends AbstractRestController
      */
     public function getByIdAction(Request $request, $id)
     {
-        $this->checkAuthenticated();
         $person = $this->getRepository()->findOneById($id);
 
         if (!$person)

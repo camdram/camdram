@@ -26,6 +26,8 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class OrganisationController
  *
  * Abstract controller for REST actions for organisations. Inherits from AbstractRestController.
+ * @template T of \Acts\CamdramBundle\Entity\Organisation
+ * @extends AbstractRestController<T>
  */
 abstract class OrganisationController extends AbstractRestController
 {
@@ -233,7 +235,6 @@ abstract class OrganisationController extends AbstractRestController
      */
     public function deleteApplicationAction(Request $request, $identifier)
     {
-        $this->checkAuthenticated();
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $org);
 
