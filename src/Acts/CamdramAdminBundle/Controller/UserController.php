@@ -117,7 +117,7 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('get_user', ['identifier' => $form->getData()->getId()]);
         } else {
-            return $this->render('admin/user/edit.html.twig', ['form' => $form])
+            return $this->render('admin/user/edit.html.twig', ['form' => $form->createView()])
                 ->setStatusCode(400);
         }
     }

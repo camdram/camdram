@@ -38,6 +38,14 @@ class UserControllerTest extends RestTestCase
         $crawler3 = $this->click('Edit this user', $crawler2);
         $form = $crawler3->selectButton('Save')->form();
         $form->setValues([
+            'user[name]' => '', // Non-allowed value
+            'user[email]' => 'john.b.smith@example.com',
+        ]);
+
+        $crawler3 = $this->client->submit($form);
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $form = $crawler3->selectButton('Save')->form();
+        $form->setValues([
             'user[name]' => 'John B. Smith',
             'user[email]' => 'john.b.smith@example.com',
         ]);
