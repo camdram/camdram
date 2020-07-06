@@ -219,7 +219,7 @@ $(function() {
         if (data) diary.load_from_state(data);
     });
 
-    $(window).endlessScroll({callback: () => {
+    Camdram.endlessScroll({callback: () => {
         if (diary.diary.childNodes.length && !q('.diary-week[style*="transition"]')) {
             diary.load_next_weeks(6);
         }

@@ -89,19 +89,21 @@ function supportsDateInput() {
 }
 
 function showModalDialog(title, body) {
-    $(body).prepend($('<h5/>').text(title))
-           .prepend($('<a/>').attr('aria-label', 'Close dialog')
-                             .attr('role', 'button')
-                             .addClass('close-reveal-modal')
-                             .html('&#215;').click(hideModalDialog));
-
-    $('<div/>').attr('role', 'dialog').attr('aria-modal', 'true')
-               .addClass('reveal-modal')
-               .append(body).appendTo('body');
+    body.insertAdjacentHTML('afterbegin', '<a aria-label="Close dialog" role="button" class="close-reveal-modal">&#215;</a><h5></h5>');
+    body.children[0].addEventListener('click', hideModalDialog);
+    body.children[1].innerText = title;
+    const dialog = document.createElement('div');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.className = 'reveal-modal';
+    dialog.appendChild(body);
+    document.body.appendChild(dialog);
 }
 
 function hideModalDialog() {
-    $(".reveal-modal").remove();
+    for (const el of document.querySelectorAll(".reveal-modal")) {
+        el.parentNode.removeChild(el);
+    }
 }
 
 function createTabContainers(elementsToFix) {
@@ -171,13 +173,14 @@ Camdram.flashMessage = function (status, text) {
 };
 
 Camdram.scrollTo = function(el, options) {
-    options = $.extend({
+    options = {
         speed: 500,
         threshold: 0.7,
-        overshoot: 10
-    }, options);
+        overshoot: 10,
+        ...options
+    };
 
-    var top = $('html').scrollTop();
+    var top = window.pageYOffset;
     var max = $(el).offset().top + options.threshold * $(el).height();
     if (top > max) {
         $('html, body').animate({scrollTop: $(el).offset().top - options.overshoot}, options.speed);
@@ -213,10 +216,11 @@ $.fn.entitySearch = function(options) {
        return;
     }
 
-    options = $.extend({
+    options = {
         placeholder: 'start typing to search',
-        prefetch : true
-    }, options);
+        prefetch: true,
+        ...options
+    };
     var $self = $(this);
 
     var tokenize = function(str) {
@@ -262,12 +266,13 @@ $.fn.entitySearch = function(options) {
 };
 
 $.fn.entityCollection = function(options) {
-    options = $.extend({
+    options = {
         max_items: 100,
         min_items: 1,
         initialiseRow: function() {},
-        add_link_selector: '.add_link'
-    }, options);
+        add_link_selector: '.add_link',
+        ...options
+    };
 
     $(this).each(function() {
         var $self = $(this);
@@ -358,31 +363,30 @@ $.fn.deleteLink = function() {
         $(this).click(function(e) {
             e.preventDefault();
 
-            showModalDialog(dialogtitle,
-                (bodytext ? $('<p/>').text(bodytext).append($("<br>")) : $("<p/>"))
-                    .append($('<a/>').addClass('button').text('Yes').click(action))
-                    .append(' ')
-                    .append($('<a/>').addClass('button').text('No').click(hideModalDialog))
-                );
+            const dialogBody = document.createElement('p');
+            if (bodytext) dialogBody.innerText = bodytext + '\n';
+            dialogBody.insertAdjacentHTML('beforeend', '<a class="button">Yes</a>');
+            dialogBody.lastElementChild.addEventListener('click', action);
+            dialogBody.insertAdjacentHTML('beforeend', ' <a class="button">No</a>');
+            dialogBody.lastElementChild.addEventListener('click', hideModalDialog);
+
+            showModalDialog(dialogtitle, dialogBody);
         });
     });
 };
 
-$.fn.endlessScroll = function(options) {
-    options = $.extend({
+Camdram.endlessScroll = function(options) {
+    options = {
         distance: 500,
         interval: 200,
-        callback: function() {}
-    }, options);
+        callback: function() {},
+        ...options
+    };
 
-    var $window = $(window),
-        $document = $(document),
-        $self = $(this);
-
-    var checkScrollPosition = function() {
-        var top = $document.height() - $window.height() - options.distance;
-        if ($window.scrollTop() >= top) {
-            options.callback.apply($self);
+    const checkScrollPosition = function() {
+        if (window.pageYOffset + window.innerHeight +
+            options.distance >= document.body.scrollHeight) {
+            options.callback.apply(this);
         }
     };
 
@@ -409,36 +413,36 @@ Dropzone.options.imageUpload = {
     dictDefaultMessage: 'Click to upload image',
     previewTemplate: '<div class="dz-preview dz-file-preview">'
         + '<div class="dz-details">'
-        + '<div class="dz-filename alert-box round">Uploading <span data-dz-name></span></div>'
+        + '<div class="dz-filename">Uploading <span data-dz-name></span></div>'
         + '<div class="dz-size" data-dz-size></div>'
         + '<img data-dz-thumbnail />'
         + '</div>'
         + ' <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>'
         + '</div>',
     init: function() {
-        var msgDiv = Dropzone.createElement('<div/>');
-        msgDiv.className = 'hidden';
-        this.element.append(msgDiv);
+        const msgDiv = document.createElement('div');
+        msgDiv.style.display = 'none';
+        this.element.appendChild(msgDiv);
 
         this.on('error', function(file, errorMessage, blah) {
             this.removeAllFiles();
 
-            var errorText = 'Error uploading "' + file.name + '"';
+            let errorText = 'Error uploading "' + file.name + '"';
 
             if (typeof errorMessage == 'string') {
-                errorText += ':<br />' + errorMessage;
+                errorText += ':\n' + errorMessage;
             } else if (typeof errorMessage.error == 'string') {
-              errorText += ':<br />' + errorMessage.error;
+                errorText += ':\n' + errorMessage.error;
             }
-            msgDiv.innerHTML = errorText;
-            msgDiv.className = 'alert-box alert round';
+            msgDiv.innerText = errorText;
+            msgDiv.style.display = null;
         }).on('addedfile', function() {
-            msgDiv.className = 'hidden';
-            msgDiv.innerHTML = '';
+            msgDiv.style.display = 'none';
+            msgDiv.innerText = '';
         }).on('success', function(file) {
             this.destroy();
-            msgDiv.innerTest = `“${file.name}” uploaded\nReloading page...`;
-            msgDiv.className = 'alert-box success round';
+            msgDiv.innerText = `“${file.name}” uploaded\nReloading page...`;
+            msgDiv.style.display = null;
             location.reload();
         }).on("maxfilesexceeded", function(file) {
             this.removeFile(file);
