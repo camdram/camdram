@@ -48,6 +48,9 @@ abstract class OrganisationController extends AbstractRestController
         );
     }
 
+    /**
+     * @Route("/{identifier}/news.{_format}", format="html", methods={"GET"})
+     */
     public function getNewsAction($identifier)
     {
         $org = $this->getEntity($identifier);
