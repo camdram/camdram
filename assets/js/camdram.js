@@ -116,11 +116,12 @@ function createTabContainers(elementsToFix) {
 
 // This function is called on the document later, but also
 // on extra elements as they are added to the page.
-function fixHtml(elementsToFix){
-    $('.news_media', elementsToFix).newsFeedMedia();
-    $('.button-destructive').deleteLink();
+function fixHtml(elementsToFix) {
+    for (const link of elementsToFix.querySelectorAll('.button-destructive')) {
+        Camdram.makeLinkSafetyDialog(link);
+    }
     $(elementsToFix).entitySearch({auto: 1});
-    createTabContainers();
+    createTabContainers(elementsToFix);
 
     if (!supportsDateInput()) {
         // Inject custom datepicker on desktops
@@ -133,30 +134,6 @@ function fixHtml(elementsToFix){
             $('head').append($('<link rel="stylesheet" href="/jquery-ui.custom.css" type="text/css" id="jquery-ui-theme">'));
         }
     }
-
-    $('.dropdown-link', elementsToFix).each(function() {
-        var $link = $(this);
-        var $dropdown = $('.topbar-dropdown', $link);
-        $dropdown.hide();
-        var hideEnabled = true;
-
-        $link.mouseenter(function() {
-            $dropdown.css({
-                'position': 'absolute',
-                'top': $link.offset().top + $link.height(),
-                'left': $link.offset().left + $link.outerWidth() - $dropdown.outerWidth()
-            }).show();
-            $dropdown.show();
-        }).mouseleave(function() {
-            if (hideEnabled) $dropdown.hide();
-        });
-        $('input', $dropdown).bind('invalid',function() {
-            hideEnabled = false;
-            window.setTimeout(function() {
-                hideEnabled = true;
-            }, 200);
-        });
-    });
 
     $('.flash-messages p').delay(2500).slideUp(300, function() {
         if (this.parentNode) this.parentNode.removeChild(this);
@@ -185,19 +162,6 @@ Camdram.scrollTo = function(el, options) {
     if (top > max) {
         $('html, body').animate({scrollTop: $(el).offset().top - options.overshoot}, options.speed);
     }
-};
-
-$.fn.newsFeedMedia = function() {
-    this.each(function() {
-        var $media = $(this);
-        var $img = $media.parents('.news_link').find('img');
-        var $panel = $media.parents('.news_link');
-        $media = $media.remove().show();
-        $img.addClass('has_media')
-            .click(function() {
-                $panel.html($media);
-            });
-    });
 };
 
 $.fn.entitySearch = function(options) {
@@ -301,14 +265,15 @@ $.fn.entityCollection = function(options) {
             downarrows.last().css('visibility', 'hidden');
         };
 
-        $add_link.click(function(e) {
+        $add_link.click(e => {
             e.preventDefault();
-            var html = $self.attr('data-prototype').replace(/__name__/g, index);
-            var $row = $(html);
-            $self.append($row);
-            fixHtml($row);
+            let row = document.createElement('div');
+            row.innerHTML = this.dataset.prototype.replace(/__name__/g, index);
+            row = row.children[0];
+            this.appendChild(row);
+            fixHtml(row);
             update_links();
-            options.initialiseRow(index, $row);
+            options.initialiseRow(index, row);
             index++;
         });
 
@@ -337,41 +302,39 @@ $.fn.entityCollection = function(options) {
     });
 };
 
-$.fn.deleteLink = function() {
-    $(this).each(function() {
-        const dialogtitle = this.getAttribute('data-title');
-        const bodytext = this.getAttribute('data-text') || "";
-        let action;
-        if (this.tagName.toLowerCase() == "a") {
-            const href = this.getAttribute('href');
+Camdram.makeLinkSafetyDialog = function(link) {
+    const dialogtitle = link.getAttribute('data-title');
+    const bodytext = link.getAttribute('data-text') || "";
+    let action;
+    if (link.tagName.toLowerCase() == "a") {
+        const href = link.getAttribute('href');
 
-            // Remove href to prevent accidental ctrl/middle clicking
-            this.setAttribute('href', '#');
-            action = function() { document.location = href; };
-        } else if (this.tagName.toLowerCase() == "button") {
-            let form = this;
-            while (form.tagName.toLowerCase() != "form") form = form.parentNode;
-            // Inactivate the form.
-            form.setAttribute('data-oldaction', form.action);
-            form.action = '';
-            action = function() {
-                form.action = form.getAttribute('data-oldaction');
-                form.submit();
-            };
-        } else return;
+        // Remove href to prevent accidental ctrl/middle clicking
+        link.setAttribute('href', '#');
+        action = function() { document.location = href; };
+    } else if (link.tagName.toLowerCase() == "button") {
+        let form = link;
+        while (form.tagName.toLowerCase() != "form") form = form.parentNode;
+        // Inactivate the form.
+        form.setAttribute('data-oldaction', form.action);
+        form.action = '';
+        action = function() {
+            form.action = form.getAttribute('data-oldaction');
+            form.submit();
+        };
+    } else return;
 
-        $(this).click(function(e) {
-            e.preventDefault();
+    link.addEventListener('click', e => {
+        e.preventDefault();
 
-            const dialogBody = document.createElement('p');
-            if (bodytext) dialogBody.innerText = bodytext + '\n';
-            dialogBody.insertAdjacentHTML('beforeend', '<a class="button">Yes</a>');
-            dialogBody.lastElementChild.addEventListener('click', action);
-            dialogBody.insertAdjacentHTML('beforeend', ' <a class="button">No</a>');
-            dialogBody.lastElementChild.addEventListener('click', hideModalDialog);
+        const dialogBody = document.createElement('p');
+        if (bodytext) dialogBody.innerText = bodytext + '\n';
+        dialogBody.insertAdjacentHTML('beforeend', '<a class="button">Yes</a>');
+        dialogBody.lastElementChild.addEventListener('click', action);
+        dialogBody.insertAdjacentHTML('beforeend', ' <a class="button">No</a>');
+        dialogBody.lastElementChild.addEventListener('click', hideModalDialog);
 
-            showModalDialog(dialogtitle, dialogBody);
-        });
+        showModalDialog(dialogtitle, dialogBody);
     });
 };
 
@@ -394,7 +357,7 @@ Camdram.endlessScroll = function(options) {
 };
 
 $(function() {
-    fixHtml($(document));
+    fixHtml(document);
     doCookieConsent();
     document.body.addEventListener('keydown', e => {
         if (e.key == "Esc" || e.key == "Escape") hideModalDialog();
