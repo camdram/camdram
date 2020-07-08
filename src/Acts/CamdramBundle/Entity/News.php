@@ -3,12 +3,16 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
 /**
  * News
  *
  * @ORM\Table(name="acts_news")
  * @ORM\Entity(repositoryClass="NewsRepository")
+ * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("news")
  */
 class News
 {
@@ -18,18 +22,23 @@ class News
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Serializer\XmlAttribute
+     * @Serializer\Expose()
+     * @Serializer\Type("integer")
      */
     private $id;
 
     /** @var Society|null
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="news")
      * @ORM\JoinColumn(name="society_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @Api\Link(embed=true, route="get_society", params={"identifier": "object.getSociety().getSlug()"})
      */
     private $society;
 
     /** @var Venue|null
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="news")
      * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
+     * @Api\Link(embed=true, route="get_venue", params={"identifier": "object.getVenue().getSlug()"})
      */
     private $venue;
 
@@ -37,6 +46,7 @@ class News
      * @var ?string
      *
      * @ORM\Column(name="remote_id", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $remote_id;
 
@@ -51,6 +61,7 @@ class News
      * @var ?string
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
+     * @Serializer\Expose
      */
     private $picture;
 
@@ -58,16 +69,21 @@ class News
      * @var string
      *
      * @ORM\Column(name="body", type="text")
+     * @Serializer\Expose
      */
     private $body;
 
-    /** @var \DateTime
+    /**
+     * @var \DateTime
      * @ORM\Column(name="posted_at", type="datetime", nullable=false)
+     * @Serializer\Expose
      */
     private $posted_at;
 
-    /** @var \DateTime
+    /** 
+     * @var \DateTime
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @Serializer\Expose
      */
     private $created_at;
 
@@ -263,5 +279,29 @@ class News
             case 'facebook': return 'http://www.facebook.com/'.$this->getRemoteId();
             case 'twitter': return 'http://www.twitter.com/redirect/status/'.$this->getRemoteId();
         }
+    }
+
+    public function getSociety(): ?Society
+    {
+        return $this->society;
+    }
+
+    public function setSociety(?Society $society): self
+    {
+        $this->society = $society;
+
+        return $this;
+    }
+
+    public function getVenue(): ?Venue
+    {
+        return $this->venue;
+    }
+
+    public function setVenue(?Venue $venue): self
+    {
+        $this->venue = $venue;
+
+        return $this;
     }
 }

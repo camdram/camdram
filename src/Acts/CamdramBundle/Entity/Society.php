@@ -127,6 +127,7 @@ class Society extends Organisation
 
     /**
      * @ORM\OneToMany(targetEntity="News", mappedBy="society")
+     * @Api\Link(route="acts_camdram_society_getnews", params={"identifier": "object.getSlug()"})
      */
     private $news;
 

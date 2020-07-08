@@ -152,6 +152,7 @@ class Venue extends Organisation implements VenueInterface
 
     /**
      * @ORM\OneToMany(targetEntity="News", mappedBy="venue")
+     * @Api\Link(route="acts_camdram_venue_getnews", params={"identifier": "object.getSlug()"})
      */
     private $news;
 
