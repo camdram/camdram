@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

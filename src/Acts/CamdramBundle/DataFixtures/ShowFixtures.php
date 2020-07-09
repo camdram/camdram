@@ -24,6 +24,14 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
 
     private $people_ids = array();
 
+    private $design_roles = [
+        "Set Designer",
+        "Production Designer",
+        "Artistic Director",
+        "Supreme Artistic Overlord",
+        "Publicity Designer"
+    ];
+
     /** @var \Acts\CamdramBundle\Entity\PersonRepository $repo */
     private $person_repo;
 
@@ -183,6 +191,10 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             if (mt_rand(0, 1) == 1) {
                 $this->addTechieAdverts($manager, $show);
             }
+
+            if (mt_rand(0, 1) == 1) {
+                $this->addDesignerAdverts($manager, $show);
+            }
         }
         $manager->flush();
     }
@@ -300,10 +312,41 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             ->setExpiresAt(new \DateTime(mt_rand(-5, 15) . ' days'))
             ->setSummary('Further Info text ' . mt_rand(1, 100))
             ->setBody('Further Info text ' . mt_rand(1, 100))
-            ->setContactDetails('Random Contact ' . mt_rand(1, 100))
+            ->setContactDetails('Random Contact ' . mt_rand(1, 100) . ', random@example.com')
             ->setDisplay(mt_rand(0, 3) > 0)
             ->setShow($show);
         $manager->persist($application);
+    }
+
+    private function addDesignerAdverts(ObjectManager $manager, Show $show)
+    {
+        $num_roles_to_seek = mt_rand(1, count($this->design_roles) - 1);
+        $roles_to_seek = $this->design_roles;
+        shuffle($roles_to_seek);
+        $roles_to_seek = array_splice($roles_to_seek, 0, $num_roles_to_seek);
+
+        $advert = new Advert();
+        $advert->setTitle('Designer roles for '. $show->getName())
+            ->setType(Advert::TYPE_DESIGN)
+            ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
+            ->setContactDetails('Random Contact ' . mt_rand(1, 100) . ', random@example.com')
+            ->setDisplay(mt_rand(0, 4) > 0);
+
+        $expiry = new \DateTime(mt_rand(-15, 60) . ' days');
+        $advert->setExpiresAt($expiry);
+
+        $body = '';
+        if (mt_rand(0, 1) == 1) {
+            $body = 'Short Tech Extra';
+        } elseif (mt_rand(0, 1) == 1) {
+            $body = "A very very long tech extra because some people don't know when to stop. You know the type,"
+            . 'they will go on and on about the show hoping to persuade you to do it because it is exciting with'
+            . 'scaffolding and balloons and probably a raised forestage.';
+        }
+        $advert->setBody($body);
+        $advert->setShow($show);
+
+        $manager->persist($advert);
     }
 
     private function addTechieAdverts(ObjectManager $manager, Show $show)
@@ -311,33 +354,30 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $num_roles_to_seek = mt_rand(1, count($this->roles) - 1);
         $roles_to_seek = $this->roles;
         shuffle($roles_to_seek);
-
         $roles_to_seek = array_splice($roles_to_seek, 0, $num_roles_to_seek);
 
-        $techieAdvert = new Advert();
-        $techieAdvert->setTitle('Technical roles for '. $show->getName())
+        $advert = new Advert();
+        $advert->setTitle('Technical roles for '. $show->getName())
             ->setType(Advert::TYPE_TECHNICAL)
-            ->setSummary(implode("\n", $roles_to_seek))
+            ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
             ->setContactDetails('Random Contact ' . mt_rand(1, 100))
             ->setDisplay(mt_rand(0, 4) > 0);
-    
+
         $expiry = new \DateTime(mt_rand(-15, 60) . ' days');
-        $techieAdvert->setExpiresAt($expiry);
+        $advert->setExpiresAt($expiry);
 
-        $techExtra = '';
-
+        $body = '';
         if (mt_rand(0, 1) == 1) {
-            $techExtra = 'Short Tech Extra';
+            $body = 'Short Tech Extra';
         } elseif (mt_rand(0, 1) == 1) {
-            $techExtra = "A very very long tech extra because some people don't know when to stop. You know the type,"
+            $body = "A very very long tech extra because some people don't know when to stop. You know the type,"
             . 'they will go on and on about the show hoping to persuade you to do it because it is exciting with'
-            . 'scaffolding and balloons and probably a raised forestage';
+            . 'scaffolding and balloons and probably a raised forestage.';
         }
+        $advert->setBody($body);
+        $advert->setShow($show);
 
-        $techieAdvert->setBody($techExtra);
-        $techieAdvert->setShow($show);
-
-        $manager->persist($techieAdvert);
+        $manager->persist($advert);
     }
 
     private function addAuditions(ObjectManager $manager, Show $show)
@@ -351,7 +391,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
                 ->setDisplay(mt_rand(0, 3) > 0)
                 ->setShow($show);
         $manager->persist($advert);
-            
+
         $numAuditions = mt_rand(1, 3);
 
         for ($i = 0; $i < $numAuditions; $i++) {

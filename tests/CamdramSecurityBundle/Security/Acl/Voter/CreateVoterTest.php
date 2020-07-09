@@ -34,11 +34,11 @@ class CreateVoterTest extends TestCase
         ));
     }
 
-    public function testCreateTechieAdvert()
+    public function testCreateAdvert()
     {
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
-            \Acts\CamdramBundle\Entity\TechieAdvert::class,
+            \Acts\CamdramBundle\Entity\Advert::class,
             array('CREATE')
             ));
     }
@@ -48,15 +48,6 @@ class CreateVoterTest extends TestCase
         $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
             \Acts\CamdramBundle\Entity\Audition::class,
-            array('CREATE')
-            ));
-    }
-
-    public function testCreateApplication()
-    {
-        $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token,
-            \Acts\CamdramBundle\Entity\Application::class,
             array('CREATE')
             ));
     }

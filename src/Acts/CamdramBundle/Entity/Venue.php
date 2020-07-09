@@ -159,11 +159,7 @@ class Venue extends Organisation implements VenueInterface
     private $news;
 
     /**
-<<<<<<< HEAD
-     * @var \Doctrine\Common\Collections\Collection<Application>
-=======
-     * @var Advert[]
->>>>>>> Migrate techie_adverts and applications
+     * @var \Doctrine\Common\Collections\Collection<Advert>
      *
      * @ORM\OneToMany(targetEntity="Advert", mappedBy="venue")
      */
@@ -351,7 +347,6 @@ class Venue extends Organisation implements VenueInterface
     public function __construct()
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new ArrayCollection();
         $this->adverts = new ArrayCollection();
     }

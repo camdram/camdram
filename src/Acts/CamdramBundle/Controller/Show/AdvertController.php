@@ -105,7 +105,6 @@ class AdvertController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/shows/{identifier}/adverts/{advertId}/edit", methods={"GET"}, name="edit_show_advert")
      */
     public function editAction(Helper $helper, $identifier, $advertId)
@@ -121,7 +120,6 @@ class AdvertController extends AbstractFOSRestController
     }
 
     /**
-     * @param $identifier
      * @Route("/shows/{identifier}/adverts/{advertId}", methods={"PUT"}, name="put_show_advert")
      */
     public function putAuditionsAction(Request $request, $identifier, $advertId)

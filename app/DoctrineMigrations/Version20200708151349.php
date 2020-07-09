@@ -31,7 +31,7 @@ final class Version20200708151349 extends AbstractMigration
                             SET contact_details = a.location WHERE a.nonscheduled = 1');
         $this->addSql('UPDATE acts_adverts AS v SET expires_at = (SELECT MAX(end_at) FROM acts_auditions AS a WHERE a.showid = v.id)');
 
-        $this->addSql('ALTER TABLE acts_auditions DROP display, DROP nonscheduled, CHANGE showid advert_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE acts_auditions DROP display, DROP nonscheduled, CHANGE showid advert_id INT NOT NULL');
         $this->addSql('ALTER TABLE acts_auditions ADD CONSTRAINT FK_BFECDAF7D07ECCB6 FOREIGN KEY (advert_id) REFERENCES acts_adverts (id) ON DELETE CASCADE');
         $this->addSql('CREATE INDEX IDX_BFECDAF7D07ECCB6 ON acts_auditions (advert_id)');
         $this->addSql('ALTER TABLE acts_shows DROP techsend, DROP actorsend, DROP audextra, DROP entryexpiry');

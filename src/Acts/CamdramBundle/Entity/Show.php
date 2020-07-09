@@ -697,14 +697,9 @@ class Show extends BaseEntity implements OwnableInterface
         return $this;
     }
 
-    /**
-     * Remove advert
-     *
-     * @param \Acts\CamdramBundle\Entity\Audition $auditions
-     */
     public function removeAdvert(\Acts\CamdramBundle\Entity\Advert $advert)
     {
-        $this->advert->removeElement($advert);
+        $this->adverts->removeElement($advert);
     }
 
     /**

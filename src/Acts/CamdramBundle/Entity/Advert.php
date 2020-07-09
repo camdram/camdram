@@ -48,7 +48,7 @@ class Advert
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="type", type="string", length=255, nullable=false)
      * @Serializer\Expose
      */
@@ -71,7 +71,7 @@ class Advert
 
     /**
      * @var bool
-     * 
+     *
      * @ORM\Column(name="display", type="boolean", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
@@ -98,7 +98,7 @@ class Advert
 
     /**
      * @var \DateTimeInterface
-     * 
+     *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="create")
      * @Serializer\Expose
@@ -108,7 +108,7 @@ class Advert
 
     /**
      * @var \DateTimeInterface
-     * 
+     *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="update")
      * @Serializer\Expose
@@ -118,14 +118,14 @@ class Advert
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="contact_details", type="string", length=255, nullable=false)
      * @Serializer\Expose
      */
     private $contactDetails;
 
     /**
-     * @var Show
+     * @var ?Show
      *
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="adverts")
      * @ORM\JoinColumns({
@@ -136,9 +136,9 @@ class Advert
      */
     private $show;
 
-    /** 
-     * @var Society
-     * 
+    /**
+     * @var ?Society
+     *
      * @ORM\ManyToOne(targetEntity="Society", inversedBy="adverts")
      * @ORM\JoinColumn(name="society_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      * @Gedmo\Versioned
@@ -146,9 +146,9 @@ class Advert
      */
     private $society;
 
-    /** 
-     * @var Venue
-     * 
+    /**
+     * @var ?Venue
+     *
      * @ORM\ManyToOne(targetEntity="Venue", inversedBy="adverts")
      * @ORM\JoinColumn(name="venue_id", referencedColumnName="id", onDelete="CASCADE", nullable=true)
      * @Gedmo\Versioned
@@ -157,7 +157,7 @@ class Advert
     private $venue;
 
      /**
-     * @var array
+     * @var Collection<Audition>
      *
      * @ORM\OneToMany(targetEntity="Audition", mappedBy="advert", cascade={"all"}, orphanRemoval=true)
      * @Serializer\Expose

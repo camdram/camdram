@@ -70,15 +70,11 @@ class Audition implements EventInterface
     private $location;
 
     /**
-<<<<<<< HEAD
-     * @var ?Show
-=======
      * @var Advert
->>>>>>> Create Advert entity and migrate data
      *
      * @ORM\ManyToOne(targetEntity="Advert", inversedBy="auditions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="advert_id", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="advert_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * })
      * @Gedmo\Versioned
      */
@@ -201,7 +197,7 @@ class Audition implements EventInterface
      *
      * @return Advert
      */
-    public function setAdvert($advert = null)
+    public function setAdvert($advert)
     {
         $this->advert = $advert;
 
