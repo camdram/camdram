@@ -77,7 +77,7 @@
         </ul>
     </div>
 
-    <p>{{ advert.summary | camdram_markdown }}</p>
+    <p>{{ advert.summary }}</p>
     <ul>
     {%- for audition in advert.auditions -%}
         <li>{{ audition.dateString }}, {{ audition.location }}</li>

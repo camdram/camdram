@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% set current_navigation_id = 'vacancies' %}
-{% block title %}New Auditions Advert{% endblock %}
+{% block title %}New Advert{% endblock %}
 
 {% block body %}
 
@@ -16,7 +16,6 @@
         You can add one or more audition sessions (if applicable) and/or 
         leave contact details for people to get in touch.
     </p>
-    <p>{{ include('markdown_notice.html.twig', { thing: 'advertisement' }) }}</p>
     <p>
         Please ensure you have your team members' permission <em>before</em> adding their contact
         details to the advert!
@@ -24,7 +23,7 @@
 </div>
 
 {{ form_start(form, {'action': path("post_show_advert", {identifier: show.slug} )}) }}
-{{ include('show/advert-form.html.twig') }}
+{{ include('advert/form.html.twig') }}
 {{ form_end(form) }}
 
 {% endblock %}

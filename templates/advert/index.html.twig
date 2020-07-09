@@ -19,7 +19,7 @@
                 <h5><a href="{{ path('get_venue', {identifier: a.venue.slug}) }}">{{ a.venue.name }}</a></h5>
             </div>
             {% endif %}
-            <p>{{ a.summary | camdram_markdown }}</p>
+            <p>{{ a.summary }}</p>
             <ul>
             {%- for audition in a.auditions -%}
                 <li>{{ audition.dateString }}, {{ audition.location }}</li>

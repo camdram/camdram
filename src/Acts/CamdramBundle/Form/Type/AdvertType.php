@@ -36,7 +36,10 @@ class AdvertType extends AbstractType
                 ],
             ])
             ->add('summary')
-            ->add('body')
+            ->add('body', TextareaType::class, [
+                'label' => 'Full details',
+                'attr' => ['class' => 'large'],
+            ])
             ->add('auditions', CollectionType::class, array(
                 'entry_type' => AuditionType::class,
                 'allow_add' => true,

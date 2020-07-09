@@ -25,7 +25,10 @@ class OrganisationAdvertType extends AbstractType
         $builder
             ->add('title')
             ->add('summary')
-            ->add('body')
+            ->add('body', TextareaType::class, [
+                'label' => 'Full details',
+                'attr' => ['class' => 'large'],
+            ])
             ->add('contactDetails')
             ->add('expiresAt', DateTimeType::class, [
                 'date_widget' => 'single_text',

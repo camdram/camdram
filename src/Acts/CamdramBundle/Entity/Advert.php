@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 
+use Acts\CamdramBundle\Validator\Constraints\AdvertExpiry;
 use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
 
@@ -16,11 +17,13 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *
  * @ORM\Table(name="acts_adverts")
  * @ORM\Entity(repositoryClass="AdvertRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @Api\Feed(name="Camdram.net - Vacancies", titleField="feed_title",
  *     description="Vacancies advertised for shows in Cambridge",
  *     template="advert/rss.html.twig")
  * @Serializer\XmlRoot("advert")
  * @Serializer\ExclusionPolicy("all")
+ * @AdvertExpiry()
  * @Gedmo\Loggable
  * @Api\Link(route="get_advert", params={"identifier": "object.getId()"})
  */
@@ -169,7 +172,7 @@ class Advert
     {
         $this->auditions = new ArrayCollection();
         $this->display = true;
-        $this->expiresAt = new \DateTime('+2 weeks');
+        $this->expiresAt = (new \DateTime('+2 weeks'))->setTime(0, 0, 0);
         $this->type = self::TYPE_ACTORS;
     }
 
@@ -366,6 +369,17 @@ class Advert
         $this->venue = $venue;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function updateAuditions()
+    {
+        if ($this->getType() != self::TYPE_ACTORS) {
+            $this->auditions->clear();
+        }
     }
 
 }

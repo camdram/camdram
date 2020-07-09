@@ -2,6 +2,13 @@
 
 {% block title %}Advert: {{ advert.title }}{% endblock %}
 
+{# Facebook open graph markup #}
+{% block opengraph %}
+    <meta property="og:url" content="{{ url('get_advert', {identifier: advert.id}) }}" />
+    <meta property="og:title" content="{{ advert.title }}" />
+    <meta property="og:description" content="{{ advert.summary | strip_new_lines | truncate(500) }}" />
+{% endblock %}
+
 {% block vacancies_body %}
     <div class="vacancies-panel">
         <h4>{{ advert.title }}</h4>
@@ -18,7 +25,7 @@
             <h5><a href="{{ path('get_venue', {identifier: advert.venue.slug}) }}">{{ advert.venue.name }}</a></h5>
         </div>
         {% endif %}
-        <p>{{ advert.summary | camdram_markdown }}</p>
+        <p>{{ advert.summary }}</p>
         <ul>
         {%- for audition in advert.auditions -%}
             <li>{{ audition.dateString }}, {{ audition.location }}</li>
