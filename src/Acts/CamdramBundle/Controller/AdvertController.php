@@ -68,8 +68,9 @@ class AdvertController extends AbstractFOSRestController
 
     /**
      * Backwards compatibility
-     * 
+     *
      * @Route("/vacancies/techies.{_format}", format="html", methods={"GET"})
+     * @Route("/vacancies/techies/{identifier}", methods={"GET"})
      */
     public function getTechiesAction(Request $request)
     {
@@ -81,8 +82,9 @@ class AdvertController extends AbstractFOSRestController
 
     /**
      * Backwards compatibility
-     * 
+     *
      * @Route("/vacancies/applications.{_format}", format="html", methods={"GET"})
+     * @Route("/vacancies/applications/{identifier}", methods={"GET"})
      */
     public function getApplicationsAction(Request $request)
     {

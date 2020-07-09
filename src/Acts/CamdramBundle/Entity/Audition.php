@@ -191,13 +191,9 @@ class Audition implements EventInterface
     }
 
     /**
-     * Set advert
-     *
      * @param \Acts\CamdramBundle\Entity\Advert $advert
-     *
-     * @return Advert
      */
-    public function setAdvert($advert)
+    public function setAdvert($advert): self
     {
         $this->advert = $advert;
 

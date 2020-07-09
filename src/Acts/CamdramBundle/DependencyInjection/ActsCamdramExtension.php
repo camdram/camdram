@@ -28,9 +28,6 @@ class ActsCamdramExtension extends Extension implements PrependExtensionInterfac
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->getDefinition('acts.camdram.listener.techie_advert')->addArgument($config['techies_advert_default_days']);
-        $container->getDefinition('acts.camdram.techie_advert_expiry_validator')->addArgument($config['techies_advert_max_days']);
-
         $dataDir = $container->getParameterBag()->resolveValue($config['data_dir']);
         if (!is_dir($dataDir) && false === @mkdir($dataDir, 0777, true)) {
             throw new \RuntimeException(sprintf('Could not create data directory "%s".', $dataDir));
