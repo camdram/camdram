@@ -24,7 +24,7 @@
 {% for advert in org.adverts %}
 <div class="vacancies-panel{% if not advert.visible %} hidden{% endif %}">
     <div class="split-header">
-        <h5><a href="{{ path('get_advert', {identifier: advert.id}) }}">{{ advert.title }}</a></h5>
+        <h5>{{ link_entity(advert) }}</h5>
         <ul>
             <li><a href="{{ path('acts_camdram_venue_editadvert', {identifier: org.slug, advertId: advert.id}) }}" class="button small">
                 <i class="fa fa-pencil"></i> Edit</a>

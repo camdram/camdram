@@ -99,7 +99,7 @@ class VacanciesTest extends WebTestCase
         $show = $this->createShow('Test Show', '2000-02-01');
         $advert = new Advert;
         $advert->setType(Advert::TYPE_ACTORS)
-            ->setTitle('blah')
+            ->setName('blah')
             ->setSummary('Lorem ipsum')
             ->setBody('Lorem ipsum')
             ->setContactDetails('foo@bar.com')
@@ -129,7 +129,7 @@ class VacanciesTest extends WebTestCase
 
         $techieAdvert = new Advert;
         $techieAdvert->setType(Advert::TYPE_TECHNICAL)
-            ->setTitle('Technical roles for test show')
+            ->setName('Technical roles for test show')
             ->setSummary("Technical Director\nLighting Designer")
             ->setBody('Lorem ipsum')
             ->setContactDetails('foo@bar.com')
@@ -155,7 +155,7 @@ class VacanciesTest extends WebTestCase
         $application = new Advert;
         $application
             ->setType(Advert::TYPE_APPLICATION)
-            ->setTitle('Applications for test show')
+            ->setName('Applications for test show')
             ->setSummary('Lorem ipsum')
             ->setBody('Lorem ipsum')
             ->setExpiresAt(new \DateTime('2000-01-15 15:00'))

@@ -1,17 +1,17 @@
 {% extends 'advert/layout.html.twig' %}
 
-{% block title %}Advert: {{ advert.title }}{% endblock %}
+{% block title %}Advert: {{ advert.name }}{% endblock %}
 
 {# Facebook open graph markup #}
 {% block opengraph %}
     <meta property="og:url" content="{{ url('get_advert', {identifier: advert.id}) }}" />
-    <meta property="og:title" content="{{ advert.title }}" />
+    <meta property="og:title" content="{{ advert.name }}" />
     <meta property="og:description" content="{{ advert.summary | strip_new_lines | truncate(500) }}" />
 {% endblock %}
 
 {% block vacancies_body %}
     <div class="vacancies-panel">
-        <h4>{{ advert.title }}</h4>
+        <h4>{{ advert.name }}</h4>
         {% if advert.show %}
         <div class="vacancies-show-panel">
             {%- include 'show/advert_header.html.twig' with {'show': advert.show} -%}

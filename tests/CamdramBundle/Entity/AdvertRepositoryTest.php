@@ -39,7 +39,7 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setExpiresAt(new \DateTime('2014-03-12'))
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -59,7 +59,7 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setExpiresAt(new \DateTime('2014-03-12'))
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -77,7 +77,7 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setExpiresAt(new \DateTime('2014-03-12 10:00'))
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -95,7 +95,7 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setExpiresAt(new \DateTime('2014-03-12 10:05'))
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -113,7 +113,7 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setExpiresAt(new \DateTime('2014-03-12'))
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -131,7 +131,7 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setExpiresAt(new \DateTime('2014-03-12'))
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -143,13 +143,13 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $this->assertEquals(1, count($res));
     }
 
-    public function testFindOneById()
+    public function testFindOneNonExpiredById()
     {
         $ad = new Advert();
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setExpiresAt(new \DateTime('2014-03-12'))
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -157,7 +157,9 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $this->em->persist($ad);
         $this->em->flush();
 
-        $show = $this->getRepository()->findOneById($ad->getId(), new \DateTime('2014-03-01'));
-        $this->assertInstanceOf(Advert::class, $show);
+        $result = $this->getRepository()->findOneNonExpiredById($ad->getId(), new \DateTime('2014-03-01'));
+        $this->assertInstanceOf(Advert::class, $result);
+        $result = $this->getRepository()->findOneNonExpiredById($ad->getId(), new \DateTime('2014-04-01'));
+        $this->assertNull($result);
     }
 }

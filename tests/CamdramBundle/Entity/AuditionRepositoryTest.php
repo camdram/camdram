@@ -27,7 +27,7 @@ class AuditionRepositoryTest extends RepositoryTestCase
 
 
         $this->advert = new Advert;
-        $this->advert->setTitle('New advert')
+        $this->advert->setName('New advert')
             ->setSummary('Lorem ipsum')
             ->setBody('Lorem ipsum')
             ->setContactDetails('foo@bar.com')

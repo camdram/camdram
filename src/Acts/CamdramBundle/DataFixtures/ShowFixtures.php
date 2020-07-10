@@ -308,7 +308,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
     {
         $application = new Advert();
         $application->setType(Advert::TYPE_APPLICATION)
-            ->setTitle('Random text ' . mt_rand(1, 100))
+            ->setName('Random text ' . mt_rand(1, 100))
             ->setExpiresAt(new \DateTime(mt_rand(-5, 15) . ' days'))
             ->setSummary('Further Info text ' . mt_rand(1, 100))
             ->setBody('Further Info text ' . mt_rand(1, 100))
@@ -326,7 +326,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $roles_to_seek = array_splice($roles_to_seek, 0, $num_roles_to_seek);
 
         $advert = new Advert();
-        $advert->setTitle('Designer roles for '. $show->getName())
+        $advert->setName('Designer roles for '. $show->getName())
             ->setType(Advert::TYPE_DESIGN)
             ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
             ->setContactDetails('Random Contact ' . mt_rand(1, 100) . ', random@example.com')
@@ -357,7 +357,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $roles_to_seek = array_splice($roles_to_seek, 0, $num_roles_to_seek);
 
         $advert = new Advert();
-        $advert->setTitle('Technical roles for '. $show->getName())
+        $advert->setName('Technical roles for '. $show->getName())
             ->setType(Advert::TYPE_TECHNICAL)
             ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
             ->setContactDetails('Random Contact ' . mt_rand(1, 100))
@@ -384,7 +384,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
     {
         $advert = new Advert();
         $advert->setType(Advert::TYPE_ACTORS);
-        $advert->setTitle('Auditions for '.$show->getName())
+        $advert->setName('Auditions for '.$show->getName())
                 ->setSummary('Audition details')
                 ->setBody("# Audition extra text #\nLorem ipsum")
                 ->setContactDetails('abc123@cam.ac.uk')

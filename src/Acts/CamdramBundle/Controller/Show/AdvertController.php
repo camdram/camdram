@@ -5,21 +5,27 @@ namespace Acts\CamdramBundle\Controller\Show;
 use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\AdvertType;
-use Acts\CamdramSecurityBundle\Security\Acl\Helper;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdvertController extends AbstractFOSRestController
+class AdvertController extends AbstractController
 {
-    protected function getShow($identifier)
+    private function getAndCheckShow($identifier): Show
     {
-        return $this->getDoctrine()->getRepository('ActsCamdramBundle:Show')->findOneBySlug($identifier);
+        $show = $this->getDoctrine()->getRepository(Show::class)->findOneBySlug($identifier);
+        if ($show == null) throw new NotFoundHttpException("That show does not exist.");
+        $this->denyAccessUnlessGranted('EDIT', $show);
+        return $show;
     }
 
-    protected function getEntity($identifier, $advertId)
+    private function getAndCheckAdvert($identifier, $advertId): Advert
     {
-        return $this->getDoctrine()->getRepository('ActsCamdramBundle:Advert')->findOneByShowAndId($identifier, $advertId);
+        $show = $this->getAndCheckShow($identifier);
+        $advert = $this->getDoctrine()->getRepository(Advert::class)->findOneBy(['show' => $show, 'id' => $advertId]);
+        if (!$advert) throw new NotFoundHttpException("That advert does not exist.");
+        return $advert;
     }
 
     /**
@@ -27,10 +33,8 @@ class AdvertController extends AbstractFOSRestController
      */
     public function cgetAction(Request $request, $identifier)
     {
-        $show = $this->getShow($identifier);
-
         return $this->render('show/adverts.html.twig', [
-            'show' => $show,
+            'show' => $this->getAndCheckShow($identifier),
         ]);
     }
 
@@ -39,8 +43,7 @@ class AdvertController extends AbstractFOSRestController
      */
     public function newAction(Request $request, $identifier)
     {
-        $show = $this->getShow($identifier);
-        $this->denyAccessUnlessGranted('EDIT', $show);
+        $show = $this->getAndCheckShow($identifier);
 
         $advert = new Advert();
         $advert->setShow($show);
@@ -57,8 +60,7 @@ class AdvertController extends AbstractFOSRestController
      */
     public function postAction(Request $request, $identifier)
     {
-        $show = $this->getShow($identifier);
-        $this->denyAccessUnlessGranted('EDIT', $show);
+        $show = $this->getAndCheckShow($identifier);
 
         $advert = new Advert();
         $advert->setShow($show);
@@ -83,8 +85,7 @@ class AdvertController extends AbstractFOSRestController
      */
     public function hideAction(Request $request, $identifier, $advertId)
     {
-        $advert = $this->getEntity($identifier, $advertId);
-        $this->denyAccessUnlessGranted('EDIT', $advert->getShow());
+        $advert = $this->getAndCheckAdvert($identifier, $advertId);
 
         $advert->setDisplay(false);
         $this->getDoctrine()->getManager()->flush();
@@ -96,8 +97,7 @@ class AdvertController extends AbstractFOSRestController
      */
     public function showAction(Request $request, $identifier, $advertId)
     {
-        $advert = $this->getEntity($identifier, $advertId);
-        $this->denyAccessUnlessGranted('EDIT', $advert->getShow());
+        $advert = $this->getAndCheckAdvert($identifier, $advertId);
 
         $advert->setDisplay(true);
         $this->getDoctrine()->getManager()->flush();
@@ -107,14 +107,13 @@ class AdvertController extends AbstractFOSRestController
     /**
      * @Route("/shows/{identifier}/adverts/{advertId}/edit", methods={"GET"}, name="edit_show_advert")
      */
-    public function editAction(Helper $helper, $identifier, $advertId)
+    public function editAction($identifier, $advertId)
     {
-        $advert = $this->getEntity($identifier, $advertId);
-        $this->denyAccessUnlessGranted('EDIT', $advert->getShow());
+        $advert = $this->getAndCheckAdvert($identifier, $advertId);
         $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
 
         return $this->render('show/advert-edit.html.twig', [
-            'advert' => $advert, 
+            'advert' => $advert,
             'form' => $form->createView()
         ]);
     }
@@ -124,8 +123,7 @@ class AdvertController extends AbstractFOSRestController
      */
     public function putAuditionsAction(Request $request, $identifier, $advertId)
     {
-        $advert = $this->getEntity($identifier, $advertId);
-        $this->denyAccessUnlessGranted('EDIT', $advert->getShow());
+        $advert = $this->getAndCheckAdvert($identifier, $advertId);
 
         $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -136,7 +134,7 @@ class AdvertController extends AbstractFOSRestController
             return $this->redirectToRoute('get_show_adverts', array('identifier' => $advert->getShow()->getSlug()));
         } else {
             return $this->render('show/advert-edit.html.twig', [
-                'advert' => $advert, 
+                'advert' => $advert,
                 'form' => $form->createView()
             ])->setStatusCode(400);
         }

@@ -2,7 +2,7 @@
 
 {% for advert in adverts %}
     <div class="vacancies-panel" >
-        <h5><a href="{{ path('get_advert', {identifier: advert.id}) }}">{{ advert.title }}</a></h5>
+        <h5>{{ link_entity(advert) }}</h5>
         <p>{{ advert.summary }}</p>
         <ul>
         {%- for audition in advert.auditions -%}

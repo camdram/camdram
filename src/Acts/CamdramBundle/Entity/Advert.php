@@ -47,7 +47,7 @@ class Advert
      * @Serializer\Expose
      * @Gedmo\Versioned
      */
-    private $title;
+    private $name;
 
     /**
      * @var string
@@ -110,7 +110,7 @@ class Advert
     private $createdAt;
 
     /**
-     * @var \DateTimeInterface
+     * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="update")
@@ -181,24 +181,24 @@ class Advert
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getExpiresAt(): ?\DateTimeInterface
+    public function getExpiresAt(): ?\DateTime
     {
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(\DateTimeInterface $expiresAt): self
+    public function setExpiresAt(\DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
 
@@ -286,7 +286,7 @@ class Advert
         if ($this->auditions->contains($audition)) {
             $this->auditions->removeElement($audition);
             // set the owning side to null (unless already changed)
-            if ($audition->getShow() === $this) {
+            if ($audition->getAdvert() === $this) {
                 $audition->setAdvert(null);
             }
         }
@@ -318,12 +318,12 @@ class Advert
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -332,7 +332,7 @@ class Advert
 
     public function getFeedTitle()
     {
-        return $this->getTitle(). ' - last updated '.$this->getUpdatedAt()->format('D, j M Y H:i T');
+        return $this->getName(). ' - last updated '.$this->getUpdatedAt()->format('D, j M Y H:i T');
     }
 
     public function getType(): ?string

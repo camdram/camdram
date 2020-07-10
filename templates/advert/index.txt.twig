@@ -1,10 +1,10 @@
 {% for a in adverts %}
-{{ a.title }} ({{ a.show.weeks }})
+{{ a.name }} ({{ a.show.weeks }})
 {% endfor %}
 
 {% for a in adverts %}
 ****************************************************************
-{{ a.title }}
+{{ a.name }}
 ****************************************************************
 {% include 'show/advert_header.txt.twig' with
     {'show': a.show} %}

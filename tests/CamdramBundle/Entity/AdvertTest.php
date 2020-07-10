@@ -1,6 +1,6 @@
 <?php
 
-namespace Camdram\Tests\CamdramBundle\Service;
+namespace Camdram\Tests\CamdramBundle\Entity;
 
 use Camdram\Tests\RepositoryTestCase;
 use Acts\CamdramBundle\Entity\Show;
@@ -31,7 +31,7 @@ class AdvertTest extends RepositoryTestCase
         $ad = new Advert();
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');
@@ -53,7 +53,7 @@ class AdvertTest extends RepositoryTestCase
         $ad = new Advert();
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_ACTORS)
-            ->setTitle('Technical Roles')
+            ->setName('Technical Roles')
             ->setSummary("Technical Director\nLighting Designer")
             ->setContactDetails('Contact me')
             ->setBody('Get involved with this show');

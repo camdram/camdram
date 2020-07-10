@@ -100,7 +100,7 @@ class AdvertController extends AbstractFOSRestController
     public function getAction(Request $request, $identifier)
     {
         $advert = $this->getDoctrine()->getRepository(Advert::class)
-                ->findOneById($identifier, Time::now());
+                ->findOneNonExpiredById($identifier, Time::now());
         if (!$advert) {
             throw $this->createNotFoundException('No advert exists with that identifier');
         }

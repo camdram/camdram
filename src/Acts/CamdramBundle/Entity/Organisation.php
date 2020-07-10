@@ -189,24 +189,13 @@ abstract class Organisation extends BaseEntity implements OwnableInterface
     abstract public function removeNews(\Acts\CamdramBundle\Entity\News $news);
 
     /**
-     * Add applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Advert $advert
-     *
-     * @return Organisation
+     * @return $this
      */
     abstract public function addAdvert(Advert $advert);
 
-    /**
-     * Remove applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Advert $advert
-     */
     abstract public function removeAdvert(Advert $advert);
 
     /**
-     * Get applications
-     *
      * @return \Doctrine\Common\Collections\Collection
      */
     abstract public function getAdverts();

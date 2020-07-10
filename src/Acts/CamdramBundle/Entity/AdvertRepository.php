@@ -69,7 +69,7 @@ class AdvertRepository extends EntityRepository
             ->setParameter('venue', $venue)->getQuery()->getResult();
     }
 
-    public function findOneById($id, \DateTime $now)
+    public function findOneNonExpiredById($id, \DateTime $now)
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -80,17 +80,5 @@ class AdvertRepository extends EntityRepository
             ->setParameter('id', $id)
             ->setParameter('expires', $now)
             ->getQuery()->getOneOrNullResult();
-    }
-
-    public function findOneByShowAndId($slug, $advertId)
-    {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.show', 's')
-            ->where('s.slug = :slug')
-            ->andWhere('a.id = :id')
-            ->setParameter('slug', $slug)
-            ->setParameter('id', $advertId)
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 }

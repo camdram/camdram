@@ -165,7 +165,6 @@ abstract class OrganisationController extends AbstractRestController
      */
     public function advertsAction($identifier)
     {
-
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
@@ -276,26 +275,6 @@ abstract class OrganisationController extends AbstractRestController
             return $this->render($this->type.'/application-edit.html.twig',
                ['advert' => $advert, 'form' => $form->createView()])->setStatusCode(400);
         }
-    }
-
-    /**
-     * @Route("/{identifier}/application", methods={"DELETE"})
-     */
-    public function deleteAdvertAction(Request $request, $identifier)
-    {
-        $org = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $org);
-
-        if (!$this->isCsrfTokenValid('delete_application', $request->request->get('_token'))) {
-            throw new BadRequestHttpException('Invalid CSRF token');
-        }
-
-        $application = $org->getApplications()->first();
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($application);
-        $em->flush();
-
-        return $this->redirectToRoute('get_'.$this->type, array('identifier' => $org->getSlug()));
     }
 
     /**

@@ -214,7 +214,7 @@ class Audition implements EventInterface
 
     public function getName()
     {
-        return $this->advert->getTitle();
+        return $this->advert->getName();
     }
 
     public function getRepeatUntil()

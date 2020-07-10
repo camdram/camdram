@@ -1,7 +1,7 @@
 <h5>Get Involved</h5>
 {% for advert in adverts %}
     <div class="vacancies-panel">
-        <a href="{{ path('get_advert', {identifier: advert.id}) }}">{{ advert.title }}</a>
+        {{ link_entity(advert) }}
         <br/>{{ advert.summary }}
     </div>
 {% endfor %}
