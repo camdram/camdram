@@ -142,24 +142,4 @@ class AdvertRepositoryTest extends RepositoryTestCase
         $res = $this->getRepository()->findLatest(1, new \DateTime('2014-03-04'));
         $this->assertEquals(1, count($res));
     }
-
-    public function testFindOneNonExpiredById()
-    {
-        $ad = new Advert();
-        $ad->setShow($this->show)
-            ->setType(Advert::TYPE_TECHNICAL)
-            ->setExpiresAt(new \DateTime('2014-03-12'))
-            ->setName('Technical Roles')
-            ->setSummary("Technical Director\nLighting Designer")
-            ->setContactDetails('Contact me')
-            ->setBody('Get involved with this show');
-
-        $this->em->persist($ad);
-        $this->em->flush();
-
-        $result = $this->getRepository()->findOneNonExpiredById($ad->getId(), new \DateTime('2014-03-01'));
-        $this->assertInstanceOf(Advert::class, $result);
-        $result = $this->getRepository()->findOneNonExpiredById($ad->getId(), new \DateTime('2014-04-01'));
-        $this->assertNull($result);
-    }
 }

@@ -1,6 +1,9 @@
 {% extends 'layout.html.twig' %}
 
 {% set current_navigation_id = 'vacancies' %}
+{% if filter is not defined %}
+{% set filter = null %}
+{% endif %}
 {% set current_subnav_id = filter %}
 
 {% block body %}

@@ -97,7 +97,7 @@ class AdvertController extends AbstractController
     /**
      * @Route("/shows/{identifier}/adverts/{advertId}", methods={"PUT"}, name="put_show_advert")
      */
-    public function putAuditionsAction(Request $request, $identifier, $advertId)
+    public function putAction(Request $request, $identifier, $advertId)
     {
         $advert = $this->getAndCheckAdvert($identifier, $advertId);
 

@@ -28,7 +28,6 @@ class EditorVoter extends Voter
                 \Acts\CamdramBundle\Entity\Venue::class,
                 \Acts\CamdramBundle\Entity\Person::class,
                 \Acts\CamdramBundle\Entity\Advert::class,
-                \Acts\CamdramBundle\Entity\Audition::class,
             ]);
     }
 

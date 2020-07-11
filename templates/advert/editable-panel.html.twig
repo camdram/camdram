@@ -7,17 +7,17 @@
             {%- elseif advert.display -%}
                 {{- include('navigation/form-item.html.twig', { item: {
                     intent: 'hide_advert', class: 'small',
-                    path: path('hide_advert', {id: advert.id}), text: 'Hide', icon: 'eye-slash'} }) -}}
+                    path: path('hide_embedded_advert', {id: advert.id}), text: 'Hide', icon: 'eye-slash'} }) -}}
             {%- else -%}
                 <li><em><i class="fa fa-eye-slash"></i> Hidden from public</em></li>
                 {{- include('navigation/form-item.html.twig', { item: {
                     intent: 'show_advert', class: 'small',
-                    path: path('show_advert', {id: advert.id}), text: 'Show', icon: 'eye'} }) -}}
+                    path: path('show_embedded_advert', {id: advert.id}), text: 'Show', icon: 'eye'} }) -}}
             {%- endif -%}
 
             {{- include('navigation/form-item.html.twig', { item: {
                     intent: 'delete_advert', class: 'small',
-                    path: path('delete_advert', {id: advert.id}), method: 'DELETE', text: 'Delete', icon: 'eraser'},
+                    path: path('delete_embedded_advert', {id: advert.id}), method: 'DELETE', text: 'Delete', icon: 'eraser'},
                 destructive: {
                     title: "Delete the advert “" ~ advert.name ~ "”?",
                     text: "This is permanent; you could hide it instead." }

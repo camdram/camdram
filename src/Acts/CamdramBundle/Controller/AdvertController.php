@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Service\Time;
+use Acts\CamdramBundle\Form\Type\AdvertType;
 use Acts\DiaryBundle\Diary\Diary;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,6 +57,17 @@ class AdvertController extends AbstractFOSRestController
     }
 
     /**
+     * Render the Admin Panel
+     */
+    public function adminPanelAction(Advert $advert)
+    {
+        return $this->render(
+            'advert/admin-panel.html.twig', [
+                'advert' => $advert
+            ]);
+    }
+
+    /**
      * Backwards compatibility
      * 
      * @Route("/vacancies/auditions.{_format}", format="html", methods={"GET"})
@@ -97,13 +109,14 @@ class AdvertController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/vacancies/{identifier}.{_format}", format="html", methods={"GET"}, name="get_advert")
+     * @Route("/vacancies/{identifier<\d+>}.{_format}", format="html", methods={"GET"}, name="get_advert")
      */
     public function getAction(Request $request, $identifier)
     {
         $advert = $this->getDoctrine()->getRepository(Advert::class)
-                ->findOneNonExpiredById($identifier, Time::now());
+                ->find($identifier);
         if (!$advert) throw $this->createNotFoundException('That advert does not exist.');
+        $this->denyAccessUnlessGranted('VIEW', $advert);
 
         if ($request->getRequestFormat() == 'html') {
             return $this->render('advert/view.html.twig', ['filter' => $advert->getType(), 'advert' => $advert]);
@@ -113,6 +126,45 @@ class AdvertController extends AbstractFOSRestController
     }
 
     // ----- Editing actions ----- //
+
+    /**
+     * @Route("/vacancies/{id<\d+>}/edit", methods={"GET"}, name="edit_advert")
+     */
+    public function editAdvert(Request $request, int $id)
+    {
+        $advert = $this->getDoctrine()->getRepository(Advert::class)->find($id);
+        $this->denyAccessUnlessGranted('EDIT', $advert);
+
+        $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
+
+        return $this->render('advert/edit.html.twig', [
+            'advert' => $advert,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/vacancies/{id<\d+>}", methods={"PUT"}, name="put_advert")
+     */
+    public function putAdvert(Request $request, int $id)
+    {
+        $advert = $this->getDoctrine()->getRepository(Advert::class)->find($id);
+        $this->denyAccessUnlessGranted('EDIT', $advert);
+
+        $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('get_advert', ['identifier' => $advert->getId()]);
+        } else {
+            return $this->render('advert/edit.html.twig', [
+                'advert' => $advert,
+                'form' => $form->createView()
+            ])->setStatusCode(400);
+        }
+    }
 
     /**
      * Finds entities and checks access-control etc.
@@ -126,13 +178,11 @@ class AdvertController extends AbstractFOSRestController
             throw new BadRequestHttpException('Invalid CSRF token');
         }
 
-        $parent = $advert->getParentEntity();
-        // An HTTP 500-type exception as this should not happen
-        if (!$parent) throw new \Exception("Advert $id has no parent!");
-        $this->denyAccessUnlessGranted('EDIT', $parent);
+        $this->denyAccessUnlessGranted('EDIT', $advert);
 
         return $advert;
     }
+
 
     private function redirectToParentsAds(\Acts\CamdramBundle\Entity\BaseEntity $parent)
     {
@@ -144,18 +194,43 @@ class AdvertController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/vacancies/{id<\d+>}", methods={"DELETE"}, name="delete_advert")
+     * @Route("/vacancies/{id<\d+>}/embedded", methods={"DELETE"}, name="delete_embedded_advert")
      */
-    public function deleteAdvert(Request $request, int $id): Response
+    public function deleteEmbeddedAdvert(Request $request, int $id): Response
     {
         $advert = $this->getAdCheckEditable($request, $id, 'delete_advert');
-        $parent = $advert->getParentEntity();
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($advert);
         $em->flush();
 
-        return $this->redirectToParentsAds($parent);
+        return $this->redirectToParentsAds($advert->getParentEntity());
+    }
+
+    /**
+     * @Route("/vacancies/{id<\d+>}", methods={"DELETE"}, name="delete_advert")
+     */
+    public function deleteAdvert(Request $request, int $id): Response
+    {
+        $advert = $this->getAdCheckEditable($request, $id, 'delete_advert');
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($advert);
+        $em->flush();
+
+        return $this->redirectToRoute('get_adverts');
+    }
+
+    /**
+     * @Route("/vacancies/{id<\d+>}/hide-embedded", methods={"PATCH"}, name="hide_embedded_advert")
+     */
+    public function hideEmbeddedAction(Request $request, int $id): Response
+    {
+        $advert = $this->getAdCheckEditable($request, $id, 'hide_advert');
+        $advert->setDisplay(false);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToParentsAds($advert->getParentEntity());
     }
 
     /**
@@ -165,6 +240,18 @@ class AdvertController extends AbstractFOSRestController
     {
         $advert = $this->getAdCheckEditable($request, $id, 'hide_advert');
         $advert->setDisplay(false);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('get_advert', ['identifier' => $advert->getId()]);
+    }
+
+    /**
+     * @Route("/vacancies/{id<\d+>}/show-embedded", methods={"PATCH"}, name="show_embedded_advert")
+     */
+    public function showEmbeddedAction(Request $request, int $id): Response
+    {
+        $advert = $this->getAdCheckEditable($request, $id, 'show_advert');
+        $advert->setDisplay(true);
         $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToParentsAds($advert->getParentEntity());
@@ -179,7 +266,7 @@ class AdvertController extends AbstractFOSRestController
         $advert->setDisplay(true);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToParentsAds($advert->getParentEntity());
+        return $this->redirectToRoute('get_advert', ['identifier' => $advert->getId()]);
     }
 
 }

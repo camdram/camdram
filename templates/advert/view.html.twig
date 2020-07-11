@@ -10,6 +10,10 @@
 {% endblock %}
 
 {% block vacancies_body %}
+    {% if is_granted('EDIT', advert) %}
+        {{ render(controller('Acts\\CamdramBundle\\Controller\\AdvertController::adminPanelAction', {advert: advert})) }}
+    {% endif %}
+
     <div class="vacancies-panel">
         <h4>{{ advert.name }}</h4>
         {% if advert.show %}

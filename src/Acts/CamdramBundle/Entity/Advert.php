@@ -11,6 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Acts\CamdramBundle\Validator\Constraints\AdvertExpiry;
 use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramApiBundle\Configuration\Annotation as Api;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
 /**
  * Advert
@@ -27,7 +28,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Gedmo\Loggable
  * @Api\Link(route="get_advert", params={"identifier": "object.getId()"})
  */
-class Advert
+class Advert implements OwnableInterface
 {
     /**
      * @var int
@@ -386,6 +387,11 @@ class Advert
         if ($this->getType() != self::TYPE_ACTORS) {
             $this->auditions->clear();
         }
+    }
+
+    public static function getAceType(): string
+    {
+        return 'advert';
     }
 
 }

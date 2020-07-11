@@ -43,15 +43,6 @@ class CreateVoterTest extends TestCase
             ));
     }
 
-    public function testCreateAudition()
-    {
-        $this->assertEquals(CreateVoter::ACCESS_GRANTED, $this->voter->vote(
-                $this->token,
-            \Acts\CamdramBundle\Entity\Audition::class,
-            array('CREATE')
-            ));
-    }
-
     public function testNotCreate()
     {
         $this->assertEquals(CreateVoter::ACCESS_ABSTAIN, $this->voter->vote(

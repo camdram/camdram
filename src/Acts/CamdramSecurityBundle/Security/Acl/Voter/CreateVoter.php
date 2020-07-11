@@ -25,7 +25,6 @@ class CreateVoter extends Voter
             [
                 \Acts\CamdramBundle\Entity\Show::class,
                 \Acts\CamdramBundle\Entity\Advert::class,
-                \Acts\CamdramBundle\Entity\Audition::class,
             ]);
     }
 

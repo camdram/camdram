@@ -68,17 +68,4 @@ class AdvertRepository extends EntityRepository
             'EXISTS (SELECT p FROM \Acts\CamdramBundle\Entity\Performance p WHERE p.show = s AND p.venue = :venue)'))
             ->setParameter('venue', $venue)->getQuery()->getResult();
     }
-
-    public function findOneNonExpiredById($id, \DateTime $now)
-    {
-        $qb = $this->createQueryBuilder('a');
-
-        return $qb->leftJoin('a.show', 's')
-            ->where('a.expiresAt > :expires')
-            ->andWhere('a.id = :id')
-            ->andWhere($qb->expr()->orX('s.authorised = true', 's IS NULL'))
-            ->setParameter('id', $id)
-            ->setParameter('expires', $now)
-            ->getQuery()->getOneOrNullResult();
-    }
 }

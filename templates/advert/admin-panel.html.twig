@@ -1,0 +1,39 @@
+{% if is_granted('EDIT', advert) %}
+<div class="admin-panel">
+    <h6 class="split-header">
+        <span>Advert Administration: {{ link_entity(advert) }}</span>
+        <span>ID: {{ advert.id }}</span></h6>
+    <ul role="menubar">
+        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_advert', {id:advert.id}), icon: 'pencil', text: 'Edit this advert'} }) }}
+        
+        {{- include('navigation/form-item.html.twig', { item: {
+                    intent: 'delete_advert', class: 'small',
+                    path: path('delete_advert', {id: advert.id}), method: 'DELETE', text: 'Delete this advert', icon: 'eraser'},
+                destructive: {
+                    title: "Delete the advert “" ~ advert.name ~ "”?",
+                    text: "This is permanent; you could hide it instead." }
+                }) -}}
+
+        {% if advert.display %}
+        {{ include('navigation/form-item.html.twig', {item: {id: 'hide_advert', path: path('hide_advert',{id:advert.id}), icon: 'eye-slash', text: 'Hide this advert' }}) }}
+        {% else %}
+        {{ include('navigation/form-item.html.twig', {item: {id: 'show_advert', path: path('show_advert',{id:advert.id}), icon: 'eye', text: 'Show this advert' }}) }}
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+{% if advert.expired %}
+    <div class="panel text-center">
+        <p>This advert has expired.</p>
+    </div>
+{% elseif not advert.display %}
+    <div class="panel text-center">
+        <p>This advert is hidden from the public.</p>
+    </div>
+{% elseif advert.show and not advert.show.authorised %}
+    <div class="panel text-center">
+        <p>This advert is not yet visible to the public – the show is awaiting approval
+        from a society/venue owner or a Camdram administrator.</p>
+    </div>
+{% endif %}
+
