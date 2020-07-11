@@ -36,7 +36,7 @@ class AuditionController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/shows/{identifier}/auditions", methods={"POST"}, name="put_show_auditions")
+     * @Route("/shows/{identifier}/auditions", methods={"PUT"}, name="put_show_auditions")
      */
     public function putAuditionsAction(Request $request, Helper $helper, $identifier)
     {
