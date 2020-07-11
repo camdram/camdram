@@ -40,5 +40,17 @@
     </div>
     
     <hr/>
+    
+    {% if advert.auditions | length > 0 %}
+    {{ render_diary(diary) }}
+    <hr/>
+    {% endif%}
+
     <p>{{ advert.body | camdram_markdown }}</p>
+
+    <hr/>
+    <p class="text-right"><em>
+        Created at {{ advert.createdAt | date('jS M Y H:i') }}<br />
+        Last updated at {{ advert.updatedAt | date('jS M Y H:i') }}
+    </em></p>
 {% endblock %}

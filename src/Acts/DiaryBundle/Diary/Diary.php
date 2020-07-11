@@ -59,7 +59,7 @@ class Diary
      * A quick way of adding lots of events to the diary
      * @param array<EventInterface> $events
      */
-    public function addEvents(array $events): void
+    public function addEvents(iterable $events): void
     {
         foreach ($events as $event) {
             $this->addEvent($event);

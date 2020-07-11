@@ -119,7 +119,14 @@ class AdvertController extends AbstractFOSRestController
         $this->denyAccessUnlessGranted('VIEW', $advert);
 
         if ($request->getRequestFormat() == 'html') {
-            return $this->render('advert/view.html.twig', ['filter' => $advert->getType(), 'advert' => $advert]);
+            $diary = new Diary;
+            $diary->addEvents($advert->getAuditions());
+
+            return $this->render('advert/view.html.twig', [
+                'filter' => $advert->getType(),
+                'diary' => $diary,
+                'advert' => $advert,
+            ]);
         } else {
             return $this->view($advert);
         }
