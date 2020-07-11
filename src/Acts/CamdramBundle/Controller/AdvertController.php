@@ -8,6 +8,8 @@ use Acts\CamdramBundle\Service\Time;
 use Acts\DiaryBundle\Diary\Diary;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdvertController extends AbstractFOSRestController
@@ -101,9 +103,7 @@ class AdvertController extends AbstractFOSRestController
     {
         $advert = $this->getDoctrine()->getRepository(Advert::class)
                 ->findOneNonExpiredById($identifier, Time::now());
-        if (!$advert) {
-            throw $this->createNotFoundException('No advert exists with that identifier');
-        }
+        if (!$advert) throw $this->createNotFoundException('That advert does not exist.');
 
         if ($request->getRequestFormat() == 'html') {
             return $this->render('advert/view.html.twig', ['filter' => $advert->getType(), 'advert' => $advert]);
@@ -111,4 +111,75 @@ class AdvertController extends AbstractFOSRestController
             return $this->view($advert);
         }
     }
+
+    // ----- Editing actions ----- //
+
+    /**
+     * Finds entities and checks access-control etc.
+     */
+    private function getAdCheckEditable(Request $request, int $id, string $csrf_name): Advert
+    {
+        $advert = $this->getDoctrine()->getRepository(Advert::class)->find($id);
+        if (!$advert) throw $this->createNotFoundException('That advert does not exist.');
+
+        if (!$this->isCsrfTokenValid($csrf_name, $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
+        $parent = $advert->getParentEntity();
+        // An HTTP 500-type exception as this should not happen
+        if (!$parent) throw new \Exception("Advert $id has no parent!");
+        $this->denyAccessUnlessGranted('EDIT', $parent);
+
+        return $advert;
+    }
+
+    private function redirectToParentsAds(\Acts\CamdramBundle\Entity\BaseEntity $parent)
+    {
+        return $this->redirectToRoute([
+            'show'    => 'get_show_adverts',
+            'society' => 'acts_camdram_society_adverts',
+            'venue'   => 'acts_camdram_venue_adverts',
+        ][$parent->getEntityType()], ['identifier' => $parent->getSlug()]);
+    }
+
+    /**
+     * @Route("/vacancies/{id<\d+>}", methods={"DELETE"}, name="delete_advert")
+     */
+    public function deleteAdvert(Request $request, int $id): Response
+    {
+        $advert = $this->getAdCheckEditable($request, $id, 'delete_advert');
+        $parent = $advert->getParentEntity();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($advert);
+        $em->flush();
+
+        return $this->redirectToParentsAds($parent);
+    }
+
+    /**
+     * @Route("/vacancies/{id<\d+>}/hide", methods={"PATCH"}, name="hide_advert")
+     */
+    public function hideAction(Request $request, int $id): Response
+    {
+        $advert = $this->getAdCheckEditable($request, $id, 'hide_advert');
+        $advert->setDisplay(false);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToParentsAds($advert->getParentEntity());
+    }
+
+    /**
+     * @Route("/vacancies/{id<\d+>}/show", methods={"PATCH"}, name="show_advert")
+     */
+    public function showAction(Request $request, int $id): Response
+    {
+        $advert = $this->getAdCheckEditable($request, $id, 'show_advert');
+        $advert->setDisplay(true);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToParentsAds($advert->getParentEntity());
+    }
+
 }

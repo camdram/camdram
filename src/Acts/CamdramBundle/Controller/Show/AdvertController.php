@@ -81,31 +81,7 @@ class AdvertController extends AbstractController
     }
 
     /**
-     * @Route("/shows/{identifier}/adverts/{advertId}/hide", methods={"PATCH"}, name="hide_show_advert")
-     */
-    public function hideAction(Request $request, $identifier, $advertId)
-    {
-        $advert = $this->getAndCheckAdvert($identifier, $advertId);
-
-        $advert->setDisplay(false);
-        $this->getDoctrine()->getManager()->flush();
-        return $this->redirectToRoute('get_show_adverts', ['identifier' => $advert->getShow()->getSlug()]);
-    }
-
-    /**
-     * @Route("/shows/{identifier}/adverts/{advertId}/show", methods={"PATCH"}, name="show_show_advert")
-     */
-    public function showAction(Request $request, $identifier, $advertId)
-    {
-        $advert = $this->getAndCheckAdvert($identifier, $advertId);
-
-        $advert->setDisplay(true);
-        $this->getDoctrine()->getManager()->flush();
-        return $this->redirectToRoute('get_show_adverts', ['identifier' => $advert->getShow()->getSlug()]);
-    }
-
-    /**
-     * @Route("/shows/{identifier}/adverts/{advertId}/edit", methods={"GET"}, name="edit_show_advert")
+     * @Route("/shows/{identifier}/adverts/{advertId}/edit", methods={"GET"}, name="acts_camdram_show_editadvert")
      */
     public function editAction($identifier, $advertId)
     {

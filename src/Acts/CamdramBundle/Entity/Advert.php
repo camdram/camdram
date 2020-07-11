@@ -371,6 +371,12 @@ class Advert
         return $this;
     }
 
+    /** @return Show|Society|Venue|null */
+    public function getParentEntity()
+    {
+        return $this->show ?: $this->society ?: $this->venue;
+    }
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()

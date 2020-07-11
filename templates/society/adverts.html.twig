@@ -22,38 +22,7 @@
 </p>
 
 {% for advert in org.adverts %}
-<div class="vacancies-panel{% if not advert.visible %} hidden{% endif %}">
-    <div class="split-header">
-        <h5>{{ link_entity(advert) }}</h5>
-        <ul>
-            <li><a href="{{ path('acts_camdram_society_editadvert', {identifier: org.slug, advertId: advert.id}) }}" class="button small">
-                <i class="fa fa-pencil"></i> Edit</a>
-            </li>
-            <li>
-                {% if advert.expired %}
-                    <em><i class="fa fa-clock-o"></i> Expired</em>
-                {% elseif advert.display %}
-                <form action="{{ path('acts_camdram_society_hideadvert', {identifier: org.slug, advertId: advert.id}) }}" method="POST">
-                    <input type="hidden" name="_method" value="PATCH"/>
-                    <button type="submit" class="button small">
-                        <i class="fa fa-eye"></i> Hide</a>
-                    </button>
-                </form>
-                {% else %}
-                <form action="{{ path('acts_camdram_society_showadvert', {identifier: org.slug, advertId: advert.id}) }}" method="POST">
-                    <input type="hidden" name="_method" value="PATCH"/>
-                    <button type="submit" class="button small">
-                        <i class="fa fa-eye"></i> Show</a>
-                    </button>
-                </form>
-                {% endif %}
-            </li>
-        </ul>
-    </div>
-
-    <p>{{ advert.summary }}</p>
-    <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
-</div>
+    {{- include('advert/editable-panel.html.twig') -}}
 {% endfor %}
 
 {% endblock %}

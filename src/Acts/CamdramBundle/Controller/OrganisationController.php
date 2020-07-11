@@ -210,36 +210,6 @@ abstract class OrganisationController extends AbstractRestController
     }
 
     /**
-     * @Route("/{identifier}/adverts/{advertId}/hide", methods={"PATCH"})
-     */
-    public function hideAdvertAction($identifier, $advertId)
-    {
-        $org = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
-
-        $advert = $org->getAdvertById($advertId);
-        $advert->setDisplay(false);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('acts_camdram_'.$this->type.'_adverts', array('identifier' => $org->getSlug()));
-    }
-
-    /**
-     * @Route("/{identifier}/adverts/{advertId}/show", methods={"PATCH"})
-     */
-    public function showAdvertAction($identifier, $advertId)
-    {
-        $org = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
-
-        $advert = $org->getAdvertById($advertId);
-        $advert->setDisplay(true);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('acts_camdram_'.$this->type.'_adverts', array('identifier' => $org->getSlug()));
-    }
-
-    /**
      * @Route("/{identifier}/adverts/{advertId}/edit", methods={"GET"})
      */
     public function editAdvertAction($identifier, $advertId)
