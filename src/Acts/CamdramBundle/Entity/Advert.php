@@ -125,6 +125,7 @@ class Advert implements OwnableInterface
      *
      * @ORM\Column(name="contact_details", type="string", length=255, nullable=false)
      * @Serializer\Expose
+     * @Gedmo\Versioned
      */
     private $contactDetails;
 
