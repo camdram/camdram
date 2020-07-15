@@ -1,89 +1,71 @@
 import Routing from 'router';
 
-$(function() {
+const q = document.querySelector.bind(document);
 
-    if ($('#home-diary-container').length > 0) {
+document.addEventListener('DOMContentLoaded', event => {
+    const container = q('#home-diary-container');
+    if (!container) return;
 
-        var diary_queue = [];
+    let diary = q('.home-diary');
+    const nav = q('#home-diary-nav');
 
-        var $container = $('#home-diary-container');
-        var $diary = $('#home-diary');
-        var $nav = $('#home-diary-nav');
-        var $overlay = $('.overlay', $container);
+    var load_new_diary = function(url, ltr) {
+        diary.classList.add('diary_loading');
 
-        var load_new_diary = function(url, direction) {
-            diary_queue.push({url: url, direction: direction});
-            if (diary_queue.length == 1) {
-                service_queue();
-            }
-        };
-        var service_queue = function() {
-            if (diary_queue.length == 0) return;
-            var opts = diary_queue[0];
+        Camdram.get(url, function(data) {
+            diary.classList.remove('diary_loading');
 
-            $overlay.height($diary.height()).fadeIn(200);
+            container.style.height = 'auto';
+            const old_height = container.clientHeight;
+            diary.style.position = 'absolute';
+            const new_diary = document.createElement('div');
+            new_diary.style.transform = `translateX(${ltr ? -100 : 100}%)`;
+            new_diary.className = 'home-diary';
+            new_diary.innerHTML = data;
 
-            $.get(opts.url, function(data) {
+            container.appendChild(new_diary);
 
-                var old_height = $container.height();
-                $diary.attr('id', 'home-diary-old').css({
-                    'position': 'absolute',
-                    'height': old_height,
-                    'width': '100%'
-                });
-                $diary = $('<div/>').attr('id', 'home-diary').html(data);
-                $container.append($diary);
-                $diary.show();
-                var new_height = $container.height();
-                $diary.hide();
-                $container.height(old_height);
+            const new_height = container.clientHeight;
+            container.style.transition = 'height 200ms';
+            container.style.height = old_height + 'px';
+            container.getClientRects()
 
-                var slide_diaries = function(cb) {
-                    var hide_dir = (opts.direction === 'ltr') ? 'right' : 'left';
-                    var show_dir = (opts.direction === 'rtl') ? 'right' : 'left';
+            window.setTimeout(() => {
+                new_diary.style.transform = 'none';
+                diary.style.transform = `translateX(${ltr ? 100 : -100}%)`;
+                container.style.height = new_height + 'px';
+            }, 10);
 
-                    $('#home-diary-old').hide('slide', {direction: hide_dir}, 200, function() {
-                        $('#home-diary-old').remove();
-                    });
-                    $diary.hide().delay(50).show('slide', {direction: show_dir}, 200, function() {
-                        if (typeof cb !== 'undefined') cb();
-                    });
-                };
-
-                $overlay.height($diary.height()).hide();
-                if (new_height > old_height) {
-                    $container.animate({height: new_height},100, slide_diaries(function() {
-                        $container.height('auto');
-                        diary_queue.shift();
-                        service_queue();
-                    }));
-                }
-                else {
-                    slide_diaries(function() {
-                        $container.animate({height: new_height},100, function() {
-                            $container.height('auto');
-                            diary_queue.shift();
-                            service_queue();
-                        });
-                    });
-                }
-            });
-        };
-
-        $('li.week-link', $nav).click(function() {
-            if ($(this).hasClass('current')) return;
-            var date = $(this).attr('data-week-start');
-
-            var last_sel = $('li.current', $nav);
-            $('li', $nav).removeClass('current');
-            $(this).addClass('current');
-            var direction =  (last_sel.prevAll('.current').length > 0) ? 'ltr' : 'rtl';
-
-            load_new_diary(Routing.generate('acts_camdram_diary_single_week', {date: date}), direction);
+            window.setTimeout(() => {
+                diary.parentNode.removeChild(diary);
+                diary = new_diary;
+                container.style.transition = 'none';
+                container.style.height = 'auto';
+            }, 200);
         });
+    };
 
-        $('.diary-expand', $nav).click(function() {
-            document.querySelector('#home-diary-nav').classList.add('expanded');
+    for (const el of nav.querySelectorAll('li.week-link')) {
+        el.addEventListener('click', e => {
+            if (e.currentTarget.classList.contains('current')) return;
+            var date = e.currentTarget.dataset.weekStart;
+
+            const prev_sel = nav.querySelector('li.current');
+            prev_sel.classList.remove('current');
+            e.currentTarget.classList.add('current');
+            let ltr = true;
+            for (let j = prev_sel; j; j = j.nextElementSibling) {
+                if (j == e.currentTarget) {
+                    ltr = false;
+                    break;
+                }
+            }
+
+            load_new_diary(Routing.generate('acts_camdram_diary_single_week', {date: date, fragment: 'true'}), ltr);
         });
     }
+
+    nav.querySelector('.diary-expand').addEventListener('click', e => {
+        nav.classList.add('expanded');
+    });
 });

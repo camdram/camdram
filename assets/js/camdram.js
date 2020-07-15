@@ -1,4 +1,5 @@
 import 'cookieconsent';
+import {install as hotkey_install} from '@github/hotkey';
 import Dropzone from 'dropzone';
 import Routing from 'router';
 
@@ -356,12 +357,16 @@ Camdram.endlessScroll = function(options) {
     setInterval(checkScrollPosition, options.interval);
 };
 
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
     fixHtml(document);
     doCookieConsent();
     document.body.addEventListener('keydown', e => {
         if (e.key == "Esc" || e.key == "Escape") hideModalDialog();
     });
+    // Install all the hotkeys on the page
+    for (const el of document.querySelectorAll('[data-hotkey]')) {
+        hotkey_install(el);
+    }
 });
 
 Dropzone.options.imageUpload = {
