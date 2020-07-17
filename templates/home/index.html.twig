@@ -11,7 +11,7 @@
     {{ shutdown_notice | camdram_markdown }}
 </div>
 {% else %}
-<div class="row" id="home-diary-container">
+<div id="home-diary-container">
    <div id="home-diary-nav">
        <ul>
            <li class="diary-expand">
@@ -48,8 +48,7 @@
            {% endfor %}
        </ul>
    </div>
-   <div class="overlay"><div class="spinner"><i class="fa fa-spinner fa-spin"></i></div></div>
-   <div id="home-diary">
+   <div class="home-diary">
        {{ render(url('acts_camdram_diary_single_week', {fragment: true, date: current_week.startAt | date('Y-m-d')}) , { 'strategy': 'esi'}) }}
    </div>
 </div>

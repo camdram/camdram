@@ -42,36 +42,32 @@ $include-html-classes: false;
 #home-diary-container {
   border-top:1px solid #ddd;
   border-bottom:1px solid #ddd;
+  overflow: hidden;
   position:relative;
   margin-bottom:1em;
-
-  .overlay {
-    opacity:0.5;
-    display:none;
-    position:absolute;
-    width:100%;
-    background:white;
-    z-index:10;
-
-    .spinner {
-      position:absolute;
-      top:50%;
-      left:50%;
-      margin-left:-1em;
-      margin-top:-1em;
-      i {
-        font-size:2em;
-      }
-    }
-  }
 }
 
-#home-diary {
+.home-diary {
   width:100%;
   overflow-x:auto;
   overflow-y:hidden;
+  transition: opacity 50ms, transform 200ms;
+  position: relative;
   .diary-week {
     min-width:900px;
+  }
+  &.diary_loading {
+    opacity: 0.5;
+    &::after {
+      content: "\f110";
+      animation: spin 2s infinite linear;
+      font: 2em FontAwesome;
+      left: 50%;
+      margin-left: -1em;
+      margin-top: -1em;
+      position: absolute;
+      top: 50%;
+    }
   }
 }
 

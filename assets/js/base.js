@@ -20,12 +20,3 @@ import '../scss/news.scss';
 
 import '@fancyapps/fancybox';
 import "@fancyapps/fancybox/dist/jquery.fancybox.css";
-
-import {install} from '@github/hotkey';
-
-$(function() {
-  // Install all the hotkeys on the page
-  for (const el of document.querySelectorAll('[data-hotkey]')) {
-    install(el);
-  }
-});
