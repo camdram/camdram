@@ -24,23 +24,23 @@ final class Version20200708185005 extends AbstractMigration
         $this->addSql('ALTER TABLE acts_adverts ADD CONSTRAINT FK_AA7A15A0E6389D24 FOREIGN KEY (society_id) REFERENCES acts_societies (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE acts_adverts ADD CONSTRAINT FK_AA7A15A040A73EBA FOREIGN KEY (venue_id) REFERENCES acts_venues (id) ON DELETE CASCADE');
 
-        $this->addSql('UPDATE acts_adverts SET type="audition"');
+        $this->addSql('UPDATE acts_adverts SET type="actors"');
         $this->addSql('INSERT INTO acts_adverts (show_id, title, type, summary, body, display, expires_at, contact_details, created_at, updated_at)
-            SELECT s.id, CONCAT("Technical team for ", s.title), "techie", t.positions, t.techextra, 1, t.expiry, t.contact, t.lastupdated, t.lastupdated 
+            SELECT s.id, CONCAT("Technical team for ", s.title), "technical", t.positions, t.techextra, 1, t.expiry, t.contact, t.lastupdated, t.lastupdated 
             FROM acts_techies AS t
             JOIN acts_shows AS s ON s.id = t.showid');
         $this->addSql('INSERT INTO acts_adverts (show_id, title, type, summary, body, display, expires_at, contact_details, created_at, updated_at)
-            SELECT s.id, a.text, "application", a.furtherinfo, "", 1, ADDTIME(CONVERT(a.deadlinedate, DATETIME), a.deadlinetime), "", NOW(), NOW()
+            SELECT s.id, a.text, "application", a.furtherinfo, "", 1, COALESCE(TIMESTAMP(a.deadlinedate, a.deadlinetime), UTC_TIMESTAMP()), "", UTC_TIMESTAMP(), UTC_TIMESTAMP()
             FROM acts_applications AS a
             JOIN acts_shows AS s ON s.id = a.showid');
         $this->addSql('INSERT INTO acts_adverts (society_id, title, type, summary, body, display, expires_at, contact_details, created_at, updated_at)
-            SELECT s.id, a.text, "application", a.furtherinfo, "", 1, ADDTIME(CONVERT(a.deadlinedate, DATETIME), a.deadlinetime), "", NOW(), NOW()
+            SELECT s.id, a.text, "application", a.furtherinfo, "", 1, COALESCE(TIMESTAMP(a.deadlinedate, a.deadlinetime), UTC_TIMESTAMP()), "", UTC_TIMESTAMP(), UTC_TIMESTAMP()
             FROM acts_applications AS a
-            JOIN acts_societies AS s ON s.id = a.showid');
+            JOIN acts_societies AS s ON s.id = a.society_id');
         $this->addSql('INSERT INTO acts_adverts (venue_id, title, type, summary, body, display, expires_at, contact_details, created_at, updated_at)
-            SELECT v.id, a.text, "application", a.furtherinfo, "", 1, ADDTIME(CONVERT(a.deadlinedate, DATETIME), a.deadlinetime), "", NOW(), NOW()
+            SELECT v.id, a.text, "application", a.furtherinfo, "", 1, COALESCE(TIMESTAMP(a.deadlinedate, a.deadlinetime), UTC_TIMESTAMP()), "", UTC_TIMESTAMP(), UTC_TIMESTAMP()
             FROM acts_applications AS a
-            JOIN acts_venues AS v ON v.id = a.showid');
+            JOIN acts_venues AS v ON v.id = a.venue_id');
 
 
         $this->addSql('DROP TABLE acts_applications');

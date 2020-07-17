@@ -25,12 +25,14 @@ final class Version20200708151349 extends AbstractMigration
         $this->addSql('ALTER TABLE acts_auditions DROP FOREIGN KEY FK_BFECDAF7592D0E6F');
         $this->addSql('DROP INDEX IDX_BFECDAF7592D0E6F ON acts_auditions');
 
+        $this->addSql('DELETE FROM acts_auditions WHERE showid IS NULL');
         $this->addSql('INSERT INTO acts_adverts (id, show_id, title, summary, body, display, expires_at, contact_details, created_at, updated_at)
-        SELECT id, id, CONCAT("Auditions for ", title), audextra, "", 1, NOW(), "", `timestamp`, `timestamp` FROM acts_shows WHERE audextra IS NOT NULL');
+            SELECT showid, showid, CONCAT("Auditions for ", title), COALESCE(audextra, ""), "", 1, MAX(end_at), "", `timestamp`, `timestamp`
+            FROM acts_auditions AS a JOiN acts_shows AS s ON a.showid = s.id GROUP BY showid');
         $this->addSql('UPDATE acts_adverts AS v INNER JOIN acts_auditions AS a ON a.showid = v.id
                             SET contact_details = a.location WHERE a.nonscheduled = 1');
-        $this->addSql('UPDATE acts_adverts AS v SET expires_at = (SELECT MAX(end_at) FROM acts_auditions AS a WHERE a.showid = v.id)');
-
+        $this->addSql('DELETE FROM acts_auditions WHERE nonscheduled = 1');
+    
         $this->addSql('ALTER TABLE acts_auditions DROP display, DROP nonscheduled, CHANGE showid advert_id INT NOT NULL');
         $this->addSql('ALTER TABLE acts_auditions ADD CONSTRAINT FK_BFECDAF7D07ECCB6 FOREIGN KEY (advert_id) REFERENCES acts_adverts (id) ON DELETE CASCADE');
         $this->addSql('CREATE INDEX IDX_BFECDAF7D07ECCB6 ON acts_auditions (advert_id)');
