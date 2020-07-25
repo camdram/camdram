@@ -183,7 +183,7 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
             link.children[0].className = icon_class;
             link.children[1].textContent = result.name;
 
-            if (result.entity_type == 'person' && result.show_count > 0) {
+            if (result.entity_type == 'person' && result.first_active != null && result.last_active != null) {
                 const from = Camdram.parseISODate(result.first_active);
                 const till = Camdram.parseISODate(result.last_active);
                 const now_ms = Date.now();
@@ -191,20 +191,19 @@ Camdram.autocomplete.displayResults = function(query, items, error) {
                 const tillString = Camdram.formatMMMYYYY(till);
                 const SIX_MONTHS = 180*86400*1000;
                 const em = document.createElement('em');
-                em.textContent = `\xA0(${result.show_count} ${result.show_count == 1 ? 'show' : 'shows'}, `;
 
                 if (now_ms - from.valueOf() < SIX_MONTHS && now_ms - till.valueOf() < SIX_MONTHS) {
                     // All activity within past six months
-                    em.textContent += 'active currently)';
+                    em.textContent = '\xA0(active currently)';
                 } else if (fromString === tillString) {
                     // All activity in same month
-                    em.textContent += `active ${fromString})`;
+                    em.textContent = `\xA0(active ${fromString})`;
                 } else if (now_ms - till.valueOf() < SIX_MONTHS) {
                     // Active both within and before past six months
-                    em.textContent += `active since ${fromString})`;
+                    em.textContent = `\xA0(active since ${fromString})`;
                 } else {
                     // Active only prior to past six months
-                    em.textContent += `active ${fromString}–${tillString})`;
+                    em.textContent = `\xA0(active ${fromString}–${tillString})`;
                 }
 
                 link.appendChild(em);

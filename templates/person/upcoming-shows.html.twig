@@ -1,4 +1,5 @@
 {% if shows | length > 0 %}
+    <span class="person-show-count">{{ shows | length }}</span>
     <h4>{{ person.name }} is preparing for</h4>
     <ul class="large-block-list">
     {% for show in shows %}
