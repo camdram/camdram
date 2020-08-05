@@ -6,6 +6,7 @@ use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Form\Type\AdvertType;
+use Acts\CamdramBundle\Form\Type\OrganisationAdvertType;
 use Acts\DiaryBundle\Diary\Diary;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +70,7 @@ class AdvertController extends AbstractFOSRestController
 
     /**
      * Backwards compatibility
-     * 
+     *
      * @Route("/vacancies/auditions.{_format}", format="html", methods={"GET"})
      */
     public function getAuditionsAction(Request $request)
@@ -134,6 +135,13 @@ class AdvertController extends AbstractFOSRestController
 
     // ----- Editing actions ----- //
 
+    private function getForm(Advert $advert, string $method)
+    {
+        $isOrg = (bool)($advert->getSociety() || $advert->getVenue());
+        return $this->createForm($isOrg ? OrganisationAdvertType::class : AdvertType::class,
+            $advert, ['method' => $method]);
+    }
+
     /**
      * @Route("/vacancies/{id<\d+>}/edit", methods={"GET"}, name="edit_advert")
      */
@@ -142,7 +150,7 @@ class AdvertController extends AbstractFOSRestController
         $advert = $this->getDoctrine()->getRepository(Advert::class)->find($id);
         $this->denyAccessUnlessGranted('EDIT', $advert);
 
-        $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
+        $form = $this->getForm($advert, 'PUT');
 
         return $this->render('advert/edit.html.twig', [
             'advert' => $advert,
@@ -158,7 +166,7 @@ class AdvertController extends AbstractFOSRestController
         $advert = $this->getDoctrine()->getRepository(Advert::class)->find($id);
         $this->denyAccessUnlessGranted('EDIT', $advert);
 
-        $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
+        $form = $this->getForm($advert, 'PUT');
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -191,7 +199,7 @@ class AdvertController extends AbstractFOSRestController
     }
 
 
-    private function redirectToParentsAds(\Acts\CamdramBundle\Entity\BaseEntity $parent)
+    private function redirectToParentsAds(\Acts\CamdramBundle\Entity\BaseEntity $parent): Response
     {
         return $this->redirectToRoute([
             'show'    => 'get_show_adverts',
@@ -200,10 +208,12 @@ class AdvertController extends AbstractFOSRestController
         ][$parent->getEntityType()], ['identifier' => $parent->getSlug()]);
     }
 
+
     /**
-     * @Route("/vacancies/{id<\d+>}/embedded", methods={"DELETE"}, name="delete_embedded_advert")
+     * @Route("/vacancies/{id<\d+>}/embedded", methods={"DELETE"}, name="delete_embedded_advert", defaults={"embedded":true})
+     * @Route("/vacancies/{id<\d+>}", methods={"DELETE"}, name="delete_advert", defaults={"embedded":false})
      */
-    public function deleteEmbeddedAdvert(Request $request, int $id): Response
+    public function deleteAdvert(Request $request, int $id, bool $embedded): Response
     {
         $advert = $this->getAdCheckEditable($request, $id, 'delete_advert');
 
@@ -211,68 +221,23 @@ class AdvertController extends AbstractFOSRestController
         $em->remove($advert);
         $em->flush();
 
-        return $this->redirectToParentsAds($advert->getParentEntity());
-    }
-
-    /**
-     * @Route("/vacancies/{id<\d+>}", methods={"DELETE"}, name="delete_advert")
-     */
-    public function deleteAdvert(Request $request, int $id): Response
-    {
-        $advert = $this->getAdCheckEditable($request, $id, 'delete_advert');
-
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($advert);
-        $em->flush();
-
+        if ($embedded) return $this->redirectToParentsAds($advert->getParentEntity());
         return $this->redirectToRoute('get_adverts');
     }
 
     /**
-     * @Route("/vacancies/{id<\d+>}/hide-embedded", methods={"PATCH"}, name="hide_embedded_advert")
+     * @Route("/vacancies/{id<\d+>}/hide", methods={"PATCH"}, name="hide_advert", defaults={"embedded": false, "visible": false})
+     * @Route("/vacancies/{id<\d+>}/hide-embedded", methods={"PATCH"}, name="hide_embedded_advert", defaults={"embedded": true, "visible": false})
+     * @Route("/vacancies/{id<\d+>}/show", methods={"PATCH"}, name="show_advert", defaults={"embedded": false, "visible": true})
+     * @Route("/vacancies/{id<\d+>}/show-embedded", methods={"PATCH"}, name="show_embedded_advert", defaults={"embedded": true, "visible": true})
      */
-    public function hideEmbeddedAction(Request $request, int $id): Response
+    public function setVisibleAction(Request $request, int $id, bool $visible, bool $embedded): Response
     {
-        $advert = $this->getAdCheckEditable($request, $id, 'hide_advert');
-        $advert->setDisplay(false);
+        $advert = $this->getAdCheckEditable($request, $id, $visible ? 'show_advert' : 'hide_advert');
+        $advert->setDisplay($visible);
         $this->getDoctrine()->getManager()->flush();
 
-        return $this->redirectToParentsAds($advert->getParentEntity());
-    }
-
-    /**
-     * @Route("/vacancies/{id<\d+>}/hide", methods={"PATCH"}, name="hide_advert")
-     */
-    public function hideAction(Request $request, int $id): Response
-    {
-        $advert = $this->getAdCheckEditable($request, $id, 'hide_advert');
-        $advert->setDisplay(false);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToRoute('get_advert', ['identifier' => $advert->getId()]);
-    }
-
-    /**
-     * @Route("/vacancies/{id<\d+>}/show-embedded", methods={"PATCH"}, name="show_embedded_advert")
-     */
-    public function showEmbeddedAction(Request $request, int $id): Response
-    {
-        $advert = $this->getAdCheckEditable($request, $id, 'show_advert');
-        $advert->setDisplay(true);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $this->redirectToParentsAds($advert->getParentEntity());
-    }
-
-    /**
-     * @Route("/vacancies/{id<\d+>}/show", methods={"PATCH"}, name="show_advert")
-     */
-    public function showAction(Request $request, int $id): Response
-    {
-        $advert = $this->getAdCheckEditable($request, $id, 'show_advert');
-        $advert->setDisplay(true);
-        $this->getDoctrine()->getManager()->flush();
-
+        if ($embedded) return $this->redirectToParentsAds($advert->getParentEntity());
         return $this->redirectToRoute('get_advert', ['identifier' => $advert->getId()]);
     }
 

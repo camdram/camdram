@@ -5,7 +5,7 @@
         <span>ID: {{ advert.id }}</span></h6>
     <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_advert', {id:advert.id}), icon: 'pencil', text: 'Edit this advert'} }) }}
-        
+
         {{- include('navigation/form-item.html.twig', { item: {
                     intent: 'delete_advert', class: 'small',
                     path: path('delete_advert', {id: advert.id}), method: 'DELETE', text: 'Delete this advert', icon: 'eraser'},
