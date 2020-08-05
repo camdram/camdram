@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -132,9 +134,9 @@ class Society extends Organisation
     private $news;
 
     /**
-     * @ORM\OneToMany(targetEntity="Application", mappedBy="society")
+     * @ORM\OneToMany(targetEntity="Advert", mappedBy="society")
      */
-    private $applications;
+    private $adverts;
 
     public function setShortName(?string $shortName): self
     {
@@ -334,7 +336,7 @@ class Society extends Organisation
     public function __construct()
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->adverts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -362,36 +364,7 @@ class Society extends Organisation
         $this->news->removeElement($news);
     }
 
-    /**
-     * Add applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     *
-     * @return Organisation
-     */
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications[] = $applications;
-
-        return $this;
-    }
-
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $application)
-    {
-        $this->applications->removeElement($application);
-    }
-
-    /**
-     * Get applications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getApplications()
-    {
-        return $this->applications;
-    }
-
-    public static function getAceType(): string
+    public static function getAceType() : string
     {
         return 'society';
     }
@@ -454,5 +427,36 @@ class Society extends Organisation
     public function getThemeColor(): ?string
     {
         return $this->theme_color;
+    }
+
+    /**
+     * @return Collection|Advert[]
+     */
+    public function getAdverts(): Collection
+    {
+        return $this->adverts;
+    }
+
+    public function addAdvert(Advert $advert): self
+    {
+        if (!$this->adverts->contains($advert)) {
+            $this->adverts[] = $advert;
+            $advert->setSociety($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvert(Advert $advert): self
+    {
+        if ($this->adverts->contains($advert)) {
+            $this->adverts->removeElement($advert);
+            // set the owning side to null (unless already changed)
+            if ($advert->getSociety() === $this) {
+                $advert->setSociety(null);
+            }
+        }
+
+        return $this;
     }
 }

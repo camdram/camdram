@@ -80,17 +80,12 @@ class SocietyController extends OrganisationController
     public function getVacanciesAction($identifier)
     {
         $society = $this->getEntity($identifier);
-        $auditions_repo = $this->getDoctrine()->getRepository(Entity\Audition::class);
-        $techie_repo = $this->getDoctrine()->getRepository(Entity\TechieAdvert::class);
-        $applications_repo = $this->getDoctrine()->getRepository(Entity\Application::class);
+        $repo = $this->getDoctrine()->getRepository(Entity\Advert::class);
         $now = new \DateTime;
 
         $data = [
             'society' => $society,
-            'auditions' => $auditions_repo->findUpcomingBySociety($society, 10, $now),
-            'nonscheduled_auditions' => $auditions_repo->findUpcomingNonScheduledBySociety($society, 10, $now),
-            'techie_ads' => $techie_repo->findLatestBySociety($society, 10, $now),
-            'app_ads' => $applications_repo->findLatestBySociety($society, 10, $now),
+            'adverts' => $repo->findLatestBySociety($society, 10, $now),
         ];
 
         return $this->show('society/vacancies.html.twig', 'data', $data);

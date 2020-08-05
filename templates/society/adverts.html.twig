@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Adverts{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'manage_adverts' %}
+{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: org})) }}
+
+<h3>Manage adverts</h3>
+
+<div class="panel">
+    <p>Below are all active and hidden show application advertisements. You can create multiple
+        concurrent adverts for different purposes.</p>
+</div>
+
+<p>
+    <a href="{{ path('acts_camdram_society_newadvert', {identifier: org.slug}) }}" class="button">
+        <i class="fa fa-plus-circle"></i> New advert
+    </a>
+</p>
+
+{% for advert in org.adverts %}
+    {{- include('advert/editable-panel.html.twig') -}}
+{% endfor %}
+
+{% endblock %}

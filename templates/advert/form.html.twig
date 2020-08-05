@@ -1,0 +1,75 @@
+<div class="form-large-row">
+    {{ form_errors(form) }}
+</div>
+
+{{ form_row(form.name)}}
+
+{% if form.type is defined %}
+{{ form_row(form.type) }}
+{% endif %}
+
+<div class="form-large-row">
+    {{ form_label(form.summary) }}
+    <div>
+        <p><small>Briefly describe the roles you're seeking to fill. A link will be shown to take applicants
+        to the full details below.</small></p>
+         {{ form_widget(form.summary) }}
+         {{ form_errors(form.summary) }}
+    </div>
+</div>
+
+<div class="form-large-row">
+    {{ form_label(form.body) }}
+    <div>
+        <p><small>This will appear on the advert's own Camdram page.</small></p>
+        <p><small>{{ include('markdown_notice.html.twig', { thing: 'advertisement' }) }}</small></p>
+         {{ form_widget(form.body) }}
+         {{ form_errors(form.body) }}
+    </div>
+</div>
+
+{% if form.auditions is defined %}
+<div class="form-large-row" id="auditions-row">
+
+    {{ form_label(form.auditions) }}
+    <div>
+        <div class="auditions entity_collection" data-prototype="{% apply escape('html') %}{% include 'show/auditions-form.html.twig' with {audition: form.auditions.vars.prototype} %}{% endapply %}">
+            {% for audition in form.auditions %}
+                {% include 'show/auditions-form.html.twig' %}
+            {% endfor %}
+        </div>
+        <ul class="inline-list">
+            <li> <a href="#" class="add_link"><i class="fa fa-plus-circle"></i> Add an audition session</a></li>
+        </ul>
+    </div>
+    {% do form.auditions.setRendered() %}
+</div>
+{% endif %}
+
+{{ form_row(form.contactDetails) }}
+<div id="expiresAt-row">
+    {{ form_row(form.expiresAt) }}
+</div>
+{{ form_row(form.display) }}
+
+<div class="text-right">
+    <input type="submit" value="Save" class="button"/>
+</div>
+
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+<script>
+    {#- begin-CSP-permitted-script -#}
+    $('.auditions').entityCollection({min_items: 0});
+    const updateView = () => {
+        if ($('#advert_type input:checked').val() == 'actors') {
+            $('#auditions-row').show();
+        } else {
+            $('#auditions-row').hide();
+        }
+    }
+    $('#advert_type input').change(updateView)
+    updateView();
+    {#- end-CSP-permitted-script -#}
+</script>

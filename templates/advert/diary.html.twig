@@ -1,0 +1,12 @@
+{% extends 'advert/layout.html.twig' %}
+
+{% block title %}Auditions Diary{% endblock %}
+{% set current_vacancies_id='auditions' %}
+
+{% block vacancies_body %}
+  
+<div id="diary">
+    {{ render_diary(diary) }}
+</div>
+
+{% endblock %}

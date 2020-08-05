@@ -1,0 +1,35 @@
+{% extends 'advert/layout.html.twig' %}
+
+{% block title %}Vacancies{% endblock %}
+
+{% block vacancies_body %}
+    {%- for a in adverts -%}
+        <div class="vacancies-panel">
+            <h5>{{ link_entity(a) }}</h5>
+            {% if a.show %}
+            <div class="vacancies-show-panel">
+                {%- include 'show/advert_header.html.twig' with {'show': a.show} -%}
+            </div>
+            {% elseif a.society %}
+            <div class="vacancies-show-panel">
+                <h5><a href="{{ path('get_society', {identifier: a.society.slug}) }}">{{ a.society.name }}</a></h5>
+            </div>
+            {% elseif a.venue %}
+            <div class="vacancies-show-panel">
+                <h5><a href="{{ path('get_venue', {identifier: a.venue.slug}) }}">{{ a.venue.name }}</a></h5>
+            </div>
+            {% endif %}
+            <p>{{ a.summary }}</p>
+            <ul>
+            {%- for audition in a.auditions -%}
+                <li>{{ audition.dateString }}, {{ audition.location }}</li>
+            {%- endfor -%}
+            </ul>
+            <p></p>
+            <p>Contact {{ a.contactDetails|detect_links }} before {{a.expiresAt | date('jS M Y H:i')}} for more details.</p>
+        </div>
+    {%- else -%}
+        <p>There are currently no advertisements listed – please check again later.</p>
+    {%- endfor -%}
+    </ul>
+{% endblock %}

@@ -2,6 +2,8 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -157,11 +159,11 @@ class Venue extends Organisation implements VenueInterface
     private $news;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection<Application>
+     * @var \Doctrine\Common\Collections\Collection<Advert>
      *
-     * @ORM\OneToMany(targetEntity="Application", mappedBy="venue")
+     * @ORM\OneToMany(targetEntity="Advert", mappedBy="venue")
      */
-    private $applications;
+    private $adverts;
 
     public function setShortName(?string $shortName): self
     {
@@ -345,7 +347,8 @@ class Venue extends Organisation implements VenueInterface
     public function __construct()
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->applications = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->performances = new ArrayCollection();
+        $this->adverts = new ArrayCollection();
     }
 
     public function addNews(\Acts\CamdramBundle\Entity\News $news): self
@@ -365,34 +368,7 @@ class Venue extends Organisation implements VenueInterface
         $this->news->removeElement($news);
     }
 
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications): self
-    {
-        $this->applications[] = $applications;
-
-        return $this;
-    }
-
-    /**
-     * Remove applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     */
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications->removeElement($applications);
-    }
-
-    /**
-     * Get applications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getApplications()
-    {
-        return $this->applications;
-    }
-
-    public static function getAceType(): string
+    public static function getAceType() : string
     {
         return 'venue';
     }
@@ -547,5 +523,36 @@ class Venue extends Organisation implements VenueInterface
     public function getThemeColor(): ?string
     {
         return $this->theme_color;
+    }
+
+    /**
+     * @return Collection|Advert[]
+     */
+    public function getAdverts(): Collection
+    {
+        return $this->adverts;
+    }
+
+    public function addAdvert(Advert $advert): self
+    {
+        if (!$this->adverts->contains($advert)) {
+            $this->adverts[] = $advert;
+            $advert->setVenue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvert(Advert $advert): self
+    {
+        if ($this->adverts->contains($advert)) {
+            $this->adverts->removeElement($advert);
+            // set the owning side to null (unless already changed)
+            if ($advert->getVenue() === $this) {
+                $advert->setVenue(null);
+            }
+        }
+
+        return $this;
     }
 }

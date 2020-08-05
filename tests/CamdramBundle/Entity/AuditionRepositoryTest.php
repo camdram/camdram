@@ -3,6 +3,7 @@
 namespace Camdram\Tests\CamdramBundle\Service;
 
 use Camdram\Tests\RepositoryTestCase;
+use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Show;
 
@@ -11,6 +12,8 @@ class AuditionRepositoryTest extends RepositoryTestCase
     private $user;
 
     private $show;
+
+    private $advert;
 
     public function setUp(): void
     {
@@ -21,6 +24,15 @@ class AuditionRepositoryTest extends RepositoryTestCase
         $this->show->setCategory('drama');
         $this->show->setAuthorised(true);
         $this->em->persist($this->show);
+
+
+        $this->advert = new Advert;
+        $this->advert->setName('New advert')
+            ->setSummary('Lorem ipsum')
+            ->setBody('Lorem ipsum')
+            ->setContactDetails('foo@bar.com')
+            ->setShow($this->show);
+        $this->em->persist($this->advert);
 
         $this->em->flush();
     }
@@ -36,11 +48,10 @@ class AuditionRepositoryTest extends RepositoryTestCase
     public function testFindUpcoming_before()
     {
         $ad = new Audition();
-        $ad->setShow($this->show);
+        $ad->setAdvert($this->advert);
         $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
         $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
-        $ad->setNonScheduled(false);
 
         $this->em->persist($ad);
         $this->em->flush();
@@ -52,11 +63,10 @@ class AuditionRepositoryTest extends RepositoryTestCase
     public function testFindUpcoming_sameDayBefore()
     {
         $ad = new Audition();
-        $ad->setShow($this->show);
+        $ad->setAdvert($this->advert);
         $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
         $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
-        $ad->setNonScheduled(false);
 
         $this->em->persist($ad);
         $this->em->flush();
@@ -68,11 +78,10 @@ class AuditionRepositoryTest extends RepositoryTestCase
     public function testFindUpcoming_sameDayAfter()
     {
         $ad = new Audition();
-        $ad->setShow($this->show);
+        $ad->setAdvert($this->advert);
         $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
         $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
-        $ad->setNonScheduled(false);
 
         $this->em->persist($ad);
         $this->em->flush();
@@ -84,11 +93,10 @@ class AuditionRepositoryTest extends RepositoryTestCase
     public function testFindUpcoming_after()
     {
         $ad = new Audition();
-        $ad->setShow($this->show);
+        $ad->setAdvert($this->advert);
         $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
         $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
         $ad->setLocation('ADC Theatre Bar');
-        $ad->setNonScheduled(false);
 
         $this->em->persist($ad);
         $this->em->flush();
@@ -97,67 +105,4 @@ class AuditionRepositoryTest extends RepositoryTestCase
         $this->assertEquals(0, count($res));
     }
 
-    public function testFindUpcomingNonScheduled_before()
-    {
-        $ad = new Audition();
-        $ad->setShow($this->show);
-        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
-        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
-        $ad->setLocation('Contact me');
-        $ad->setNonScheduled(true);
-
-        $this->em->persist($ad);
-        $this->em->flush();
-
-        $res = $this->getRepository()->findUpcomingNonScheduled(3, new \DateTime('2014-03-04 12:00'));
-        $this->assertEquals(1, count($res));
-    }
-
-    public function testFindUpcomingNonScheduled_sameDayBefore()
-    {
-        $ad = new Audition();
-        $ad->setShow($this->show);
-        $ad->setStartAt(new \DateTime('2014-03-12 14:00'));
-        $ad->setEndAt(new \DateTime('2014-03-12 14:00'));
-        $ad->setLocation('Contact me');
-        $ad->setNonScheduled(true);
-
-        $this->em->persist($ad);
-        $this->em->flush();
-
-        $res = $this->getRepository()->findUpcomingNonScheduled(3, new \DateTime('2014-03-12 13:00'));
-        $this->assertEquals(1, count($res));
-    }
-
-    public function testFindUpcomingNonScheduled_sameDayAfter()
-    {
-        $ad = new Audition();
-        $ad->setShow($this->show);
-        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
-        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
-        $ad->setLocation('Contact me');
-        $ad->setNonScheduled(true);
-
-        $this->em->persist($ad);
-        $this->em->flush();
-
-        $res = $this->getRepository()->findUpcomingNonScheduled(3, new \DateTime('2014-03-12 17:00'));
-        $this->assertEquals(0, count($res));
-    }
-
-    public function testFindUpcomingNonScheduled_after()
-    {
-        $ad = new Audition();
-        $ad->setShow($this->show);
-        $ad->setStartAt(new \DateTime('2014-03-12 12:00'));
-        $ad->setEndAt(new \DateTime('2014-03-12 16:00'));
-        $ad->setLocation('Contact me');
-        $ad->setNonScheduled(true);
-
-        $this->em->persist($ad);
-        $this->em->flush();
-
-        $res = $this->getRepository()->findUpcomingNonScheduled(3, new \DateTime('2014-03-17 13:00'));
-        $this->assertEquals(0, count($res));
-    }
 }

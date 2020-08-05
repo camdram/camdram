@@ -5,11 +5,10 @@ namespace Camdram\Tests\Functional;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 use Acts\CamdramBundle\Service\Time;
+use Acts\CamdramBundle\Entity\Advert;
+use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
-use Acts\CamdramBundle\Entity\Audition;
-use Acts\CamdramBundle\Entity\TechieAdvert;
-use Acts\CamdramBundle\Entity\Application;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 class VacanciesTest extends WebTestCase
@@ -32,6 +31,7 @@ class VacanciesTest extends WebTestCase
     public function setUp(): void
     {
         $this->client = self::createClient(array('environment' => 'test'));
+        $this->client->followRedirects();
 
         $container = $this->client->getKernel()->getContainer();
         $this->entityManager = $container->get('doctrine.orm.entity_manager');
@@ -97,14 +97,19 @@ class VacanciesTest extends WebTestCase
     public function testAuditions()
     {
         $show = $this->createShow('Test Show', '2000-02-01');
-        $show->setAudextra('blah');
+        $advert = new Advert;
+        $advert->setType(Advert::TYPE_ACTORS)
+            ->setName('blah')
+            ->setSummary('Lorem ipsum')
+            ->setBody('Lorem ipsum')
+            ->setContactDetails('foo@bar.com')
+            ->setShow($show);
+        $this->entityManager->persist($advert);
         $audition = new Audition;
-        $audition->setDisplay(0)
-            ->setStartAt(new \Datetime('2000-01-15 10:00'))
+        $audition->setStartAt(new \Datetime('2000-01-15 10:00'))
             ->setEndAt(new \DateTime('2000-01-15 18:00'))
             ->setLocation('Somewhere')
-            ->setNonScheduled(false)
-            ->setShow($show);
+            ->setAdvert($advert);
         $this->entityManager->persist($audition);
         $this->entityManager->flush();
 
@@ -122,12 +127,13 @@ class VacanciesTest extends WebTestCase
     {
         $show = $this->createShow('Test Show', '2000-02-01');
 
-        $techieAdvert = new TechieAdvert;
-        $techieAdvert->setDisplay(0)
-            ->setPositions("Technical Director\nLighting Designer")
-            ->setContact('Contact foo@bar.com')
-            ->setDeadline(true)
-            ->setExpiry(new \DateTime('2000-01-15'))
+        $techieAdvert = new Advert;
+        $techieAdvert->setType(Advert::TYPE_TECHNICAL)
+            ->setName('Technical roles for test show')
+            ->setSummary("Technical Director\nLighting Designer")
+            ->setBody('Lorem ipsum')
+            ->setContactDetails('foo@bar.com')
+            ->setExpiresAt(new \DateTime('2000-01-15'))
             ->setShow($show);
         $this->entityManager->persist($techieAdvert);
         $this->entityManager->flush();
@@ -146,12 +152,14 @@ class VacanciesTest extends WebTestCase
     {
         $show = $this->createShow('Test Show', '2000-02-01');
 
-        $application = new Application;
+        $application = new Advert;
         $application
-            ->setText('Lorem ipsum')
-            ->setDeadlineDate(new \DateTime('2000-01-15'))
-            ->setDeadlineTime(new \DateTime('15:00'))
-            ->setFurtherInfo('Contact foo@bar.com')
+            ->setType(Advert::TYPE_APPLICATION)
+            ->setName('Applications for test show')
+            ->setSummary('Lorem ipsum')
+            ->setBody('Lorem ipsum')
+            ->setExpiresAt(new \DateTime('2000-01-15 15:00'))
+            ->setContactDetails('Contact foo@bar.com')
             ->setShow($show);
         $this->entityManager->persist($application);
         $this->entityManager->flush();

@@ -15,27 +15,10 @@
             {{ include('navigation/form-item.html.twig', {item: {id: 'unapprove_show', path: path('unapprove_show',{identifier:show.slug}), icon: 'lock', text: 'Deauthorize this show' },
                destructive: {title: "Are you sure you want to de-authorize this show?", text: "The show “" ~ show.name ~ "” will be hidden from public view, and returned to the awaiting-approval stage." }}) }}
         {% endif %}
-        {% if show.auditions | length == 0 %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_auditions', path: path('edit_show_auditions',{identifier:show.slug}), icon: 'plus-circle', text: 'Add an audition'} }) }}
-        {% else %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_auditions', path: path('edit_show_auditions',{identifier:show.slug}), icon: 'pencil', text: 'Edit auditions'} }) }}
-        {% endif %}
-        {% if show.techieAdverts | length == 0 %}
-            {{ include('navigation/nav-item.html.twig',
-                {item: {id: 'new_techie_advert', path: path('new_show_techie_advert',{identifier:show.slug}), icon: 'plus-circle', text: 'Add technical team advert'} }) }}
-        {% else %}
-            {{ include('navigation/nav-item.html.twig',
-                {item: {id: 'edit_techie_advert', path: path('edit_show_techie_advert',{identifier:show.slug}), icon: 'pencil', text: 'Edit/renew technical team advert'} }) }}
-        {% endif %}
-        {% if show.applications | length == 0 %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'new_application', path: path('new_show_application',{identifier:show.slug}), icon: 'plus-circle', text: 'Add director/​producer advert'} }) }}
-        {% else %}
-            {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_application', path: path('edit_show_application',{identifier:show.slug}), icon: 'pencil', text: 'Edit director/​producer advert'} }) }}
-        {% endif %}
+    
+        {{ include('navigation/nav-item.html.twig',
+        {item: {id: 'get_show_adverts', path: path('get_show_adverts', {identifier:show.slug}), icon: 'list', text: 'Manage adverts'} }) }}
+    
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'edit_admin', path: path('edit_show_admin',{identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}
         {{ include('navigation/nav-item.html.twig',

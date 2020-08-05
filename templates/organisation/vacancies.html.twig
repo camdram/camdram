@@ -1,31 +1,20 @@
-<div class="vacancies-panel">
-    <h5>{% block vacancies_panel_title %}Get involved:{% endblock %}</h5>
-    <ul>
-    {% for audition in auditions %}
-        <li>{{ link_entity(audition.show) }} is holding auditions:
-            in {{ audition.location }} from {{ audition.startAt | date('H:i') }} to {{ audition.startAt | date('H:i') }} on {{ audition.startAt | date('D jS M') }}
-            - <a href="{{ path('get_audition', {identifier: audition.show.slug}) }}">more details</a>
-        </li>
-    {% endfor %}
-    {% for audition in nonscheduled_auditions %}
-        <li>{{ link_entity(audition.show) }} is holding auditions, contact {{audition.location}} - <a href="{{ path('get_auditions') }}#auditions-{{ audition.show.id }}">more details</a>
-        </li>
-    {% endfor %}
-    {% for ad in techie_ads %}
-        <li>{{ link_entity(ad.show) }} is looking for:
-            {{ ad.getPositionsOneLine() }}
-            - <a href="{{ path('get_techie', {identifier: ad.slug}) }}">more details</a>
-        </li>
-    {% endfor %}
-    {% for ad in app_ads %}
-        <li>
-            {{ link_entity(ad.owningEntity) }} has announced:
-            {{ ad.text() }} –
-            <a href="{{ path('get_application', {identifier: ad.slug}) }}">more details</a>
-        </li>
-    {% endfor %}
-    </ul>
-    {% if auditions | length == 0 and techie_ads | length == 0 and app_ads | length == 0 %}
-    <p>No opportunities are currently being advertised - why not check out the <a href="{{ path('get_auditions') }}">main vacancies page</a>?</p>
-    {% endif %}
-</div>
+<h5>{% block vacancies_panel_title %}Get involved:{% endblock %}</h5>
+
+{% for advert in adverts %}
+    <div class="vacancies-panel" >
+        <h5>{{ link_entity(advert) }}</h5>
+        <p>{{ advert.summary }}</p>
+        <ul>
+        {%- for audition in advert.auditions -%}
+            <li>{{ audition.dateString }}, {{ audition.location }}</li>
+        {%- endfor -%}
+        </ul>
+        <p></p>
+        <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+    </div>
+{% endfor %}
+
+</ul>
+{% if adverts | length == 0 %}
+<p>No opportunities are currently being advertised - why not check out the <a href="{{ path('get_adverts') }}">main vacancies page</a>?</p>
+{% endif %}

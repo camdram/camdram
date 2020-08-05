@@ -3,9 +3,10 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -152,28 +153,6 @@ class Show extends BaseEntity implements OwnableInterface
     private $societies_display_list = [];
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="techsend", type="boolean", nullable=false)
-     */
-    private $tech_send = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="actorsend", type="boolean", nullable=false)
-     */
-    private $actor_send = false;
-
-    /**
-     * @var ?string
-     *
-     * @ORM\Column(name="audextra", type="text", nullable=true)
-     * @Gedmo\Versioned
-     */
-    private $audextra;
-
-    /**
      * All the registered scieties involved with this show.
      * @ORM\ManyToMany(targetEntity="Society", inversedBy="shows")
      * @ORM\JoinTable(name="acts_show_soc_link")
@@ -187,13 +166,6 @@ class Show extends BaseEntity implements OwnableInterface
      * @Gedmo\Versioned
      */
     private $authorised = false;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="entryexpiry", type="date", nullable=false)
-     */
-    private $entry_expiry;
 
     /**
      * The show's genre (takes one of several predefined values)
@@ -216,19 +188,9 @@ class Show extends BaseEntity implements OwnableInterface
     private $timestamp;
 
     /**
-     * @ORM\OneToMany(targetEntity="TechieAdvert", mappedBy="show")
+     * @ORM\OneToMany(targetEntity="Advert", mappedBy="show", cascade={"all"}, orphanRemoval=true)
      */
-    private $techie_adverts;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Audition", mappedBy="show", cascade={"all"}, orphanRemoval=true)
-     */
-    private $auditions;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Application", mappedBy="show")
-     */
-    private $applications;
+    private $adverts;
 
     /**
      * @ORM\OneToMany(targetEntity="Role", mappedBy="show")
@@ -282,7 +244,7 @@ class Show extends BaseEntity implements OwnableInterface
      */
     private $online_booking_url;
 
-    private $weeks = array();
+    private $weeks = "";
     private $weekManager;
 
     private $entity_type = 'show';
@@ -479,102 +441,6 @@ class Show extends BaseEntity implements OwnableInterface
     }
 
     /**
-     * Set tech_send
-     *
-     * @param bool $techSend
-     *
-     * @return Show
-     */
-    public function setTechSend($techSend)
-    {
-        $this->tech_send = $techSend;
-
-        return $this;
-    }
-
-    /**
-     * Get tech_send
-     *
-     * @return bool
-     */
-    public function getTechSend()
-    {
-        return $this->tech_send;
-    }
-
-    /**
-     * Set actor_send
-     *
-     * @param bool $actorSend
-     *
-     * @return Show
-     */
-    public function setActorSend($actorSend)
-    {
-        $this->actor_send = $actorSend;
-
-        return $this;
-    }
-
-    /**
-     * Get actor_send
-     *
-     * @return bool
-     */
-    public function getActorSend()
-    {
-        return $this->actor_send;
-    }
-
-    /**
-     * Set audextra
-     *
-     * @param string $audextra
-     *
-     * @return Show
-     */
-    public function setAudextra($audextra)
-    {
-        $this->audextra = $audextra;
-
-        return $this;
-    }
-
-    /**
-     * Get audextra
-     *
-     * @return string
-     */
-    public function getAudextra()
-    {
-        return $this->audextra;
-    }
-
-    /**
-     * Set entry_expiry
-     *
-     * @param \DateTime $entryExpiry
-     *
-     * @return Show
-     */
-    public function setEntryExpiry($entryExpiry)
-    {
-        $this->entry_expiry = $entryExpiry;
-
-        return $this;
-    }
-
-    /**
-     * Get entry_expiry
-     *
-     * @return \DateTime
-     */
-    public function getEntryExpiry()
-    {
-        return $this->entry_expiry;
-    }
-
-    /**
      * Set category
      *
      * @param string $category
@@ -729,14 +595,10 @@ class Show extends BaseEntity implements OwnableInterface
      */
     public function __construct()
     {
-        $this->applications = new ArrayCollection();
-        $this->auditions    = new ArrayCollection();
+        $this->adverts      = new ArrayCollection();  
         $this->performances = new ArrayCollection();
         $this->roles        = new ArrayCollection();
         $this->societies    = new ArrayCollection();
-        $this->techie_adverts = new ArrayCollection();
-
-        $this->entry_expiry = new \DateTime();
         $this->timestamp    = new \DateTime();
 
         $this->setSocietiesDisplayList([]);
@@ -814,103 +676,30 @@ class Show extends BaseEntity implements OwnableInterface
     }
 
     /**
-     * Add techie_adverts
+     * @return Collection|Advert[]
+     */
+    public function getAdverts(): Collection
+    {
+        return $this->adverts;
+    }
+
+    /**
+     * Add advert
      *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
+     * @param \Acts\CamdramBundle\Entity\Advert $advert
      *
      * @return Show
      */
-    public function addTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    public function addAdvert(\Acts\CamdramBundle\Entity\Advert $advert)
     {
-        $this->techie_adverts[] = $techieAdverts;
+        $this->adverts[] = $advert;
 
         return $this;
     }
 
-    /**
-     * Remove techie_adverts
-     *
-     * @param \Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts
-     */
-    public function removeTechieAdvert(\Acts\CamdramBundle\Entity\TechieAdvert $techieAdverts)
+    public function removeAdvert(\Acts\CamdramBundle\Entity\Advert $advert)
     {
-        $this->techie_adverts->removeElement($techieAdverts);
-    }
-
-    /**
-     * Get techie_adverts
-     *
-     * @return ?TechieAdvert
-     * @Api\Link(route="get_techie", name="techie_advert", params={"identifier": "object.getSlug()"},
-     *      targetType="techie_advert")
-     */
-    public function getActiveTechieAdvert()
-    {
-        $now = new \DateTime();
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gt('expiry', $now));
-
-        return $this->techie_adverts->matching($criteria)->first();
-    }
-
-    /**
-     * Get techie_adverts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTechieAdverts()
-    {
-        return $this->techie_adverts;
-    }
-
-    /**
-     * Add auditions
-     *
-     * @param \Acts\CamdramBundle\Entity\Audition $auditions
-     *
-     * @return Show
-     */
-    public function addAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
-    {
-        $this->auditions[] = $auditions;
-
-        return $this;
-    }
-
-    /**
-     * Remove auditions
-     *
-     * @param \Acts\CamdramBundle\Entity\Audition $auditions
-     */
-    public function removeAudition(\Acts\CamdramBundle\Entity\Audition $auditions)
-    {
-        $this->auditions->removeElement($auditions);
-    }
-
-    public function mergeAuditions($auditions)
-    {
-        foreach ($auditions as $audition) {
-            $audition->setShow($this);
-            if (!$audition->getId()) {
-                $this->addAudition($audition);
-            } else {
-                foreach ($this->auditions as $k => $a) {
-                    if ($a->getId() == $audition->getId()) {
-                        $this->auditions[$k] = $audition;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Get all auditions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAllAuditions() {
-        return $this->auditions;
+        $this->adverts->removeElement($advert);
     }
 
     /**
@@ -918,151 +707,18 @@ class Show extends BaseEntity implements OwnableInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAuditions()
+    public function getActiveAdverts()
     {
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq('display', 0))
-            ->andWhere(Criteria::expr()->orX(
-                Criteria::expr()->gte('start_at', new \DateTime()),
-                Criteria::expr()->gte('end_at', new \DateTime())
-            ));
+            ->where(Criteria::expr()->eq('display', true))
+            ->andWhere(Criteria::expr()->gte('expiresAt', new \DateTime()));
 
-        return $this->auditions->matching($criteria);
+        return $this->adverts->matching($criteria);
     }
 
-    public function getScheduledAuditions()
+    public function hasActiveAdverts()
     {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->gte('end_at', new \DateTime()))
-            ->andWhere(Criteria::expr()->eq('nonScheduled', false));
-
-        return $this->auditions->matching($criteria);
-    }
-
-    public function setScheduledAuditions($auditions)
-    {
-        foreach ($this->getScheduledAuditions() as $k => $audition) {
-            $found = false;
-            foreach ($auditions as $a) {
-                if ($audition->getId() == $a->getId()) {
-                    $this->auditions[$k] = $a;
-                    $found = true;
-                    break;
-                }
-            }
-            if (!$found) {
-                $this->auditions->remove($k);
-            }
-        }
-
-        foreach ($auditions as &$audition) {
-            if (!$audition->getId()) {
-                $audition->setShow($this);
-                $audition->setNonScheduled(false);
-                $this->addAudition($audition);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getNonScheduledAuditions()
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('nonScheduled', true))
-            ->andWhere(Criteria::expr()->gte('start_at', new \DateTime()))
-            ;
-
-        return $this->auditions->matching($criteria);
-    }
-
-    public function setNonScheduledAuditions($auditions)
-    {
-        foreach ($this->getNonScheduledAuditions() as $k => $audition) {
-            $found = false;
-            foreach ($auditions as $a) {
-                if ($audition->getId() == $a->getId()) {
-                    $this->auditions[$k] = $a;
-                    $found = true;
-                    break;
-                }
-            }
-            if (!$found) {
-                $this->auditions->remove($k);
-            }
-        }
-
-        foreach ($auditions as &$audition) {
-            if (!$audition->getId()) {
-                $audition->setShow($this);
-                $audition->setNonScheduled(true);
-                $this->addAudition($audition);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Add applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     *
-     * @return Show
-     */
-    public function addApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications[] = $applications;
-
-        return $this;
-    }
-
-    /**
-     * Remove applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     */
-    public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications)
-    {
-        $this->applications->removeElement($applications);
-    }
-
-    /**
-     * Get applications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getApplications()
-    {
-        return $this->applications;
-    }
-
-    /**
-     * Get active applications
-     *
-     * @return ?Application
-     * @Api\Link(route="get_application", name="application", params={"identifier": "object.getSlug()"},
-     *      targetType="application")
-     */
-    public function getActiveApplication()
-    {
-        $now = new \DateTime();
-        $today = new \DateTime($now->format('Y-m-d'));
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->gt('deadlineDate', $today))
-            ->orWhere(Criteria::expr()->andX(
-                Criteria::expr()->gte('deadlineDate', $today),
-                Criteria::expr()->gt('deadlineTime', $now)
-            ));
-
-        return $this->applications->matching($criteria)->first();
-    }
-
-    public function hasVacancies()
-    {
-        return $this->getActiveTechieAdvert()
-                || count($this->getAuditions()) > 0
-                || $this->getActiveApplication();
+        return count($this->getActiveAdverts()) > 0;
     }
 
     public function setAuthorised(bool $authorised): self
@@ -1420,4 +1076,23 @@ class Show extends BaseEntity implements OwnableInterface
     {
         $this->weekManager = $manager;
     }
+
+    public function addSociety(Society $society): self
+    {
+        if (!$this->societies->contains($society)) {
+            $this->societies[] = $society;
+        }
+
+        return $this;
+    }
+
+    public function removeSociety(Society $society): self
+    {
+        if ($this->societies->contains($society)) {
+            $this->societies->removeElement($society);
+        }
+
+        return $this;
+    }
+
 }

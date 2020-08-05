@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}New Advert{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'manage_adverts' %}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
+
+<h3>New Advert</h3>
+
+<div class="panel">
+    <p>
+        Use the form below add a new advertisement for your show.
+        You can add one or more audition sessions (if applicable) and/or 
+        leave contact details for people to get in touch.
+    </p>
+    <p>
+        Please ensure you have your team members' permission <em>before</em> adding their contact
+        details to the advert!
+    </p>
+</div>
+
+{{ form_start(form, {'action': path("post_show_advert", {identifier: show.slug} )}) }}
+{{ include('advert/form.html.twig') }}
+{{ form_end(form) }}
+
+{% endblock %}

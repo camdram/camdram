@@ -1,0 +1,54 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% block title %}Manage Adverts{% endblock %}
+
+{% block body %}
+
+{% set current_subnav_id = 'edit_auditions' %}
+{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
+
+<h3>Manage Adverts</h3>
+
+<div class="panel">
+    <p>
+        Below are all active and hidden advertisements for your show. You can create multiple
+        concurrent adverts for different purposes (e.g. principals, chorus, designers, technical team).
+    </p>
+    <p>
+        The CUADC committee send out mailings lists for all active advertisements on the following schedules:
+    </p>
+    <ul>
+        <li>
+            The CUADC Actors' Reps (<a href=mailto:actor@cuadc.org>actor@cuadc.org</a>) aim to send out the 
+            Actors' mailing list twice a week during Full Term.
+        </li>
+        <li>
+            The CUADC Technical Director (<a href=mailto:td@cuadc.org>td@cuadc.org</a>),
+            Technicians' Rep (<a href=mailto:technician@cuadc.org>technician@cuadc.org</a>)
+            and Stage Managers' Rep (<a href=mailto:sm@cuadc.org>sm@cuadc.org</a>) 
+            aim to send out the Techies' mailing list once a week during Full Term.
+        </li>
+        <li>
+            The Designers' Rep (<a href=mailto:designer@cuadc.org> desginer@cuadc.org</a>) aims to send the 
+            Designers' mailing list once a week during Full Term.
+        </li>
+        <li>
+            The CUADC Directors' Rep (<a href="mailto:director@cuadc.org">director@cuadc.org</a>) 
+            and Producers' Rep (<a href="mailto:producer@cuadc.org">producer@cuadc.org</a>)
+            aim to send out the Production mailing list once a week during Full Term.
+        </li>
+    </p>
+</div>
+
+<p>
+    <a href="{{ path('new_show_advert', {identifier: show.slug}) }}" class="button">
+        <i class="fa fa-plus-circle"></i> New advert
+    </a>
+</p>
+
+{% for advert in show.adverts %}
+    {{- include('advert/editable-panel.html.twig') -}}
+{% endfor %}
+
+{% endblock %}

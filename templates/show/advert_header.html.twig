@@ -2,7 +2,7 @@
  of advert i.e. auditions, production team vancancies, and applications to
  direct or produce.
    Uses url() so it's safe to include in emails. #}
-<h4><a href="{{ url('get_show',
+<h5><a href="{{ url('get_show',
     {identifier: show.slug}) }}">{{ show.name }}</a>
     {% for society in show.prettysocdata %}
         {{- loop.index == 1 ? " – " -}}
@@ -17,9 +17,9 @@
             and
         {% endif -%}
     {% endfor %}
-</h4>
-<p>{% include 'performance/show.html.twig' with { 'performances' : show.performances } %}
+</h5>
+{% include 'performance/show.html.twig' with { 'performances' : show.performances } %}
 {% if show.weeks is not empty %}
 <em>{{ show.weeks }}</em>
 {% endif %}
-</p>
+

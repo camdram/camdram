@@ -1,0 +1,64 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'vacancies' %}
+{% if filter is not defined %}
+{% set filter = null %}
+{% endif %}
+{% set current_subnav_id = filter %}
+
+{% block body %}
+<div class="row">
+    <main>
+    <div class="split-header">
+        <h3>Vacancies</h3>
+            <ul class="inline-list">
+                <li>Filter:</li>
+                 {{ include('navigation/nav-item.html.twig', {item: {
+                    id: null,
+                    path: path('get_adverts'),
+                    text: 'All',
+                }}) }}
+                {{ include('navigation/nav-item.html.twig', {item: {
+                    id: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_ACTORS'),
+                    path: path('get_adverts', {filter: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_ACTORS')}),
+                    text: 'Actors',
+                }}) }}
+                {{ include('navigation/nav-item.html.twig', {item: {
+                    id: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_TECHNICAL'),
+                    path: path('get_adverts', {filter: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_TECHNICAL')}),
+                    text: 'Technical',
+                }}) }}
+                {{ include('navigation/nav-item.html.twig', {item: {
+                    id: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_DESIGN'),
+                    path: path('get_adverts', {filter: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_DESIGN')}),
+                    text: 'Design',
+                }}) }}
+                {{ include('navigation/nav-item.html.twig', {item: {
+                    id: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_APPLICATION'),
+                    path: path('get_adverts', {filter: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_APPLICATION')}),
+                    text: 'Directors/Producers',
+                }}) }}
+                {{ include('navigation/nav-item.html.twig', {item: {
+                    id: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_OTHER'),
+                    path: path('get_adverts', {filter: constant('Acts\\CamdramBundle\\Entity\\Advert::TYPE_OTHER')}),
+                    text: 'Other',
+                }}) }}
+            </ul>
+            
+            <ul class="inline-list">
+                <li>Format:</li>
+                <li><a href="{{ path('get_adverts', {filter: filter}) }}" {% if diary is not defined %} class="active"{% endif %}>
+                    <i class="fa fa-list"></i> List view</a>
+                </li>
+                <li><a href="{{ path('get_adverts_diary') }}" {% if diary is defined %} class="active"{% endif %}>
+                    <i class="fa fa-calendar"></i> Diary View</a>
+                    </li>
+                <li><a href="{{ path('get_adverts_diary', {_format: 'ics'}) }}"><i class="fa fa-calendar"></i> iCal</a></li>
+                <li><a href="{{ path('get_adverts', {_format: 'rss', filter: filter}) }}"><i class="fa fa-rss"></i> RSS Feed</a></li>
+                <li><a href="{{ path('get_adverts', {_format: 'txt', filter:filter}) }}"><i class="fa fa-file-text-o"></i> Plain Text</a></li>
+            </ul>
+    </div>
+    {% block vacancies_body %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

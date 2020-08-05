@@ -3,9 +3,9 @@
 namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Entity;
-use Acts\CamdramBundle\Entity\Application;
+use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Organisation;
-use Acts\CamdramBundle\Form\Type\OrganisationApplicationType;
+use Acts\CamdramBundle\Form\Type\OrganisationAdvertType;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
@@ -144,51 +144,65 @@ abstract class OrganisationController extends AbstractRestController
             ['identifier' => $identifier, '_format' => $request->getRequestFormat()]));
     }
 
-    private function getApplicationForm(Organisation $org, $obj = null, $method = 'POST')
+    private function getAdvertForm(Organisation $org, $obj = null, $method = 'POST')
     {
         if (!$obj) {
-            $obj = new Application();
+            $obj = new Advert();
+            $obj->setType(Advert::TYPE_APPLICATION);
             if ($org instanceof Society) {
                 $obj->setSociety($org);
             } else {
                 $obj->setVenue($org);
             }
         }
-        $form = $this->createForm(OrganisationApplicationType::class, $obj, ['method' => $method]);
+        $form = $this->createForm(OrganisationAdvertType::class, $obj, ['method' => $method]);
 
         return $form;
     }
 
     /**
-     * @Route("/{identifier}/applications/new", methods={"GET"})
+     * @Route("/{identifier}/adverts", methods={"GET"})
      */
-    public function newApplicationAction($identifier)
+    public function advertsAction($identifier)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
-        $form = $this->getApplicationForm($org);
+        return $this->render($this->type.'/adverts.html.twig', [
+            'org' => $org,
+        ]);
+    }
+
+    /**
+     * @Route("/{identifier}/adverts/new", methods={"GET"})
+     */
+    public function newAdvertAction($identifier)
+    {
+        $org = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
+
+        $form = $this->getAdvertForm($org);
 
         return $this->render($this->type.'/application-new.html.twig',
             ['org' => $org, 'form' => $form->createView()]);
     }
 
     /**
-     * @Route("/{identifier}/applications", methods={"POST"})
+     * @Route("/{identifier}/adverts", methods={"POST"})
      */
-    public function postApplicationAction(Request $request, $identifier)
+    public function postAdvertAction(Request $request, $identifier)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
-        $form = $this->getApplicationForm($org);
+        $form = $this->getAdvertForm($org);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->redirectToRoute('get_'.$this->type, array('identifier' => $org->getSlug()));
+            return $this->redirectToRoute('acts_camdram_'.$this->type.'_adverts', array('identifier' => $org->getSlug()));
         } else {
             return $this->render($this->type.'/application-new.html.twig',
                 ['org' => $org, 'form' => $form->createView()]);
@@ -196,61 +210,41 @@ abstract class OrganisationController extends AbstractRestController
     }
 
     /**
-     * @Route("/{identifier}/application/edit", methods={"GET"})
+     * @Route("/{identifier}/adverts/{advertId}/edit", methods={"GET"})
      */
-    public function editApplicationAction($identifier)
+    public function editAdvertAction($identifier, $advertId)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
-        $application = $org->getApplications()->first();
-        $form = $this->getApplicationForm($org, $application, 'PUT');
+        $advert = $org->getAdvertById($advertId);
+        $form = $this->getAdvertForm($org, $advert, 'PUT');
 
         return $this->render($this->type.'/application-edit.html.twig',
-            ['org' => $org, 'form' => $form->createView()]);
+            ['org' => $org,'advert' => $advert, 'form' => $form->createView()]);
     }
 
     /**
-     * @Route("/{identifier}/application", methods={"PUT"})
+     * @Route("/{identifier}/adverts/{advertId}", methods={"PUT"})
      */
-    public function putApplicationAction(Request $request, $identifier)
+    public function putAdvertAction(Request $request, $identifier, $advertId)
     {
         $org = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
 
-        $application = $org->getApplications()->first();
-        $form = $this->getApplicationForm($org, $application, 'PUT');
+        $advert = $org->getAdvertById($advertId);
+        $form = $this->getAdvertForm($org, $advert, 'PUT');
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
             $em->flush();
 
-            return $this->redirectToRoute('get_'.$this->type, array('identifier' => $org->getSlug()));
+            return $this->redirectToRoute('acts_camdram_'.$this->type.'_adverts', array('identifier' => $org->getSlug()));
         } else {
             return $this->render($this->type.'/application-edit.html.twig',
-               ['form' => $form->createView()])->setStatusCode(400);
+               ['advert' => $advert, 'form' => $form->createView()])->setStatusCode(400);
         }
-    }
-
-    /**
-     * @Route("/{identifier}/application", methods={"DELETE"})
-     */
-    public function deleteApplicationAction(Request $request, $identifier)
-    {
-        $org = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $org);
-
-        if (!$this->isCsrfTokenValid('delete_application', $request->request->get('_token'))) {
-            throw new BadRequestHttpException('Invalid CSRF token');
-        }
-
-        $application = $org->getApplications()->first();
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($application);
-        $em->flush();
-
-        return $this->redirectToRoute('get_'.$this->type, array('identifier' => $org->getSlug()));
     }
 
     /**

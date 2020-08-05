@@ -2,14 +2,13 @@
 
 namespace Acts\CamdramBundle\DataFixtures;
 
-use Acts\CamdramBundle\Entity\Application;
+use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
-use Acts\CamdramBundle\Entity\TechieAdvert;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\DataFixtures\UserFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -24,6 +23,14 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
     private $musicians = array();
 
     private $people_ids = array();
+
+    private $design_roles = [
+        "Set Designer",
+        "Production Designer",
+        "Artistic Director",
+        "Supreme Artistic Overlord",
+        "Publicity Designer"
+    ];
 
     /** @var \Acts\CamdramBundle\Entity\PersonRepository $repo */
     private $person_repo;
@@ -184,6 +191,10 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             if (mt_rand(0, 1) == 1) {
                 $this->addTechieAdverts($manager, $show);
             }
+
+            if (mt_rand(0, 1) == 1) {
+                $this->addDesignerAdverts($manager, $show);
+            }
         }
         $manager->flush();
     }
@@ -295,13 +306,47 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
 
     private function addApplications(ObjectManager $manager, Show $show)
     {
-        $application = new Application();
-        $application->setText('Random text ' . mt_rand(1, 100));
-        $application->setDeadlineDate(new \DateTime(mt_rand(-5, 15) . ' days'));
-        $application->setFurtherInfo('Further Info text ' . mt_rand(1, 100));
-        $application->setDeadlineTime(new \DateTime(mt_rand(0, 23) . ':' . mt_rand(0, 3) * 15));
-        $application->setShow($show);
+        $application = new Advert();
+        $application->setType(Advert::TYPE_APPLICATION)
+            ->setName('Random text ' . mt_rand(1, 100))
+            ->setExpiresAt(new \DateTime(mt_rand(-5, 15) . ' days'))
+            ->setSummary('Further Info text ' . mt_rand(1, 100))
+            ->setBody('Further Info text ' . mt_rand(1, 100))
+            ->setContactDetails('Random Contact ' . mt_rand(1, 100) . ', random@example.com')
+            ->setDisplay(mt_rand(0, 3) > 0)
+            ->setShow($show);
         $manager->persist($application);
+    }
+
+    private function addDesignerAdverts(ObjectManager $manager, Show $show)
+    {
+        $num_roles_to_seek = mt_rand(1, count($this->design_roles) - 1);
+        $roles_to_seek = $this->design_roles;
+        shuffle($roles_to_seek);
+        $roles_to_seek = array_splice($roles_to_seek, 0, $num_roles_to_seek);
+
+        $advert = new Advert();
+        $advert->setName('Designer roles for '. $show->getName())
+            ->setType(Advert::TYPE_DESIGN)
+            ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
+            ->setContactDetails('Random Contact ' . mt_rand(1, 100) . ', random@example.com')
+            ->setDisplay(mt_rand(0, 4) > 0);
+
+        $expiry = new \DateTime(mt_rand(-15, 60) . ' days');
+        $advert->setExpiresAt($expiry);
+
+        $body = '';
+        if (mt_rand(0, 1) == 1) {
+            $body = 'Short Tech Extra';
+        } elseif (mt_rand(0, 1) == 1) {
+            $body = "A very very long tech extra because some people don't know when to stop. You know the type,"
+            . 'they will go on and on about the show hoping to persuade you to do it because it is exciting with'
+            . 'scaffolding and balloons and probably a raised forestage.';
+        }
+        $advert->setBody($body);
+        $advert->setShow($show);
+
+        $manager->persist($advert);
     }
 
     private function addTechieAdverts(ObjectManager $manager, Show $show)
@@ -309,45 +354,47 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $num_roles_to_seek = mt_rand(1, count($this->roles) - 1);
         $roles_to_seek = $this->roles;
         shuffle($roles_to_seek);
-
         $roles_to_seek = array_splice($roles_to_seek, 0, $num_roles_to_seek);
 
-        $techieAdvert = new TechieAdvert();
-        $techieAdvert->setPositions(implode("\n", $roles_to_seek));
-        $techieAdvert->setContact('Random Contact ' . mt_rand(1, 100));
-        $techieAdvert->setDeadline(false);
+        $advert = new Advert();
+        $advert->setName('Technical roles for '. $show->getName())
+            ->setType(Advert::TYPE_TECHNICAL)
+            ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
+            ->setContactDetails('Random Contact ' . mt_rand(1, 100))
+            ->setDisplay(mt_rand(0, 4) > 0);
 
         $expiry = new \DateTime(mt_rand(-15, 60) . ' days');
+        $advert->setExpiresAt($expiry);
 
-        $techieAdvert->setExpiry($expiry);
-
-        if (mt_rand(0, 4) > 0) {
-            $techieAdvert->setDeadline(true);
-        }
-
-        $techieAdvert->setDisplay(mt_rand(0, 4) > 0);
-
-        $techExtra = '';
-
+        $body = '';
         if (mt_rand(0, 1) == 1) {
-            $techExtra = 'Short Tech Extra';
+            $body = 'Short Tech Extra';
         } elseif (mt_rand(0, 1) == 1) {
-            $techExtra = "A very very long tech extra because some people don't know when to stop. You know the type,"
+            $body = "A very very long tech extra because some people don't know when to stop. You know the type,"
             . 'they will go on and on about the show hoping to persuade you to do it because it is exciting with'
-            . 'scaffolding and balloons and probably a raised forestage';
+            . 'scaffolding and balloons and probably a raised forestage.';
         }
+        $advert->setBody($body);
+        $advert->setShow($show);
 
-        $techieAdvert->setTechExtra($techExtra);
-        $techieAdvert->setShow($show);
-
-        $manager->persist($techieAdvert);
+        $manager->persist($advert);
     }
 
     private function addAuditions(ObjectManager $manager, Show $show)
     {
-        $numScheduledAuditions = mt_rand(1, 3);
+        $advert = new Advert();
+        $advert->setType(Advert::TYPE_ACTORS);
+        $advert->setName('Auditions for '.$show->getName())
+                ->setSummary('Audition details')
+                ->setBody("# Audition extra text #\nLorem ipsum")
+                ->setContactDetails('abc123@cam.ac.uk')
+                ->setDisplay(mt_rand(0, 3) > 0)
+                ->setShow($show);
+        $manager->persist($advert);
 
-        for ($i = 0; $i < $numScheduledAuditions; $i++) {
+        $numAuditions = mt_rand(1, 3);
+
+        for ($i = 0; $i < $numAuditions; $i++) {
             $audition = new Audition();
 
             $days = mt_rand(-5, 10);
@@ -360,14 +407,13 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             $endTime->add(\DateInterval::createFromDateString(mt_rand(2, 4). ' hours'));
             $audition->setEndAt($endTime);
 
+            if ($endTime > $advert->getExpiresAt()) {
+                $advert->setExpiresAt($endTime);
+            }
+
             $audition->setLocation('Random Location ' . mt_rand(1, 50));
 
-            $audition->setDisplay(mt_rand(0, 3) > 0);
-
-            $audition->setShow($show);
-            $show->setAudextra('Audition extra text');
-            $audition->setNonScheduled(false);
-
+            $advert->addAudition($audition);
             $manager->persist($audition);
         }
     }

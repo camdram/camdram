@@ -1,0 +1,56 @@
+{% extends 'advert/layout.html.twig' %}
+
+{% block title %}Advert: {{ advert.name }}{% endblock %}
+
+{# Facebook open graph markup #}
+{% block opengraph %}
+    <meta property="og:url" content="{{ url('get_advert', {identifier: advert.id}) }}" />
+    <meta property="og:title" content="{{ advert.name }}" />
+    <meta property="og:description" content="{{ advert.summary | strip_new_lines | truncate(500) }}" />
+{% endblock %}
+
+{% block vacancies_body %}
+    {% if is_granted('EDIT', advert) %}
+        {{ render(controller('Acts\\CamdramBundle\\Controller\\AdvertController::adminPanelAction', {advert: advert})) }}
+    {% endif %}
+
+    <div class="vacancies-panel">
+        <h4>{{ advert.name }}</h4>
+        {% if advert.show %}
+        <div class="vacancies-show-panel">
+            {%- include 'show/advert_header.html.twig' with {'show': advert.show} -%}
+        </div>
+        {% elseif advert.society %}
+        <div class="vacancies-show-panel">
+            <h5><a href="{{ path('get_society', {identifier: advert.society.slug}) }}">{{ advert.society.name }}</a></h5>
+        </div>
+        {% elseif advert.venue %}
+        <div class="vacancies-show-panel">
+            <h5><a href="{{ path('get_venue', {identifier: advert.venue.slug}) }}">{{ advert.venue.name }}</a></h5>
+        </div>
+        {% endif %}
+        <p>{{ advert.summary }}</p>
+        <ul>
+        {%- for audition in advert.auditions -%}
+            <li>{{ audition.dateString }}, {{ audition.location }}</li>
+        {%- endfor -%}
+        </ul>
+        <p></p>
+        <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+    </div>
+    
+    <hr/>
+    
+    {% if advert.auditions | length > 0 %}
+    {{ render_diary(diary) }}
+    <hr/>
+    {% endif%}
+
+    <p>{{ advert.body | camdram_markdown }}</p>
+
+    <hr/>
+    <p class="text-right"><em>
+        Created at {{ advert.createdAt | date('jS M Y H:i') }}<br />
+        Last updated at {{ advert.updatedAt | date('jS M Y H:i') }}
+    </em></p>
+{% endblock %}

@@ -20,7 +20,6 @@ use JMS\Serializer\Annotation as Serializer;
  * @Gedmo\Loggable
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("audition")
- * @Api\Link(route="get_audition", params={"identifier": "object.getShow().getSlug()"})
  */
 class Audition implements EventInterface
 {
@@ -71,32 +70,15 @@ class Audition implements EventInterface
     private $location;
 
     /**
-     * @var ?Show
+     * @var Advert
      *
-     * @ORM\ManyToOne(targetEntity="Show", inversedBy="auditions")
+     * @ORM\ManyToOne(targetEntity="Advert", inversedBy="auditions")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="showid", referencedColumnName="id", onDelete="CASCADE")
+     *   @ORM\JoinColumn(name="advert_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * })
      * @Gedmo\Versioned
-     * @Api\Link(embed=true, route="get_show", params={"identifier": "object.getShow().getSlug()"})
      */
-    private $show;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="display", type="boolean", nullable=false)
-     * @Gedmo\Versioned
-     */
-    private $display = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="nonscheduled", type="boolean", nullable=false)
-     * @Gedmo\Versioned
-     */
-    private $nonScheduled;
+    private $advert;
 
     /**
      * Get id
@@ -209,92 +191,30 @@ class Audition implements EventInterface
     }
 
     /**
-     * Set display
-     *
-     * @param bool $display
-     *
-     * @return Audition
+     * @param \Acts\CamdramBundle\Entity\Advert $advert
      */
-    public function setDisplay($display)
+    public function setAdvert($advert): self
     {
-        $this->display = $display;
+        $this->advert = $advert;
 
         return $this;
     }
 
     /**
-     * Get display
+     * Get advert
      *
-     * @return bool
+     * @return Advert
      */
-    public function getDisplay()
+    public function getAdvert()
     {
-        return $this->display;
-    }
-
-    /**
-     * Set non_scheduled
-     *
-     * @param bool $nonScheduled
-     *
-     * @return Audition
-     */
-    public function setNonScheduled($nonScheduled)
-    {
-        $this->nonScheduled = $nonScheduled;
-
-        return $this;
-    }
-
-    /**
-     * Get nonSheduled
-     *
-     * @return bool
-     */
-    public function getNonScheduled()
-    {
-        return $this->nonScheduled;
-    }
-
-    /**
-     * Set show
-     *
-     * @param \Acts\CamdramBundle\Entity\Show $show
-     *
-     * @return Audition
-     */
-    public function setShow(\Acts\CamdramBundle\Entity\Show $show = null)
-    {
-        $this->show = $show;
-
-        return $this;
-    }
-
-    /**
-     * Get show
-     *
-     * @return \Acts\CamdramBundle\Entity\Show
-     */
-    public function getShow()
-    {
-        return $this->show;
-    }
-
-    public function getFeedTitle()
-    {
-        return $this->getShow()->getName();
-    }
-
-    public function getSlug()
-    {
-        return $this->getShow()->getSlug();
+        return $this->advert;
     }
 
     // EventInterface
 
     public function getName()
     {
-        return $this->show->getName();
+        return $this->advert->getName();
     }
 
     public function getRepeatUntil()
@@ -314,6 +234,6 @@ class Audition implements EventInterface
 
     public function getUpdatedAt()
     {
-        return $this->getShow()->getTimestamp();
+        return $this->getAdvert()->getUpdatedAt();
     }
 }

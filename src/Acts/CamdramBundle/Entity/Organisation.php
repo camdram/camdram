@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -188,27 +189,25 @@ abstract class Organisation extends BaseEntity implements OwnableInterface
     abstract public function removeNews(\Acts\CamdramBundle\Entity\News $news);
 
     /**
-     * Add applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     *
-     * @return Organisation
+     * @return $this
      */
-    abstract public function addApplication(\Acts\CamdramBundle\Entity\Application $applications);
+    abstract public function addAdvert(Advert $advert);
+
+    abstract public function removeAdvert(Advert $advert);
 
     /**
-     * Remove applications
-     *
-     * @param \Acts\CamdramBundle\Entity\Application $applications
-     */
-    abstract public function removeApplication(\Acts\CamdramBundle\Entity\Application $applications);
-
-    /**
-     * Get applications
-     *
      * @return \Doctrine\Common\Collections\Collection
      */
-    abstract public function getApplications();
+    abstract public function getAdverts();
+
+    public function getAdvertById($id)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('id', $id))
+        ;
+
+        return $this->getAdverts()->matching($criteria)->first();
+    }
 
     abstract public function getOrganisationType();
 }

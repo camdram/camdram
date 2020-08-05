@@ -6,28 +6,23 @@
 {% block body %}
 
 {% set current_subnav_id = 'edit_application' %}
-{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: form.vars.value.venue})) }}
+{{ render(controller('ActsCamdramBundle:Venue:adminPanel', {org: form.vars.value.venue})) }}
 
-<div class="split-header"
+<div class="split-header">
     <h3>Edit show applications advertisement</h3>
-    <ul>
-        {{ include('navigation/form-item.html.twig', {item: {id: 'delete_application',
-            path: path('acts_camdram_venue_deleteapplication', {identifier:form.vars.value.venue.slug}), method: 'DELETE', text: 'Delete', icon: 'eraser'},
-            destructive: {title: "Are you sure you want to delete this application?" }
-            }) }}
-    </ul>
 </div>
 
 <div class="panel">
     <p>Use the form below to modify or extend your show applications advertisement. The advert will be displayed
-    until the deadline date.</p>
+    until the expiry date.</p>
+    <p>
+        Please ensure you have your team members' permission <em>before</em> adding their contact
+        details to the advert!
+    </p>
 </div>
 
-<form action="{{ path("acts_camdram_venue_putapplication", {identifier: form.vars.value.venue.slug, _method: 'put'}) }}" method="post">
-    {{ include('organisation/application-form.html.twig') }}
-    <div class="text-right">
-        <input type="submit" value="Save" class="button"/>
-    </div>
+<form action="{{ path("acts_camdram_venue_putadvert", {identifier: org.slug, advertId: advert.id}) }}" method="post">
+    {{ include('advert/form.html.twig') }}
 </form>
 
 {% endblock %}

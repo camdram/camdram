@@ -21,18 +21,14 @@ class EditorVoter extends Voter
             $subject = get_class($subject);
         }
 
-        return in_array(
-            $subject,
+        return in_array($subject,
             [
                 \Acts\CamdramBundle\Entity\Show::class,
                 \Acts\CamdramBundle\Entity\Society::class,
                 \Acts\CamdramBundle\Entity\Venue::class,
                 \Acts\CamdramBundle\Entity\Person::class,
-                \Acts\CamdramBundle\Entity\TechieAdvert::class,
-                \Acts\CamdramBundle\Entity\Audition::class,
-                \Acts\CamdramBundle\Entity\Application::class,
-            ]
-        );
+                \Acts\CamdramBundle\Entity\Advert::class,
+            ]);
     }
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
