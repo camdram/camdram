@@ -17,7 +17,9 @@ class UserListener
      * @var \Doctrine\ORM\EntityManager
      */
     private $entityManager;
+    /** @var EmailDispatcher */
     private $emailDispatcher;
+    /** @var TokenGenerator */
     private $tokenGenerator;
 
     public function __construct(EntityManager $em, EmailDispatcher $emailDispatcher, TokenGenerator $tokenGenerator)
@@ -31,7 +33,7 @@ class UserListener
      * Delete any pending access tokens given to this user, and grant access to
      * those resources in turn.
      */
-    public function postPersist(User $user, LifecycleEventArgs $event)
+    public function postPersist(User $user, LifecycleEventArgs $event): void
     {
         $pending_aces = $this->entityManager->getRepository(PendingAccess::class)
                             ->findByEmail($user->getEmail());
@@ -49,7 +51,7 @@ class UserListener
         $this->entityManager->flush();
     }
 
-    public function preUpdate(User $user, PreUpdateEventArgs $event)
+    public function preUpdate(User $user, PreUpdateEventArgs $event): void
     {
         if ($event->hasChangedField('email')) {
             $token = $this->tokenGenerator->generateEmailConfirmationToken($user);

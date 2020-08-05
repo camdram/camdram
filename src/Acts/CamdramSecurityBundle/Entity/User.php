@@ -85,6 +85,7 @@ class User implements UserInterface, \Serializable
     private $person;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection<int|string,ExternalUser>
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\ExternalUser", mappedBy="user", cascade={"remove"})
      * @Serializer\Exclude()
      */
@@ -104,6 +105,7 @@ class User implements UserInterface, \Serializable
     private $profile_picture_url;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection<int|string,AccessControlEntry>
      * @ORM\OneToMany(targetEntity="Acts\CamdramSecurityBundle\Entity\AccessControlEntry", mappedBy="user")
      * @Serializer\Exclude()
      */
@@ -120,12 +122,14 @@ class User implements UserInterface, \Serializable
     private $organisations;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection<int|string,AccessControlEntry>
      * @ORM\OneToMany(targetEntity="AccessControlEntry", mappedBy="grantedBy")
      * @Serializer\Exclude()
      */
     private $ace_grants;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection<int|string,\Acts\CamdramApiBundle\Entity\Authorization>
      * @ORM\OneToMany(targetEntity="Acts\CamdramApiBundle\Entity\Authorization", mappedBy="user")
      * @Serializer\Exclude()
      */
@@ -165,6 +169,7 @@ class User implements UserInterface, \Serializable
         return $this->name;
     }
 
+    /** @return string */
     public function getDisplayName()
     {
         return $this->getName();
@@ -347,15 +352,13 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser)
+    public function removeExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser): void
     {
         $this->external_users->removeElement($externalUser);
     }
 
     /**
-     * Get external_users
-     *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection<int|string,ExternalUser>
      */
     public function getExternalUsers()
     {
@@ -376,7 +379,7 @@ class User implements UserInterface, \Serializable
         }
     }
 
-    public function getType()
+    public function getType(): string
     {
         return 'native';
     }
@@ -410,21 +413,22 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function removeAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces)
+    public function removeAce(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aces): void
     {
         $this->aces->removeElement($aces);
     }
 
     /**
-     * Get aces
-     *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection<int|string,\Acts\CamdramSecurityBundle\Entity\AccessControlEntry>
      */
     public function getAces()
     {
         return $this->aces;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\Collection<int|string,\Acts\CamdramSecurityBundle\Entity\AccessControlEntry>
+     */
     public function getSecurityAces()
     {
         $criteria = Criteria::create();
@@ -439,44 +443,26 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * Remove ace_grants
-     *
-     * @param \Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants
-     */
-    public function removeAceGrant(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants)
+    public function removeAceGrant(\Acts\CamdramSecurityBundle\Entity\AccessControlEntry $aceGrants): void
     {
         $this->ace_grants->removeElement($aceGrants);
     }
 
     /**
-     * Get ace_grants
-     *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection<int|string,\Acts\CamdramSecurityBundle\Entity\AccessControlEntry>
      */
     public function getAceGrants()
     {
         return $this->ace_grants;
     }
 
-    /**
-     * Add authorizations
-     *
-     * @param \Acts\CamdramApiBundle\Entity\Authorization $authorizations
-     * @return User
-     */
-    public function addAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations)
+    public function addAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations): self
     {
         $this->authorizations[] = $authorizations;
         return $this;
     }
 
-    /**
-     * Remove authorizations
-     *
-     * @param \Acts\CamdramApiBundle\Entity\Authorization $authorizations
-     */
-    public function removeAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations)
+    public function removeAuthorization(\Acts\CamdramApiBundle\Entity\Authorization $authorizations): void
     {
         $this->authorizations->removeElement($authorizations);
     }
@@ -484,7 +470,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get authorizations
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection<int|string,\Acts\CamdramApiBundle\Entity\Authorization>
      */
     public function getAuthorizations()
     {

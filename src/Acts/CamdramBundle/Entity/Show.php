@@ -859,13 +859,9 @@ class Show extends BaseEntity implements OwnableInterface
     }
 
     /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return Show
+     * @param ?string $slug
      */
-    public function setSlug($slug)
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
 

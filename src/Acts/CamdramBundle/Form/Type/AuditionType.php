@@ -81,7 +81,7 @@ class AuditionType extends AbstractType
         $endAt = clone $startAt;
         // Reverse model transform -> UTC before setting date
         $endAt->setTimezone(new \DateTimezone('Europe/London'));
-        $endAt->setTime($endAtTime->format('H'), $endAtTime->format('i'), $endAtTime->format('s'));
+        $endAt->setTime((int)$endAtTime->format('H'), (int)$endAtTime->format('i'), (int)$endAtTime->format('s'));
         // Convert back to UTC for serialization
         $endAt->setTimezone(new \DateTimezone('UTC'));
 

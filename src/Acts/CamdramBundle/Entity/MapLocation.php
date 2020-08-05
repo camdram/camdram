@@ -40,7 +40,7 @@ class MapLocation
     /**
      * @param float $latitude
      */
-    public function setLatitude($latitude)
+    public function setLatitude($latitude): void
     {
         $this->latitude = $latitude;
     }
@@ -56,7 +56,7 @@ class MapLocation
     /**
      * @param float $longitude
      */
-    public function setLongitude($longitude)
+    public function setLongitude($longitude): void
     {
         $this->longitude = $longitude;
     }
@@ -76,6 +76,7 @@ class MapLocation
         return $this->latitude.', '.$this->longitude;
     }
 
+    /** @return float */
     public function getDistanceTo(MapLocation $location)
     {
         $earthRadius = 3958.75;

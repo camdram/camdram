@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class NewsRepository extends EntityRepository
 {
-    public function itemExists($service_name, $id)
+    public function itemExists($service_name, $id): bool
     {
         $query = $this->createQueryBuilder('n')
             ->select('count(n.id) AS c')
@@ -25,6 +25,7 @@ class NewsRepository extends EntityRepository
         return $count > 0;
     }
 
+    /** @return iterable<News> */
     public function getRecent($count)
     {
         $query = $this->createQueryBuilder('n')
@@ -35,6 +36,7 @@ class NewsRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /** @return iterable<News> */
     public function getRecentByOrganisation(Organisation $org, $count)
     {
         $qb = $this->createQueryBuilder('n')

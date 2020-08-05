@@ -37,6 +37,7 @@ class AclProvider
         $this->repository = $entityManager->getRepository(AccessControlEntry::class);
     }
 
+    /** @return bool */
     public function isOwner($user, OwnableInterface $entity)
     {
         if (is_null($user) || !$user instanceof User) {
@@ -46,6 +47,7 @@ class AclProvider
         return $this->repository->aceExists($user, $entity);
     }
 
+    /** @return User[] */
     public function getOwners(OwnableInterface $entity)
     {
         return $this->entityManager->getRepository(User::class)->getEntityOwners($entity);
@@ -53,16 +55,19 @@ class AclProvider
 
     // user -> ace ->society -> (join table) -> show
     //             ↳  venue  -> performance  ⮥
+    /** @return User[] */
     public function getOwnersOfOwningSocs(Show $show): array
     {
         return $this->getOwnersOfOwningOrgs($show, 'society');
     }
 
+    /** @return User[] */
     public function getOwnersOfOwningVens(Show $show): array
     {
         return $this->getOwnersOfOwningOrgs($show, 'venue');
     }
 
+    /** @return User[] */
     public function getOwnersOfOwningOrgs(Show $show, string $type = null): array
     {
         if ($type && $type !== 'society' && $type !== 'venue') {
@@ -85,11 +90,13 @@ class AclProvider
         return $query->getResult();
     }
 
-    public function getAdmins($min_level = AccessControlEntry::LEVEL_FULL_ADMIN)
+    /** @return User[] */
+    public function getAdmins(int $min_level = AccessControlEntry::LEVEL_FULL_ADMIN)
     {
         return $this->entityManager->getRepository(User::class)->findAdmins($min_level);
     }
 
+    /** @return \Acts\CamdramBundle\Entity\Organisation[] */
     public function getOrganisationsByUser(User $user): array
     {
         $socs = $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Society')->createQueryBuilder('s')
@@ -104,6 +111,11 @@ class AclProvider
         return array_merge($socs, $vens);
     }
 
+    /**
+     * @phpstan-template T of \Acts\CamdramSecurityBundle\Security\OwnableInterface
+     * @phpstan-param class-string<T> $class
+     * @return int[]
+     */
     public function getEntityIdsByUser(User $user, $class)
     {
         $reflection = new \ReflectionClass($class);
@@ -120,7 +132,7 @@ class AclProvider
     }
 
     /**
-     * @phpstan-template T
+     * @phpstan-template T of \Acts\CamdramSecurityBundle\Security\OwnableInterface
      * @phpstan-param class-string<T> $class
      * @phpstan-return T[]
      */
@@ -144,7 +156,7 @@ class AclProvider
      * database, and dispatches a Camdram-specific event that is used
      * to trigger sending of emails.
      */
-    public function grantAccess(OwnableInterface $entity, User $user, User $granter = null)
+    public function grantAccess(OwnableInterface $entity, User $user, User $granter = null): void
     {
         $ace = new AccessControlEntry();
         $ace->setUser($user);
@@ -170,7 +182,7 @@ class AclProvider
     /**
      * Revoke access to the entity.
      */
-    public function revokeAccess(OwnableInterface $entity, User $user, User $revoker = null)
+    public function revokeAccess(OwnableInterface $entity, User $user, User $revoker = null): void
     {
         $ace_repo = $this->repository;
 
@@ -189,7 +201,7 @@ class AclProvider
         }
     }
 
-    public function grantAdmin(User $user, $level = AccessControlEntry::LEVEL_FULL_ADMIN)
+    public function grantAdmin(User $user, int $level = AccessControlEntry::LEVEL_FULL_ADMIN): void
     {
         $aceRepo = $this->repository;
         $qb = $aceRepo->createQueryBuilder('a');
@@ -220,7 +232,7 @@ class AclProvider
         $this->entityManager->flush();
     }
 
-    public function revokeAdmin(User $user)
+    public function revokeAdmin(User $user): void
     {
         $aceRepo = $this->repository;
         $qb = $aceRepo->createQueryBuilder('a');
@@ -244,7 +256,7 @@ class AclProvider
      * to access a show. This function approves the request, and dispatches
      * a Camdram-specific event that is used to trigger sending of emails.
      */
-    public function approveShowAccess(Show $show, User $user, User $granter)
+    public function approveShowAccess(Show $show, User $user, User $granter): void
     {
         $ace_repo = $this->repository;
         $existing_ace = $ace_repo->findAce($user, $show);

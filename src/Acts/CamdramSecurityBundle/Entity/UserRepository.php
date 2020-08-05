@@ -12,8 +12,8 @@ use Acts\CamdramSecurityBundle\Security\OwnableInterface;
  */
 class UserRepository extends EntityRepository
 {
-
-    public function findAdmins($min_level)
+    /** @return User[] */
+    public function findAdmins(int $min_level)
     {
         $query = $this->createQueryBuilder('u')
             ->innerJoin('u.aces', 'e')
@@ -26,6 +26,7 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /** @return User[] */
     public function findOrganisationAdmins()
     {
         $qb = $this->createQueryBuilder('u');
@@ -37,6 +38,7 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /** @return User[] */
     public function findActiveUsersForMailOut()
     {
         $qb = $this->createQueryBuilder('u');
@@ -46,6 +48,7 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /** @return User[] */
     public function getEntityOwners(OwnableInterface $entity)
     {
         $query = $this->createQueryBuilder('u')
@@ -60,7 +63,8 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * Returns the combined owners of an array of ownable entities.
+     * @param iterable<\Acts\CamdramSecurityBundle\Security\OwnableInterface> $entities
+     * @return User[] the combined owners of an array of ownable entities.
      */
     public function getOwnersOfEntities(iterable $entities): array
     {
@@ -91,6 +95,7 @@ class UserRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /** @return User[] */
     public function getContactableEntityOwners(OwnableInterface $entity)
     {
         $query = $this->createQueryBuilder('u')
@@ -106,7 +111,7 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * Get the list of users that have requested admin access to a show.
+     * @return User[] the list of users that have requested admin access to a show.
      */
     public function getRequestedShowAdmins(Show $show)
     {
@@ -122,7 +127,7 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * Construct a querybuilder (alias u) populated with a search term.
+     * @return \Doctrine\ORM\QueryBuilder a querybuilder (alias u) populated with a search term.
      */
     public function search($query)
     {
@@ -138,7 +143,7 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * Find user by external user details
+     * @return ?User user found by external user details
      */
     public function findByExternalUser($service, $username)
     {

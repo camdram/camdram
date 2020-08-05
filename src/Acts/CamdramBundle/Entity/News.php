@@ -273,6 +273,7 @@ class News
         return $this->picture;
     }
 
+    /** @return string */
     public function getLink()
     {
         switch ($this->getSource()) {

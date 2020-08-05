@@ -88,6 +88,12 @@ class DoctrineEventListener
     }
 
 
+    /**
+     * @phpstan-template T
+     * @phpstan-param T[] $in
+     * @phpstan-return T[]
+     * $in is filtered such that only one object of any given id is returned.
+     */
     private static function array_unique_byid(array $in): array
     {
         $uniqueIds = array_unique(array_map(function($o) {
@@ -97,6 +103,10 @@ class DoctrineEventListener
     }
 
 
+    /**
+     * @param int[] $arr
+     * @param int|string $key
+     */
     private static function array_increment(array &$arr, $key, int $diff): void
     {
         $arr[$key] = $diff + ($arr[$key] ?? 0);

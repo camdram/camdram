@@ -25,16 +25,17 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ModerationManager
 {
+    /** @var EntityManagerInterface */
     private $entityManager;
-
+    /** @var EmailDispatcher */
     private $dispatcher;
-
+    /** @var AclProvider */
     private $aclProvider;
-
+    /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
-
+    /** @var TokenStorageInterface */
     private $tokenStorage;
-
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(

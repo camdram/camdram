@@ -22,8 +22,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class EmailSendListener implements EventSubscriberInterface
 {
+    /** @var EmailDispatcher */
     private $dispatcher;
+    /** @var TokenGenerator */
     private $generator;
+    /** @var ModerationManager*/
     private $moderationManager;
 
     public function __construct(EmailDispatcher $dispatcher, TokenGenerator $generator,
@@ -34,6 +37,7 @@ class EmailSendListener implements EventSubscriberInterface
         $this->moderationManager = $moderationManager;
     }
 
+    /** @return array<string,string> */
     public static function getSubscribedEvents()
     {
         return [
@@ -44,7 +48,7 @@ class EmailSendListener implements EventSubscriberInterface
         ];
     }
 
-    public function onRegistrationEvent(FilterUserResponseEvent $event)
+    public function onRegistrationEvent(FilterUserResponseEvent $event): void
     {
         /** @var \Acts\CamdramSecurityBundle\Entity\User $user */
         $user = $event->getUser();
@@ -55,7 +59,7 @@ class EmailSendListener implements EventSubscriberInterface
         }
     }
 
-    public function onEmailChangeEvent(UserEvent $event)
+    public function onEmailChangeEvent(UserEvent $event): void
     {
         $user = $event->getUser();
         $token = $this->generator->generateEmailConfirmationToken($user);
@@ -67,7 +71,7 @@ class EmailSendListener implements EventSubscriberInterface
      * Inform the person that they have been granted access to a resource on the
      * site.
      */
-    public function onAceCreatedEvent(AccessControlEntryEvent $event)
+    public function onAceCreatedEvent(AccessControlEntryEvent $event): void
     {
         $ace = $event->getAccessControlEntry();
         switch ($ace->getType()) {
@@ -86,7 +90,7 @@ class EmailSendListener implements EventSubscriberInterface
      * Inform the person that they have been granted access to a resource on the
      * site, pending creating an account.
      */
-    public function onPendingAccessCreatedEvent(PendingAccessEvent $event)
+    public function onPendingAccessCreatedEvent(PendingAccessEvent $event): void
     {
         $pending_ace = $event->getPendingAccess();
         $this->dispatcher->sendPendingAceEmail($pending_ace);

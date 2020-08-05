@@ -21,6 +21,10 @@ class Helper
         $this->aclProvider = $aclProvider;
     }
 
+    /**
+     * @param string $attributes
+     * @param ?object $object
+     */
     public function isGranted($attributes, $object = null, bool $fully_authenticated = true): bool
     {
         if ($fully_authenticated) {
@@ -32,6 +36,10 @@ class Helper
         return $this->authorizationChecker->isGranted($attributes, $object);
     }
 
+    /**
+     * @param string $attributes
+     * @param ?object $object
+     */
     public function ensureGranted($attributes, $object = null, bool $fully_authenticated = true): void
     {
         if (false === $this->isGranted($attributes, $object, $fully_authenticated)) {
