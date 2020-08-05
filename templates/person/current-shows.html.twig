@@ -1,4 +1,5 @@
 {%- if shows | length > 0 -%}
+    <span class="person-show-count">{{ shows | length }}</span>
     <h4>{{ person.name }} is currently involved with</h4>
     <div>
     {%- for show in shows -%}

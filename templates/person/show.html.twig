@@ -39,6 +39,11 @@
 {% if person.norobots %}
 <meta name="robots" content="noindex" />
 {% endif %}
+<style>
+.person-show-count {
+    color:#FFF;background:#aaa;border-radius:7px;padding:3px 4px;font:90% sans-serif;float:right
+}
+</style>
 <script>
 {#- begin-CSP-permitted-script -#}
 $(function() {
@@ -71,9 +76,14 @@ $(function() {
             e.target.parentNode.querySelector('.active').classList.remove('active');
             e.target.classList.add('active');
             for (var heading of document.querySelectorAll('.content h4')) {
-                if (heading.nextElementSibling.querySelector('[itemtype*="TheaterEvent"]:not([hidden])')) {
+                var nItems = heading.nextElementSibling.querySelectorAll('[itemtype*="TheaterEvent"]:not([hidden])').length;
+                var showCount = heading.previousElementSibling;
+                if (nItems) {
+                    showCount.textContent = nItems;
+                    showCount.removeAttribute('hidden');
                     heading.removeAttribute('hidden');
                 } else {
+                    showCount.setAttribute('hidden', 'hidden');
                     heading.setAttribute('hidden', 'hidden');
                 }
             }

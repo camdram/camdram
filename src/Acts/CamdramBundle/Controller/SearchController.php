@@ -66,12 +66,12 @@ ENDSQL
         // Name columns irrespective of what entities are chosen
         $prefixSQL = <<<'ENDSQL'
             (SELECT NULL AS entity_type, NULL AS id, NULL AS slug, NULL AS name,
-                NULL AS start_at, NULL AS last_active, NULL AS show_count FROM DUAL WHERE FALSE) UNION
+                NULL AS start_at, NULL AS last_active FROM DUAL WHERE FALSE) UNION
 ENDSQL;
 
         $fragments = [];
         $fragments['show'] = <<<'ENDSQL'
-            (SELECT 'show', s.id, s.slug, s.title, MIN(acts_performances.start_at), NULL, NULL
+            (SELECT 'show', s.id, s.slug, s.title, MIN(acts_performances.start_at), NULL
                 FROM acts_shows s
                 LEFT JOIN acts_performances ON s.id = acts_performances.sid
                 WHERE MATCH (`title`, `slug`) AGAINST (? IN BOOLEAN MODE)
@@ -79,8 +79,7 @@ ENDSQL;
 ENDSQL;
         $fragments['person'] = <<<'ENDSQL'
             (SELECT 'person', p.id, p.slug, p.name,
-                    MIN(acts_performances.start_at), MAX(acts_performances.repeat_until),
-                    COUNT(DISTINCT acts_shows_people_link.sid)
+                    MIN(acts_performances.start_at), MAX(acts_performances.repeat_until)
                 FROM acts_people_data p
                 LEFT JOIN acts_shows_people_link ON acts_shows_people_link.pid = p.id
                 LEFT JOIN acts_performances ON acts_performances.sid = acts_shows_people_link.sid
@@ -88,12 +87,12 @@ ENDSQL;
                 GROUP BY p.id)
 ENDSQL;
         $fragments['society'] = <<<'ENDSQL'
-            (SELECT 'society', soc.id, soc.slug, soc.name, NULL, NULL, NULL
+            (SELECT 'society', soc.id, soc.slug, soc.name, NULL, NULL
                 FROM acts_societies soc
                 WHERE MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE))
 ENDSQL;
         $fragments['venue'] = <<<'ENDSQL'
-            (SELECT 'venue', ven.id, ven.slug, ven.name, NULL, NULL, NULL
+            (SELECT 'venue', ven.id, ven.slug, ven.name, NULL, NULL
                 FROM acts_venues ven
                 WHERE MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE))
 ENDSQL;
@@ -110,7 +109,7 @@ ENDSQL
         if (empty($parts)) throw new \InvalidArgumentException("No entity types specified");
 
         $query = $this->em->createNativeQuery($prefixSQL . implode(' UNION ', $parts) . $suffixSQL,
-            $this->makeArrayRSM(['name', 'slug', 'start_at', 'id', 'entity_type', 'last_active', 'show_count']));
+            $this->makeArrayRSM(['name', 'slug', 'start_at', 'id', 'entity_type', 'last_active']));
         for ($i = 0; $i < count($parts); $i++) {
             $query->setParameter($i, $search);
         }
@@ -128,10 +127,8 @@ ENDSQL
                     substr($result['start_at'] ?? "0", 0, 10)));
 
                 unset($result['last_active']);
-                unset($result['show_count']);
             } else {
                 unset($result['last_active']);
-                unset($result['show_count']);
                 unset($result['start_at']);
                 unset($result['rank']);
             }
