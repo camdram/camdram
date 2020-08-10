@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'edit_auditions' %}
-{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
+{{ render(admin_panel(show)) }}
 
 <h3>Manage Adverts</h3>
 

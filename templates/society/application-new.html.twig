@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'new_application' %}
-{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: org})) }}
+{{ render(admin_panel(org)) }}
 
 <h3>Add show applications advertisement</h3>
 

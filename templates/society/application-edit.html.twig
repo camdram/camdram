@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'edit_application' %}
-{{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: form.vars.value.society})) }}
+{{ render(admin_panel(form.vars.value.society)) }}
 
 <div class="split-header">
     <h3>Edit show applications advertisement</h3>

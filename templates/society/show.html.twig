@@ -12,7 +12,7 @@
 {% block body %}
 
     {% if is_granted('EDIT', society) %}
-        {{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: society})) }}
+        {{ render(admin_panel(society)) }}
     {% endif %}
 
 <div class="row panel" itemscope="" itemtype="http://schema.org/TheaterGroup">

@@ -4,11 +4,11 @@
 {% block body %}
 
 {% if entity.entityType == 'show' %}
-    {{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: entity})) }}
+    {{ render(admin_panel(entity)) }}
 {% elseif entity.entityType == 'society' %}
-    {{ render(controller('ActsCamdramBundle:Society:adminPanel', {org: entity})) }}
+    {{ render(admin_panel(entity)) }}
 {% elseif entity.entityType == 'venue' %}
-    {{ render(controller('ActsCamdramBundle:Venue:adminPanel', {org: entity})) }}
+    {{ render(admin_panel(entity)) }}
 {% endif %}
 
 <p>

@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'manage_adverts' %}
-{{ render(controller('ActsCamdramBundle:Venue:adminPanel', {org: org})) }}
+{{ render(admin_panel(org)) }}
 
 <h3>Manage adverts</h3>
 

@@ -7,6 +7,7 @@ use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Service\TextService;
 use Doctrine\Inflector\Rules\English\InflectorFactory;
+use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 
@@ -56,6 +57,7 @@ class CamdramExtension extends AbstractExtension
     public function getFunctions()
     {
         return array(
+            new \Twig\TwigFunction('admin_panel', [$this, 'admin_panel']),
             new \Twig\TwigFunction('link_entity', [$this, 'link_entity'], ['is_safe' => ['html']]),
             new \Twig\TwigFunction('list_sep_verb', [$this, 'list_sep_verb']),
             new \Twig\TwigFunction('requires_article', [$this, 'requiresArticle']),
@@ -146,6 +148,21 @@ class CamdramExtension extends AbstractExtension
         return ($loop['length'] == 1) ?
             ' '.($verb_sing ?? ($verb_pl.'s')).' ' :
             " $verb_pl ";
+    }
+
+    public function admin_panel(object $entity): ControllerReference
+    {
+        if ($entity instanceof \Acts\CamdramBundle\Entity\Advert) {
+            return new ControllerReference('Acts\\CamdramBundle\\Controller\\AdvertController::adminPanelAction', ['advert' => $entity]);
+        } else if ($entity instanceof \Acts\CamdramBundle\Entity\Show) {
+            return new ControllerReference('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', ['show' => $entity]);
+        } else if ($entity instanceof \Acts\CamdramBundle\Entity\Society) {
+            return new ControllerReference('Acts\\CamdramBundle\\Controller\\SocietyController::adminPanelAction', ['org' => $entity]);
+        } else if ($entity instanceof \Acts\CamdramBundle\Entity\Venue) {
+            return new ControllerReference('Acts\\CamdramBundle\\Controller\\VenueController::adminPanelAction', ['org' => $entity]);
+        } else {
+            throw new \Exception("Unknown type ".get_class($entity)." passed to admin_panel.");
+        }
     }
 
     /**

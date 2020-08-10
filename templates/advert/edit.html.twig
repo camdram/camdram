@@ -5,7 +5,7 @@
 
 {% block vacancies_body %}
 
-{{ render(controller('Acts\\CamdramBundle\\Controller\\AdvertController::adminPanelAction', {advert: advert})) }}
+{{ render(admin_panel(advert)) }}
 
 <h3>Edit Advert</h3>
 

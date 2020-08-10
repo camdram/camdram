@@ -6,7 +6,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'manage_adverts' %}
-{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
+{{ render(admin_panel(show)) }}
 
 <h3>New Advert</h3>
 

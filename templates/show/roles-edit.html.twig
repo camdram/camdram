@@ -12,7 +12,7 @@
 {% block body %}
 
 {% set current_subnav_id = 'show_add_many_roles' %}
-{{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', {show: show})) }}
+{{ render(admin_panel(show)) }}
 
 <h3>Edit roles for <em>{{show.name}}</em></h3>
 
