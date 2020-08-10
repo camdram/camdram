@@ -143,9 +143,10 @@ class AdvertController extends AbstractFOSRestController
     }
 
     /**
-     * @Route("/vacancies/{id<\d+>}/edit", methods={"GET"}, name="edit_advert")
+     * @Route("/vacancies/{id<\d+>}/edit", methods={"GET"}, name="edit_advert", defaults={"embedded":false})
+     * @Route("/vacancies/{id<\d+>}/edit-embedded", methods={"GET"}, name="edit_embedded_advert", defaults={"embedded":true})
      */
-    public function editAdvert(Request $request, int $id)
+    public function editAdvert(Request $request, int $id, bool $embedded)
     {
         $advert = $this->getDoctrine()->getRepository(Advert::class)->find($id);
         $this->denyAccessUnlessGranted('EDIT', $advert);
@@ -154,17 +155,18 @@ class AdvertController extends AbstractFOSRestController
 
         return $this->render('advert/edit.html.twig', [
             'advert' => $advert,
+            'embedded' => $embedded,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/vacancies/{id<\d+>}", methods={"PUT"}, name="put_advert")
+     * @Route("/vacancies/{id<\d+>}/embedded", methods={"PUT"}, name="put_embedded_advert", defaults={"embedded":true})
+     * @Route("/vacancies/{id<\d+>}", methods={"PUT"}, name="put_advert", defaults={"embedded":false})
      */
-    public function putAdvert(Request $request, int $id)
+    public function putAdvert(Request $request, int $id, bool $embedded)
     {
-        $advert = $this->getDoctrine()->getRepository(Advert::class)->find($id);
-        $this->denyAccessUnlessGranted('EDIT', $advert);
+        $advert = $this->getAdCheckEditable($request, $id, 'put_advert');
 
         $form = $this->getForm($advert, 'PUT');
         $form->handleRequest($request);
@@ -172,10 +174,12 @@ class AdvertController extends AbstractFOSRestController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
+            if ($embedded) return $this->redirectToParentsAds($advert->getParentEntity());
             return $this->redirectToRoute('get_advert', ['identifier' => $advert->getId()]);
         } else {
             return $this->render('advert/edit.html.twig', [
                 'advert' => $advert,
+                'embedded' => $embedded,
                 'form' => $form->createView()
             ])->setStatusCode(400);
         }

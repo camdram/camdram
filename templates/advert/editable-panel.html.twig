@@ -22,8 +22,7 @@
                     title: "Delete the advert “" ~ advert.name ~ "”?",
                     text: "This is permanent; you could hide it instead." }
                 }) -}}
-            <li><a href="{{ path('acts_camdram_' ~ advert.parentEntity.entityType ~ '_editadvert',
-                        {identifier: advert.parentEntity.slug, advertId: advert.id}) }}" class="button small">
+            <li><a href="{{ path('edit_embedded_advert', {id: advert.id}) }}" class="button small">
                 <i class="fa fa-pencil"></i> Edit</a>
             </li>
         </ul>

@@ -79,40 +79,4 @@ class AdvertController extends AbstractController
             ]);
         }
     }
-
-    /**
-     * @Route("/shows/{identifier}/adverts/{advertId}/edit", methods={"GET"}, name="acts_camdram_show_editadvert")
-     */
-    public function editAction($identifier, $advertId)
-    {
-        $advert = $this->getAndCheckAdvert($identifier, $advertId);
-        $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
-
-        return $this->render('show/advert-edit.html.twig', [
-            'advert' => $advert,
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/shows/{identifier}/adverts/{advertId}", methods={"PUT"}, name="put_show_advert")
-     */
-    public function putAction(Request $request, $identifier, $advertId)
-    {
-        $advert = $this->getAndCheckAdvert($identifier, $advertId);
-
-        $form = $this->createForm(AdvertType::class, $advert, ['method' => 'PUT']);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            return $this->redirectToRoute('get_show_adverts', array('identifier' => $advert->getShow()->getSlug()));
-        } else {
-            return $this->render('show/advert-edit.html.twig', [
-                'advert' => $advert,
-                'form' => $form->createView()
-            ])->setStatusCode(400);
-        }
-    }
 }

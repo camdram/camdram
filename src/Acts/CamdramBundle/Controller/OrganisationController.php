@@ -210,44 +210,6 @@ abstract class OrganisationController extends AbstractRestController
     }
 
     /**
-     * @Route("/{identifier}/adverts/{advertId}/edit", methods={"GET"})
-     */
-    public function editAdvertAction($identifier, $advertId)
-    {
-        $org = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
-
-        $advert = $org->getAdvertById($advertId);
-        $form = $this->getAdvertForm($org, $advert, 'PUT');
-
-        return $this->render($this->type.'/application-edit.html.twig',
-            ['org' => $org,'advert' => $advert, 'form' => $form->createView()]);
-    }
-
-    /**
-     * @Route("/{identifier}/adverts/{advertId}", methods={"PUT"})
-     */
-    public function putAdvertAction(Request $request, $identifier, $advertId)
-    {
-        $org = $this->getEntity($identifier);
-        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $org);
-
-        $advert = $org->getAdvertById($advertId);
-        $form = $this->getAdvertForm($org, $advert, 'PUT');
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($form->getData());
-            $em->flush();
-
-            return $this->redirectToRoute('acts_camdram_'.$this->type.'_adverts', array('identifier' => $org->getSlug()));
-        } else {
-            return $this->render($this->type.'/application-edit.html.twig',
-               ['advert' => $advert, 'form' => $form->createView()])->setStatusCode(400);
-        }
-    }
-
-    /**
      * Get a form for adding an admin to an organisation.
      *
      * @Route("/{identifier}/admin/edit")

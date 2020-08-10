@@ -1,27 +1,36 @@
-{% extends 'advert/layout.html.twig' %}
+{% extends embedded ? 'layout.html.twig' : 'advert/layout.html.twig' %}
 
-{% set current_navigation_id = 'vacancies' %}
+{% set current_navigation_id = embedded ? (advert.parentEntity.entityType | plural(2)) : 'vacancies' %}
 {% block title %}Edit Advert{% endblock %}
+
+{% block body %}
+    {{- embedded ? block('vacancies_body') : parent() -}}
+{% endblock %}
 
 {% block vacancies_body %}
 
-{{ render(admin_panel(advert)) }}
+{{ render(admin_panel(embedded ? advert.parentEntity : advert)) }}
 
 <h3>Edit Advert</h3>
 
 <div class="panel">
-    <p>
-        Use the form below modify your show's advert.
-        You can add one or more audition sessions (if applicable) and/or leave contact details for people to 
-        get in touch.
-    </p>
+    {%- set entityType = advert.parentEntity.entityType ?? '' -%}
+    {%- if entityType == 'show' -%}
+        <p>Use the form below to modify your show's advert.
+        You can add one or more audition sessions (if applicable) and/or leave contact details for people to
+        get in touch.</p>
+    {%- elseif entityType == 'society' or entityType == 'venue' -%}
+        <p>Use the form below to modify or extend your show applications advertisement. The advert will be displayed
+        until the expiry date.</p>
+    {%- endif -%}
     <p>
         Please ensure you have your team members' permission <em>before</em> adding their contact
         details to the advert!
     </p>
 </div>
 
-{{ form_start(form, {'action': path("put_advert", {id: advert.id} )}) }}
+{{ form_start(form, {'action': path(embedded ? "put_embedded_advert" : "put_advert", {id: advert.id} )}) }}
+<input type="hidden" name="_token" value="{{ csrf_token('put_advert') }}"/>
 {{ include('advert/form.html.twig') }}
 {{ form_end(form) }}
 

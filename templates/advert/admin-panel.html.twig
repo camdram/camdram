@@ -1,7 +1,7 @@
 {% if is_granted('EDIT', advert) %}
 <div class="admin-panel">
     <h6 class="split-header">
-        <span>Advert Administration: {{ link_entity(advert) }}</span>
+        <span>Advert Administration: {{ link_entity(advert) }} for {{ link_entity(advert.parentEntity) }}</span>
         <span>ID: {{ advert.id }}</span></h6>
     <ul role="menubar">
         {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_show', path: path('edit_advert', {id:advert.id}), icon: 'pencil', text: 'Edit this advert'} }) }}
