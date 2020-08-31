@@ -28,6 +28,11 @@ class Society extends Organisation
      */
     private $shows;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Event", mappedBy="societies")
+     */
+    private $events;
+
     private $entity_type = 'society';
 
     /**

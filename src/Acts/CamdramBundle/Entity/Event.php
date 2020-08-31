@@ -2,52 +2,46 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Event
  *
- * @ORM\Table(name="acts_events")
+ * @Gedmo\Loggable
+ * @ORM\Table(name="acts_events",
+ *      indexes={@ORM\Index(name="idx_event_fulltext", columns={"text"}, flags={"fulltext"})})
  * @ORM\Entity
  */
-class Event
+class Event extends BaseEntity implements OwnableInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    use MultipleSocsTrait;
 
     /**
      * @var string
      *
      * @ORM\Column(name="text", type="string", length=255, nullable=false)
      */
-    private $title;
+    private $name;
 
     /**
-     * @var \DateTime
+     * This property holds the CLOCK TIME that the event ends regardless of time zones etc.
      *
+     * @var \DateTime
      * @ORM\Column(name="endtime", type="time", nullable=false)
      */
     private $end_time;
 
     /**
-     * @var \DateTime
+     * This property holds the UTC date and time that the event starts.
      *
-     * @ORM\Column(name="starttime", type="time", nullable=false)
-     */
-    private $start_time;
-
-    /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date", nullable=false)
+     * @ORM\Column(name="start_at", type="datetime", nullable=false)
      */
-    private $date;
+    private $start_at;
 
     /**
      * @var string
@@ -57,40 +51,61 @@ class Event
     private $description;
 
     /**
-     * @var int
+     * @var ?Event
      *
-     * @ORM\Column(name="linkid", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="linked_dates")
+     * @ORM\OrderBy({"start_at" = "ASC"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="linkid", referencedColumnName="id", onDelete="CASCADE")
+     * })
      */
     private $link_id;
 
     /**
-     * @var ?Society
-     *
-     * @ORM\ManyToOne(targetEntity="Society")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="socid", referencedColumnName="id", onDelete="SET NULL")
-     * })
+     * @Assert\Valid(traverse=true)
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="link_id", cascade={"persist", "remove"})
      */
-    private $society;
+    private $linked_dates;
 
     /**
-     * Get id
-     *
-     * @return int
+     * @var ArrayCollection<Event>
      */
-    public function getId()
+    private $deleted_dates;
+
+    /**
+     * All the registered scieties involved with this show.
+     * @ORM\ManyToMany(targetEntity="Society", inversedBy="events")
+     * @ORM\JoinTable(name="acts_event_soc_link")
+     */
+    private $societies;
+
+    /**
+     * Should be in #f21343 notation, if it isn't the form is broken. (It uses JS to enforce the notation.)
+     * @var ?string
+     * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
+     *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
+     * @ORM\Column(name="colour", type="string", length=7, nullable=true)
+     */
+    private $theme_color;
+
+    public function __construct()
+    {
+        $this->deleted_dates = new ArrayCollection();
+        $this->description  = '';
+        $this->linked_dates = new ArrayCollection();
+        $this->name         = '';
+        $this->societies    = new ArrayCollection();
+    }
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * Set end_time
-     *
      * @param \DateTime $endTime
-     *
-     * @return Event
      */
-    public function setEndTime($endTime)
+    public function setEndTime($endTime): self
     {
         $this->end_time = $endTime;
 
@@ -98,8 +113,6 @@ class Event
     }
 
     /**
-     * Get end_time
-     *
      * @return \DateTime
      */
     public function getEndTime()
@@ -108,37 +121,27 @@ class Event
     }
 
     /**
-     * Set start_time
-     *
-     * @param \DateTime $startTime
-     *
-     * @return Event
+     * @param \DateTime $startAt
      */
-    public function setStartTime($startTime)
+    public function setStartAt($startAt): self
     {
-        $this->start_time = $startTime;
+        $this->start_at = $startAt;
 
         return $this;
     }
 
     /**
-     * Get start_time
-     *
      * @return \DateTime
      */
-    public function getStartTime()
+    public function getStartAt()
     {
-        return $this->start_time;
+        return $this->start_at;
     }
 
     /**
-     * Set date
-     *
      * @param \DateTime $date
-     *
-     * @return Event
      */
-    public function setDate($date)
+    public function setDate($date): self
     {
         $this->date = $date;
 
@@ -146,8 +149,6 @@ class Event
     }
 
     /**
-     * Get date
-     *
      * @return \DateTime
      */
     public function getDate()
@@ -156,13 +157,9 @@ class Event
     }
 
     /**
-     * Set description
-     *
      * @param string $description
-     *
-     * @return Event
      */
-    public function setDescription($description)
+    public function setDescription($description): self
     {
         $this->description = $description;
 
@@ -170,8 +167,6 @@ class Event
     }
 
     /**
-     * Get description
-     *
      * @return string
      */
     public function getDescription()
@@ -179,14 +174,7 @@ class Event
         return $this->description;
     }
 
-    /**
-     * Set link_id
-     *
-     * @param int $linkId
-     *
-     * @return Event
-     */
-    public function setLinkId($linkId)
+    public function setLinkId(?Event $linkId): self
     {
         $this->link_id = $linkId;
 
@@ -194,60 +182,90 @@ class Event
     }
 
     /**
-     * Get link_id
-     *
-     * @return int
+     * @return ?Event
      */
     public function getLinkId()
     {
         return $this->link_id;
     }
 
-    /**
-     * Set society
-     *
-     * @param \Acts\CamdramBundle\Entity\Society $society
-     *
-     * @return Event
-     */
-    public function setSociety(\Acts\CamdramBundle\Entity\Society $society = null)
+    /** @return iterable<Event> */
+    public function getLinkedDates()
     {
-        $this->society = $society;
+        return $this->linked_dates;
+    }
 
+    public function addLinkedDate(Event $evt): self
+    {
+        $this->linked_dates->add($evt);
+        $evt->setLinkId($this);
         return $this;
     }
 
-    /**
-     * Get society
-     *
-     * @return \Acts\CamdramBundle\Entity\Society
-     */
-    public function getSociety()
+    public function removeLinkedDate(Event $evt): self
     {
-        return $this->society;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Event
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
+        $this->linked_dates->removeElement($evt);
+        $this->getDeletedDates()->add($evt);
         return $this;
     }
 
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
+    /** @return ArrayCollection<Event> */
+    public function getDeletedDates(): ArrayCollection
     {
-        return $this->title;
+        if (!$this->deleted_dates) $this->deleted_dates = new ArrayCollection();
+        return $this->deleted_dates;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Required for BaseEntity, actually returns the ID.
+     */
+    public function getSlug(): string
+    {
+        return "{$this->getId()}";
+    }
+
+    public static function getAceType(): string
+    {
+        return "event";
+    }
+
+    public function getEntityType(): string
+    {
+        return "event";
+    }
+
+    public function getTimes(): array
+    {
+        $dateList = [];
+        $dateList[] = [$this->getStartAt(), $this->getEndTime()];
+
+        foreach ($this->linked_dates as $linked) {
+            $dateList[] = [$linked->getStartAt(), $linked->getEndTime()];
+        }
+
+        usort($dateList, function ($a, $b) { return $a <=> $b; });
+        return $dateList;
+    }
+
+    public function getThemeColor()
+    {
+        return $this->theme_color;
+    }
+
+    public function setThemeColor(?string $color): self
+    {
+        $this->theme_color = $color;
+        return $this;
     }
 }

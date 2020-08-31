@@ -154,6 +154,8 @@ class CamdramExtension extends AbstractExtension
     {
         if ($entity instanceof \Acts\CamdramBundle\Entity\Advert) {
             return new ControllerReference('Acts\\CamdramBundle\\Controller\\AdvertController::adminPanelAction', ['advert' => $entity]);
+        } else if ($entity instanceof \Acts\CamdramBundle\Entity\Event) {
+            return new ControllerReference('Acts\\CamdramBundle\\Controller\\EventController::adminPanelAction', ['event' => $entity]);
         } else if ($entity instanceof \Acts\CamdramBundle\Entity\Show) {
             return new ControllerReference('Acts\\CamdramBundle\\Controller\\ShowController::adminPanelAction', ['show' => $entity]);
         } else if ($entity instanceof \Acts\CamdramBundle\Entity\Society) {

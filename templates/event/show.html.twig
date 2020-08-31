@@ -1,0 +1,51 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'events' %}
+{% if event.themeColor %}
+    {% set colors = wcag_colors(event.themeColor) %}
+    {% set body_attribs_raw = ' style="--custom-color: '  ~ colors['raw'] ~
+                                    '; --color-text: ' ~ colors['smalltext'] ~ ';"' ~
+                              ' class="entity-has-theme-color"' %}
+{% endif %}
+{% block title %}{{ event.name }} – Camdram{% endblock %}
+
+{# Facebook open graph markup #}
+{% block opengraph %}
+    <meta property="og:url" content="{{ url('get_event', {identifier: event.id}) }}" />
+    <meta property="og:title" content="{{ event.name }}" />
+    <meta property="og:description" content="{{ event.description | strip_camdram_markdown | strip_new_lines | truncate(500) }}" />
+{% endblock %}
+
+{% block body %}
+
+{% if is_granted('EDIT', event) %}
+{{ render(admin_panel(event)) }}
+{% endif %}
+
+<div class="row panel">
+    <meta itemprop="name" content="{{ event.name }}"/>
+    <h2 itemprop="name">{{ event.name }}</h2>
+
+    {%- for soc in event.prettysocdata -%}
+        {{- loop.first ? '<p style="font-weight: bold; color: #333">From ' | raw -}}
+        <span itemprop="organizer" itemscope="" itemtype="http://schema.org/TheaterGroup">
+        {%- if soc.id is defined -%}
+            <a href="{{ path('get_society', {identifier: soc.slug}) }}" itemprop="url"><span itemprop="name">{{ soc.name }}</span></a>
+        {%- else -%}
+            <span itemprop="name" content="{{ soc.name }}">{{ soc.name }}</span>
+        {%- endif -%}
+        </span>
+        {{- list_sep_verb(loop) -}}
+        {{- loop.last ? '.</p>' | raw -}}
+    {%- endfor -%}
+
+    <div class="entity-body-text">
+        <ul class="event-dates-section">
+        {%- for date in event.times -%}
+            <li>{{ date[0]|date }}–{{ date[1]|date('H:i') }}
+        {%- endfor -%}</ul>
+        {{ event.description | camdram_markdown }}
+    </div>
+</div>
+
+{% endblock %}

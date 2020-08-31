@@ -169,7 +169,7 @@ stof_doctrine_extensions:
             timestampable: true
 
 fos_js_routing:
-    routes_to_expose: [ 'get_person', 'get_people', 'get_show', 'get_society', 'get_societies', 'get_venues?', 'get_time-period', 'get_user', 'get_users', 'acts_camdram_diary.*', 'acts_camdram_privacy', 'patch_roles_.*', '.*search.*', 'patch_show_role', 'delete_show_role' ]
+    routes_to_expose: [ 'get_event', 'get_person', 'get_people', 'get_show', 'get_society', 'get_societies', 'get_venues?', 'get_time-period', 'get_user', 'get_users', 'acts_camdram_diary.*', 'acts_camdram_privacy', 'patch_roles_.*', '.*search.*', 'patch_show_role', 'delete_show_role' ]
 
 ewz_recaptcha:
     public_key: "%recaptcha_site_key%"

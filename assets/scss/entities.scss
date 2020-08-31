@@ -190,3 +190,16 @@
     border: 1px solid $orange;
     button { padding-left: 0.5em; }
 }
+
+#content ul.event-dates-section {
+    margin: 0 0 1em 1em;
+    padding-left: 30px;
+    list-style: none;
+    &::before {
+        content: "\f073";
+        font-family: FontAwesome;
+        color: var(--primary-color, #fe5c1f);
+        float: left;
+        margin-left: -30px;
+    }
+}

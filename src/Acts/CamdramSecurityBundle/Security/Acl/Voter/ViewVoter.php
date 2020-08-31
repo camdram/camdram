@@ -5,6 +5,7 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Acts\CamdramBundle\Entity\Advert;
+use Acts\CamdramBundle\Entity\Event;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
@@ -21,6 +22,7 @@ class ViewVoter extends Voter
                   || $subject instanceof Society
                   || $subject instanceof Person
                   || $subject instanceof Advert
+                  || $subject instanceof Event
                );
     }
 
@@ -35,7 +37,7 @@ class ViewVoter extends Voter
                 return false;
             } else {
                 return $subject->isVisible();
-            } 
+            }
         }
 
         return true;

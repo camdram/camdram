@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SearchController extends AbstractController
 {
     private $em;
-    private static $entityTypes = ['show', 'person', 'society', 'venue'];
+    private static $entityTypes = ['show', 'person', 'society', 'venue', 'event'];
 
     public function __construct(EntityManagerInterface $em)
     {
@@ -39,7 +39,9 @@ class SearchController extends AbstractController
             (SELECT COUNT(*) FROM acts_societies soc
                 WHERE ? AND MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE)) +
             (SELECT COUNT(*) FROM acts_venues ven
-                WHERE ? AND MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE))
+                WHERE ? AND MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE)) +
+            (SELECT COUNT(*) FROM acts_events evt
+                WHERE ? AND MATCH (`text`) AGAINST (? IN BOOLEAN MODE))
             AS n_results
 ENDSQL
         , $this->makeArrayRSM(['n_results']));
@@ -95,6 +97,11 @@ ENDSQL;
             (SELECT 'venue', ven.id, ven.slug, ven.name, NULL, NULL
                 FROM acts_venues ven
                 WHERE MATCH (`name`, `shortname`, `slug`) AGAINST (? IN BOOLEAN MODE))
+ENDSQL;
+        $fragments['event'] = <<<'ENDSQL'
+            (SELECT 'event', evt.id, evt.id, evt.text, NULL, NULL
+                FROM acts_events evt
+                WHERE MATCH (`text`) AGAINST (? IN BOOLEAN MODE))
 ENDSQL;
         $suffixSQL = sprintf(<<<ENDSQL
             ORDER BY (entity_type IN ('society', 'venue')) DESC,

@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'events' %}
+{% block title %}Events{% endblock %}
+
+{% block body %}
+
+<div class="split-header">
+    <h2>Upcoming events</h2>
+    <a href="{{ path('acts_camdram_event_new') }}"><i class="fa fa-edit"></i> Add a workshop or talk...</a>
+</div>
+<ul class="large-block-list">
+{% for event in events %}
+    <li>
+        <div class="panel">
+            <h5>{{ link_entity(event) }}</h5>
+            <p>{{ event.description | camdram_markdown | truncateHTML(200) }}</p>
+        </div>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% if is_granted('EDIT', event) %}
+<div class="admin-panel">
+    <h6 class="split-header">
+        <span>Event Administration: {{ link_entity(event) }}</span>
+        <span>ID: {{ event.id}}</span></h6>
+    <ul role="menubar">
+        {{ include('navigation/nav-item.html.twig', {item: {id: 'edit_event', path: path('acts_camdram_event_edit',{identifier:event.slug}), icon: 'pencil', text: 'Edit this event'} }) }}
+        {% if is_granted('DELETE', event) %}
+            {{ include('navigation/form-item.html.twig', {item: {id: 'delete_event',
+                path: path('acts_camdram_event_delete', {identifier:event.slug}), method: 'DELETE', text: 'Delete this event', icon: 'eraser'},
+                destructive: {title: "Are you sure you want to delete the event “" ~ event.name ~ "”?", text: "This is a permanent action that cannot be undone" }
+                }) }}
+        {% endif %}
+
+        {{ include('navigation/nav-item.html.twig',
+        {item: {id: 'edit_admin', path: path('edit_event_admin',{identifier:event.slug}), icon: 'pencil', text: "Edit the event's admins"} }) }}
+    </ul>
+
+    <p>
+    {% if admins is not empty %}
+        The following people and/or groups can edit this event:
+    {% endif %}
+    {% for admin in admins %}
+        {%- if admin.person is defined %}
+            {%- if admin.person -%}
+                <a href="{{ path('get_person', {identifier: admin.person.slug}) }}">{{ admin.name }}</a>
+            {%- else -%}
+                {{ admin.name }}
+            {%- endif -%}
+        {%- elseif admin.organisationType == 'society' %}
+            <a href="{{ path('get_society', {identifier: admin.slug}) }}">{{ admin.name }}</a>
+        {%- elseif admin.organisationType == 'venue' %}
+            <a href="{{ path('get_venue', {identifier: admin.slug}) }}">{{ admin.name }}</a>
+        {%- endif %}
+        {{- not loop.last ? ',' }}
+    {% endfor %}
+    </p>
+{% if pending_admins is not empty %}
+    <p>
+        The following people will be admins, pending creating an account:
+        {% for pending in pending_admins %}
+            {{ pending.email }}
+            {{- not loop.last ? ',' }}
+        {% endfor %}
+        </p>
+    {% endif %}
+</div>
+{% endif %}

@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+
+{% set current_navigation_id = 'events' %}
+{% block title %}New event - Camdram{% endblock %}
+
+{% block body %}
+
+<h3>New Event</h3>
+
+<div class="panel">
+    <p>Use this form to advertise workshops, talks, and other events.
+       For shows, films and auditions,
+       <a href="{{ path('acts_camdram_show_new') }}">create a show entry instead</a>.</p>
+</div>
+
+{{ form_start(form, {'action': path("acts_camdram_event_post")}) }}
+
+{% include 'event/form.html.twig' %}
+
+<div class="text-right">
+    <input type="submit" value="Create" class="button"/>
+</div>
+
+{{ form_end(form) }}
+
+{% endblock %}

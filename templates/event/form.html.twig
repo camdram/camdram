@@ -1,0 +1,97 @@
+{{- form_row(form.name) -}}
+<div class="form-large-row">
+    {{- form_label(form.description) -}}
+    <div>
+        <p><small>{{ include('markdown_notice.html.twig', { thing: 'event descriptions' }) }}</small></p>
+        {{- form_widget(form.description) -}}
+        {{- form_errors(form.description) -}}
+    </div>
+</div>
+<div class="form-large-row">
+    <label class="required">Times</label>
+    <div>
+        {{- _self.daterow(form, false) -}}
+        <div id="event-subevents" data-prototype="
+{%- apply escape('html') -%}
+    {{- _self.daterow(form.linked_dates.vars.prototype) -}}
+{%- endapply -%}">
+            {%- for linked in form.linked_dates -%}
+                {{- _self.daterow(linked) -}}
+            {%- endfor -%}
+        </div>
+        {%- do form.linked_dates.setRendered -%}
+        <ul class="inline-list right">
+           <li> <a href="#" class="add_link">Add time</a></li>
+        </ul>
+    </div>
+</div>
+<div class="form-large-row">
+    {{- form_label(form.societies) -}}
+    <div>
+        <p><small>
+            Registered societies will appear in the search pop-up,
+            but you can also add societies that aren't registered with Camdram.
+            Adding a registered society allows its admins to approve and edit
+            your show. &nbsp;
+            <a href="{{- path('acts_camdram_faq') -}}#newsociety">How do societies
+            become registered with Camdram?</a>
+            </small>
+        {{- form_errors(form.societies) -}}</p>
+        <div class="linked-societies" data-prototype="{% apply escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endapply %}">
+            {%- for society in form.societies -%}
+                {%- include 'show/society-form.html.twig' with {society: society} -%}
+            {%- endfor -%}
+        </div>
+        <ul class="inline-list right">
+           <li> <a href="#" class="add_link">Add society</a></li>
+        </ul>
+    </div>
+    {%- do form.societies.setRendered -%}
+</div>
+{{- form_rest(form) -}}
+
+{%- macro daterow(form, embedded = true) -%}
+<div>
+    <div class="row">
+        {%- if embedded -%}
+        <div class="right">
+            <a href="#" class="remove_link"><i class="fa fa-times"></i></a>
+        </div>
+        {%- endif -%}
+        <div class="form-small-widget">
+            {{ form_label(form.start_at.date, 'Date') -}}
+            {{- form_widget(form.start_at.date) }}
+            {{ form_errors(form.start_at.date) }}
+        </div>
+        <div class="form-small-widget">
+            {{ form_label(form.start_at.time, 'Start time') -}}
+            {{- form_widget(form.start_at.time) }}
+            {{ form_errors(form.start_at.time) }}
+        </div>
+        <div class="form-small-widget">
+            {{ form_label(form.endtime, 'End time') -}}
+            {{- form_widget(form.endtime) }}
+            {{ form_errors(form.endtime) }}
+        </div>
+        {{ form_errors(form.start_at) }}
+        {{- embedded ? form_rest(form) -}}
+    </div>
+</div>
+{%- endmacro -%}
+
+<script>
+{#- begin-CSP-permitted-script -#}
+$('#event-subevents').entityCollection({
+    min_items: 0
+});
+
+$('.linked-societies').entityCollection({
+    initialiseRow: function(index, row) {
+        var input = $(row).find("input");
+        input.addClass("autocomplete_input");
+        input.entitySearch({route: 'get_societies'});
+    },
+    min_items: 0
+});
+{#- end-CSP-permitted-script -#}
+</script>
