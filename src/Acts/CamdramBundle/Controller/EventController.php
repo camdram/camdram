@@ -150,4 +150,23 @@ class EventController extends AbstractRestController
             'pending_admins' => $pending_admins
         ]);
     }
+
+    /**
+     * @Route("/{identifier}/image", methods={"DELETE"}, name="delete_event_image")
+     */
+    public function deleteImageAction(Request $request, $identifier)
+    {
+        $event = $this->getEntity($identifier);
+        $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $event);
+
+        if (!$this->isCsrfTokenValid('delete_event_image', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token');
+        }
+
+        $this->em->remove($event->getImage());
+        $event->setImage(null);
+        $this->em->flush();
+
+        return $this->redirectToRoute('get_event', ['identifier' => $identifier]);
+    }
 }

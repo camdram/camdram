@@ -88,6 +88,14 @@ class Event extends BaseEntity implements OwnableInterface
      */
     private $theme_color;
 
+    /**
+     * @var ?Image
+     *
+     * @ORM\ManyToOne(targetEntity="Image")
+     * @Gedmo\Versioned
+     */
+    private $image;
+
     public function __construct()
     {
         $this->deleted_dates = new ArrayCollection();
@@ -268,4 +276,16 @@ class Event extends BaseEntity implements OwnableInterface
         $this->theme_color = $color;
         return $this;
     }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
 }

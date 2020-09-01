@@ -51,15 +51,17 @@ class ImageListener
         $this->logger = $logger;
     }
 
-    private function getRepository($type)
+    private function getEntity($type, $identifier)
     {
         switch ($type) {
+            case 'event':
+                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Event')->find($identifier);
             case 'show':
-                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Show');
+                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Show')->findOneBySlug($identifier);
             case 'society':
-                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Society');
+                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Society')->findOneBySlug($identifier);
             case 'venue':
-                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Venue');
+                return $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Venue')->findOneBySlug($identifier);
             default:
                 return null;
         }
@@ -91,18 +93,9 @@ class ImageListener
         }
 
         $type = $event->getRequest()->request->get('type', '');
-        $repo = $this->getRepository($type);
         $identifier = $event->getRequest()->request->get('identifier', '');
 
-        if (is_null($repo)) {
-            $this->logger->error(
-                'ImageListener: File uploaded with invalid resource type',
-                ['filename' => $file->getBasename(), 'type' => $type]
-            );
-            throw new ValidationException('Invalid image type');
-        }
-
-        $entity = $repo->findOneBySlug($identifier);
+        $entity = $this->getEntity($type, $identifier);
         if (!$entity) {
             $this->logger->error(
                 'ImageListener: Identifier not found',
@@ -123,9 +116,8 @@ class ImageListener
     public function onUpload(PostPersistEvent $event)
     {
         $type = $event->getRequest()->request->get('type', '');
-        $repo = $this->getRepository($type);
         $identifier = $event->getRequest()->request->get('identifier', '');
-        $entity = $repo->findOneBySlug($identifier);
+        $entity = $this->getEntity($type, $identifier);
         if (!$this->authorizationChecker->isGranted('EDIT', $entity)
             || !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return;

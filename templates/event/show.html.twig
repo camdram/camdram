@@ -14,6 +14,11 @@
     <meta property="og:url" content="{{ url('get_event', {identifier: event.id}) }}" />
     <meta property="og:title" content="{{ event.name }}" />
     <meta property="og:description" content="{{ event.description | strip_camdram_markdown | strip_new_lines | truncate(500) }}" />
+    {% if event.image %}
+        <meta property="og:image" content="{{ event.image.filename | imagine_filter('preview') }}" />
+    {% else %}
+        {# Maybe put a stock camdram image here? #}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
@@ -24,6 +29,7 @@
 
 <div class="row panel">
     <meta itemprop="name" content="{{ event.name }}"/>
+
     <h2 itemprop="name">{{ event.name }}</h2>
 
     {%- for soc in event.prettysocdata -%}
@@ -39,11 +45,35 @@
         {{- loop.last ? '.</p>' | raw -}}
     {%- endfor -%}
 
+    <ul class="event-dates-section">
+    {%- for date in event.times -%}
+        <li>{{ date[0]|date }}–{{ date[1]|date('H:i') }}
+    {%- endfor -%}</ul>
+
+    {# Display event image #}
+    {%- if event.image -%}
+        <div class="entity-image-container">
+            <a itemprop="image" href="{{ event.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ event.image.filename | imagine_filter('thumbnail') }}" /></a>
+            {%- if is_granted('EDIT', event) and is_granted("IS_AUTHENTICATED_FULLY") -%}
+                <ul class="inline-list">
+                {{ include('navigation/form-item.html.twig', {item: {id: 'delete_event_image',
+                    path: path('delete_event_image', {identifier:event.slug}), method: 'DELETE', text: 'Remove image', icon: 'eraser'},
+                    destructive: {title: "Are you sure you want to delete the image for “" ~ event.name ~ "”?" }
+                    }) }}
+                </ul>
+            {%- endif -%}
+        </div>
+
+        {# Show prompt to upload image #}
+    {%- elseif is_granted('EDIT', event) and is_granted("IS_AUTHENTICATED_FULLY") -%}
+        <div class="entity-image-container">
+            <form action="{{ oneup_uploader_endpoint('images') }}" id="image_upload" class="dropzone">
+                <input type="hidden" name="identifier" value="{{ event.slug }}"/>
+                <input type="hidden" name="type" value="event"/>
+            </form>
+        </div>
+    {%- endif -%}
     <div class="entity-body-text">
-        <ul class="event-dates-section">
-        {%- for date in event.times -%}
-            <li>{{ date[0]|date }}–{{ date[1]|date('H:i') }}
-        {%- endfor -%}</ul>
         {{ event.description | camdram_markdown }}
     </div>
 </div>
