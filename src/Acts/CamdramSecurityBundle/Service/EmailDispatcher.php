@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Service;
 
+use Acts\CamdramBundle\Entity\Event;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramBundle\Entity\Venue;
@@ -98,6 +99,9 @@ class EmailDispatcher
             ->setTo($ace->getUser()->getEmail());
 
         switch ($ace->getType()) {
+            case 'event':
+                $entity = $this->em->getRepository(Event::class)->findOneById($ace->getEntityId());
+                break;
             case 'show':
                 $entity = $this->em->getRepository(Show::class)->findOneById($ace->getEntityId());
                 break;
@@ -136,6 +140,9 @@ class EmailDispatcher
             ->setTo($ace->getEmail());
         /* Get the resource and pass it to the template. */
         switch ($ace->getType()) {
+            case 'event':
+                $entity = $this->em->getRepository(Event::class)->findOneById($ace->getRid());
+                break;
             case 'show':
                 $entity = $this->em->getRepository(Show::class)->findOneById($ace->getRid());
                 break;

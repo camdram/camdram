@@ -130,23 +130,4 @@ class SocietyController extends OrganisationController
 
         return $this->redirectToRoute('get_society', ['identifier' => $identifier]);
     }
-
-    /**
-     * Revoke a pending admin's access to an organisation.
-     *
-     * @Route("/{identifier}/pending-admins/{uid}", methods={"DELETE"}, name="delete_society_pending_admin")
-     */
-    public function deletePendingAdminAction(Request $request, $identifier, $uid)
-    {
-        return parent::deletePendingAdminAction($request, $identifier, $uid);
-    }
-
-    /**
-      * @Route("/{identifier}/admins", methods={"POST"}, name="post_society_admin")
-      */
-    public function postAdminAction(Request $request, $identifier,
-        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
-    {
-        return parent::postAdmin($request, $identifier, $moderation_manager, $event_dispatcher);
-    }
 }

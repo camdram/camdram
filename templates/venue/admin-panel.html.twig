@@ -12,10 +12,9 @@
         
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'manage_adverts', path: path('acts_camdram_venue_adverts', {identifier: org.slug}), icon: 'list', text: 'Manage adverts'} }) }}
-       
 
         {{ include('navigation/nav-item.html.twig',
-            {item: {id: 'edit_admin', path: path('acts_camdram_venue_editadmin',{identifier:org.slug}), icon: 'pencil', text: "Edit the venue's admins"} }) }}
+            {item: {id: 'edit_admin', path: path('edit_entity_admin',{type:'venues',identifier:org.slug}), icon: 'pencil', text: "Edit the venue's admins"} }) }}
     </ul>
     <p>
     The following people can edit this venue:

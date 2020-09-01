@@ -19,8 +19,6 @@ class PendingAccessType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('rid', HiddenType::class)
-            ->add('type', HiddenType::class)
             ->add('email', EmailType::class)
             ->add('send', SubmitType::class)
         ;

@@ -12,9 +12,9 @@
        
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'manage_adverts', path: path('acts_camdram_society_adverts', {identifier: org.slug}), icon: 'list', text: 'Manage adverts'} }) }}
-       
+
         {{ include('navigation/nav-item.html.twig',
-        {item: {id: 'edit_admin', path: path('acts_camdram_society_editadmin',{identifier:org.slug}), icon: 'pencil', text: "Edit the society's admins"} }) }}
+        {item: {id: 'edit_admin', path: path('edit_entity_admin',{type:'societies',identifier:org.slug}), icon: 'pencil', text: "Edit the society's admins"} }) }}
     </ul>
     <p>
     The following people can edit this society:

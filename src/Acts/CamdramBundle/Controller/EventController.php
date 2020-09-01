@@ -150,12 +150,4 @@ class EventController extends AbstractRestController
             'pending_admins' => $pending_admins
         ]);
     }
-
-    /**
-     * @Route("/{identifier}/admin/edit", methods={"GET"}, name="edit_event_admin")
-     */
-    public function editAdminAction(Request $request, $identifier)
-    {
-        throw $this->createNotFoundException('Not implemented');
-    }
 }

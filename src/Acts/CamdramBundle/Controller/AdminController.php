@@ -1,6 +1,6 @@
 <?php
 
-namespace Acts\CamdramBundle\Controller\Show;
+namespace Acts\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
@@ -17,92 +17,99 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * General AdminController for all OwnableInterfaces.
+ */
 class AdminController extends AbstractFOSRestController
 {
-    protected function getEntity($identifier)
+    protected function getEntity($type, $identifier)
     {
-        return $this->getDoctrine()->getRepository(\Acts\CamdramBundle\Entity\Show::class)->findOneBy(['slug' => $identifier]);
+        $class = [
+            'events'    => \Acts\CamdramBundle\Entity\Event::class,
+            'shows'     => \Acts\CamdramBundle\Entity\Show::class,
+            'societies' => \Acts\CamdramBundle\Entity\Society::class,
+            'venues'    => \Acts\CamdramBundle\Entity\Venue::class
+        ][$type];
+        if ($type == 'events') return $this->getDoctrine()->getRepository($class)->find($identifier);
+        return $this->getDoctrine()->getRepository($class)->findOneBy(['slug' => $identifier]);
     }
 
     /**
      * Get a form for adding an admin to a show.
      *
-     * @Rest\Get("/shows/{identifier}/admin/edit", name="edit_show_admin")
+     * @Route("/{type<events|shows|societies|venues>}/{identifier}/admin/edit", name="edit_entity_admin", methods={"GET"})
      */
-    public function editAdminAction($identifier, Helper $helper)
+    public function editAdminAction(string $type, string $identifier, Helper $helper)
     {
-        return $this->createEditAdminResponse($identifier, null, $helper);
+        return $this->createEditAdminResponse($type, $identifier, null, $helper);
     }
 
     /**
      * This method's contents were formerly included in editAdminAction
      * directly. Splitting it off allows an alternative form to be passed.
      */
-    private function createEditAdminResponse(string $identifier, $form, Helper $helper)
+    private function createEditAdminResponse(string $type, string $identifier, $form, Helper $helper)
     {
-        $show = $this->getEntity($identifier);
-        $helper->ensureGranted('EDIT', $show);
+        $entity = $this->getEntity($type, $identifier);
+        $helper->ensureGranted('EDIT', $entity);
 
         if ($form == null) {
-            $ace = new PendingAccess();
-            $ace->setRid($show->getId());
-            $ace->setType('show');
-            $ace->setIssuer($this->getUser());
-            $form = $this->createForm(PendingAccessType::class, $ace, array(
-                'action' => $this->generateUrl('post_show_admin', array('identifier' => $identifier))));
+            $form = $this->createForm(PendingAccessType::class, new PendingAccess(), [
+                'action' => $this->generateUrl('post_entity_admin', compact('type', 'identifier'))
+            ])->createView();
         }
 
         $em = $this->getDoctrine()->getManager();
-        $admins = $em->getRepository(User::class)->getEntityOwners($show);
-        $requested_admins = $em->getRepository(User::class)->getRequestedShowAdmins($show);
-        $pending_admins = $em->getRepository(PendingAccess::class)->findByResource($show);
+        $admins = $em->getRepository(User::class)->getEntityOwners($entity);
+        $pending_admins = $em->getRepository(PendingAccess::class)->findByResource($entity);
+        $requested_admins = $entity instanceof \Acts\CamdramBundle\Entity\Show ?
+            $em->getRepository(User::class)->getRequestedShowAdmins($entity) : null;
 
-        return $this->render('pending_access/edit.html.twig', [
-            'entity' => $show,
-            'admins' => $admins,
-            'requested_admins' => $requested_admins,
-            'pending_admins' => $pending_admins,
-            'form' => $form->createView()]);
+        return $this->render('pending_access/edit.html.twig', compact(
+            'entity', 'admins', 'requested_admins', 'pending_admins','form'));
     }
 
     /**
-     * Create a new admin associated with this show.
+     * Create a new admin associated with this entity.
      *
      * If the given email address isn't associated with an existing user, then
      * they will be given a pending access token, and invited via email to
      * create an account.
      *
      * An explicit ACE will be created if the user doesn't already have access
-     * to the show by some other means, e.g. they are an admin for the show's
-     * funding society, the venue the show is being performed at, or have
-     * suitable site-wide privileges.
+     * to the show.
      *
-     * @Rest\Post("/shows/{identifier}/admins", name="post_show_admin")
+     * @Rest\Post("/{type<events|shows|societies|venues>}/{identifier}/admins", name="post_entity_admin")
      */
     public function postAdminAction(Request $request, AclProvider $aclProvider, Helper $helper,
-        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher, $identifier)
+        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher,
+        $type, $identifier)
     {
-        $show = $this->getEntity($identifier);
-        $helper->ensureGranted('EDIT', $show);
+        $entity = $this->getEntity($type, $identifier);
+        $helper->ensureGranted('EDIT', $entity);
 
         $pending_ace = new PendingAccess();
+        $pending_ace->setRid($entity->getId());
+        $pending_ace->setType($entity->getEntityType());
+        $pending_ace->setIssuer($this->getUser());
         $form = $this->createForm(PendingAccessType::class, $pending_ace);
         $form->handleRequest($request);
         if (!$form->isValid()) {
             // Form not valid, return it to user.
-            return $this->createEditAdminResponse($show->getSlug(), $form, $helper);
+            return $this->createEditAdminResponse($type, $identifier, $form, $helper);
         }
         /* Check if the ACE doesn't need to be created for various reasons. */
 
         /* Is this person already an admin? */
-        /* Changed to only check for explicit admins of the show. */
-        $admins = $aclProvider->getOwners($show);
+        /* Changed to only check for explicit admins of shows. */
+        $admins = $aclProvider->getOwners($entity);
         foreach ($admins as $admin) {
             if ($admin->getEmail() == $pending_ace->getEmail()) {
                 $this->addFlash('error', "The user {$admin->getName()} " .
                    "<{$admin->getEmail()}> is already an admin so they weren't added again.");
-                return $this->createEditAdminResponse($show->getSlug(), $form, $helper);
+                return $this->createEditAdminResponse($type, $identifier, $form, $helper);
             }
         }
 
@@ -112,7 +119,7 @@ class AdminController extends AbstractFOSRestController
             ->findOneByEmail($pending_ace->getEmail());
 
         if ($existing_user != null) {
-            $aclProvider->grantAccess($show, $existing_user, $this->getUser());
+            $aclProvider->grantAccess($entity, $existing_user, $this->getUser());
         } else {
             /* This is an unknown email address. Check if they've already
              * got a pending access token for this resource, otherwise
@@ -120,7 +127,6 @@ class AdminController extends AbstractFOSRestController
              */
             $pending_repo = $em->getRepository(PendingAccess::class);
             if ($pending_repo->isDuplicate($pending_ace) == false) {
-                $pending_ace->setIssuer($this->getUser());
                 $em->persist($pending_ace);
                 $em->flush();
                 $event_dispatcher->dispatch(
@@ -130,11 +136,11 @@ class AdminController extends AbstractFOSRestController
             }
         }
         // Success
-        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_entity_admin', compact('type', 'identifier'));
     }
 
     /**
-     * Request to be an admin associated with this show.
+     * Request to be an admin associated with this show. Only available for shows.
      *
      * @Rest\Post("/shows/{identifier}/admin/request", name="request_show_admin")
      */
@@ -145,7 +151,7 @@ class AdminController extends AbstractFOSRestController
             throw new BadRequestHttpException('Invalid CSRF token');
         }
 
-        $show = $this->getEntity($identifier);
+        $show = $this->getEntity('shows', $identifier);
         if ($helper->isGranted('EDIT', $show)) {
             $this->addFlash('error', 'Cannot request admin rights on this show: you are already an admin.');
             return $this->redirectToRoute('get_show', ['identifier' => $show->getSlug()]);
@@ -187,7 +193,7 @@ class AdminController extends AbstractFOSRestController
      */
     public function approveAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $identifier)
     {
-        $show = $this->getEntity($identifier);
+        $show = $this->getEntity('shows', $identifier);
         $helper->ensureGranted('EDIT', $show);
 
         if (!$this->isCsrfTokenValid('approve_show_admin', $request->request->get('_token'))) {
@@ -203,18 +209,19 @@ class AdminController extends AbstractFOSRestController
             $this->addFlash('error', "Cannot approve access: user ID not found. Try again or contact support.");
         }
 
-        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_entity_admin',
+            ['type' => 'shows', 'identifier' => $show->getSlug()]);
     }
 
     /**
      * Revoke an admin's access to a show.
      *
-     * @Rest\Delete("/shows/{identifier}/admins/{uid}", name="delete_show_admin")
+     * @Rest\Delete("/{type<events|shows|societies|venues>}/{identifier}/admins/{uid}", name="delete_entity_admin")
      */
-    public function deleteAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $identifier, $uid)
+    public function deleteAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $type, $identifier, $uid)
     {
-        $show = $this->getEntity($identifier);
-        $helper->ensureGranted('EDIT', $show);
+        $entity = $this->getEntity($type, $identifier);
+        $helper->ensureGranted('EDIT', $entity);
 
         if (!$this->isCsrfTokenValid('delete_admin', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
@@ -223,23 +230,23 @@ class AdminController extends AbstractFOSRestController
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->findOneById($uid);
         if ($user != null) {
-            $aclProvider->revokeAccess($show, $user, $this->getUser());
+            $aclProvider->revokeAccess($entity, $user, $this->getUser());
         } else {
             $this->addFlash('error', "Cannot delete admin: user ID not found. Try again or contact support.");
         }
 
-        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_entity_admin', compact('type', 'identifier'));
     }
 
     /**
-     * Revoke a pending admin's access to a show.
+     * Revoke a pending admin's access to an entity.
      *
-     * @Rest\Delete("/shows/{identifier}/pending-admins/{uid}", name="delete_show_pending_admin")
+     * @Rest\Delete("/{type<events|shows|societies|venues>}/{identifier}/pending-admins/{uid}", name="delete_pending_admin")
      */
-    public function deletePendingAdminAction(Request $request, Helper $helper, $identifier, $uid)
+    public function deletePendingAdminAction(Request $request, Helper $helper, $type, $identifier, $uid)
     {
-        $show = $this->getEntity($identifier);
-        $helper->ensureGranted('EDIT', $show);
+        $entity = $this->getEntity($type, $identifier);
+        $helper->ensureGranted('EDIT', $entity);
 
         if (!$this->isCsrfTokenValid('delete_pending_admin', $request->request->get('_token'))) {
             throw new BadRequestHttpException('Invalid CSRF token');
@@ -247,13 +254,16 @@ class AdminController extends AbstractFOSRestController
 
         $em = $this->getDoctrine()->getManager();
         $pending_admin = $em->getRepository(PendingAccess::class)->findOneById($uid);
-        if ($pending_admin != null) {
+        if ($pending_admin == null) {
+            $this->addFlash('error', "Cannot delete pending admin: ID not found. Try again or contact support.");
+        } else if ($pending_admin->getRid() != $entity->getId() ||
+                $pending_admin->getType() != $entity->getEntityType()) {
+            $this->addFlash('error', "Cannot delete pending admin: wrong entity. Try again or contact support.");
+        } else {
             $em->remove($pending_admin);
             $em->flush();
-        } else {
-            $this->addFlash('error', "Cannot delete pending admin: ID not found. Try again or contact support.");
         }
 
-        return $this->redirectToRoute('edit_show_admin', array('identifier' => $show->getSlug()));
+        return $this->redirectToRoute('edit_entity_admin', compact('type', 'identifier'));
     }
 }

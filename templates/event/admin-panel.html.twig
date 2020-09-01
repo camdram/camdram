@@ -11,9 +11,10 @@
                 destructive: {title: "Are you sure you want to delete the event “" ~ event.name ~ "”?", text: "This is a permanent action that cannot be undone" }
                 }) }}
         {% endif %}
-
-        {{ include('navigation/nav-item.html.twig',
-        {item: {id: 'edit_admin', path: path('edit_event_admin',{identifier:event.slug}), icon: 'pencil', text: "Edit the event's admins"} }) }}
+        {{ include('navigation/nav-item.html.twig', {item: {
+            id: 'edit_admin',
+            path: path('edit_entity_admin',{type: 'events', identifier:event.slug}),
+            icon: 'pencil', text: "Edit the event's admins"} }) }}
     </ul>
 
     <p>

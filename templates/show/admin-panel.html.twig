@@ -18,9 +18,9 @@
     
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'get_show_adverts', path: path('get_show_adverts', {identifier:show.slug}), icon: 'list', text: 'Manage adverts'} }) }}
-    
+
         {{ include('navigation/nav-item.html.twig',
-        {item: {id: 'edit_admin', path: path('edit_show_admin',{identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}
+        {item: {id: 'edit_admin', path: path('edit_entity_admin',{type:'shows',identifier:show.slug}), icon: 'pencil', text: "Edit the show's admins"} }) }}
         {{ include('navigation/nav-item.html.twig',
         {item: {id: 'show_edit_roles', path: path('get_show_edit_roles',{identifier:show.slug}), icon: 'users', text: "Edit roles"} }) }}
     </ul>

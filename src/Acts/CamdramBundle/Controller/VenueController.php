@@ -129,23 +129,4 @@ class VenueController extends OrganisationController
 
         return $this->redirectToRoute('get_venue', ['identifier' => $identifier]);
     }
-
-    /**
-     * Revoke a pending admin's access to an organisation.
-     *
-     * @Route("/{identifier}/pending-admins/{uid}", methods={"DELETE"}, name="delete_venue_pending_admin")
-     */
-    public function deletePendingAdminAction(Request $request, $identifier, $uid)
-    {
-        return parent::deletePendingAdminAction($request, $identifier, $uid);
-    }
-
-    /**
-     * @Route("/{identifier}/admins", methods={"POST"}, name="post_venue_admin")
-     */
-    public function postAdminAction(Request $request, $identifier,
-        ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher)
-    {
-        return parent::postAdmin($request, $identifier, $moderation_manager, $event_dispatcher);
-    }
 }
