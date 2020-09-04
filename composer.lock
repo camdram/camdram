@@ -3650,7 +3650,7 @@
             "version": "dev-v2.3.0+camdram",
             "source": {
                 "type": "git",
-                "url": "https://github.com/GKFX/LiipImagineBundle.git",
+                "url": "git@github.com:GKFX/LiipImagineBundle.git",
                 "reference": "ca966eeedba3bdc37cb0e82492f5506b1e821e2f"
             },
             "dist": {
@@ -3743,9 +3743,6 @@
                 "symfony",
                 "transformation"
             ],
-            "support": {
-                "source": "https://github.com/GKFX/LiipImagineBundle/tree/dev-2.3.0+camdram"
-            },
             "time": "2020-04-13T14:14:12+00:00"
         },
         {
@@ -7336,7 +7333,7 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v5.1.4",
+            "version": "v5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
