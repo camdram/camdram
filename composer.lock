@@ -3650,7 +3650,7 @@
             "version": "dev-v2.3.0+camdram",
             "source": {
                 "type": "git",
-                "url": "https://github.com/GKFX/LiipImagineBundle.git",
+                "url": "git@github.com:GKFX/LiipImagineBundle.git",
                 "reference": "ca966eeedba3bdc37cb0e82492f5506b1e821e2f"
             },
             "dist": {
@@ -3743,9 +3743,6 @@
                 "symfony",
                 "transformation"
             ],
-            "support": {
-                "source": "https://github.com/GKFX/LiipImagineBundle/tree/dev-2.3.0+camdram"
-            },
             "time": "2020-04-13T14:14:12+00:00"
         },
         {
@@ -5742,16 +5739,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.1.4",
+            "version": "v5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "5a165f187e675312e4b179e4955daa4e02b8f365"
+                "reference": "c31bdd71f30435baff03693e684469c7ecb3ca1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/5a165f187e675312e4b179e4955daa4e02b8f365",
-                "reference": "5a165f187e675312e4b179e4955daa4e02b8f365",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/c31bdd71f30435baff03693e684469c7ecb3ca1a",
+                "reference": "c31bdd71f30435baff03693e684469c7ecb3ca1a",
                 "shasum": ""
             },
             "require": {
@@ -5832,7 +5829,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-23T09:22:34+00:00"
+            "time": "2020-09-01T05:52:18+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -6845,7 +6842,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v5.1.4",
+            "version": "v5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -7011,7 +7008,7 @@
         },
         {
             "name": "symfony/framework-bundle",
-            "version": "v4.4.12",
+            "version": "v4.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/framework-bundle.git",
@@ -8744,7 +8741,7 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v4.4.12",
+            "version": "v4.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
@@ -10267,7 +10264,7 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v5.1.4",
+            "version": "v5.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
