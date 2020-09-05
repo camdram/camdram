@@ -78,15 +78,18 @@
           'venues': {'text': 'Venues', 'path': path('get_venues')},
           }, current_id: current_navigation_id} %}
           {% include 'navigation/nav-items.html.twig'  with {items: {
-          'people': {'text': 'People', 'path': path('get_people')}
+          'events': {'text': 'Events', 'path': path('get_events')}
           }, current_id: current_navigation_id, class: 'hide-for-small'} %}
       </ul>
       <ul>
         <li class="dropdown">
-          <a href="#!" id="nav-edit-link" tabindex="-1"><i class="fa fa-edit"></i></a>
+          <a href="#!" id="nav-edit-link" tabindex="-1"><i class="fa fa-edit hide-for-small"></i><i class="fa fa-bars show-for-small"></i></a>
           <ul>
             {% block option_links %}
             {% endblock %}
+            {% include 'navigation/nav-items.html.twig'  with {items: {
+              'events': {text: 'Events', path: path('get_events'), icon: 'user-circle'}
+            }, current_id: current_navigation_id, class: 'show-for-small'} %}
             {% include 'navigation/nav-items.html.twig' with {items: {
               'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
               'add_show': {text: 'Add a show', path: path('acts_camdram_show_new'), icon: 'plus-circle'}

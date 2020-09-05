@@ -111,9 +111,7 @@ class DiaryController extends AbstractFOSRestController
         $diary = new Diary;
         $diary->setDateRange($start_date, $end_date);
 
-        $repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
-        $performances = $repo->findInDateRange($start_date, $end_date);
-        $diary->addEvents($performances);
+        $this->populateDiary($diary, $start_date, $end_date);
 
         return $this->renderDiary($request, $diary);
     }
@@ -139,9 +137,7 @@ class DiaryController extends AbstractFOSRestController
 
         $diary = new Diary;
 
-        $repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
-        $performances = $repo->findInDateRange($start, $end);
-        $diary->addEvents($performances);
+        $this->populateDiary($diary, $start, $end);
 
         $repo = $this->getDoctrine()->getRepository(Entity\WeekName::class);
         foreach ($repo->findBetween($start, $end) as $name) {
@@ -155,5 +151,20 @@ class DiaryController extends AbstractFOSRestController
         $diary->setDateRange($week_manager->previousSunday($start), $week_manager->nextSunday($end));
 
         return $this->renderDiary($request, $diary);
+    }
+
+    private function populateDiary(Diary $diary, \DateTime $from, \DateTime $to)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $performances = $em->getRepository(Entity\Performance::class)
+                           ->findInDateRange($from, $to);
+        $diary->addEvents($performances);
+
+        $events = $em->getRepository(Entity\Event::class)
+                 ->createQueryBuilder('e')
+                 ->where('e.start_at > :from AND e.start_at < :to')
+                 ->setParameters(compact('from', 'to'))
+                 ->getQuery()->getResult();
+        $diary->addEvents($events);
     }
 }

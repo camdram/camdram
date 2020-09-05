@@ -5,12 +5,13 @@ namespace Acts\CamdramSecurityBundle\Security\Acl\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Acts\CamdramBundle\Entity\Event;
 use Acts\CamdramBundle\Entity\Show;
 
 /**
- * Grants access to a show if the user is an admin of a society/venue of the show
+ * Grants access to a show if the user is an admin of a society/venue of the target
  */
-class ShowVoter extends Voter
+class OrganisationVoter extends Voter
 {
     /**
      * @var \Acts\CamdramSecurityBundle\Security\Acl\AclProvider
@@ -25,7 +26,7 @@ class ShowVoter extends Voter
     public function supports($attribute, $subject)
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'APPROVE', 'DELETE'])
-                       && $subject instanceof Show;
+            && ($subject instanceof Show || $subject instanceof Event);
     }
 
     public function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -34,9 +35,11 @@ class ShowVoter extends Voter
             return false;
         }
 
-        foreach ($subject->getVenues() as $venue) {
-            if ($this->aclProvider->isOwner($token->getUser(), $venue)) {
-                return true;
+        if ($subject instanceof Show) {
+            foreach ($subject->getVenues() as $venue) {
+                if ($this->aclProvider->isOwner($token->getUser(), $venue)) {
+                    return true;
+                }
             }
         }
         foreach ($subject->getSocieties() as $society) {

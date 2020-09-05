@@ -6,15 +6,15 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramBundle\Entity\Venue;
-use Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter;
+use Acts\CamdramSecurityBundle\Security\Acl\Voter\OrganisationVoter;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 use Camdram\Tests\RestTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class ShowVoterTest extends RestTestCase
+class OrganisationVoterTest extends RestTestCase
 {
     /**
-     * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\ShowVoter
+     * @var \Acts\CamdramSecurityBundle\Security\Acl\Voter\OrganisationVoter
      */
     private $voter;
 
@@ -31,7 +31,7 @@ class ShowVoterTest extends RestTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->voter = new ShowVoter($this->aclProvider);
+        $this->voter = new OrganisationVoter($this->aclProvider);
         $this->user = $this->createUser();
         $this->token = new OAuthToken('', $this->user->getRoles());
         $this->token->setUser($this->user);
@@ -47,12 +47,12 @@ class ShowVoterTest extends RestTestCase
         $this->entityManager->flush();
         $this->aclProvider->grantAccess($society, $this->user);
 
-        $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
             $show,
             array('EDIT')
         ));
-        $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
             $show,
             array('APPROVE')
@@ -68,12 +68,12 @@ class ShowVoterTest extends RestTestCase
         $this->entityManager->persist($society);
         $this->entityManager->flush();
 
-        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,
             $show,
             array('EDIT')
             ));
-        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,
             $show,
             array('APPROVE')
@@ -90,12 +90,12 @@ class ShowVoterTest extends RestTestCase
         $this->entityManager->flush();
         $this->aclProvider->grantAccess($venue, $this->user);
 
-        $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
             $show,
             array('EDIT')
             ));
-        $this->assertEquals(ShowVoter::ACCESS_GRANTED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_GRANTED, $this->voter->vote(
                 $this->token,
             $show,
             array('APPROVE')
@@ -111,12 +111,12 @@ class ShowVoterTest extends RestTestCase
         $this->entityManager->persist($venue);
         $this->entityManager->flush();
 
-        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,
             $show,
             array('EDIT')
             ));
-        $this->assertEquals(ShowVoter::ACCESS_DENIED, $this->voter->vote(
+        $this->assertEquals(OrganisationVoter::ACCESS_DENIED, $this->voter->vote(
                 $this->token,
             $show,
             array('APPROVE')

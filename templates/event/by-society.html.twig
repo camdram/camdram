@@ -1,0 +1,31 @@
+{% set current_navigation_id = 'events' %}
+{% extends 'layout.html.twig' %}
+
+{% block title %}Events from {{society.name}} - Camdram{% endblock %}
+
+{% block body %}
+<div class="split-header">
+    <h3>Events from {{ link_entity(society) }}</h3>
+    <a href="{{ path('acts_camdram_event_new') }}"><i class="fa fa-edit"></i> Add a workshop or talk...</a>
+</div>
+
+<p><a href="{{ path('get_events') }}"><i class="fa fa-chevron-left"></i> View all upcoming events</a></p>
+
+{% include 'paginator.html.twig' %}
+<ul class="large-block-list">
+{%- for event in paginator -%}
+    <li>
+        <div class="panel">
+            <h5>{{ link_entity(event) }}</h5>
+            <ul class="event-dates-section">
+            {%- for date in event.times -%}
+                <li>{{ date[0]|date }}–{{ date[1]|date('H:i') }}
+            {%- endfor -%}</ul>
+
+            <p>{{ event.description | camdram_markdown | truncateHTML(200) }}</p>
+        </div>
+    </li>
+{%- endfor -%}
+</ul>
+{% include 'paginator.html.twig' %}
+{% endblock %}

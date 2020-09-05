@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Entity;
 
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
+use Acts\DiaryBundle\Model\EventInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -16,13 +17,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      indexes={@ORM\Index(name="idx_event_fulltext", columns={"text"}, flags={"fulltext"})})
  * @ORM\Entity
  */
-class Event extends BaseEntity implements OwnableInterface
+class Event extends BaseEntity implements EventInterface, OwnableInterface
 {
     use MultipleSocsTrait;
 
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="text", type="string", length=255, nullable=false)
      */
     private $name;
@@ -31,6 +33,7 @@ class Event extends BaseEntity implements OwnableInterface
      * This property holds the CLOCK TIME that the event ends regardless of time zones etc.
      *
      * @var \DateTime
+     * @Assert\NotBlank()
      * @ORM\Column(name="endtime", type="time", nullable=false)
      */
     private $end_time;
@@ -39,6 +42,7 @@ class Event extends BaseEntity implements OwnableInterface
      * This property holds the UTC date and time that the event starts.
      *
      * @var \DateTime
+     * @Assert\NotBlank()
      * @ORM\Column(name="start_at", type="datetime", nullable=false)
      */
     private $start_at;
@@ -46,6 +50,7 @@ class Event extends BaseEntity implements OwnableInterface
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
@@ -99,9 +104,7 @@ class Event extends BaseEntity implements OwnableInterface
     public function __construct()
     {
         $this->deleted_dates = new ArrayCollection();
-        $this->description  = '';
         $this->linked_dates = new ArrayCollection();
-        $this->name         = '';
         $this->societies    = new ArrayCollection();
     }
 
@@ -179,7 +182,7 @@ class Event extends BaseEntity implements OwnableInterface
      */
     public function getDescription()
     {
-        return $this->description;
+        return ($this->getLinkId() ?: $this)->description;
     }
 
     public function setLinkId(?Event $linkId): self
@@ -224,7 +227,7 @@ class Event extends BaseEntity implements OwnableInterface
         return $this->deleted_dates;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
         return $this;
@@ -232,7 +235,7 @@ class Event extends BaseEntity implements OwnableInterface
 
     public function getName(): ?string
     {
-        return $this->name;
+        return ($this->getLinkId() ?: $this)->name;
     }
 
     /**
@@ -288,4 +291,39 @@ class Event extends BaseEntity implements OwnableInterface
         return $this->image;
     }
 
+    // EventInterface
+
+    /**
+     * Returns the DateTime that this event ends calculated from the start_at
+     * and end_time fields.
+     */
+    public function getEndAt(): \DateTime
+    {
+        $endtime = explode(':', $this->getEndTime()->format('H:i:s'));
+        $enddatetime = clone $this->getStartAt();
+        $enddatetime->setTimezone(new \DateTimeZone('Europe/London'));
+        $enddatetime->setTime(...$endtime);
+        if ($enddatetime < $this->getStartAt()) $enddatetime->modify('+1 day');
+        return $enddatetime;
+    }
+
+    public function getRepeatUntil()
+    {
+        return null;
+    }
+
+    public function getUpdatedAt()
+    {
+        return null;
+    }
+
+    public function getVenue()
+    {
+        return null;
+    }
+
+    public function getVenueName()
+    {
+        return null;
+    }
 }

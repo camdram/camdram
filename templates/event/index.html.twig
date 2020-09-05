@@ -9,15 +9,28 @@
     <h2>Upcoming events</h2>
     <a href="{{ path('acts_camdram_event_new') }}"><i class="fa fa-edit"></i> Add a workshop or talk...</a>
 </div>
-<ul class="large-block-list">
-{% for event in events %}
-    <li>
-        <div class="panel">
-            <h5>{{ link_entity(event) }}</h5>
-            <p>{{ event.description | camdram_markdown | truncateHTML(200) }}</p>
-        </div>
-    </li>
-{% endfor %}
-</ul>
+{%- if resultset.data is not empty -%}
+    <ul class="large-block-list">
+    {%- for event in resultset.data -%}
+        <li>
+            <div class="panel">
+                <h5>{{ link_entity(event) }}</h5>
+                <ul class="event-dates-section">
+                {%- for date in event.times -%}
+                    <li>{{ date[0]|date }}–{{ date[1]|date('H:i') }}
+                {%- endfor -%}</ul>
+
+                <p>{{ event.description | camdram_markdown | truncateHTML(200) }}</p>
+            </div>
+        </li>
+    {%- endfor -%}
+    </ul>
+{%- else -%}
+    <p>There are no upcoming events at the moment.</p>
+{%- endif -%}
+
+{%- include 'paginator.html.twig' -%}
+
+<p><a href="{{ path('acts_camdram_event_historic') }}">View past events <i class="fa fa-chevron-right"></i></a></p>
 
 {% endblock %}

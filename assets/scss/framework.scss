@@ -419,8 +419,8 @@ nav.sidenav > a.active {
  * Classes to hide or show content at different widths
  */
 @media all and (min-width: $width-small) {
-  .show-for-small { display: none }
+  .show-for-small { display: none !important }
 }
 @media not all and (min-width: $width-small) {
-  .hide-for-small { display: none }
+  .hide-for-small { display: none !important }
 }

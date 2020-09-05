@@ -55,6 +55,7 @@
     <div>
     {%- endif -%}
         {{ render(controller('ActsCamdramBundle:Society:getVacancies', {identifier: society.slug}), {'strategy': 'esi'}) }}
+        <p>You can also see <a href="{{ path('acts_camdram_event_bysociety', {slug: society.slug}) }}">all events</a> that have been put on by this society.</p>
     </div>
     {%- if society.hasSocialId -%}
         <div class="split-header">

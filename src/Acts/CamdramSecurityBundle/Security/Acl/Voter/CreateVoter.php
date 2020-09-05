@@ -23,8 +23,9 @@ class CreateVoter extends Voter
 
         return in_array($subject,
             [
-                \Acts\CamdramBundle\Entity\Show::class,
                 \Acts\CamdramBundle\Entity\Advert::class,
+                \Acts\CamdramBundle\Entity\Event::class,
+                \Acts\CamdramBundle\Entity\Show::class,
             ]);
     }
 
