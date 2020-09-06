@@ -127,4 +127,10 @@ class RestTestCase extends WebTestCase
         $this->assertEquals(0, count($vobj->validate()));
         return $vobj;
     }
+
+    protected function click(string $linkText, $crawler)
+    {
+        $link = $crawler->selectLink($linkText)->link();
+        return $this->client->request('GET', $link->getUri());
+    }
 }

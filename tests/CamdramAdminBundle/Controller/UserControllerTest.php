@@ -112,10 +112,4 @@ class UserControllerTest extends RestTestCase
         $crawler = $this->client->request('GET', '/admin/users/'.$userIds[2]);
         $this->assertEquals($this->client->getResponse()->getStatusCode(), 404);
     }
-
-    private function click($linkText, $crawler)
-    {
-        $link = $crawler->selectLink($linkText)->link();
-        return $this->client->request('GET', $link->getUri());
-    }
 }
