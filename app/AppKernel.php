@@ -35,17 +35,17 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         ];
 
-        if (in_array($this->getEnvironment(), ['dev', 'test'])) {
+        if ($this->getEnvironment() === 'dev') {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             $bundles[] = new \Symfony\Bundle\MakerBundle\MakerBundle();
-
-            if ($this->getEnvironment() === 'test') {
-                $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
-            }
         }
 
-        if (in_array($this->getEnvironment(), ['prod'])) {
+        if ($this->getEnvironment() === 'test') {
+            $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
+        }
+
+        if ($this->getEnvironment() === 'prod') {
             $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 
