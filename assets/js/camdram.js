@@ -239,68 +239,62 @@ $.fn.entityCollection = function(options) {
         ...options
     };
 
-    $(this).each(function() {
-        var $self = $(this);
-        var index = $(this).children().length;
-        var $add_link = $(options.add_link_selector, $self.parent());
+    for (const el of [].slice.call(this)) {
+        const index = el.children.length;
+        const add_link = el.parentNode.querySelector(options.add_link_selector);
 
-        var update_links = function() {
-            var uparrows = $('[data-entitycollection="moveup"]', $self);
-            var downarrows = $('[data-entitycollection="movedown"]', $self);
-            if ($('.remove_link', $self).length > options.min_items) {
-                $('.remove_link', $self).css('visibility', 'visible');
+        const update_links = function() {
+            const uparrows = el.querySelectorAll('[data-entitycollection="moveup"]');
+            const downarrows = el.querySelectorAll('[data-entitycollection="movedown"]');
+            const removeLinks = el.querySelectorAll('.remove_link');
+            for (const removeLink of removeLinks) {
+                removeLink.style.visibility = (removeLinks.length > options.min_items) ? 'visible' : 'hidden';
             }
-            else {
-                $('.remove_link', $self).css('visibility', 'hidden');
-            }
+            add_link.style.visibility = (removeLinks.length < options.max_items) ? 'visible' : 'hidden';
 
-            if ($('.remove_link', $self).length < options.max_items) {
-                $add_link.css('visibility', 'visible');
+            for (let i = 0; i < uparrows.length; i++) {
+                uparrows[i].style.visibility = i ? 'visible' : 'hidden';
             }
-            else {
-                $add_link.css('visibility', 'hidden');
+            for (let i = 0; i < downarrows.length; i++) {
+                downarrows[i].style.visibility = (i < downarrows.length - 1) ? 'visible' : 'hidden';
             }
-            uparrows.not(':first').css('visibility', 'visible');
-            uparrows.first().css('visibility', 'hidden');
-            downarrows.not(':last').css('visibility', 'visible');
-            downarrows.last().css('visibility', 'hidden');
         };
 
-        $add_link.click(e => {
+        add_link.addEventListener('click', e => {
             e.preventDefault();
             let row = document.createElement('div');
-            row.innerHTML = this.dataset.prototype.replace(/__name__/g, index);
+            row.innerHTML = el.dataset.prototype.replace(/__name__/g, index);
             row = row.children[0];
-            this.appendChild(row);
+            el.appendChild(row);
             fixHtml(row);
             update_links();
             options.initialiseRow(index, row);
             index++;
         });
 
-        $self.on('click', '.remove_link', function(e) {
-            e.preventDefault();
-            $(this).parentsUntil($self).remove();
-            update_links();
+        el.addEventListener('click', e => {
+            let target = e.target.closest('.remove_link');
+            if (target) {
+                e.preventDefault();
+                while (target && target.parentNode != el) target = target.parentNode;
+                el.removeChild(target);
+                update_links();
+            } else if ((target = e.target.closest('[data-entitycollection]'))) {
+                e.preventDefault();
+                const action = target.dataset.entitycollection;
+                let myRow = e.target;
+                while (myRow && myRow.parentNode != el) myRow = myRow.parentNode;
+                const otherRow = (action === 'moveup') ? myRow.previousElementSibling : myRow.nextElementSibling;
+
+                const myInput = myRow.querySelector('input[name]');
+                const otherInput = otherRow.querySelector("input[name]");
+                [myInput.value, otherInput.value] = [otherInput.value, myInput.value];
+            }
         });
 
-        var rowSwapper = function(e) {
-            e.preventDefault();
-            var action = this.getAttribute('data-entitycollection');
-            var $myRow = $(this).parentsUntil($self).last();
-            var myInput = $myRow.find("input[name]").get(0);
-            var otherInput = (action === 'moveup' ? $myRow.prev() : $myRow.next()
-                  ).find("input[name]").get(0);
-            var temp = myInput.value;
-            myInput.value = otherInput.value;
-            otherInput.value = temp;
-        };
-
-        $self.on('click', '[data-entitycollection]', rowSwapper);
-
         update_links();
-        $self.children().each(options.initialiseRow);
-    });
+        for (const child of el.children) options.initialiseRow(child);
+    }
 };
 
 Camdram.makeLinkSafetyDialog = function(link) {
