@@ -21,24 +21,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowAdminController extends AbstractController
 {
     /**
-     * Lists all the user's shows.
+     * Lists all the user's shows and shows awaiting approval.
      * @Route("/show-admin", methods={"GET"}, name="acts_camdram_show_admin")
      */
-    public function cgetAction(Request $request, AclProvider $aclProvider, EntityManagerInterface $entityManager)
+    public function cgetAction(Request $request, AclProvider $aclProvider, EntityManagerInterface $entityManager, ModerationManager $moderationManager)
     {
         $ids = $aclProvider->getEntitiesByUser($this->getUser(), '\\Acts\\CamdramBundle\\Entity\\Show');
         $shows = $entityManager->getRepository(Show::class)->findIdsByDate($ids);
+        $unauthorised = $moderationManager->getEntitiesToModerate();
 
-        return $this->render('show_admin/index.html.twig', array('shows' => $shows));
-    }
-
-    /**
-     * Lists all the shows waiting for approval by this user.
-     */
-    public function cgetUnauthorisedAction(Request $request, ModerationManager $moderationManager)
-    {
-        $shows = $moderationManager->getEntitiesToModerate();
-
-        return $this->render('show_admin/unauthorised.html.twig', array('shows' => $shows));
+        return $this->render('show_admin/index.html.twig', compact('shows', 'unauthorised'));
     }
 }

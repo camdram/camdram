@@ -309,12 +309,6 @@ class Venue extends Organisation implements VenueInterface
         return $this->slug;
     }
 
-    public function getRank()
-    {
-        return PHP_INT_MAX;
-    }
-
-
     public function addNew(\Acts\CamdramBundle\Entity\News $news): self
     {
         $this->news[] = $news;

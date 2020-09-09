@@ -297,11 +297,6 @@ class Society extends Organisation
         return $this->slug;
     }
 
-    public function getRank()
-    {
-        return PHP_INT_MAX;
-    }
-
     /**
      * Add news
      *

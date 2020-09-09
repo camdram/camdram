@@ -8,7 +8,7 @@ use Acts\CamdramBundle\Entity\Show;
 class SigninsheetControllerTest extends RestTestCase
 {
 
-    public function testAddRemoveRole()
+    public function testSigninSheet()
     {
         $show = new Show();
         $show->setName('Signin sheet test')->setCategory('drama')->setAuthorised(true);
@@ -47,6 +47,11 @@ class SigninsheetControllerTest extends RestTestCase
         $table = $crawler->filter('table')->first();
         $this->assertRegExp('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/',
             $table->filter('tr')->first()->html());
+
+        // CSV mode
+        $this->click('CSV format', $crawler);
+        $csv = $this->client->getResponse()->getContent();
+        $this->assertRegExp('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/', $csv);
     }
 
 }

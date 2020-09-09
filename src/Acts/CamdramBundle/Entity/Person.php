@@ -213,25 +213,6 @@ class Person extends BaseEntity
         return $this->entity_type;
     }
 
-    /**
-         * A ranking used by the autocomplete index
-         * For people, return the start date of the most recent show
-         *
-         * @return int
-         */
-    public function getRank()
-    {
-        $activeDate = $this->getLastActive();
-
-        return $activeDate ? $activeDate->format('Ymd') : 0;
-    }
-
-
-    public function isIndexable()
-    {
-        return !empty($this->getName()) && !$this->isMapped() && count($this->getRoles());
-    }
-
     public function getId(): ?int
     {
         return $this->id;

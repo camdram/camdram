@@ -12,8 +12,7 @@ use Acts\CamdramSecurityBundle\Event\PendingAccessEvent;
 use Acts\CamdramSecurityBundle\Form\Type\PendingAccessType;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Security\Acl\Helper;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -22,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * General AdminController for all OwnableInterfaces.
  */
-class AdminController extends AbstractFOSRestController
+class AdminController extends AbstractController
 {
     protected function getEntity($type, $identifier)
     {
@@ -81,7 +80,7 @@ class AdminController extends AbstractFOSRestController
      * An explicit ACE will be created if the user doesn't already have access
      * to the show.
      *
-     * @Rest\Post("/{type<events|shows|societies|venues>}/{identifier}/admins", name="post_entity_admin")
+     * @Route("/{type<events|shows|societies|venues>}/{identifier}/admins", methods={"POST"}, name="post_entity_admin")
      */
     public function postAdminAction(Request $request, AclProvider $aclProvider, Helper $helper,
         ModerationManager $moderation_manager, EventDispatcherInterface $event_dispatcher,
@@ -142,7 +141,7 @@ class AdminController extends AbstractFOSRestController
     /**
      * Request to be an admin associated with this show. Only available for shows.
      *
-     * @Rest\Post("/shows/{identifier}/admin/request", name="request_show_admin")
+     * @Route("/shows/{identifier}/admin/request", methods={"POST"}, name="request_show_admin")
      */
     public function requestAdminAction(Request $request, Helper $helper, EventDispatcherInterface $event_dispatcher, $identifier)
     {
@@ -189,7 +188,7 @@ class AdminController extends AbstractFOSRestController
     /**
      * Approve a request to be an admin for this show.
      *
-     * @Rest\Patch("/shows/{identifier}/admin/approve", name="approve_show_admin")
+     * @Route("/shows/{identifier}/admin/approve", methods={"PATCH"}, name="approve_show_admin")
      */
     public function approveAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $identifier)
     {
@@ -216,7 +215,7 @@ class AdminController extends AbstractFOSRestController
     /**
      * Revoke an admin's access to a show.
      *
-     * @Rest\Delete("/{type<events|shows|societies|venues>}/{identifier}/admins/{uid}", name="delete_entity_admin")
+     * @Route("/{type<events|shows|societies|venues>}/{identifier}/admins/{uid}", methods={"DELETE"}, name="delete_entity_admin")
      */
     public function deleteAdminAction(Request $request, AclProvider $aclProvider, Helper $helper, $type, $identifier, $uid)
     {
@@ -241,7 +240,7 @@ class AdminController extends AbstractFOSRestController
     /**
      * Revoke a pending admin's access to an entity.
      *
-     * @Rest\Delete("/{type<events|shows|societies|venues>}/{identifier}/pending-admins/{uid}", name="delete_pending_admin")
+     * @Route("/{type<events|shows|societies|venues>}/{identifier}/pending-admins/{uid}", methods={"DELETE"}, name="delete_pending_admin")
      */
     public function deletePendingAdminAction(Request $request, Helper $helper, $type, $identifier, $uid)
     {

@@ -450,12 +450,8 @@ class Show extends BaseEntity implements OwnableInterface
      * are returned in the explicit ordering or in the order they were entered
      * into the database.
      */
-    public function getRolesByType($type)
+    public function getRolesByType(string $type)
     {
-        if (!is_string($type)) {
-            throw new \InvalidArgumentException('The service name given to Show::getRolesByType() must be a string');
-        }
-
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('type', $type))
             ->orderBy(array('order' => 'ASC', 'id' => 'ASC'))
@@ -566,24 +562,6 @@ class Show extends BaseEntity implements OwnableInterface
         }
 
         return 'single';
-    }
-
-    /**
-     * A ranking used by the autocomplete index
-     * For shows, return the Ymd timestamp of the show's start date
-     *
-     * @return int
-     */
-    public function getRank()
-    {
-        $startAt = $this->getStartAt();
-        return $startAt ? (int) $startAt->format('Ymd') : 0;
-    }
-
-
-    public function isIndexable()
-    {
-        return $this->getAuthorised();
     }
 
     /**
@@ -916,11 +894,6 @@ class Show extends BaseEntity implements OwnableInterface
     public static function getAceType(): string
     {
         return 'show';
-    }
-
-    public function getShortName()
-    {
-        return '';
     }
 
     /**

@@ -7,7 +7,20 @@
 
 <h3>Show Administration</h3>
 
-{{ render(controller('ActsCamdramBundle:ShowAdmin:cgetUnauthorised')) }}
+{% if unauthorised | length > 0 %}
+<h5>Unauthorised shows</h5>
+<ul class="large-block-list">
+    {% for show in unauthorised %}
+        <li>
+            <div class="panel">
+                <h5>{{ link_entity(show) }}</h5>
+                <p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}</p>
+                <p>{{ show.description | camdram_markdown | truncateHTML(200) }}</p>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <h5>My Shows</h5>
 <ul class="large-block-list">
