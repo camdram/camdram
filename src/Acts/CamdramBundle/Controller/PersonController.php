@@ -34,14 +34,15 @@ class PersonController extends AbstractRestController
     /**
      * @Route("/{identifier}.{_format}", format="html", methods={"GET"}, name="get_person")
      */
-    public function getAction($identifier)
+    public function getAction($identifier, $_format)
     {
         $person = $this->getEntity($identifier);
 
         //If person is mapped to a different person, redirect to the canonical person
         if ($person->getMappedTo()) {
-            return $this->redirectToRoute('get_person',
-                ['identifier' => $person->getMappedTo()->getSlug()], 301);
+            return $this->redirectToRoute('get_person', [
+                'identifier' => $person->getMappedTo()->getSlug(),
+                '_format' => $_format], 301);
         }
 
         return parent::doGetAction($person);
@@ -114,7 +115,7 @@ class PersonController extends AbstractRestController
     }*/
 
     /**
-     * @Route("/{identifier}/roles.{_format}", format="html", methods={"GET"}, name="get_person_roles")
+     * @Route("/{identifier}/roles.{_format}", methods={"GET"}, name="get_person_roles")
      */
     public function getRolesAction($identifier)
     {
