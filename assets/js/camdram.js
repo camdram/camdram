@@ -293,7 +293,8 @@ $.fn.entityCollection = function(options) {
         });
 
         update_links();
-        for (const child of el.children) options.initialiseRow(child);
+        let i = 0;
+        for (const child of el.children) options.initialiseRow(i++, child);
     }
 };
 
