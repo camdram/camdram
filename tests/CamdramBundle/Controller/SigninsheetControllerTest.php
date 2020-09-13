@@ -18,14 +18,14 @@ class SigninsheetControllerTest extends RestTestCase
         // Test non-existent
         foreach (['', '.csv'] as $format) {
             $crawler = $this->client->request('GET', '/shows/non-existent-test/signinsheet'.$format);
-            $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+            $this->assertHTTPStatus(404);
             $this->assertStringContainsString('That show does not exist', $this->client->getResponse()->getContent());
         }
 
         // Test no performances
         foreach (['', '.csv'] as $format) {
             $crawler = $this->client->request('GET', '/shows/'.$show->getSlug().'/signinsheet' . $format);
-            $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+            $this->assertHTTPStatus(404);
             $this->assertStringContainsString('There are no performances associated with this show', $this->client->getResponse()->getContent());
         }
 
@@ -43,7 +43,7 @@ class SigninsheetControllerTest extends RestTestCase
 
         // HTML mode
         $crawler = $this->client->request('GET', '/shows/'.$show->getSlug().'/signinsheet');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(200);
         $table = $crawler->filter('table')->first();
         $this->assertRegExp('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/',
             $table->filter('tr')->first()->html());

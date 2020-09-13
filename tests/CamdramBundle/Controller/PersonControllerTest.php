@@ -50,6 +50,12 @@ class PersonControllerTest extends RestTestCase
         $crawler = $this->client->request('GET', '/people/john-smith');
         $this->assertEquals($crawler->filter('#content:contains("John Smith")')->count(), 1);
         $this->assertEquals($crawler->filter('#content:contains("Person Test")')->count(), 1);
+
+        $crawler = $this->client->request('GET', '/people/by-id/999999');
+        $this->assertHTTPStatus(404);
+
+        $crawler = $this->client->request('GET', '/people/non-existant');
+        $this->assertHTTPStatus(404);
     }
 
     public function testPersonRoles()
@@ -83,5 +89,29 @@ class PersonControllerTest extends RestTestCase
                 $this->assertEquals($i === $j, $crawler->filter('#content:contains("'.$prose[$j].'")')->count() === 1);
             }
         }
+
+        $data = $this->doJsonRequest('/people/john-smith/roles.json');
+        $this->assertCount(1, $data);
+        $this->assertArraySubset([
+            'person_name'   => 'John Smith',
+            'person_slug'   => 'john-smith',
+            'id'            => $this->role->getId(),
+            'type'          => 'cast',
+            'role'          => 'Antigone',
+            'show'          => [
+                'id'        => $this->show->getId(),
+                'name'      => $this->show->getName(),
+                'slug'      => $this->show->getSlug(),
+                '_type'     => 'show',
+            ], 'person'     => [
+                'id'        => $this->person->getId(),
+                'name'      => $this->person->getName(),
+                'slug'      => $this->person->getSlug(),
+                '_type'     => 'person',
+            ], '_links'     => [
+                'show'      => "/shows/{$this->show->getSlug()}",
+                'person'    => "/people/{$this->person->getSlug()}",
+            ], '_type'      => 'role'
+        ], $data[0]);
     }
 }

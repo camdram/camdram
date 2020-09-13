@@ -21,7 +21,7 @@ class UserControllerTest extends RestTestCase
     {
         $this->login($this->createUser("Normal User", "normal@example.com"));
         $this->client->request('GET', '/admin/users');
-        $this->assertEquals($this->client->getResponse()->getStatusCode(), 403);
+        $this->assertHTTPStatus(403);
     }
 
     public function testGetUser()
@@ -43,7 +43,7 @@ class UserControllerTest extends RestTestCase
         ]);
 
         $crawler3 = $this->client->submit($form);
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(400);
         $form = $crawler3->selectButton('Save')->form();
         $form->setValues([
             'user[name]' => 'John B. Smith',
@@ -88,7 +88,7 @@ class UserControllerTest extends RestTestCase
         $this->assertFalse($this->aclProvider->isOwner($john, $show3));
 
         $crawler = $this->client->request('GET', '/admin/users/'.$userIds[1]);
-        $this->assertEquals($this->client->getResponse()->getStatusCode(), 404);
+        $this->assertHTTPStatus(404);
 
         $crawler = $this->client->request('GET', '/admin/users/'.$userIds[0]);
         $crawler = $this->click('Merge user', $crawler);
@@ -103,13 +103,13 @@ class UserControllerTest extends RestTestCase
         $this->assertTrue($this->aclProvider->isOwner($joan, $show3));
 
         $crawler = $this->client->request('GET', '/admin/users/'.$userIds[0]);
-        $this->assertEquals($this->client->getResponse()->getStatusCode(), 404);
+        $this->assertHTTPStatus(404);
 
         $crawler = $this->client->request('GET', '/admin/users/'.$userIds[2]);
         $form = $crawler->selectButton('Delete this user')->form();
         $crawler = $this->client->submit($form);
 
         $crawler = $this->client->request('GET', '/admin/users/'.$userIds[2]);
-        $this->assertEquals($this->client->getResponse()->getStatusCode(), 404);
+        $this->assertHTTPStatus(404);
     }
 }

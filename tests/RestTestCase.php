@@ -133,4 +133,9 @@ class RestTestCase extends WebTestCase
         $link = $crawler->selectLink($linkText)->link();
         return $this->client->request('GET', $link->getUri());
     }
+
+    protected function assertHTTPStatus(int $status): void
+    {
+        $this->assertEquals($status, $this->client->getResponse()->getStatusCode());
+    }
 }

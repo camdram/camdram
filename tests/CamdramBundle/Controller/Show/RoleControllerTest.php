@@ -36,7 +36,7 @@ class RoleControllerTest extends RestTestCase
             'id' => 'new', 'role' => 'Romeo', 'person' => 'Richard O\'Brien',
             'role_type' => 'cast', '_token' => $patch_token
         ]);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(200);
         $response1 = json_decode($this->client->getResponse()->getContent());
 
         //Add another role for same person with curly apostrophe and extra whitespace
@@ -44,7 +44,7 @@ class RoleControllerTest extends RestTestCase
             'id' => 'new', 'role' => 'Mercutio', 'person' => ' Richard O’Brien ',
             'role_type' => 'cast', '_token' => $patch_token
         ]);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(200);
         $response2 = json_decode($this->client->getResponse()->getContent());
 
         $crawler = $this->client->request('GET', $this->showUrl);
@@ -62,10 +62,10 @@ class RoleControllerTest extends RestTestCase
         //Remove both roles
         $this->client->request('DELETE', "/delete-role",
             ['role' => $role1->getId(), '_token' => $delete_token]);
-        $this->assertEquals(204, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(204);
         $this->client->request('DELETE', "/delete-role",
             ['role' => $role2->getId(), '_token' => $delete_token]);
-        $this->assertEquals(204, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(204);
 
         $crawler = $this->client->request('GET', $this->showUrl);
         $this->assertEquals($crawler->filter('#sortable-cast div:contains("Richard O\'Brien")')->count(), 0);
@@ -86,7 +86,7 @@ class RoleControllerTest extends RestTestCase
             'id' => 'new', 'role' => 'Romeo', 'person' => 'Richard O\'Brien',
             'role_type' => 'cast', '_token' => $patch_token
         ]);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(200);
         $response1 = json_decode($this->client->getResponse()->getContent());
         $roleId = $response1->id;
 
@@ -95,7 +95,7 @@ class RoleControllerTest extends RestTestCase
             'id' => $roleId, 'role' => 'Juliet', 'person' => 'Jane Smith',
             'role_type' => 'cast', '_token' => $patch_token
         ]);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(200);
 
         $role = $repo->find($roleId);
         $this->assertEquals('Juliet', $role->getRole());
@@ -113,7 +113,7 @@ class RoleControllerTest extends RestTestCase
         // Wrong user
         $this->login($this->createUser());
         $crawler = $this->client->request('GET', "{$this->showUrl}/edit-roles");
-        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(403);
         $this->assertEquals($crawler->filter('#content:contains("Show Administration")')->count(), 0);
 
         // Right user
@@ -128,7 +128,7 @@ class RoleControllerTest extends RestTestCase
             'id' => 'new', 'role' => 'Romeo', 'person' => 'Richard O\'Brien',
             'role_type' => 'cast', '_token' => $patch_token
         ]);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(200);
         $response1 = json_decode($this->client->getResponse()->getContent());
         $roleId = $response1->id;
 
@@ -136,7 +136,7 @@ class RoleControllerTest extends RestTestCase
             'id' => $roleId, 'role' => 'Romeo', 'person' => 'Richard O\'Brien',
             'role_type' => 'cast', '_token' => $patch_token
         ]);
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(400);
         $this->assertStringContainsString('That role is not part of that show', $crawler->html());
 
         // No tokens
@@ -144,11 +144,11 @@ class RoleControllerTest extends RestTestCase
             'id' => 'new', 'role' => 'Romeo', 'person' => 'Richard O\'Brien',
             'role_type' => 'cast', '_token' => 'wrong'
         ]);
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(400);
         $this->assertStringContainsString('Invalid CSRF token', $crawler->html());
         $this->client->request('DELETE', "/delete-role",
             ['role' => $roleId, '_token' => 'wrong']);
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(400);
         $this->assertStringContainsString('Invalid CSRF token', $crawler->html());
     }
 

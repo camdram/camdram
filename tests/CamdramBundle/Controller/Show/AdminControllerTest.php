@@ -17,7 +17,7 @@ class AdminControllerTest extends RestTestCase
         $this->login($user);
         // Test access denied
         $crawler = $this->client->request('GET', '/shows/test-show/admin/edit');
-        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(403);
 
         // Add role for existing user
         $this->aclProvider->grantAccess($show, $user);

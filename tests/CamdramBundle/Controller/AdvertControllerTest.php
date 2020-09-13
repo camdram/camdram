@@ -70,11 +70,11 @@ class AdvertControllerTest extends RestTestCase
         $crawler = $this->client->submit($form);
 
         if ($shouldPass) {
-            $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+            $this->assertHTTPStatus(200);
             $this->assertEquals($crawler->filter("#content:contains(\"$name\")")->count(), 1);
             $this->assertEquals($crawler->filter('#content:contains("This show is not yet visible to the public")')->count(), 1);
         } else {
-            $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+            $this->assertHTTPStatus(400);
             $this->assertTrue($crawler->filter('small.error')->count() > 0);
         }
     }
@@ -107,7 +107,7 @@ class AdvertControllerTest extends RestTestCase
         $form = $crawler->selectButton('Approve this show')->form();
         $crawler = $this->client->submit($form);
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(200);
         $this->assertEquals($crawler->filter('#content:contains("This show is not yet visible to the public")')->count(), 0);
 
         $this->logout();
@@ -154,7 +154,7 @@ class AdvertControllerTest extends RestTestCase
 
         // Check that by-id can generate 404s
         $crawler = $this->client->request('GET', '/shows/by-id/28934');
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(404);
     }
 
     public function testShowWithSociety()

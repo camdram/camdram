@@ -189,9 +189,9 @@ class DiaryControllerTest extends RestTestCase
     public function testInvalidDates()
     {
         $this->client->request('GET', '/diary/blah');
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(404);
 
         $this->client->request('GET', '/diary/2003.json?end=invalid-date');
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertHTTPStatus(400);
     }
 }

@@ -89,11 +89,11 @@ class EventControllerTest extends RestTestCase
         $crawler = $this->client->submit($form);
 
         if ($shouldPass) {
-            $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+            $this->assertHTTPStatus(200);
             $this->assertEquals($crawler->filter("#content:contains(\"$name\")")->count(), 1);
             $this->assertEquals($crawler->filter('#content:contains("Event Administration")')->count(), 1);
         } else {
-            $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+            $this->assertHTTPStatus(400);
             $this->assertTrue($crawler->filter('small.error')->count() > 0);
         }
     }
