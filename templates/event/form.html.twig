@@ -14,7 +14,7 @@
         <div id="event-subevents" data-prototype="
 {%- apply escape('html') -%}
     {{- _self.daterow(form.linked_dates.vars.prototype) -}}
-{%- endapply -%}">
+{%- endapply -%}" data-entitycollection-init="{&quot;min_items&quot;: 0}">
             {%- for linked in form.linked_dates -%}
                 {{- _self.daterow(linked) -}}
             {%- endfor -%}
@@ -37,7 +37,7 @@
             become registered with Camdram?</a>
             </small>
         {{- form_errors(form.societies) -}}</p>
-        <div class="linked-societies" data-prototype="{% apply escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endapply %}">
+        <div class="linked-societies" data-prototype="{% apply escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endapply %}" data-entitycollection-init="{&quot;min_items&quot;: 0}">
             {%- for society in form.societies -%}
                 {%- include 'show/society-form.html.twig' with {society: society} -%}
             {%- endfor -%}
@@ -78,15 +78,3 @@
     </div>
 </div>
 {%- endmacro -%}
-
-<script>
-{#- begin-CSP-permitted-script -#}
-$('#event-subevents').entityCollection({
-    min_items: 0
-});
-
-$('.linked-societies').entityCollection({
-    min_items: 0
-});
-{#- end-CSP-permitted-script -#}
-</script>

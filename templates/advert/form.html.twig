@@ -33,7 +33,9 @@
 
     {{ form_label(form.auditions) }}
     <div>
-        <div class="auditions entity_collection" data-prototype="{% apply escape('html') %}{% include 'show/auditions-form.html.twig' with {audition: form.auditions.vars.prototype} %}{% endapply %}">
+        <div class="auditions entity_collection" data-prototype="{%- apply escape('html') -%}
+                {%- include 'show/auditions-form.html.twig' with {audition: form.auditions.vars.prototype} -%}
+            {%- endapply -%}" data-entitycollection-init="{&quot;min_items&quot;: 0}">
             {% for audition in form.auditions %}
                 {% include 'show/auditions-form.html.twig' %}
             {% endfor %}
@@ -61,7 +63,6 @@
 
 <script>
     {#- begin-CSP-permitted-script -#}
-    $('.auditions').entityCollection({min_items: 0});
     const updateView = () => {
         if ($('#advert_type input:checked').val() == 'actors') {
             $('#auditions-row').show();

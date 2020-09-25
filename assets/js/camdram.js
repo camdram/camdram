@@ -124,6 +124,9 @@ function fixHtml(elementsToFix) {
     for (const searchContainer of elementsToFix.querySelectorAll('[data-entitysearch-route]')) {
         const autocomplete = new Camdram.autocomplete(searchContainer);
     }
+    for (const entityCollection of elementsToFix.querySelectorAll('[data-entitycollection-init]')) {
+        Camdram.entityCollection(entityCollection);
+    }
     createTabContainers(elementsToFix);
 
     if (!supportsDateInput()) {
@@ -167,72 +170,76 @@ Camdram.scrollTo = function(el, options) {
     }
 };
 
-$.fn.entityCollection = function(options) {
-    options = {
+Camdram.entityCollection = function(el) {
+    const options = {
         max_items: 100,
         min_items: 1,
-        initialiseRow: function() {},
         add_link_selector: '.add_link',
-        ...options
+        ...JSON.parse(el.dataset.entitycollectionInit || '{}')
     };
 
-    for (const el of [].slice.call(this)) {
-        const index = el.children.length;
-        const add_link = el.parentNode.querySelector(options.add_link_selector);
+    delete el.dataset.entitycollectionInit;
+    let index = el.children.length;
+    const add_link = el.parentNode.querySelector(options.add_link_selector);
 
-        const update_links = function() {
-            const uparrows = el.querySelectorAll('[data-entitycollection="moveup"]');
-            const downarrows = el.querySelectorAll('[data-entitycollection="movedown"]');
-            const removeLinks = el.querySelectorAll('.remove_link');
-            for (const removeLink of removeLinks) {
-                removeLink.style.visibility = (removeLinks.length > options.min_items) ? 'visible' : 'hidden';
-            }
-            add_link.style.visibility = (removeLinks.length < options.max_items) ? 'visible' : 'hidden';
+    const update_links = function() {
+        const uparrows = el.querySelectorAll('[data-entitycollection="moveup"]');
+        const downarrows = el.querySelectorAll('[data-entitycollection="movedown"]');
+        const removeLinks = el.querySelectorAll('.remove_link');
+        for (const removeLink of removeLinks) {
+            removeLink.style.visibility = (removeLinks.length > options.min_items) ? 'visible' : 'hidden';
+        }
+        add_link.style.visibility = (removeLinks.length < options.max_items) ? 'visible' : 'hidden';
 
-            for (let i = 0; i < uparrows.length; i++) {
-                uparrows[i].style.visibility = i ? 'visible' : 'hidden';
-            }
-            for (let i = 0; i < downarrows.length; i++) {
-                downarrows[i].style.visibility = (i < downarrows.length - 1) ? 'visible' : 'hidden';
-            }
-        };
+        for (let i = 0; i < uparrows.length; i++) {
+            uparrows[i].style.visibility = i ? 'visible' : 'hidden';
+        }
+        for (let i = 0; i < downarrows.length; i++) {
+            downarrows[i].style.visibility = (i < downarrows.length - 1) ? 'visible' : 'hidden';
+        }
+    };
 
-        add_link.addEventListener('click', e => {
-            e.preventDefault();
-            let row = document.createElement('div');
-            row.innerHTML = el.dataset.prototype.replace(/__name__/g, index);
-            row = row.children[0];
-            el.appendChild(row);
-            fixHtml(row);
-            update_links();
-            options.initialiseRow(index, row);
-            index++;
-        });
-
-        el.addEventListener('click', e => {
-            let target = e.target.closest('.remove_link');
-            if (target) {
-                e.preventDefault();
-                while (target && target.parentNode != el) target = target.parentNode;
-                el.removeChild(target);
-                update_links();
-            } else if ((target = e.target.closest('[data-entitycollection]'))) {
-                e.preventDefault();
-                const action = target.dataset.entitycollection;
-                let myRow = e.target;
-                while (myRow && myRow.parentNode != el) myRow = myRow.parentNode;
-                const otherRow = (action === 'moveup') ? myRow.previousElementSibling : myRow.nextElementSibling;
-
-                const myInput = myRow.querySelector('input[name]');
-                const otherInput = otherRow.querySelector("input[name]");
-                [myInput.value, otherInput.value] = [otherInput.value, myInput.value];
-            }
-        });
-
-        update_links();
-        let i = 0;
-        for (const child of el.children) options.initialiseRow(i++, child);
+    const initialiseRow = function(index, row) {
+        const event = new CustomEvent('entitycollection:newrow', {
+            bubbles: true, details: {index: index}});
+        row.dispatchEvent(event);
     }
+
+    add_link.addEventListener('click', e => {
+        e.preventDefault();
+        let row = document.createElement('div');
+        row.innerHTML = el.dataset.prototype.replace(/__name__/g, index);
+        row = row.children[0];
+        el.appendChild(row);
+        fixHtml(row);
+        update_links();
+        initialiseRow(index, row);
+        index++;
+    });
+
+    el.addEventListener('click', e => {
+        let target = e.target.closest('.remove_link');
+        if (target) {
+            e.preventDefault();
+            while (target && target.parentNode != el) target = target.parentNode;
+            el.removeChild(target);
+            update_links();
+        } else if ((target = e.target.closest('[data-entitycollection]'))) {
+            e.preventDefault();
+            const action = target.dataset.entitycollection;
+            let myRow = e.target;
+            while (myRow && myRow.parentNode != el) myRow = myRow.parentNode;
+            const otherRow = (action === 'moveup') ? myRow.previousElementSibling : myRow.nextElementSibling;
+
+            const myInput = myRow.querySelector('input[name]');
+            const otherInput = otherRow.querySelector("input[name]");
+            [myInput.value, otherInput.value] = [otherInput.value, myInput.value];
+        }
+    });
+
+    update_links();
+    let i = 0;
+    for (const child of el.children) initialiseRow(i++, child);
 };
 
 Camdram.makeLinkSafetyDialog = function(link) {
