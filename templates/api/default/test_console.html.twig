@@ -48,45 +48,49 @@
 
     </div>
 
-    <script>
-    {#- begin-CSP-permitted-script -#}
-        $('#test_console_form').submit(function(e) {
-            e.preventDefault();
-            var method = $('#method').val();
-            var url = $('#url').val();
+<script>
+{#- begin-CSP-permitted-script -#}
+const q = document.querySelector.bind(document);
+const makeRequest = function() {
+    const method = q('#method').value;
+    const url = q('#url').value;
 
-            var parts = url.split('?');
-            var dataType = parts[0].substr(-4) == 'json' ? 'json' : 'xml';
-            $('#results').html('<i class="fa fa-spinner fa-spin"></i>')
-            $.ajax({
-                'type': method,
-                'url': url,
-                'dataType' : dataType,
-                'success': function(data) {
-                    var res = $('<pre><code></code></pre>');
-                    if (dataType == 'json') {
-                        data = JSON.stringify(data, undefined, 2);
-                    }
-                    else {
-                        data = (new XMLSerializer()).serializeToString(data);
-                    }
-                    res.children().text(data);
-                    $('#results').html(res);
-                },
-                error: function(req, status, message) {
-                    var data = $('<p/>').addClass('error');
-                    data.text(req.status + ' Error: ' + message)
-                    $('#results').html(data)
-                }
-            })
-        })
-        $('#example_queries a').click(function(e) {
-            e.preventDefault();
-            $('#url').val($(this).attr('href'));
-            $('#test_console_form').submit();
-        })
-    {#- end-CSP-permitted-script -#}
-    </script>
+    const parts = url.split('?');
+    const isJSON = parts[0].substr(-4) == 'json';
+    q('#results').innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", function() {
+        if (this.status >= 200 && this.status < 300) {
+            q('#results').innerHTML = '<pre><code></code></pre>';
+            let text = this.responseText;
+            if (isJSON) text = JSON.stringify(JSON.parse(text), null, 4);
+            q('#results code').innerText = text;
+        } else {
+            q('#results').innerHTML = '<p class="error"></p>';
+            q('#results p').innerText = 'HTTP error ' + this.status;
+        }
+    });
+    xhr.addEventListener("error", function (e) {
+        q('#results').innerHTML = '<p class="error">Request failed</p>';
+    });
+    xhr.open(method, url);
+    xhr.send();
+}
+q('#test_console_form').addEventListener('submit', e => {
+    e.preventDefault();
+    makeRequest();
+})
+for (const el of document.querySelectorAll('#example_queries a')) {
+    el.addEventListener('click', function(e) {
+        e.preventDefault();
+        q('#method').value = 'GET';
+        q('#url').value = e.target.href;
+        makeRequest();
+    });
+}
+{#- end-CSP-permitted-script -#}
+</script>
 
 {% endblock %}
 

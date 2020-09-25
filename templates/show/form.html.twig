@@ -1,3 +1,5 @@
+{%- from 'form/fields.html.twig' import entity_search_macro -%}
+
 {{ form_errors(form) }}
 
 {{ form_row(form.name) }}
@@ -24,7 +26,7 @@
 
 <div class="form-large-row main-venue-row">
     {{ form_label(form.venue) }}
-    {{ form_widget(form.venue) }}
+    {{- entity_search_macro('get_venues', form.venue, null, true) -}}
     {{ form_errors(form.venue) }}
 </div>
 
@@ -185,13 +187,7 @@ $(function() {
     $('.performances').entityCollection({
         initialiseRow: update_date_fields
     });
-    $('#show_venue').entitySearch({route: 'get_venues'});
     $('.linked-societies').entityCollection({
-        initialiseRow: function(index, row) {
-            var input = $(row).find("input");
-            input.addClass("autocomplete_input");
-            input.entitySearch({route: 'get_societies'});
-        },
         min_items: 0
     });
 });

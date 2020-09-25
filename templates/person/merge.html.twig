@@ -22,11 +22,11 @@
     {{ form_row(form.search_by) }}
     <div class="panel" id="name_fields">
         {{ form_row(form.person) }}
-        <p>Selected profile: <span id="name_link"></span></p>
+        <p>Selected profile: <a id="name_link" target="_blank"></a></p>
     </div>
     <div class="panel" id="slug_fields">
         {{ form_row(form.slug) }}
-        <p>Selected profile: <span id="slug_link"></span></p>
+        <p>Selected profile: <a id="slug_link" target="_blank"></a></p>
     </div>
 
     {{ form_row(form.keep_person) }}
@@ -39,51 +39,49 @@
 </form>
 
 <script>
-    {#- begin-CSP-permitted-script -#}
-    $(function() {
-        var nameFields = $('#name_fields');
-        var slugFields = $('#slug_fields');
-        var nameRadio = $('#form_search_by_0');
-        var slugRadio = $('#form_search_by_1');
+{#- begin-CSP-permitted-script -#}
+var q = document.querySelector.bind(document);
+document.addEventListener('DOMContentLoaded', function() {
+    var nameFields = q('#name_fields');
+    var slugFields = q('#slug_fields');
+    var nameRadio = q('#form_search_by_0');
+    var slugRadio = q('#form_search_by_1');
 
-        var createLink = function(slug) {
+    var setLink = (a, slug) => {
+        if (slug != null) {
             var url = Routing.generate('get_person', {identifier: slug}, true);
-            return $('<a/>').attr('href', url).attr('target', '_blank').text(url);
+            a.href = url;
+            a.textContent = url;
+            a.style.display = 'inline';
+        } else {
+            a.style.display = 'none';
         }
+    }
 
-        $('#form_person_person_name').on('entitysearch:changed', function(event, datum) {
-            $('#name_link').html(createLink(datum.slug));
-        });
-        $('#form_slug').keyup(function() {
-            var slug = $(this).val();
-            var matches = slug.match(/\/people\/([a-z\-]+)/i);
-            if (matches) {
-                slug = matches[1];
-            }
-            var slugRegex = /^[a-z\-]+$/i
-            if (slugRegex.test(slug)) {
-                $('#slug_link').html(createLink(slug));
-            }
-            else {
-                $('#slug_link').html('');
-            }
-        });
-
-        var updateMergeForm = function() {
-            if (nameRadio.is(':checked')) {
-                nameFields.show();
-                slugFields.hide();
-            }
-            else {
-                nameFields.hide();
-                slugFields.show();
-            }
+    nameFields.addEventListener('entitysearch:changed', e => {
+        setLink(q('#name_link'), e.detail.slug);
+    });
+    q('#form_slug').addEventListener('input', e => {
+        var slug = e.target.value;
+        var matches = slug.match(/\/people\/([a-z\-]+)/i);
+        if (matches) {
+            slug = matches[1];
         }
-        updateMergeForm();
-        nameRadio.change(updateMergeForm);
-        slugRadio.change(updateMergeForm);
-    })
-    {#- end-CSP-permitted-script -#}
+        var slugRegex = /^[a-z\-]+$/i
+        if (!slugRegex.test(slug)) slug = null;
+
+        setLink(q('#slug_link'), slug);
+    });
+
+    var updateMergeForm = () => {
+        nameFields.style.display = nameRadio.checked ? null : 'none';
+        slugFields.style.display = nameRadio.checked ? 'none' : null;
+    }
+    updateMergeForm();
+    nameRadio.addEventListener('change', updateMergeForm);
+    slugRadio.addEventListener('change', updateMergeForm);
+})
+{#- end-CSP-permitted-script -#}
 </script>
 
 {% endblock %}

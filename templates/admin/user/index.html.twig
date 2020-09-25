@@ -6,13 +6,11 @@
     <div class="row">
         <h3>Manage Users</h3>
 
-        <form action="{{ path('get_users') }}" method="get">
-            <div style="display: flex; justify-content: space-around;">
-                <label for="user_search_box" class="hide-for-small inline">Search</label>
-                <input id="user_search_box" type="text" name="q" style="max-width: 35em; margin-right: 1em;"
-                       placeholder="Search by name, email and id" value="{{ query }}"/>
-                <input type="submit" class="button small" value="Go" />
-            </div>
+        <form action="{{ path('get_users') }}" method="get"
+                style="max-width: 40em; display: flex; margin: 0 auto 1em auto">
+            <input id="user_search_box" type="text" name="q" style="margin-right: 1em;"
+                   placeholder="Search by name, email and id" value="{{ query }}"/>
+            <input type="submit" class="button small" value="Go" />
         </form>
 
         {% include 'paginator.html.twig' %}
@@ -45,23 +43,5 @@
         </table>
         </div>
         {% include 'paginator.html.twig' %}
-
     </div>
-
-{% endblock %}
-
-{% block javascripts %}
-<script>
-    {#- begin-CSP-permitted-script -#}
-    $(function() {
-        $('#user_search_box').typeahead({
-            name: 'users_search',
-            valueKey: 'name',
-            remote: {url: Routing.generate('get_users', {_format: 'json', q: 'QUERY'}), wildcard: 'QUERY'}
-        }).on('typeahead:selected', function (object, datum) {
-            document.location = Routing.generate('get_user', {identifier: datum.id})
-        });
-    })
-    {#- end-CSP-permitted-script -#}
-</script>
 {% endblock %}

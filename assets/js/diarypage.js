@@ -6,7 +6,7 @@ const qq = document.querySelectorAll.bind(document);
 
 Camdram.diary_server = {};
 Camdram.diary_server.get_content = function(url, cb) {
-    $.get(url, cb);
+    Camdram.get(url, cb);
 };
 Camdram.diary_server.get_content_for_today = function(cb) {
     Camdram.diary_server.get_content(Routing.generate('acts_camdram_diary', {fragment: true}), cb);
@@ -183,9 +183,9 @@ Camdram.diary_selector = class {
     update_years() {
         const previous_period = this.period();
         this.periods_select.setAttribute('disabled', 'disabled');
-        $.get(Routing.generate('get_time-period', {'year': this.year(), '_format' : 'json'}), periods => {
+        Camdram.get(Routing.generate('get_time-period', {'year': this.year(), '_format' : 'json'}), periods => {
             this.periods_select.innerHTML = '';
-            for (const period of periods) {
+            for (const period of JSON.parse(periods)) {
                 const option = document.createElement('option');
                 option.value = period.slug;
                 option.textContent = period.name;
@@ -209,8 +209,7 @@ Camdram.diary_selector = class {
     }
 };
 
-
-$(function() {
+window.addEventListener('DOMContentLoaded', () => {
     const diary = new Camdram.diary();
     const selector = new Camdram.diary_selector(diary);
 
@@ -226,14 +225,13 @@ $(function() {
     }});
 
     selector.attach_events();
-    $('#load_previous').click(function(e) {
+    q('#load_previous').addEventListener('click', e => {
         e.preventDefault();
         diary.load_previous_weeks(1);
     });
 
-    $('#load_today').click(function(e) {
+    q('#load_today').addEventListener('click', e => {
         e.preventDefault();
         diary.goto_today();
     });
-
 });

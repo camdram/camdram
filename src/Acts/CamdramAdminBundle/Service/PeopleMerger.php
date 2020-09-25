@@ -32,7 +32,7 @@ class PeopleMerger
                 'expanded' => true,
                 'data' => 'person'
             ))
-            ->add('person', EntitySearchType::class, array('other_allowed' => false, 'prefetch' => false,
+            ->add('person', EntitySearchType::class, array('other_allowed' => false,
                 'required' => false, 'route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
             ->add('slug', TextType::class, array('label' => 'Slug or URL', 'required' => false))
             ->add('keep_person', ChoiceType::class, array(

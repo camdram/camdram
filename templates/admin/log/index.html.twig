@@ -63,15 +63,19 @@
 </div>
 <script>
     {#- begin-CSP-permitted-script -#}
-    $('#logTabs a.title').click(function(e) {
-        var $self = $(this);
-        $.get($self.attr('href'), function(response) {
-            var $div = $self.next().find('.logfile');
-            $div.text(response);
-            $div.scrollTop($div[0].scrollHeight);
+    function onTabClick(tab) {
+        Camdram.get(tab.href, response => {
+            var div = tab.nextElementSibling.querySelector('.logfile');
+            div.innerText = response;
+            div.scrollTop = div.scrollHeight;
         })
-    });
-    $('#logTabs a.title.active').click();
+    }
+    document.querySelectorAll('#logTabs a.title').forEach(
+        a => a.addEventListener('click' , e => {
+            e.preventDefault();
+            onTabClick(e.target);
+        }));
+    onTabClick(document.querySelector('#logTabs a.title.active'));
     {#- end-CSP-permitted-script -#}
 </script>
 {% endblock %}

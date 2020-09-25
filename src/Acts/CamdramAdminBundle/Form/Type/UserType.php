@@ -23,7 +23,7 @@ class UserType extends AbstractType
             ->add('email')
             ->add('is_email_verified', ChoiceType::class, ['label' => 'Email verified',
                 'expanded' => true, 'choices' => ['Yes' => true, 'No' => false]])
-            ->add('person', EntitySearchType::class, array('other_allowed' => false, 'prefetch' => false,
+            ->add('person', EntitySearchType::class, array('other_allowed' => false,
                 'required' => false, 'route' => 'get_people', 'class' => 'Acts\\CamdramBundle\\Entity\\Person'))
         ;
     }

@@ -86,11 +86,6 @@ $('#event-subevents').entityCollection({
 });
 
 $('.linked-societies').entityCollection({
-    initialiseRow: function(index, row) {
-        var input = $(row).find("input");
-        input.addClass("autocomplete_input");
-        input.entitySearch({route: 'get_societies'});
-    },
     min_items: 0
 });
 {#- end-CSP-permitted-script -#}

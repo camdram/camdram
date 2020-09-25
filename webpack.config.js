@@ -22,12 +22,6 @@ Encore
     .disableSingleRuntimeChunk()
     .splitEntryChunks()
 
-    // The Typeahead library is not compatible (it seems) with current Webpack
-    // so is just included directly in every page.
-    .copyFiles({from: './node_modules/typeahead.js/dist/',
-        pattern: /typeahead\.bundle\.min\.js/,
-        to: 'typeahead.[hash:8].js'})
-
     // enable source maps during development
     .enableSourceMaps(!Encore.isProduction())
 
@@ -45,6 +39,10 @@ Encore
     })
 
     .addPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
+
+    .configureBabel(babelConfig => {
+        babelConfig.plugins.push('@babel/plugin-proposal-class-properties');
+    });
 ;
 
 // generate the onfiguration

@@ -121,7 +121,9 @@ function fixHtml(elementsToFix) {
     for (const link of elementsToFix.querySelectorAll('.button-destructive')) {
         Camdram.makeLinkSafetyDialog(link);
     }
-    $(elementsToFix).entitySearch({auto: 1});
+    for (const searchContainer of elementsToFix.querySelectorAll('[data-entitysearch-route]')) {
+        const autocomplete = new Camdram.autocomplete(searchContainer);
+    }
     createTabContainers(elementsToFix);
 
     if (!supportsDateInput()) {
@@ -163,71 +165,6 @@ Camdram.scrollTo = function(el, options) {
     if (top > max) {
         $('html, body').animate({scrollTop: $(el).offset().top - options.overshoot}, options.speed);
     }
-};
-
-$.fn.entitySearch = function(options) {
-    if (options.auto) {
-       this.find('[data-entitysearch-route]').each(function() {
-           $(this).entitySearch({
-               placeholder: 'start typing to search',
-               prefetch: this.getAttribute('data-entitysearch-prefetch') == 'true',
-               route: this.getAttribute('data-entitysearch-route')
-           });
-       });
-       // Ensure that entitySearch is fired only once per element,
-       // regardless of how many times entitySearch({auto}) is called.
-       this.find('[data-entitysearch-prefetch]').removeAttr('data-entitysearch-prefetch');
-       this.find('[data-entitysearch-route]').removeAttr('data-entitysearch-route');
-       return;
-    }
-
-    options = {
-        placeholder: 'start typing to search',
-        prefetch: true,
-        ...options
-    };
-    var $self = $(this);
-
-    var tokenize = function(str) {
-        return $.trim(str).toLowerCase().replace(/[\(\)]/g, '').split(/[\s\-_]+/);
-    };
-
-    var filter = function(items) {
-        for (var i in items) {
-            items[i].tokens = tokenize(items[i].name).concat(tokenize(items[i].short_name));
-        }
-        return items;
-    };
-
-    var onValueSelect = function(event, datum) {
-        $self.parent().siblings('input[type=hidden]').val(datum.id);
-        $self.trigger('entitysearch:changed', [datum]);
-    };
-
-
-    var engine = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: options.prefetch ? {url: Routing.generate(options.route, {_format: 'json'}), filter: filter} : null,
-        remote: {
-            url: Routing.generate(options.route, {q: 'QUERY', _format: 'json'}),
-            wildcard: 'QUERY',
-            filter: filter
-        }
-    });
-    engine.initialize();
-
-    $self.typeahead(null, {
-       name: options.route,
-       valueKey: 'name',
-       source: engine,
-       display: 'name'
-   }).on('typeahead:autocompleted', onValueSelect).on('typeahead:selected', onValueSelect);
-
-   $(this).change(function() {
-       $self.parent().siblings('input[type=hidden]').val('');
-   }).attr('placeholder', options.placeholder);
-
 };
 
 $.fn.entityCollection = function(options) {

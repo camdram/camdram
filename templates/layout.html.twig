@@ -50,7 +50,7 @@
             asset('images/logo' ~ imgtheme ~ '-4x.png') }} 4x" src="{{
             asset('images/logo' ~ imgtheme ~ '.png') }}" alt="Camdram" title="Camdram"/></a></h1>
       <div class="search">
-        <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form">
+        <form action="{{ path('search_entity') }}" class="searchform" method="GET" id="search_form" data-entitysearch-route="search_entity">
           <i class="fa fa-search">
             <span>Tip: Press the 's' or forward-slash key to jump to search!</span>
           </i>

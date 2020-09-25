@@ -84,7 +84,7 @@ class EntitySearchType extends AbstractType
         $view->vars['route'] = $options['route'];
         $view->vars['text_id'] = $form->getConfig()->getAttribute('text_field');
         $view->vars['hidden_id'] = $form->getName();
-        $view->vars['prefetch'] = $options['prefetch'];
+        $view->vars['other_allowed'] = $options['other_allowed'];
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options)
@@ -106,7 +106,6 @@ class EntitySearchType extends AbstractType
             'class' => null,
             'inherit_data' => true,
             'other_allowed' => true,
-            'prefetch' => true
         ));
     }
 }

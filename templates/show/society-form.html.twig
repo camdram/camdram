@@ -1,10 +1,12 @@
+{%- from 'form/fields.html.twig' import entity_search_macro -%}
+
 <div class="form-medium-widget">
     <menu style="display: flex; justify-content: space-around" class="fake-label">
         <a href="#!" class="fa fa-fw remove_link fa-times" title="Remove this society"></a>
         <a href="#!" data-entitycollection="moveup" class="fa fa-fw fa-long-arrow-up" title="Move this society up"></a>
         <a href="#!" data-entitycollection="movedown" class="fa fa-fw fa-long-arrow-down" title="Move this society down"></a>
     </menu>
-    {{ form_widget(society) }}
+    {{- entity_search_macro('get_societies', society, null, true) -}}
     {{ form_errors(society)}}
     {{ form_rest(society) }}
 </div>

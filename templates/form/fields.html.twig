@@ -1,10 +1,22 @@
+{%- macro entity_search_macro(route, text, hidden, other_allowed) -%}
+    <div class="searchform" data-entitysearch-route="{{ route }}">
+        {{- form_widget(text, { attr: { autocomplete: 'off' } }) -}}
+        {{- hidden ? form_widget(hidden) : ('<input type="hidden">'|raw) -}}
+        <div class="results hidden">
+            <ul></ul>
+            <div class="noresults">
+                {{- other_allowed ? 'Use ' : 'No results found for ' -}}
+                “<span class="query"></span>”</div>
+            <div class="error">Search is not available at the moment</div>
+        </div>
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+{%- endmacro -%}
+
 {% block entity_search_widget %}
     {%- set text = attribute(form.children, text_id) -%}
     {%- set hidden = attribute(form.children, hidden_id) -%}
-    {{- form_widget(text, {'attr': {
-       'data-entitysearch-prefetch': (prefetch ? 'true' : 'false'),
-       'data-entitysearch-route': route } }) -}}
-    {{- form_widget(hidden) -}}
+    {{- _self.entity_search_macro(route, text, hidden, other_allowed) -}}
 {% endblock %}
 
 {% block form_option_box %}
