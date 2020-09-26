@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de2562d8102d4458c0941145988dc505",
+    "content-hash": "2eca0cf83d61711e48f48a215070c174",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -2072,12 +2072,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSOAuthServerBundle.git",
-                "reference": "3d4c441ede4457a2c2569ddbf93a384bd712aa8c"
+                "reference": "fc4ba11be1d76a3648d5ac73729934ecd8e68c71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/3d4c441ede4457a2c2569ddbf93a384bd712aa8c",
-                "reference": "3d4c441ede4457a2c2569ddbf93a384bd712aa8c",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSOAuthServerBundle/zipball/fc4ba11be1d76a3648d5ac73729934ecd8e68c71",
+                "reference": "fc4ba11be1d76a3648d5ac73729934ecd8e68c71",
                 "shasum": ""
             },
             "require": {
@@ -2150,7 +2150,7 @@
                 "oauth2",
                 "server"
             ],
-            "time": "2020-09-18T12:50:03+00:00"
+            "time": "2020-09-21T09:38:34+00:00"
         },
         {
             "name": "friendsofsymfony/oauth2-php",
@@ -10937,16 +10937,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.1",
+            "version": "v4.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "1b479e7592812411c20c34d9ed33db3957bde66e"
+                "reference": "658f1be311a230e0907f5dfe0213742aff0596de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1b479e7592812411c20c34d9ed33db3957bde66e",
-                "reference": "1b479e7592812411c20c34d9ed33db3957bde66e",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/658f1be311a230e0907f5dfe0213742aff0596de",
+                "reference": "658f1be311a230e0907f5dfe0213742aff0596de",
                 "shasum": ""
             },
             "require": {
@@ -10985,7 +10985,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-09-23T18:23:49+00:00"
+            "time": "2020-09-26T10:30:38+00:00"
         },
         {
             "name": "phpstan/phpstan",

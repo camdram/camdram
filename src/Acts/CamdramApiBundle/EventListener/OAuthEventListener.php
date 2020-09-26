@@ -5,7 +5,8 @@ namespace Acts\CamdramApiBundle\EventListener;
 use Acts\CamdramApiBundle\Entity\Authorization;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\OAuthServerBundle\Event\OAuthEvent;
+use FOS\OAuthServerBundle\Event\PostAuthorizationEvent;
+use FOS\OAuthServerBundle\Event\PreAuthorizationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -31,8 +32,8 @@ class OAuthEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            OAuthEvent::PRE_AUTHORIZATION_PROCESS => 'onPreAuthorizationProcess',
-            OAuthEvent::POST_AUTHORIZATION_PROCESS => 'onPostAuthorizationProcess',
+            PreAuthorizationEvent::class  => 'onPreAuthorizationProcess',
+            PostAuthorizationEvent::class => 'onPostAuthorizationProcess',
         ];
     }
 
@@ -56,7 +57,7 @@ class OAuthEventListener implements EventSubscriberInterface
         return explode(' ', $scope_str);
     }
 
-    public function onPreAuthorizationProcess(OAuthEvent $event)
+    public function onPreAuthorizationProcess(PreAuthorizationEvent $event)
     {
         $repo = $this->entityManager->getRepository(Authorization::class);
 
@@ -67,7 +68,7 @@ class OAuthEventListener implements EventSubscriberInterface
         }
     }
 
-    public function onPostAuthorizationProcess(OAuthEvent $event)
+    public function onPostAuthorizationProcess(PostAuthorizationEvent $event)
     {
         if ($event->isAuthorizedClient() && null !== $client = $event->getClient()) {
             $repo = $this->entityManager->getRepository(Authorization::class);

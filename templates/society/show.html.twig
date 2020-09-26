@@ -54,7 +54,7 @@
     {%- else -%}
     <div>
     {%- endif -%}
-        {{ render(controller('ActsCamdramBundle:Society:getVacancies', {identifier: society.slug}), {'strategy': 'esi'}) }}
+        {{ render(controller('Acts\\CamdramBundle\\Controller\\SocietyController::getVacanciesAction', {identifier: society.slug}), {'strategy': 'esi'}) }}
         <p>You can also see <a href="{{ path('acts_camdram_event_bysociety', {slug: society.slug}) }}">all events</a> that have been put on by this society.</p>
     </div>
     {%- if society.hasSocialId -%}
@@ -72,7 +72,7 @@
             </ul>
         </div>
 
-        {{ render(controller('ActsCamdramBundle:Society:getNews', {identifier: society.slug}), {'strategy': 'esi'}) }}
+        {{ render(controller('Acts\\CamdramBundle\\Controller\\SocietyController::getNewsAction', {identifier: society.slug}), {'strategy': 'esi'}) }}
     {% endif %}
 </div>
 
