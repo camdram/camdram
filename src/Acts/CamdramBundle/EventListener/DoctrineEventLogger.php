@@ -4,7 +4,7 @@ namespace Acts\CamdramBundle\EventListener;
 
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;

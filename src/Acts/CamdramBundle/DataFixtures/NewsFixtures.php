@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBundle\DataFixtures;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Acts\CamdramBundle\Entity\Organisation;

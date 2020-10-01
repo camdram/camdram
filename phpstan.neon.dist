@@ -10,8 +10,6 @@ parameters:
     doctrine:
         objectManagerLoader: tests/object-manager.php
     ignoreErrors:
-        # This error is the result of a backwards-compatibility trick Symfony is using
-        - '#Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required.#'
         - '#Call to an undefined method Github\\Api\\ApiInterface.*#'
     level: 3
     paths:

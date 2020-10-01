@@ -20,7 +20,6 @@ class ResponseSubscriber implements EventSubscriberInterface
 
     /**
      * Callback function for event subscriber
-     * @param FilterResponseEvent $event
      */
     public function onResponse(ResponseEvent $event)
     {

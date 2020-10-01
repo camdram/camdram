@@ -13,7 +13,7 @@ use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramSecurityBundle\DataFixtures\UserFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
 
 class ShowFixtures extends Fixture implements DependentFixtureInterface

@@ -150,24 +150,6 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
     }
 
     /**
-     * @param \DateTime $date
-     */
-    public function setDate($date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
      * @param string $description
      */
     public function setDescription($description): self

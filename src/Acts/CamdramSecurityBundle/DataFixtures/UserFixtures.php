@@ -3,8 +3,8 @@
 namespace Acts\CamdramSecurityBundle\DataFixtures;
 
 use Acts\CamdramSecurityBundle\Entity\User;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
 
 class UserFixtures extends Fixture

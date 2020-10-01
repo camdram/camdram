@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramBundle\DataFixtures;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Yaml\Yaml;
 use Acts\CamdramBundle\Entity\Person;

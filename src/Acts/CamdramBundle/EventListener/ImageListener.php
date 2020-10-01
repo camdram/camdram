@@ -1,7 +1,7 @@
 <?php
 namespace Acts\CamdramBundle\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oneup\UploaderBundle\Event\ValidationEvent;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

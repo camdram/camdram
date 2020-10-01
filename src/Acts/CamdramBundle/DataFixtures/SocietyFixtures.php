@@ -2,8 +2,8 @@
 
 namespace Acts\CamdramBundle\DataFixtures;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
 use Acts\CamdramBundle\Entity\Society;
 
 class SocietyFixtures extends Fixture

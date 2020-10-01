@@ -84,7 +84,7 @@
         "symfony/dotenv": "*",
         "symfony/expression-language": "*",
         "symfony/form": "*",
-        "symfony/framework-bundle": ">=4.4",
+        "symfony/framework-bundle": "^5.1",
         "symfony/intl": "*",
         "symfony/mime": "^5.1",
         "symfony/monolog-bundle": "^3.3",
