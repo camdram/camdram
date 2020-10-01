@@ -2,7 +2,7 @@
 
 namespace Acts\CamdramApiBundle\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,7 +15,7 @@ class KernelEventListener
         $this->entityManager = $entityManager;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $params = $event->getRequest()->request;
         // The client_id POST parameter has the database primary key embedded

@@ -12,12 +12,12 @@ framework:
     esi: { enabled: true }
     secret:          "%env(APP_SECRET)%"
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: "%kernel.project_dir%/app/config/routing.yml"
         strict_requirements: "%kernel.debug%"
+        utf8: true
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
-    templating:      { engines: ['twig'] }
     default_locale:  "%locale%"
     session:
         name: camdram
@@ -25,7 +25,6 @@ framework:
     fragments: { path: /_fragment }
     assets:
         json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
-    error_controller: 'twig.controller.exception::showAction'
 
 sensio_framework_extra:
     router:
@@ -71,7 +70,7 @@ doctrine:
             gedmo_loggable:
                 type: annotation
                 prefix: Gedmo\Loggable\Entity
-                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
                 alias: GedmoLoggable
                 is_bundle: false
 
@@ -113,7 +112,7 @@ jms_serializer:
             options: JSON_PRETTY_PRINT
 
 acts_camdram:
-    data_dir: "%kernel.root_dir%/data"
+    data_dir: "%kernel.project_dir%/app/data"
 
 fos_oauth_server:
     db_driver:           orm
@@ -131,13 +130,13 @@ oneup_uploader:
         images:
             frontend: dropzone
             storage:
-                directory: '%kernel.root_dir%/data/'
+                directory: '%kernel.project_dir%/app/data/'
 
 liip_imagine:
     loaders:
         default:
             filesystem:
-                data_root: '%kernel.root_dir%/data/'
+                data_root: '%kernel.project_dir%/app/data/'
 
     filter_sets:
         cache: ~
@@ -177,4 +176,4 @@ ewz_recaptcha:
     locale_key: "%kernel.default_locale%"
 
 webpack_encore:
-    output_path: "%kernel.root_dir%/../public/build/"
+    output_path: "%kernel.project_dir%/public/build/"

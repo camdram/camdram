@@ -21,7 +21,6 @@
         }
     },
     "conflict" : {
-        "friendsofsymfony/jsrouting-bundle": "2.5.*",
         "symfony/symfony": "*"
     },
     "description": "Camdram - The portal website for student theatre in Cambridge",
@@ -64,7 +63,7 @@
         "erusev/parsedown": "^1.7",
         "excelwebzone/recaptcha-bundle": "^1.5",
         "facebook/graph-sdk": "^5.6",
-        "friendsofsymfony/jsrouting-bundle": "2.4.0",
+        "friendsofsymfony/jsrouting-bundle": "^2.5.3",
         "friendsofsymfony/oauth-server-bundle": "dev-master#fc4ba11be1d76a3648d5ac73729934ecd8e68c71",
         "friendsofsymfony/rest-bundle": "^3.0",
         "hwi/oauth-bundle": "^1.1",
@@ -85,7 +84,7 @@
         "symfony/dotenv": "*",
         "symfony/expression-language": "*",
         "symfony/form": "*",
-        "symfony/framework-bundle": "^4.4",
+        "symfony/framework-bundle": ">=4.4",
         "symfony/intl": "*",
         "symfony/mime": "^5.1",
         "symfony/monolog-bundle": "^3.3",

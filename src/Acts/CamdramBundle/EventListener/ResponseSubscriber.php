@@ -3,7 +3,7 @@
 namespace Acts\CamdramBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -22,7 +22,7 @@ class ResponseSubscriber implements EventSubscriberInterface
      * Callback function for event subscriber
      * @param FilterResponseEvent $event
      */
-    public function onResponse(FilterResponseEvent $event)
+    public function onResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
         if ($this->policy == null) {

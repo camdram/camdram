@@ -1,5 +1,5 @@
 {% if app.user %}
-    {%- if is_granted('ROLE_PREVIOUS_ADMIN') -%}
+    {%- if is_granted('IS_IMPERSONATOR') -%}
         <li data-alert style="box-shadow: inset red 0 0 5px 5px">
             <a href="{{ path('acts_camdram_homepage', {_switch_to_user: '_exit'}) }}">You are impersonating this user: revert</a>
         </li>

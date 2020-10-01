@@ -26,6 +26,6 @@ class DiaryExtension extends AbstractExtension
 
     public function renderDiary(\Twig\Environment $env, Diary $diary)
     {
-        return $env->render('ActsDiaryBundle:Diary:index.html.twig', array('diary' => $diary->createView()));
+        return $env->render('diary/base.html.twig', array('diary' => $diary->createView()));
     }
 }

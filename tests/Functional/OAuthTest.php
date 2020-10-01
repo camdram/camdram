@@ -4,7 +4,6 @@ namespace Camdram\Tests\Functional;
 use Acts\CamdramApiBundle\Entity\ExternalApp;
 use Acts\CamdramBundle\Entity\Society;
 use Acts\CamdramSecurityBundle\Entity\User;
-use Acts\CamdramSecurityBundle\Security\Encoder\LegacyMd5Encoder;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

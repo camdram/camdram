@@ -1,5 +1,5 @@
 parameters:
-    env(DATABASE_URL): "sqlite:///%kernel.root_dir%/data/orm.db"
+    env(DATABASE_URL): "sqlite:///%kernel.project_dir%/app/data/orm.db"
     env(MAILER_URL): "null://localhost"
     dev_delivery_address: example@example.com
 
