@@ -1,3 +1,4 @@
+app/.preload.php*
 app/bootstrap.php.cache
 app/cache/
 app/config/parameters.yml
