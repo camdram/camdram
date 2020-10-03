@@ -23,7 +23,7 @@
     {%- else -%}
         {%- for result in resultset.data -%}
             {%- if result.entity_type == 'show' -%}
-                {{ render(controller('ActsCamdramBundle:Show:searchResultPanel', {slug : result.slug})) }}
+                {{ render(controller('Acts\\CamdramBundle\\Controller\\ShowController::searchResultPanelAction', {slug : result.slug})) }}
             {%- else -%}
             <div class="panel">
                 <h5>{{ result.entity_type | capitalize }}<br>
