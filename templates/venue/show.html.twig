@@ -64,7 +64,7 @@
         {%- else -%}
         <div>
         {%- endif -%}
-          {{ render(controller('Acts\CamdramBundle\Controller\VenueController::getVacanciesAction', {identifier: venue.slug}), {'strategy': 'esi'}) }}
+          {{ render(controller('Acts\\CamdramBundle\\Controller\\VenueController::getVacanciesAction', {identifier: venue.slug}), {'strategy': 'esi'}) }}
         </div>
         {% if venue.hasSocialId %}
         <div class="split-header">
