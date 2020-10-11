@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Acts\CamdramBundle\Validator\Constraints\AdvertExpiry;
 use Acts\CamdramBundle\Service\Time;
@@ -44,6 +45,7 @@ class Advert implements OwnableInterface
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
@@ -53,6 +55,7 @@ class Advert implements OwnableInterface
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="type", type="string", length=255, nullable=false)
      * @Serializer\Expose
      */
@@ -67,6 +70,7 @@ class Advert implements OwnableInterface
     /**
      * @var \DateTime
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="expires_at", type="datetime", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
@@ -85,6 +89,7 @@ class Advert implements OwnableInterface
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="summary", type="text", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
@@ -94,6 +99,7 @@ class Advert implements OwnableInterface
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="body", type="text", nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
@@ -103,6 +109,7 @@ class Advert implements OwnableInterface
     /**
      * @var \DateTimeInterface
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="create")
      * @Serializer\Expose
@@ -113,6 +120,7 @@ class Advert implements OwnableInterface
     /**
      * @var \DateTime
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="update")
      * @Serializer\Expose
@@ -123,6 +131,7 @@ class Advert implements OwnableInterface
     /**
      * @var string
      *
+     * @Assert\NotBlank()
      * @ORM\Column(name="contact_details", type="string", length=255, nullable=false)
      * @Serializer\Expose
      * @Gedmo\Versioned
@@ -188,7 +197,7 @@ class Advert implements OwnableInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -200,7 +209,7 @@ class Advert implements OwnableInterface
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(\DateTime $expiresAt): self
+    public function setExpiresAt(?\DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
 
@@ -234,7 +243,7 @@ class Advert implements OwnableInterface
         return $this->summary;
     }
 
-    public function setSummary(string $summary): self
+    public function setSummary(?string $summary): self
     {
         $this->summary = $summary;
 
@@ -246,7 +255,7 @@ class Advert implements OwnableInterface
         return $this->body;
     }
 
-    public function setBody(string $body): self
+    public function setBody(?string $body): self
     {
         $this->body = $body;
 
@@ -301,7 +310,7 @@ class Advert implements OwnableInterface
         return $this->contactDetails;
     }
 
-    public function setContactDetails(string $contactDetails): self
+    public function setContactDetails(?string $contactDetails): self
     {
         $this->contactDetails = $contactDetails;
 
@@ -342,7 +351,7 @@ class Advert implements OwnableInterface
         return $this->type;
     }
 
-    public function setType(string $type): self
+    public function setType(?string $type): self
     {
         $this->type = $type;
 
