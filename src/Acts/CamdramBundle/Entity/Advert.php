@@ -109,7 +109,6 @@ class Advert implements OwnableInterface
     /**
      * @var \DateTimeInterface
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="create")
      * @Serializer\Expose
@@ -120,7 +119,6 @@ class Advert implements OwnableInterface
     /**
      * @var \DateTime
      *
-     * @Assert\NotBlank()
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      * @Gedmo\Timestampable(on="update")
      * @Serializer\Expose
