@@ -50,19 +50,6 @@ class WeekNameRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findIntersecting(\DateTime $start, \DateTime $end)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $query = $qb
-            ->where($qb->expr()->andX('p.start_at < :start', 'p.end_at >= :start'))
-            ->orWhere($qb->expr()->andX('p.start_at < :end', 'p.end_at >= :end'))
-            ->orWhere($qb->expr()->andX('p.start_at > :start', 'p.end_at <= :end'))
-            ->setParameter('start', $start)->setParameter('end', $end)
-            ->getQuery();
-
-        return $query->getResult();
-    }
-
     public function getByYearPeriodAndSlug($year, $period, $slug)
     {
         $year = (int) $year;

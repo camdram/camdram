@@ -14,27 +14,6 @@ use Doctrine\ORM\Query\Expr;
  */
 class AuditionRepository extends EntityRepository
 {
-    /**
-     * CurrentOrderedByNameDate
-     *
-     * Find all auditions between two dates that should be shown on the
-     * diary page, joined to the corresponding show.
-     *
-     * @return array of auditions
-     */
-    public function findCurrentOrderedByNameDate(\DateTime $now)
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb->leftJoin('ActsCamdramBundle:Show', 's', Expr\Join::WITH, 'a.show = s.id')
-            ->where('a.end_at >= :now')
-            ->andWhere('s.authorised = true')
-            ->orderBy('s.name, a.start_at, a.nonScheduled')
-            ->setParameter('now', $now)
-            ->getQuery();
-
-        return $qb->getQuery()->getResult();
-    }
-
     private function getUpcomingQuery($limit, \DateTime $now)
     {
         $qb = $this->createQueryBuilder('a');
@@ -69,19 +48,5 @@ class AuditionRepository extends EntityRepository
             ->andWhere('EXISTS (SELECT p FROM \Acts\CamdramBundle\Entity\Performance p WHERE p.show = s AND p.venue = :venue)')
             ->setParameter('venue', $venue)
             ->getQuery()->getResult();
-    }
-
-    public function findOneByShowSlug($slug, \DateTime $now)
-    {
-        $qb = $this->createQueryBuilder('a');
-
-        return $qb->leftJoin('a.show', 's')
-            ->where('a.end_at > :now')
-            ->andWhere('s.slug = :slug')
-            ->andWhere('s.authorised = true')
-            ->setMaxResults(1)
-            ->setParameter('slug', $slug)
-            ->setParameter('now', $now)
-            ->getQuery()->getOneOrNullResult();
     }
 }

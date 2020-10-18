@@ -4492,16 +4492,16 @@
         },
         {
             "name": "php-http/message",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "2c7256e3c1aba0bfca70f099810f1c7712e00945"
+                "reference": "09f3f13af3a1a4273ecbf8e6b27248c002a3db29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/2c7256e3c1aba0bfca70f099810f1c7712e00945",
-                "reference": "2c7256e3c1aba0bfca70f099810f1c7712e00945",
+                "url": "https://api.github.com/repos/php-http/message/zipball/09f3f13af3a1a4273ecbf8e6b27248c002a3db29",
+                "reference": "09f3f13af3a1a4273ecbf8e6b27248c002a3db29",
                 "shasum": ""
             },
             "require": {
@@ -4561,7 +4561,7 @@
                 "message",
                 "psr-7"
             ],
-            "time": "2020-08-17T06:33:14+00:00"
+            "time": "2020-10-13T06:21:08+00:00"
         },
         {
             "name": "php-http/message-factory",
@@ -5540,16 +5540,16 @@
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "3.5.2",
+            "version": "3.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "ed178a9cff1cff2e8816d5b279ab311e43b16371"
+                "reference": "839460734f50fc26a0276532ad9bf977c117bece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/ed178a9cff1cff2e8816d5b279ab311e43b16371",
-                "reference": "ed178a9cff1cff2e8816d5b279ab311e43b16371",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/839460734f50fc26a0276532ad9bf977c117bece",
+                "reference": "839460734f50fc26a0276532ad9bf977c117bece",
                 "shasum": ""
             },
             "require": {
@@ -5630,7 +5630,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-07-08T10:36:55+00:00"
+            "time": "2020-10-13T07:37:17+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -7278,16 +7278,16 @@
         },
         {
             "name": "symfony/http-client-contracts",
-            "version": "v2.2.0",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client-contracts.git",
-                "reference": "3a5d0fe7908daaa23e3dbf4cee3ba4bfbb19fdd3"
+                "reference": "41db680a15018f9c1d4b23516059633ce280ca33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client-contracts/zipball/3a5d0fe7908daaa23e3dbf4cee3ba4bfbb19fdd3",
-                "reference": "3a5d0fe7908daaa23e3dbf4cee3ba4bfbb19fdd3",
+                "url": "https://api.github.com/repos/symfony/http-client-contracts/zipball/41db680a15018f9c1d4b23516059633ce280ca33",
+                "reference": "41db680a15018f9c1d4b23516059633ce280ca33",
                 "shasum": ""
             },
             "require": {
@@ -7298,8 +7298,9 @@
             },
             "type": "library",
             "extra": {
+                "branch-version": "2.3",
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-main": "2.3-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -7349,7 +7350,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-07T11:33:47+00:00"
+            "time": "2020-10-14T17:08:19+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -11030,16 +11031,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.48",
+            "version": "0.12.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "d364cfbac9ffd869570cdfea7eaa6541c3dac666"
+                "reference": "b8248f9c81265af75d6d969ca3252aaf3e998f3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d364cfbac9ffd869570cdfea7eaa6541c3dac666",
-                "reference": "d364cfbac9ffd869570cdfea7eaa6541c3dac666",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b8248f9c81265af75d6d969ca3252aaf3e998f3a",
+                "reference": "b8248f9c81265af75d6d969ca3252aaf3e998f3a",
                 "shasum": ""
             },
             "require": {
@@ -11082,20 +11083,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-01T13:20:16+00:00"
+            "time": "2020-10-16T12:22:23+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "0.12.20",
+            "version": "0.12.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "207a6aedf0ca95c57fb041f3b3c82bcb6e66ad27"
+                "reference": "6e76d431376d7fc00f26d4bd59d6f60201c79334"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/207a6aedf0ca95c57fb041f3b3c82bcb6e66ad27",
-                "reference": "207a6aedf0ca95c57fb041f3b3c82bcb6e66ad27",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/6e76d431376d7fc00f26d4bd59d6f60201c79334",
+                "reference": "6e76d431376d7fc00f26d4bd59d6f60201c79334",
                 "shasum": ""
             },
             "require": {
@@ -11118,8 +11119,8 @@
                 "doctrine/orm": "^2.5",
                 "doctrine/persistence": "^1.1 || ^2.0",
                 "ergebnis/composer-normalize": "^2.0.2",
-                "jakub-onderka/php-parallel-lint": "^1.0",
                 "phing/phing": "^2.16.0",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpstan/phpstan-phpunit": "^0.12",
                 "phpstan/phpstan-strict-rules": "^0.12",
                 "phpunit/phpunit": "^7.0",
@@ -11148,7 +11149,7 @@
                 "MIT"
             ],
             "description": "Doctrine extensions for PHPStan",
-            "time": "2020-09-25T13:34:35+00:00"
+            "time": "2020-10-14T16:25:45+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
