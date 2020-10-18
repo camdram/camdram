@@ -20,5 +20,5 @@ php app/console doctrine:fixtures:load --no-interaction
 mysql --user=travis -e 'DROP DATABASE camdram_test;CREATE DATABASE camdram_test;'
 php app/console doctrine:migrations:migrate --no-interaction
 mysql --user=travis < tests/SearchController.sql
-./runtests tests/CamdramBundle/Controller/SearchControllerTest.php
+bin/simple-phpunit --group mysql
 mysql --user=travis -e 'DROP DATABASE camdram_test;'

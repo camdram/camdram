@@ -11,7 +11,7 @@ use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramSecurityBundle\Entity\User;
 
 /**
- * @group search
+ * @group mysql
  */
 class SearchControllerTest extends WebTestCase
 {
