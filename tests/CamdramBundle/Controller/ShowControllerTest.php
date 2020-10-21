@@ -116,6 +116,25 @@ class ShowControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter('#content .admin-panel')->count(), 0);
     }
 
+    public function testUnauthorizeShow()
+    {
+        $user = $this->createUser();
+        $this->aclProvider->grantAdmin($user);
+        $this->login($user);
+
+        $crawler = $this->client->request('GET', '/shows/test-show');
+        $form = $crawler->selectButton('Deauthorize this show')->form();
+        $crawler = $this->client->submit($form);
+
+        $this->assertHTTPStatus(200);
+        $this->assertEquals(1, $crawler->filter('#content:contains("This show is not yet visible to the public")')->count());
+
+        $this->logout();
+        $crawler = $this->client->request('GET', '/shows/test-show');
+        $this->assertEquals(1, $crawler->filter('#content:contains("Log in to Camdram")')->count());
+        $this->assertEquals(0, $crawler->filter('#content .admin-panel')->count());
+    }
+
     public function testEditShow()
     {
         $user = $this->createUser();
@@ -288,6 +307,5 @@ class ShowControllerTest extends RestTestCase
         $this->assertHTTPStatus(200);
         $this->assertEquals(0, $crawler->filter('.error_panel:contains("no performances")')->count());
         $this->assertEquals(0, $crawler->filter('.error_panel:contains("Validator Test 2")')->count());
-
     }
 }
