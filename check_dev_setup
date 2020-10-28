@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 export SYMFONY_ENV=test
+export SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 
 # Test fixture generation
 php app/console camdram:database:refresh
