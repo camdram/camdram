@@ -46,6 +46,9 @@ class ICalRenderer
                 if ($rrule) {
                     $params['RRULE'] = $rrule;
                 }
+                if ($event instanceof \Acts\CamdramBundle\Entity\Event) {
+                    $params['UID'] = 'event-'.$params['UID'];
+                }
                 $vcalendar->add('VEVENT', $params);
             }
         }

@@ -73,7 +73,7 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
     private $linked_dates;
 
     /**
-     * @var ArrayCollection<Event>
+     * @var ?ArrayCollection<Event>
      */
     private $deleted_dates;
 
@@ -291,12 +291,12 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
 
     public function getRepeatUntil()
     {
-        return null;
+        return $this->getStartAt();
     }
 
     public function getUpdatedAt()
     {
-        return null;
+        return new \DateTime('1970-01-01 01:00');
     }
 
     public function getVenue()
@@ -306,6 +306,6 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
 
     public function getVenueName()
     {
-        return null;
+        return '';
     }
 }

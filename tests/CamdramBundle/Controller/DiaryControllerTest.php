@@ -4,6 +4,7 @@ namespace Camdram\Tests\CamdramBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 use Camdram\Tests\RestTestCase;
+use Acts\CamdramBundle\Entity\Event;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
 use Acts\CamdramBundle\Entity\TimePeriod;
@@ -18,6 +19,29 @@ class DiaryControllerTest extends RestTestCase
         parent::setUp();
 
         Time::mockDateTime(new \DateTime('2000-07-03 15:30:00'));
+    }
+
+    private function createEventWithDate(string $name, int $days, string $time, string $timeto)
+    {
+        $time = \DateTime::createFromFormat('!H:i', $time);
+        $timeto = \DateTime::createFromFormat('!H:i', $timeto);
+
+        $start_date = Time::now();
+        $start_date->setTime($time->format('H'), $time->format('i'));
+        $day_of_week = $start_date->format('N');
+        if ($day_of_week < 7) {
+            $start_date->modify('-'.$day_of_week.' days');
+        }
+        $start_date->modify('+'.$days.' day');
+
+        $event = new Event();
+        $event->setDescription("Test event")
+              ->setEndTime($timeto)
+              ->setName($name)
+              ->setStartAt($start_date);
+
+        $this->entityManager->persist($event);
+        $this->entityManager->flush();
     }
 
     private function createShowWithDates($show_name, $days, $length, $time)
@@ -53,14 +77,18 @@ class DiaryControllerTest extends RestTestCase
     {
         $this->createShowWithDates("Test Show 1", 1, 4, '19:30');
         $this->createShowWithDates("Test Show 2", 2, 1, '14:00');
+        $this->entityManager->clear();
+        $this->createEventWithDate("Test Event", 3, '14:00', '15:00');
 
         $crawler = $this->client->request('GET', '/diary');
+        $this->assertHTTPStatus(200);
         $this->assertEquals($crawler->filter('#diary:contains("Test Show 1")')->count(), 1);
         $this->assertEquals($crawler->filter('#diary:contains("Test Show 2")')->count(), 1);
+        $this->assertEquals($crawler->filter('#diary:contains("Test Event")')->count(), 1);
 
         //JSON response
         $data = $this->doJsonRequest('/diary.json');
-        $this->assertEquals(2, count($data['events']));
+        $this->assertEquals(3, count($data['events']));
         $this->assertArraySubset([
             'events' => [
                 [
@@ -85,12 +113,14 @@ class DiaryControllerTest extends RestTestCase
 
         //iCal response
         $vcal = $this->doICalRequest('/diary.ics');
-        $this->assertEquals(2, count($vcal->VEVENT));
+        $this->assertEquals(3, count($vcal->VEVENT));
         $this->assertEquals('Test Show 1', $vcal->VEVENT[0]->SUMMARY);
         $this->assertEquals(new \DateTime('2000-07-03 19:30'), $vcal->VEVENT[0]->DTSTART->getDateTime());
         $this->assertArraySubset(['UNTIL' => '20000706T193000Z'], $vcal->VEVENT[0]->RRULE->getParts());
         $this->assertEquals('Test Show 2', $vcal->VEVENT[1]->SUMMARY);
         $this->assertEquals(new \DateTime('2000-07-04 14:00'), $vcal->VEVENT[1]->DTSTART->getDateTime());
+        $this->assertEquals('Test Event', $vcal->VEVENT[2]->SUMMARY);
+        $this->assertEquals(new \DateTime('2000-07-05 14:00'), $vcal->VEVENT[2]->DTSTART->getDateTime());
     }
 
     public function testSpecificDate()
