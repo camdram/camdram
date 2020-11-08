@@ -7,6 +7,7 @@ use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Service\WeekManager;
 use Acts\DiaryBundle\Diary\Diary;
 use Acts\DiaryBundle\Diary\Label;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -18,6 +19,14 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class DiaryController extends AbstractFOSRestController
 {
+    /** @var EntityManagerInterface */
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * Renders the main diary template
      *
@@ -155,16 +164,15 @@ class DiaryController extends AbstractFOSRestController
 
     private function populateDiary(Diary $diary, \DateTime $from, \DateTime $to)
     {
-        $em = $this->getDoctrine()->getManager();
-        $performances = $em->getRepository(Entity\Performance::class)
+        $performances = $this->em->getRepository(Entity\Performance::class)
                            ->findInDateRange($from, $to);
         $diary->addEvents($performances);
 
-        $events = $em->getRepository(Entity\Event::class)
-                 ->createQueryBuilder('e')
-                 ->where('e.start_at > :from AND e.start_at < :to')
-                 ->setParameters(compact('from', 'to'))
-                 ->getQuery()->getResult();
+        $events = $this->em->createQuery(
+            'SELECT e, x FROM ' . Entity\Event::class . ' e ' .
+            'LEFT JOIN e.link_id x ' .
+            'WHERE e.start_at > :from AND e.start_at < :to')
+            ->setParameters(compact('from', 'to'))->getResult();
         $diary->addEvents($events);
     }
 }
