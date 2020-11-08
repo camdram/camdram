@@ -15,11 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 class ShowCategoryType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $file = __DIR__.'/../../Resources/config/categories.yml';
         $data = Yaml::parse(file_get_contents($file));

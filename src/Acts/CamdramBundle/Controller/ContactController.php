@@ -52,6 +52,9 @@ class ContactController extends AbstractController
         ]);
     }
 
+    /**
+     * @return \Acts\CamdramBundle\Entity\Show|\Acts\CamdramBundle\Entity\Society|\Acts\CamdramBundle\Entity\Venue|null
+     */
     private function getEntity($type, $identifier)
     {
         switch ($type) {

@@ -2,13 +2,16 @@
 
 namespace Acts\CamdramBundle\Service;
 
+use Acts\CamdramBundle\Entity\BaseEntity;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
+use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 
 class ContactEntityService
 {
+    /** @var \Swift_Mailer */
     private $mailer;
-
+    /** @var AclProvider */
     private $aclProvider;
 
     public function __construct(\Swift_Mailer $mailer, AclProvider $aclProvider)
@@ -17,7 +20,8 @@ class ContactEntityService
         $this->aclProvider = $aclProvider;
     }
 
-    public function emailEntity($entity, $from_name, $from_email, $subject, $message)
+    /** @param BaseEntity&OwnableInterface $entity */
+    public function emailEntity(BaseEntity $entity, string $from_name, string $from_email, string $subject, string $message): void
     {
         $recipients = $this->findRecipients($entity);
         $msg = "You are receiving this email because you manage ".$entity->getName()." on Camdram.\n\n"
@@ -33,7 +37,8 @@ class ContactEntityService
         $this->mailer->send($message);
     }
 
-    private function findRecipients($entity)
+    /** @return array<string> */
+    private function findRecipients(OwnableInterface $entity)
     {
         $users = $this->findRecipientUsers($entity);
         $emails = array();
@@ -51,7 +56,8 @@ class ContactEntityService
         return $emails;
     }
 
-    private function findRecipientUsers($entity)
+    /** @return array<\Acts\CamdramSecurityBundle\Entity\User> */
+    private function findRecipientUsers(OwnableInterface $entity)
     {
         $recipients = $this->aclProvider->getOwners($entity);
 

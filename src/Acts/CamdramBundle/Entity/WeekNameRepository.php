@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class WeekNameRepository extends EntityRepository
 {
-    public function findAt(\DateTime $date)
+    public function findAt(\DateTime $date): ?WeekName
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->where('p.start_at = :now')
@@ -23,6 +23,7 @@ class WeekNameRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /** @return iterable<WeekName> */
     public function findAfter($date, $limit)
     {
         $qb = $this->createQueryBuilder('p');
@@ -35,6 +36,7 @@ class WeekNameRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /** @return iterable<WeekName> */
     public function findBetween(\DateTime $start_date, \DateTime $end_date, $limit = null)
     {
         $qb = $this->createQueryBuilder('p');
@@ -50,7 +52,7 @@ class WeekNameRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getByYearPeriodAndSlug($year, $period, $slug)
+    public function getByYearPeriodAndSlug($year, $period, $slug): ?WeekName
     {
         $year = (int) $year;
         $start = new \DateTime($year.'-01-01');

@@ -18,7 +18,7 @@ class PendingAccessRepository extends EntityRepository
      * This is a lightweight test for equality; is the same email address being
      * granted access to the same resource.
      */
-    public function isDuplicate(PendingAccess $ace)
+    public function isDuplicate(PendingAccess $ace): bool
     {
         $qb = $this->createQueryBuilder('p')
             ->where('p.rid = :rid')
@@ -31,22 +31,19 @@ class PendingAccessRepository extends EntityRepository
                 ));
         $result = $qb->getQuery()->getOneOrNullResult();
 
-        return ($result == null) ? false : true;
+        return $result != null;
     }
     /**
      * Find records for pending access based on resource.
+     * @return iterable<PendingAccess>
      */
-    public function findByResource($resource)
+    public function findByResource(OwnableInterface $resource)
     {
-        if ($resource instanceof OwnableInterface) {
-            $qb = $this->createQueryBuilder('p')
-                ->where('p.rid = :rid')
-                ->andWhere('p.type = :type')
-                ->setParameter('rid', $resource->getId())
-                ->setParameter('type', $resource->getAceType());
-            return $qb->getQuery()->getResult();
-        } else {
-            return array();
-        }
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.rid = :rid')
+            ->andWhere('p.type = :type')
+            ->setParameter('rid', $resource->getId())
+            ->setParameter('type', $resource->getAceType());
+        return $qb->getQuery()->getResult();
     }
 }

@@ -7,11 +7,14 @@ use Acts\CamdramSecurityBundle\Entity\User;
 
 class EmailDispatcher
 {
+    /** @var \Swift_Mailer */
     private $mailer;
+    /** @var \Twig\Environment */
     private $twig;
+    /** @var string */
     private $from_address;
 
-    public function __construct(\Swift_Mailer $mailer, \Twig\Environment $twig, $adminEmail)
+    public function __construct(\Swift_Mailer $mailer, \Twig\Environment $twig, string $adminEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

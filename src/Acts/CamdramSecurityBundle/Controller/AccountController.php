@@ -43,7 +43,7 @@ class AccountController extends AbstractFOSRestController
     /**
      * The linked accounts block on the account settings page.
      */
-    public function linkedAccountsAction()
+    public function linkedAccountsAction(): Response
     {
         return $this->render('account/linked_accounts.html.twig');
     }
@@ -75,7 +75,7 @@ class AccountController extends AbstractFOSRestController
     /**
      * @Route("/settings/change-email", methods={"POST"}, name="change_account_email")
      */
-    public function changeEmailAction(Request $request)
+    public function changeEmailAction(Request $request): Response
     {
         $form = $form = $this->createForm(ChangeEmailType::class, $this->getUser());
 
@@ -102,7 +102,7 @@ class AccountController extends AbstractFOSRestController
     /**
      * @Route("/settings/resend-verification", methods={"POST"}, name="resend_account_verification")
      */
-    public function resendVerificationAction(TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher)
+    public function resendVerificationAction(TokenGenerator $tokenGenerator, EmailDispatcher $emailDispatcher): Response
     {
         $user = $this->getUser();
         $token = $tokenGenerator->generateEmailConfirmationToken($user);
@@ -114,7 +114,7 @@ class AccountController extends AbstractFOSRestController
     /**
      * @Route("/settings/unlink-account/{service}", methods={"POST"}, name="unlink_account_account")
      */
-    public function unlinkAccountAction($service)
+    public function unlinkAccountAction($service): Response
     {
         $user = $this->getUser();
         $external_user = $user->getExternalUserByService($service);
@@ -132,7 +132,7 @@ class AccountController extends AbstractFOSRestController
     /**
      * @Route("/account/authorizations/{id}/revoke", name="revoke_account_authorization", methods={"DELETE"})
      */
-    public function revokeAuthorization($id)
+    public function revokeAuthorization($id): Response
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(\Acts\CamdramApiBundle\Entity\Authorization::class);

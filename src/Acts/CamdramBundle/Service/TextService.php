@@ -109,6 +109,10 @@ class TextService
         return preg_replace("/[\r\n]+/", '', $text);
     }
 
+    /**
+     * @param string $text
+     * @return string
+     */
     public function stripMarkdown($text)
     {
         $text = strip_tags($text);

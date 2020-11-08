@@ -20,6 +20,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 
 class ContactUsType extends AbstractType
 {
+    /** @var TokenStorageInterface */
     private $storage;
 
     public function __construct(TokenStorageInterface $storage)
@@ -31,7 +32,7 @@ class ContactUsType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, ['constraints' => [new NotBlank()]])

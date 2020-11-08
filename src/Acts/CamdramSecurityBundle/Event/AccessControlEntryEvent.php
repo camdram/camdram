@@ -7,6 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class AccessControlEntryEvent extends Event
 {
+    /** @var AccessControlEntry */
     private $ace;
 
     public function __construct(AccessControlEntry $ace)
@@ -14,7 +15,7 @@ class AccessControlEntryEvent extends Event
         $this->ace = $ace;
     }
 
-    public function getAccessControlEntry()
+    public function getAccessControlEntry(): AccessControlEntry
     {
         return $this->ace;
     }

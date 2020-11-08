@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints;
  */
 class RolesType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('ordering', ChoiceType::class, array(
@@ -53,7 +53,7 @@ class RolesType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array('data_class' => null));
     }

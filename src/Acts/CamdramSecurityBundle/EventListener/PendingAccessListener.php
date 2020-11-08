@@ -14,6 +14,7 @@ use Acts\CamdramSecurityBundle\Entity\PendingAccess;
  */
 class PendingAccessListener
 {
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(LoggerInterface $logger)

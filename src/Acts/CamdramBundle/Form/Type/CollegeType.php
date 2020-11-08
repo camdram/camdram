@@ -16,11 +16,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 class CollegeType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $file = __DIR__.'/../../Resources/config/colleges.yml';
         $data = Yaml::parse(file_get_contents($file));

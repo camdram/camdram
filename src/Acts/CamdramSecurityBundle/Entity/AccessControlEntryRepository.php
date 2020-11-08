@@ -11,7 +11,7 @@ use Acts\CamdramSecurityBundle\Security\OwnableInterface;
  */
 class AccessControlEntryRepository extends EntityRepository
 {
-    public function aceExists(User $user, OwnableInterface $entity)
+    public function aceExists(User $user, OwnableInterface $entity): bool
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->select('COUNT(e.id) AS c')
@@ -31,7 +31,7 @@ class AccessControlEntryRepository extends EntityRepository
     /**
      * find an ACE for this User accessing the specified resource.
      */
-    public function findAce(User $user, OwnableInterface $entity)
+    public function findAce(User $user, OwnableInterface $entity): ?AccessControlEntry
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->where('e.user = :user')
@@ -48,7 +48,7 @@ class AccessControlEntryRepository extends EntityRepository
     /**
      * Get an ACE request request made by a user for the show.
      */
-    public function findAceRequest(User $user, Show $show)
+    public function findAceRequest(User $user, Show $show): ?AccessControlEntry
     {
         $qb = $this->createQueryBuilder('e');
         $query = $qb->where('e.user = :user')
@@ -61,6 +61,9 @@ class AccessControlEntryRepository extends EntityRepository
         return $query->getQuery()->getOneOrNullResult();
     }
 
+    /**
+     * @return iterable<AccessControlEntry>
+     */
     public function findByUserAndType(User $user, $type)
     {
         $qb = $this->createQueryBuilder('e');

@@ -7,6 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PendingAccessEvent extends Event
 {
+    /** @var PendingAccess */
     private $pending_ace;
 
     public function __construct(PendingAccess $pending_ace)
@@ -14,7 +15,7 @@ class PendingAccessEvent extends Event
         $this->pending_ace = $pending_ace;
     }
 
-    public function getPendingAccess()
+    public function getPendingAccess(): PendingAccess
     {
         return $this->pending_ace;
     }

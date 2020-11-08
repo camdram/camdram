@@ -14,8 +14,9 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 class ShowListener
 {
+    /** @var ModerationManager */
     private $moderationManager;
-
+    /** @var WeekManager */
     private $weekManager;
 
     public function __construct(ModerationManager $moderationManager, WeekManager $weekManager)

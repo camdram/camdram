@@ -27,12 +27,12 @@ class TwitterLinkType extends AbstractType
         $this->api = $api;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new TwitterLinkTransformer($this->api));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'class' => 'medium',

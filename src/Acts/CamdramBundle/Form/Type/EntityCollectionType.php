@@ -26,7 +26,7 @@ class EntityCollectionType extends AbstractType
         $this->em = $em;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('new_entity', 'text', array(
             'label' => 'Add',

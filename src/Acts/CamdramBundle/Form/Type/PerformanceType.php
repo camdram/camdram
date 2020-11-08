@@ -16,7 +16,7 @@ use Acts\CamdramBundle\Form\Type\EntitySearchType;
  */
 class PerformanceType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder// 'format' => 'eee d MMM y',
             ->add('start_at', DateTimeType::class, [
@@ -35,7 +35,7 @@ class PerformanceType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acts\CamdramBundle\Entity\Performance'

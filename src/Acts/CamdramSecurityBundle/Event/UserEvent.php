@@ -7,6 +7,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class UserEvent extends Event
 {
+    /** @var User */
     private $user;
 
     public function __construct(User $user)
@@ -14,7 +15,7 @@ class UserEvent extends Event
         $this->user = $user;
     }
 
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }

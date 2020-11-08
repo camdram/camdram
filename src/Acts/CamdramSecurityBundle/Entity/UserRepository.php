@@ -129,7 +129,7 @@ class UserRepository extends EntityRepository
     /**
      * @return \Doctrine\ORM\QueryBuilder a querybuilder (alias u) populated with a search term.
      */
-    public function search($query)
+    public function search(string $query)
     {
         $qb = $this->createQueryBuilder('u');
         $condition = $qb->expr()->orX(
@@ -145,7 +145,7 @@ class UserRepository extends EntityRepository
     /**
      * @return ?User user found by external user details
      */
-    public function findByExternalUser($service, $username)
+    public function findByExternalUser(string $service, string $username)
     {
         $qb = $this->createQueryBuilder('u')
             ->join('u.external_users', 'e')

@@ -30,7 +30,7 @@ class EntitySearchType extends AbstractType
         $this->em = $em;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!$options['text_field']) {
             $options['text_field'] = $builder->getName().'_name';
@@ -98,7 +98,7 @@ class EntitySearchType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'text_field' => null,

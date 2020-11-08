@@ -9,8 +9,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class AdvertExpiry extends Constraint
 {
+    /** @var string */
     public $too_late_message = 'The expiry date cannot be more than %days% days in the future';
- 
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
