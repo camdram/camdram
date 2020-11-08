@@ -34,4 +34,4 @@ jobs:
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run PHPStan
-      run: bin/phpstan
+      run: bin/phpstan analyze
