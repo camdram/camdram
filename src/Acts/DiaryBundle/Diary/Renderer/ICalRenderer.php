@@ -28,10 +28,15 @@ class ICalRenderer
             }
 
             if ($start_time) {
+                $end_time = $event->getEndAt();
+                if ($end_time) {
+                    $duration = date_diff($start_time, $end_time)->format('PT%hH%IM%SS');
+                } else {
+                    $duration = 'PT2H00M00S';
+                }
+
                 $utc = new \DateTimeZone('UTC');
                 $start_time->setTimezone($utc);
-                $end_time = clone $start_time;
-                $end_time->modify('+2 hours');
                 $dtstamp = clone $event->getUpdatedAt();
                 $dtstamp->setTimezone($utc);
 
@@ -41,7 +46,7 @@ class ICalRenderer
                     'UID' => $event->getId().'@camdram.net',
                     'DTSTAMP' => $dtstamp,
                     'DTSTART' => $start_time,
-                    'DURATION' => 'PT2H00M00S',
+                    'DURATION' => $duration,
                 );
                 if ($rrule) {
                     $params['RRULE'] = $rrule;
