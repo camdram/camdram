@@ -17,7 +17,7 @@
                 <h5>{{ link_entity(event) }}</h5>
                 <ul class="event-dates-section">
                 {%- for date in event.times -%}
-                    <li>{{ date[0]|date }}–{{ date[1]|date('H:i') }}
+                    <li>{{ date[0]|date }}–{{ date[1]|date('H:i', false) }}
                 {%- endfor -%}</ul>
 
                 <p>{{ event.description | camdram_markdown | truncateHTML(200) }}</p>
