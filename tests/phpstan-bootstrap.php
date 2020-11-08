@@ -1,3 +1,3 @@
 <?php
 
-require 'Composer/autoload.php';
+#require 'Composer/autoload.php';
