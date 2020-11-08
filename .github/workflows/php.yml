@@ -29,8 +29,14 @@ jobs:
           ${{ runner.os }}-composer-
 
     - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress
 
     - name: Run PHPStan
-      run: bin/phpstan analyze
+      run: |
+        mkdir composer-src
+        cd composer-src
+        wget -qO- https://github.com/composer/composer/archive/1.10.17.tar.gz | tar xz
+        cd ..
+        echo '[includes: [phpstan.neon.dist], parameters: [scanDirectories: [composer-src/composer-1.10.17/src/Composer]]]' > phpstan.neon
+        bin/phpstan analyze
+        rm -rf composer-src

@@ -14,5 +14,3 @@ parameters:
     level: 4
     paths:
         - src
-    scanDirectories:
-        - /usr/share/php/Composer
