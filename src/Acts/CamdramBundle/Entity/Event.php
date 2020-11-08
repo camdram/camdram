@@ -326,7 +326,7 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
         $endtime = explode(':', $this->getEndTime()->format('H:i:s'));
         $enddatetime = clone $this->getStartAt();
         $enddatetime->setTimezone(new \DateTimeZone('Europe/London'));
-        $enddatetime->setTime(...$endtime);
+        $enddatetime->setTime(...array_map('intval', $endtime));
         if ($enddatetime < $this->getStartAt()) $enddatetime->modify('+1 day');
         return $enddatetime;
     }

@@ -7,6 +7,7 @@ use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Form\Type\OrganisationAdvertType;
 use Acts\CamdramBundle\Entity\Society;
+use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
 use Acts\CamdramSecurityBundle\Entity\User;
@@ -151,9 +152,9 @@ abstract class OrganisationController extends AbstractRestController
             $obj->setType(Advert::TYPE_APPLICATION);
             if ($org instanceof Society) {
                 $obj->setSociety($org);
-            } else {
+            } else if ($org instanceof Venue) {
                 $obj->setVenue($org);
-            }
+            } else throw new \LogicException();
         }
         $form = $this->createForm(OrganisationAdvertType::class, $obj, ['method' => $method]);
 

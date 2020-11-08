@@ -184,9 +184,9 @@ class ShowRepository extends EntityRepository
     {
         if ($org instanceof Society) {
             return $this->queryBySociety($org, $from, $to);
-        } else {
+        } else if ($org instanceof Venue) {
             return $this->queryByVenue($org, $from, $to);
-        }
+        } else throw new \LogicException();
     }
 
     private function queryBySociety(Society $society, \DateTime $from = null, \DateTime $to = null): QueryBuilder

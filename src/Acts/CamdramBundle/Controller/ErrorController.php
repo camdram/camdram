@@ -22,7 +22,7 @@ class ErrorController extends AbstractController
         } else if ($format === 'xml') {
             $document = new \DOMDocument();
             $root = $document->createElement('error');
-            $root->setAttribute('code', $exception->getStatusCode());
+            $root->setAttribute('code', (string)$exception->getStatusCode());
             $root->setAttribute('message', $exception->getStatusText());
             $document->appendChild($root);
             $content = $document->saveXML();

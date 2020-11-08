@@ -76,7 +76,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Load an entity given its identifier (normally its slug, but this method could be overridden to use a different
      * parameter).
      *
-     * @param string $identifier the identifier given (normally as part of the URL)
+     * @param int|string $identifier the identifier given (normally as part of the URL)
      * @return T
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
