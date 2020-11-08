@@ -11,7 +11,7 @@ parameters:
         objectManagerLoader: tests/object-manager.php
     ignoreErrors:
         - '#Call to an undefined method Github\\Api\\ApiInterface.*#'
-    level: 3
+    level: 4
     paths:
         - src
     scanDirectories:

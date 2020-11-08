@@ -232,9 +232,7 @@ class ExternalUser implements \Serializable
     }
 
     /**
-     * Get linked_user
-     *
-     * @return User
+     * @return ?User
      */
     public function getUser()
     {

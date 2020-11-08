@@ -280,6 +280,7 @@ class News
             case 'facebook': return 'http://www.facebook.com/'.$this->getRemoteId();
             case 'twitter': return 'http://www.twitter.com/redirect/status/'.$this->getRemoteId();
         }
+        throw new \LogicException("Unrecognized news provider");
     }
 
     public function getSociety(): ?Society

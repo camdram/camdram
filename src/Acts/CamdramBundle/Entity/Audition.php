@@ -159,7 +159,7 @@ class Audition implements EventInterface
     /**
      * Get end_at
      *
-     * @return \DateTime
+     * @return ?\DateTime
      */
     public function getEndAt()
     {

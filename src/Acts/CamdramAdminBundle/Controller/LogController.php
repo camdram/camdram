@@ -28,18 +28,18 @@ class LogController extends AbstractController
      */
     public function getAction(Kernel $kernel, $file): Response
     {
-        $log_dir = $kernel->getRootDir().'/logs/';
+        $log_dir = $kernel->getLogDir();
         $env = $kernel->getEnvironment();
 
         switch ($file) {
             case 'action.log':
-                $file = $log_dir.$env.'.action.log';
+                $file = "$log_dir/$env.action.log";
                 break;
             case 'mailer.log':
-                $file = $log_dir.$env.'.mailer.log';
+                $file = "$log_dir/$env.mailer.log";
                 break;
             case 'symfony.log':
-                $file = $log_dir.$env.'.log';
+                $file = "$log_dir/$env.log";
                 break;
             case 'error.log':
                 $file = '/var/log/apache2/error.log';

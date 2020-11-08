@@ -36,7 +36,7 @@ class EmailDispatcher
         $toEmails = $this->emailArrayFromUsers($moderators);
         $bccEmails = $this->emailArrayFromUsers($admins);
         foreach ($bccEmails as $email => $name) {
-            if (isset($emails[$email])) {
+            if (isset($toEmails[$email])) {
                 unset($bccEmails[$email]);
             }
         }

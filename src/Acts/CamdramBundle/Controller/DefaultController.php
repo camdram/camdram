@@ -111,11 +111,9 @@ class DefaultController extends AbstractController
             $date = clone $now;
             $date->modify('-'.$years.' years');
             $week = $week_manager->findAt($date);
-            if ($week) {
-                $shows = $show_repo->findMostInterestingByWeek($week, 5);
-                if (count($shows) > 0) {
-                    $data[$years] = $shows;
-                }
+            $shows = $show_repo->findMostInterestingByWeek($week, 5);
+            if (count($shows) > 0) {
+                $data[$years] = $shows;
             }
         }
 

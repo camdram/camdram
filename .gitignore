@@ -17,3 +17,4 @@ bin
 node_modules
 assets/js/fos_js_routes.json
 coverage.xml
+phpstan.neon

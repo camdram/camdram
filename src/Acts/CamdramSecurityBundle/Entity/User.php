@@ -233,7 +233,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get login
      *
-     * @return \DateTime
+     * @return ?\DateTime
      */
     public function getLastLoginAt()
     {
@@ -367,12 +367,8 @@ class User implements UserInterface, \Serializable
 
     public function getExternalUserByService($service)
     {
-        if (is_null($this->external_users)) {
-            return null;
-        }
-
         $criteria = Criteria::create()
-        ->where(Criteria::expr()->eq('service', $service));
+            ->where(Criteria::expr()->eq('service', $service));
         $res = $this->external_users->matching($criteria);
         if (count($res) > 0) {
             return $res->first();
