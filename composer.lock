@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3315275e06b7316018904ce4f92f83f4",
+    "content-hash": "15cdcbf15792567df5f6097ec36400a8",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -817,16 +817,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.1.2",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "f5153089993e1230f5d8acbd8e126014d5a63e17"
+                "reference": "c1b1fe95a6cce5e53a1454c46ae3500e53fadae1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/f5153089993e1230f5d8acbd8e126014d5a63e17",
-                "reference": "f5153089993e1230f5d8acbd8e126014d5a63e17",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/c1b1fe95a6cce5e53a1454c46ae3500e53fadae1",
+                "reference": "c1b1fe95a6cce5e53a1454c46ae3500e53fadae1",
                 "shasum": ""
             },
             "require": {
@@ -847,10 +847,10 @@
                 "twig/twig": "<1.34|>=2.0,<2.4"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^6.0",
+                "doctrine/coding-standard": "^8.0",
                 "doctrine/orm": "^2.6",
                 "ocramius/proxy-manager": "^2.1",
-                "phpunit/phpunit": "^7.5",
+                "phpunit/phpunit": "^7.5 || ^9.3",
                 "symfony/phpunit-bridge": "^4.2",
                 "symfony/property-info": "^4.3.3|^5.0",
                 "symfony/proxy-manager-bridge": "^3.4|^4.3.3|^5.0",
@@ -858,7 +858,7 @@
                 "symfony/validator": "^3.4.30|^4.3.3|^5.0",
                 "symfony/web-profiler-bundle": "^3.4.30|^4.3.3|^5.0",
                 "symfony/yaml": "^3.4.30|^4.3.3|^5.0",
-                "twig/twig": "^1.34|^2.12"
+                "twig/twig": "^1.34|^2.12|^3.0"
             },
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle.",
@@ -867,7 +867,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -919,7 +919,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-25T10:57:15+00:00"
+            "time": "2020-11-07T16:32:32+00:00"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -1737,16 +1737,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.22",
+            "version": "2.1.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "68e418ec08fbfc6f58f6fd2eea70ca8efc8cc7d5"
+                "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/68e418ec08fbfc6f58f6fd2eea70ca8efc8cc7d5",
-                "reference": "68e418ec08fbfc6f58f6fd2eea70ca8efc8cc7d5",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
+                "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
                 "shasum": ""
             },
             "require": {
@@ -1791,7 +1791,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-09-26T15:48:38+00:00"
+            "time": "2020-10-31T20:37:35+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -1841,16 +1841,16 @@
         },
         {
             "name": "excelwebzone/recaptcha-bundle",
-            "version": "v1.5.21",
+            "version": "v1.5.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
-                "reference": "730702dce87f999e35c433472f22593347984271"
+                "reference": "3f347b39ebfce3d9a0d9a81328bedf1f4a6c7889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/730702dce87f999e35c433472f22593347984271",
-                "reference": "730702dce87f999e35c433472f22593347984271",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/3f347b39ebfce3d9a0d9a81328bedf1f4a6c7889",
+                "reference": "3f347b39ebfce3d9a0d9a81328bedf1f4a6c7889",
                 "shasum": ""
             },
             "require": {
@@ -1893,7 +1893,7 @@
             "keywords": [
                 "recaptcha"
             ],
-            "time": "2020-08-21T15:14:59+00:00"
+            "time": "2020-11-04T01:21:59+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -2802,24 +2802,24 @@
         },
         {
             "name": "imagine/imagine",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "cb2361e5bb4410b681462d8e4f912bc5dabf84ab"
+                "reference": "d2e18be6e930ca169e4f921ef73ebfc061bf55d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/cb2361e5bb4410b681462d8e4f912bc5dabf84ab",
-                "reference": "cb2361e5bb4410b681462d8e4f912bc5dabf84ab",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/d2e18be6e930ca169e4f921ef73ebfc061bf55d8",
+                "reference": "d2e18be6e930ca169e4f921ef73ebfc061bf55d8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.2.*",
-                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.4"
+                "friendsofphp/php-cs-fixer": "^2.2",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.4 || ^9.3"
             },
             "suggest": {
                 "ext-gd": "to use the GD implementation",
@@ -2856,7 +2856,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2019-12-04T09:55:33+00:00"
+            "time": "2020-11-03T22:35:03+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -3020,16 +3020,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "3.9.0",
+            "version": "3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "4fe470c179ae8da9e243dd8fac6c0fc2302d9378"
+                "reference": "0ed0b6aa79cc029772286f2dc262f6933674b0ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/4fe470c179ae8da9e243dd8fac6c0fc2302d9378",
-                "reference": "4fe470c179ae8da9e243dd8fac6c0fc2302d9378",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/0ed0b6aa79cc029772286f2dc262f6933674b0ec",
+                "reference": "0ed0b6aa79cc029772286f2dc262f6933674b0ec",
                 "shasum": ""
             },
             "require": {
@@ -3040,7 +3040,7 @@
                 "php": "^7.2"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^5.0",
+                "doctrine/coding-standard": "^8.1",
                 "doctrine/orm": "~2.1",
                 "doctrine/persistence": "^1.3.3|^2.0|^3.0",
                 "doctrine/phpcr-odm": "^1.3|^2.0",
@@ -3066,7 +3066,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.9-dev"
+                    "dev-master": "3.10-dev"
                 }
             },
             "autoload": {
@@ -3103,7 +3103,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-08-26T07:23:26+00:00"
+            "time": "2020-10-29T20:24:00+00:00"
         },
         {
             "name": "jms/serializer-bundle",
@@ -3187,16 +3187,16 @@
         },
         {
             "name": "knplabs/github-api",
-            "version": "v2.15.0",
+            "version": "v2.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "03445f26843ec44319fe1f3c2a8ef6fcd545a154"
+                "reference": "e1c5dca1b7d2abeb218a041c29e522d62f7c6a7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/03445f26843ec44319fe1f3c2a8ef6fcd545a154",
-                "reference": "03445f26843ec44319fe1f3c2a8ef6fcd545a154",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/e1c5dca1b7d2abeb218a041c29e522d62f7c6a7f",
+                "reference": "e1c5dca1b7d2abeb218a041c29e522d62f7c6a7f",
                 "shasum": ""
             },
             "require": {
@@ -3258,7 +3258,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-07-11T16:45:45+00:00"
+            "time": "2020-11-08T13:42:56+00:00"
         },
         {
             "name": "laminas/laminas-code",
