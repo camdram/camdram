@@ -2,10 +2,12 @@
 
 namespace Acts\CamdramBundle\Entity;
 
+use Acts\CamdramApiBundle\Entity\ArrayEntity;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Acts\DiaryBundle\Model\EventInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,6 +28,8 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      *
      * @Assert\NotBlank()
      * @ORM\Column(name="text", type="string", length=255, nullable=false)
+     * @Serializer\Exclude(if="object.getLinkId() != null")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $name;
 
@@ -35,6 +39,8 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      * @var \DateTime
      * @Assert\NotBlank()
      * @ORM\Column(name="endtime", type="time", nullable=false)
+     * @Serializer\Exclude
+     * @Serializer\XmlElement(cdata=false)
      */
     private $end_time;
 
@@ -44,6 +50,7 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      * @var \DateTime
      * @Assert\NotBlank()
      * @ORM\Column(name="start_at", type="datetime", nullable=false)
+     * @Serializer\XmlElement(cdata=false)
      */
     private $start_at;
 
@@ -52,6 +59,8 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      *
      * @Assert\NotBlank()
      * @ORM\Column(name="description", type="text", nullable=false)
+     * @Serializer\Exclude(if="object.getLinkId() != null")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $description;
 
@@ -63,12 +72,14 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="linkid", referencedColumnName="id", onDelete="CASCADE")
      * })
+     * @Serializer\SerializedName("root_event")
      */
     private $link_id;
 
     /**
      * @Assert\Valid(traverse=true)
      * @ORM\OneToMany(targetEntity="Event", mappedBy="link_id", cascade={"persist", "remove"})
+     * @Serializer\Exclude
      */
     private $linked_dates;
 
@@ -81,6 +92,7 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      * All the registered scieties involved with this show.
      * @ORM\ManyToMany(targetEntity="Society", inversedBy="events")
      * @ORM\JoinTable(name="acts_event_soc_link")
+     * @Serializer\Exclude
      */
     private $societies;
 
@@ -90,6 +102,8 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      * @Assert\Regex("/^#[0-9A-Fa-f]{6}$/",
      *     message="The provided colour must be in six-digit hex notation. If this isn't working leave it blank and contact support.")
      * @ORM\Column(name="colour", type="string", length=7, nullable=true)
+     * @Serializer\Exclude(if="object.getLinkId() != null")
+     * @Serializer\XmlElement(cdata=false)
      */
     private $theme_color;
 
@@ -98,6 +112,7 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
      *
      * @ORM\ManyToOne(targetEntity="Image")
      * @Gedmo\Versioned
+     * @Serializer\Exclude(if="object.getLinkId() != null")
      */
     private $image;
 
@@ -273,11 +288,38 @@ class Event extends BaseEntity implements EventInterface, OwnableInterface
         return $this->image;
     }
 
+    /**
+     * @Serializer\Exclude(if="object.getLinkId() != null")
+     * @Serializer\SerializedName("dates")
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlList(entry="date")
+     */
+    public function getSubeventsForAPI(): array
+    {
+        $evts = array_merge([$this], $this->linked_dates->toArray());
+        $out = [];
+        foreach ($evts as $date) {
+            $out[] = new ArrayEntity([
+                'start_at' => $date->getStartAt(),
+                'end_at' => $date->getEndAt(),
+                'id' => $date->getId(),
+            ]);
+        }
+        return $out;
+    }
+
+    public function shouldSerializeSocieties(): bool
+    {
+        return $this->link_id == null;
+    }
+
     // EventInterface
 
     /**
      * Returns the DateTime that this event ends calculated from the start_at
      * and end_time fields.
+     * @Serializer\VirtualProperty()
+     * @Serializer\XmlElement(cdata=false)
      */
     public function getEndAt(): \DateTime
     {

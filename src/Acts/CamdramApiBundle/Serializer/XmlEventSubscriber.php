@@ -10,6 +10,7 @@ namespace Acts\CamdramApiBundle\Serializer;
 
 use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Configuration\LinkMetadata;
+use Acts\CamdramApiBundle\Entity\ArrayEntity;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
@@ -102,8 +103,11 @@ class XmlEventSubscriber implements EventSubscriberInterface
             $visitor->getCurrentNode()->appendChild($this->createLinkNode($metadata->getSelfLink(), $visitor, $object));
         }
 
-        $class = new \ReflectionClass($object);
-        $visitor->getCurrentNode()->setAttribute('rel', strtolower($class->getShortName()));
+        if (!$object instanceof ArrayEntity) {
+            // ArrayEntity is an implementation detail and should not be exposed
+            $class = new \ReflectionClass($object);
+            $visitor->getCurrentNode()->setAttribute('rel', strtolower($class->getShortName()));
+        }
     }
 
     private function createLinkNode(LinkMetadata $link, XmlSerializationVisitor $visitor, $object)

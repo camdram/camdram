@@ -10,6 +10,7 @@ namespace Acts\CamdramApiBundle\Serializer;
 
 use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Configuration\LinkMetadata;
+use Acts\CamdramApiBundle\Entity\ArrayEntity;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
@@ -95,8 +96,11 @@ class JsonEventSubscriber implements EventSubscriberInterface
             $visitor->visitProperty(new StaticPropertyMetadata('', '_links', null), $linkJson);
         }
 
-        $class = new \ReflectionClass($object);
-        $visitor->visitProperty(new StaticPropertyMetadata('', '_type', null), strtolower($class->getShortName()));
+        if (!$object instanceof ArrayEntity) {
+            // ArrayEntity is an implementation detail and should not be exposed
+            $class = new \ReflectionClass($object);
+            $visitor->visitProperty(new StaticPropertyMetadata('', '_type', null), strtolower($class->getShortName()));
+        }
     }
 
     private function createLinkUrl(LinkMetadata $link, $object)

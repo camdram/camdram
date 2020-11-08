@@ -25,6 +25,7 @@ trait MultipleSocsTrait
      *
      * @ORM\Column(name="socs_list", type="json_array", nullable=false)
      * @Gedmo\Versioned
+     * @Serializer\Expose(if="object.shouldSerializeSocieties()")
      */
     private $societies_display_list = [];
     /**
@@ -42,6 +43,7 @@ trait MultipleSocsTrait
      * @Serializer\VirtualProperty()
      * @Serializer\XmlKeyValuePairs()
      * @Serializer\SerializedName("societies")
+     * @Serializer\Expose(if="object.shouldSerializeSocieties()")
      */
     public function getSocietiesForAPI()
     {
@@ -120,4 +122,8 @@ trait MultipleSocsTrait
         return $this;
     }
 
+    public function shouldSerializeSocieties(): bool
+    {
+        return true;
+    }
 }
