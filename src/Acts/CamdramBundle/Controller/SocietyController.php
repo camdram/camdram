@@ -38,7 +38,8 @@ class SocietyController extends OrganisationController
     public function getAction($identifier)
     {
         $society = $this->getEntity($identifier);
-        $can_contact = !empty($this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class)
+        $can_contact = $society->getContactEmail() != null ||
+            !empty($this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class)
             ->getContactableEntityOwners($society));
 
         return $this->doGetAction($society, ['can_contact' => $can_contact]);

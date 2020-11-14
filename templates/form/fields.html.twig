@@ -49,8 +49,11 @@
         </div>
     {% else %}
         {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
+        <div>
+            {{ form_help(form) }}
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
     {% endif %}
     </div>
 {% endblock %}
@@ -87,7 +90,7 @@
 {% block theme_color_widget %}
     <div>
         <div class="color-swatch"></div>
-        <p><small>{{ theme_color_message }} (If you pick a pale colour it will be darkened in some places for legibility.)</small></p>
+        <p class="help-text">{{ theme_color_message }} (If you pick a pale colour it will be darkened in some places for legibility.)</p>
         <div class="form-small-widget">
             <span>Code:</span>
             <input type="text" id="show_theme_color" name="{{ full_name }}"

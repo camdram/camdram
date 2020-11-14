@@ -28,15 +28,14 @@
 <div class="form-large-row">
     {{- form_label(form.societies) -}}
     <div>
-        <p><small>
+        <p class="help-text">
             Registered societies will appear in the search pop-up,
             but you can also add societies that aren't registered with Camdram.
             Adding a registered society allows its admins to approve and edit
             your show. &nbsp;
             <a href="{{- path('acts_camdram_faq') -}}#newsociety">How do societies
-            become registered with Camdram?</a>
-            </small>
-        {{- form_errors(form.societies) -}}</p>
+            become registered with Camdram?</a></p>
+        {{- form_errors(form.societies) -}}
         <div class="linked-societies" data-prototype="{% apply escape('html') %}{% include 'show/society-form.html.twig' with {society: form.societies.vars.prototype} %}{% endapply %}" data-entitycollection-init="{&quot;min_items&quot;: 0}">
             {%- for society in form.societies -%}
                 {%- include 'show/society-form.html.twig' with {society: society} -%}

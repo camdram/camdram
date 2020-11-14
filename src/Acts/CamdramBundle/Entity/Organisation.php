@@ -5,6 +5,8 @@ namespace Acts\CamdramBundle\Entity;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Organisation common features
@@ -12,6 +14,26 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class Organisation extends BaseEntity implements OwnableInterface
 {
+    /**
+     * @var ?string
+     *
+     * @ORM\Column(name="contact_email", type="string", length=255, nullable=true)
+     * @Assert\Email()
+     * @Serializer\Exclude
+     */
+    private $contactEmail;
+
+    public function getContactEmail(): ?string
+    {
+        return $this->contactEmail;
+    }
+
+    public function setContactEmail(?string $contactEmail): self
+    {
+        $this->contactEmail = $contactEmail;
+        return $this;
+    }
+
     /**
      * @return Organisation
      */

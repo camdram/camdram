@@ -3,6 +3,7 @@
 namespace Acts\CamdramBundle\Service;
 
 use Acts\CamdramBundle\Entity\BaseEntity;
+use Acts\CamdramBundle\Entity\Organisation;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Security\OwnableInterface;
@@ -40,6 +41,11 @@ class ContactEntityService
     /** @return array<string> */
     private function findRecipients(OwnableInterface $entity)
     {
+        if ($entity instanceof Organisation) {
+            if ($email = $entity->getContactEmail()) {
+                return [$email => $entity->getName()];
+            }
+        }
         $users = $this->findRecipientUsers($entity);
         $emails = array();
 

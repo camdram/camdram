@@ -38,7 +38,8 @@ class VenueController extends OrganisationController
     public function getAction($identifier)
     {
         $venue = $this->getEntity($identifier);
-        $can_contact = !empty($this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class)
+        $can_contact = $venue->getContactEmail() != null ||
+            !empty($this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class)
             ->getContactableEntityOwners($venue));
 
         return $this->doGetAction($venue, ['can_contact' => $can_contact]);
