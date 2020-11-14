@@ -26,7 +26,7 @@ class LogController extends AbstractController
     /**
      * @Route("/logs/get/{file}", name="acts_camdram_logs_get")
      */
-    public function getAction(Kernel $kernel, $file): Response
+    public function getAction(Kernel $kernel, string $file): Response
     {
         $log_dir = $kernel->getLogDir();
         $env = $kernel->getEnvironment();

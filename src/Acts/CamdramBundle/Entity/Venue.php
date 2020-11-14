@@ -49,10 +49,12 @@ class Venue extends Organisation implements VenueInterface
     private $longitude;
 
     /**
+     * @var Collection<int|string,Performance>
      * @ORM\OneToMany(targetEntity="Performance", mappedBy="venue")
      */
     private $performances;
 
+    /** @var string */
     private $entity_type = 'venue';
 
     /**
@@ -143,6 +145,7 @@ class Venue extends Organisation implements VenueInterface
     private $logo_url;
 
     /**
+     * @var string
      * @Gedmo\Slug(handlers={
      *      @Gedmo\SlugHandler(class="Acts\CamdramBundle\Service\SlugHandler", options={})
      * }, fields={"name"})
@@ -153,13 +156,14 @@ class Venue extends Organisation implements VenueInterface
     private $slug;
 
     /**
+     * @var Collection<int|string,News>
      * @ORM\OneToMany(targetEntity="News", mappedBy="venue")
      * @Api\Link(route="acts_camdram_venue_getnews", params={"identifier": "object.getSlug()"})
      */
     private $news;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection<Advert>
+     * @var Collection<int|string,Advert>
      *
      * @ORM\OneToMany(targetEntity="Advert", mappedBy="venue")
      */
@@ -321,7 +325,7 @@ class Venue extends Organisation implements VenueInterface
      *
      * @param \Acts\CamdramBundle\Entity\News $news
      */
-    public function removeNew(\Acts\CamdramBundle\Entity\News $news)
+    public function removeNew(\Acts\CamdramBundle\Entity\News $news): void
     {
         $this->news->removeElement($news);
     }
@@ -329,7 +333,7 @@ class Venue extends Organisation implements VenueInterface
     /**
      * Get news
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection<int|string,News>
      */
     public function getNews()
     {
@@ -447,7 +451,7 @@ class Venue extends Organisation implements VenueInterface
     /**
      * @param MapLocation|null $location
      */
-    public function setLocation($location)
+    public function setLocation($location): void
     {
         if ($location instanceof MapLocation) {
             $this->latitude = $location->getLatitude();
@@ -496,7 +500,7 @@ class Venue extends Organisation implements VenueInterface
     /**
      * Get performances
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection<int|string,Performance>
      */
     public function getPerformances()
     {
@@ -520,7 +524,7 @@ class Venue extends Organisation implements VenueInterface
     }
 
     /**
-     * @return Collection|Advert[]
+     * @return Collection<int|string,Advert>
      */
     public function getAdverts(): Collection
     {

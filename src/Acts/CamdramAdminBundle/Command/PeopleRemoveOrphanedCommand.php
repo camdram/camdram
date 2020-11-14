@@ -21,7 +21,7 @@ class PeopleRemoveOrphanedCommand extends Command
         $this->entityManager = $entityManager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('camdram:people:remove-orphaned')
@@ -29,7 +29,7 @@ class PeopleRemoveOrphanedCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Removing people with no associated user or role on a show</info>');
 
@@ -48,7 +48,7 @@ class PeopleRemoveOrphanedCommand extends Command
         return 0;
     }
 
-    private function deletePerson(Person $person, OutputInterface $output)
+    private function deletePerson(Person $person, OutputInterface $output): void
     {
         $people_res = $this->entityManager->getRepository(Person::class);
 

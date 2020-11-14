@@ -12,8 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserMerger
 {
+    /** @var EntityManagerInterface */
     private $entityManager;
-
+    /** @var FormFactoryInterface */
     private $formFactory;
 
     public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory)
@@ -22,7 +23,7 @@ class UserMerger
         $this->formFactory = $formFactory;
     }
 
-    public function createForm(bool $setDefault = false)
+    public function createForm(bool $setDefault = false): \Symfony\Component\Form\FormInterface
     {
         return $this->formFactory->createBuilder()
             ->add('email', TextType::class, ['label' => "Other user's email", 'required' => true])

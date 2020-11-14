@@ -9,7 +9,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ResponseSubscriber implements EventSubscriberInterface
 {
+    /** @var string */
     private $policy = null;
+    /** @var string */
     private $header_name = "Content-Security-Policy";
 
     /** @inheritdoc */

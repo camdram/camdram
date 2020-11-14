@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AbstractController
 {
-    private function getEntity($identifier)
+    private function getEntity(int $identifier): User
     {
         $entity = $this->getRepository()->findOneBy(['id' => $identifier]);
 
@@ -31,7 +32,7 @@ class UserController extends AbstractController
         return $entity;
     }
 
-    private function getRepository()
+    private function getRepository(): \Acts\CamdramSecurityBundle\Entity\UserRepository
     {
         return $this->getDoctrine()->getManager()->getRepository(User::class);
     }
@@ -43,7 +44,7 @@ class UserController extends AbstractController
      * collection of all entities is returned.
      * @Route("/users", methods={"GET"}, name="get_users")
      */
-    public function cgetAction(Request $request)
+    public function cgetAction(Request $request): Response
     {
         $repo = $this->getRepository();
         $page = max(1, (int)($request->query->get('p', '1')));
@@ -73,7 +74,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{identifier}", methods={"GET"}, name="get_user")
      */
-    public function getAction(AclProvider $aclProvider, $identifier)
+    public function getAction(AclProvider $aclProvider, int $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
@@ -90,7 +91,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{identifier}/edit", methods={"GET"}, name="edit_user")
      */
-    public function editAction($identifier)
+    public function editAction(int $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
@@ -103,7 +104,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{identifier}", methods={"PUT"}, name="put_user")
      */
-    public function putAction(Request $request, $identifier)
+    public function putAction(Request $request, int $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('EDIT', $entity);
@@ -125,7 +126,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{identifier}", methods={"DELETE"}, name="delete_user")
      */
-    public function deleteAction(Request $request, $identifier)
+    public function deleteAction(Request $request, int $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->denyAccessUnlessGranted('DELETE', $entity);
@@ -144,7 +145,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{identifier}/merge", methods={"GET"}, name="get_user_merge")
      */
-    public function getMergeAction($identifier, UserMerger $merger)
+    public function getMergeAction(int $identifier, UserMerger $merger): Response
     {
         $user = $this->getEntity($identifier);
 
@@ -157,7 +158,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users/{identifier}/merge", methods={"PATCH"}, name="merge_user")
      */
-    public function mergeAction($identifier, Request $request, UserMerger $merger)
+    public function mergeAction(int $identifier, Request $request, UserMerger $merger): Response
     {
         $user = $this->getEntity($identifier);
 

@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AuthorizationRepository extends EntityRepository
 {
-    public function findOne(UserInterface $user, ClientInterface $app)
+    public function findOne(UserInterface $user, ClientInterface $app): ?Authorization
     {
         return $this->createQueryBuilder('a')
             ->where('a.user = :user')
@@ -28,7 +28,7 @@ class AuthorizationRepository extends EntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function findOneByClientId(UserInterface $user, $clientId)
+    public function findOneByClientId(UserInterface $user, $clientId): ?Authorization
     {
         return $this->createQueryBuilder('a')
             ->leftJoin('a.client', 'c')

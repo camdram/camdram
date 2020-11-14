@@ -35,7 +35,7 @@ class Admins extends Command
 
     protected static $defaultName = 'camdram:admins';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('List all current Camdram admins')
@@ -48,7 +48,7 @@ class Admins extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($input->getOption('grant') as $grant) {
             $this->grantAccess($grant);
@@ -76,7 +76,8 @@ class Admins extends Command
         return 0;
     }
 
-    private function grantAccess($idOrEmail)
+    /** @param int|string $idOrEmail */
+    private function grantAccess($idOrEmail): void
     {
         $userRepo = $this->entityManager->getRepository(User::class);
         if (is_numeric($idOrEmail)) {
@@ -92,7 +93,8 @@ class Admins extends Command
         $this->aclProvider->grantAdmin($user);
     }
 
-    private function revokeAccess($idOrEmail)
+    /** @param int|string $idOrEmail */
+    private function revokeAccess($idOrEmail): void
     {
         $userRepo = $this->entityManager->getRepository(User::class);
         if (is_numeric($idOrEmail)) {
@@ -108,7 +110,7 @@ class Admins extends Command
         $this->aclProvider->revokeAdmin($user);
     }
 
-    private function getAdminType(User $user)
+    private function getAdminType(User $user): string
     {
         $roles = $user->getRoles();
         foreach (['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_EDITOR'] as $role) {

@@ -41,17 +41,17 @@ class EntitiesNewsCommand extends Command
 
     protected static $defaultName = 'camdram:entities:social-news';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Automatically pull in news for linked Twitter accounts');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         return $this->executeForTwitter($output);
     }
 
-    private function executeForTwitter(OutputInterface $output)
+    private function executeForTwitter(OutputInterface $output): int
     {
         $this->twitter->setDecodeJsonAsArray(true);
         $news_repo = $this->entityManager->getRepository(News::class);
@@ -77,7 +77,7 @@ class EntitiesNewsCommand extends Command
         return $returnVal;
     }
 
-    private function executeForEntity($entity, $news_repo, $output)
+    private function executeForEntity($entity, $news_repo, $output): void
     {
         $response = $this->twitter->get(
             'statuses/user_timeline', [
@@ -100,7 +100,7 @@ class EntitiesNewsCommand extends Command
         }
     }
 
-    private function addNews($service_name, $item, $entity, OutputInterface $output)
+    private function addNews($service_name, $item, $entity, OutputInterface $output): void
     {
         $news = new News();
         $news->setEntity($entity);
@@ -143,7 +143,7 @@ class EntitiesNewsCommand extends Command
         $this->entityManager->flush();
     }
 
-    private function getOrganisationsWithService(string $service)
+    private function getOrganisationsWithService(string $service): array
     {
         $soc_qb = $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Society')->createQueryBuilder('s');
         $ven_qb = $this->entityManager->getRepository('\Acts\CamdramBundle\Entity\Venue')->createQueryBuilder('v');

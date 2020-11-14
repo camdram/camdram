@@ -4,6 +4,7 @@ namespace Acts\CamdramAdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -35,7 +36,7 @@ For any enquiries, please contact support@camdram.net.";
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(\Swift_Mailer $mailer, Request $request)
+    public function indexAction(\Swift_Mailer $mailer, Request $request): Response
     {
         $repo = $this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class);
         $numActiveUsers = count($repo->findActiveUsersForMailOut());
@@ -65,7 +66,8 @@ For any enquiries, please contact support@camdram.net.";
         );
     }
 
-    private function sendEmails(\Swift_Mailer $mailer, $data)
+    /** @param array<mixed> $data */
+    private function sendEmails(\Swift_Mailer $mailer, $data): Response
     {
         $repo = $this->getDoctrine()->getRepository(\Acts\CamdramSecurityBundle\Entity\User::class);
 

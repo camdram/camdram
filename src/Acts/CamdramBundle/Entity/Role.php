@@ -69,6 +69,7 @@ class Role
     private $order;
 
     /**
+     * @var ?Show
      * @ORM\ManyToOne(targetEntity="Show", inversedBy="roles")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="sid", referencedColumnName="id", onDelete="CASCADE")
@@ -79,6 +80,7 @@ class Role
     private $show;
 
     /**
+     * @var ?Person
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="roles")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="pid", referencedColumnName="id", onDelete="CASCADE")
@@ -89,6 +91,7 @@ class Role
     private $person;
 
     /**
+     * @var ?string
      * @ORM\Column(name="tag", type="string", length=20, nullable=true)
      * @Serializer\Expose()
      * @Serializer\XmlElement(cdata=false)

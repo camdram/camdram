@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AuditController extends AbstractController
 {
+    /** @var array<string,string> */
     private $queryParams = [
         'time_from'   => 'e.loggedAt >= ',
         'time_until'  => 'e.loggedAt <= ',

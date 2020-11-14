@@ -109,6 +109,10 @@ class DownloadAssetsCommand extends Command
         return 0;
     }
 
+    /**
+     * @param array<string,string> $manifest
+     * @param array<string,string> $existingManifest
+     */
     private function deleteFiles(array $manifest, array $existingManifest, OutputInterface $output): void
     {
         $changedFiles = array_diff($existingManifest, $manifest);

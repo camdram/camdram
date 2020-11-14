@@ -20,6 +20,7 @@ class UnauthorisedShowsEmailCommand extends Command
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /** @var ModerationManager */
     private $moderationManager;
 
     public function __construct(EntityManagerInterface $entityManager, ModerationManager $mm)
@@ -32,7 +33,7 @@ class UnauthorisedShowsEmailCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('camdram:unauthorised-shows:email')
@@ -40,7 +41,7 @@ class UnauthorisedShowsEmailCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $unauthorised_shows = $this->entityManager->getRepository(Show::class)->findUnauthorised();
 

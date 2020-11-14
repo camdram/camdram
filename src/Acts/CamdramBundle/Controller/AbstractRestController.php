@@ -104,9 +104,11 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Return a Form type object corresponding to the entity type represented by the child class.
      * The Type objects are defined in src\CamdramBundle\Form\Type, which define what a form looks like for each class,
      * including validation rules.
+     * @param T $entity
+     * @param string $method
      * @return \Symfony\Component\Form\FormInterface
      */
-    abstract protected function getForm($entity = null, $method = 'POST');
+    abstract protected function getForm($entity = null, string $method = 'POST');
 
     /**
      * @Route("/new", methods={"GET"})

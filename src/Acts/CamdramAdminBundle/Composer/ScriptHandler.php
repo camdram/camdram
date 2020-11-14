@@ -11,7 +11,7 @@ class ScriptHandler
      *
      * @param Event $event
      */
-    public static function refreshDatabase(Event $event)
+    public static function refreshDatabase(Event $event): void
     {
         if (!$event->isDevMode()) return;
 
@@ -25,7 +25,7 @@ class ScriptHandler
      *
      * @param Event $event
      */
-    public static function downloadAssets(Event $event)
+    public static function downloadAssets(Event $event): void
     {
         if (!$event->isDevMode()) return;
 
@@ -34,7 +34,7 @@ class ScriptHandler
         system('app/console camdram:assets:download');
     }
 
-    public static function welcomeMessage(Event $event)
+    public static function welcomeMessage(Event $event): void
     {
         static::writeHeader($event, "Complete!");
 
@@ -72,7 +72,7 @@ EOF
         );
     }
 
-    protected static function writeHeader(Event $event, $text)
+    protected static function writeHeader(Event $event, string $text): void
     {
         $event->getIO()->write("<fg=black;bg=yellow>\n\n"
         ."<fg=black;bg=yellow;options=bold>Camdram Setup:</> " . $text

@@ -17,6 +17,7 @@ use Acts\CamdramBundle\Service\Time;
  */
 class LastLoginTimeListener implements EventSubscriberInterface
 {
+    /** @var EntityManagerInterface */
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)

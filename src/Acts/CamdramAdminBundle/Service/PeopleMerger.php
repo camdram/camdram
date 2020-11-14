@@ -11,8 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class PeopleMerger
 {
+    /** @var EntityManagerInterface */
     private $entityManager;
-
+    /** @var FormFactoryInterface */
     private $formFactory;
 
     public function __construct(EntityManagerInterface $entityManager, FormFactoryInterface $formFactory)
@@ -21,7 +22,7 @@ class PeopleMerger
         $this->formFactory = $formFactory;
     }
 
-    public function createForm()
+    public function createForm(): \Symfony\Component\Form\FormInterface
     {
         return $this->formFactory->createBuilder()
             ->add('search_by', ChoiceType::class, array(
@@ -47,9 +48,10 @@ class PeopleMerger
             ->getForm();
     }
 
-    public function getPersonFromFormData($data)
+    /** @param array<mixed> $data */
+    public function getPersonFromFormData(array $data): ?Person
     {
-        $repo = $this->entityManager->getRepository('ActsCamdramBundle:Person');
+        $repo = $this->entityManager->getRepository(Person::class);
         if ($data['search_by'] == 'person') {
             return $data['person'];
         } else {
