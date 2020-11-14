@@ -86,14 +86,15 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         );
 
         $this->society_repo = $manager->getRepository(Society::class);
-        $this->society_ids = array_map(
+        $this->society_ids = array_map( # Shuffle so we can ignore a random few later
             function ($val) {
                 return $val['id'];
             },
             $this->society_repo->createQueryBuilder('s')->select('s.id')->getQuery()->getArrayResult()
         );
+        shuffle($this->society_ids);
 
-        for ($i = 0; $i < 250; $i++) {
+        for ($i = 0; $i < 300; $i++) {
             $show = new Show();
             $play = $plays[mt_rand(0, $max)];
             $show->setName($play['name']);
@@ -105,6 +106,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             $this->allocateSociety($show);
 
             $start = clone $start_date;
+            if ($i > 150) $start->modify('-'.($i*10 - 1500).' days');
             $start->modify('+'.mt_rand(0, $total_weeks).' weeks');
             $manager->persist($show);
 
@@ -213,7 +215,8 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         if (mt_rand(0, 3) == 0) {
             $show->setSocietiesDisplayList(['Random Society '.mt_rand(1, 100)]);
         } else {
-            $socId = $this->society_ids[mt_rand(0, count($this->society_ids) - 1)];
+            # Ignore a few societies so that there are some "inactive" societies.
+            $socId = $this->society_ids[mt_rand(0, count($this->society_ids) - 5)];
             $show->setSocietiesDisplayList([$socId]);
             $show->getSocieties()->add($this->society_repo->findOneById($socId));
         }

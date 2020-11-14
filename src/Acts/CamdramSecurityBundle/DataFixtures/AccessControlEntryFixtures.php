@@ -3,6 +3,7 @@
 namespace Acts\CamdramSecurityBundle\DataFixtures;
 
 use Acts\CamdramBundle\DataFixtures\ShowFixtures;
+use Acts\CamdramBundle\DataFixtures\SocietyFixtures;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -41,6 +42,16 @@ class AccessControlEntryFixtures extends Fixture implements DependentFixtureInte
             $manager->persist($e);
         }
 
+        // society1admin owns society 1
+        $e = new AccessControlEntry();
+        $soc1 = $manager->getRepository(\Acts\CamdramBundle\Entity\Society::class)->findOneBy(['name' => 'Society 1']);
+        $e->setUser($this->getReference('society1adminuser'));
+        $e->setGrantedBy($this->getReference('testuser1'));
+        $e->setEntityId($soc1->getId());
+        $e->setCreatedAt(new \DateTime('2001-01-01'));
+        $e->setType('society');
+        $manager->persist($e);
+
         $manager->flush();
     }
 
@@ -51,7 +62,8 @@ class AccessControlEntryFixtures extends Fixture implements DependentFixtureInte
     {
         return [
             UserFixtures::class,
-            ShowFixtures::class
+            ShowFixtures::class,
+            SocietyFixtures::class
         ];
     }
 }
