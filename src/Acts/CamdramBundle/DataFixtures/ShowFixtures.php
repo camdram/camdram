@@ -35,7 +35,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
     /** @var \Acts\CamdramBundle\Entity\PersonRepository $repo */
     private $person_repo;
 
-    /** @var \Acts\CamdramBundle\Entity\SocietyRepository $repo */
+    /** @var \Doctrine\ORM\EntityRepository<Society> */
     private $society_repo;
 
     /** @var \Acts\CamdramBundle\Entity\VenueRepository $repo */

@@ -6,10 +6,10 @@
 {% block body %}
 <h3>Societies</h3>
 
-{%- if societies | length > 0 -%}
+{%- if currentSocieties | length > 0 -%}
 <ul class="large-block-list">
     {%- set seen_college = false -%}
-    {%- for society in societies -%}
+    {%- for society in currentSocieties -%}
         {%- if (society.college is not empty) and not seen_college -%}
             {%- set seen_college = true -%}
             <hr>
@@ -17,25 +17,41 @@
             <h3>College Societies</h3>
             <ul class="large-block-list">
         {%- endif -%}
-        <li>
-            <h5 class="split-header">
-                <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
-                {%- if society.shortname is not empty -%}
-                <small>{{ society.shortname }}</small>
-                {%- endif -%}
-            </h5>
-            {%- if society.college is not empty -%}
-                <h6 class="subheader"><strong>{{ society.college}}</strong></h6>
-            {%- endif -%}
 
-            {%- if society.image -%}
-                <a class="left" style="margin-right: 0.8em; max-width: 8em" href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
-            {%endif -%}
-            <p>{{ society.description | strip_camdram_markdown | truncate(200) }}
-            <span class="right">[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</span></p>
-        </li>
+        {{- _self.soc_block(society) -}}
     {%- endfor -%}
 </ul>
-
 {%- endif -%}
+
+{%- if oldSocieties | length > 0 -%}
+<h3>Inactive societies</h3>
+<p>We've lost contact with these societies and aren't aware of any recent activity by them. If you're part of one of them, and it's becoming active again, please <a href="{{ path('acts_camdram_contact_us') }}">contact us</a>.
+
+<ul class="large-block-list">
+    {%- for society in oldSocieties -%}
+        {{- _self.soc_block(society) -}}
+    {%- endfor -%}
+</ul>
+{%- endif -%}
+
 {%- endblock -%}
+
+{%- macro soc_block(society) -%}
+<li>
+    <h5 class="split-header">
+        <a href="{{ path('get_society', {identifier: society.slug}) }}">{{ society.name }}</a>
+        {%- if society.shortname is not empty -%}
+        <small>{{ society.shortname }}</small>
+        {%- endif -%}
+    </h5>
+    {%- if society.college is not empty -%}
+        <h6 class="subheader"><strong>{{ society.college }}</strong></h6>
+    {%- endif -%}
+
+    {%- if society.image -%}
+        <a class="left" style="margin-right: 0.8em; max-width: 8em" href="{{ path('get_society', {identifier: society.slug}) }}"><img src="{{ society.image.filename | imagine_filter('thumbnail') }}" /></a>
+    {%endif -%}
+    <p>{{ society.description | strip_camdram_markdown | truncate(200) }}
+    <span class="right">[<a href="{{ path('get_society', {identifier: society.slug}) }}">More</a>]</span></p>
+</li>
+{%- endmacro -%}

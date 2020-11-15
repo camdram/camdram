@@ -26,11 +26,6 @@ parameters:
 			path: src/Acts/CamdramBundle/Controller/ShowController.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<Acts\\\\CamdramBundle\\\\Entity\\\\Society\\>\\:\\:findAllOrderedByCollegeName\\(\\)\\.$#"
-			count: 1
-			path: src/Acts/CamdramBundle/Controller/SocietyController.php
-
-		-
 			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<Acts\\\\CamdramBundle\\\\Entity\\\\Venue\\>\\:\\:findAllOrderedByName\\(\\)\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/Controller/VenueController.php

@@ -22,7 +22,7 @@ class EntitySearchTypeTest extends TypeTestCase
 
     public function setUp(): void
     {
-        $this->repo = $this->getMockBuilder('Acts\\CamdramBundle\\Entity\\SocietyRepository')
+        $this->repo = $this->getMockBuilder('Doctrine\\ORM\\EntityRepository')
             ->disableOriginalConstructor()
             ->setMethods(array('findOneByName', 'findOneBy'))
             ->getMock();
