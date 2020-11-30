@@ -51,13 +51,14 @@ class WeekManager
     public function findBetween(\DateTime $start_date, \DateTime $end_date): array
     {
         $weeks = array();
+        $start_date = $this->previousSunday($start_date);
 
         foreach ($this->weekRepository->findBetween($start_date, $end_date) as $week_name) {
             $key = $week_name->getStartAt()->format('Y-m-d');
             $weeks[$key] = $this->getWeekFromWeekName($week_name);
         }
 
-        $date = $this->previousSunday($start_date);
+        $date = $start_date;
         while ($date <= $end_date) {
             $key = $date->format('Y-m-d');
             if (!isset($weeks[$key])) {
