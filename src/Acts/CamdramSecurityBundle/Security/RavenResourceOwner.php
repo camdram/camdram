@@ -9,6 +9,7 @@ use HWI\Bundle\OAuthBundle\OAuth\ResourceOwnerInterface;
 use HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse;
 use OAuth2\Model\OAuth2Token;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
+use HWI\Bundle\OAuthBundle\OAuth\StateInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
@@ -18,6 +19,9 @@ class RavenResourceOwner implements ResourceOwnerInterface
 
     /** @var HttpClient */
     private $httpClient;
+
+    /** @var StateInterface */
+    private $state;
 
     public function __construct(HttpClient $httpClient)
     {
@@ -260,5 +264,20 @@ AFciErbr6zl5i7ClrpXKA2O2lDzvHTFM8A3rumiOeauckbngNqIBiCRemYapZzGc
 W7fgOEEsI4FoLOjQbJgIrgdYR2NIJh6pKKEf+9Ts2q/fuWv2xOLw7w29PIICeFIF
 hAM+a6/30F5fdkWpE1smPyrfASyXRfWE4Ccn1RVgYX9u
 -----END CERTIFICATE-----';
+    }
+
+    public function getState(): StateInterface
+    {
+        return $this->state;
+    }
+
+    public function storeState(StateInterface $state = null)
+    {
+        $this->state = $state;
+    }
+
+    public function addStateParameter(string $key, string $value): void
+    {
+
     }
 }

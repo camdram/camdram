@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59fd4f4cda38400faf5ec68c8acec5d0",
+    "content-hash": "f06dcc2de78a16086425991a1574b2f4",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -2634,16 +2634,16 @@
         },
         {
             "name": "hwi/oauth-bundle",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hwi/HWIOAuthBundle.git",
-                "reference": "0131bac13cd889114f47594bb82f7b2927894f50"
+                "reference": "252608b96ade4124ac7b028814fd3c9574750824"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/0131bac13cd889114f47594bb82f7b2927894f50",
-                "reference": "0131bac13cd889114f47594bb82f7b2927894f50",
+                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/252608b96ade4124ac7b028814fd3c9574750824",
+                "reference": "252608b96ade4124ac7b028814fd3c9574750824",
                 "shasum": ""
             },
             "require": {
@@ -2654,12 +2654,12 @@
                 "php-http/httplug": "^2.0",
                 "php-http/message-factory": "^1.0",
                 "psr/http-message": "^1.0",
-                "symfony/form": "^3.4|^4.3|^5.0",
-                "symfony/framework-bundle": "^3.4.26|^4.3|^5.0",
-                "symfony/options-resolver": "^3.4|^4.3|^5.0",
-                "symfony/security-bundle": "^3.4|^4.3|^5.0",
-                "symfony/templating": "^3.4|^4.3|^5.0",
-                "symfony/yaml": "^3.4|^4.3|^5.0"
+                "symfony/form": "^3.4|^4.4|^5.0",
+                "symfony/framework-bundle": "^3.4.26|^4.4|^5.0",
+                "symfony/options-resolver": "^3.4|^4.4|^5.0",
+                "symfony/security-bundle": "^3.4|^4.4|^5.0",
+                "symfony/templating": "^3.4|^4.4|^5.0",
+                "symfony/yaml": "^3.4|^4.4|^5.0"
             },
             "conflict": {
                 "twig/twig": "<1.34"
@@ -2672,15 +2672,15 @@
                 "php-http/guzzle6-adapter": "^2.0",
                 "php-http/httplug-bundle": "^1.7",
                 "phpunit/phpunit": "^7.5|^8.0",
-                "symfony/browser-kit": "^3.4|^4.3|^5.0",
-                "symfony/css-selector": "^3.4|^4.3|^5.0",
+                "symfony/browser-kit": "^3.4|^4.4|^5.0",
+                "symfony/css-selector": "^3.4|^4.4|^5.0",
                 "symfony/monolog-bundle": "^3.4",
                 "symfony/phpunit-bridge": "^5.0",
-                "symfony/property-access": "^3.4|^4.3|^5.0",
-                "symfony/stopwatch": "^3.4|^4.3|^5.0",
-                "symfony/translation": "^3.4|^4.3|^5.0",
-                "symfony/twig-bundle": "^3.4|^4.3|^5.0",
-                "symfony/validator": "^3.4|^4.3|^5.0"
+                "symfony/property-access": "^3.4|^4.4|^5.0",
+                "symfony/stopwatch": "^3.4|^4.4|^5.0",
+                "symfony/translation": "^3.4|^4.4|^5.0",
+                "symfony/twig-bundle": "^3.4|^4.4|^5.0",
+                "symfony/validator": "^3.4|^4.4|^5.0"
             },
             "suggest": {
                 "doctrine/doctrine-bundle": "to use Doctrine user provider",
@@ -2692,7 +2692,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -2733,6 +2733,7 @@
                 "Deezer",
                 "EVE Online",
                 "amazon",
+                "apple",
                 "asana",
                 "auth0",
                 "azure",
@@ -2794,7 +2795,7 @@
                 "yandex",
                 "youtube"
             ],
-            "time": "2020-04-06T20:52:53+00:00"
+            "time": "2020-10-19T11:02:20+00:00"
         },
         {
             "name": "imagine/imagine",
