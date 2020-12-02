@@ -41,13 +41,13 @@ class CamdramExtension extends AbstractExtension
     public function getFilters()
     {
         return array(
-            new \Twig\TwigFilter('camdram_markdown', [$this, 'camdramMarkdown'], ['is_safe' => ['html']]),
-            new \Twig\TwigFilter('strip_camdram_markdown', [$this, 'stripCamdramMarkdown']),
-            new \Twig\TwigFilter('detect_links', [$this, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig\TwigFilter('camdram_markdown', [$this->textService, 'convertMarkdown'], ['is_safe' => ['html']]),
+            new \Twig\TwigFilter('strip_camdram_markdown', [$this->textService, 'stripMarkdown']),
+            new \Twig\TwigFilter('detect_links', [$this->textService, 'detectLinks'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig\TwigFilter('explain_oauth_scopes', [$this, 'explainOAuthScopes']),
-            new \Twig\TwigFilter('strip_new_lines', [$this, 'stripNewLines']),
-            new \Twig\TwigFilter('truncate', [$this, 'truncate']),
-            new \Twig\TwigFilter('truncateHTML', [$this, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
+            new \Twig\TwigFilter('strip_new_lines', [$this->textService, 'stripNewLines']),
+            new \Twig\TwigFilter('truncate', [$this->textService, 'truncate']),
+            new \Twig\TwigFilter('truncateHTML', [$this->textService, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig\TwigFilter('plural', [$this, 'pluralize']),
             new \Twig\TwigFilter('ucfirst', 'ucfirst'),
         );
@@ -63,36 +63,6 @@ class CamdramExtension extends AbstractExtension
             new \Twig\TwigFunction('requires_article', [$this, 'requiresArticle']),
             new \Twig\TwigFunction('wcag_colors', [$this, 'genWcagColors'])
         );
-    }
-
-    public function camdramMarkdown($text)
-    {
-        return $this->textService->convertMarkdown($text);
-    }
-
-    public function stripCamdramMarkdown($text)
-    {
-        return $this->textService->stripMarkdown($text);
-    }
-
-    public function detectLinks($text)
-    {
-        return $this->textService->detectLinks($text);
-    }
-
-    public function stripNewLines($text)
-    {
-        return $this->textService->stripNewLines($text);
-    }
-
-    public function truncate($text, $length)
-    {
-        return $this->textService->truncate($text, $length);
-    }
-
-    public function truncateHTML($html, $length)
-    {
-        return $this->textService->truncateHTML($html, $length);
     }
 
     public function requiresArticle($string)
