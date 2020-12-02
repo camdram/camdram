@@ -55,7 +55,7 @@
     ],
     "require": {
         "php": ">=7.3",
-        "abraham/twitteroauth": "^1.0",
+        "abraham/twitteroauth": "^2.0",
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
