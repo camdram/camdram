@@ -6,7 +6,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@fancyapps/fancybox": "^3.5.7",
-    "@symfony/webpack-encore": "^0.31.0",
+    "@symfony/webpack-encore": "^0.32.1",
     "cookieconsent": "^3.1.1",
     "dropzone": "^5.7.2",
     "imports-loader": "^0.8.0",
