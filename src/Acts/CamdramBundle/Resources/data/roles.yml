@@ -1,11 +1,27 @@
-- Director
-- Producer
-- Technical Director
-- Lighting Designer
-- Publicity Designer
-- Sound Designer
-- Costume Designer
-- Set Designer
-- Master Carpenter
-- Production Manager
-- Publicist
+- name: Director
+  wiki: Director
+- name: Producer
+  wiki: Producer
+- name: Technical Director
+  wiki: Technical_Director
+- name: Lighting Designer
+  wiki: Lighting_Designer
+- name: Publicity Designer
+  wiki: Publicity_Designer
+- name: Sound Designer
+  wiki: Sound_Designer
+- name: Costume Designer
+  wiki: Costume_Designer
+- name: Set Designer
+  wiki: Set_Designer
+  tags: ['Set Designer']
+- name: Master Carpenter
+  wiki: Head_Carpenter
+- name: Production Manager
+  wiki: Production_Manager
+- name: Publicist
+  wiki: Publicist
+- name: Stage Manager
+  wiki: Stage_Manager
+- name: Deputy Stage Manager
+  wiki: Deputy_Stage_Manager

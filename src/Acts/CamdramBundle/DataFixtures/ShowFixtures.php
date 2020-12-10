@@ -273,7 +273,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i <= $max; $i++) {
             $role = new Role();
             $role->setType('prod');
-            $role->setRole($this->roles[$i]);
+            $role->setRole($this->roles[$i]['name']);
             $role->setPerson($this->getRandomPerson());
             $role->setOrder($order++);
             $roles[] = $role;
@@ -362,7 +362,8 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $advert = new Advert();
         $advert->setName('Technical roles for '. $show->getName())
             ->setType(Advert::TYPE_TECHNICAL)
-            ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
+            ->setSummary("We are looking for: \n* " . implode("\n* ", 
+                array_map(function ($role) { return $role['name']; }, $roles_to_seek)))
             ->setContactDetails('Random Contact ' . mt_rand(1, 100))
             ->setDisplay(mt_rand(0, 4) > 0);
 
