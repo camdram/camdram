@@ -115,7 +115,7 @@ class DefaultController extends AbstractController
                 ['query' => $params, 'timeout' => 2],
             );
             $data = $response->toArray();
-            if (isset($data['error'])) {
+            if (isset($data['error']) || count($data['query']['recentchanges']) == 0) {
                 return new Response();
             }
 
