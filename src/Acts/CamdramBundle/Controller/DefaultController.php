@@ -5,7 +5,9 @@ namespace Acts\CamdramBundle\Controller;
 use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Service\WeekManager;
 use Acts\DiaryBundle\Diary\Diary;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DefaultController
@@ -93,6 +95,39 @@ class DefaultController extends AbstractController
         $response->setSharedMaxAge(60);
 
         return $response;
+    }
+
+    public function wikiAction(HttpClientInterface $httpClient)
+    {
+        $url = 'https://wiki.cuadc.org';
+        $params = [
+            'action' => 'query',
+            'list' => 'recentchanges',
+            'format' => 'json',
+            'rclimit'=> 5,
+            'rcprop' => 'user|title|timestamp',
+        ];
+
+        try {
+            $response = $httpClient->request(
+                'GET',
+                $url.'/w/api.php',
+                ['query' => $params, 'timeout' => 2],
+            );
+            $data = $response->toArray();
+            if (isset($data['error'])) {
+                return new Response();
+            }
+
+            $response = $this->render('/home/wiki.html.twig', [
+                'changes' => $data['query']['recentchanges'],
+                'url' => $url,
+            ]);
+            $response->setSharedMaxAge(900);
+            return $response;
+        } catch (\Exception $e) {
+            return new Response();
+        }
     }
 
     /**

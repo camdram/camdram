@@ -151,3 +151,18 @@ $include-html-classes: false;
     }
   }
 }
+
+#home_wiki {
+  ul {
+    background: rgb(232, 255, 254);
+    list-style: none;
+    border-top: 2px solid rgb(156, 255, 251);
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    border-bottom: 2px solid rgb(156, 255, 251);
+    padding: 0.5em;
+  }
+}
