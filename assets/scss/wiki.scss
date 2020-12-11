@@ -14,13 +14,6 @@
         img {
             margin: 0 0.5em 0 0;
         }
-
-        &:hover {
-            background: rgb(184, 252, 249);
-        }
-        a:hover {
-            text-decoration: none;
-        }
     }
 
     a:link, a:visited {
@@ -58,4 +51,8 @@
         font-style: italic;
         text-align: right;
     }
+}
+
+.position-link {
+  text-decoration: underline dashed;
 }

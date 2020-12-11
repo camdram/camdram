@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 use Doctrine\ORM\EntityManagerInterface;
 
+use Acts\CamdramBundle\DataFixtures\PositionFixtures;
 use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramBundle\EventListener\AdvertListener;
@@ -32,7 +33,7 @@ class PositionTags extends Command
      */
     private $roleListener;
 
-    public function __construct(EntityManagerInterface $entityManager, 
+    public function __construct(EntityManagerInterface $entityManager,
             AdvertListener $advertListener, RoleListener $roleListener)
     {
         $this->entityManager = $entityManager;
@@ -47,12 +48,18 @@ class PositionTags extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Refresh all advert and role position links')
+            ->setDescription('Refresh position definitions, and all advert and role position links')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln('Rebuilding positions table...');
+        // Clear the existing tags and positions.
+        $this->entityManager->createQuery(
+            'DELETE FROM \Acts\CamdramBundle\Entity\Position p')->execute();
+        PositionFixtures::loadStatic($this->entityManager);
+
         $output->writeln('Updating adverts...');
         $advertRepository = $this->entityManager->getRepository(Advert::class);
         foreach ($advertRepository->findAll() as $advert) {

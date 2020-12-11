@@ -332,7 +332,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $advert = new Advert();
         $advert->setName('Designer roles for '. $show->getName())
             ->setType(Advert::TYPE_DESIGN)
-            ->setSummary("We are looking for: \n* " . implode("\n* ", $roles_to_seek))
+            ->setSummary("We are looking for: " . implode(", ", $roles_to_seek))
             ->setContactDetails('Random Contact ' . mt_rand(1, 100) . ', random@example.com')
             ->setDisplay(mt_rand(0, 4) > 0);
 
@@ -363,7 +363,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
         $advert = new Advert();
         $advert->setName('Technical roles for '. $show->getName())
             ->setType(Advert::TYPE_TECHNICAL)
-            ->setSummary("We are looking for: \n* " . implode("\n* ", 
+            ->setSummary("We are looking for: " . implode(", ",
                 array_map(function ($role) { return $role['name']; }, $roles_to_seek)))
             ->setContactDetails('Random Contact ' . mt_rand(1, 100))
             ->setDisplay(mt_rand(0, 4) > 0);

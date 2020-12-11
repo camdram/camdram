@@ -11,9 +11,10 @@ use Symfony\Component\Yaml\Yaml;
 class PositionFixtures extends Fixture implements FixtureGroupInterface
 {
     /**
-     * {@inheritDoc}
+     * Load fixtures, but in a static method so this can be called from
+     * elsewhere without calling the parent constructors etc.
      */
-    public function load(ObjectManager $manager)
+    public static function loadStatic(ObjectManager $manager): void
     {
         $file = __DIR__.'/../Resources/data/roles.yml';
         $roles = Yaml::parse(file_get_contents($file));
@@ -31,6 +32,15 @@ class PositionFixtures extends Fixture implements FixtureGroupInterface
         }
 
         $manager->flush();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        static::loadStatic($manager);
     }
 
     public static function getGroups(): array

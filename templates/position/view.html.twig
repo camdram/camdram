@@ -9,9 +9,11 @@
     <div class="wiki-panel">
         <div class="cuadc-wiki-info">
             <a href="{{ constant('Acts\\CamdramBundle\\Controller\\PositionController::WIKI_URL') }}/wiki/{{ position.wikiName }}">
-                <img src="{{ asset('images/cuadc.png') }}" alt="CUADC logo" />
-                View in the CUADC Wiki
-            </a>
+                <img srcset="{{
+                    asset('images/cuadc-1x.png') }}, {{
+                    asset('images/cuadc-2x.png') }} 2x, {{
+                    asset('images/cuadc-4x.png') }} 4x" src="{{
+                    asset('images/cuadc-1x.png') }}" alt="CUADC logo" />View in the CUADC Wiki</a>
             <span>
                 <a href="{{ constant('Acts\\CamdramBundle\\Controller\\PositionController::WIKI_URL') }}/wiki/{{ position.wikiName }}/edit">
                     [edit]

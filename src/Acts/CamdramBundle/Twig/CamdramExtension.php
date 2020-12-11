@@ -50,7 +50,7 @@ class CamdramExtension extends AbstractExtension
             new \Twig\TwigFilter('truncateHTML', [$this->textService, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig\TwigFilter('plural', [$this, 'pluralize']),
             new \Twig\TwigFilter('ucfirst', 'ucfirst'),
-            new \Twig\TwigFilter('annotate_positions', [$this, 'annotatePositions'], ['is_safe' => ['html']]),
+            new \Twig\TwigFilter('annotate_positions', [$this, 'annotatePositions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         );
     }
 
@@ -238,8 +238,8 @@ class CamdramExtension extends AbstractExtension
 
         foreach ($replaceMap as $search => $slug) {
             $url = $this->router->generate('get_position', ['identifier' => $slug]);
-            $replacement = '<span>$0&nbsp;<a class="position-link" href="'.$url.'"><i class="fa fa-question-circle"></i></a></span>';
-            $text = preg_replace('/'.preg_quote($search, '/').'(?:s|\(s\)|)(?=\W+|$)(?![^\<]*\<a class="position\-link")/', $replacement, $text);
+            $replacement = '<a class="position-link" href="'.$url.'">$0&nbsp;<i class="fa fa-question-circle"></i></a>';
+            $text = preg_replace('/'.preg_quote($search, '/').'(?:s|\(s\)|)(?=\W+|$)(?![^\<]*\<i class="fa fa-question-circle")/', $replacement, $text);
         }
 
         return $text;
