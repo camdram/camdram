@@ -4,9 +4,9 @@
 
 {% block body %}
     <h2><a href="{{ path('get_positions') }}">Roles</a></h2>
-    <h3>{{ position.name }}</h3>
-    {% if position.wikiName %}
-    <div class="wiki-panel">
+    <div class="split-header">
+        <h3>{{ position.name }}</h3>
+        {% if position.wikiName %}
         <div class="cuadc-wiki-info">
             <a href="{{ constant('Acts\\CamdramBundle\\Controller\\PositionController::WIKI_URL') }}/wiki/{{ position.wikiName }}">
                 <img srcset="{{
@@ -20,12 +20,15 @@
                 </a>
             </span>
         </div>
-
-        {{ render(controller('Acts\\CamdramBundle\\Controller\\PositionController::wikiEmbedAction',
-            {pageName: position.wikiName}))}}
-
+        {%- endif -%}
     </div>
-    {% endif %}
+
+    {%- if position.wikiName -%}
+    <div class="wiki-panel">
+        {{- render(controller('Acts\\CamdramBundle\\Controller\\PositionController::wikiEmbedAction',
+            {pageName: position.wikiName})) -}}
+    </div>
+    {%- endif -%}
 
     <h4>{{ position.name }} Vacancies</h4>
 
