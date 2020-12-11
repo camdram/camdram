@@ -3,7 +3,7 @@
 {% block title %}Role: {{ position.name }}{% endblock %}
 
 {% block body %}
-    <h2>Roles</h2>
+    <h2><a href="{{ path('get_positions') }}">Roles</a></h2>
     <h3>{{ position.name }}</h3>
     {% if position.wikiName %}
     <div class="wiki-panel">

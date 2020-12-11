@@ -89,7 +89,8 @@
             {% block option_links %}
             {% endblock %}
             {% include 'navigation/nav-items.html.twig'  with {items: {
-              'events': {text: 'Events', path: path('get_events'), icon: 'user-circle'}
+              'events': {text: 'Events', path: path('get_events'), icon: 'user-circle'},
+              'positions': {'text': 'Roles', 'path': path('get_positions'), icon: 'user-circle'},
             }, current_id: current_navigation_id, class: 'show-for-small'} %}
             {% include 'navigation/nav-items.html.twig' with {items: {
               'show_admin' : {text: 'Show Admin', path: path('acts_camdram_show_admin'), icon: 'ticket'},
