@@ -4,10 +4,11 @@ namespace Acts\CamdramBundle\DataFixtures;
 
 use Acts\CamdramBundle\Entity\Position;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Yaml\Yaml;
 
-class PositionFixtures extends Fixture
+class PositionFixtures extends Fixture implements FixtureGroupInterface
 {
     /**
      * {@inheritDoc}
@@ -19,9 +20,12 @@ class PositionFixtures extends Fixture
 
         foreach ($roles as $role) {
             $position = new Position();
-            $position->setPrimaryName($role['name'])
+            $position->setName($role['name'])
                 ->setWikiName($role['wiki'])
                 ;
+            foreach ($role['tags'] as $tag) {
+                $position->addTagName($tag);
+            }
 
             $manager->persist($position);
         }
@@ -29,11 +33,8 @@ class PositionFixtures extends Fixture
         $manager->flush();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getOrder()
+    public static function getGroups(): array
     {
-        return 1;
+        return ['positions'];
     }
 }

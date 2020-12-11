@@ -1,27 +1,45 @@
 - name: Director
-  wiki: Director
+  wiki: ~
+  tags: ['Director', 'Co-Director']
 - name: Producer
   wiki: Producer
+  tags: ['Producer', 'Co-Producer']
 - name: Technical Director
   wiki: Technical_Director
+  tags: ['Technical Director', 'TD']
 - name: Lighting Designer
   wiki: Lighting_Designer
+  tags: ['Lighting Designer', 'LD']
 - name: Publicity Designer
   wiki: Publicity_Designer
+  tags: ['Publicity Designer']
 - name: Sound Designer
   wiki: Sound_Designer
+  tags: ['Sound Designer', 'SD']
 - name: Costume Designer
   wiki: Costume_Designer
+  tags: ['Costume Designer']
 - name: Set Designer
   wiki: Set_Designer
   tags: ['Set Designer']
 - name: Master Carpenter
   wiki: Head_Carpenter
+  tags: ['Master Carpenter', 'Head Carpenter']
 - name: Production Manager
-  wiki: Production_Manager
+  wiki: ~
+  tags: ['Production Manager', 'PM']
 - name: Publicist
-  wiki: Publicist
+  wiki: ~
+  tags: ['Publicist']
 - name: Stage Manager
   wiki: Stage_Manager
+  tags: ['Stage Manager', 'SM']
 - name: Deputy Stage Manager
   wiki: Deputy_Stage_Manager
+  tags: ['Deputy Stage Manager', 'DSM']
+- name: Assistant Stage Manager
+  wiki: Assistant_Stage_Manager
+  tags: ['Assistant Stage Mananger', 'ASM']
+- name: Production Electrician
+  wiki: Production_Electrician
+  tags: ['Production Electrician', 'PLX']

@@ -29,7 +29,7 @@ class PositionController extends AbstractFOSRestController
     {
         $repository = $this->getDoctrine()->getRepository(Position::class);
         $positions = $repository->createQueryBuilder('p')
-            ->orderBy('p.primaryName')->getQuery()->getResult();
+            ->orderBy('p.name')->getQuery()->getResult();
 
         if ($request->getRequestFormat() == 'html') {
             return $this->render('position/index.html.twig', [

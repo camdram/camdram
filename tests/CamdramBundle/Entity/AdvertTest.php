@@ -6,6 +6,7 @@ use Camdram\Tests\RepositoryTestCase;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Audition;
+use Acts\CamdramBundle\Entity\Position;
 
 class AdvertTest extends RepositoryTestCase
 {
@@ -72,4 +73,37 @@ class AdvertTest extends RepositoryTestCase
         $this->assertEquals(0, count($ad->getAuditions()));
     }
 
+    public function testPositions()
+    {
+        $position1 = new Position;
+        $position1->setName('Technical Director')
+            ->addTagName('Technical Director');
+        $this->em->persist($position1);
+        $position2 = new Position;
+        $position2->setName('Lighting Designer')
+            ->addTagName('Lighting Designer');
+        $this->em->persist($position2);
+        $position3 = new Position;
+        $position3->setName('Stage Manager')
+            ->addTagName('Stage Manager');
+        $this->em->persist($position3);
+        $position4 = new Position;
+        $position4->setName('Director')
+            ->addTagName('Director');
+        $this->em->persist($position4);
+        $this->em->flush();
+
+        $ad = new Advert();
+        $ad->setShow($this->show)
+            ->setType(Advert::TYPE_TECHNICAL)
+            ->setName('Technical Roles')
+            ->setSummary("Technical Director\nLighting Designer")
+            ->setContactDetails('Contact me')
+            ->setBody('Get involved with this show. Stage Manager');
+
+        $this->em->persist($ad);
+        $this->em->flush();
+        
+        $this->assertEquals(3, count($ad->getPositions()));
+    }
 }

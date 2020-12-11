@@ -38,6 +38,24 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener }
 
+    acts.camdram.listener.advert:
+        class: Acts\CamdramBundle\EventListener\AdvertListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    acts.camdram.listener.role:
+        class: Acts\CamdramBundle\EventListener\RoleListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    acts.camdram.listener.position_tag:
+        class: Acts\CamdramBundle\EventListener\PositionTagListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
     acts.camdram.week_manager:
         class: Acts\CamdramBundle\Service\WeekManager
         arguments: ['@doctrine.orm.entity_manager']

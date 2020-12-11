@@ -6,7 +6,7 @@
     <h2>Roles</h2>
     <ul class="large-block-list">
     {%- for p in positions -%}
-        <li><a href="{{ path('get_position', {identifier: p.slug})}}">{{ p.primaryName }}</a></li>
+        <li><a href="{{ path('get_position', {identifier: p.slug})}}">{{ p.name }}</a></li>
     {%- endfor -%}
     </ul>
 {% endblock %}

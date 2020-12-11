@@ -304,6 +304,7 @@ class ShowFixtures extends Fixture implements DependentFixtureInterface
             VenueFixtures::class,
             SocietyFixtures::class,
             UserFixtures::class,
+            PositionFixtures::class,
         ];
     }
 

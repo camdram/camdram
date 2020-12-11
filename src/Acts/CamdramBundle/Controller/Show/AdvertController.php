@@ -5,6 +5,7 @@ namespace Acts\CamdramBundle\Controller\Show;
 use Acts\CamdramBundle\Entity\Advert;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\AdvertType;
+use Acts\CamdramBundle\EventListener\AdvertListener;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -58,7 +59,7 @@ class AdvertController extends AbstractController
     /**
      * @Route("/shows/{identifier}/adverts", methods={"POST"}, name="post_show_advert")
      */
-    public function postAction(Request $request, $identifier)
+    public function postAction(Request $request, $identifier, AdvertListener $listener)
     {
         $show = $this->getAndCheckShow($identifier);
 
@@ -70,6 +71,7 @@ class AdvertController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($form->getData());
+            $listener->updatePositions($advert);
             $em->flush();
             return $this->redirectToRoute('get_show_adverts', ['identifier' => $show->getSlug()]);
         } else {

@@ -19,6 +19,7 @@ use Acts\CamdramSecurityBundle\Security\OwnableInterface;
  *
  * @ORM\Table(name="acts_adverts")
  * @ORM\Entity(repositoryClass="AdvertRepository")
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\AdvertListener"})
  * @ORM\HasLifecycleCallbacks()
  * @Api\Feed(name="Camdram.net - Vacancies", titleField="feed_title",
  *     description="Vacancies advertised for shows in Cambridge",
@@ -177,12 +178,20 @@ class Advert implements OwnableInterface
      */
     private $auditions;
 
+    /**
+     * @var Collection<Position>
+     * @ORM\ManyToMany(targetEntity="Position", inversedBy="adverts", cascade={"all"})
+     * @ORM\JoinTable(name="acts_advert_position_link")
+     */
+    private $positions;
+
     public function __construct()
     {
         $this->auditions = new ArrayCollection();
         $this->display = true;
         $this->expiresAt = (new \DateTime('+2 weeks'))->setTime(0, 0, 0);
         $this->type = self::TYPE_ACTORS;
+        $this->positions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -400,6 +409,30 @@ class Advert implements OwnableInterface
     public static function getAceType(): string
     {
         return 'advert';
+    }
+
+    /**
+     * @return Collection|Position[]
+     */
+    public function getPositions(): Collection
+    {
+        return $this->positions;
+    }
+
+    public function addPosition(Position $position): self
+    {
+        if (!$this->positions->contains($position)) {
+            $this->positions[] = $position;
+        }
+
+        return $this;
+    }
+
+    public function removePosition(Position $position): self
+    {
+        $this->positions->removeElement($position);
+
+        return $this;
     }
 
 }
