@@ -97,9 +97,9 @@ class AdvertTest extends RepositoryTestCase
         $ad->setShow($this->show)
             ->setType(Advert::TYPE_TECHNICAL)
             ->setName('Technical Roles')
-            ->setSummary("Technical Director\nLighting Designer")
+            ->setSummary("Technical Director\nLighting Designer\nStage Manager")
             ->setContactDetails('Contact me')
-            ->setBody('Get involved with this show. Stage Manager');
+            ->setBody('Get involved with this show.');
 
         $this->em->persist($ad);
         $this->em->flush();
