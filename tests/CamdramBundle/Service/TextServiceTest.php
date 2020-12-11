@@ -4,6 +4,7 @@ namespace Camdram\Tests\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Service\TextService;
 use PHPUnit\Framework\TestCase;
+use Acts\CamdramBundle\Entity\Position;
 
 class TextServiceTest extends TestCase
 {

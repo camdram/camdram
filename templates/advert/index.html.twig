@@ -19,7 +19,7 @@
                 <h5><a href="{{ path('get_venue', {identifier: a.venue.slug}) }}">{{ a.venue.name }}</a></h5>
             </div>
             {% endif %}
-            <p>{{ a.summary }}</p>
+            <p>{{ a.summary | annotate_positions(a.positions) }}</p>
             <ul>
             {%- for audition in a.auditions -%}
                 <li>{{ audition.dateString }}, {{ audition.location }}</li>
