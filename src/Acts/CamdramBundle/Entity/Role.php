@@ -101,7 +101,7 @@ class Role
     private $tag;
 
     /**
-      * @var Position
+      * @var Position|null
      * @ORM\ManyToOne(targetEntity="Position")
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
