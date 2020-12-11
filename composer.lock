@@ -3811,44 +3811,44 @@
         },
         {
             "name": "oneup/uploader-bundle",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
-                "reference": "f9d820ab679f7c4942f90ea0e13847a23ef0a0d4"
+                "reference": "14f0f3b618d9e73f99636a5695927caf8214a2d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/f9d820ab679f7c4942f90ea0e13847a23ef0a0d4",
-                "reference": "f9d820ab679f7c4942f90ea0e13847a23ef0a0d4",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/14f0f3b618d9e73f99636a5695927caf8214a2d4",
+                "reference": "14f0f3b618d9e73f99636a5695927caf8214a2d4",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2.5",
-                "symfony/asset": "^4.4|^5.0",
-                "symfony/event-dispatcher-contracts": "^1.0|^2.0",
-                "symfony/finder": "^4.4|^5.0",
-                "symfony/framework-bundle": "^4.4|^5.0",
-                "symfony/mime": "^4.4|^5.0",
-                "symfony/templating": "^4.4|^5.0",
-                "symfony/translation": "^4.4|^5.0",
-                "symfony/translation-contracts": "^1.0|^2.0",
-                "symfony/yaml": "^4.4|^5.0",
-                "twig/twig": "^2.4|^3.0"
+                "symfony/asset": "^4.4 || ^5.0",
+                "symfony/event-dispatcher-contracts": "^1.0 || ^2.0",
+                "symfony/finder": "^4.4 || ^5.0",
+                "symfony/framework-bundle": "^4.4 || ^5.0",
+                "symfony/mime": "^4.4 || ^5.0",
+                "symfony/templating": "^4.4 || ^5.0",
+                "symfony/translation": "^4.4 || ^5.0",
+                "symfony/translation-contracts": "^1.0 || ^2.0",
+                "symfony/yaml": "^4.4 || ^5.0",
+                "twig/twig": "^2.4 || ^3.0"
             },
             "require-dev": {
                 "amazonwebservices/aws-sdk-for-php": "1.5.*",
                 "doctrine/common": "^2.12",
                 "friendsofphp/php-cs-fixer": "^2.16",
                 "knplabs/gaufrette": "^0.9",
-                "oneup/flysystem-bundle": "^1.2|^2.0|^3.0",
+                "oneup/flysystem-bundle": "^1.2 || ^2.0 || ^3.0",
                 "phpstan/phpstan": "^0.12.10",
                 "phpunit/phpunit": "^8.5",
                 "sensio/framework-extra-bundle": "^5.0",
-                "symfony/browser-kit": "^4.4|^5.0",
+                "symfony/browser-kit": "^4.4 || ^5.0",
                 "symfony/phpunit-bridge": "^5.0",
-                "symfony/security-bundle": "^4.4|^5.0",
-                "symfony/var-dumper": "^4.4|^5.0",
+                "symfony/security-bundle": "^4.4 || ^5.0",
+                "symfony/var-dumper": "^4.4 || ^5.0",
                 "twistor/flysystem-stream-wrapper": "^1.0"
             },
             "suggest": {
@@ -3895,7 +3895,7 @@
                 "plupload",
                 "upload"
             ],
-            "time": "2020-07-06T14:54:07+00:00"
+            "time": "2020-12-07T07:49:15+00:00"
         },
         {
             "name": "php-http/cache-plugin",
