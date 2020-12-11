@@ -26,7 +26,7 @@ final class Version20201211004819 extends AbstractMigration
         $this->addSql('ALTER TABLE acts_advert_position_link ADD CONSTRAINT FK_E7FD3A3BDD842E46 FOREIGN KEY (position_id) REFERENCES acts_positions (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE acts_position_tags ADD CONSTRAINT FK_514471ACDD842E46 FOREIGN KEY (position_id) REFERENCES acts_positions (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE acts_shows_people_link ADD position_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE acts_shows_people_link ADD CONSTRAINT FK_2F5AB85EDD842E46 FOREIGN KEY (position_id) REFERENCES acts_positions (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE acts_shows_people_link ADD CONSTRAINT FK_2F5AB85EDD842E46 FOREIGN KEY (position_id) REFERENCES acts_positions (id) ON DELETE SET NULL');
         $this->addSql('CREATE INDEX IDX_2F5AB85EDD842E46 ON acts_shows_people_link (position_id)');
     }
 

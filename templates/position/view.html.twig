@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Roles{% endblock %}
+{% block title %}Role: {{ position.name }}{% endblock %}
 
 {% block body %}
     <h2>Roles</h2>
@@ -10,7 +10,7 @@
         <div class="cuadc-wiki-info">
             <a href="{{ constant('Acts\\CamdramBundle\\Controller\\PositionController::WIKI_URL') }}/wiki/{{ position.wikiName }}">
                 <img src="{{ asset('images/cuadc.png') }}" alt="CUADC logo" />
-                From the CUADC Wiki
+                View in the CUADC Wiki
             </a>
             <span>
                 <a href="{{ constant('Acts\\CamdramBundle\\Controller\\PositionController::WIKI_URL') }}/wiki/{{ position.wikiName }}/edit">
@@ -21,12 +21,13 @@
 
         {{ render(controller('Acts\\CamdramBundle\\Controller\\PositionController::wikiEmbedAction',
             {pageName: position.wikiName}))}}
+
     </div>
     {% endif %}
 
     <h4>{{ position.name }} Vacancies</h4>
 
-    {% for advert in position.adverts %}
+    {% for advert in position.activeAdverts %}
         <div class="vacancies-panel" >
             <h5>{{ link_entity(advert) }}</h5>
             {% if advert.show %}

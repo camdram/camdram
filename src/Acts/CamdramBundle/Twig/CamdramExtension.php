@@ -238,9 +238,8 @@ class CamdramExtension extends AbstractExtension
 
         foreach ($replaceMap as $search => $slug) {
             $url = $this->router->generate('get_position', ['identifier' => $slug]);
-            $replacement = '<span>$0 <a class="position-link" href="'.$url.'"><i class="fa fa-question-circle"></i></a></span>';
-            $text = preg_replace('/'.preg_quote($search).'(?![^\<]*\<a class="position\-link")/', $replacement, $text);
-
+            $replacement = '<span>$0&nbsp;<a class="position-link" href="'.$url.'"><i class="fa fa-question-circle"></i></a></span>';
+            $text = preg_replace('/'.preg_quote($search, '/').'(?:s|\(s\)|)(?=\W+|$)(?![^\<]*\<a class="position\-link")/', $replacement, $text);
         }
 
         return $text;

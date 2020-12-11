@@ -76,7 +76,13 @@ class PositionController extends AbstractFOSRestController
                 ['query' => $params],
             );
             $data = $response->toArray();
+            if (isset($data['error'])) {
+                return new Response('This page does not exist in the CUADC wiki');
+            }
             $html = $data['parse']['text']['*'];
+            $html .= '<p class="attribution">Wiki content is licensed under the
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+            Creative Commons Attribution-ShareAlike Licence</a>.</p>';
             $response = new Response($html);
             $response->setPublic();
             $response->setMaxAge(3600);

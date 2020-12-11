@@ -103,7 +103,7 @@ class Role
     /**
       * @var Position
      * @ORM\ManyToOne(targetEntity="Position")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
     private $position;
 

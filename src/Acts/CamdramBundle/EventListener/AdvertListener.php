@@ -42,7 +42,7 @@ class AdvertListener
             in reverse length order
             */
             $tags = $tagRepository->findAllOrderedByLengthDesc();
-            $searchString = $advert->getSummary().$advert->getBody();
+            $searchString = $advert->getSummary();
 
             foreach ($tags as $tag) {
                 if (\strpos($searchString, $tag->getName()) !== false) {
@@ -51,7 +51,5 @@ class AdvertListener
                 }
             }
         }
-
-        //var_dump(count($advert->getPositions()));die();
     }
 }
