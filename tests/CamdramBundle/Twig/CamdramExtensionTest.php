@@ -46,22 +46,22 @@ class CamdramExtensionTest extends TestCase
 
         $input = 'Technical Director';
         $output = $this->extension->annotatePositions($input, $positions);
-        $expected = '<span>Technical Director&nbsp;'
-            .'<a class="position-link" href="/positions/technical-director"><i class="fa fa-question-circle"></i></a></span>';
+        $expected = '<a class="position-link" href="/positions/technical-director">Technical Director&nbsp;'
+            .'<i class="fa fa-question-circle"></i></a>';
         $this->assertEquals($expected, $output);
 
         $input = 'Technical Directors';
         $output = $this->extension->annotatePositions($input, $positions);
-        $expected = '<span>Technical Directors&nbsp;'
-            .'<a class="position-link" href="/positions/technical-director"><i class="fa fa-question-circle"></i></a></span>';
+        $expected = '<a class="position-link" href="/positions/technical-director">Technical Directors&nbsp;'
+            .'<i class="fa fa-question-circle"></i></a>';
         $this->assertEquals($expected, $output);
 
         $input = "We are seeking a Technical Director and a Director.";
         $output = $this->extension->annotatePositions($input, $positions);
-        $expected = 'We are seeking a <span>Technical Director&nbsp;'
-            .'<a class="position-link" href="/positions/technical-director"><i class="fa fa-question-circle"></i></a></span>'
-            .' and a <span>Director&nbsp;'
-            .'<a class="position-link" href="/positions/director"><i class="fa fa-question-circle"></i></a></span>.';
+        $expected = 'We are seeking a <a class="position-link" href="/positions/technical-director">'
+            .'Technical Director&nbsp;<i class="fa fa-question-circle"></i></a>'
+            .' and a <a class="position-link" href="/positions/director">Director&nbsp;'
+            .'<i class="fa fa-question-circle"></i></a>.';
         $this->assertEquals($expected, $output);
     }
 }
