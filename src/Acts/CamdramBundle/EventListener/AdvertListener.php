@@ -45,9 +45,10 @@ class AdvertListener
             $searchString = $advert->getSummary();
 
             foreach ($tags as $tag) {
-                if (\strpos($searchString, $tag->getName()) !== false) {
+                $pattern = '/(?:\W|^)'.preg_quote($tag->getName(), '/').'(s|\(s\)|)(?:\W|$)/i';
+                if (preg_match($pattern, $searchString)) {
                     $advert->addPosition($tag->getPosition());
-                    $searchString = str_replace($tag->getName(), "", $searchString);
+                    $searchString = preg_replace($pattern, "", $searchString);
                 }
             }
         }

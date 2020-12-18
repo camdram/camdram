@@ -56,6 +56,12 @@ class CamdramExtensionTest extends TestCase
             .'<i class="fa fa-question-circle"></i></a>';
         $this->assertEquals($expected, $output);
 
+        $input = 'TECHNICAL DIRECTOR';
+        $output = $this->extension->annotatePositions($input, $positions);
+        $expected = '<a class="position-link" href="/positions/technical-director">TECHNICAL DIRECTOR&nbsp;'
+            .'<i class="fa fa-question-circle"></i></a>';
+        $this->assertEquals($expected, $output);
+
         $input = "We are seeking a Technical Director and a Director.";
         $output = $this->extension->annotatePositions($input, $positions);
         $expected = 'We are seeking a <a class="position-link" href="/positions/technical-director">'
