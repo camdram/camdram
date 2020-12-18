@@ -1831,16 +1831,16 @@
         },
         {
             "name": "excelwebzone/recaptcha-bundle",
-            "version": "v1.5.22",
+            "version": "v1.5.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
-                "reference": "3f347b39ebfce3d9a0d9a81328bedf1f4a6c7889"
+                "reference": "e738dd9887cbe1b4d47b095a0fcd0be095905edd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/3f347b39ebfce3d9a0d9a81328bedf1f4a6c7889",
-                "reference": "3f347b39ebfce3d9a0d9a81328bedf1f4a6c7889",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/e738dd9887cbe1b4d47b095a0fcd0be095905edd",
+                "reference": "e738dd9887cbe1b4d47b095a0fcd0be095905edd",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1883,7 @@
             "keywords": [
                 "recaptcha"
             ],
-            "time": "2020-11-04T01:21:59+00:00"
+            "time": "2020-12-15T14:07:06+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -10365,16 +10365,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v5.2.0",
+            "version": "v5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "bb73619b2ae5121bbbcd9f191dfd53ded17ae598"
+                "reference": "290ea5e03b8cf9b42c783163123f54441fb06939"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/bb73619b2ae5121bbbcd9f191dfd53ded17ae598",
-                "reference": "bb73619b2ae5121bbbcd9f191dfd53ded17ae598",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/290ea5e03b8cf9b42c783163123f54441fb06939",
+                "reference": "290ea5e03b8cf9b42c783163123f54441fb06939",
                 "shasum": ""
             },
             "require": {
@@ -10433,7 +10433,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-28T10:57:20+00:00"
+            "time": "2020-12-08T17:02:38+00:00"
         },
         {
             "name": "twig/twig",
