@@ -107,15 +107,14 @@
 {%- if show.hasActiveAdverts() -%}
 <h5>Get involved with <em>{{ show.name }}</em>:</h5>
     {% for advert in show.activeAdverts %}
-        <div class="vacancies-panel" >
+        <div class="vacancies-panel">
             <h5>{{ link_entity(advert) }}</h5>
             <p>{{ advert.summary }}</p>
-            <ul>
+            <ul class="prose-list">
             {%- for audition in advert.auditions -%}
                 <li>{{ audition.dateString }}, {{ audition.location }}</li>
             {%- endfor -%}
             </ul>
-            <p></p>
             <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
         </div>
     {% endfor %}

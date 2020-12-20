@@ -1,5 +1,5 @@
 <h3>The following people have made contributions to Camdram:</h3>
-<ul>
+<ul class="prose-list">
     {% for user in users %}
         {% if user.name %}
             <li><a href="{{ user.html_url }}" target="_blank" rel="ext">{{ user.name }}</a></li>
@@ -10,21 +10,21 @@
 </ul>
 
 <h3>Issues currently being worked on:</h3>
-<ul>
+<ul class="prose-list">
     {% for issue in inprogress %}
         <li><a href="{{ issue.html_url }}" target="_blank" rel="ext">{{ issue.title }}</a></li>
     {% endfor %}
 </ul>
 
 <h3>Issues recently fixed:</h3>
-<ul>
+<ul class="prose-list">
     {% for issue in fixed %}
         <li><a href="{{ issue.html_url }}" target="_blank" rel="ext">{{ issue.title }}</a></li>
     {% endfor %}
 </ul>
 
 <h3>Issues recently created:</h3>
-<ul>
+<ul class="prose-list">
     {% for issue in recent %}
         <li><a href="{{ issue.html_url }}" target="_blank" rel="ext">{{ issue.title }}</a></li>
     {% endfor %}
