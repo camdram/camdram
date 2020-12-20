@@ -8,8 +8,8 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    # Ubuntu 18.04 image has more versions of PHP than 20.04.
+    runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v2
@@ -17,26 +17,52 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate
 
-    - name: Cache Composer packages
+    - name: Cache Composer and Yarn packages
       id: composer-cache
       uses: actions/cache@v2
       with:
         path: |
           bin
+          composer-src
+          node_modules
           vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock', 'yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-composer-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: |
+        sudo systemctl start mysql.service
+        # composer install has to run even if the packages are cached
+        composer install --prefer-dist --no-progress
+        yarn install
+        # Download composer source to allow PHPStan to run
+        if [ ! -a composer-src ]; then mkdir composer-src; cd composer-src; wget -qO- https://github.com/composer/composer/archive/1.10.17.tar.gz | tar xz; fi
+        # Switch PHP version to 7.3
+        for i in pear pecl php phar phar.phar php-cgi php-config phpize phpdbg; do
+          [ -e "/usr/bin/${i}7.3" ] && sudo update-alternatives --set $i "/usr/bin/${i}7.3"
+        done
 
     - name: Run PHPStan
       run: |
-        mkdir composer-src
-        cd composer-src
-        wget -qO- https://github.com/composer/composer/archive/1.10.17.tar.gz | tar xz
-        cd ..
         echo '[includes: [phpstan.neon.dist], parameters: [scanDirectories: [composer-src/composer-1.10.17/src/Composer]]]' > phpstan.neon
         bin/phpstan analyze
         rm -rf composer-src
+
+    - name: Run PHPUnit with coverage
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      run: |
+        rm -rf app/cache/test
+        composer install
+
+        yarn build
+
+        if [ "$GITHUB_EVENT_NAME" == push -a "$GITHUB_REF" == refs/heads/master ]; then
+            XDEBUG_MODE=coverage ./runtests -d memory_limit=512M --coverage-clover=coverage.xml
+            bash <(curl -s https://codecov.io/bash)
+        else
+            ./runtests
+        fi
+        MYSQL_URL=mysql://root:root@localhost/camdram_test ./check_dev_setup
