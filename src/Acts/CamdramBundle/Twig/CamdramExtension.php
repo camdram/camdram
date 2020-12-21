@@ -50,6 +50,7 @@ class CamdramExtension extends AbstractExtension
             new \Twig\TwigFilter('truncateHTML', [$this->textService, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig\TwigFilter('plural', [$this, 'pluralize']),
             new \Twig\TwigFilter('ucfirst', 'ucfirst'),
+            new \Twig\TwigFilter('annotate_positions', [$this, 'annotatePositions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         );
     }
 
@@ -221,5 +222,26 @@ class CamdramExtension extends AbstractExtension
             $RGB[] = $rgb[$i] <= 10 ? $rgb[$i] / 3294.6 : (($rgb[$i] + 14.025) / 269.025) ** 2.4;
         }
         return 0.2126*$RGB[0] + 0.7152*$RGB[1] + 0.0722*$RGB[2];
+    }
+
+    public function annotatePositions($text, $positions)
+    {
+        $replaceMap = [];
+        foreach ($positions as $position) {
+            foreach ($position->getTags() as $tag) {
+                $replaceMap[$tag->getName()] = $position->getSlug();
+            }
+        }
+        uksort($replaceMap, function($a, $b) {
+            return mb_strlen($a) < mb_strlen($b);
+        });
+
+        foreach ($replaceMap as $search => $slug) {
+            $url = $this->router->generate('get_position', ['identifier' => $slug]);
+            $replacement = '<a class="position-link" href="'.$url.'">$0&nbsp;<i class="fa fa-question-circle"></i></a>';
+            $text = preg_replace('/(?<=\W|^)'.preg_quote($search, '/').'(?:s|\(s\)|)(?=\W+|$)(?![^\<]*\<i class="fa fa-question-circle")/i', $replacement, $text);
+        }
+
+        return $text;
     }
 }

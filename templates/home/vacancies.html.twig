@@ -2,7 +2,7 @@
 {% for advert in adverts %}
     <div class="vacancies-panel">
         {{ link_entity(advert) }}
-        <br/>{{ advert.summary }}
+        <br/>{{ advert.summary | annotate_positions(advert.positions) }}
     </div>
 {% endfor %}
 <p class="text-right"><a href="{{ path('get_adverts') }}">More vacancies &gt;&gt;</a></p>

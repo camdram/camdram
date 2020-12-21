@@ -13,6 +13,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  *
  * @ORM\Table(name="acts_shows_people_link")
  * @ORM\Entity(repositoryClass="Acts\CamdramBundle\Entity\RoleRepository")
+ * @ORM\EntityListeners({"Acts\CamdramBundle\EventListener\RoleListener"})
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\Loggable
  * @Serializer\XmlRoot("role")
@@ -98,6 +99,13 @@ class Role
      * @Gedmo\Versioned
      */
     private $tag;
+
+    /**
+      * @var Position|null
+     * @ORM\ManyToOne(targetEntity="Position")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     */
+    private $position;
 
     /**
      * Get id
@@ -291,5 +299,17 @@ class Role
     public function getPersonSlug()
     {
         return $this->person->getSlug();
+    }
+
+    public function getPosition(): ?Position
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?Position $position): self
+    {
+        $this->position = $position;
+
+        return $this;
     }
 }

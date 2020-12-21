@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Roles{% endblock %}
+
+{% block body %}
+    <h2>Roles</h2>
+    <p>Below is a list of common roles on shows. Click on the role to see related information
+        from the CUADC wiki as well as related show vacancies.</p>
+    <ul class="large-block-list">
+    {%- for p in positions -%}
+        <li><a href="{{ path('get_position', {identifier: p.slug})}}">{{ p.name }}</a></li>
+    {%- endfor -%}
+    </ul>
+{% endblock %}

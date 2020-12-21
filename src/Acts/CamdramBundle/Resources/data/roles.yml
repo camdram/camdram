@@ -1,11 +1,72 @@
-- Director
-- Producer
-- Technical Director
-- Lighting Designer
-- Publicity Designer
-- Sound Designer
-- Costume Designer
-- Set Designer
-- Master Carpenter
-- Production Manager
-- Publicist
+- name: Director
+  wiki: Director
+  tags: ['Director', 'Co-Director', 'Assistant Director']
+- name: Producer
+  wiki: Producer
+  tags: ['Producer', 'Co-Producer', 'Assistant Producer']
+- name: Musical Director
+  wiki: Musical_Director
+  tags: ['Musical Director', 'MD', 'Assistant Musical Director', 'Co-Musical Director', 'Associate Musical Director']
+- name: Writer
+  wiki: Writer
+  tags: ['Writer']
+- name: Composer
+  wiki: Composer
+  tags: ['Composer']
+- name: Technical Director
+  wiki: Technical_Director
+  tags: ['Technical Director', 'TD']
+- name: Lighting Designer
+  wiki: Lighting_Designer
+  tags: ['Lighting Designer', 'LD', 'Assistant Lighting Designer']
+- name: Choreographer
+  wiki: Choreographer
+  tags: ['Choreographer', 'Co-Choreographer']
+- name: Publicity Designer
+  wiki: Publicity_Designer
+  tags: ['Publicity Designer']
+- name: Sound Designer
+  wiki: Sound_Designer
+  tags: ['Sound Designer', 'SD', 'Assistant Sound Designer']
+- name: Costume Designer
+  wiki: Costume_Designer
+  tags: ['Costume Designer', 'Assistant Costume Designer']
+- name: Set Designer
+  wiki: Set_Designer
+  tags: ['Set Designer', 'Set Painter']
+- name: Carpenter
+  wiki: Head_Carpenter
+  tags: ['Master Carpenter', 'Head Carpenter', 'Set Builder', 'Assistant Carpenter']
+- name: Production Manager
+  wiki: Production Manager
+  tags: ['Production Manager', 'PM']
+- name: Publicist
+  wiki: Publicist
+  tags: ['Publicist', 'Publicity Manager']
+- name: Stage Manager
+  wiki: Stage_Manager
+  tags: ['Stage Manager', 'SM']
+- name: Deputy Stage Manager
+  wiki: Deputy_Stage_Manager
+  tags: ['Deputy Stage Manager', 'DSM']
+- name: Assistant Stage Manager
+  wiki: Assistant_Stage_Manager
+  tags: ['Assistant Stage Manager', 'ASM']
+- name: Production Electrician
+  wiki: Production_Electrician
+  tags: ['Production Electrician', 'PLX']
+- name: Chief Electrician
+  wiki: Chief_Electrician
+  tags: ['Chief Electrician', 'CLX']
+- name: Video Director
+  wiki: Video_Director
+  tags: ['Video Director', 'Video Switcher', 'Video Director/Switcher']
+- name: Camera Operator
+  wiki: Camera_Operator
+  tags: ['Camera Operator', 'Camera Op']
+- name: Photographer
+  wiki: Photographer
+  tags: ['Photographer']
+- name: Editor
+  wiki: Sound_Editor
+  tags: ['Editor', 'Sound Editor', 'Audio Editor']

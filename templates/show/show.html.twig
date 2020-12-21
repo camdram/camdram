@@ -109,7 +109,7 @@
     {% for advert in show.activeAdverts %}
         <div class="vacancies-panel">
             <h5>{{ link_entity(advert) }}</h5>
-            <p>{{ advert.summary }}</p>
+            <p>{{ advert.summary | annotate_positions(advert.positions) }}</p>
             <ul class="prose-list">
             {%- for audition in advert.auditions -%}
                 <li>{{ audition.dateString }}, {{ audition.location }}</li>

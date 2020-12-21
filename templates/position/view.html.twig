@@ -1,0 +1,58 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Role: {{ position.name }}{% endblock %}
+
+{% block body %}
+    <h2><a href="{{ path('get_positions') }}">Roles</a></h2>
+    <div class="split-header">
+        <h3>{{ position.name }}</h3>
+        {% if position.wikiName %}
+        <div class="cuadc-wiki-info">
+            <a href="{{ constant('Acts\\CamdramBundle\\Controller\\PositionController::WIKI_URL') }}/wiki/{{ position.wikiName }}">
+                <img srcset="{{
+                    asset('images/cuadc-1x.png') }}, {{
+                    asset('images/cuadc-2x.png') }} 2x, {{
+                    asset('images/cuadc-4x.png') }} 4x" src="{{
+                    asset('images/cuadc-1x.png') }}" alt="CUADC logo" />View in the CUADC Wiki</a>
+            <span>
+                <a href="{{ constant('Acts\\CamdramBundle\\Controller\\PositionController::WIKI_URL') }}/wiki/{{ position.wikiName }}/edit">
+                    [edit]
+                </a>
+            </span>
+        </div>
+        {%- endif -%}
+    </div>
+
+    {%- if position.wikiName -%}
+    <div class="wiki-panel">
+        {{- render(controller('Acts\\CamdramBundle\\Controller\\PositionController::wikiEmbedAction',
+            {pageName: position.wikiName})) -}}
+    </div>
+    {%- endif -%}
+
+    <h4>{{ position.name }} Vacancies</h4>
+
+    {% for advert in position.activeAdverts %}
+        <div class="vacancies-panel" >
+            <h5>{{ link_entity(advert) }}</h5>
+            {% if advert.show %}
+            <div class="vacancies-show-panel">
+                {%- include 'show/advert_header.html.twig' with {'show': advert.show} -%}
+            </div>
+            {% elseif advert.society %}
+            <div class="vacancies-show-panel">
+                <h5><a href="{{ path('get_society', {identifier: advert.society.slug}) }}">{{ advert.society.name }}</a></h5>
+            </div>
+            {% elseif advert.venue %}
+            <div class="vacancies-show-panel">
+                <h5><a href="{{ path('get_venue', {identifier: advert.venue.slug}) }}">{{ advert.venue.name }}</a></h5>
+            </div>
+            {% endif %}
+            <p>{{ advert.summary | annotate_positions(advert.positions) }}</p>
+            <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+        </div>
+    {% else %}
+        <p>There are no {{ position.name }} vacancies at the moment</p>
+    {% endfor %}
+
+{% endblock %}

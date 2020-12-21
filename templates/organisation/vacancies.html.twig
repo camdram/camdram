@@ -3,8 +3,13 @@
 {% for advert in adverts %}
     <div class="vacancies-panel" >
         <h5>{{ link_entity(advert) }}</h5>
+<<<<<<< HEAD
+        <p>{{ advert.summary | annotate_positions(advert.positions) }}</p>
+        <ul class="prose-list">
+=======
         <p>{{ advert.summary }}</p>
         <ul class="prose-list">
+>>>>>>> master
         {%- for audition in advert.auditions -%}
             <li>{{ audition.dateString }}, {{ audition.location }}</li>
         {%- endfor -%}

@@ -7,6 +7,7 @@ use Acts\CamdramBundle\Entity\Audition;
 use Acts\CamdramBundle\Service\Time;
 use Acts\CamdramBundle\Form\Type\AdvertType;
 use Acts\CamdramBundle\Form\Type\OrganisationAdvertType;
+use Acts\CamdramBundle\EventListener\AdvertListener;
 use Acts\DiaryBundle\Diary\Diary;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
@@ -164,7 +165,7 @@ class AdvertController extends AbstractFOSRestController
      * @Route("/vacancies/{id<\d+>}/embedded", methods={"PUT"}, name="put_embedded_advert", defaults={"embedded":true})
      * @Route("/vacancies/{id<\d+>}", methods={"PUT"}, name="put_advert", defaults={"embedded":false})
      */
-    public function putAdvert(Request $request, int $id, bool $embedded)
+    public function putAdvert(Request $request, int $id, bool $embedded, AdvertListener $listener)
     {
         $advert = $this->getAdCheckEditable($request, $id, 'put_advert');
 
@@ -172,6 +173,7 @@ class AdvertController extends AbstractFOSRestController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $listener->updatePositions($advert);
             $em->flush();
 
             if ($embedded) return $this->redirectToParentsAds($advert->getParentEntity());

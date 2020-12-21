@@ -29,7 +29,7 @@
             <h5><a href="{{ path('get_venue', {identifier: advert.venue.slug}) }}">{{ advert.venue.name }}</a></h5>
         </div>
         {% endif %}
-        <p>{{ advert.summary }}</p>
+        <p>{{ advert.summary | annotate_positions(advert.positions) }}</p>
         <ul class="prose-list">
         {%- for audition in advert.auditions -%}
             <li>{{ audition.dateString }}, {{ audition.location }}</li>
@@ -45,7 +45,7 @@
     <hr/>
     {% endif%}
 
-    <p>{{ advert.body | camdram_markdown }}</p>
+    <p>{{ advert.body | camdram_markdown | annotate_positions(advert.positions) }}</p>
 
     <hr/>
     <p class="text-right"><em>

@@ -1,0 +1,67 @@
+@import "./vars.scss";
+
+#content .split-header {
+    .cuadc-wiki-info {
+        flex-grow: 0;
+        border: 2px solid rgb(156, 255, 251);
+        border-radius: 0.5em;
+        margin: auto 0.5em -1.3em auto;
+        padding: 0.5em !important;
+        background: rgb(199, 252, 250);
+
+        a:link, a:visited {
+            color: #0645ad;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        img {
+            margin: 0 0.5em 0 0;
+        }
+    }
+}
+
+#content .wiki-panel {
+    @include panel(rgb(232, 255, 254), 1em 1em 1em);
+    margin-top: 0.5em;
+
+    a:link, a:visited {
+        color: #0645ad;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    table {
+        margin-bottom:1em;
+    }
+
+    ol, ul {
+        margin-left:2em;
+
+        li {
+            margin-bottom:0.8em;
+        }
+    }
+
+    .mw-editsection {
+        font-size: small;
+        font-weight: normal;
+        line-height: 1em;
+        margin-left:1em;
+    }
+
+    p.attribution {
+        font-size: 0.8em;
+        font-style: italic;
+        text-align: right;
+    }
+}
+
+.position-link {
+  text-decoration: underline dashed;
+}
