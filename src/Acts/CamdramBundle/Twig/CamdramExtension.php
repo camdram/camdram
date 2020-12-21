@@ -163,9 +163,9 @@ class CamdramExtension extends AbstractExtension
         }
         // Escape all non-alphabetic <= 0xFF.
         $url = mb_encode_numericentity($url, [
-            [0x00, 0x40, 0, 0],
-            [0x5B, 0x60, 0, 0],
-            [0x7B, 0xFF, 0, 0]
+            0x00, 0x40, 0, 0,
+            0x5B, 0x60, 0, 0,
+            0x7B, 0xFF, 0, 0
         ]);
         $content = $options['innerhtml'] ??
             htmlspecialchars($options['innertext'] ?? $entity->getName());

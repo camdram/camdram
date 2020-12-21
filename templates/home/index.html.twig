@@ -68,6 +68,11 @@
         </div>
         <hr />
 
+        <div id="home_wiki">
+            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::wikiAction'), {'strategy': 'esi'}) }}
+        </div>
+        <hr />
+
         <div id="home_historic">
             {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::historicDataAction'), {'strategy': 'esi'}) }}
         </div>

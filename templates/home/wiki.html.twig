@@ -1,0 +1,6 @@
+<h5>CUADC Wiki - Recent Changes</h5>
+<ul class="prose-list">
+{% for change in changes %}
+<li><a href="{{ url }}/wiki/{{ change.title | url_encode }}" target="_blank">{{ change.title }}</a> by {{ change.user }}</li>
+{% endfor %}
+</ul>

@@ -29,11 +29,10 @@
     </div>
 
     <p>{{ advert.summary | annotate_positions(advert.positions) }}</p>
-    <ul>
+    <ul class="prose-list">
     {%- for audition in advert.auditions -%}
         <li>{{ audition.dateString }}, {{ audition.location }}</li>
     {%- endfor -%}
     </ul>
-    <p></p>
     <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
 </div>
