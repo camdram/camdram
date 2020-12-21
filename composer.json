@@ -69,7 +69,7 @@
         "hwi/oauth-bundle": "~1.2.0",
         "incenteev/composer-parameter-handler": "^2.1",
         "jms/serializer-bundle": "^3.4",
-        "knplabs/github-api": "^2.8",
+        "knplabs/github-api": "^3.0",
         "laminas/laminas-feed": "2.13.*",
         "liip/imagine-bundle": "dev-v2.3.0+camdram",
         "oneup/uploader-bundle": "^3.0",
