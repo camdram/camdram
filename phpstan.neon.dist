@@ -10,7 +10,7 @@ parameters:
     doctrine:
         objectManagerLoader: tests/object-manager.php
     ignoreErrors:
-        - '#Call to an undefined method Github\\Api\\ApiInterface.*#'
+        - '#Call to an undefined method Github\\Api\\AbstractApi.*#'
     level: 5
     paths:
         - src
