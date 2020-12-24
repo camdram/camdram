@@ -3,7 +3,20 @@ set -e
 export SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 export SYMFONY_ENV=test
 
+mysql_doctrine() {
+    DATABASE_URL=$MYSQL_TEST_URL app/console doctrine:"$@"
+}
+
 mkdir -p web/build
-php app/console lint:yaml app/config
-php app/console lint:twig templates
-bin/simple-phpunit --exclude-group mysql $@
+app/console lint:yaml app/config
+app/console lint:twig templates
+if [ -n "${MYSQL_TEST_URL:+x}" ]; then
+    mysql_doctrine database:create
+    mysql_doctrine schema:create -q
+    while IFS="" read -r insert; do
+        mysql_doctrine query:sql -q "$insert"
+    done < tests/SearchController.sql
+    trap 'mysql_doctrine database:drop --force' EXIT
+fi
+
+bin/paratest $@

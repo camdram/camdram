@@ -40,7 +40,6 @@
     "name": "camdram/camdram",
     "replace": {
         "paragonie/random_compat": "2.99",
-        "phpunit/phpunit": "8.2.4",
         "symfony/polyfill-php56": "1.99",
         "symfony/polyfill-php70": "1.99",
         "symfony/polyfill-php71": "1.99",
@@ -56,6 +55,7 @@
     "require": {
         "php": ">=7.3",
         "abraham/twitteroauth": "^2",
+        "dms/phpunit-arraysubset-asserts": "^0.2.1",
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
@@ -98,16 +98,16 @@
         "twig/twig": "^3"
     },
     "require-dev": {
+        "brianium/paratest": "^6.1",
         "dama/doctrine-test-bundle": "^6.0",
-        "dms/phpunit-arraysubset-asserts": "^0.1.0",
         "phpstan/phpstan": "^0.12.30",
         "phpstan/phpstan-doctrine": "^0.12.17",
         "phpstan/phpstan-symfony": "^0.12.6",
+        "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
         "symfony/debug-bundle": "*",
         "symfony/maker-bundle": "^1.11",
-        "symfony/phpunit-bridge": "^5.0",
         "symfony/web-profiler-bundle": "*",
         "symfony/web-server-bundle": "^4.4"
     },

@@ -52,17 +52,17 @@ jobs:
     - name: Run PHPUnit with coverage
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        MYSQL_TEST_URL: mysql://root:root@localhost/camdram_test
 
       run: |
         rm -rf app/cache/test
-        composer install
 
         yarn build
 
         if [ "$GITHUB_EVENT_NAME" == push -a "$GITHUB_REF" == refs/heads/master ]; then
-            XDEBUG_MODE=coverage ./runtests -d memory_limit=512M --coverage-clover=coverage.xml
+            XDEBUG_MODE=coverage ./runtests --coverage-clover=coverage.xml
             bash <(curl -s https://codecov.io/bash)
         else
             ./runtests
         fi
-        MYSQL_URL=mysql://root:root@localhost/camdram_test ./check_dev_setup
+        ./check_dev_setup

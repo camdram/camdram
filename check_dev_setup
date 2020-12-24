@@ -7,7 +7,7 @@ export SYMFONY_DEPRECATIONS_HELPER="max[self]=0"
 app/console camdram:database:refresh
 
 #Create a mysql database and test migrations using MySQL
-export DATABASE_URL=${MYSQL_URL:-"mysql://travis@localhost/camdram_test"}
+export DATABASE_URL=${MYSQL_TEST_URL:-"mysql://travis@localhost/camdram_test"}
 app/console doctrine:database:create
 app/console doctrine:migrations:migrate --no-interaction -vvv
 app/console doctrine:schema:validate || {
@@ -16,13 +16,4 @@ app/console doctrine:schema:validate || {
   exit 1
 }
 app/console doctrine:fixtures:load --no-interaction
-app/console doctrine:database:drop --force
-
-# Tests requiring MySQL
-app/console doctrine:database:create
-app/console doctrine:migrations:migrate --no-interaction
-while IFS="" read -r insert; do
-    php app/console doctrine:query:sql "$insert"
-done < tests/SearchController.sql
-bin/simple-phpunit --group mysql
 app/console doctrine:database:drop --force

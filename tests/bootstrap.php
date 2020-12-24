@@ -6,6 +6,7 @@ use Symfony\Component\Process\Process;
 
 //Create schema if the SQLite DB doesn't already exist
 $testDbPath = __DIR__.'/../app/cache/test/test.db';
+
 if (!file_exists($testDbPath) || filesize($testDbPath) == 0) {
 
     echo "Generating test DB schema...\n";
@@ -21,4 +22,14 @@ if (!file_exists($testDbPath) || filesize($testDbPath) == 0) {
     if (!$process->isSuccessful()) {
         throw new \RuntimeException('An error occurred generate the test DB schema');
     }
+}
+
+// Parallelized
+if (getenv('TEST_TOKEN') !== false) {
+    $tempfile = tempnam('/dev/shm', 'sql');
+    copy($testDbPath, $tempfile);
+    register_shutdown_function(function() use ($tempfile) {
+        unlink($tempfile);
+    });
+    putenv("DATABASE_URL=sqlite:////$tempfile");
 }

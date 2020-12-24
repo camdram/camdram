@@ -1,6 +1,5 @@
 <?php
-
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+namespace Camdram\Tests\CamdramBundle\Controller;
 
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Entity\Performance;
@@ -9,114 +8,10 @@ use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Role;
 use Acts\CamdramSecurityBundle\Entity\User;
+use Camdram\Tests\MySQLTestCase;
 
-/**
- * @group mysql
- */
-class SearchControllerTest extends WebTestCase
+class SearchControllerTest extends MySQLTestCase
 {
-    /**
-     * @var Symfony\Bundle\FrameworkBundle\Client
-     */
-    private $client;
-
-    /**
-     * @var \Doctrine\ORM\EntityManager;
-     */
-    private $entityManager;
-
-    /**
-     * @var User
-     */
-    private $user;
-
-    public function setUp(): void
-    {
-        $this->client = self::createClient(array('environment' => 'test'));
-
-        $container = $this->client->getKernel()->getContainer();
-        $this->entityManager = $container->get('doctrine.orm.entity_manager');
-        $platform = $container->get('doctrine.dbal.default_connection')
-            ->getDatabasePlatform()->getName();
-
-        if ($platform != 'mysql') {
-            $this->markTestSkipped('MySQL or MariaDB required for search tests');
-        }
-    }
-
-    private function createShow($name, $startDate, $flush = true)
-    {
-        $show = new Show;
-        $show->setName($name)
-            ->setAuthorised(true)
-            ->setCategory('drama');
-
-        $performance = new Performance;
-        $performance->setStartAt(new \DateTime($startDate.' 19:30'));
-        $performance->setRepeatUntil(new \DateTime($startDate));
-        $show->addPerformance($performance);
-
-        $this->entityManager->persist($show);
-        $this->entityManager->persist($performance);
-
-        if ($flush) {
-            $this->entityManager->flush();
-        }
-    }
-
-    private function createPerson($name)
-    {
-        $person = new Person;
-        $person->setName($name);
-
-        //People must have >= 1 role to be indexed
-        $show = new Show;
-        $show->setName('Test Show')
-            ->setAuthorised(true)
-            ->setCategory('drama');
-
-        $role = new Role;
-        $role->setShow($show)
-            ->setPerson($person)
-            ->setRole('Director')
-            ->setType('prod')
-            ->setOrder(0);
-        $person->addRole($role);
-
-        $this->entityManager->persist($person);
-        $this->entityManager->persist($show);
-        $this->entityManager->persist($role);
-        $this->entityManager->flush();
-    }
-
-    private function createSociety($name, $shortName)
-    {
-        $society = new Society;
-        $society->setName($name)
-            ->setShortName($shortName);
-        $this->entityManager->persist($society);
-        $this->entityManager->flush();
-    }
-
-    private function createVenue($name)
-    {
-        $venue = new Venue;
-        $venue->setName($name)
-            ->setShortName($name);
-        $this->entityManager->persist($venue);
-        $this->entityManager->flush();
-    }
-
-    private function doJsonRequest($url, $params)
-    {
-        $this->client->request('GET', $url, $params);
-
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertStringContainsString('application/json', $response->headers->get('Content-Type'));
-        return json_decode($response->getContent(), true);
-    }
-
     private function doSearch($query)
     {
         return $this->doJsonRequest('/search.json', ['q' => $query]);

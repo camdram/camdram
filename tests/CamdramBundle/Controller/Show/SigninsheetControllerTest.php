@@ -45,13 +45,13 @@ class SigninsheetControllerTest extends RestTestCase
         $crawler = $this->client->request('GET', '/shows/'.$show->getSlug().'/signinsheet');
         $this->assertHTTPStatus(200);
         $table = $crawler->filter('table')->first();
-        $this->assertRegExp('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/',
+        $this->assertMatchesRegularExpression('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/',
             $table->filter('tr')->first()->html());
 
         // CSV mode
         $this->click('CSV format', $crawler);
         $csv = $this->client->getResponse()->getContent();
-        $this->assertRegExp('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/', $csv);
+        $this->assertMatchesRegularExpression('/Tech.*Dress.*Thu.*19:45.*Fri.*19:45.*Sat.*19:45.*Sun.*19:45.*Mon.*19:45/', $csv);
     }
 
 }

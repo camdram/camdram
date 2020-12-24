@@ -54,7 +54,7 @@ class AdvertVoterTest extends TestCase
         $advert = new Advert;
         $advert->setShow($show);
 
-        $this->security->expects($this->at(0))->method('isGranted')
+        $this->security->expects($this->atLeastOnce())->method('isGranted')
             ->with('EDIT', $show)->will($this->returnValue(true));
 
         $ret = $this->voter->vote($this->token, $advert, ['EDIT']);
@@ -67,7 +67,7 @@ class AdvertVoterTest extends TestCase
         $advert = new Advert;
         $advert->setShow($show);
 
-        $this->security->expects($this->at(0))->method('isGranted')
+        $this->security->expects($this->atLeastOnce())->method('isGranted')
             ->with('EDIT', $show)->will($this->returnValue(false));
 
         $ret = $this->voter->vote($this->token, $advert, ['EDIT']);
