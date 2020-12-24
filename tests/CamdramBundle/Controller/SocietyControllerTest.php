@@ -62,4 +62,19 @@ class SocietyControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter("#content:contains(\"$sampletext\")")->count(), 1);
         $this->assertEquals($crawler->filter('#content:contains("Society Administration")')->count(), 1);
     }
+
+    public function testSocietyDelete()
+    {
+        $this->login($this->user);
+        $crawler = $this->client->request('GET', "/societies/test-society");
+        $this->assertSelectorTextContains('#content', 'Test Society');
+        $form = $crawler->selectButton('Delete this society')->form();
+        $crawler = $this->client->submit($form);
+
+        $this->assertSelectorTextContains('.flash-messages', 'Deleted society “Test Society”.');
+
+        $crawler = $this->client->request('GET', "/societies/test-society");
+        $this->assertHTTPStatus(404);
+        $this->assertSelectorTextContains('html', 'That society does not exist');
+    }
 }

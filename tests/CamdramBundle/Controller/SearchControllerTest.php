@@ -285,4 +285,33 @@ class SearchControllerTest extends MySQLTestCase
         $results = $this->doJsonRequest('/venues.json', ['q' => 'adc']);
         $this->assertEquals('ADC Theatre', $results[0]['name']);
     }
+
+    public function testXML()
+    {
+        $this->client->request('GET', '/search.xml', ['q' => 'ADC']);
+        $response = $this->client->getResponse();
+        $xml = new \SimpleXMLElement($response->getContent());
+        $this->assertHTTPStatus(410, $response->getStatusCode());
+        $this->assertStringContainsString('text/xml', $response->headers->get('Content-Type'));
+    }
+
+    public function testSyntaxError()
+    {
+        $results = $this->doSearch("tit****");
+        $this->assertEquals(1, count($results));
+        $this->assertEquals('Titus Andronicus', $results[0]['name']);
+
+        $results = $this->doJsonRequest('/search.json', ['q' => 'tit****', 'parse' => 'boolean']);
+        $this->assertEquals(["error" => "Try setting \"Interpret search\" back to normal."], $results);
+
+        $crawler = $this->client->request('GET', '/search/advanced', ['q' => 'tit****', 'parse' => 'boolean']);
+        $this->assertSelectorTextContains('#content', 'Try setting "Interpret search" back to normal');
+    }
+
+    public function testBooleanMode()
+    {
+        $results = $this->doJsonRequest('/search.json', ['q' => 'andr*cus', 'parse' => 'boolean']);
+        $this->assertEquals(1, count($results));
+        $this->assertEquals('Titus Andronicus', $results[0]['name']);
+    }
 }
