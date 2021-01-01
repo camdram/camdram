@@ -107,7 +107,8 @@ class ShowController extends AbstractRestController
     /**
      * Called by AbstractRestController before form goes to user.
      */
-    public function modifyEditForm($form, $identifier) {
+    public function modifyEditForm($form, $identifier): void
+    {
         // List of societies is public knowledge, no ACL checks here.
         $show = $this->getEntity($identifier);
         $socs = $show->getPrettySocData();
@@ -127,7 +128,7 @@ class ShowController extends AbstractRestController
     /**
      * Called by AbstractRestController after form sent by user.
      */
-    public function afterEditFormSubmitted($form, $identifier) {
+    public function afterEditFormSubmitted($form, $identifier): void {
         $show = $this->getEntity($identifier);
 
         // Societies

@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -24,7 +25,7 @@ class ShowAdminController extends AbstractController
      * Lists all the user's shows and shows awaiting approval.
      * @Route("/show-admin", methods={"GET"}, name="acts_camdram_show_admin")
      */
-    public function cgetAction(Request $request, AclProvider $aclProvider, EntityManagerInterface $entityManager, ModerationManager $moderationManager)
+    public function cgetAction(Request $request, AclProvider $aclProvider, EntityManagerInterface $entityManager, ModerationManager $moderationManager): Response
     {
         $ids = $aclProvider->getEntitiesByUser($this->getUser(), '\\Acts\\CamdramBundle\\Entity\\Show');
         $shows = $entityManager->getRepository(Show::class)->findIdsByDate($ids);

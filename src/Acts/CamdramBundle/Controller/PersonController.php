@@ -8,6 +8,7 @@ use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\PersonType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -51,7 +52,7 @@ class PersonController extends AbstractRestController
     /**
      * People are created by adding them to shows. No form.
      */
-    public function newAction() { throw $this->createNotFoundException(); }
+    public function newAction(): Response { throw $this->createNotFoundException(); }
 
     /**
      * Action that allows querying by id. Redirects to slug URL

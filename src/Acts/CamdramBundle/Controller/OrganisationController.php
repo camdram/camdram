@@ -19,6 +19,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\Query;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +36,7 @@ abstract class OrganisationController extends AbstractRestController
     /**
      * Render the Admin Panel
      */
-    public function adminPanelAction(Organisation $org)
+    public function adminPanelAction(Organisation $org): Response
     {
         $em = $this->getDoctrine()->getManager();
         $admins = $this->get('camdram.security.acl.provider')->getOwners($org);
@@ -60,9 +61,10 @@ abstract class OrganisationController extends AbstractRestController
         return $this->show('organisation/news.html.twig', 'news', $news_repo->getRecentByOrganisation($org, 30));
     }
 
-    abstract protected function getPerformances($slug, \DateTime $from, \DateTime $to);
-
-    abstract protected function getShows($slug, \DateTime $from, \DateTime $to);
+    /** @return iterable<Entity\Performance> */
+    abstract protected function getPerformances(string $slug, \DateTime $from, \DateTime $to);
+    /** @return iterable<Entity\Show> */
+    abstract protected function getShows(string $slug, \DateTime $from, \DateTime $to);
 
     /**
      * Render a diary of the shows put on by this society.

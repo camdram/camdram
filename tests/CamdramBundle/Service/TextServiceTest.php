@@ -133,6 +133,13 @@ class TextServiceTest extends TestCase
         );
     }
 
+    public function testConvertMarkdown_ProseList()
+    {
+        $this->assertEquals(
+            "<p>Paragraph</p>\n<ul class=\"prose-list\">\n<li>Bullet point</li>\n</ul>\n<ol class=\"prose-list\">\n<li>Numbered list</li>\n</ol>",
+            $this->textService->convertMarkdown("Paragraph\n\n* Bullet point\n\n1. Numbered list"));
+    }
+
     public function testStripMarkDown_Tags()
     {
         $this->assertEquals('Hello world', $this->textService->stripMarkdown('<b>Hello</b> <i>world</i>'));

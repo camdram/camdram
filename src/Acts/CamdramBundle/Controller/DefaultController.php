@@ -97,7 +97,7 @@ class DefaultController extends AbstractController
         return $response;
     }
 
-    public function wikiAction(HttpClientInterface $httpClient)
+    public function wikiAction(HttpClientInterface $httpClient): Response
     {
         $url = 'https://wiki.cuadc.org';
         $params = [

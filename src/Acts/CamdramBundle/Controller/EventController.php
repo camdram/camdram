@@ -16,9 +16,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ShowController
- *
- * Controller for REST actions for shows. Inherits from AbstractRestController.
  * @Route("/events")
  * @extends AbstractRestController<Event>
  */
@@ -164,7 +161,7 @@ class EventController extends AbstractRestController
     /**
      * Called by AbstractRestController before form goes to user.
      */
-    public function modifyEditForm($form, $identifier) {
+    public function modifyEditForm($form, $identifier): void {
         // List of societies is public knowledge, no ACL checks here.
         $show = $this->getEntity($identifier);
         $socs = $show->getPrettySocData();
@@ -177,7 +174,7 @@ class EventController extends AbstractRestController
     /**
      * Called by AbstractRestController after form sent by user.
      */
-    public function afterEditFormSubmitted($form, $identifier) {
+    public function afterEditFormSubmitted($form, $identifier): void {
         $event = $this->getEntity($identifier);
 
         // Societies

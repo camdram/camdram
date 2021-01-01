@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\View\View;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -45,6 +46,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
         $this->requestStack = $requestStack;
     }
 
+    /** @return array<mixed> */
     public static function getSubscribedServices(): array
     {
         $services = parent::getSubscribedServices();
@@ -64,8 +66,8 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
     /**
      * Returns the route parameters used to identity a particular entity. Used when generating URLs for redirects
-     *
-     * @return array the parameters to pass to the router
+     * @param T $entity
+     * @return array<string> the parameters to pass to the router
      */
     protected function getRouteParams($entity, Request $request)
     {
@@ -113,7 +115,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /**
      * @Route("/new", methods={"GET"})
      */
-    public function newAction()
+    public function newAction(): Response
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
 
@@ -126,7 +128,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Action where POST request is submitted from new entity form
      * @Route(".{_format}", format="html", methods={"POST"})
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request): Response
     {
         $this->get('camdram.security.acl.helper')->ensureGranted('CREATE', $this->class);
 
@@ -149,6 +151,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /**
      * Action for URL e.g. /shows/the-lion-king/edit
      * @Route("/{identifier}/edit")
+     * @return Response|View
      */
     public function editAction($identifier)
     {
@@ -165,7 +168,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Action where PUT request is submitted from edit entity form
      * @Route("/{identifier}.{_format}", format="html", methods={"PUT"})
      */
-    public function putAction(Request $request, $identifier)
+    public function putAction(Request $request, $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
@@ -187,7 +190,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Action where PATCH request is submitted from edit entity form
      * @Route("/{identifier}.{_format}", format="html", methods={"PATCH"})
      */
-    public function patchAction(Request $request, $identifier)
+    public function patchAction(Request $request, $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
@@ -209,20 +212,20 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /**
      * Called before a new edit form is sent to the user.
      */
-    public function modifyEditForm($form, $identifier) {}
+    public function modifyEditForm($form, $identifier): void {}
 
     /**
      * Called after an edit (or new) form has been successfully submitted and
      * changes given to Doctrine.
      * $em->flush() will be called soon after this is called.
      */
-    public function afterEditFormSubmitted($form, $identifier) {}
+    public function afterEditFormSubmitted($form, $identifier): void {}
 
     /**
      * Action to delete entity
      * @Route("/{identifier}", methods={"DELETE"})
      */
-    public function deleteAction(Request $request, $identifier)
+    public function deleteAction(Request $request, string $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('DELETE', $entity);
@@ -249,9 +252,9 @@ abstract class AbstractRestController extends AbstractFOSRestController
      */
     abstract public function cgetAction(Request $request);
 
-
     /**
      * Perform a search.
+     * @return Response|View
      */
     protected function entitySearch(Request $request) {
         return $this->forward('Acts\CamdramBundle\Controller\SearchController::search',
@@ -260,6 +263,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
     /**
      * Action for pages that represent a single entity - the entity in question is passed to the template
+     * @return Response|View
      */
     public function doGetAction($entity, array $extraData = [])
     {
@@ -268,6 +272,9 @@ abstract class AbstractRestController extends AbstractFOSRestController
         return $this->show($this->type.'/show.html.twig', $this->type, $entity, $extraData);
     }
 
+    /**
+     * @return Response|View
+     */
     protected function show(string $template, string $templateVar, $data, array $templateData = [])
     {
         $format = $this->requestStack->getCurrentRequest()->getRequestFormat();
@@ -282,7 +289,8 @@ abstract class AbstractRestController extends AbstractFOSRestController
         }
     }
 
-    protected function redirectIfHuman(string $route, array $routeParams, int $successCode = 200) {
+    protected function redirectIfHuman(string $route, array $routeParams, int $successCode = 200): Response
+    {
         $format = $this->requestStack->getCurrentRequest()->getRequestFormat();
         if ($format == 'html' || $format == 'txt') {
             return $this->redirectToRoute($route, $routeParams);

@@ -24,19 +24,6 @@ class WeekNameRepository extends EntityRepository
     }
 
     /** @return iterable<WeekName> */
-    public function findAfter($date, $limit)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $query = $qb->where('p.start_at >= :date')
-            ->setParameter('date', $date)
-            ->orderBy('p.start_at', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery();
-
-        return $query->getResult();
-    }
-
-    /** @return iterable<WeekName> */
     public function findBetween(\DateTime $start_date, \DateTime $end_date, $limit = null)
     {
         $qb = $this->createQueryBuilder('p');

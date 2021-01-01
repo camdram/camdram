@@ -6,8 +6,10 @@ use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Entity\Venue;
 use Acts\CamdramBundle\Form\Type\VenueType;
 use Acts\CamdramBundle\Service\ModerationManager;
+use FOS\RestBundle\View\View;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,8 +36,9 @@ class VenueController extends OrganisationController
     /**
      * @Route("/{identifier}.{_format}", format="html", methods={"GET"}, name="get_venue",
      *      condition="request.getPathInfo() != '/venues/new'"))
+     * @return Response|View
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier)
     {
         $venue = $this->getEntity($identifier);
         $can_contact = $venue->getContactEmail() != null ||
@@ -50,7 +53,7 @@ class VenueController extends OrganisationController
      *
      * @Route("/by-id/{id}.{_format}", format="html", methods={"GET"}, name="get_venue_by_id")
      */
-    public function getByIdAction(Request $request, $id)
+    public function getByIdAction(Request $request, int $id): Response
     {
         $venue = $this->getRepository()->findOneById($id);
 
@@ -77,7 +80,7 @@ class VenueController extends OrganisationController
         return $this->show('venue/index.html.twig', 'venues', $venues);
     }
 
-    public function getVacanciesAction($identifier)
+    public function getVacanciesAction(string $identifier)
     {
         $venue = $this->getEntity($identifier);
         $repo = $this->getDoctrine()->getRepository(Entity\Advert::class);
@@ -94,7 +97,7 @@ class VenueController extends OrganisationController
     /**
      * Finds all performances in the selected venue (used by OrganisationController).
      */
-    protected function getPerformances($slug, \DateTime $from, \DateTime $to)
+    protected function getPerformances(string $slug, \DateTime $from, \DateTime $to)
     {
         $performance_repo = $this->getDoctrine()->getRepository(Entity\Performance::class);
 
@@ -104,7 +107,7 @@ class VenueController extends OrganisationController
     /**
      * Finds all shows in the selected venue (used by OrganisationController).
      */
-    protected function getShows($slug, \DateTime $from, \DateTime $to)
+    protected function getShows(string $slug, \DateTime $from, \DateTime $to)
     {
         $show_repo = $this->getDoctrine()->getRepository(Entity\Show::class);
 
@@ -114,7 +117,7 @@ class VenueController extends OrganisationController
     /**
      * @Route("/{identifier}/image", methods={"DELETE"}, name="delete_venue_image")
      */
-    public function deleteImageAction(Request $request, $identifier)
+    public function deleteImageAction(Request $request, string $identifier): Response
     {
         $venue = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $venue);
