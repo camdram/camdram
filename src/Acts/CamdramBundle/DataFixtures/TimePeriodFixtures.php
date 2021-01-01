@@ -31,46 +31,51 @@ class TimePeriodFixtures extends Fixture
         2029 => [2, 15, 23],
     ];
 
+    /** @var \Doctrine\ORM\EntityManagerInterface */
+    private $em;
+
     /**
      * {@inheritDoc}
      * @param \Doctrine\ORM\EntityManagerInterface $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
+        $this->em = $manager;
         $first_key = min(array_keys(self::term_dates));
         for ($year = 1990; ; $year++) {
-            list($lent_start, $lent_end) = $this->addTerm($manager, 'Lent', new \DateTime($year.'-01-16'), 0, 9);
+            list($lent_start, $lent_end) = $this->addTerm('Lent', new \DateTime($year.'-01-16'), 0, 9);
             if (isset($michaelmas_end)) {
-                $this->addVacation($manager, 'Christmas', $michaelmas_end, $lent_start);
+                $this->addVacation('Christmas', $michaelmas_end, $lent_start);
             }
 
-            list($easter_start, $easter_end) = $this->addTerm($manager, 'Easter', new \DateTime($year.'-04-24'), 0, 8);
-            $this->addVacation($manager, 'Easter', $lent_end, $easter_start);
+            list($easter_start, $easter_end) = $this->addTerm('Easter', new \DateTime($year.'-04-24'), 0, 8);
+            $this->addVacation('Easter', $lent_end, $easter_start);
 
             if ($year >= $first_key) break;
 
-            list($michaelmas_start, $michaelmas_end) = $this->addTerm($manager, 'Michaelmas', new \DateTime($year.'-10-06'), 0, 8);
-            $this->addVacation($manager, 'Summer', $easter_end, $michaelmas_start);
+            list($michaelmas_start, $michaelmas_end) = $this->addTerm('Michaelmas', new \DateTime($year.'-10-06'), 0, 8);
+            $this->addVacation('Summer', $easter_end, $michaelmas_start);
         }
 
         for ($year = $first_key; array_key_exists($year, self::term_dates); $year++) {
-            list($michaelmas_start, $michaelmas_end) = $this->addTerm($manager, 'Michaelmas',
+            list($michaelmas_start, $michaelmas_end) = $this->addTerm('Michaelmas',
                 new \DateTime($year.'-10-'.self::term_dates[$year][0]), 0, 8);
             if (isset($easter_end)) {
-                $this->addVacation($manager, 'Summer', $easter_end, $michaelmas_start);
+                $this->addVacation('Summer', $easter_end, $michaelmas_start);
             }
 
-            list($lent_start, $lent_end) = $this->addTerm($manager, 'Lent',
+            list($lent_start, $lent_end) = $this->addTerm('Lent',
                 new \DateTime(($year + 1).'-01-'.self::term_dates[$year][1]), 0, 9);
-            $this->addVacation($manager, 'Christmas', $michaelmas_end, $lent_start);
+            $this->addVacation('Christmas', $michaelmas_end, $lent_start);
 
-            list($easter_start, $easter_end) = $this->addTerm($manager, 'Easter',
+            list($easter_start, $easter_end) = $this->addTerm('Easter',
                 new \DateTime(($year + 1).'-04-'.self::term_dates[$year][2]), 0, 8);
-            $this->addVacation($manager, 'Easter', $lent_end, $easter_start);
+            $this->addVacation('Easter', $lent_end, $easter_start);
         }
+        $this->em->flush();
     }
 
-    private function rewindToSunday(\DateTime $date)
+    private function rewindToSunday(\DateTime $date): \DateTime
     {
         $date = clone $date;
         $day = $date->format('N');
@@ -81,83 +86,55 @@ class TimePeriodFixtures extends Fixture
         return $date;
     }
 
-    protected function addTerm(ObjectManager $manager, $name, \DateTime $latest_start_date, $start_week, $end_week)
+    /** @return array{\DateTime, \DateTime} */
+    protected function addTerm(string $name, \DateTime $latest_start_date, int $start_week, int $end_week)
     {
         $start_date = $this->rewindToSunday($latest_start_date);
         $start_date->modify('-'.$start_week.' weeks');
         $date = clone $start_date;
+        /** @var WeekName[] */
+        $weeks = [];
         for ($week = $start_week; $week <= $end_week; $week++) {
             $week_name = ($name == 'Easter' && $week == 8) ? 'May Week' : 'Week '.$week;
 
-            $this->createWeek($manager, $week_name, $name.' '.$week_name, $date);
+            $weeks[] = $this->createWeek($week_name, $name.' '.$week_name, $date);
             $date->modify('+1 week');
         }
-        $this->createPeriod($manager, $name, $name.' Term', $name.' Term '.$date->format('Y'), $start_date, $date);
+        $this->createPeriod($name, "$name Term", "$name Term ".$date->format('Y'), $start_date, $date, $weeks);
 
         return array($start_date, $date);
     }
 
-    protected function addVacation(ObjectManager $manager, $name, \DateTime $start, \DateTime $end)
+    protected function addVacation(string $name, \DateTime $start, \DateTime $end): void
     {
         $start_year = $start->format('Y');
         $end_year = $end->format('Y');
         $year = ($start_year == $end_year) ? $start_year : $start_year.'/'.$end_year;
 
-        $this->createPeriod($manager, $name.' Vacation', $name.' Vacation', $name.' Vacation '.$year, $start, $end);
+        $this->createPeriod("$name Vacation", "$name Vacation", "$name Vacation $year", $start, $end);
     }
 
-    private function createPeriod(ObjectManager $manager, $short, $name, $long, $start, $end)
+    /** @param WeekName[] $weeks */
+    private function createPeriod(string $short, string $name, string $long,
+        \DateTime $start, \DateTime $end, array $weeks = []): void
     {
-        /** @var TimePeriodRepository $repo */
-        $repo = $manager->getRepository(TimePeriod::class);
-        $qb = $repo->createQueryBuilder('p');
-        $query = $qb
-            ->where($qb->expr()->andX('p.start_at < :end', 'p.end_at > :start'))
-            ->setParameter('start', $start)->setParameter('end', $end)
-            ->getQuery();
-        $result = $query->getResult();
+        $p = new TimePeriod();
+        $p->setShortName($short)->setName($short)->setFullName($long)
+            ->setStartAt($start)->setEndAt($end);
+        $this->em->persist($p);
 
-        if (count($result) == 0) {
-            $p = new TimePeriod();
-            $p->setShortName($short)->setName($name)->setFullName($long)
-                ->setStartAt($start)->setEndAt($end);
-
-            $manager->persist($p);
-            $manager->flush();
-        } else {
-            $p = current($result);
-        }
-
-        $repo = $manager->getRepository(WeekName::class);
-        $qb = $repo->createQueryBuilder('w');
-        $query = $qb
-            ->where($qb->expr()->andX('w.start_at >= :start', 'w.start_at < :end'))
-            ->setParameter('start', $start)->setParameter('end', $end)
-            ->getQuery();
-        foreach ($query->getResult() as $week) {
+        foreach ($weeks as $week) {
             $p->addWeekName($week);
             $week->setTimePeriod($p);
         }
-        $manager->flush();
     }
 
-    private function createWeek(ObjectManager $manager, string $short_name, string $name, \DateTime $start): void
+    private function createWeek(string $short_name, string $name, \DateTime $start): WeekName
     {
-        $repo = $manager->getRepository(WeekName::class);
-        $qb = $repo->createQueryBuilder('w');
-        $query = $qb->select('count(w.id) AS c')
-            ->where($qb->expr()->andX('w.start_at = :start'))
-            ->setParameter('start', $start)
-            ->getQuery();
-        $result = $query->getResult();
-        $count = $result[0]['c'];
-        if ($count == 0) {
-            $w = new WeekName();
-            $w->setShortName($short_name)->setName($name)
-                ->setStartAt($start);
-
-            $manager->persist($w);
-            $manager->flush();
-        }
+        $w = new WeekName();
+        $w->setShortName($short_name)->setName($name)
+          ->setStartAt(clone $start);
+        $this->em->persist($w);
+        return $w;
     }
 }
