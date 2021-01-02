@@ -11,18 +11,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ContactController extends AbstractController
 {
-
     /**
      * @Route("/contact/{type}/{identifier}", name="contact_entity")
-     *
-     * @param Request $request
-     * @param string $identifier
      */
-    public function indexAction(Request $request, ContactEntityService $ces, $type, $identifier)
+    public function indexAction(Request $request, ContactEntityService $ces, string $type, string $identifier)
     {
         $entity = $this->getEntity($type, $identifier);
         if (is_null($entity)) {
-            throw $this->createNotFoundException("There is no $type called $identifier.");
+            throw $this->createNotFoundException("There is no $type called $identifier. It may have been deleted since you followed this link.");
         }
         $this->denyAccessUnlessGranted('VIEW', $entity);
 
@@ -55,12 +51,18 @@ class ContactController extends AbstractController
     /**
      * @return \Acts\CamdramBundle\Entity\Show|\Acts\CamdramBundle\Entity\Society|\Acts\CamdramBundle\Entity\Venue|null
      */
-    private function getEntity($type, $identifier)
+    private function getEntity(string $type, string $identifier)
     {
+        if ($type === 'show') {
+            $show = $this->getDoctrine()->getRepository('\Acts\CamdramBundle\Entity\Show')
+                         ->findOneBySlug($identifier);
+            if (!is_null($show)) return $show;
+
+            $slug = $this->getDoctrine()->getRepository('\Acts\CamdramBundle\Entity\ShowSlug')
+                                        ->findOneBySlug($identifier);
+            return is_null($slug) ? null : $slug->getShow();
+        }
         switch ($type) {
-            case 'show':
-                return $this->getDoctrine()->getRepository('\Acts\CamdramBundle\Entity\Show')
-                    ->findOneBySlug($identifier);
             case 'society':
                 return $this->getDoctrine()->getRepository('\Acts\CamdramBundle\Entity\Society')
                 ->findOneBySlug($identifier);
