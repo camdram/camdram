@@ -19,13 +19,17 @@ set('git_tty', false);
 add('shared_files', []);
 add('shared_dirs', ['app/data']);
 
-// Writable dirs by web server
-add('writable_dirs', ['app/data', 'public/media']);
+// Don't submit anonymous usage statistics
 set('allow_anonymous_stats', false);
+
+// Who does the Apache httpd process run as?
+set('http_user', 'www-data');
 set('http_group', 'www-data');
 
-// Hosts
+// Make the dirs below writable by web server
+add('writable_dirs', ['app/data', 'public/media']);
 
+// Hosts
 host('production')
     ->hostname('antigone.camdram.net')
     ->user('deploy')
@@ -37,7 +41,7 @@ host('development')
     ->hostname('antigone.camdram.net')
     ->user('deploy')
     ->stage('development')
-    ->set('deploy_path', '/var/www/camdram/dev/master')
+    ->set('deploy_path', '/var/www/camdram/development/master')
     ->set('keep_releases', 1);
 
 // Yarn tasks
@@ -59,7 +63,6 @@ task('yarn:build', function () {
 })->desc('Build assets');
 
 // Database Tasks
-
 task('database:update', function() {
     if (get('stage') == 'production')
     {
@@ -74,13 +77,12 @@ task('database:update', function() {
 })->desc('Refresh development database');
 
 // Deployment Tasks
-
 task('deploy:validate', function() {
     if (get('stage') == 'production' && (!input()->hasOption('tag') || empty(input()->getOption('tag')))) {
         throw new Exception('Only release tags can be deployed to production (e.g. --tag 20001010)');
     }
     if (get('stage') == 'development') {
-        set('deploy_path', '/var/www/camdram/dev/'.input()->getOption('branch'));
+        set('deploy_path', '/var/www/camdram/development/'.input()->getOption('branch'));
     }
 })->desc('Validate git target');
 
