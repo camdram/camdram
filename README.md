@@ -1,6 +1,6 @@
 # Camdram
 
-[![Build Status](https://travis-ci.org/camdram/camdram.svg?branch=master)](https://travis-ci.org/camdram/camdram)
+![Build status](https://github.com/camdram/camdram/workflows/CI/badge.svg?branch=master&event=push)
 [![Deployment pipeline](https://app.buddy.works/pahoyes/camdram/pipelines/pipeline/144463/badge.svg?token=341b56da65db9ca188c65852d3d63e16c6a51a1132c8c963fe37f88bfad02c59 "Deployment pipeline")](https://app.buddy.works/pahoyes/camdram/pipelines/pipeline/144463)
 [![Code Coverage](https://codecov.io/gh/camdram/camdram/branch/master/graphs/badge.svg?branch=master)](http://codecov.io/github/camdram/camdram?branch=master)
 [![Join the chat at https://gitter.im/camdram/development](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/camdram/development)
