@@ -51,8 +51,11 @@ class PersonController extends AbstractRestController
 
     /**
      * People are created by adding them to shows. No form.
+	 * @codeCoverageIgnore
      */
-    public function newAction(): Response { throw $this->createNotFoundException(); }
+	public function newAction(): Response { throw $this->createNotFoundException(); }
+	/** @codeCoverageIgnore */
+    public function postAction(Request $request): Response { throw $this->createNotFoundException(); }
 
     /**
      * Action that allows querying by id. Redirects to slug URL

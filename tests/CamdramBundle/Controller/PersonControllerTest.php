@@ -7,7 +7,24 @@ use Acts\CamdramBundle\Entity\Role;
 
 class PersonControllerTest extends RestTestCase
 {
+    /** @var string */
+    private static $old_dev_warning;
     private $show;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$old_dev_warning = getenv("DEVELOPMENT_WARNING");
+        putenv("DEVELOPMENT_WARNING=false");
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        if (self::$old_dev_warning === false) {
+            putenv("DEVELOPMENT_WARNING");
+        } else {
+            putenv("DEVELOPMENT_WARNING={$this->old_dev_warning}");
+        }
+    }
 
     public function setUp(): void
     {
@@ -48,6 +65,7 @@ class PersonControllerTest extends RestTestCase
     public function testViewPerson()
     {
         $crawler = $this->client->request('GET', '/people/john-smith');
+        $this->assertEquals($crawler->filter('meta[name="robots"][content="noindex"]')->count(), 0);
         $this->assertEquals($crawler->filter('#content:contains("John Smith")')->count(), 1);
         $this->assertEquals($crawler->filter('#content:contains("Person Test")')->count(), 1);
 
@@ -114,4 +132,35 @@ class PersonControllerTest extends RestTestCase
             ], '_type'      => 'role'
         ], $data[0]);
     }
+
+	public function testNewPerson() {
+        $crawler = $this->client->request('GET', '/people/new');
+        $this->assertHTTPStatus(404);
+
+        $crawler = $this->client->request('POST', '/people');
+        $this->assertHTTPStatus(405);
+	}
+
+	public function testEditPerson() {
+        $crawler = $this->client->request('GET', '/people/john-smith/edit');
+        $this->assertEquals($crawler->filter('#content:contains("Log in to Camdram")')->count(), 1);
+
+        $user = $this->createUser();
+        $this->aclProvider->grantAdmin($user);
+        $this->login($user);
+
+        $crawler = $this->client->request('GET', '/people/john-smith');
+		$crawler = $this->click("Edit profile", $crawler);
+		$this->assertHTTPStatus(200);
+
+        $form = $crawler->selectButton('Save')->form();
+        $form['person[name]'] = 'Jane Doe';
+        $form['person[description]'] = 'Text text text';
+        $form['person[no_robots]']->tick();
+        $crawler = $this->client->submit($form);
+
+        $this->assertEquals($crawler->filter('meta[name="robots"][content="noindex"]')->count(), 1);
+        $this->assertEquals($crawler->filter('#content h2:contains("Jane Doe")')->count(), 1);
+        $this->assertEquals($crawler->filter('#content p:contains("Text text text")')->count(), 1);
+	}
 }

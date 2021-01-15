@@ -15,7 +15,7 @@ class MySQLTestCase extends RestTestCase
         putenv("DATABASE_URL=$MYSQL_TEST_URL");
     }
 
-    public static function tearDownAfterTest(): void
+    public static function tearDownAfterClass(): void
     {
         if (self::$old_db_url === false) {
             putenv("DATABASE_URL");
