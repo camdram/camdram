@@ -310,7 +310,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 Dropzone.options.imageUpload = {
     paramName: "file", // The name that will be used to transfer the file
-    maxFilesize: 2, // MB
+    maxFilesize: 4, // MiB
+    chunking: true,
+    chunkSize: 1000000,
     createImageThumbnails: true,
     thumbnailWidth: 120,
     thumbnailHeight: 120,

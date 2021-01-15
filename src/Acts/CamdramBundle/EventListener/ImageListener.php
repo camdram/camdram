@@ -15,7 +15,6 @@ use Psr\Log\LoggerInterface;
 
 class ImageListener
 {
-
     /**
      * @var ObjectManager
      */
@@ -84,12 +83,12 @@ class ImageListener
             throw new ValidationException('File is not a valid image');
         }
 
-        if ($event->getFile()->getSize() > 2 * 1024 * 1024) {
+        if ($event->getFile()->getSize() > 4 * 1024 * 1024) {
             $this->logger->error(
-                'ImageListener: File > 2Mb uploaded',
+                'ImageListener: File > 4 MiB uploaded',
                 ['filename' => $file->getBasename(), 'size' => $file->getSize()]
             );
-            throw new ValidationException('Files over 2Mb cannot be processed');
+            throw new ValidationException('Files over 4 MiB cannot be processed');
         }
 
         $type = $event->getRequest()->request->get('type', '');
