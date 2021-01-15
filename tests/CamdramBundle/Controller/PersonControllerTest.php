@@ -22,7 +22,7 @@ class PersonControllerTest extends RestTestCase
         if (self::$old_dev_warning === false) {
             putenv("DEVELOPMENT_WARNING");
         } else {
-            putenv("DEVELOPMENT_WARNING={$this->old_dev_warning}");
+            putenv("DEVELOPMENT_WARNING=".self::$old_dev_warning);
         }
     }
 

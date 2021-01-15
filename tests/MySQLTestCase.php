@@ -20,7 +20,7 @@ class MySQLTestCase extends RestTestCase
         if (self::$old_db_url === false) {
             putenv("DATABASE_URL");
         } else {
-            putenv("DATABASE_URL={$this->old_db_url}");
+            putenv("DATABASE_URL=".self::$old_db_url);
         }
     }
 }
