@@ -31,9 +31,16 @@ monolog:
 sentry:
     dsn: "%sentry_dsn%"
     options:
-        excluded_exceptions:
-            - Symfony\Component\HttpKernel\Exception\BadRequestHttpException
-            - Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
-            - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-            - Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException
-            - Symfony\Component\Security\Core\Exception\AccessDeniedException
+        integrations:
+            - 'Sentry\Integration\IgnoreErrorsIntegration'
+
+services:
+    Sentry\Integration\IgnoreErrorsIntegration:
+        arguments:
+            $options:
+                ignore_exceptions:
+                    - Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+                    - Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+                    - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+                    - Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException
+                    - Symfony\Component\Security\Core\Exception\AccessDeniedException
