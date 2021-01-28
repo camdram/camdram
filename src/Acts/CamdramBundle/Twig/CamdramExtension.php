@@ -173,11 +173,6 @@ class CamdramExtension extends AbstractExtension
         return "<a href=\"$url\" $attrs>$content</a>";
     }
 
-    public function getName(): string
-    {
-        return 'camdram_extension';
-    }
-
     /**
      * This function takes a six-digit hex color and returns an array
      * of hex colors which are accessible. E.g.
@@ -233,7 +228,7 @@ class CamdramExtension extends AbstractExtension
             }
         }
         uksort($replaceMap, function($a, $b) {
-            return mb_strlen($a) < mb_strlen($b);
+            return mb_strlen($b) <=> mb_strlen($a);
         });
 
         foreach ($replaceMap as $search => $slug) {
