@@ -1,5 +1,5 @@
 import './base.js';
-import L from 'leaflet';
+import { DivIcon, Map, Marker, TileLayer } from '../../node_modules/leaflet/dist/leaflet-src.esm.js'
 import "leaflet/dist/leaflet.css";
 import '../scss/venues.scss';
 
@@ -7,9 +7,9 @@ const q = document.querySelector.bind(document);
 const qq = document.querySelectorAll.bind(document);
 const maps = {};
 
-L.Marker.prototype.options.icon = L.divIcon({
+Marker.prototype.options.icon = new DivIcon({
     className: 'custom-map-icon',
-    html: '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="40px"><path fill="#49c" fill-rule="even-odd" d="M1.1,17A12,12 0 1 1 22.9,17L12,40Z"/><circle cx="12" cy="12" r="4" fill="#fff"/></svg>',
+    html: '<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="40px"><path fill="#49c" d="M1.1,17A12,12 0 1 1 22.9,17L12,40Z"/><circle cx="12" cy="12" r="4" fill="#fff"/></svg>',
     iconSize:    [40, 40],
     iconAnchor:  [12, 40],
     popupAnchor: [0, -34],
@@ -23,18 +23,18 @@ function venueMap(elId, action, opts) {
     if (!map) {
         const centre = opts.location || [52.20531, 0.12279];
         const zoom = opts.location ? 16 : 14;
-        map = L.map(elId).setView(centre, zoom);
+        map = (new Map(elId)).setView(centre, zoom);
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        (new TileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-        }).addTo(map);
+        })).addTo(map);
 
         maps[elId] = map;
     }
 
     switch (action) {
         case 'add-marker':
-            const marker = L.marker(opts.location)
+            const marker = (new Marker(opts.location))
                 .addTo(map).bindPopup(opts.content);
             if (opts.open) {
                 marker.openPopup();

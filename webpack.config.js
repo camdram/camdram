@@ -42,7 +42,11 @@ Encore
 
     .configureBabel(babelConfig => {
         babelConfig.plugins.push('@babel/plugin-proposal-class-properties');
-    });
+    })
+
+    .configureCssLoader(config => {
+        config.url = false;
+    })
 ;
 
 // generate the onfiguration
