@@ -180,7 +180,7 @@ class Advert implements OwnableInterface
 
     /**
      * @var Collection<Position>
-     * @ORM\ManyToMany(targetEntity="Position", inversedBy="adverts", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="Position", inversedBy="adverts")
      * @ORM\JoinTable(name="acts_advert_position_link")
      */
     private $positions;
