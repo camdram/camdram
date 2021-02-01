@@ -858,10 +858,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@symfony/webpack-encore@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.0.2.tgz#7d98626c8424abf04f07f8f0ad626aa9b3f7e7d7"
-  integrity sha512-3ZMtkKE07SpYR5IT+hZS6Nf3tu4t05tXh07OjmTozP5ik61rZbOJi0so7nxA/Vb82LAy+tKbziaEULcVxfwJsw==
+"@symfony/webpack-encore@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.0.3.tgz#c65bbc976e114faceaa84e467b5c6478567dea7a"
+  integrity sha512-s3XlHyYHKLiWNVpgiTUHg3iAP8UIJ3s9Rk0+z4bydIlfM+YxVLKFJ151tIyBW1VZk7UHjAeCceaaVbOrlfwvfw==
   dependencies:
     "@babel/core" "^7.7.0"
     "@babel/plugin-syntax-dynamic-import" "^7.0.0"
