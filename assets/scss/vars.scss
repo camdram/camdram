@@ -1,3 +1,4 @@
+$custom-color: #FB51B7;
 $background-color: #fff9e3;
 $white: #fff;
 $orange: #fe5c1f;
@@ -6,7 +7,7 @@ $light-grey: #666;
 $destructive: #B71C1C;
 $destructive-light: #D32F2F;
 
-$primary-color: $orange;
+$primary-color: $custom-color;
 $secondary-color: #999;
 $hr-color: #ccc;
 $form-text-color: #444;
@@ -24,6 +25,10 @@ $width-small: 768px;
 $row-width: 62.5rem;
 
 $default-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+:root {
+  --custom-color: #{$custom-color};
+}
 
 @mixin button($bg: $primary-color) {
   line-height: 21px;
