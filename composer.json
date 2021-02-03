@@ -77,7 +77,7 @@
         "php-http/guzzle6-adapter": "^2",
         "php-http/httplug-bundle": "^1.10",
         "sabre/vobject": "~4.1",
-        "sensio/framework-extra-bundle": "^5.2",
+        "sensio/framework-extra-bundle": "^6.0",
         "sentry/sentry-symfony": "^4",
         "stof/doctrine-extensions-bundle": "^1.4",
         "symfony/asset": "*",
