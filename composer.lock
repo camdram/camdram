@@ -6448,16 +6448,16 @@
         },
         {
             "name": "sabre/vobject",
-            "version": "4.3.3",
+            "version": "4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/vobject.git",
-                "reference": "58f9f9b46a1080c0130bd86f4df9a568aacb9c79"
+                "reference": "3168acd7c22fa3c96cb115539f93b59818ba1f06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/58f9f9b46a1080c0130bd86f4df9a568aacb9c79",
-                "reference": "58f9f9b46a1080c0130bd86f4df9a568aacb9c79",
+                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/3168acd7c22fa3c96cb115539f93b59818ba1f06",
+                "reference": "3168acd7c22fa3c96cb115539f93b59818ba1f06",
                 "shasum": ""
             },
             "require": {
@@ -6466,8 +6466,9 @@
                 "sabre/xml": "^2.1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.16.7",
+                "friendsofphp/php-cs-fixer": "~2.17.1",
                 "phpstan/phpstan": "^0.12",
+                "phpunit/php-invoker": "^2.0 || ^3.1",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
             },
             "suggest": {
@@ -6547,7 +6548,7 @@
                 "issues": "https://github.com/sabre-io/vobject/issues",
                 "source": "https://github.com/fruux/sabre-vobject"
             },
-            "time": "2020-11-09T04:31:38+00:00"
+            "time": "2021-02-04T09:59:59+00:00"
         },
         {
             "name": "sabre/xml",
