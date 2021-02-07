@@ -2242,10 +2242,10 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-dropzone@^5.7.2:
-  version "5.7.2"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.7.2.tgz#91bee1572dda515d40901da304bc79dddf309b4c"
-  integrity sha512-m217bJHtf0J1IiKn4Tv6mnu1h5QvQNBnKZ39gma7hzGQhIZMxYq1vYEHs4AVd4ThFwmALys+52NAOD4zdLTG4w==
+dropzone@^5.7.3:
+  version "5.7.3"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.7.3.tgz#de1f06c893afa1fd2982f1cc0e91675e1dd173ae"
+  integrity sha512-hHiU7G6wfGfWP3bHtQzPWEaSuWQIQuwRW7SxkF9V9LHgk+9GFGmZJi39FMzZhBJMa6V6HUSj4B0tYvNEiKdPVQ==
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
