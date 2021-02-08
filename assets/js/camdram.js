@@ -66,7 +66,7 @@ function doCookieConsent() {
     window.cookieconsent.initialise({
         "palette": {
             "popup": {
-                 "background": "#fb51b7",
+                 "background": "#fe5c1f",
                  "text": "#ffffff"
             },
             "button": {

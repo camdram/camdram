@@ -96,7 +96,7 @@ nav.navbar {
 }
 
 #content {
-  --primary-color: var(--color-text, #{$primary-color});
+  --primary-color: var(--color-text, #{$orange});
   font-size: .875rem;
 
   ul {
