@@ -4289,20 +4289,20 @@
         },
         {
             "name": "oneup/uploader-bundle",
-            "version": "3.0.2",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
-                "reference": "14f0f3b618d9e73f99636a5695927caf8214a2d4"
+                "reference": "62223478ae1cc07be69a1c7c98a4f9aaffeb7ff9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/14f0f3b618d9e73f99636a5695927caf8214a2d4",
-                "reference": "14f0f3b618d9e73f99636a5695927caf8214a2d4",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/62223478ae1cc07be69a1c7c98a4f9aaffeb7ff9",
+                "reference": "62223478ae1cc07be69a1c7c98a4f9aaffeb7ff9",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5",
+                "php": "^7.2.5 || ^8.0",
                 "symfony/asset": "^4.4 || ^5.0",
                 "symfony/event-dispatcher-contracts": "^1.0 || ^2.0",
                 "symfony/finder": "^4.4 || ^5.0",
@@ -4375,9 +4375,9 @@
             ],
             "support": {
                 "issues": "https://github.com/1up-lab/OneupUploaderBundle/issues",
-                "source": "https://github.com/1up-lab/OneupUploaderBundle/tree/3.0.2"
+                "source": "https://github.com/1up-lab/OneupUploaderBundle/tree/3.1.0"
             },
-            "time": "2020-12-07T07:49:15+00:00"
+            "time": "2021-02-08T18:06:19+00:00"
         },
         {
             "name": "phar-io/manifest",
