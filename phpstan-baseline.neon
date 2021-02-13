@@ -31,11 +31,6 @@ parameters:
 			path: src/Acts/CamdramBundle/Controller/VenueController.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition\\:\\:children\\(\\)\\.$#"
-			count: 1
-			path: src/Acts/CamdramBundle/DependencyInjection/Configuration.php
-
-		-
 			message: "#^Call to function is_null\\(\\) with Oneup\\\\UploaderBundle\\\\Uploader\\\\File\\\\FileInterface\\|Symfony\\\\Component\\\\HttpFoundation\\\\File\\\\File will always evaluate to false\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/EventListener/ImageListener.php
