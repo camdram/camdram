@@ -33,6 +33,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        sudo apt install php-xdebug
         sudo systemctl start mysql.service
         # composer install has to run even if the packages are cached
         composer install --prefer-dist --no-progress
