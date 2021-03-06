@@ -85,7 +85,7 @@ ENDSQL;
                 FROM acts_people_data p
                 LEFT JOIN acts_shows_people_link ON acts_shows_people_link.pid = p.id
                 LEFT JOIN acts_performances ON acts_performances.sid = acts_shows_people_link.sid
-                WHERE MATCH (`name`, `slug`) AGAINST (? IN BOOLEAN MODE)
+                WHERE MATCH (`name`, `slug`) AGAINST (? IN BOOLEAN MODE) AND p.mapto IS NULL
                 GROUP BY p.id)
 ENDSQL;
         $fragments['society'] = <<<'ENDSQL'
