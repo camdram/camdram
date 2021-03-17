@@ -48,17 +48,16 @@ class AdminController extends AbstractController
     /**
      * This method's contents were formerly included in editAdminAction
      * directly. Splitting it off allows an alternative form to be passed.
+     * @param ?\Symfony\Component\Form\FormInterface $formBase
      */
-    private function createEditAdminResponse(string $type, string $identifier, $form, Helper $helper)
+    private function createEditAdminResponse(string $type, string $identifier, $formBase, Helper $helper)
     {
         $entity = $this->getEntity($type, $identifier);
         $helper->ensureGranted('EDIT', $entity);
 
-        if ($form == null) {
-            $form = $this->createForm(PendingAccessType::class, new PendingAccess(), [
+        $form = ($formBase == null) ? $this->createForm(PendingAccessType::class, new PendingAccess(), [
                 'action' => $this->generateUrl('post_entity_admin', compact('type', 'identifier'))
-            ])->createView();
-        }
+            ])->createView() : $formBase->createView();
 
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository(User::class)->getEntityOwners($entity);
@@ -67,7 +66,7 @@ class AdminController extends AbstractController
             $em->getRepository(User::class)->getRequestedShowAdmins($entity) : null;
 
         return $this->render('pending_access/edit.html.twig', compact(
-            'entity', 'admins', 'requested_admins', 'pending_admins','form'));
+            'entity', 'admins', 'requested_admins', 'pending_admins', 'form'));
     }
 
     /**
