@@ -1,11 +1,4 @@
 version: 2
-registries:
-  git-github-com:
-    type: git
-    url: https://github.com
-    username: x-access-token
-    password: "${{secrets.GIT_GITHUB_COM_PASSWORD}}"
-
 updates:
 - package-ecosystem: composer
   directory: "/"
@@ -14,8 +7,6 @@ updates:
     time: "09:00"
     timezone: Europe/London
   open-pull-requests-limit: 99
-  registries:
-  - git-github-com
 - package-ecosystem: npm
   directory: "/"
   schedule:
@@ -23,5 +14,3 @@ updates:
     time: "09:00"
     timezone: Europe/London
   open-pull-requests-limit: 99
-  registries:
-  - git-github-com
