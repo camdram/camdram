@@ -49,7 +49,7 @@ class OAuthEventListener implements EventSubscriberInterface
 
         $scope_str = $request->query->get('scope');
         if (!$scope_str) {
-            $form = $request->request->get('fos_oauth_server_authorize_form');
+            $form = $request->request->all('fos_oauth_server_authorize_form');
             if ($form) {
                 $scope_str = $form['scope'];
             }

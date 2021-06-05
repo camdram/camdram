@@ -24,10 +24,8 @@ class RoleController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Role::class);
-        $role_ids = $request->request->get('role');
-        if (!is_array($role_ids)) {
-            return new Response("role must be array", 400);
-        }
+        // The following line will throw if the user passes a scalar, e.g. ?role=x.
+        $role_ids = $request->request->all('role');
         $failed = [];
         $i = 0;
         foreach ($role_ids as $id) {
