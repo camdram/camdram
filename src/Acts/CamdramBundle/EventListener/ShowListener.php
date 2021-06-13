@@ -50,7 +50,7 @@ class ShowListener
         $uow->recomputeSingleEntityChangeSet($meta, $show);
 
         //ensure all the associated performances are also saved
-        $performanceMeta = $em->getClassMetadata('ActsCamdramBundle:Performance');
+        $performanceMeta = $em->getClassMetadata('\Acts\CamdramBundle\Entity\Performance');
         foreach ($show->getPerformances() as $performance) {
             $performance->setShow($show);
             $uow->recomputeSingleEntityChangeSet($performanceMeta, $performance);
