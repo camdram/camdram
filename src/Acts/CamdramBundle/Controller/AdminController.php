@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramBundle\Controller;
 
+use Acts\CamdramBundle\Entity;
 use Acts\CamdramBundle\Service\ModerationManager;
 use Acts\CamdramSecurityBundle\Entity\AccessControlEntry;
 use Acts\CamdramSecurityBundle\Entity\PendingAccess;
@@ -23,13 +24,18 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+    /**
+     * @param string $type
+     * @param string|int $identifier
+     * @return Entity\Event |Entity\Show|Entity\Society|Entity\Venue
+     */
     protected function getEntity($type, $identifier)
     {
         $class = [
-            'events'    => \Acts\CamdramBundle\Entity\Event::class,
-            'shows'     => \Acts\CamdramBundle\Entity\Show::class,
-            'societies' => \Acts\CamdramBundle\Entity\Society::class,
-            'venues'    => \Acts\CamdramBundle\Entity\Venue::class
+            'events'    => Entity\Event::class,
+            'shows'     => Entity\Show::class,
+            'societies' => Entity\Society::class,
+            'venues'    => Entity\Venue::class
         ][$type];
         if ($type == 'events') return $this->getDoctrine()->getRepository($class)->find($identifier);
         return $this->getDoctrine()->getRepository($class)->findOneBy(['slug' => $identifier]);

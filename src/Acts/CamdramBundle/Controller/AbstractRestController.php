@@ -153,7 +153,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * @Route("/{identifier}/edit")
      * @return Response|View
      */
-    public function editAction($identifier)
+    public function editAction(string $identifier)
     {
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
@@ -168,7 +168,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Action where PUT request is submitted from edit entity form
      * @Route("/{identifier}.{_format}", format="html", methods={"PUT"})
      */
-    public function putAction(Request $request, $identifier): Response
+    public function putAction(Request $request, string $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
@@ -190,7 +190,7 @@ abstract class AbstractRestController extends AbstractFOSRestController
      * Action where PATCH request is submitted from edit entity form
      * @Route("/{identifier}.{_format}", format="html", methods={"PATCH"})
      */
-    public function patchAction(Request $request, $identifier): Response
+    public function patchAction(Request $request, string $identifier): Response
     {
         $entity = $this->getEntity($identifier);
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $entity);
@@ -212,14 +212,14 @@ abstract class AbstractRestController extends AbstractFOSRestController
     /**
      * Called before a new edit form is sent to the user.
      */
-    public function modifyEditForm($form, $identifier): void {}
+    public function modifyEditForm($form, string $identifier): void {}
 
     /**
      * Called after an edit (or new) form has been successfully submitted and
      * changes given to Doctrine.
      * $em->flush() will be called soon after this is called.
      */
-    public function afterEditFormSubmitted($form, $identifier): void {}
+    public function afterEditFormSubmitted($form, string $identifier): void {}
 
     /**
      * Action to delete entity
@@ -263,6 +263,8 @@ abstract class AbstractRestController extends AbstractFOSRestController
 
     /**
      * Action for pages that represent a single entity - the entity in question is passed to the template
+     * @param T $entity
+     * @param array<mixed> $extraData
      * @return Response|View
      */
     public function doGetAction($entity, array $extraData = [])
