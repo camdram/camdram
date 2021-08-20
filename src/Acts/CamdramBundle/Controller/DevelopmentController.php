@@ -61,9 +61,8 @@ class DevelopmentController extends AbstractController
     {
         try {
             $github->authenticate(
-                $this->getParameter('github_id'),
-                $this->getParameter('github_secret'),
-                \Github\Client::AUTH_CLIENT_ID
+                $this->getParameter('github_token'),
+                \Github\Client::AUTH_ACCESS_TOKEN
             );
             $owner = 'camdram';
             $repoName = 'camdram';

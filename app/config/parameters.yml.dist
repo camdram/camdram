@@ -14,8 +14,7 @@ parameters:
     google_client_id:           1234
     google_client_secret:       s3cr3t
     google_key:                 s3cr3t
-    github_id:                  1234
-    github_secret:              s3cr3t
+    github_token:               s3cr3t
     recaptcha_site_key:         1234
     recaptcha_secret_key:       s3cr3t
     sentry_dsn:                 https://123dsn789@sentry.io/1234567
