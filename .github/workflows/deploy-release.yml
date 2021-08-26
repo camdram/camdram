@@ -21,4 +21,4 @@ jobs:
         with:
           args: deploy production --tag ${{ github.ref }}
         env:
-          SSH_PRIVATE_KEY: ${{ steps.get_version.outputs.TAG }}
+          SSH_PRIVATE_KEY: ${{ steps.get_tag.outputs.TAG }}
