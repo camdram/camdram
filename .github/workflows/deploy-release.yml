@@ -13,9 +13,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: Get the tag from the refspec
+        id: get_tag
+        run: echo ::set-output name=TAG::$(echo $GITHUB_REF | cut -d / -f 3)
       - name: Deploy
         uses: musps/action-deployer-php@master
         with:
           args: deploy production --tag ${{ github.ref }}
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.ANTIGONE_PRIVATE_KEY }}
+          SSH_PRIVATE_KEY: ${{ steps.get_version.outputs.TAG }}
