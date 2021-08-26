@@ -16,6 +16,6 @@ jobs:
       - name: Deploy
         uses: musps/action-deployer-php@master
         with:
-          args: deploy production --tag $GITHUB_REF
+          args: deploy production --tag ${{ env.GITHUB_REF }}
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ANTIGONE_PRIVATE_KEY }}
