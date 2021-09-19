@@ -18,19 +18,4 @@
 
 {{ include('@HWIOAuth/Connect/service-list.html.twig') }}
 
-{% if not app.user or app.user.externalUsers | length == 0 %}
-<div class="panel">
-    <h5><i class="fa fa-info-circle"></i> You can no longer use a password to log into your Camdram account.</h5>
-    <p>If you previously logged in using a password, please follow one of the following options:</p>
-    <ul>
-        <li>If you are registered with a <em>&commat;cam.ac.uk</em> e-mail address, please log in using
-            <strong>Raven</strong> above and your Camdram account will be automatically detected.</li>
-        <li>If you use the same e-mail address for Camdram as your primary e-mail address for a <strong>Google</strong>,
-            <strong>Facebook</strong> or <strong>Twitter</strong> account, please use the corresponding link above and your existing
-            Camdram account will be automatically detected.</li>
-        <li>Otherwise, please <a href="{{ path("acts_camdram_contact_us") }}">contact us</a> and we will help you to 
-            regain access to your account.</li>
-    </ul>
-</div>
-{% endif %}
 {% endblock %}
