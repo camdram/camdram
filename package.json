@@ -8,7 +8,7 @@
     "@fancyapps/fancybox": "^3.5.7",
     "@symfony/webpack-encore": "^1.5.0",
     "cookieconsent": "^3.1.1",
-    "dropzone": "^5.9.2",
+    "dropzone": "^5.9.3",
     "imports-loader": "^0.8.0",
     "leaflet": "^1.7.1",
     "node-sass": "^6.0.1",
