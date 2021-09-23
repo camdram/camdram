@@ -43,6 +43,7 @@ class AppKernel extends Kernel
 
         if ($this->getEnvironment() === 'test') {
             $bundles[] = new DAMA\DoctrineTestBundle\DAMADoctrineTestBundle();
+            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
         }
 
         if ($this->getEnvironment() === 'prod') {
