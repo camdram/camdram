@@ -1,6 +1,5 @@
 //Bundle assets
 const Encore = require('@symfony/webpack-encore');
-const webpack = require('webpack');
 const path = require('path');
 
 Encore
@@ -35,10 +34,8 @@ Encore
     .enableVersioning()
 
     // allow sass/scss files to be processed
-    .enableSassLoader(function(options) {
+    .enableSassLoader(function (options) {
     })
-
-    .addPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/))
 
     .configureBabel(babelConfig => {
         babelConfig.plugins.push('@babel/plugin-proposal-class-properties');
@@ -47,7 +44,7 @@ Encore
     .configureCssLoader(config => {
         config.url = false;
     })
-;
+    ;
 
 // generate the onfiguration
 var config = Encore.getWebpackConfig();
