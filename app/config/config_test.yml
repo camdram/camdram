@@ -25,3 +25,15 @@ fos_js_routing:
 
 ewz_recaptcha:
     enabled: false
+
+security:
+    firewalls:
+        public:
+            oauth:
+                resource_owners:
+                    test:               "/auth/check-test"
+
+hwi_oauth:
+    resource_owners:
+        test:
+            service: Acts\CamdramSecurityBundle\Security\TestResourceOwner

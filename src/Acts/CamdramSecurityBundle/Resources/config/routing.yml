@@ -1,3 +1,7 @@
+camdram_security_annotation:
+    resource: "@ActsCamdramSecurityBundle/Controller/"
+    type:     annotation
+
 acts_camdram_security_confirm_email:
     path:   /confirm-email/{email}/{token}
     defaults: { _controller: Acts\CamdramSecurityBundle\Controller\DefaultController::confirmEmailAction }
@@ -29,3 +33,6 @@ twitter_login:
 
 raven_login:
     path: /check-raven
+
+test_login:
+    path: /check-test
