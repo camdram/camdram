@@ -878,10 +878,10 @@
   resolved "https://registry.yarnpkg.com/@fancyapps/fancybox/-/fancybox-3.5.7.tgz#12f8734663ec6eae7f9236b92ca236e6e07fdfd5"
   integrity sha512-rcEtu8t+WnmqIDV/Wfm1yvy/nDdwc7YV25j9HLxGC2/WOsUhk9rcWg2nB8g1BrjRt9zaoADdjHTU6ILYTJzBBg==
 
-"@github/hotkey@^1.5.5":
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-1.5.5.tgz#ea56276c5cd066cad139aec88fd3c6c637bfe1c5"
-  integrity sha512-7FwmSY7n/9qEtb+DEBKRJUMQSt0kTNC8nJ97s4fYuYDdxn9lOziIbvjiHyNQTV3+GpowPtqbADfzrHF5jMsa4g==
+"@github/hotkey@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-1.6.0.tgz#64da82a18ac11d24f9d5d61575a0a58ba101b2ab"
+  integrity sha512-pm/xBWrn0yyD2GFqPUBH4ne7mdpdrnmdHxwKV0hN/jnSKj01RTPxau65SAvBvWD1Pf2VRv/OEE4H9ECORBHGdg==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
