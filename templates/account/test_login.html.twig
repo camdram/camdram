@@ -1,0 +1,15 @@
+<form action="{{ path('auth_test_login') }}" method="POST">
+
+<label for="identifier">Identifier</label>
+<input type="text" id="identifier" name="identifier" />
+
+<label for="name">Name</label>
+<input type="text" id="name" name="name" />
+
+<label for="email">Email</label>
+<input type="text" id="email" name="email" />
+
+<input type="hidden" name="redirect_uri" value="{{ redirect_uri }}" />
+
+<input type="submit" value="Submit" />
+</form>

@@ -15,6 +15,7 @@ use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Security\Handler\AuthenticationSuccessHandler;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use HWI\Bundle\OAuthBundle\Security\Core\Exception\AccountNotLinkedException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
@@ -36,6 +37,31 @@ class DefaultController extends AbstractController
         }
 
         return $this->render('account/confirm_email_error.html.twig');
+    }
+
+    /**
+     * @Route("/test-login-handler", name="auth_test_login")
+     */
+    public function testLoginAction(Request $request)
+    {
+        if ($this->getParameter('kernel.environment') !== 'test') {
+            throw $this->createNotFoundException('Test login is only valid in test environment');
+        }
+
+        if ($request->getMethod() == 'POST') {
+            $data = [
+                'identifier' => $request->request->get('identifier'),
+                'name' => $request->request->get('name'),
+                'email' => $request->request->get('email'),
+            ];
+            $redirect_uri = $request->request->get('redirect_uri');
+            $token = base64_encode(json_encode($data));
+            return $this->redirect($redirect_uri.'?test-token='.$token);
+        } else {
+            return $this->render('account/test_login.html.twig', [
+                'redirect_uri' => $request->query->get('redirect_uri'),
+            ]);
+        }
     }
 
 }
