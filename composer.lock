@@ -2020,16 +2020,16 @@
         },
         {
             "name": "excelwebzone/recaptcha-bundle",
-            "version": "v1.5.29",
+            "version": "v1.5.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
-                "reference": "8bb31b2073aeaa0b22403a82687fd139af4e1dbd"
+                "reference": "c7e375a9145c052baaa055a54e07698928082db4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/8bb31b2073aeaa0b22403a82687fd139af4e1dbd",
-                "reference": "8bb31b2073aeaa0b22403a82687fd139af4e1dbd",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/c7e375a9145c052baaa055a54e07698928082db4",
+                "reference": "c7e375a9145c052baaa055a54e07698928082db4",
                 "shasum": ""
             },
             "require": {
@@ -2074,9 +2074,9 @@
             ],
             "support": {
                 "issues": "https://github.com/excelwebzone/EWZRecaptchaBundle/issues",
-                "source": "https://github.com/excelwebzone/EWZRecaptchaBundle/tree/v1.5.29"
+                "source": "https://github.com/excelwebzone/EWZRecaptchaBundle/tree/v1.5.30"
             },
-            "time": "2021-09-08T14:52:45+00:00"
+            "time": "2021-10-18T12:56:22+00:00"
         },
         {
             "name": "facebook/graph-sdk",
