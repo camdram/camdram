@@ -29,6 +29,12 @@
             <h5><a href="{{ path('get_venue', {identifier: advert.venue.slug}) }}">{{ advert.venue.name }}</a></h5>
         </div>
         {% endif %}
+        {%- if advert.show and advert.show.contentWarning -%}
+        <details class="content-warning">
+            <summary><span><strong>Content warning</strong> (may contain spoilers)</span> <span>Click to expand</span><span>Click to close</span></summary>
+            <div>{{ advert.show.contentWarning | nl2br }}</div>
+        </details>
+        {%- endif -%}
         <p>{{ advert.summary | annotate_positions(advert.positions) }}</p>
         <ul class="prose-list">
         {%- for audition in advert.auditions -%}

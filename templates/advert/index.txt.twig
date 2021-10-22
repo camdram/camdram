@@ -9,6 +9,16 @@
 {% include 'show/advert_header.txt.twig' with
     {'show': a.show} %}
 ****************************************************************
+{% if a.show.contentWarning %}
+[ CW // {{
+    preg_replace("/\\s*\n\\s*/", "; ", a.show.contentWarning)
+    | wordwrap(55, "\n[    // ") }} ]
+
+
+
+
+
+{% endif %}
 {{ a.summary }}
 
 {% for audition in a.auditions -%}

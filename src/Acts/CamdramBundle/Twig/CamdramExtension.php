@@ -49,6 +49,7 @@ class CamdramExtension extends AbstractExtension
             new \Twig\TwigFilter('truncate', [$this->textService, 'truncate']),
             new \Twig\TwigFilter('truncateHTML', [$this->textService, 'truncateHTML'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
             new \Twig\TwigFilter('plural', [$this, 'pluralize']),
+            new \Twig\TwigFilter('wordwrap', 'wordwrap'),
             new \Twig\TwigFilter('ucfirst', 'ucfirst'),
             new \Twig\TwigFilter('annotate_positions', [$this, 'annotatePositions'], ['pre_escape' => 'html', 'is_safe' => ['html']]),
         );
@@ -61,6 +62,7 @@ class CamdramExtension extends AbstractExtension
             new \Twig\TwigFunction('admin_panel', [$this, 'admin_panel']),
             new \Twig\TwigFunction('link_entity', [$this, 'link_entity'], ['is_safe' => ['html']]),
             new \Twig\TwigFunction('list_sep_verb', [$this, 'list_sep_verb']),
+            new \Twig\TwigFunction('preg_replace', 'preg_replace'),
             new \Twig\TwigFunction('requires_article', [$this, 'requiresArticle']),
             new \Twig\TwigFunction('wcag_colors', [$this, 'genWcagColors'])
         );

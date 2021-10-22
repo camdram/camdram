@@ -3,6 +3,12 @@
 <em>{{ show.weeks }}</em>
 {% endif %}
 </p>
+{%- if show.contentWarning -%}
+<details class="content-warning">
+    <summary><span><strong>Content warning</strong> (may contain spoilers)</span> <span>Click to expand</span><span>Click to close</span></summary>
+    <div>{{ show.contentWarning | nl2br }}</div>
+</details>
+{%- endif -%}
 {{ show.description | camdram_markdown }}
 {% if not show.isArchived() and can_contact %}
 <p><a href="{{ path('contact_entity', {type: 'show', identifier: show.slug}) }}">

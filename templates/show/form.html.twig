@@ -83,6 +83,16 @@
 </div>
 
 <div class="form-large-row">
+    {{ form_label(form.content_warning) }}
+    <div>
+        <p class="help-text">Content warnings – guidance on what to put here is available from the <a href="https://www.adctheatre.com/media/4273/adc-theatre-content-warning-guide.pdf">ADC Theatre</a>.</p>
+        <p class="help-text">Please do not include "CW", slashes, dotted lines or similar padding, as all notices will be formatted appropriately for the locations they appear in.</p>
+         {{ form_widget(form.content_warning) }}
+         {{ form_errors(form.content_warning) }}
+    </div>
+</div>
+
+<div class="form-large-row">
     <span>Social</span>
     <div>
         <div class="form-small-widget">

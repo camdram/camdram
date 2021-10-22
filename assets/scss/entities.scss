@@ -203,3 +203,48 @@
         margin-left: -30px;
     }
 }
+
+details.content-warning {
+    border: 1px solid #505050;
+    border-radius: 4px;
+    display: flex;
+    margin: 0.5em 0 1em;
+    overflow-x: hidden;
+
+    > summary {
+        display: grid;
+        padding: 0.75em;
+        transition: background-color 200ms, color 200ms;
+        user-select: none;
+        cursor: pointer;
+        > :nth-child(n+2) {
+            grid-column: 2;
+            grid-row: 1;
+            justify-self: end;
+            opacity: 0.9;
+            font-size: 95%;
+            align-self: center;
+        }
+        > :nth-child(3) {
+            visibility: hidden;
+        }
+    }
+    &[open] > summary {
+        background: #505050;
+        color: white;
+        > :nth-child(2) {
+            visibility: hidden;
+        }
+        > :nth-child(3) {
+            visibility: visible;
+        }
+    }
+    > div {
+        margin: 0.75em;
+        color: white;
+        transition: color 350ms;
+    }
+    &[open] > div {
+        color: black;
+    }
+}

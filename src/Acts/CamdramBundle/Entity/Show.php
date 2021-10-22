@@ -59,6 +59,18 @@ class Show extends BaseEntity implements OwnableInterface
     private $description;
 
     /**
+     * A content warning.
+     *
+     * @var ?string
+     *
+     * @ORM\Column(name="content_warning", type="text", nullable=true)
+     * @Gedmo\Versioned
+     * @Serializer\Expose()
+     * @Serializer\Type("string")
+     */
+    private $content_warning;
+
+    /**
      * @var ?Image
      *
      * @ORM\ManyToOne(targetEntity="Image")
@@ -673,6 +685,18 @@ class Show extends BaseEntity implements OwnableInterface
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function setContentWarning(?string $content_warning): self
+    {
+        $this->content_warning = $content_warning;
+
+        return $this;
+    }
+
+    public function getContentWarning(): ?string
+    {
+        return $this->content_warning;
     }
 
     /**
