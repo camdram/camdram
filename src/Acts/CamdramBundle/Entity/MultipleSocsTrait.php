@@ -23,7 +23,7 @@ trait MultipleSocsTrait
      *
      * @var array
      *
-     * @ORM\Column(name="socs_list", type="json_array", nullable=false)
+     * @ORM\Column(name="socs_list", type="json", nullable=false)
      * @Gedmo\Versioned
      * @Serializer\Expose(if="object.shouldSerializeSocieties()")
      */
