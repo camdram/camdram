@@ -8,8 +8,7 @@ on:
 
 jobs:
   build:
-    # Ubuntu 18.04 image has more versions of PHP than 20.04.
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
@@ -40,10 +39,6 @@ jobs:
         yarn install
         # Download composer source to allow PHPStan to run
         if [ ! -a composer-src ]; then mkdir composer-src; cd composer-src; wget -qO- https://github.com/composer/composer/archive/1.10.17.tar.gz | tar xz; fi
-        # Switch PHP version to 7.3
-        for i in pear pecl php phar phar.phar php-cgi php-config phpize phpdbg; do
-          [ -e "/usr/bin/${i}7.3" ] && sudo update-alternatives --set $i "/usr/bin/${i}7.3"
-        done
 
     - name: Run PHPStan
       run: |
