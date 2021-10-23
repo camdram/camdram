@@ -6,11 +6,11 @@ use Acts\CamdramApiBundle\Configuration\AnnotationReader;
 use Acts\CamdramApiBundle\Service\EntityUrlGenerator;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandler;
+use Laminas\Feed\Writer\Feed;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Zend\Feed\Writer\Feed;
 
 class FeedViewHandler
 {
