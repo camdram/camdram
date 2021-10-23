@@ -78,8 +78,9 @@ class EventController extends AbstractRestController
         $eventIds = $this->em->createNativeQuery(
             $retrieveQuery." LIMIT $limit OFFSET $offset;", $rsm)
             ->setParameter('now', Time::now())->getResult();
+
         # Flatten array
-        $eventIds = array_map('reset', $eventIds);
+        $eventIds = array_map(function($a) { return $a['id']; }, $eventIds);
 
         $eventsById = $this->em->createQuery(
             'SELECT e FROM ActsCamdramBundle:Event e INDEX BY e.id WHERE e.id IN (:ids)'
