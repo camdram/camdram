@@ -91,6 +91,8 @@ nav.navbar {
   max-width: $row-width;
   margin:auto;
   padding: 1.5rem 1.25rem 1.25rem;
+  padding-left: unquote('max(1.5rem, env(safe-area-inset-left))');
+  padding-right: unquote('max(1.5rem, env(safe-area-inset-right))');
   background:$white;
   word-wrap:break-word;
 }
@@ -131,6 +133,8 @@ nav.navbar {
 footer {
   background: #2B2B2B;
   color: $white;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   h5 {
     color: $white;
   }
@@ -148,12 +152,11 @@ footer {
   > #sitemap {
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     > div {
       display: inline-block; /* This is purely a fallback for old browsers, probably not necessary */
       padding: 0.8em;
       vertical-align: top;
-      flex: 1;
     }
   }
 }
@@ -161,6 +164,8 @@ footer {
 header#main-header {
   background: $orange;
   background: var(--custom-color, $orange);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   clear: both;
   > div {
     max-width: $row-width;
@@ -215,7 +220,11 @@ header#main-header {
     height: 80px;
     #searchfield {
       font-size: 0.875rem;
-      height: 2.3125em;
+      height: 2.3125 * 0.875rem;
+      @supports(-webkit-touch-callout: none) {
+          /* Prevent iOS zooming behaviour */
+          font-size: 16px;
+      }
     }
 
     @media only screen and (min-width: 768px) {
@@ -378,11 +387,17 @@ $panel-font-color-alt: #000;
   position: fixed;
 }
 
+@mixin big-banner($bg) {
+    background: $bg;
+    text-align: center;
+    padding: 0.1em 1em;
+    padding-left: unquote('max(1em, env(safe-area-inset-left))');
+    padding-right: unquote('max(1em, env(safe-area-inset-right))');
+    font-size: 0.9em;
+}
+
 #dev-warning {
-  background: #ffff00;
-  text-align:center;
-  padding:0.1em 1em;
-  font-size:0.9em;
+  @include big-banner(#ff0)
 
   h3 {
     /* a11y only text as the logo is changed instead of a big h3*/
@@ -396,13 +411,10 @@ $panel-font-color-alt: #000;
 }
 
 #site-notice {
-  background:#dfdfff;
-  text-align:center;
-  padding:0.1em 1em;
-  font-size:0.9em;
+  @include big-banner(#dfdfff);
 
   h3 {
-    color:#000000;
+    color: #000000;
   }
 }
 

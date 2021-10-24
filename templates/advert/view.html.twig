@@ -31,7 +31,7 @@
         {% endif %}
         {%- if advert.show and advert.show.contentWarning -%}
         <details class="content-warning">
-            <summary><span><strong>Content warning</strong> (may contain spoilers)</span> <span>Click to expand</span><span>Click to close</span></summary>
+            <summary><div><span><strong>Content warning</strong> (may contain spoilers)</span> <span>Click to expand</span><span>Click to close</span></div></summary>
             <div>{{ advert.show.contentWarning | nl2br }}</div>
         </details>
         {%- endif -%}
