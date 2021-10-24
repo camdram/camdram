@@ -138,4 +138,9 @@ class RestTestCase extends WebTestCase
     {
         $this->assertEquals($status, $this->client->getResponse()->getStatusCode());
     }
+
+    protected function assertCrawlerHasN(string $selector, int $n, $crawler): void
+    {
+        $this->assertEquals($n, $crawler->filter($selector)->count(), $crawler->html());
+    }
 }

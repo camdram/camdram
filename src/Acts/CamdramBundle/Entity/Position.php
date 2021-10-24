@@ -148,7 +148,7 @@ class Position extends BaseEntity
         $now = new \DateTime();
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('display', true))
-            ->andWhere(Criteria::expr()->gte('expiresAt', $now->format('Y-m-d H:i:s')));
+            ->andWhere(Criteria::expr()->gte('expiresAt', $now));
 
         return $this->adverts->matching($criteria);
     }
