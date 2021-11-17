@@ -77,7 +77,7 @@ class PositionController extends AbstractFOSRestController
             );
             $data = $response->toArray();
             if (isset($data['error'])) {
-                return new Response('This page does not exist in the CUADC wiki');
+                return new Response('This page does not exist in the CUADC Wiki');
             }
             $html = $data['parse']['text']['*'];
             $html .= '<p class="attribution">Wiki content is licensed under the
@@ -90,7 +90,6 @@ class PositionController extends AbstractFOSRestController
         } catch (\Exception $e) {
             return new Response('Error fetching data from the CUADC wiki');
         }
-        
     }
 
     /**
@@ -106,7 +105,7 @@ class PositionController extends AbstractFOSRestController
         if ($position) {
             return $this->redirectToRoute('get_position', ['identifier' => $position->getSlug()]);
         } else {
-            return $this->redirect(self::WIKI_URL.'/wiki/'.$pageName);   
+            return $this->redirect(self::WIKI_URL.'/wiki/'.$pageName);
         }
     }
 }
