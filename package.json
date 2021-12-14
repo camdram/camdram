@@ -4,7 +4,7 @@
   "repository": "git@github.com:camdram/camdram.git",
   "license": "GPL-2.0",
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.5",
     "@fancyapps/fancybox": "^3.5.7",
     "@symfony/webpack-encore": "^1.5.0",
     "cookieconsent": "^3.1.1",
