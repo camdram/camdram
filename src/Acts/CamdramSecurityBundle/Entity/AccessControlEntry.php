@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * AccessControlEntry
  *
- * @ORM\Table(name="acts_access")
+ * @ORM\Table(name="acts_access",uniqueConstraints={@ORM\UniqueConstraint(name="idx_entity_type_user",columns={"entity_id", "type", "user_id"})})
  * @ORM\Entity(repositoryClass="AccessControlEntryRepository")
  */
 class AccessControlEntry
