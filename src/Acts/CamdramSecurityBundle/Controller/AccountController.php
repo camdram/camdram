@@ -2,6 +2,7 @@
 
 namespace Acts\CamdramSecurityBundle\Controller;
 
+use Acts\CamdramSecurityBundle\Entity\User;
 use Acts\CamdramSecurityBundle\Form\Type\ChangeEmailType;
 use Acts\CamdramSecurityBundle\Security\Acl\AclProvider;
 use Acts\CamdramSecurityBundle\Service\TokenGenerator;
@@ -116,7 +117,10 @@ class AccountController extends AbstractFOSRestController
      */
     public function unlinkAccountAction($service): Response
     {
-        $user = $this->getUser();
+        /**
+         * @var User
+        */
+        $user = $this->getUser();  
         $external_user = $user->getExternalUserByService($service);
 
         if ($external_user) {

@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Acts\CamdramSecurityBundle\Entity\User;
 
 /**
  *
@@ -79,6 +80,9 @@ For any enquiries, please contact support@camdram.net.";
                 $users = $repo->findOrganisationAdmins();
                 break;
             case 'me':
+                /**
+                 * @var User[]
+                */
                 $users = [$this->getUser()];
                 break;
             default:
