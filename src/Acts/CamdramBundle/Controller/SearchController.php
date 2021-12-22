@@ -193,7 +193,7 @@ ENDSQL
             try {
                 $data = $this->doSearch($enhancedSearchText, $types, ($page-1)*$limit, $limit);
                 $hits = $this->countResults($enhancedSearchText, $types);
-            } catch (\Doctrine\DBAL\DBALException $ex) {
+            } catch (\Doctrine\DBAL\Exception $ex) {
                 if ($queryParams['parse'] !== 'normal') {
                     // Probably the user's fault due to a misformed query.
                     $data = ['error' => 'Try setting "Interpret search" back to normal.'];
