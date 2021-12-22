@@ -56,7 +56,7 @@
         "php": ">=7.3",
         "abraham/twitteroauth": "^3",
         "dms/phpunit-arraysubset-asserts": "^0.3.0",
-        "doctrine/dbal": "^2.13",
+        "doctrine/dbal": "^3.2",
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^3.0",
