@@ -2438,16 +2438,16 @@
         },
         {
             "name": "friendsofsymfony/rest-bundle",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSRestBundle.git",
-                "reference": "519d967fb101fa4b5aaaff3e3fc060add24fd694"
+                "reference": "c20efbbfecc311663baa939e4956d1f13350029a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRestBundle/zipball/519d967fb101fa4b5aaaff3e3fc060add24fd694",
-                "reference": "519d967fb101fa4b5aaaff3e3fc060add24fd694",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSRestBundle/zipball/c20efbbfecc311663baa939e4956d1f13350029a",
+                "reference": "c20efbbfecc311663baa939e4956d1f13350029a",
                 "shasum": ""
             },
             "require": {
@@ -2538,9 +2538,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FriendsOfSymfony/FOSRestBundle/issues",
-                "source": "https://github.com/FriendsOfSymfony/FOSRestBundle/tree/3.2.0"
+                "source": "https://github.com/FriendsOfSymfony/FOSRestBundle/tree/3.2.1"
             },
-            "time": "2021-12-18T21:22:44+00:00"
+            "time": "2022-01-08T12:14:48+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
