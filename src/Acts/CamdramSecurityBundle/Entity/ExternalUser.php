@@ -72,7 +72,7 @@ class ExternalUser implements \Serializable
     /**
      * @var ?string
      *
-     * @ORM\Column(name="profile_picture_url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="profile_picture_url", type="string", length=8192, nullable=true)
      */
     private $profile_picture_url;
 
@@ -270,20 +270,22 @@ class ExternalUser implements \Serializable
 
     public function __toString()
     {
-        return $this->getId().':'.$this->getName();
+        return $this->getId() . ':' . $this->getName();
     }
 
     public function serialize()
     {
         return serialize(array(
-                $this->id, $this->name, $this->email, $this->service,
-                $this->username
-            ));
+            $this->id, $this->name, $this->email, $this->service,
+            $this->username
+        ));
     }
     public function unserialize($serialized)
     {
-        list($this->id, $this->name, $this->email, $this->service,
-            $this->username) = unserialize($serialized);
+        list(
+            $this->id, $this->name, $this->email, $this->service,
+            $this->username
+        ) = unserialize($serialized);
     }
 
     /**
