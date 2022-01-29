@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="acts_external_users")
  * @ORM\Entity
  */
-class ExternalUser implements \Serializable
+class ExternalUser
 {
     public function __construct()
     {
@@ -273,19 +273,19 @@ class ExternalUser implements \Serializable
         return $this->getId() . ':' . $this->getName();
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize(array(
+        return [
             $this->id, $this->name, $this->email, $this->service,
             $this->username
-        ));
+        ];
     }
-    public function unserialize($serialized)
+    public function __unserialize($serialized)
     {
         list(
             $this->id, $this->name, $this->email, $this->service,
             $this->username
-        ) = unserialize($serialized);
+        ) = $serialized;
     }
 
     /**

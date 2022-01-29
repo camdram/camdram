@@ -22,7 +22,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Serializer\XmlRoot("user")
  * @Api\Link(route="get_account")
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface
 {
     /**
      * @var int
@@ -283,9 +283,15 @@ class User implements UserInterface, \Serializable
 
         foreach ($this->getSecurityAces() as $ace) {
             switch ($ace->getEntityId()) {
-                case -1: $roles[] = 'ROLE_SUPER_ADMIN'; break;
-                case -2: $roles[] = 'ROLE_ADMIN'; break;
-                case -3: $roles[] = 'ROLE_EDITOR'; break;
+                case -1:
+                    $roles[] = 'ROLE_SUPER_ADMIN';
+                    break;
+                case -2:
+                    $roles[] = 'ROLE_ADMIN';
+                    break;
+                case -3:
+                    $roles[] = 'ROLE_EDITOR';
+                    break;
             }
         }
 
@@ -325,20 +331,20 @@ class User implements UserInterface, \Serializable
         $this->external_users = new ArrayCollection();
     }
 
-    public function serialize()
+    public function __serialize()
     {
-        return serialize(array(
-                $this->id, $this->name, $this->email
-        ));
+        return [
+            $this->id, $this->name, $this->email
+        ];
     }
-    public function unserialize($serialized)
+    public function __unserialize($serialized)
     {
-        list($this->id, $this->name, $this->email) = unserialize($serialized);
+        list($this->id, $this->name, $this->email) = $serialized;
     }
 
     public function __toString()
     {
-        return $this->getName().' ('.$this->getEmail().')';
+        return $this->getName() . ' (' . $this->getEmail() . ')';
     }
 
     public function addExternalUser(\Acts\CamdramSecurityBundle\Entity\ExternalUser $externalUser): self
@@ -472,5 +478,4 @@ class User implements UserInterface, \Serializable
     {
         return $this->authorizations;
     }
-
 }
