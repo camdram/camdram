@@ -1940,16 +1940,16 @@
         },
         {
             "name": "excelwebzone/recaptcha-bundle",
-            "version": "v1.5.31",
+            "version": "v1.5.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/excelwebzone/EWZRecaptchaBundle.git",
-                "reference": "f5fbc9e164976a581fb579c2d38ec869000de600"
+                "reference": "c4dcc715fa765a16ace2ca51ddc9ae276cc5dd59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/f5fbc9e164976a581fb579c2d38ec869000de600",
-                "reference": "f5fbc9e164976a581fb579c2d38ec869000de600",
+                "url": "https://api.github.com/repos/excelwebzone/EWZRecaptchaBundle/zipball/c4dcc715fa765a16ace2ca51ddc9ae276cc5dd59",
+                "reference": "c4dcc715fa765a16ace2ca51ddc9ae276cc5dd59",
                 "shasum": ""
             },
             "require": {
@@ -1994,9 +1994,9 @@
             ],
             "support": {
                 "issues": "https://github.com/excelwebzone/EWZRecaptchaBundle/issues",
-                "source": "https://github.com/excelwebzone/EWZRecaptchaBundle/tree/v1.5.31"
+                "source": "https://github.com/excelwebzone/EWZRecaptchaBundle/tree/v1.5.32"
             },
-            "time": "2022-01-11T15:13:31+00:00"
+            "time": "2022-02-03T17:58:00+00:00"
         },
         {
             "name": "facebook/graph-sdk",
@@ -13249,16 +13249,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v5.4.2",
+            "version": "v5.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "b9eb163846a61bb32dfc147f7859e274fab38b58"
+                "reference": "e80f87d2c9495966768310fc531b487ce64237a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/b9eb163846a61bb32dfc147f7859e274fab38b58",
-                "reference": "b9eb163846a61bb32dfc147f7859e274fab38b58",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/e80f87d2c9495966768310fc531b487ce64237a2",
+                "reference": "e80f87d2c9495966768310fc531b487ce64237a2",
                 "shasum": ""
             },
             "require": {
@@ -13304,7 +13304,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v5.4.2"
+                "source": "https://github.com/symfony/yaml/tree/v5.4.3"
             },
             "funding": [
                 {
@@ -13320,7 +13320,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-16T21:58:21+00:00"
+            "time": "2022-01-26T16:32:32+00:00"
         },
         {
             "name": "theseer/tokenizer",
