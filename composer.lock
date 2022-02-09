@@ -545,16 +545,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "3.2.1",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "e927fc2410c8723d053b8032e591cdff76587cdb"
+                "reference": "295082d3750987065912816a9d536c2df735f637"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/e927fc2410c8723d053b8032e591cdff76587cdb",
-                "reference": "e927fc2410c8723d053b8032e591cdff76587cdb",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/295082d3750987065912816a9d536c2df735f637",
+                "reference": "295082d3750987065912816a9d536c2df735f637",
                 "shasum": ""
             },
             "require": {
@@ -563,7 +563,7 @@
             },
             "require-dev": {
                 "doctrine/coding-standard": "^9.0",
-                "phpstan/phpstan": "^1.2.0",
+                "phpstan/phpstan": "^1.4.1",
                 "phpstan/phpstan-phpunit": "^1",
                 "phpunit/phpunit": "^7.5.20 || ^8.5 || ^9.0",
                 "squizlabs/php_codesniffer": "^3.0",
@@ -615,7 +615,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/common/issues",
-                "source": "https://github.com/doctrine/common/tree/3.2.1"
+                "source": "https://github.com/doctrine/common/tree/3.2.2"
             },
             "funding": [
                 {
@@ -631,7 +631,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-26T22:39:45+00:00"
+            "time": "2022-02-02T09:15:57+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -10488,12 +10488,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Grapheme\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Grapheme\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -13709,21 +13709,22 @@
         },
         {
             "name": "dama/doctrine-test-bundle",
-            "version": "v6.7.4",
+            "version": "v6.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmaicher/doctrine-test-bundle.git",
-                "reference": "b1626f0e63a75a335aac49f6932d33018a6c5e2a"
+                "reference": "af6f8e8c56fcfdf2ae039b97607883961a14af9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/b1626f0e63a75a335aac49f6932d33018a6c5e2a",
-                "reference": "b1626f0e63a75a335aac49f6932d33018a6c5e2a",
+                "url": "https://api.github.com/repos/dmaicher/doctrine-test-bundle/zipball/af6f8e8c56fcfdf2ae039b97607883961a14af9c",
+                "reference": "af6f8e8c56fcfdf2ae039b97607883961a14af9c",
                 "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^2.9.3 || ^3.0",
                 "doctrine/doctrine-bundle": "^1.11 || ^2.0",
+                "ext-json": "*",
                 "php": "^7.1 || ^8.0",
                 "psr/cache": "^1.0 || ^2.0 || ^3.0",
                 "symfony/cache": "^4.4 || ^5.3 || ^6.0",
@@ -13769,9 +13770,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dmaicher/doctrine-test-bundle/issues",
-                "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v6.7.4"
+                "source": "https://github.com/dmaicher/doctrine-test-bundle/tree/v6.7.5"
             },
-            "time": "2022-01-26T19:40:56+00:00"
+            "time": "2022-02-08T16:00:51+00:00"
         },
         {
             "name": "phpstan/phpstan",
