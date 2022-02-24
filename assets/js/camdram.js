@@ -130,14 +130,15 @@ function fixHtml(elementsToFix) {
     createTabContainers(elementsToFix);
 
     if (!supportsDateInput()) {
-        // Inject custom datepicker on desktops
-        // (Use on native datepicker on mobile)
-        $('input[type=date]', elementsToFix).datepicker({
-            dateFormat: 'yy-mm-dd',
-            constrainInput: true
-        });
-        if (!document.getElementById('jquery-ui-theme')) {
-            $('head').append($('<link rel="stylesheet" href="/jquery-ui.custom.css" type="text/css" id="jquery-ui-theme">'));
+        // Warn users of Safari < 14.1 and IE to use ISO 8601 format or a modern browser.
+        for (const dateField of elementsToFix.querySelectorAll('input[type=date]')) {
+            const form = dateField.form;
+            if (!form || form.classList.contains('input-date-warning')) continue;
+            form.insertAdjacentHTML('afterbegin',
+                '<p style="border: 2px solid red">Your browser is out of date and does not ' +
+                'support standard date inputs. Either use a modern browser or enter dates ' +
+                'precisely in the format <b>YYYY-MM-DD</b>.</p>')
+            form.classList.add('input-date-warning');
         }
     }
 
