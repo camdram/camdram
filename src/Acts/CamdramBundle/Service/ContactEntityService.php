@@ -30,7 +30,7 @@ class ContactEntityService
             .$message;
 
         $message = (new \Swift_Message('[Camdram] ' . $subject))
-            ->setFrom($from_email, $from_name)
+            ->setReplyTo($from_email, $from_name)
             ->setTo($recipients)
             ->setBody($msg)
             ;
