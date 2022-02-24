@@ -2,6 +2,14 @@
 
 {% block title %}Advert: {{ advert.name }}{% endblock %}
 
+{% set entity = advert.show ?? advert.society ?? advert.venue %}
+{% if entity and entity.themeColor %}
+    {% set colors = wcag_colors(entity.themeColor) %}
+    {% set body_attribs_raw = ' style="--custom-color: '  ~ colors['raw'] ~
+                                    '; --color-text: ' ~ colors['smalltext'] ~ ';"' ~
+                              ' class="entity-has-theme-color"' %}
+{% endif %}
+
 {# Facebook open graph markup #}
 {% block opengraph %}
     <meta property="og:url" content="{{ url('get_advert', {identifier: advert.id}) }}" />
@@ -14,7 +22,7 @@
         {{ render(admin_panel(advert)) }}
     {% endif %}
 
-    <div class="vacancies-panel">
+    <div class="vacancies-panel row">
         <h4>{{ advert.name }}</h4>
         {% if advert.show %}
         <div class="vacancies-show-panel">
@@ -41,19 +49,17 @@
             <li>{{ audition.dateString }}, {{ audition.location }}</li>
         {%- endfor -%}
         </ul>
+        <p>{{ advert.body | camdram_markdown | annotate_positions(advert.positions) }}</p>
+
+        <hr>
+
         <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
     </div>
 
-    <hr/>
-
     {% if advert.auditions | length > 0 %}
     {{ render_diary(diary) }}
-    <hr/>
     {% endif%}
 
-    <p>{{ advert.body | camdram_markdown | annotate_positions(advert.positions) }}</p>
-
-    <hr/>
     <p class="text-right"><em>
         Created at {{ advert.createdAt | date('jS M Y H:i') }}<br />
         Last updated at {{ advert.updatedAt | date('jS M Y H:i') }}

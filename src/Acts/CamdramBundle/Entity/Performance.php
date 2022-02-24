@@ -104,14 +104,19 @@ class Performance implements EventInterface
         $startAt = clone $this->getStartAt();
         $startAt->setTimezone(new \DateTimeZone("Europe/London"));
 
-        $str = $startAt->format('H:i');
-
-        $str .= ', ' . $startAt->format('D jS F Y');
-        if ($this->isRepeating()) {
-            $str .= ' - '.$this->getRepeatUntil()->format('D jS F Y');
+        if (!$this->isRepeating()) {
+            return $startAt->format('H:i') . ', ' . $startAt->format('D j F Y');
         }
 
-        return $str;
+        $repeatUntil = $this->getRepeatUntil();
+        $str = '–' . $repeatUntil->format('D j F Y');
+        if ($startAt->format('F Y') === $repeatUntil->format('F Y')) {
+            return $startAt->format('D j') . $str;
+        }
+        if ($startAt->format('Y') === $repeatUntil->format('Y')) {
+            return $startAt->format('D j F') . $str;
+        }
+        return $startAt->format('D j F Y') . $str;
     }
 
     /**
