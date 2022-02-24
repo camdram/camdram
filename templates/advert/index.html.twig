@@ -8,8 +8,8 @@
     </div>
 
     {%- for a in adverts -%}
-        <div class="vacancies-panel">
-            <h5>{{ link_entity(a) }}</h5>
+        <div class="vacancies-panel row">
+            <h5>{{ link_entity(a, {innerhtml: (a.name|e) ~ '<i style="font-weight:normal"> – read more...</i>'}) }}</h5>
             {% if a.show %}
             <div class="vacancies-show-panel">
                 {%- include 'show/advert_header.html.twig' with {'show': a.show} -%}
@@ -36,7 +36,8 @@
             {%- endfor -%}
             </ul>
             <p></p>
-            <p>Contact {{ a.contactDetails|detect_links }} before {{a.expiresAt | date('jS M Y H:i')}} for more details.</p>
+            <p>For more details, read the {{ link_entity(a, {innertext: 'full advert'}) }} or contact {{
+                a.contactDetails|detect_links }} before {{a.expiresAt | date('jS M Y H:i')}}.</p>
         </div>
     {%- else -%}
         <p>There are currently no advertisements listed – please check again later.</p>

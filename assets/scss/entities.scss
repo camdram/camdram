@@ -1,24 +1,41 @@
 @import "./vars.scss";
 
 #entity-header {
-  @include panel(#f2f2f2);
+    @include panel(#f2f2f2);
 }
 
 .vacancies-panel {
-  @include panel(rgb(250, 237, 220), 1em 1em 1em);
-  border-radius:7px;
+    @include panel(rgb(250, 237, 220), 1em 1em 1em);
+    border-radius: 7px;
 
-  &.hidden {
-    background: rgb(240, 240, 240);
-  }
+    &.hidden {
+        background: rgb(240, 240, 240);
+    }
+
+    hr {
+        border-color: var(--custom-color, $orange);
+        margin-left: auto;
+        margin-right: auto;
+        @media (min-width: $width-small) {
+            max-width: 40em;
+        }
+    }
 }
 
 .vacancies-show-panel {
-  background: rgb(242, 242, 242);
-  border: solid rgb(255, 140, 0);
-  border-width: 8px 1px 1px;
-  padding: 0.5em;
-  margin-bottom:0.5em;
+    padding: 0.5em 0;
+    margin-bottom: 0.5em;
+    border: solid var(--custom-color, $orange);
+    border-width: 1px 0;
+
+    @media (min-width: $width-small) {
+        background: white;
+        border-width: 8px 1px 1px;
+        padding: 0.5em;
+        float: right;
+        margin-left: 1em;
+        width: 30em;
+    }
 }
 
 

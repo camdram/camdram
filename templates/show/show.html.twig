@@ -108,14 +108,15 @@
 <h5>Get involved with <em>{{ show.name }}</em>:</h5>
     {% for advert in show.activeAdverts %}
         <div class="vacancies-panel">
-            <h5>{{ link_entity(advert) }}</h5>
+            <h5>{{ link_entity(advert, {innerhtml: (advert.name|e) ~ '<i style="font-weight:normal"> – read more...</i>'}) }}</h5>
             <p>{{ advert.summary | annotate_positions(advert.positions) }}</p>
             <ul class="prose-list">
             {%- for audition in advert.auditions -%}
                 <li>{{ audition.dateString }}, {{ audition.location }}</li>
             {%- endfor -%}
             </ul>
-            <p>Contact {{ advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}} for more details.</p>
+            <p>For more details, read the {{ link_entity(advert, {innertext: 'full advert'}) }} or contact {{
+                advert.contactDetails | detect_links }} before {{advert.expiresAt | date('jS M Y H:i')}}.</p>
         </div>
     {% endfor %}
 {%- endif -%}
