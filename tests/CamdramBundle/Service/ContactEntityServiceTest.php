@@ -81,7 +81,7 @@ class ContactEntityServiceTest extends RestTestCase
 
         $this->mailer->expects($this->exactly(9))->method("send")
              ->with($this->callback(function($msg) {
-                 if ($msg->getFrom()['support@camdram.net'] != 'Camdram') return false;
+            if ($msg->getReplyTo()['support@camdram.net'] != 'Camdram') return false;
                  if (strpos($msg->getSubject(), 'Email Test') === false) return false;
                  $matches = [];
                  if (!preg_match('/receiving.*because.*(Show [A-E]|Society \d|Venue \d)/',
