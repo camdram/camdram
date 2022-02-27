@@ -46,7 +46,27 @@
 </style>
 <script>
 {#- begin-CSP-permitted-script -#}
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
+
+    var make_handler = function(x) { return function(e) {
+        for (var show of shows) show.setAttribute('hidden', 'hidden');
+        for (var show of x)     show.removeAttribute('hidden');
+        e.target.parentNode.querySelector('.active').classList.remove('active');
+        e.target.classList.add('active');
+        for (var heading of document.querySelectorAll('.content h4')) {
+            var nItems = heading.nextElementSibling.querySelectorAll('[itemtype*="TheaterEvent"]:not([hidden])').length;
+            var showCount = heading.previousElementSibling;
+            if (nItems) {
+                showCount.textContent = nItems;
+                showCount.removeAttribute('hidden');
+                heading.removeAttribute('hidden');
+            } else {
+                showCount.setAttribute('hidden', 'hidden');
+                heading.setAttribute('hidden', 'hidden');
+            }
+        }
+    }};
+
     var shows = document.querySelectorAll('[data-roletypes]');
     var aftertabs = document.querySelector('#person-role-tabs');
     var tags = {};
@@ -70,34 +90,12 @@ $(function() {
         aftertabs.insertAdjacentHTML('beforebegin', '<a href="#!" class="title"></a>');
         aftertabs.previousElementSibling.href = '#!tab-' + tagName.replace(/[^A-Za-z0-9]/,'');
         aftertabs.previousElementSibling.innerText = tagName;
-        aftertabs.previousElementSibling.addEventListener('click', (function(x) { return function(e) {
-            for (var show of shows) show.setAttribute('hidden', 'hidden');
-            for (var show of x)     show.removeAttribute('hidden');
-            e.target.parentNode.querySelector('.active').classList.remove('active');
-            e.target.classList.add('active');
-            for (var heading of document.querySelectorAll('.content h4')) {
-                var nItems = heading.nextElementSibling.querySelectorAll('[itemtype*="TheaterEvent"]:not([hidden])').length;
-                var showCount = heading.previousElementSibling;
-                if (nItems) {
-                    showCount.textContent = nItems;
-                    showCount.removeAttribute('hidden');
-                    heading.removeAttribute('hidden');
-                } else {
-                    showCount.setAttribute('hidden', 'hidden');
-                    heading.setAttribute('hidden', 'hidden');
-                }
-            }
-        }})(tags[tagName]));
+        aftertabs.previousElementSibling.addEventListener('click', make_handler(tags[tagName]));
         if (aftertabs.previousElementSibling.href == window.location.href) {
             aftertabs.previousElementSibling.click();
         }
     }
-    aftertabs.parentNode.firstElementChild.addEventListener('click', function(e) {
-        for (var show of shows) show.removeAttribute('hidden');
-        for (var heading of document.querySelectorAll('.content h4')) heading.removeAttribute('hidden');
-        e.target.parentNode.querySelector('.active').classList.remove('active');
-        e.target.classList.add('active');
-    });
+    aftertabs.parentNode.firstElementChild.addEventListener('click', make_handler(shows));
 });
 {#- end-CSP-permitted-script -#}
 </script>
