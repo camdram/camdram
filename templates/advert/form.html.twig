@@ -60,17 +60,3 @@
 
 {{ form_rest(form) }}
 {{ form_end(form) }}
-
-<script>
-    {#- begin-CSP-permitted-script -#}
-    const updateView = () => {
-        if ($('#advert_type input:checked').val() == 'actors') {
-            $('#auditions-row').show();
-        } else {
-            $('#auditions-row').hide();
-        }
-    }
-    $('#advert_type input').change(updateView)
-    updateView();
-    {#- end-CSP-permitted-script -#}
-</script>

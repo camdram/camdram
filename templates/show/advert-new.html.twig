@@ -27,3 +27,8 @@
 {{ form_end(form) }}
 
 {% endblock %}
+
+{% block compiled_assets -%}
+    {{ encore_entry_link_tags('html-forms') }}
+    {{ encore_entry_script_tags('html-forms') }}
+{%- endblock %}
