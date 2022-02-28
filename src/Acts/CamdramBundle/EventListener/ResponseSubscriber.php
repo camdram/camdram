@@ -53,7 +53,7 @@ class ResponseSubscriber implements EventSubscriberInterface
             "font-src 'self' https://netdna.bootstrapcdn.com; " .
             "child-src *.google.com; " . # We don't put frames around our own content
             "frame-src *.google.com; " . # We don't put frames around our own content
-            "script-src 'self' https://www.googletagmanager.com https://ajax.googleapis.com *.google.com *.gstatic.com ".
+            "script-src 'self' *.google.com *.gstatic.com ".
             $script_hashes .
             "; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://netdna.bootstrapcdn.com";
         }
