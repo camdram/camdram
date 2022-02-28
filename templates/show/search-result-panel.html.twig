@@ -2,7 +2,7 @@
     <h5>Show<br>{{ link_entity(show) }}</h5>
     {%- if show.image -%}
     <div class="entity-image-container">
-        <a href="{{ show.image.filename | imagine_filter('preview') }}" data-fancybox><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
+        <a href="{{ show.image.filename | imagine_filter('preview') }}" class="show-image-modal"><img src="{{ show.image.filename | imagine_filter('thumbnail') }}" /></a>
     </div>
     {%- endif -%}
     <div class="entity-body-text">

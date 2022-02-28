@@ -89,23 +89,45 @@ function supportsDateInput() {
     return input.value !== notADateValue;
 }
 
-function showModalDialog(title, body) {
-    body.insertAdjacentHTML("afterbegin", '<a aria-label="Close dialog" role="button" class="close-reveal-modal">&#215;</a><h5></h5>');
-    body.children[0].addEventListener("click", hideModalDialog);
-    body.children[1].innerText = title;
+function modal_dialog_base() {
     const dialog = document.createElement("div");
     dialog.setAttribute("role", "dialog");
     dialog.setAttribute("aria-modal", "true");
     dialog.className = "reveal-modal";
-    dialog.appendChild(body);
-    document.body.appendChild(dialog);
+
+    dialog.insertAdjacentHTML("afterbegin", '<a aria-label="Close dialog" role="button" class="close-reveal-modal">&#215;</a>');
+    const close = dialog.firstChild;
+    dialog.removeChild(close);
+    close.addEventListener("click", Camdram.hideModalDialog);
+
+    return [dialog, close];
 }
 
-function hideModalDialog() {
+Camdram.showModalDialog = (title, body) => {
+    const [dialog, close] = modal_dialog_base();
+    body.insertAdjacentHTML("afterbegin", "<h5></h5>");
+    body.insertAdjacentElement("afterbegin", close);
+    body.children[1].innerText = title;
+    dialog.appendChild(body);
+    document.body.appendChild(dialog);
+};
+
+Camdram.showImageDialog = url => {
+    const [dialog, close] = modal_dialog_base();
+    dialog.classList.add("image-modal");
+    dialog.appendChild(close);
+    const image = document.createElement("img");
+    image.src = url;
+    image.addEventListener("click", () => window.location.href = url);
+    dialog.appendChild(image);
+    document.body.appendChild(dialog);
+};
+
+Camdram.hideModalDialog = () => {
     for (const el of document.querySelectorAll(".reveal-modal")) {
         el.parentNode.removeChild(el);
     }
-}
+};
 
 function createTabContainers(elementsToFix) {
     for (const title of elementsToFix.querySelectorAll(".tabbed-content > .title")) {
@@ -148,6 +170,13 @@ function fixHtml(elementsToFix) {
 
     for (const msg of elementsToFix.querySelectorAll(".flash-messages p")) {
         Camdram.slideOut(msg, 2500, 300);
+    }
+
+    for (const img_link of elementsToFix.querySelectorAll(".show-image-modal")) {
+        img_link.addEventListener("click", e => {
+            e.preventDefault();
+            Camdram.showImageDialog(img_link.href);
+        }, true);
     }
 }
 
@@ -270,9 +299,9 @@ Camdram.makeLinkSafetyDialog = function(link) {
         dialogBody.insertAdjacentHTML("beforeend", '<a class="button">Yes</a>');
         dialogBody.lastElementChild.addEventListener("click", action);
         dialogBody.insertAdjacentHTML("beforeend", ' <a class="button">No</a>');
-        dialogBody.lastElementChild.addEventListener("click", hideModalDialog);
+        dialogBody.lastElementChild.addEventListener("click", Camdram.hideModalDialog);
 
-        showModalDialog(dialogtitle, dialogBody);
+        Camdram.showModalDialog(dialogtitle, dialogBody);
     });
 };
 
@@ -298,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fixHtml(document);
     doCookieConsent();
     document.body.addEventListener("keydown", e => {
-        if (e.key == "Esc" || e.key == "Escape") hideModalDialog();
+        if (e.key == "Esc" || e.key == "Escape") Camdram.hideModalDialog();
     });
     // Install all the hotkeys on the page
     for (const el of document.querySelectorAll("[data-hotkey]")) {
