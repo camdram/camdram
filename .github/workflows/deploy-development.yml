@@ -1,0 +1,24 @@
+name: Deploy development branches
+
+on:
+  push:
+    branches: ['*'] # This means all branches without a slash.
+
+concurrency: deployment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Extract branch name
+      id: get_branch
+      run: echo ::set-output name=BRANCH::${GITHUB_REF#refs/*/}
+
+    - name: Deploy
+      uses: deployphp/action@v1
+      with:
+        private-key: ${{ secrets.ANTIGONE_PRIVATE_KEY }}
+        dep: deploy development --branch ${{ steps.get_branch.outputs.BRANCH }}
