@@ -66,7 +66,7 @@
         "facebook/graph-sdk": "^5.6",
         "friendsofsymfony/jsrouting-bundle": "^2.5.3",
         "friendsofsymfony/oauth-server-bundle": "dev-master#72c5e4041c35555f001cd1c74ee716050a99e929",
-        "friendsofsymfony/rest-bundle": "^3.0",
+        "friendsofsymfony/rest-bundle": "^3.3",
         "hwi/oauth-bundle": "~1.4.2",
         "incenteev/composer-parameter-handler": "^2.1",
         "jms/serializer-bundle": "^4.0.1",
@@ -95,7 +95,7 @@
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
-        "symfony/webpack-encore-bundle": "^1.6",
+        "symfony/webpack-encore-bundle": "^1.14",
         "twig/twig": "^3"
     },
     "require-dev": {
@@ -108,7 +108,7 @@
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
         "symfony/debug-bundle": "*",
-        "symfony/maker-bundle": "^1.11",
+        "symfony/maker-bundle": "^1.38",
         "symfony/web-profiler-bundle": "*",
         "symfony/web-server-bundle": "^4.4"
     },

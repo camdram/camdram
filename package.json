@@ -22,6 +22,6 @@
     "dev": "SYMFONY_ENV=dev yarn js-routing && yarn encore dev && python3 gen-csp-hashes.py"
   },
   "dependencies": {
-    "@github/hotkey": "^1.6.1"
+    "@github/hotkey": "^2.0"
   }
 }

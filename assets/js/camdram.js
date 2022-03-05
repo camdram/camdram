@@ -49,8 +49,8 @@ Camdram.get = function(url, success, failure) {
 };
 
 let spun = false;
-window.spinTheWorld = function() {
-    const element = document.getElementsByTagName("body")[0];
+Camdram.spinTheWorld = function() {
+    const element = document.body;
     element.style["transition-duration"] = "1.5s";
     element.style["transition-timing-function"] = "ease-in-out";
     if (spun) {
