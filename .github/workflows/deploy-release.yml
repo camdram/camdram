@@ -6,19 +6,21 @@ on:
 
   workflow_dispatch:
 
+concurrency: deployment
+
 jobs:
   deploy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Get the tag from the refspec
-        id: get_tag
-        run: echo ::set-output name=TAG::$(echo $GITHUB_REF | cut -d / -f 3)
-      - name: Deploy
-        uses: musps/action-deployer-php@master
-        with:
-          args: deploy production --tag ${{ steps.get_tag.outputs.TAG }}
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.ANTIGONE_PRIVATE_KEY }}
+    - uses: actions/checkout@v2
+
+    - name: Extract tag name
+      id: get_tag
+      run: echo ::set-output name=TAG::${GITHUB_REF#refs/*/}
+
+    - name: Deploy
+      uses: deployphp/action@v1
+      with:
+        private-key: ${{ secrets.ANTIGONE_PRIVATE_KEY }}
+        dep: deploy production --tag ${{ steps.get_tag.outputs.TAG }}

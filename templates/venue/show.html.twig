@@ -31,7 +31,7 @@
 
         {%- if venue.image -%}
         <div class="entity-image-container">
-            <a href="{{ venue.image.filename | imagine_filter('preview') }}" data-fancybox>
+            <a href="{{ venue.image.filename | imagine_filter('preview') }}" class="show-image-modal">
                 <img src="{{ venue.image.filename | imagine_filter('thumbnail') }}" />
             </a>
             {% if is_granted('EDIT', venue) and is_granted("IS_AUTHENTICATED_FULLY") %}

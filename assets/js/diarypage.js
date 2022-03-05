@@ -1,5 +1,5 @@
-import './base.js';
-import Routing from 'router';
+import Camdram from "./base.js";
+import Routing from "router";
 
 const q = document.querySelector.bind(document);
 const qq = document.querySelectorAll.bind(document);
@@ -9,17 +9,17 @@ Camdram.diary_server.get_content = function(url, cb) {
     Camdram.get(url, cb);
 };
 Camdram.diary_server.get_content_for_today = function(cb) {
-    Camdram.diary_server.get_content(Routing.generate('acts_camdram_diary', {fragment: true}), cb);
+    Camdram.diary_server.get_content(Routing.generate("acts_camdram_diary", {fragment: true}), cb);
 };
 Camdram.diary_server.get_content_by_dates = function(start, end, cb) {
-    Camdram.diary_server.get_content(Routing.generate('acts_camdram_diary_date', {
+    Camdram.diary_server.get_content(Routing.generate("acts_camdram_diary_date", {
         start: Camdram.formatISODate(start),
         end: Camdram.formatISODate(end),
         fragment: true
     }), cb);
 };
 Camdram.diary_server.get_content_by_period = function(year, period, end, cb) {
-    Camdram.diary_server.get_content(Routing.generate('acts_camdram_diary_period', {
+    Camdram.diary_server.get_content(Routing.generate("acts_camdram_diary_period", {
         year: year,
         period: period,
         end: end ? Camdram.formatISODate(end) : null,
@@ -30,33 +30,33 @@ Camdram.diary_server.get_content_by_period = function(year, period, end, cb) {
 Camdram.diary = class {
     constructor() {
         this.is_loading = false;
-        this.diary = q('#diary');
+        this.diary = q("#diary");
         this.state = {};
     }
     get first_date() {
-        const el = q('#diary > .diary-week');
+        const el = q("#diary > .diary-week");
         return el ? Camdram.parseISODate(el.dataset.start) : null;
     }
     get last_date() {
-        const weeks = qq('#diary > .diary-week');
+        const weeks = qq("#diary > .diary-week");
         return weeks.length ? Camdram.parseISODate(weeks[weeks.length-1].dataset.end) : null;
     }
     insert_content(html, cb) {
-        const div = document.createElement('div');
-        const weeks = qq('#diary > .diary-week');
+        const div = document.createElement("div");
+        const weeks = qq("#diary > .diary-week");
         const firstChild = this.diary.firstElementChild;
         const lastWeek = weeks.length ? weeks[weeks.length-1] : undefined;
         div.innerHTML = html;
 
-        const new_start_at = Camdram.parseISODate(div.getElementsByClassName('diary-week')[0].dataset.start);
+        const new_start_at = Camdram.parseISODate(div.getElementsByClassName("diary-week")[0].dataset.start);
         const start_at = lastWeek ? Camdram.parseISODate(lastWeek.dataset.start) : null;
         // Converting to array first avoids looping over the HTMLCollection, which
         // is being implicitly modified when elements are moved out of it.
         const newElements = Array.prototype.slice.call(div.children);
         for (let el of newElements) {
-            el.style.maxHeight = '0';
-            el.style.transition = 'max-height 500ms ease-in';
-            el.style.overflow = 'hidden';
+            el.style.maxHeight = "0";
+            el.style.transition = "max-height 500ms ease-in";
+            el.style.overflow = "hidden";
             if (new_start_at >= start_at) {
                 this.diary.appendChild(el);
             } else {
@@ -64,7 +64,7 @@ Camdram.diary = class {
             }
         }
         window.setTimeout(() => {
-            for (let el of newElements) el.style.maxHeight = '800px';
+            for (let el of newElements) el.style.maxHeight = "800px";
         }, 50);
         window.setTimeout(() => {
             for (let el of newElements) {
@@ -77,7 +77,7 @@ Camdram.diary = class {
 
         // Ensure each period label appears exactly once
         const seen_start_at = [];
-        for (let label of this.diary.querySelectorAll('.diary-period-label')) {
+        for (let label of this.diary.querySelectorAll(".diary-period-label")) {
             let start_at = label.dataset.start;
             if (seen_start_at.indexOf(start_at) >= 0) {
                 label.parentNode.removeChild(label);
@@ -91,33 +91,33 @@ Camdram.diary = class {
     load_from_state(state) {
         if (state.year && state.period) {
             this.is_loading = true;
-            this.diary.innerHTML = '';
+            this.diary.innerHTML = "";
             const end = state.end ? Camdram.parseISODate(state.end) : null;
             Camdram.diary_server.get_content_by_period(state.year, state.period, end,
                 data => this.insert_content(data, () => this.is_loading = false));
         } else if (state.start && state.end) {
             this.is_loading = true;
-            this.diary.innerHTML = '';
+            this.diary.innerHTML = "";
             Camdram.diary_server.get_content_by_dates(
                 Camdram.parseISODate(state.start), Camdram.parseISODate(state.end),
                 data => this.insert_content(data, () => this.is_loading = false));
         } else {
             this.is_loading = true;
-            this.diary.innerHTML = '';
+            this.diary.innerHTML = "";
             Camdram.diary_server.get_content_for_today(
                 data => this.insert_content(data, () => this.is_loading = false));
         }
     }
     goto_today() {
         this.is_loading = true;
-        this.diary.innerHTML = '';
+        this.diary.innerHTML = "";
         Camdram.diary_server.get_content_for_today(
             data => this.insert_content(data, () => this.is_loading = false));
         this.change_state({}, false);
     }
     goto_period(year, period) {
         this.is_loading = true;
-        this.diary.innerHTML = '';
+        this.diary.innerHTML = "";
         Camdram.diary_server.get_content_by_period(year, period, null, data => {
             this.insert_content(data);
             this.is_loading = false;
@@ -148,14 +148,14 @@ Camdram.diary = class {
         this.change_state(this.state, true);
     }
     on_state_change(data, replace) {
-        if (q('#diary > .diary-week') && history.pushState) {
+        if (q("#diary > .diary-week") && history.pushState) {
             let url;
             if (data.year && data.period) {
-                url = Routing.generate('acts_camdram_diary_period',data);
+                url = Routing.generate("acts_camdram_diary_period",data);
             } else if (data.start) {
-                url = Routing.generate('acts_camdram_diary_date', data);
+                url = Routing.generate("acts_camdram_diary_date", data);
             } else {
-                url = Routing.generate('acts_camdram_diary', data);
+                url = Routing.generate("acts_camdram_diary", data);
             }
             if (replace) {
                 history.replaceState(data, document.title, url);
@@ -169,8 +169,8 @@ Camdram.diary = class {
 Camdram.diary_selector = class {
     constructor(diary) {
         this.diary = diary;
-        this.years_select = q('#years');
-        this.periods_select = q('#periods');
+        this.years_select = q("#years");
+        this.periods_select = q("#periods");
     }
     year(val) {
         if (!arguments.length) return this.years_select.value;
@@ -182,17 +182,17 @@ Camdram.diary_selector = class {
     }
     update_years() {
         const previous_period = this.period();
-        this.periods_select.setAttribute('disabled', 'disabled');
-        Camdram.get(Routing.generate('get_time-period', {'year': this.year(), '_format' : 'json'}), periods => {
-            this.periods_select.innerHTML = '';
+        this.periods_select.setAttribute("disabled", "disabled");
+        Camdram.get(Routing.generate("get_time-period", {"year": this.year(), "_format" : "json"}), periods => {
+            this.periods_select.innerHTML = "";
             for (const period of JSON.parse(periods)) {
-                const option = document.createElement('option');
+                const option = document.createElement("option");
                 option.value = period.slug;
                 option.textContent = period.name;
                 this.periods_select.appendChild(option);
             }
             this.period(previous_period);
-            this.periods_select.removeAttribute('disabled');
+            this.periods_select.removeAttribute("disabled");
             this.update_diary();
         });
     }
@@ -200,37 +200,37 @@ Camdram.diary_selector = class {
         this.diary.goto_period(this.year(), this.period(), true);
     }
     attach_events() {
-        this.periods_select.addEventListener('change', () => this.update_diary());
-        this.years_select.addEventListener('change', () => this.update_years());
-        q('#diary_jump_form').addEventListener('submit', e => {
+        this.periods_select.addEventListener("change", () => this.update_diary());
+        this.years_select.addEventListener("change", () => this.update_years());
+        q("#diary_jump_form").addEventListener("submit", e => {
             e.preventDefault();
             this.update_years();
         });
     }
 };
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener("DOMContentLoaded", () => {
     const diary = new Camdram.diary();
     const selector = new Camdram.diary_selector(diary);
 
-    window.addEventListener('popstate', e => {
+    window.addEventListener("popstate", e => {
         const data = e.state;
         if (data) diary.load_from_state(data);
     });
 
     Camdram.endlessScroll({callback: () => {
-        if (diary.diary.childNodes.length && !q('.diary-week[style*="transition"]')) {
+        if (diary.diary.childNodes.length && !q(".diary-week[style*=\"transition\"]")) {
             diary.load_next_weeks(6);
         }
     }});
 
     selector.attach_events();
-    q('#load_previous').addEventListener('click', e => {
+    q("#load_previous").addEventListener("click", e => {
         e.preventDefault();
         diary.load_previous_weeks(1);
     });
 
-    q('#load_today').addEventListener('click', e => {
+    q("#load_today").addEventListener("click", e => {
         e.preventDefault();
         diary.goto_today();
     });

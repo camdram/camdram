@@ -1,238 +1,239 @@
 @import "./vars.scss";
 
 @mixin brighten($factor) {
-  filter: brightness($factor);
-  -webkit-filter: brightness($factor);
-  -moz-filter: brightness($factor);
-  -o-filter: brightness($factor);
-  -ms-filter: brightness($factor);
+    filter: brightness($factor);
+    -webkit-filter: brightness($factor);
+    -moz-filter: brightness($factor);
+    -o-filter: brightness($factor);
+    -ms-filter: brightness($factor);
 }
 
 html, body {
-  height: 100%;
+    height: 100%;
+    scroll-behavior: smooth;
 }
 #wrapper {
-  flex-grow: 1;
+    flex-grow: 1;
 
-  &:before {
-    content: "";
-    position:absolute;
-    display:block;
-    max-width:$row-width;
-    background:$white;
-    width:100%;
-    padding: 0 emCalc(15);
-    box-sizing:border-box;
+    &:before {
+        content: "";
+        position:absolute;
+        display:block;
+        max-width:$row-width;
+        background:$white;
+        width:100%;
+        padding: 0 emCalc(15);
+        box-sizing:border-box;
 
-    bottom:0;
-    top:120px;
-    z-index:-5;
+        bottom:0;
+        top:120px;
+        z-index:-5;
 
-    @media only screen and (min-width: $row-width) {
-      left:50%;
-      margin-left: $row-width * -0.5;
+        @media only screen and (min-width: $row-width) {
+            left:50%;
+            margin-left: $row-width * -0.5;
+        }
     }
-  }
 }
 
 body {
-  background:$background-color;
-  -webkit-text-size-adjust:100%; /* Don't mess with our font sizes! */
-  -moz-text-size-adjust:100%;    /* https://github.com/camdram/camdram/issues/442 */
-  -ms-text-size-adjust:100%;
-  display: flex;                 /* Force page to fill all vertical space. */
-  flex-flow: column;
+    background:$background-color;
+    -webkit-text-size-adjust:100%; /* Don't mess with our font sizes! */
+    -moz-text-size-adjust:100%;    /* https://github.com/camdram/camdram/issues/442 */
+    -ms-text-size-adjust:100%;
+    display: flex;                 /* Force page to fill all vertical space. */
+    flex-flow: column;
 }
 
 nav.navbar {
-  .fa {
-    display: inline;
-    padding: 0 4px;
-  }
-  &:first-of-type {
-    > div > ul > li > a {
-      font-size: 0.8em;
-      font-weight: 700;
+    .fa {
+        display: inline;
+        padding: 0 4px;
     }
-    @media (min-width: $width-small) {
-      .opt-dropdown a {
-        font-size: 0.8em;
-        font-weight: 700;
-      }
+    &:first-of-type {
+        > div > ul > li > a {
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+        @media (min-width: $width-small) {
+            .opt-dropdown a {
+                font-size: 0.8em;
+                font-weight: 700;
+            }
+        }
+        #login-link a {
+            display: inline-block;
+            &.icon-link {
+                padding: 0 5px 0 0;
+            }
+        }
+        #account-link > a {
+            /** User names might be very long. */
+            @media (max-width: 499px) {
+                max-width: 12em;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
     }
-    #login-link a {
-      display: inline-block;
-      &.icon-link {
-        padding: 0 5px 0 0;
-      }
+    &:nth-of-type(2) {
+        > div > ul:first-child {
+            @media (max-width: 499px) {
+                .fa + span {display: none;}
+            }
+            @media (min-width: 500px) {
+                .fa {display: none;}
+            }
+        }
     }
-    #account-link > a {
-      /** User names might be very long. */
-      @media (max-width: 499px) {
-        max-width: 12em;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-  &:nth-of-type(2) {
-    > div > ul:first-child {
-      @media (max-width: 499px) {
-        .fa + span {display: none;}
-      }
-      @media (min-width: 500px) {
-        .fa {display: none;}
-      }
-    }
-  }
 }
 
 #wrapper > section {
-  max-width: $row-width;
-  margin:auto;
-  padding: 1.5rem 1.25rem 1.25rem;
-  padding-left: unquote('max(1.5rem, env(safe-area-inset-left))');
-  padding-right: unquote('max(1.5rem, env(safe-area-inset-right))');
-  background:$white;
-  word-wrap:break-word;
+    max-width: $row-width;
+    margin:auto;
+    padding: 1.5rem 1.25rem 1.25rem;
+    padding-left: unquote('max(1.5rem, env(safe-area-inset-left))');
+    padding-right: unquote('max(1.5rem, env(safe-area-inset-right))');
+    background:$white;
+    word-wrap:break-word;
 }
 
 #content {
-  --primary-color: var(--color-text, #{$orange});
-  font-size: .875rem;
+    --primary-color: var(--color-text, #{$orange});
+    font-size: .875rem;
 
-  ul {
-    list-style-position: outside;
-    padding-left:20px;
-    margin-left: 1em;
-    margin-right: 1em;
-  }
-
-  .inline-list {
-    padding-left:0;
-    margin-bottom:0.8em;
-  }
-
-  img {
-    margin-bottom:0.8em;
-  }
-
-  a.icon-link {
-    > img {
-      &[src*="google"] {
-        /* The Google logo has a white background, the same as the main
-        content section of a page. Here we give it a dark grey inside
-        border in all such cases. Notably this doesn't include the site's
-        menu bar header which already has a dark background. */
-        box-shadow: inset 0px 0px 0px 1px $dark-grey;
-      }
+    ul {
+        list-style-position: outside;
+        padding-left:20px;
+        margin-left: 1em;
+        margin-right: 1em;
     }
+
+    .inline-list {
+        padding-left:0;
+        margin-bottom:0.8em;
+    }
+
+    img {
+        margin-bottom:0.8em;
+    }
+
+    a.icon-link {
+        > img {
+            &[src*="google"] {
+                /* The Google logo has a white background, the same as the main
+                content section of a page. Here we give it a dark grey inside
+                border in all such cases. Notably this doesn't include the site's
+                menu bar header which already has a dark background. */
+box-shadow: inset 0px 0px 0px 1px $dark-grey;
+      }
+  }
   }
 }
 
 footer {
-  background: #2B2B2B;
-  color: $white;
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-  h5 {
+    background: #2B2B2B;
     color: $white;
-  }
-  p {
-    text-align:center;
-    margin:auto;
-    color:white;
-    padding:10px 0;
-    font-size:0.9em;
-  }
-  > div {
-    max-width: $row-width;
-    margin: 0 auto;
-  }
-  > #sitemap {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-evenly;
-    > div {
-      display: inline-block; /* This is purely a fallback for old browsers, probably not necessary */
-      padding: 0.8em;
-      vertical-align: top;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    h5 {
+        color: $white;
     }
-  }
+    p {
+        text-align:center;
+        margin:auto;
+        color:white;
+        padding:10px 0;
+        font-size:0.9em;
+    }
+    > div {
+        max-width: $row-width;
+        margin: 0 auto;
+    }
+    > #sitemap {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+        > div {
+            display: inline-block; /* This is purely a fallback for old browsers, probably not necessary */
+            padding: 0.8em;
+            vertical-align: top;
+        }
+    }
 }
 
 header#main-header {
-  background: $orange;
-  background: var(--custom-color, $orange);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-  clear: both;
-  > div {
-    max-width: $row-width;
-    margin: 0 auto;
-    display: flex;
-    @media not screen and (min-width: 768px) {
-      &::before {
-        /* Why 72? It's the sum of all the x-direction padding across .search. */
-        content: "";
-        display: block;
-        flex: 0 1 72px;
-      }
+    background: $orange;
+    background: var(--custom-color, $orange);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    clear: both;
+    > div {
+        max-width: $row-width;
+        margin: 0 auto;
+        display: flex;
+        @media not screen and (min-width: 768px) {
+            &::before {
+                /* Why 72? It's the sum of all the x-direction padding across .search. */
+                content: "";
+                display: block;
+                flex: 0 1 72px;
+            }
+        }
     }
-  }
 
-  #logo-block {
-    text-align: center;
+    #logo-block {
+        text-align: center;
+        position: relative;
+        margin: 0;
+        height: 80px;
+        flex: 1 1 0;
+
+        @media only screen and (min-width: 768px) {
+            min-width: 220px;
+            &::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                border-style: solid;
+                border-color: white $orange;
+                border-color: white var(--custom-color, $orange);
+                border-width: 40px 0 40px 9px;
+            }
+        }
+
+        a {
+            color: transparent;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .search {
+        /* WARNING Android bug ahead. In experiments on a random old phone, animating width will
+         * lose focus, so the bar collapses again. Animating flex or right is fine. 🤷
+         * Obtain an Android device before editing the below!
+         * See https://stackoverflow.com/q/14854359, https://github.com/camdram/camdram/issues/499 */
+height: 80px;
+#searchfield {
+    font-size: 0.875rem;
+    height: 2.3125 * 0.875rem;
+    @supports(-webkit-touch-callout: none) {
+        /* Prevent iOS zooming behaviour */
+        font-size: 16px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
     position: relative;
-    margin: 0;
-    height: 80px;
-    flex: 1 1 0;
-
-    @media only screen and (min-width: 768px) {
-      min-width: 220px;
-      &::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        border-style: solid;
-        border-color: white $orange;
-        border-color: white var(--custom-color, $orange);
-        border-width: 40px 0 40px 9px;
-      }
-    }
-
-    a {
-      color: transparent;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  .search {
-    /* WARNING Android bug ahead. In experiments on a random old phone, animating width will
-     * lose focus, so the bar collapses again. Animating flex or right is fine. 🤷
-     * Obtain an Android device before editing the below!
-     * See https://stackoverflow.com/q/14854359, https://github.com/camdram/camdram/issues/499 */
-    height: 80px;
-    #searchfield {
-      font-size: 0.875rem;
-      height: 2.3125 * 0.875rem;
-      @supports(-webkit-touch-callout: none) {
-          /* Prevent iOS zooming behaviour */
-          font-size: 16px;
-      }
-    }
-
-    @media only screen and (min-width: 768px) {
-      position: relative;
-      padding: 20px 30px 0 30px;
-      flex: 3;
-      background: #fff;
-      &::after {
+    padding: 20px 30px 0 30px;
+    flex: 3;
+    background: #fff;
+    &::after {
         content: "";
         position: absolute;
         right: 0;
@@ -242,138 +243,138 @@ header#main-header {
         border-color: $orange white;
         border-color: var(--custom-color, $orange) white;
         border-width: 40px 0 40px 9px;
-      }
     }
+}
 
-    @media not screen and (min-width: 768px) {
-      background: $orange;
-      background: var(--custom-color, $orange);
-      flex: 10 0 100%;
-      padding: 20px 10px;
-      transition: flex 500ms ease;
-      /* .active is JS to make up for lack of :focus-within support */
-      /* Supporting Edge and :focus-within at the same time involves excessive
-         faff. */
-      &:not(.active) /*:not(:focus-within)*/ {
-        flex: 0 0 0;
-        #search_form {
-          border: none;
-          background: none;
-          box-shadow: none;
-        }
-        i {
-          color: white;
-        }
-        input {
-          cursor: pointer;
-          opacity: 0;
-        }
-        #results {
-          display: none;
-        }
-      }
+@media not screen and (min-width: 768px) {
+    background: $orange;
+    background: var(--custom-color, $orange);
+    flex: 10 0 100%;
+    padding: 20px 10px;
+    transition: flex 500ms ease;
+    /* .active is JS to make up for lack of :focus-within support */
+    /* Supporting Edge and :focus-within at the same time involves excessive
+    faff. */
+&:not(.active) /*:not(:focus-within)*/ {
+    flex: 0 0 0;
+    #search_form {
+        border: none;
+        background: none;
+        box-shadow: none;
     }
-  }
+    i {
+        color: white;
+    }
+    input {
+        cursor: pointer;
+        opacity: 0;
+    }
+    #results {
+        display: none;
+    }
+}
+    }
+}
 
-  /* Theme variants */
-  &[data-theme="PRIDE"] #logo-block {
+/* Theme variants */
+&[data-theme="PRIDE"] #logo-block {
     @media only screen and (min-width: 768px) {
-      min-width: 250px;
+        min-width: 250px;
     }
-  }
-  &[data-theme="XMAS"] #logo-block {
+}
+&[data-theme="XMAS"] #logo-block {
     padding-bottom: 15px;
-  }
+}
 }
 
 h1, h2, h3, h4, h5 {
-  small {
-    display: inline-block;
-    line-height: normal;
-    color: #6f6f6f;
-    font-size: 60%;
-  }
+    small {
+        display: inline-block;
+        line-height: normal;
+        color: #6f6f6f;
+        font-size: 60%;
+    }
 }
 
 #account-link img {
-  margin-right:3px;
-  box-shadow: 0 0 3px #fff;
-  margin-top:-7px;
-  margin-bottom:-4px;
+    margin-right:3px;
+    box-shadow: 0 0 3px #fff;
+    margin-top:-7px;
+    margin-bottom:-4px;
 }
 
 .icon-link {
-  &.icon-link-textual {
-    @include menubutton(white, bold, $dark-grey, $light-grey);
-  }
-
-  &.icon-link-destructive {
-    @include menubutton(white, bold, $destructive, $destructive-light);
-  }
-
-  > img {
-    padding: 4px;
-    border-radius: 2px;
-    box-sizing: content-box;
-    margin-bottom: 0 !important;
-
-    &[src*="facebook"] {
-      background-color: #4267B2;
+    &.icon-link-textual {
+        @include menubutton(white, bold, $dark-grey, $light-grey);
     }
 
-    &[src*="google"] {
-      background-color: #fff;
+    &.icon-link-destructive {
+        @include menubutton(white, bold, $destructive, $destructive-light);
     }
 
-    &[src*="raven"] {
-      background-color: #d3d3d3;
-    }
-
-    &[src*="twitter"] {
-      background-color: #1DA1F2;
-    }
-  }
-
-  &:not(.icon-link-textual):not(.icon-link-destructive):hover {
     > img {
-      @include brighten(1.5);
+        padding: 4px;
+        border-radius: 2px;
+        box-sizing: content-box;
+        margin-bottom: 0 !important;
+
+        &[src*="facebook"] {
+            background-color: #4267B2;
+        }
+
+        &[src*="google"] {
+            background-color: #fff;
+        }
+
+        &[src*="raven"] {
+            background-color: #d3d3d3;
+        }
+
+        &[src*="twitter"] {
+            background-color: #1DA1F2;
+        }
     }
-  }
+
+    &:not(.icon-link-textual):not(.icon-link-destructive):hover {
+        > img {
+            @include brighten(1.5);
+        }
+    }
 }
 
 table {
-  border-collapse: collapse;
-  width:100%;
+    border-collapse: collapse;
+    width:100%;
 }
 
 table, th, td {
-  border: 1px solid $hr-color;
-  padding: 0.5em;
+    border: 1px solid $hr-color;
+    padding: 0.5em;
 }
 
 #nav-edit-link i {
-  font-size: 1.5em;
-  vertical-align: middle;
+    font-size: 1.5em;
+    vertical-align: middle;
 }
 .panel {
-  @include panel(#f2f2f2);
+    @include panel(#f2f2f2);
 }
 $panel-font-color-alt: #f00;
 .error_panel {
-  @include panel(rgba(198, 15, 19, 0.1));
+    @include panel(rgba(198, 15, 19, 0.1));
 }
 
 $panel-font-color-alt: #000;
 .warning_panel {
-  @include panel(rgba(198, 198, 0, 0.1));
+    @include panel(rgba(198, 198, 0, 0.1));
 }
 
 .button-neutral
 {
-@include button(
+    @include button(
     // Background color. We can set $bg:false for a transparent background. Default: $primary-color.
     rgba(200, 200, 200, 1),
-  );
+    );
 }
 
 .dropzone {
@@ -384,7 +385,7 @@ $panel-font-color-alt: #000;
 }
 
 .reveal-modal {
-  position: fixed;
+    position: fixed;
 }
 
 @mixin big-banner($bg) {
@@ -397,64 +398,64 @@ $panel-font-color-alt: #000;
 }
 
 #dev-warning {
-  @include big-banner(#ff0)
+    @include big-banner(#ff0)
 
-  h3 {
-    /* a11y only text as the logo is changed instead of a big h3*/
-    display: block;
-    position: absolute;
-    left: -9999px;
-    top: auto;
-    width: 0;
-    height: 0;
-  }
+    h3 {
+        /* a11y only text as the logo is changed instead of a big h3*/
+        display: block;
+        position: absolute;
+        left: -9999px;
+        top: auto;
+        width: 0;
+        height: 0;
+    }
 }
 
 #site-notice {
-  @include big-banner(#dfdfff);
+    @include big-banner(#dfdfff);
 
-  h3 {
-    color: #000000;
-  }
+    h3 {
+        color: #000000;
+    }
 }
 
 /**
  * Internet Exporer-specific hacks
  */
 _:-ms-input-placeholder, :root #home-diary-nav ul, :root body {
-  display: block; /* replace flex */
+    display: block; /* replace flex */
 }
 
 /**
  * Messages that appear to the user once then fade away.
  */
 .flash-messages {
-  position: fixed;
-  z-index: 99999;
-  max-width: 40rem;
-  margin: 0 auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  p {
-    margin: 1em;
-    padding: 1em;
-    background: white;
-    border: 1px solid grey;
-    border-left-width: 6px;
-    display: flex;
-    align-items: center;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-    &::before {
-      font-family: FontAwesome;
+    position: fixed;
+    z-index: 99999;
+    max-width: 40rem;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    p {
+        margin: 1em;
+        padding: 1em;
+        background: white;
+        border: 1px solid grey;
+        border-left-width: 6px;
+        display: flex;
+        align-items: center;
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+        &::before {
+            font-family: FontAwesome;
+        }
+        &.flash-error {
+            border-color: #A20;
+            &::before { content: '\f06a\2003'; color: #a20; }
+        }
+        &.flash-success {
+            border-color: #0A0;
+            &::before { content: '\f00c\2003'; color: #0A0; }
+        }
     }
-    &.flash-error {
-      border-color: #A20;
-      &::before { content: '\f06a\2003'; color: #a20; }
-    }
-    &.flash-success {
-      border-color: #0A0;
-      &::before { content: '\f00c\2003'; color: #0A0; }
-    }
-  }
 }
