@@ -4,6 +4,7 @@ namespace Camdram\Tests\CamdramBundle\Controller;
 use Camdram\Tests\RestTestCase;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Role;
+use Acts\CamdramBundle\Service\Time;
 
 class PersonControllerTest extends RestTestCase
 {
@@ -76,19 +77,36 @@ class PersonControllerTest extends RestTestCase
         $this->assertHTTPStatus(404);
     }
 
-    public function testPersonRoles()
+    public function personRolesData()
     {
-        $dates = [new \DateTime('-1 week'), new \DateTime('-1 day'), new \DateTime('+1 week')];
+        // Cover both GMT and BST.
+        return [[new \DateTime()], [new \DateTime('+5 month')], [new \DateTime('+7 month')]];
+    }
+
+    /**
+     * @dataProvider personRolesData
+     */
+    public function testPersonRoles(\DateTime $faketime)
+    {
+        Time::mockDateTime($faketime);
+        $dates = [
+            ['-7 day', '-5 day'], // Past
+            ['-1 day', '-1 day'], // Past
+            ['+0 day', '+0 day'], // Present
+            ['-1 day', '+1 day'], // Present
+            ['+1 day', '+1 day'], // Future
+            ['+7 day', '+9 day'], // Future
+        ];
         $paths = ['past-roles.json', 'current-roles.json', 'upcoming-roles.json'];
         $prose = ['has been involved', 'is currently involved', 'is preparing'];
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 6; $i++) {
             $showId = $this->show->getId();
             $this->entityManager->clear();
             $this->show = $this->entityManager->find('Acts\CamdramBundle\Entity\Show', $showId);
 
             $performance = $this->show->getPerformances()->first();
-            $performance->setStartAt($dates[$i]);
-            $performance->setRepeatUntil((clone $dates[$i])->modify('+2 day'));
+            $performance->setStartAt((clone $faketime)->modify($dates[$i][0]));
+            $performance->setRepeatUntil((clone $faketime)->modify($dates[$i][1]));
             $this->entityManager->persist($performance);
             $this->entityManager->flush();
 
@@ -98,13 +116,14 @@ class PersonControllerTest extends RestTestCase
                 $data = $this->doJsonRequest("/people/john-smith/{$paths[$j]}");
                 $this->assertEquals('John Smith', $data['person']['name']);
                 $this->assertEquals('john-smith', $data['person']['slug']);
-                if ($i === $j) {
+                $expected = ($i >> 1) === $j ? 1 : 0;
+                if ($expected) {
                     $this->assertEquals('Person Test', $data['shows'][0]['name']);
                 } else {
                     $this->assertEmpty($data['shows']);
                 }
 
-                $this->assertEquals($i === $j, $crawler->filter('#content:contains("'.$prose[$j].'")')->count() === 1);
+                $this->assertCount($expected, $crawler->filter('#content:contains("'.$prose[$j].'")'));
             }
         }
 

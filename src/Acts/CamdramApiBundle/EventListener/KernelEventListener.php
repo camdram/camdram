@@ -19,7 +19,7 @@ class KernelEventListener
     {
         $params = $event->getRequest()->request;
         // The client_id POST parameter has the database primary key embedded
-        $parts = explode("_", $params->get("client_id"));
+        $parts = explode("_", $params->get("client_id") ?? '');
         $clientSecret = $params->get("client_secret");
         if (count($parts) == 2) {
             $id = $parts[0];

@@ -77,6 +77,7 @@ class TextService
      */
     public function convertMarkdown($text, $strip_tags = true)
     {
+        if ($text == null) return '';
         if ($strip_tags) {
             $text = strip_tags($text, $this->allowed_tags);
         }
@@ -110,11 +111,12 @@ class TextService
     }
 
     /**
-     * @param string $text
+     * @param ?string $text
      * @return string
      */
     public function stripMarkdown($text)
     {
+        if ($text == null) return '';
         $text = strip_tags($text);
         $text = preg_replace(array_keys($this->markdown_strip_regexs), array_values($this->markdown_strip_regexs), $text);
         $text = $this->parsedown->text($text);

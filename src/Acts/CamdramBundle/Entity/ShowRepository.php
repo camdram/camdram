@@ -128,56 +128,45 @@ class ShowRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getUpcomingByPerson(\DateTime $now, Person $person)
+    private function queryByPerson(\DateTime $now, Person $person)
     {
-        $query = $this->createQueryBuilder('s')
+        return $this->createQueryBuilder('s')
+            ->select('s, r, p')
             ->join('s.roles', 'r')
             ->leftJoin('s.performances', 'p')
             ->where('s.authorised = true')
             ->andWhere('r.person = :person')
-            ->orderBy('p.start_at', 'ASC')
             ->groupBy('s.id')
-            ->having('MIN(p.start_at) >= :now')
-            ->setParameter('person', $person)
             ->setParameter('now', $now)
-            ->getQuery();
+            ->setParameter('person', $person);
+    }
 
-        return $query->getResult();
+    public function getUpcomingByPerson(\DateTime $now, Person $person)
+    {
+        return $this->queryByPerson($now, $person)
+            ->orderBy('p.start_at', 'ASC')
+            ->having('DATE_DIFF(MIN(p.start_at), :now) > 0')
+            ->getQuery()
+            ->getResult();
     }
 
     public function getCurrentByPerson(\DateTime $now, Person $person)
     {
-        $query = $this->createQueryBuilder('s')
-            ->join('s.roles', 'r')
-            ->leftJoin('s.performances', 'p')
-            ->where('s.authorised = true')
-            ->andWhere('r.person = :person')
+        return $this->queryByPerson($now, $person)
             ->orderBy('p.start_at', 'ASC')
-            ->groupBy('s.id')
-            ->having('MIN(p.start_at) < :now')
-            ->andHaving('MAX(p.repeat_until) >= :now')
-            ->setParameter('person', $person)
-            ->setParameter('now', $now)
-            ->getQuery();
-
-        return $query->getResult();
+            ->having('DATE_DIFF(MIN(p.start_at), :now) <= 0')
+            ->andHaving('DATE_DIFF(MAX(p.repeat_until), :now) >= 0')
+            ->getQuery()
+            ->getResult();
     }
 
     public function getPastByPerson(\DateTime $now, Person $person)
     {
-        $query = $this->createQueryBuilder('s')
-            ->leftJoin('s.performances', 'p')
-            ->join('s.roles', 'r')
-            ->andwhere('s.authorised = true')
-            ->andWhere('r.person = :person')
+        return $this->queryByPerson($now, $person)
             ->orderBy('p.repeat_until', 'DESC')
-            ->groupBy('s.id')
-            ->having('MAX(p.repeat_until) < :now')
-            ->setParameter('person', $person)
-            ->setParameter('now', $now)
-            ->getQuery();
-
-        return $query->getResult();
+            ->having('DATE_DIFF(MAX(p.repeat_until), :now) < 0')
+            ->getQuery()
+            ->getResult();
     }
 
     public function queryByOrganisation(Organisation $org, \DateTime $from = null, \DateTime $to = null): QueryBuilder

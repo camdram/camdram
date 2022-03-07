@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Grants access if
+ * Grants access if user is an admin or super admin.
  */
 class AdminVoter extends Voter
 {
@@ -14,6 +14,8 @@ class AdminVoter extends Voter
     {
         if (is_object($subject)) {
             $subject = get_class($subject);
+        } else if ($subject == null) {
+            return false;
         }
 
         return strpos($subject, 'Acts\\') !== false;

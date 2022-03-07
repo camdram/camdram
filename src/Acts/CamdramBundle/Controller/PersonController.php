@@ -6,6 +6,7 @@ use Acts\CamdramAdminBundle\Service\PeopleMerger;
 use Acts\CamdramBundle\Entity\Person;
 use Acts\CamdramBundle\Entity\Show;
 use Acts\CamdramBundle\Form\Type\PersonType;
+use Acts\CamdramBundle\Service\Time;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -140,7 +141,7 @@ class PersonController extends AbstractRestController
      */
     public function getPastRolesAction($identifier)
     {
-        $now = new \DateTime;
+        $now = Time::now();
         $person = $this->getEntity($identifier);
         $shows = $this->getDoctrine()->getRepository(Show::class)->getPastByPerson($now, $person);
 
@@ -154,7 +155,7 @@ class PersonController extends AbstractRestController
      */
     public function getUpcomingRolesAction($identifier)
     {
-        $now = new \DateTime;
+        $now = Time::now();
         $person = $this->getEntity($identifier);
         $shows = $this->getDoctrine()->getRepository(Show::class)->getUpcomingByPerson($now, $person);
 
@@ -168,7 +169,7 @@ class PersonController extends AbstractRestController
      */
     public function getCurrentRolesAction($identifier)
     {
-        $now = new \DateTime;
+        $now = Time::now();
         $person = $this->getEntity($identifier);
         $shows = $this->getDoctrine()->getRepository(Show::class)->getCurrentByPerson($now, $person);
 
