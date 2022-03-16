@@ -46,9 +46,15 @@ class RoleController extends AbstractController
             throw new BadRequestHttpException('Invalid CSRF token');
         }
 
+        $person = $request->request->get('person');
+        $role_text = $request->request->get('role');
+        $role_type = $request->request->get('role_type');
+        if (!($person && $role_text)) {
+            throw new BadRequestHttpException('Missing required fields');
+        }
+
         if ($request->request->get('id') == 'new') {
-            $role = $this->addRoleToShow($show, $request->request->get('role_type'),
-                $request->request->get('role'), $request->request->get('person'));
+            $role = $this->addRoleToShow($show, $role_type, $role_text, $person);
 
             $this->em->flush();
         } else {
@@ -61,10 +67,10 @@ class RoleController extends AbstractController
             if ($role->getShow()->getId() != $show->getId()) {
                 throw new BadRequestHttpException('That role is not part of that show');
             }
-            $role->setRole($request->request->get('role'));
+            $role->setRole($role_text);
 
             $oldPerson = $role->getPerson();
-            $newPerson = $this->findOrMakePerson($request->request->get('person'));
+            $newPerson = $this->findOrMakePerson($person);
             if ($newPerson->getId() != $oldPerson->getId()) {
                 $this->removeRoleFromPerson($role, $oldPerson);
                 $role->setPerson($newPerson);

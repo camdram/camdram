@@ -68,16 +68,18 @@ function buildrow(data) {
 
     row.insertAdjacentHTML("beforeend", `<span class="${CLASS_ROLE}"></span>`);
     if (data) row.lastChild.innerText = data.role;
-    row.insertAdjacentHTML("beforeend", `<input class="${CLASS_ROLE}" placeholder="Role, e.g. Director, Romeo" type="text">`);
+    row.insertAdjacentHTML("beforeend", `<input class="${CLASS_ROLE}" placeholder="Role, e.g. Director, Romeo" type="text" required>`);
     row.lastChild.style.display = "none";
+    row.lastChild.addEventListener("keydown", keydown_handler);
 
     row.insertAdjacentHTML("beforeend", `<a itemprop="url" href="" class="${CLASS_PERSON}"><span></span></a>`);
     if (data) {
         row.lastChild.href = Routing.generate("get_person", {"identifier": data.person.slug});
         row.lastChild.firstChild.innerText = data.person.name;
     }
-    row.insertAdjacentHTML("beforeend", `<input class="${CLASS_PERSON}" placeholder="Name" type="text">`);
+    row.insertAdjacentHTML("beforeend", `<input class="${CLASS_PERSON}" placeholder="Name" type="text" required>`);
     row.lastChild.style.display = "none";
+    row.lastChild.addEventListener("keydown", keydown_handler);
 
     row.insertAdjacentHTML("beforeend", "<button class=\"fa fa-pencil tiny-button\" title=\"Edit role\"></button>");
     row.insertAdjacentHTML("beforeend", "<button class=\"fa fa-trash-o tiny-button\" title=\"Delete role\"></button>");
@@ -122,6 +124,8 @@ function close_editor(row, saveChanges) {
     row.classList.remove("unsortable");
 
     if (saveChanges) {
+        if (!role_field.reportValidity() || !person_field.reportValidity()) return;
+
         let icon = row.querySelector(".roles-status-icon");
         let id = row.dataset.roleId === undefined ? "new" : parseInt(row.dataset.roleId);
         let show_slug = row.parentNode.dataset.showSlug;
@@ -223,6 +227,18 @@ function make_evt_handler(fn_on_row, ...args) {
     return function(event) {
         fn_on_row(event.currentTarget.parentNode, ...args);
     };
+}
+
+function keydown_handler(event) {
+    switch (event.code) {
+    case "Enter":
+        close_editor(event.currentTarget.parentNode, true);
+        break;
+
+    case "Escape":
+        close_editor(event.currentTarget.parentNode, false);
+        break;
+    }
 }
 
 const close_editor_save_e = make_evt_handler(close_editor, true);

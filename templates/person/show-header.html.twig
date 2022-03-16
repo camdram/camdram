@@ -4,10 +4,10 @@
     {%- set tags = tags|merge([role.adjustedTag]) -%}
 {%- endfor -%}
 itemscope itemtype="http://schema.org/TheaterEvent" data-roletypes="{{ tags|json_encode()|e('html_attr') }}">
-<h5><a href="{{ url('get_show', {identifier : show.slug}) }}">{{ show.name }}</a> -
+<h5><a href="{{ url('get_show', {identifier : show.slug}) }}">{{ show.name }}</a> –
     {% for role in roles %}
-        {{ role.role -}}
+        {{ role.role ?: (role.type | ucfirst) -}}
         {% if not loop.last %},{% endif %}
-    {% endfor %}
+    {% endfor -%}
 </h5>
 <p>{% include 'performance/show.html.twig' with {'performances': show.performances } %}

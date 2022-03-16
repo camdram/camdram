@@ -3,7 +3,8 @@ const Encore = require("@symfony/webpack-encore");
 const path = require("path");
 const { spawn } = require("child_process");
 
-spawn("node_modules/.bin/eslint", ["assets/js"], { stdio: "inherit" });
+spawn("node_modules/.bin/eslint", ["assets/js"], { stdio: "inherit" })
+    .on('close', code => { if (code) throw "Linter failed" } );
 
 Encore
     // the project directory where all compiled assets will be stored

@@ -10,13 +10,13 @@
         {# Pretify name-less roles held by people. #}
         {%- if role.role -%}
             {%- if type == 'cast' -%}
-                <span itemprop="character" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">{{ role.role }}</span></span> -
+                <span itemprop="character" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">{{ role.role }}</span></span> –
             {%- else -%}
                 {{ role.role }}
                 {% if role.position %}
                 <a href="{{ path('get_position', {identifier: role.position.slug}) }}"><i class="fa fa-question-circle"></i></a>
                 {% endif %}
-                -
+                –
             {%- endif -%}
             {%- set current_role = role.role -%}
         {%- endif -%}
