@@ -4223,29 +4223,29 @@
         },
         {
             "name": "oneup/uploader-bundle",
-            "version": "3.1.3",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
-                "reference": "9a207fa8b2f273fec8086341eb9b4ca51d672f8c"
+                "reference": "461e503cef5d1f73b784aecf1131a79fcc8ed181"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/9a207fa8b2f273fec8086341eb9b4ca51d672f8c",
-                "reference": "9a207fa8b2f273fec8086341eb9b4ca51d672f8c",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/461e503cef5d1f73b784aecf1131a79fcc8ed181",
+                "reference": "461e503cef5d1f73b784aecf1131a79fcc8ed181",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5 || ^8.0",
-                "symfony/asset": "^4.4 || ^5.0",
-                "symfony/event-dispatcher-contracts": "^1.0 || ^2.0",
-                "symfony/finder": "^4.4 || ^5.0",
-                "symfony/framework-bundle": "^4.4 || ^5.0",
-                "symfony/mime": "^4.4 || ^5.0",
-                "symfony/templating": "^4.4 || ^5.0",
-                "symfony/translation": "^4.4 || ^5.0",
-                "symfony/translation-contracts": "^1.0 || ^2.0",
-                "symfony/yaml": "^4.4 || ^5.0",
+                "php": "^7.4 || ^8.0",
+                "symfony/asset": "^4.4 || ^5.4 || ^6.0",
+                "symfony/event-dispatcher-contracts": "^1.0 || ^2.0 || ^3.0",
+                "symfony/finder": "^4.4 || ^5.4 || ^6.0",
+                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.0",
+                "symfony/mime": "^4.4 || ^5.4 || ^6.0",
+                "symfony/templating": "^4.4 || ^5.4 || ^6.0",
+                "symfony/translation": "^4.4 || ^5.4 || ^6.0",
+                "symfony/translation-contracts": "^1.0 || ^2.0 || ^3.0",
+                "symfony/yaml": "^4.4 || ^5.4 || ^6.0",
                 "twig/twig": "^2.4 || ^3.0"
             },
             "require-dev": {
@@ -4256,12 +4256,12 @@
                 "knplabs/gaufrette": "^0.9",
                 "oneup/flysystem-bundle": "^1.2 || ^2.0 || ^3.0",
                 "phpstan/phpstan": "^0.12.10",
-                "phpunit/phpunit": "^8.5",
+                "phpunit/phpunit": "^9.5",
                 "sensio/framework-extra-bundle": "^5.0 || ^6.0",
-                "symfony/browser-kit": "^4.4 || ^5.0",
-                "symfony/phpunit-bridge": "^5.0",
-                "symfony/security-bundle": "^4.4 || ^5.0",
-                "symfony/var-dumper": "^4.4 || ^5.0",
+                "symfony/browser-kit": "^4.4 || ^5.4 || ^6.0",
+                "symfony/phpunit-bridge": "^5.4",
+                "symfony/security-bundle": "^4.4 || ^5.4 || ^6.0",
+                "symfony/var-dumper": "^4.4 || ^5.4 || ^6.0",
                 "twistor/flysystem-stream-wrapper": "^1.0"
             },
             "suggest": {
@@ -4310,9 +4310,9 @@
             ],
             "support": {
                 "issues": "https://github.com/1up-lab/OneupUploaderBundle/issues",
-                "source": "https://github.com/1up-lab/OneupUploaderBundle/tree/3.1.3"
+                "source": "https://github.com/1up-lab/OneupUploaderBundle/tree/3.2.0"
             },
-            "time": "2021-08-04T11:29:51+00:00"
+            "time": "2022-03-21T13:30:30+00:00"
         },
         {
             "name": "phar-io/manifest",
