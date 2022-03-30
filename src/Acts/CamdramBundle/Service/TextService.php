@@ -107,7 +107,7 @@ class TextService
 
     public function stripNewLines(string $text): string
     {
-        return preg_replace("/[\r\n]+/", '', $text);
+        return preg_replace("/[\r\n]+/", ' ', $text);
     }
 
     /**

@@ -44,9 +44,9 @@ class TextServiceTest extends TestCase
 
     public function testStripNewLines()
     {
-        $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\r brown fox"));
-        $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\n brown fox"));
-        $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\r\n brown fox"));
+        $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\rbrown fox"));
+        $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\nbrown fox"));
+        $this->assertEquals('A quick brown fox', $this->textService->stripNewLines("A quick\r\nbrown fox"));
     }
 
     public function testDetectLinks_Urls()
