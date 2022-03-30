@@ -9,11 +9,11 @@
     "cookieconsent": "^3.1.1",
     "dropzone": "^5.9.2",
     "imports-loader": "^0.8.0",
-    "eslint": "^8.11",
+    "eslint": "^8.12",
     "leaflet": "^1.7.1",
     "node-sass": "^7.0.1",
     "sass-loader": "^12",
-    "sortablejs": "^1.14.0",
+    "sortablejs": "^1.15.0",
     "webpack-notifier": "^1.15.0"
   },
   "scripts": {
