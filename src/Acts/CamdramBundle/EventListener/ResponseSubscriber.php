@@ -15,7 +15,7 @@ class ResponseSubscriber implements EventSubscriberInterface
     private $header_name = "Content-Security-Policy";
 
     /** @inheritdoc */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [ KernelEvents::RESPONSE => 'onResponse' ];
     }

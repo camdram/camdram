@@ -13,12 +13,12 @@ class ThemeColorType extends AbstractType
         $resolver->setDefaults(['theme_color_message' => '']);
     }
 
-    public function buildView($view, $form, array $options)
+    public function buildView($view, $form, array $options): void
     {
         $view->vars['theme_color_message'] = $options['theme_color_message'];
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }

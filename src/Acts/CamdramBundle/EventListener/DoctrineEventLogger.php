@@ -13,7 +13,7 @@ class DoctrineEventLogger implements EventSubscriber
 {
     private $logger;
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return array(
           'postUpdate', 'postPersist', 'postRemove'
@@ -25,7 +25,7 @@ class DoctrineEventLogger implements EventSubscriber
         $this->logger = $logger;
     }
 
-    private function getContext($object)
+    private function getContext($object): array
     {
         if ($object instanceof AccessControlEntry) {
             return array(

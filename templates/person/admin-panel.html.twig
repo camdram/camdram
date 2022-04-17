@@ -13,4 +13,13 @@
             {{ include('navigation/nav-item.html.twig', {item: {id: 'person_merge', path: path('get_person_merge',{identifier:person.slug}), icon: 'compress', text: 'Merge with another person'} }) }}
         {% endif %}
     </ul>
+    {%- for redirect in person.mappedFrom -%}
+        {%- if loop.first -%}
+            <div><h6 style="margin-top:1em">Redirects to this page</h6><ul>
+        {%- endif -%}
+            <li><span>{{redirect.name}}</span>: <a href="/people/{{redirect.slug}}" style="font-family: monospace">{{redirect.slug}}</a>. ID: {{redirect.id}}</li>
+        {%- if loop.last -%}
+            </ul></div>
+        {%- endif -%}
+    {%- endfor -%}
 </div>

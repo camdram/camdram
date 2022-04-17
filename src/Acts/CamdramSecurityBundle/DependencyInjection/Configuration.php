@@ -15,10 +15,8 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): Treebuilder
     {
-        $treeBuilder = new TreeBuilder('acts_camdram_security');
-
-        return $treeBuilder;
+        return new TreeBuilder('acts_camdram_security');
     }
 }

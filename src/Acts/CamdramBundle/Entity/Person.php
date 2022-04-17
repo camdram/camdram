@@ -61,12 +61,23 @@ class Person extends BaseEntity
     /**
      * @var Person|null
      *
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Person", inversedBy="mapped_from")
      * @ORM\JoinColumn(name="mapto", nullable=true)
      * @Serializer\Exclude
      * @Gedmo\Versioned
      */
     private $mapped_to;
+
+    /**
+     * List of redirects to this person. Not expected to be exposed publicly except
+     * through the existence of the redirects.
+     *
+     * @var \Doctrine\Common\Collections\Collection<Person>
+     *
+     * @ORM\OneToMany(targetEntity="Person", mappedBy="mapped_to", fetch="EXTRA_LAZY")
+     * @Serializer\Exclude
+     */
+    private $mapped_from;
 
     /**
      * @var bool
@@ -102,6 +113,7 @@ class Person extends BaseEntity
      */
     public function __construct()
     {
+        $this->mapped_from = new \Doctrine\Common\Collections\ArrayCollection();
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
 
@@ -118,6 +130,11 @@ class Person extends BaseEntity
     public function getMappedTo(): ?Person
     {
         return $this->mapped_to;
+    }
+
+    public function getMappedFrom()
+    {
+        return $this->mapped_from;
     }
 
     public function setNoRobots(bool $noRobots): self
