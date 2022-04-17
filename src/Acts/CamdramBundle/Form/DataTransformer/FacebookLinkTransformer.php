@@ -4,26 +4,15 @@ namespace Acts\CamdramBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Facebook\Facebook;
 
 /**
  * Class FacebookLinkTransformer
  *
- * Transforms a facebook_id from it's database representation (it's page ID) to it's user-facing representation
- * (it's page username) whenever a form is loaded.
+ * Transforms a facebook_id from its database representation (page ID or URL) to
+ * its user-facing representation (an URL) whenever a form is loaded.
  */
 class FacebookLinkTransformer implements DataTransformerInterface
 {
-    /**
-     * @var Facebook
-     */
-    private $api;
-
-    public function __construct(Facebook $api)
-    {
-        $this->api = $api;
-    }
-
     /**
      * Converts a Facebook page ID into the page username
      *
@@ -37,19 +26,10 @@ class FacebookLinkTransformer implements DataTransformerInterface
     {
         if (empty($value)) {
             return null;
-        }
-        try {
-            $data = $this->api->sendRequest('GET', '/'.$value, ['fields' => 'username']);
-            return $data->getDecodedBody()['username'];
-        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
-            //Just return the id, which is valid but less user-friendly
+        } else if (is_numeric($value)) {
             return "https://www.facebook.com/".$value;
-        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
-            return "https://www.facebook.com/".$value;
-        }
-        catch (\Exception $e)
-        {
-            die('sdf');
+        } else {
+            return $value;
         }
     }
 
@@ -67,30 +47,14 @@ class FacebookLinkTransformer implements DataTransformerInterface
         if (empty($value)) {
             return null;
         }
-
-        if (preg_match('/^(?:https?\:\\/\\/)?www\.facebook\.com\\/([^\?]+)(?:\?.*)?$/i', $value, $matches)) {
-            $value = $matches[1];
+        $value = trim($value);
+        if (strpos($value, 'https://') !== 0) {
+            $value = "https://$value";
         }
-        if (preg_match('/^events\\/([0-9]+)\\/?/i', $value, $matches)) {
-            $value = $matches[1];
-        }
-
-        try {
-            $data = $this->api->get('/'.urlencode($value));
-
-            return $data->getDecodedBody()['id'];
-        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
-            if (is_numeric($value)) {
-                return $value;
-            } else {
-                throw new TransformationFailedException(sprintf('%s is an invalid Facebook id', $value));
-            }
-        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
-            if (is_numeric($value)) {
-                return $value;
-            } else {
-                throw new TransformationFailedException("We cannot accept Facebook pages at this time - we can't communicate with Facebook");
-            }
+        if (preg_match("/^https:\/\/(www\.)?facebook\.com\/./", $value) === 1) {
+            return $value;
+        } else {
+            throw new TransformationFailedException("This should be an URL starting “https://www.facebook.com/”; other URLs can go in the desciption.");
         }
     }
 }

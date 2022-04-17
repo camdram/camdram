@@ -121,7 +121,8 @@ abstract class Organisation extends BaseEntity implements OwnableInterface
 
     public function getFacebookUrl()
     {
-        return 'http://www.facebook.com/'.$this->getFacebookId();
+        $id = $this->getFacebookId();
+        return is_numeric($id) ? "https://www.facebook.com/$id" : $id;
     }
 
     public function getTwitterUrl()

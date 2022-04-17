@@ -16,31 +16,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class FacebookLinkType extends AbstractType
 {
-    /**
-     *
-     * @var \Facebook\Facebook
-     */
-    private $api;
-
-    public function __construct(\Facebook\Facebook $api)
-    {
-        $this->api = $api;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addModelTransformer(new FacebookLinkTransformer($this->api));
+        $builder->addModelTransformer(new FacebookLinkTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'class' => 'medium',
             'service' => 'facebook',
             'label' => 'Facebook event/page',
-            'attr' => array('placeholder' => 'URL, username or ID'),
+            'attr' => ['placeholder' => 'Facebook URL'],
             'required' => false,
-        ));
+            'invalid_message' => "This should be an URL starting “https://www.facebook.com/”; other URLs can go in the desciption.",
+        ]);
     }
 
     public function getParent(): ?string
