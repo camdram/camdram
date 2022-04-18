@@ -161,6 +161,9 @@ liip_imagine:
             filters:
                 thumbnail: { size : [200, 200], mode : inset }
             data_loader: url_data_loader
+    twig:
+        assets_version: false
+        mode: lazy
 
 stof_doctrine_extensions:
     orm:

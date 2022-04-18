@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dafa8d28685dba38c08038d486cb6f6a",
+    "content-hash": "8cb01376212f4061b82c07c08af32570",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -3845,50 +3845,54 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "dev-v2.3.0+camdram",
+            "version": "2.7.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/GKFX/LiipImagineBundle.git",
-                "reference": "83d1a2d1b9d3484c14800c77bde41ea1240d9bee"
+                "url": "https://github.com/liip/LiipImagineBundle.git",
+                "reference": "9baad226c7cbc85e7cd751d2bc587c35b0ad0325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GKFX/LiipImagineBundle/zipball/83d1a2d1b9d3484c14800c77bde41ea1240d9bee",
-                "reference": "83d1a2d1b9d3484c14800c77bde41ea1240d9bee",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/9baad226c7cbc85e7cd751d2bc587c35b0ad0325",
+                "reference": "9baad226c7cbc85e7cd751d2bc587c35b0ad0325",
                 "shasum": ""
             },
             "require": {
-                "imagine/imagine": "^0.7.1|^1.1",
-                "php": "^7.1",
-                "symfony/filesystem": "^3.4|^4.3|^5.0",
-                "symfony/finder": "^3.4|^4.3|^5.0",
-                "symfony/framework-bundle": "^3.4|^4.3|^5.0",
-                "symfony/mime": "^4.3|^5.0",
-                "symfony/options-resolver": "^3.4|^4.3|^5.0",
-                "symfony/process": "^3.4|^4.3|^5.0",
-                "symfony/templating": "^3.4|^4.3|^5.0",
-                "twig/twig": "^1.40|^2.9|^3.0"
+                "ext-mbstring": "*",
+                "imagine/imagine": "^1.2.4",
+                "php": "^7.1|^8.0",
+                "symfony/filesystem": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/finder": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/framework-bundle": "^3.4.23|^4.4|^5.3|^6.0",
+                "symfony/mime": "^4.4|^5.3|^6.0",
+                "symfony/options-resolver": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/process": "^3.4|^4.4|^5.3|^6.0",
+                "twig/twig": "^1.44|^2.9|^3.0"
             },
             "require-dev": {
                 "amazonwebservices/aws-sdk-for-php": "^1.0",
                 "aws/aws-sdk-php": "^2.4",
-                "doctrine/cache": "^1.1",
-                "doctrine/orm": "^2.3",
+                "doctrine/cache": "^1.11|^2.0",
+                "doctrine/persistence": "^1.3|^2.0",
                 "enqueue/enqueue-bundle": "^0.9|^0.10",
                 "ext-gd": "*",
-                "friendsofphp/php-cs-fixer": "^2.10",
-                "league/flysystem": "^1.0",
+                "league/flysystem": "^1.0|^2.0|^3.0",
+                "phpstan/phpstan": "^0.12.64",
+                "psr/cache": "^1.0|^2.0|^3.0",
                 "psr/log": "^1.0",
-                "symfony/browser-kit": "^3.4|^4.3|^5.0",
-                "symfony/console": "^3.4|^4.3|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.3|^5.0",
-                "symfony/form": "^3.4|^4.3|^5.0",
-                "symfony/phpunit-bridge": "^4.3|^5.0",
-                "symfony/validator": "^3.4|^4.3|^5.0",
-                "symfony/yaml": "^3.4|^4.3|^5.0"
+                "symfony/browser-kit": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/cache": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/console": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/dependency-injection": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/form": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/messenger": "^4.4|^5.3|^6.0",
+                "symfony/phpunit-bridge": "^5.3",
+                "symfony/templating": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/validator": "^3.4|^4.4|^5.3|^6.0",
+                "symfony/yaml": "^3.4|^4.4|^5.3|^6.0"
             },
             "suggest": {
-                "alcaeus/mongo-php-adapter": "required on PHP >= 7.0 to use mongo components with mongodb extension",
+                "alcaeus/mongo-php-adapter": "required for mongodb components",
                 "amazonwebservices/aws-sdk-for-php": "required to use AWS version 1 cache resolver",
                 "aws/aws-sdk-php": "required to use AWS version 2/3 cache resolver",
                 "doctrine/mongodb-odm": "required to use mongodb-backed doctrine components",
@@ -3897,18 +3901,13 @@
                 "ext-gd": "required to use gd driver",
                 "ext-gmagick": "required to use gmagick driver",
                 "ext-imagick": "required to use imagick driver",
-                "ext-mongo": "required for mongodb components on PHP <7.0",
-                "ext-mongodb": "required for mongodb components on PHP >=7.0",
+                "ext-mongodb": "required for mongodb components",
                 "league/flysystem": "required to use FlySystem data loader or cache resolver",
-                "monolog/monolog": "A psr/log compatible logger is required to enable logging"
+                "monolog/monolog": "A psr/log compatible logger is required to enable logging",
+                "symfony/messenger": "If you like to process images in background",
+                "symfony/templating": "required to use deprecated Templating component instead of Twig"
             },
             "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.0": "1.7-dev",
-                    "dev-master": "2.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Liip\\ImagineBundle\\": ""
@@ -3917,6 +3916,7 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3940,9 +3940,10 @@
                 "transformation"
             ],
             "support": {
-                "source": "https://github.com/GKFX/LiipImagineBundle/tree/v2.3.0+camdram"
+                "issues": "https://github.com/liip/LiipImagineBundle/issues",
+                "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.6"
             },
-            "time": "2020-10-03T13:27:34+00:00"
+            "time": "2022-01-14T16:46:57+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -14450,17 +14451,16 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "friendsofsymfony/oauth-server-bundle": 20,
-        "liip/imagine-bundle": 20
+        "friendsofsymfony/oauth-server-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.3"
+        "php": ">=7.4"
     },
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.4"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
