@@ -20,7 +20,7 @@ class ApiVoter implements VoterInterface
         return true;
     }
 
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         foreach ($attributes as $attribute) {
             if ($this->supportsAttribute($attribute) && $token instanceof OAuthToken) {

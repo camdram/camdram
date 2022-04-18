@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class CreateVoter extends Voter
 {
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         if ($attribute != "CREATE") {
             return false;
@@ -29,7 +29,7 @@ class CreateVoter extends Voter
             ]);
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if (TokenUtilities::isApiRequest($token)) {
             return TokenUtilities::hasRole($token, 'ROLE_WRITE')

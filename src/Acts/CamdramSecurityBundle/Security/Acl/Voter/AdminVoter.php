@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class AdminVoter extends Voter
 {
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         if (is_object($subject)) {
             $subject = get_class($subject);
@@ -21,7 +21,7 @@ class AdminVoter extends Voter
         return strpos($subject, 'Acts\\') !== false;
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         foreach ($token->getRoleNames() as $role) {
             if ($role == 'ROLE_ADMIN' || $role == 'ROLE_SUPER_ADMIN') {

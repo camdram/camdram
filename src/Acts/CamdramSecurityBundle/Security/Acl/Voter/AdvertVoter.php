@@ -29,13 +29,13 @@ class AdvertVoter extends Voter
         $this->aclProvider = $aclProvider;
     }
 
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
                        && $subject instanceof Advert;
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if ($subject->getShow()) {
             return $this->security->isGranted('EDIT', $subject->getShow());

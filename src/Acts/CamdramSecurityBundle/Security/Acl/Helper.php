@@ -12,13 +12,9 @@ class Helper
      */
     private $authorizationChecker;
 
-    /** @var AclProvider */
-    private $aclProvider;
-
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, AclProvider $aclProvider)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->authorizationChecker = $authorizationChecker;
-        $this->aclProvider = $aclProvider;
     }
 
     /**

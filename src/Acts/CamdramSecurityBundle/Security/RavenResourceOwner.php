@@ -17,16 +17,8 @@ class RavenResourceOwner implements ResourceOwnerInterface
 {
     private $name;
 
-    /** @var HttpClient */
-    private $httpClient;
-
     /** @var StateInterface */
     private $state;
-
-    public function __construct(HttpClient $httpClient)
-    {
-        $this->httpClient = $httpClient;
-    }
 
     public function setName($name): void
     {

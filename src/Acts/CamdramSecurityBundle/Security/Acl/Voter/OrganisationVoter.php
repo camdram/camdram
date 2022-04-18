@@ -23,13 +23,13 @@ class OrganisationVoter extends Voter
         $this->aclProvider = $aclProvider;
     }
 
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'APPROVE', 'DELETE'])
             && ($subject instanceof Show || $subject instanceof Event);
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if (TokenUtilities::isApiRequest($token) && !TokenUtilities::hasRole($token, 'ROLE_WRITE_ORG')) {
             return false;

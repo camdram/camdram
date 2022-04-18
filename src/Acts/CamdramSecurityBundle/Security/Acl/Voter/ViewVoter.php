@@ -13,7 +13,7 @@ use Acts\CamdramBundle\Entity\Person;
 
 class ViewVoter extends Voter
 {
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         return $attribute == 'VIEW'
             && (
@@ -26,7 +26,7 @@ class ViewVoter extends Voter
                );
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if ($subject instanceof Show) {
             return $subject->getAuthorised();
