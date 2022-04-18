@@ -40,7 +40,7 @@
                                Next week
                            {%- else -%}
                                {{ week.startAt|date('j&#160;M')|raw }}–<wbr>
-                               {{- week.endAt|date_modify("-1 day")|date('j&\\nb\\sp;M')|raw }}
+                               {{- week.endAt|date_modify("-1 day")|date('j&#160;M')|raw }}
                            {%- endif -%}
                        </span>
                    </a>
