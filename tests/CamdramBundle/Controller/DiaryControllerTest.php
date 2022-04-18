@@ -96,7 +96,7 @@ class DiaryControllerTest extends RestTestCase
                     '_links' => [
                         'show' => '/shows/2000-test-show-1',
                     ],
-                    'date_string' => '20:30, Mon 3rd July 2000 - Thu 6th July 2000',
+                    'date_string' => '20:30, Mon 3rd – Thu 6th July 2000',
                     'start_at' => '2000-07-03T19:30:00+00:00',
                     'repeat_until' => '2000-07-06',
                 ],
@@ -140,7 +140,7 @@ class DiaryControllerTest extends RestTestCase
                     '_links' => [
                         'show' => '/shows/2000-test-show',
                     ],
-                    'date_string' => '20:30, Sun 25th June 2000 - Mon 26th June 2000',
+                    'date_string' => '20:30, Sun 25th – Mon 26th June 2000',
                     'start_at' => '2000-06-25T19:30:00+00:00',
                     'repeat_until' => '2000-06-26',
                 ],
@@ -165,7 +165,7 @@ class DiaryControllerTest extends RestTestCase
                     '_links' => [
                         'show' => '/shows/2000-test-show',
                     ],
-                    'date_string' => '20:30, Fri 2nd June 2000 - Thu 8th June 2000',
+                    'date_string' => '20:30, Fri 2nd – Thu 8th June 2000',
                     'start_at' => '2000-06-02T19:30:00+00:00',
                     'repeat_until' => '2000-06-08',
                 ],
@@ -201,7 +201,7 @@ class DiaryControllerTest extends RestTestCase
                     '_links' => [
                         'show' => '/shows/2000-test-show',
                     ],
-                    'date_string' => '20:30, Sun 18th June 2000 - Mon 19th June 2000',
+                    'date_string' => '20:30, Sun 18th – Mon 19th June 2000',
                     'start_at' => '2000-06-18T19:30:00+00:00',
                     'repeat_until' => '2000-06-19',
                 ],
