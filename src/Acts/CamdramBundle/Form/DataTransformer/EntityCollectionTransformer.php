@@ -60,6 +60,7 @@ class EntityCollectionTransformer implements DataTransformerInterface
     public function reverseTransform($value): mixed
     {
         if (is_array($value)) {
+            /** @phpstan-var ArrayCollection<int, T> */
             $entities = new ArrayCollection();
             $repo = $this->em->getRepository($this->repository_name);
 

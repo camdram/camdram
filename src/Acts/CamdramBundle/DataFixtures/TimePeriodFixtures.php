@@ -60,9 +60,7 @@ class TimePeriodFixtures extends Fixture
         for ($year = $first_key; array_key_exists($year, self::term_dates); $year++) {
             list($michaelmas_start, $michaelmas_end) = $this->addTerm('Michaelmas',
                 new \DateTime($year.'-10-'.self::term_dates[$year][0]), 0, 8);
-            if (isset($easter_end)) {
-                $this->addVacation('Summer', $easter_end, $michaelmas_start);
-            }
+            $this->addVacation('Summer', $easter_end, $michaelmas_start);
 
             list($lent_start, $lent_end) = $this->addTerm('Lent',
                 new \DateTime(($year + 1).'-01-'.self::term_dates[$year][1]), 0, 9);

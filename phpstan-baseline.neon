@@ -18,11 +18,6 @@ parameters:
 			path: src/Acts/CamdramBundle/Controller/AbstractRestController.php
 
 		-
-			message: "#^Method Acts\\\\CamdramBundle\\\\Controller\\\\AbstractRestController\\:\\:getEntity\\(\\) should return T of Acts\\\\CamdramBundle\\\\Entity\\\\BaseEntity but returns mixed\\.$#"
-			count: 1
-			path: src/Acts/CamdramBundle/Controller/AbstractRestController.php
-
-		-
 			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<Acts\\\\CamdramBundle\\\\Entity\\\\Show\\>\\:\\:findInDateRange\\(\\)\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/Controller/ShowController.php
@@ -53,7 +48,7 @@ parameters:
 			path: src/Acts/CamdramBundle/Form/DataTransformer/EntityCollectionTransformer.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<object\\>\\:\\:findOneByName\\(\\)\\.$#"
+			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<object\\>\\:\\:findOneByName\\(\\)\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/Form/Type/EntitySearchType.php
 

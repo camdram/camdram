@@ -337,6 +337,7 @@ class Society extends Organisation
     {
         $this->news = new \Doctrine\Common\Collections\ArrayCollection();
         $this->adverts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
     }
 

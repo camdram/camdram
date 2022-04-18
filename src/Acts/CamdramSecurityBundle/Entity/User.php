@@ -113,11 +113,13 @@ class User implements UserInterface
 
     /**
      * @Api\Link(route="get_account_shows", targetType="Acts\\CamdramBundle\\Entity\\Show")
+     * @phpstan-ignore-next-line
      */
     private $shows;
 
     /**
      * @Api\Link(route="get_account_organisations", targetType="Acts\\CamdramBundle\\Entity\\Organisation")
+     * @phpstan-ignore-next-line
      */
     private $organisations;
 

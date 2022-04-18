@@ -20,14 +20,11 @@ class FeedViewHandler
 
     private $urlGen;
 
-    private $authorAddress;
-
-    public function __construct(AnnotationReader $reader, \Twig\Environment $twig, EntityUrlGenerator $urlGen, $adminEmail)
+    public function __construct(AnnotationReader $reader, \Twig\Environment $twig, EntityUrlGenerator $urlGen)
     {
         $this->reader = $reader;
         $this->twig = $twig;
         $this->urlGen = $urlGen;
-        $this->authorAddress = $adminEmail;
     }
 
     public function createResponse(ViewHandler $handler, View $view, Request $request): Response

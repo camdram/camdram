@@ -57,18 +57,16 @@ class PerformanceRepository extends EntityRepository
         $max_end = clone $end;
         $max_end->modify('-1 day');
         foreach ($result as $p) {
-            if ($p->getShow()) {
-                $start_at = $p->getStartAt();
-                $end_at = $p->getRepeatUntil();
-                if ($start_at < $start) {
-                    $start_at = $start;
-                }
-                if ($end_at > $end) {
-                    $end_at = $max_end;
-                }
-
-                $count += $end_at->diff($start_at)->d + 1;
+            $start_at = $p->getStartAt();
+            $end_at = $p->getRepeatUntil();
+            if ($start_at < $start) {
+                $start_at = $start;
             }
+            if ($end_at > $end) {
+                $end_at = $max_end;
+            }
+
+            $count += $end_at->diff($start_at)->d + 1;
         }
 
         return $count;
