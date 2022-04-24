@@ -11,7 +11,7 @@ class DiaryRow
      * causes the diary to be more compact, but looks more confusing as events with different times appear in the same
      * row
      */
-    const MAX_ROW_RANGE_MINUTES = 30;
+    const MAX_ROW_RANGE_MINUTES = 45;
 
     /** @var array<DiaryItem> */
     private $items = array();

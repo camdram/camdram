@@ -92,6 +92,9 @@ class Diary
         if ($this->start_date && $this->end_date) {
             $view->setDateRange($this->start_date, $this->end_date);
         }
+        usort($this->events, function($a, $b) {
+            return ($a->getStartAt()->getTimestamp() % 86400) <=> ($b->getStartAt()->getTimestamp() % 86400);
+        });
         $view->addEvents($this->events);
         $view->addLabels($this->labels);
 
