@@ -18,6 +18,13 @@
     {% endfor %}
 </form>
 
+{% set class_url_map = {
+    'Acts\\CamdramBundle\\Entity\\Person': '/people/by-id/',
+    'Acts\\CamdramBundle\\Entity\\Show': '/shows/by-id/',
+    'Acts\\CamdramBundle\\Entity\\Society': '/societies/by-id/',
+    'Acts\\CamdramBundle\\Entity\\Venue': '/venues/by-id/',
+} %}
+
 {% include 'paginator.html.twig' %}
 <div style="overflow-x: auto; width: 100%">
 <table>
@@ -33,7 +40,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for result in paginator %}
+    {%- for result in paginator -%}
         <tr>
             <td>{{ result.loggedAt | date('Y-m-d H:i:s') }}</td>
             <td>
@@ -43,8 +50,12 @@
             </td>
             <td>
                 <a href="{{ path('acts_camdram_audit', {class: result.objectClass, id: result.objectId}) }}">
-                    {{ result.objectId }}
+                    {{- result.objectId -}}
                 </a>
+                {%- if class_url_map[result.objectClass] is defined -%}
+                    ;<br>
+                    <a href="{{ class_url_map[result.objectClass] }}{{ result.objectId }}">(view)</a>
+                {%- endif -%}
             </td>
             <td>{{ result.version }}</td>
             <td>{{ result.action }}</td>
@@ -61,11 +72,11 @@
                 </small>
             </td>
         </tr>
-    {% else %}
+    {%- else -%}
         <tr><td colspan="7" class="text-center">
         No matching results in log; <a href="{{ path('acts_camdram_audit') }}">reset?</a>
         </td></tr>
-    {% endfor %}
+    {%- endfor -%}
     </tbody>
 </table>
 </div>
