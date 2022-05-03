@@ -24,7 +24,7 @@ use Acts\CamdramApiBundle\Configuration\Annotation as Api;
  * @Serializer\XmlRoot("show")
  * @Gedmo\Loggable
  * @Api\Feed(name="Camdram - Shows", titleField="name",
- *   description="Shows produced by students in Cambridge",
+ *   description="Amateur shows produced in Cambridge",
  *   template="show/rss.html.twig")
  * @Api\Link(route="get_show", params={"identifier": "object.getSlug()"})
  */

@@ -159,7 +159,7 @@ class RavenResourceOwner implements ResourceOwnerInterface
         ];
         if ($token['ptags'] == 'current')
         {
-            //We can only infer an e-mail address for current students
+            // We can only infer an e-mail address for current students.
             $data['email'] = $token['principal'].'@cam.ac.uk';
         }
 

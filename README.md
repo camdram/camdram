@@ -5,7 +5,7 @@
 [![Code Coverage](https://codecov.io/gh/camdram/camdram/branch/master/graphs/badge.svg?branch=master)](http://codecov.io/github/camdram/camdram?branch=master)
 [![Join the chat at https://gitter.im/camdram/development](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/camdram/development)
 
-Camdram is an [open source](http://opensource.org/docs/osd) project developed by a team of volunteers for the benefit of the Cambridge student theatre community. We use this repository to host the code that runs Camdram and to co-ordinate our work, however we welcome anyone to contribute bugs and suggest new features.
+Camdram is an [open source](http://opensource.org/docs/osd) project developed by a team of volunteers for the benefit of the Cambridge amateur theatre community. We use this repository to host the code that runs Camdram and to co-ordinate our work, however we welcome anyone to contribute bugs and suggest new features.
 
 The steps required to set up a development checkout of Camdram are detailed below. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub.
 
