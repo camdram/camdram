@@ -5,7 +5,7 @@
   "license": "GPL-2.0",
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@symfony/webpack-encore": "^1.8.2",
+    "@symfony/webpack-encore": "^2.1.0",
     "cookieconsent": "^3.1.1",
     "dropzone": "^5.9.2",
     "eslint": "^8.14",
