@@ -3,10 +3,6 @@
 {% block title %}Vacancies{% endblock %}
 
 {% block vacancies_body %}
-    <div id="adc-guidance">
-        {% include 'advert/adc-guidance.html.twig' %}
-    </div>
-
     {%- for a in adverts -%}
         <div class="vacancies-panel row">
             <h5>{{ link_entity(a, {innerhtml: (a.name|e) ~ '<i style="font-weight:normal"> – read more...</i>'}) }}</h5>

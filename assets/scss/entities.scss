@@ -277,16 +277,3 @@ details.content-warning {
         color: black;
     }
 }
-
-div#adc-guidance {
-  @include panel(#f2f2f2);
-
-  p:first-child {
-      margin-bottom: 0;
-  }
-
-  ol {
-      margin: 14px 0;
-      padding-left: 40px;
-  }
-}
