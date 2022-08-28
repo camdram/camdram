@@ -4592,16 +4592,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.14.2",
+            "version": "1.14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "c8d48852fbc052454af42f6de27635ddd916b959"
+                "reference": "31d8ee46d0215108df16a8527c7438e96a4d7735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/c8d48852fbc052454af42f6de27635ddd916b959",
-                "reference": "c8d48852fbc052454af42f6de27635ddd916b959",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/31d8ee46d0215108df16a8527c7438e96a4d7735",
+                "reference": "31d8ee46d0215108df16a8527c7438e96a4d7735",
                 "shasum": ""
             },
             "require": {
@@ -4653,9 +4653,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.14.2"
+                "source": "https://github.com/php-http/discovery/tree/1.14.3"
             },
-            "time": "2022-05-25T07:26:05+00:00"
+            "time": "2022-07-11T14:04:40+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -4788,16 +4788,16 @@
         },
         {
             "name": "php-http/httplug-bundle",
-            "version": "1.25.0",
+            "version": "1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/HttplugBundle.git",
-                "reference": "2b5dd81817dc22f6c2c3ff26f4359c877b81ad78"
+                "reference": "dda96d44338b68a1db4ee0b06fa596583a0e75c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/2b5dd81817dc22f6c2c3ff26f4359c877b81ad78",
-                "reference": "2b5dd81817dc22f6c2c3ff26f4359c877b81ad78",
+                "url": "https://api.github.com/repos/php-http/HttplugBundle/zipball/dda96d44338b68a1db4ee0b06fa596583a0e75c4",
+                "reference": "dda96d44338b68a1db4ee0b06fa596583a0e75c4",
                 "shasum": ""
             },
             "require": {
@@ -4887,9 +4887,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/HttplugBundle/issues",
-                "source": "https://github.com/php-http/HttplugBundle/tree/1.25.0"
+                "source": "https://github.com/php-http/HttplugBundle/tree/1.27.0"
             },
-            "time": "2021-11-26T07:11:24+00:00"
+            "time": "2022-07-25T14:18:05+00:00"
         },
         {
             "name": "php-http/logger-plugin",
