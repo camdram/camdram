@@ -5,8 +5,6 @@ namespace Acts\CamdramApiBundle\EventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
-use NinjaMutex\Lock\FlockLock;
-use NinjaMutex\Mutex;
 
 class KernelEventListener
 {
@@ -48,11 +46,7 @@ class KernelEventListener
                     $response->setContent("Unauthenticated API requests have a 1-in-3 chance of returning a HTTP 401 error. You should use an API key.");
                     $event->setResponse($response);
                 } else {
-                    $lock = new FlockLock('../app/cache');
-                    $mutex = new Mutex('unauth-api-req', $lock);
-                    $mutex->acquireLock();
                     sleep(12);
-                    $mutex->releaseLock();
                 }
             }
         }
