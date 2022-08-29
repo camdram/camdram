@@ -49,6 +49,7 @@
     "require": {
         "php": ">=7.4",
         "abraham/twitteroauth": "^3",
+        "arvenil/ninja-mutex": "*",
         "dms/phpunit-arraysubset-asserts": "^0.4.0",
         "doctrine/dbal": "^3.2",
         "doctrine/doctrine-bundle": "^2",

@@ -5,6 +5,8 @@ namespace Acts\CamdramApiBundle\EventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use NinjaMutex\Lock\FlockLock;
+use NinjaMutex\Mutex;
 
 class KernelEventListener
 {
@@ -40,7 +42,11 @@ class KernelEventListener
         if (!$authed && getenv("SYMFONY_ENV") !== 'test') {
             $format = $event->getRequest()->getRequestFormat();
             if ($format == 'json' || $format == 'xml') {
+                $lock = new FlockLock('../app/cache');
+                $mutex = new Mutex('unauth-api-req', $lock);
+                $mutex->acquireLock();
                 sleep(12);
+                $mutex->releaseLock();
             }
         }
     }
