@@ -42,11 +42,18 @@ class KernelEventListener
         if (!$authed && getenv("SYMFONY_ENV") !== 'test') {
             $format = $event->getRequest()->getRequestFormat();
             if ($format == 'json' || $format == 'xml') {
-                $lock = new FlockLock('../app/cache');
-                $mutex = new Mutex('unauth-api-req', $lock);
-                $mutex->acquireLock();
-                sleep(12);
-                $mutex->releaseLock();
+                if (rand(1, 100) > 66) {
+                    $response = new Response();
+                    $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
+                    $response->setContent("Unauthenticated API requests have a 1-in-3 chance of returning a HTTP 401 error. You should use an API key.");
+                    $event->setResponse($response);
+                } else {
+                    $lock = new FlockLock('../app/cache');
+                    $mutex = new Mutex('unauth-api-req', $lock);
+                    $mutex->acquireLock();
+                    sleep(12);
+                    $mutex->releaseLock();
+                }
             }
         }
     }
