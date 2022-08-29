@@ -17,6 +17,7 @@ class KernelEventListener
 
     public function onKernelRequest(RequestEvent $event)
     {
+        $authed = false;
         $params = $event->getRequest()->request;
         // The client_id POST parameter has the database primary key embedded
         $parts = explode("_", $params->get("client_id") ?? '');
@@ -32,7 +33,14 @@ class KernelEventListener
                     $app->incrementRequestCounter();
                     $app->setLastUsed($now);
                     $this->entityManager->flush();
+                    $authed = true;
                 }
+            }
+        }
+        if (!$authed && getenv("SYMFONY_ENV") !== 'test') {
+            $format = $event->getRequest()->getRequestFormat();
+            if ($format == 'json' || $format == 'xml') {
+                sleep(12);
             }
         }
     }

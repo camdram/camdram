@@ -18,10 +18,11 @@
         <li>People</li>
     </ul>
     <p>
-        In order to make write requests you must create an API key. API keys can be associated with a user, or
-        a society/venue for which you are an administrator. If your app only performs read-only actions, you
-        are still advised to create an API key so that we can better monitor how the API is used. Additionally,
-        non authenticated API requests are subjected to a lower rate limit.
+        In order to make requests you must create an API key. This is to enable us to monitor how the API is
+        used and to prevent abuse. API keys can be associated with a user, or a society/venue for which you
+        are an administrator. Unauthenticated API requests will work to allow for easier prototyping and
+        development, but are subjected to very low rate limits and long response delays. Put simply, you will
+        want to use an API key.
     </p>
     <p>
         There is some basic documentation available on our sister site <a href="https://camdram.github.io/api">
@@ -31,8 +32,8 @@
         Raven account and wish to subscribed manually by a member of the Camdram team.
     </p>
     <p>
-        The API uses the same URL structure as Camdram itself - if you're not what the URL is, try simply
-        adding '.json' or '.xml' to the URL for a relevant page.
+        The API uses mostly the same URL structure as Camdram itself. If you're not sure what an endpoint's URL
+        is, try simply adding '.json' or '.xml' to the URL for a relevant page.
     </p>
 
 {% endblock %}
