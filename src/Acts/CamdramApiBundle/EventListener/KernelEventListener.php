@@ -37,13 +37,18 @@ class KernelEventListener
                 }
             }
         }
+        if (substr($event->getRequest()->headers->get('Authorization'), 0, 6) == 'Bearer') {
+            // It is okay to just set this truthy without validation because
+            // bad bearer tokens will return invalid_grant errors.
+            $authed = true;
+        }
         if (!$authed && getenv("SYMFONY_ENV") !== 'test') {
             $format = $event->getRequest()->getRequestFormat();
             if ($format == 'json' || $format == 'xml') {
                 if (rand(1, 100) > 66) {
                     $response = new Response();
                     $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
-                    $response->setContent("Unauthenticated API requests have a 1-in-3 chance of returning a HTTP 401 error. You should use an API key.");
+                    $response->setContent("Unauthenticated API requests have a 1-in-3 chance of returning an HTTP 401 error. You should use an API key to avoid this.");
                     $event->setResponse($response);
                 } else {
                     sleep(12);
