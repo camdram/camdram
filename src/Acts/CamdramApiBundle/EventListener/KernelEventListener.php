@@ -42,6 +42,10 @@ class KernelEventListener
             // bad bearer tokens will return invalid_grant errors.
             $authed = true;
         }
+        if (substr($event->getRequest()->getRequestUri(), 0, 13) == '/auth/account') {
+            // Needed for the authorization code OAuth2 grant type.
+            $authed = true;
+        }
         if (!$authed && getenv("SYMFONY_ENV") !== 'test') {
             $format = $event->getRequest()->getRequestFormat();
             if ($format == 'json' || $format == 'xml') {
