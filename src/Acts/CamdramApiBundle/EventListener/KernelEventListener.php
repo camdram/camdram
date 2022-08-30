@@ -18,8 +18,22 @@ class KernelEventListener
     public function onKernelRequest(RequestEvent $event)
     {
         $authed = false;
-        $params = $event->getRequest()->request;
-        // The client_id POST parameter has the database primary key embedded
+        $request = $event->getRequest();
+
+        // For some unfathomable reason, Symfony apears to strip out the
+        // Authorization header. Here we check if we can and should add
+        // it back in.
+        if (!$request->headers->get('Authorization')) {
+            $all_headers = apache_request_headers();
+            if (isset($all_headers['Authorization'])) {
+                $request->headers->set('Authorization', $all_headers['Authorization']);
+            }
+        }
+
+        // Deal with incrementing API apps' counters and marking their
+        // requests as authenticated. Note that the client_id POST
+        // parameter has the database primary key embedded.
+        $params = $request->request;
         $parts = explode("_", $params->get("client_id") ?? '');
         $clientSecret = $params->get("client_secret");
         if (count($parts) == 2) {
@@ -37,15 +51,16 @@ class KernelEventListener
                 }
             }
         }
+
+        // Deal with OAuth2 bearer token. It's okay to just set this
+        // truthy without validation because bad bearer tokens will
+        // return invalid_grant errors.
         if (substr($event->getRequest()->headers->get('Authorization'), 0, 6) == 'Bearer') {
-            // It is okay to just set this truthy without validation because
-            // bad bearer tokens will return invalid_grant errors.
             $authed = true;
         }
-        if (substr($event->getRequest()->getRequestUri(), 0, 13) == '/auth/account') {
-            // Needed for the authorization code OAuth2 grant type.
-            $authed = true;
-        }
+
+        // If $authed is still false by now, then any API requests must be
+        // unauthenticated. Make the user's life generally a bit unpleasant.
         if (!$authed && getenv("SYMFONY_ENV") !== 'test') {
             $format = $event->getRequest()->getRequestFormat();
             if ($format == 'json' || $format == 'xml') {
