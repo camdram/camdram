@@ -11,7 +11,7 @@
     "eslint": "^8.23",
     "imports-loader": "^0.8.0",
     "leaflet": "^1.7.1",
-    "node-sass": "^7.0.1",
+    "node-sass": "^7.0.2",
     "sass-loader": "^12",
     "sortablejs": "^1.15.0",
     "webpack-notifier": "^1.15.0"
