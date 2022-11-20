@@ -35,7 +35,7 @@ class KernelEventListener
             $id = $parts[0];
             $clientId = $parts[1];
             if ($id && $clientId && $clientSecret) {
-                $appRepo = $this->entityManager->getRepository('ActsCamdramApiBundle:ExternalApp');
+                $appRepo = $this->entityManager->getRepository('Acts\\CamdramApiBundle\\Entity\\ExternalApp');
                 $app = $appRepo->findByCredentials($id, $clientId, $clientSecret);
                 if ($app) {
                     $now = new \DateTime;

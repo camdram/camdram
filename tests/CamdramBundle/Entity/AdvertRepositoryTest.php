@@ -30,7 +30,7 @@ class AdvertRepositoryTest extends RepositoryTestCase
      */
     private function getRepository()
     {
-        return $this->em->getRepository('ActsCamdramBundle:Advert');
+        return $this->em->getRepository('Acts\\CamdramBundle\\Entity\\Advert');
     }
 
     public function testFindNotExpiredOrderedByDateName_before()

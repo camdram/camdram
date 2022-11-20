@@ -190,9 +190,9 @@ class ModerationManager
     public function notifyVenueChanged(Show $show, array $addedVenIds, array $removedVenIds): void
     {
         $repo = $this->entityManager->getRepository(User::class);
-        $addedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')
+        $addedVenues = $this->entityManager->createQuery('SELECT v FROM Acts\\CamdramBundle\\Entity\\Venue v WHERE v.id IN (?1)')
             ->setParameter(1, $addedVenIds)->getResult();
-        $removedVenues = $this->entityManager->createQuery('SELECT v FROM ActsCamdramBundle:Venue v WHERE v.id IN (?1)')
+        $removedVenues = $this->entityManager->createQuery('SELECT v FROM Acts\\CamdramBundle\\Entity\\Venue v WHERE v.id IN (?1)')
             ->setParameter(1, $removedVenIds)->getResult();
         $modOrgs = array_merge($addedVenues, $removedVenues, iterator_to_array($show->getSocieties(), false));
         $moderators = $repo->getOwnersOfEntities($modOrgs);

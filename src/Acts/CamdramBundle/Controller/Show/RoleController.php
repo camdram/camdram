@@ -233,7 +233,7 @@ class RoleController extends AbstractController
         // Normalize apostrophes.
         $person_name = strtr($person_name, ['‘' => '\'', '’' => '\'']);
         /* Try and find the person. Add a new person if they don't exist. */
-        $person = $this->em->getRepository('ActsCamdramBundle:Person')
+        $person = $this->em->getRepository('Acts\\CamdramBundle\\Entity\\Person')
                        ->findCanonicalPerson($person_name);
         if ($person == null) {
             $person = new Person();

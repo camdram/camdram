@@ -77,12 +77,12 @@ class AclProvider
             function($s) { return $s->getId(); })->toArray();
 
         $query = $this->entityManager->createQuery(
-            "SELECT u FROM ActsCamdramSecurityBundle:User u WHERE EXISTS
-            (SELECT ace FROM ActsCamdramSecurityBundle:AccessControlEntry ace WHERE ace.user = u AND (
+            "SELECT u FROM Acts\\CamdramSecurityBundle\\Entity\\User u WHERE EXISTS
+            (SELECT ace FROM Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry ace WHERE ace.user = u AND (
                 (ace.type = 'society' AND ace.entityId IN (:socs))"
             . ($type === 'society' ? '))' :
             "   OR (ace.type = 'venue' AND ace.entityId IN
-                (SELECT IDENTITY(perf.venue) FROM ActsCamdramBundle:Performance perf
+                (SELECT IDENTITY(perf.venue) FROM Acts\\CamdramBundle\\Entity\\Performance perf
                  WHERE perf.show = :show AND perf.venue IS NOT NULL))))")
             )->setParameter('socs', $socs);
         if ($type !== 'society') $query->setParameter('show', $show);

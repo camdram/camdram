@@ -42,7 +42,7 @@ class AclProviderTest extends RepositoryTestCase
     {
         parent::setUp();
         $this->aclProvider = new AclProvider($this->em, new EventDispatcher());
-        $this->aceRepo = $this->em->getRepository('ActsCamdramSecurityBundle:AccessControlEntry');
+        $this->aceRepo = $this->em->getRepository('Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry');
 
         $this->admin = new User();
         $this->admin->setName('Admin User')

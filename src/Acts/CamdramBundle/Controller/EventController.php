@@ -51,7 +51,7 @@ class EventController extends AbstractRestController
             return $this->entitySearch($request);
         }
         return $this->eventListAction($request,
-            'SELECT COUNT(DISTINCT COALESCE(IDENTITY(e.link_id), e.id)) FROM ActsCamdramBundle:Event e
+            'SELECT COUNT(DISTINCT COALESCE(IDENTITY(e.link_id), e.id)) FROM Acts\\CamdramBundle\\Entity\\Event e
             WHERE e.start_at > CURRENT_TIMESTAMP()',
             'SELECT MIN(start_at) AS tstamp, COALESCE(linkid, id) AS ident FROM acts_events
             WHERE start_at > :now GROUP BY ident ORDER BY tstamp',
@@ -83,7 +83,7 @@ class EventController extends AbstractRestController
         $eventIds = array_map(function($a) { return $a['id']; }, $eventIds);
 
         $eventsById = $this->em->createQuery(
-            'SELECT e FROM ActsCamdramBundle:Event e INDEX BY e.id WHERE e.id IN (:ids)'
+            'SELECT e FROM Acts\\CamdramBundle\\Entity\\Event e INDEX BY e.id WHERE e.id IN (:ids)'
         )->setParameter('ids', $eventIds)->getResult();
         $events = [];
         foreach ($eventIds as $id) {
@@ -110,9 +110,9 @@ class EventController extends AbstractRestController
     public function historicAction(Request $request)
     {
         return $this->eventListAction($request,
-            'SELECT COUNT(e.id) FROM ActsCamdramBundle:Event e
+            'SELECT COUNT(e.id) FROM Acts\\CamdramBundle\\Entity\\Event e
             WHERE e.start_at < CURRENT_TIMESTAMP() AND e.link_id IS NULL AND NOT EXISTS
-                (SELECT sub FROM ActsCamdramBundle:Event sub WHERE sub.link_id = e.id AND e.start_at > CURRENT_TIMESTAMP())',
+                (SELECT sub FROM Acts\\CamdramBundle\\Entity\\Event sub WHERE sub.link_id = e.id AND e.start_at > CURRENT_TIMESTAMP())',
             'SELECT MAX(start_at) AS tstamp, COALESCE(linkid, id) AS ident FROM acts_events
             GROUP BY ident HAVING tstamp < :now ORDER BY tstamp DESC',
             'event/historic.html.twig');
@@ -127,7 +127,7 @@ class EventController extends AbstractRestController
         if ($page < 1) $page = 1;
 
         $query = $this->em->createQuery(
-            'SELECT e FROM ActsCamdramBundle:Event e
+            'SELECT e FROM Acts\\CamdramBundle\\Entity\\Event e
              WHERE :society MEMBER OF e.societies ORDER BY e.start_at DESC');
         $query->setMaxResults(10);
         $query->setFirstResult(10 * ($page - 1));

@@ -42,7 +42,7 @@ class AuditionRepositoryTest extends RepositoryTestCase
      */
     private function getRepository()
     {
-        return $this->em->getRepository('ActsCamdramBundle:Audition');
+        return $this->em->getRepository('Acts\\CamdramBundle\\Entity\\Audition');
     }
 
     public function testFindUpcoming_before()

@@ -12,7 +12,7 @@ class PersonRepositoryTest extends RepositoryTestCase
      */
     private function getRepository()
     {
-        return $this->em->getRepository('ActsCamdramBundle:Person');
+        return $this->em->getRepository('Acts\\CamdramBundle\\Entity\\Person');
     }
 
     public function testFindCanonicalPerson_none()
