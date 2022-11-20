@@ -52,6 +52,7 @@
     "require": {
         "php": ">=7.4",
         "abraham/twitteroauth": "^3",
+        "composer/composer": "^2.4",
         "dms/phpunit-arraysubset-asserts": "^0.4.0",
         "doctrine/dbal": "^3.2",
         "doctrine/doctrine-bundle": "^2",
@@ -97,9 +98,9 @@
     "require-dev": {
         "brianium/paratest": "^6.1",
         "dama/doctrine-test-bundle": "^6.0",
-        "phpstan/phpstan": "^0.12.30",
-        "phpstan/phpstan-doctrine": "^0.12.17",
-        "phpstan/phpstan-symfony": "^0.12.6",
+        "phpstan/phpstan": "^1.9",
+        "phpstan/phpstan-doctrine": "*",
+        "phpstan/phpstan-symfony": "*",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",

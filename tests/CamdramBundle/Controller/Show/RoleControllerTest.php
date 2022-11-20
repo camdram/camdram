@@ -9,6 +9,10 @@ class RoleControllerTest extends RestTestCase
     /** @var Show */
     private $show;
 
+    private $show2;
+
+    private $showUrl;
+
     private $user;
 
     public function setUp(): void

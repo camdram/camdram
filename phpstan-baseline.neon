@@ -1,6 +1,14 @@
 parameters:
 	ignoreErrors:
-		- "#expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User(?:\\|null)?, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramApiBundle\\\\Entity\\\\ExternalAppRepository\\:\\:findByUser\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramApiBundle/Controller/AppController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramApiBundle\\\\Entity\\\\ExternalAppRepository\\:\\:getByUserAndId\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramApiBundle/Controller/AppController.php
 
 		-
 			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramApiBundle\\\\Entity\\\\Authorization\\:\\:setUser\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User\\|null, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface given\\.$#"
@@ -13,14 +21,59 @@ parameters:
 			path: src/Acts/CamdramApiBundle/Serializer/XmlEventSubscriber.php
 
 		-
+			message: "#^Property Acts\\\\CamdramApiBundle\\\\View\\\\FeedViewHandler\\:\\:\\$authorAddress is never read, only written\\.$#"
+			count: 1
+			path: src/Acts/CamdramApiBundle/View/FeedViewHandler.php
+
+		-
 			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<T of Acts\\\\CamdramBundle\\\\Entity\\\\BaseEntity\\>\\:\\:findOneBySlug\\(\\)\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/Controller/AbstractRestController.php
 
 		-
-			message: "#^Method Acts\\\\CamdramBundle\\\\Controller\\\\AbstractRestController\\:\\:getEntity\\(\\) should return T of Acts\\\\CamdramBundle\\\\Entity\\\\BaseEntity but returns mixed\\.$#"
+			message: "#^Parameter \\#1 \\$issuer of method Acts\\\\CamdramSecurityBundle\\\\Entity\\\\PendingAccess\\:\\:setIssuer\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User\\|null, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
 			count: 1
-			path: src/Acts/CamdramBundle/Controller/AbstractRestController.php
+			path: src/Acts/CamdramBundle/Controller/AdminController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Entity\\\\AccessControlEntry\\:\\:setUser\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Controller/AdminController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Entity\\\\AccessControlEntryRepository\\:\\:findAceRequest\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Controller/AdminController.php
+
+		-
+			message: "#^Parameter \\#3 \\$granter of method Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\AclProvider\\:\\:approveShowAccess\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Controller/AdminController.php
+
+		-
+			message: "#^Parameter \\#3 \\$granter of method Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\AclProvider\\:\\:grantAccess\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User\\|null, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Controller/AdminController.php
+
+		-
+			message: "#^Parameter \\#3 \\$revoker of method Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\AclProvider\\:\\:revokeAccess\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User\\|null, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Controller/AdminController.php
+
+		-
+			message: "#^Unsafe call to private method Acts\\\\CamdramBundle\\\\Controller\\\\SearchController\\:\\:clampParam\\(\\) through static\\:\\:\\.$#"
+			count: 2
+			path: src/Acts/CamdramBundle/Controller/SearchController.php
+
+		-
+			message: "#^Method Acts\\\\CamdramBundle\\\\Controller\\\\Show\\\\AdvertController\\:\\:getAndCheckAdvert\\(\\) is unused\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Controller/Show/AdvertController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\AclProvider\\:\\:getEntitiesByUser\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Controller/ShowAdminController.php
 
 		-
 			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<Acts\\\\CamdramBundle\\\\Entity\\\\Show\\>\\:\\:findInDateRange\\(\\)\\.$#"
@@ -33,14 +86,29 @@ parameters:
 			path: src/Acts/CamdramBundle/Controller/VenueController.php
 
 		-
+			message: "#^Variable \\$easter_end in isset\\(\\) always exists and is not nullable\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/DataFixtures/TimePeriodFixtures.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Entity/PerformanceRepository.php
+
+		-
+			message: "#^Property Acts\\\\CamdramBundle\\\\Entity\\\\Society\\:\\:\\$events is never written, only read\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Entity/Society.php
+
+		-
 			message: "#^Call to function is_null\\(\\) with Oneup\\\\UploaderBundle\\\\Uploader\\\\File\\\\FileInterface\\|Symfony\\\\Component\\\\HttpFoundation\\\\File\\\\File will always evaluate to false\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/EventListener/ImageListener.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:getUnitOfWork\\(\\)\\.$#"
+			message: "#^Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<\\*NEVER\\*, \\*NEVER\\*\\> does not accept T of Acts\\\\CamdramBundle\\\\Entity\\\\BaseEntity\\.$#"
 			count: 1
-			path: src/Acts/CamdramBundle/EventListener/ShowListener.php
+			path: src/Acts/CamdramBundle/Form/DataTransformer/EntityCollectionTransformer.php
 
 		-
 			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
@@ -53,9 +121,14 @@ parameters:
 			path: src/Acts/CamdramBundle/Form/DataTransformer/EntityCollectionTransformer.php
 
 		-
-			message: "#^Call to an undefined method Doctrine\\\\Persistence\\\\ObjectRepository\\<object\\>\\:\\:findOneByName\\(\\)\\.$#"
+			message: "#^Call to an undefined method Doctrine\\\\ORM\\\\EntityRepository\\<object\\>\\:\\:findOneByName\\(\\)\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/Form/Type/EntitySearchType.php
+
+		-
+			message: "#^Property Acts\\\\CamdramBundle\\\\Form\\\\Type\\\\ShowType\\:\\:\\$authorizationChecker is never read, only written\\.$#"
+			count: 1
+			path: src/Acts/CamdramBundle/Form/Type/ShowType.php
 
 		-
 			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\AclProvider\\:\\:getOrganisationsByUser\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
@@ -73,9 +146,54 @@ parameters:
 			path: src/Acts/CamdramBundle/Service/SlugHandler.php
 
 		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\AclProvider\\:\\:getEntitiesByUser\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 3
+			path: src/Acts/CamdramSecurityBundle/Controller/AccountController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Service\\\\EmailDispatcher\\:\\:resendEmailVerifyEmail\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Controller/AccountController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Service\\\\TokenGenerator\\:\\:generateEmailConfirmationToken\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Controller/AccountController.php
+
+		-
+			message: "#^Property Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User\\:\\:\\$organisations is unused\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Entity/User.php
+
+		-
+			message: "#^Property Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User\\:\\:\\$shows is unused\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Entity/User.php
+
+		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\:\\:getResourceOwnerName\\(\\)\\.$#"
 			count: 1
 			path: src/Acts/CamdramSecurityBundle/EventListener/LastLoginTimeListener.php
+
+		-
+			message: "#^Property Acts\\\\CamdramSecurityBundle\\\\Form\\\\RegistrationFormHandler\\:\\:\\$encoderFactory is never read, only written\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Form/RegistrationFormHandler.php
+
+		-
+			message: "#^Property Acts\\\\CamdramSecurityBundle\\\\Form\\\\RegistrationFormHandler\\:\\:\\$eventDispatcher is never read, only written\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Form/RegistrationFormHandler.php
+
+		-
+			message: "#^Property Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\Helper\\:\\:\\$aclProvider is never read, only written\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Security/Acl/Helper.php
+
+		-
+			message: "#^Property Acts\\\\CamdramSecurityBundle\\\\Security\\\\RavenResourceOwner\\:\\:\\$httpClient is never read, only written\\.$#"
+			count: 1
+			path: src/Acts/CamdramSecurityBundle/Security/RavenResourceOwner.php
 
 		-
 			message: "#^Variable \\$ptags might not be defined\\.$#"
