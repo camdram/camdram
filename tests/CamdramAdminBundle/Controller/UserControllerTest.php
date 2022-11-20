@@ -11,6 +11,8 @@ use Acts\CamdramSecurityBundle\Entity\User;
 
 class UserControllerTest extends RestTestCase
 {
+    private $admin;
+
     public function setUp(): void
     {
         parent::setUp();

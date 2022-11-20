@@ -63,8 +63,8 @@ class PersonRepository extends EntityRepository
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT person, role, s, COUNT(role) AS HIDDEN range_show_count,
-                (SELECT COUNT(sub_r) FROM ActsCamdramBundle:Role sub_r WHERE sub_r.person = person) AS HIDDEN total_show_count
-            FROM ActsCamdramBundle:Person person
+                (SELECT COUNT(sub_r) FROM Acts\\CamdramBundle\\Entity\\Role sub_r WHERE sub_r.person = person) AS HIDDEN total_show_count
+            FROM Acts\\CamdramBundle\\Entity\\Person person
             INNER JOIN person.roles AS role INNER JOIN role.show AS s INNER JOIN s.performances AS perf
             WHERE perf.start_at < :end AND perf.repeat_until >= :start
             GROUP BY person HAVING range_show_count > 0

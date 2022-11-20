@@ -11,6 +11,9 @@ class PersonControllerTest extends RestTestCase
     /** @var string */
     private static $old_dev_warning;
     private $show;
+    private $person;
+    private $mapped;
+    private $role;
 
     public static function setUpBeforeClass(): void
     {

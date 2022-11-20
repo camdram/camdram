@@ -74,7 +74,8 @@ class SocietyController extends OrganisationController
 
         $time = Time::now()->modify('-18 months');
         $societies = $this->em->createQuery(
-            'SELECT s FROM ActsCamdramBundle:Society s ORDER BY s.college, s.name')
+            'SELECT s FROM Acts\\CamdramBundle\\Entity\\Society s ORDER BY s.college, s.name'
+        )
             ->getResult();
         if ($request->getRequestFormat() != 'html') {
             return $this->view($societies);
@@ -85,14 +86,14 @@ class SocietyController extends OrganisationController
         };
 
         $societiesWithShows = $this->em->createQuery(
-            'SELECT s.id as id FROM ActsCamdramBundle:Society s JOIN s.shows show '.
-            'WHERE show IN (SELECT x FROM ActsCamdramBundle:Performance p JOIN p.show x WHERE p.repeat_until > :time)'
+            'SELECT s.id as id FROM Acts\\CamdramBundle\\Entity\\Society s JOIN s.shows show ' .
+                'WHERE show IN (SELECT x FROM Acts\\CamdramBundle\\Entity\\Performance p JOIN p.show x WHERE p.repeat_until > :time)'
         )->setParameters(['time' => $time])->getResult();
 
         $societiesWithAdmins = $this->em->createQuery(
-            'SELECT a.entityId AS id FROM ActsCamdramSecurityBundle:AccessControlEntry a '.
+            'SELECT a.entityId AS id FROM Acts\\CamdramSecurityBundle\\Entity\\AccessControlEntry a ' .
             'WHERE a.type = \'society\' AND a.user IN '.
-            '(SELECT u FROM ActsCamdramSecurityBundle:User u WHERE u.last_login_at > :time)'
+            '(SELECT u FROM Acts\\CamdramSecurityBundle\\Entity\\User u WHERE u.last_login_at > :time)'
         )->setParameters(['time' => $time])->getResult();
 
         $oldSocieties = array_udiff($societies, $societiesWithShows, $societiesWithAdmins, $cmpIds);

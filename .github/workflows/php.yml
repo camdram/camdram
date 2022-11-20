@@ -22,7 +22,6 @@ jobs:
       with:
         path: |
           bin
-          composer-src
           node_modules
           vendor
           /tmp/phpstan
@@ -36,12 +35,9 @@ jobs:
         # composer install has to run even if the packages are cached
         composer install --prefer-dist --no-progress
         yarn install
-        # Download composer source to allow PHPStan to run
-        if [ ! -a composer-src ]; then mkdir composer-src; cd composer-src; wget -qO- https://github.com/composer/composer/archive/1.10.17.tar.gz | tar xz; fi
 
     - name: Run PHPStan
       run: |
-        echo '[includes: [phpstan.neon.dist], parameters: [scanDirectories: [composer-src/composer-1.10.17/src/Composer]]]' > phpstan.neon
         bin/phpstan analyze
         rm -rf composer-src
 

@@ -35,7 +35,7 @@ class RoleRepository extends EntityRepository
     public function removeRoleFromOrder($role)
     {
         $query = $this->createQueryBuilder('qb')
-            ->update('ActsCamdramBundle:Role', 'r')
+            ->update('Acts\\CamdramBundle\\Entity\\Role', 'r')
             ->set('r.order', 'r.order -1')
             ->where('r.order > :removed_idx')
             ->andWhere('r.type = :type')

@@ -9,6 +9,10 @@ class RoleControllerTest extends RestTestCase
     /** @var Show */
     private $show;
 
+    private $show2;
+
+    private $showUrl;
+
     private $user;
 
     public function setUp(): void
@@ -51,7 +55,7 @@ class RoleControllerTest extends RestTestCase
         $this->assertEquals($crawler->filter('#sortable-cast div:contains("Romeo")')->count(), 1);
         $this->assertEquals($crawler->filter('#sortable-cast div:contains("Mercutio")')->count(), 1);
         $this->assertEquals($crawler->filter('#sortable-cast div:contains("Richard O\'Brien")')->count(), 2);
-        $repo = $this->entityManager->getRepository("ActsCamdramBundle:Role");
+        $repo = $this->entityManager->getRepository("Acts\\CamdramBundle\\Entity\\Role");
         $role1 = $repo->findOneById($response1->id);
         $role2 = $repo->findOneById($response2->id);
         $this->assertEquals($role1->getRole(), "Romeo");
@@ -73,7 +77,7 @@ class RoleControllerTest extends RestTestCase
 
     public function testEditRole()
     {
-        $repo = $this->entityManager->getRepository("ActsCamdramBundle:Role");
+        $repo = $this->entityManager->getRepository("Acts\\CamdramBundle\\Entity\\Role");
         $this->login($this->user);
 
         //Get CSRF token
@@ -154,7 +158,7 @@ class RoleControllerTest extends RestTestCase
 
     public function testMultipleRoles()
     {
-        $repo = $this->entityManager->getRepository("ActsCamdramBundle:Role");
+        $repo = $this->entityManager->getRepository("Acts\\CamdramBundle\\Entity\\Role");
         $this->login($this->user);
 
         $crawler = $this->client->request('GET', "{$this->showUrl}/edit-roles");

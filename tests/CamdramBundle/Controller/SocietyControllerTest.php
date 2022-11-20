@@ -9,6 +9,9 @@ use Acts\CamdramBundle\Entity\Society;
 
 class SocietyControllerTest extends RestTestCase
 {
+    private $society;
+    private $user;
+
     public function setUp(): void
     {
         parent::setUp();

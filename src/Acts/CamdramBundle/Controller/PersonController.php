@@ -187,7 +187,8 @@ class PersonController extends AbstractRestController
         $this->get('camdram.security.acl.helper')->ensureGranted('EDIT', $person);
 
         $roles = $this->em->createQuery(
-            'SELECT r, s FROM ActsCamdramBundle:Role r JOIN r.show s WHERE r.person = :p ORDER BY s.id')
+            'SELECT r, s FROM Acts\\CamdramBundle\\Entity\\Role r JOIN r.show s WHERE r.person = :p ORDER BY s.id'
+        )
             ->setParameter('p', $person)->getResult();
         $roles = array_filter($roles, function($r) {
             return $this->get('camdram.security.acl.helper')->isGranted('VIEW', $r->getShow());

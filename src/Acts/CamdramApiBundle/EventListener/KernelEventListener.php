@@ -4,31 +4,26 @@ namespace Acts\CamdramApiBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use FOS\OAuthServerBundle\Security\Authentication\Token\OAuthToken;
 use Doctrine\ORM\EntityManagerInterface;
 
 class KernelEventListener
 {
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private $tokenStorage;
+
+    public function __construct(EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage)
     {
         $this->entityManager = $entityManager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function onKernelRequest(RequestEvent $event)
     {
         $authed = false;
         $request = $event->getRequest();
-
-        // For some unfathomable reason, Symfony apears to strip out the
-        // Authorization header. Here we check if we can and should add
-        // it back in.
-        if (!$request->headers->get('Authorization')) {
-            $all_headers = apache_request_headers();
-            if (isset($all_headers['Authorization'])) {
-                $request->headers->set('Authorization', $all_headers['Authorization']);
-            }
-        }
 
         // Deal with incrementing API apps' counters and marking their
         // requests as authenticated. Note that the client_id POST
@@ -40,7 +35,7 @@ class KernelEventListener
             $id = $parts[0];
             $clientId = $parts[1];
             if ($id && $clientId && $clientSecret) {
-                $appRepo = $this->entityManager->getRepository('ActsCamdramApiBundle:ExternalApp');
+                $appRepo = $this->entityManager->getRepository('Acts\\CamdramApiBundle\\Entity\\ExternalApp');
                 $app = $appRepo->findByCredentials($id, $clientId, $clientSecret);
                 if ($app) {
                     $now = new \DateTime;
@@ -55,7 +50,7 @@ class KernelEventListener
         // Deal with OAuth2 bearer token. It's okay to just set this
         // truthy without validation because bad bearer tokens will
         // return invalid_grant errors.
-        if (substr($event->getRequest()->headers->get('Authorization'), 0, 6) == 'Bearer') {
+        if ($this->tokenStorage->getToken() instanceof OAuthToken) {
             $authed = true;
         }
 
