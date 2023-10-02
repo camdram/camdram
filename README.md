@@ -27,7 +27,7 @@ The native installation is a lot more complicated than the Docker installation p
 
 ### 1) Install programs
 
-You will need to install the necessary package dependencies required to run Camdram. **PHP version 8.1 or greater is required**.
+You will need to install the necessary package dependencies required to run Camdram. **PHP version 8.2 or greater is required**.
 
 #### Debian/Ubuntu and Derivatives
 
