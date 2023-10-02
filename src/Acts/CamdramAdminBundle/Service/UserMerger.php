@@ -50,7 +50,7 @@ class UserMerger
             $user1 = $tempUser;
         }
 
-        $metadata = $this->entityManager->getClassMetadata('ActsCamdramSecurityBundle:User');
+        $metadata = $this->entityManager->getClassMetadata('\Acts\CamdramSecurityBundle\Entity\User');
         $accessor = PropertyAccess::createPropertyAccessor();
         foreach ($metadata->getAssociationMappings() as $mapping) {
             $fieldName = $mapping['fieldName'];

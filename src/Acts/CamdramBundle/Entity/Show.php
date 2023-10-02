@@ -316,7 +316,7 @@ class Show extends BaseEntity implements OwnableInterface
     /**
      * Get prices
      *
-     * @return string
+     * @return ?string
      */
     public function getPrices()
     {
