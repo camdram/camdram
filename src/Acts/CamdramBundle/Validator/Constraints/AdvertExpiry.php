@@ -12,12 +12,12 @@ class AdvertExpiry extends Constraint
     /** @var string */
     public $too_late_message = 'The expiry date cannot be more than %days% days in the future';
 
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return \get_class($this).'Validator';
     }

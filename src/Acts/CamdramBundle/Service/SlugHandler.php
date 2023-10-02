@@ -34,7 +34,7 @@ class SlugHandler implements SlugHandlerWithUniqueCallbackInterface
     /**
      * {@inheritDoc}
      */
-    public function onChangeDecision(SluggableAdapter $ea, array &$config, $object, &$slug, &$needToChangeSlug)
+    public function onChangeDecision(SluggableAdapter $ea, array &$config, $object, &$slug, &$needToChangeSlug): void
     {
         $om = $ea->getObjectManager();
         $isInsert = $om->getUnitOfWork()->isScheduledForInsert($object);
@@ -48,7 +48,7 @@ class SlugHandler implements SlugHandlerWithUniqueCallbackInterface
     /**
      * {@inheritDoc}
      */
-    public function postSlugBuild(SluggableAdapter $ea, array &$config, $object, &$slug)
+    public function postSlugBuild(SluggableAdapter $ea, array &$config, $object, &$slug): void
     {
         if (!array_key_exists('dateField', $this->options)) return;
 
@@ -65,14 +65,14 @@ class SlugHandler implements SlugHandlerWithUniqueCallbackInterface
     /**
      * {@inheritDoc}
      */
-    public static function validate(array $options, ClassMetadata $meta)
+    public static function validate(array $options, ClassMetadata $meta): void
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function beforeMakingUnique(SluggableAdapter $ea, array &$config, $object, &$slug)
+    public function beforeMakingUnique(SluggableAdapter $ea, array &$config, $object, &$slug): void
     {
         // Deal with cases of no slug, #448.
         if ($slug === '' || preg_match("/^\d{4}-?$/", $slug)) {
@@ -85,14 +85,14 @@ class SlugHandler implements SlugHandlerWithUniqueCallbackInterface
     /**
      * {@inheritDoc}
      */
-    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug)
+    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug): void
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function handlesUrlization()
+    public function handlesUrlization(): bool
     {
         return false;
     }

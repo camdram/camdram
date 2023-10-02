@@ -21,14 +21,6 @@ class AdvertController extends AbstractController
         return $show;
     }
 
-    private function getAndCheckAdvert($identifier, $advertId): Advert
-    {
-        $show = $this->getAndCheckShow($identifier);
-        $advert = $this->getDoctrine()->getRepository(Advert::class)->findOneBy(['show' => $show, 'id' => $advertId]);
-        if (!$advert) throw new NotFoundHttpException("That advert does not exist.");
-        return $advert;
-    }
-
     /**
      * @Route("/shows/{identifier}/adverts", methods={"GET"}, name="get_show_adverts")
      */

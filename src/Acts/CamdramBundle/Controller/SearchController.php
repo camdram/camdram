@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SearchController extends AbstractController
+final class SearchController extends AbstractController
 {
     private $em;
     private static $entityTypes = ['show', 'person', 'society', 'venue', 'event'];

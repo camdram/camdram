@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class EditorVoter extends Voter
 {
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         if (!in_array($attribute, ['EDIT', 'CREATE', 'APPROVE', 'DELETE'])) {
             return false;
@@ -31,7 +31,7 @@ class EditorVoter extends Voter
             ]);
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         return TokenUtilities::isInteractiveRequest($token)
             && TokenUtilities::hasRole($token, 'ROLE_EDITOR');

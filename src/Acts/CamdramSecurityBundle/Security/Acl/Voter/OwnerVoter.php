@@ -24,13 +24,13 @@ class OwnerVoter extends Voter
         $this->aclProvider = $aclProvider;
     }
 
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         return in_array($attribute, ['VIEW', 'EDIT', 'DELETE'])
                    && $subject instanceof OwnableInterface;
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         if (TokenUtilities::isApiRequest($token)) {
             if ($subject instanceof Society || $subject instanceof Venue) {

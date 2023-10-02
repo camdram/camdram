@@ -14,7 +14,7 @@ New releases are made on the `master` branch every so often using the GitHub int
 If you encounter any problems with the instructions below, please [create a GitHub issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to support@camdram.net. We also have a [live chat hosted on Gitter](https://gitter.im/camdram/development) which you can use to quickly and informally get in touch with the development team.
 
 ## Docker Installation
-[Docker](https://www.docker.com/get-started) is a virtualization service that acts as a platform for running containerised application. It's a great way to get a development environment setup with minimal hassle and should work cross-platform on Windows, macOS and Linux. First you will need to install Docker using the link above, then clone the Camdram repository and build the necessary Docker images:
+[Docker](https://www.docker.com/get-started) is a method of isolating applications which acts as a platform for running "containers". It's a great way to get a development environment setup with minimal hassle and should work cross-platform on Windows, macOS and Linux. First you will need to install Docker using the link above, then clone the Camdram repository and build the necessary Docker images:
 
 1. `git clone git@github.com:camdram/camdram.git && cd camdram`
 2. `docker-compose build`
@@ -27,7 +27,7 @@ The native installation is a lot more complicated than the Docker installation p
 
 ### 1) Install programs
 
-You will need to install the necessary package dependencies required to run Camdram. **PHP version 7.3 or greater is required**.
+You will need to install the necessary package dependencies required to run Camdram. **PHP version 8.1 or greater is required**.
 
 #### Debian/Ubuntu and Derivatives
 

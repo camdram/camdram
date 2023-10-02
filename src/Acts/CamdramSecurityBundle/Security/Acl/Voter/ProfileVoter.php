@@ -9,13 +9,13 @@ use Acts\CamdramBundle\Entity\Person;
 
 class ProfileVoter extends Voter
 {
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         return $attribute == 'EDIT'
                   && $subject instanceof Person;
     }
 
-    public function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    public function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         return $user instanceof User && $user->getPerson() == $subject;
