@@ -202,6 +202,7 @@ class ShowController extends AbstractRestController
             'show/admin-panel.html.twig',
             array('show' => $show,
                   'errors' => $errors,
+                  'did_you_forget' => $this->getValidationHints($show),
                   'admins' => $admins,
                   'requested_admins' => $requested_admins,
                   'pending_admins' => $pending_admins)
@@ -340,5 +341,26 @@ class ShowController extends AbstractRestController
             $errors[] = $clashes;
         }
         return $errors;
+    }
+
+    function getValidationHints(Show $show): array {
+        $did_you_forget = [];
+        if (!$show->hasFuturePerformances()) return $did_you_forget;
+
+        $prices = $show->getPrices() ?? "";
+
+        if (!$show->getOnlineBookingUrl() &&
+            mb_stripos($prices, "free") === false && mb_stripos($prices, "door") === false) {
+            $did_you_forget[] = "tickets";
+        }
+
+        foreach ($show->getPerformances() as $p) {
+            if (is_null($p->getVenueName())) {
+                $did_you_forget[] = "venue";
+                break;
+            }
+        }
+
+        return $did_you_forget;
     }
 }

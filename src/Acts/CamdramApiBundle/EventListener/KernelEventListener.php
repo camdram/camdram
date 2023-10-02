@@ -23,7 +23,7 @@ class KernelEventListener
         // For some unfathomable reason, Symfony apears to strip out the
         // Authorization header. Here we check if we can and should add
         // it back in.
-        if (!$request->headers->get('Authorization')) {
+        if ((!$request->headers->get('Authorization')) && function_exists("apache_request_headers")) {
             $all_headers = apache_request_headers();
             if (isset($all_headers['Authorization'])) {
                 $request->headers->set('Authorization', $all_headers['Authorization']);

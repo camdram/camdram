@@ -71,6 +71,7 @@ class DiaryControllerTest extends RestTestCase
         $show->addPerformance($performance);
 
         $this->entityManager->flush();
+        return $show;
     }
 
     public function testMain()
@@ -82,9 +83,9 @@ class DiaryControllerTest extends RestTestCase
 
         $crawler = $this->client->request('GET', '/diary');
         $this->assertHTTPStatus(200);
-        $this->assertEquals($crawler->filter('#diary:contains("Test Show 1")')->count(), 1);
-        $this->assertEquals($crawler->filter('#diary:contains("Test Show 2")')->count(), 1);
-        $this->assertEquals($crawler->filter('#diary:contains("Test Event")')->count(), 1);
+        $this->assertCrawlerHasN('#diary:contains("Test Show 1")', 1, $crawler);
+        $this->assertCrawlerHasN('#diary:contains("Test Show 2")', 1, $crawler);
+        $this->assertCrawlerHasN('#diary:contains("Test Event")', 1, $crawler);
 
         //JSON response
         $data = $this->doJsonRequest('/diary.json');
@@ -127,22 +128,24 @@ class DiaryControllerTest extends RestTestCase
     {
         //View a particular date in the diary
 
-        $this->createShowWithDates("Test Show", -7, 2, '19:30');
-        $crawler = $this->client->request('GET', '/diary/2000-06-25?end=2000-07-01');
-        $this->assertEquals($crawler->filter('#diary:contains("Test Show")')->count(), 1);
+        $show = $this->createShowWithDates("Romeo and Juliet", -7, 2, '19:30');
+        $this->assertEquals("2000-07-09 19:30:00 2000-07-10 19:30:00",
+            "{$show->getStartAt()->format('Y-m-d H:i:s')} {$show->getEndAt()->format('Y-m-d H:i:s')}");
+        $crawler = $this->client->request('GET', '/diary/2000-07-08?end=2000-07-11');
+        $this->assertCrawlerHasN('#diary:contains("Romeo and Juliet")', 1, $crawler);
 
-        $data = $this->doJsonRequest('/diary/2000-06-25.json?end=2000-07-01');
+        $data = $this->doJsonRequest('/diary/2000-07-08.json?end=2000-07-11');
         $this->assertEquals(1, count($data['events']));
         $this->assertArraySubset([
             'events' => [
                 [
-                    'show' => ['name' => 'Test Show'],
+                    'show' => ['name' => 'Romeo and Juliet'],
                     '_links' => [
-                        'show' => '/shows/2000-test-show',
+                        'show' => '/shows/2000-romeo-and-juliet',
                     ],
-                    'date_string' => '20:30, Sun 25th – Mon 26th June 2000',
-                    'start_at' => '2000-06-25T19:30:00+00:00',
-                    'repeat_until' => '2000-06-26',
+                    'date_string' => '20:30, Sun 9th – Mon 10th July 2000',
+                    'start_at' => '2000-07-09T19:30:00+00:00',
+                    'repeat_until' => '2000-07-10',
                 ],
             ]
         ], $data);
@@ -152,22 +155,24 @@ class DiaryControllerTest extends RestTestCase
     {
         //View a particular year in the diary
 
-        $this->createShowWithDates("Test Show", -30, 7, '19:30');
+        $show = $this->createShowWithDates("Hamlet", -30, 7, '19:30');
+        $this->assertEquals("2000-08-01 19:30:00 2000-08-07 19:30:00",
+            "{$show->getStartAt()->format('Y-m-d H:i:s')} {$show->getEndAt()->format('Y-m-d H:i:s')}");
         $crawler = $this->client->request('GET', '/diary/2000?end=2000-12-30');
-        $this->assertEquals($crawler->filter('#diary:contains("Test Show")')->count(), 1);
+        $this->assertCrawlerHasN('#diary:contains("Hamlet")', 1, $crawler);
 
         $data = $this->doJsonRequest('/diary/2000.json?end=2000-12-30');
         $this->assertEquals(1, count($data['events']));
         $this->assertArraySubset([
             'events' => [
                 [
-                    'show' => ['name' => 'Test Show'],
+                    'show' => ['name' => 'Hamlet'],
                     '_links' => [
-                        'show' => '/shows/2000-test-show',
+                        'show' => '/shows/2000-hamlet',
                     ],
-                    'date_string' => '20:30, Fri 2nd – Thu 8th June 2000',
-                    'start_at' => '2000-06-02T19:30:00+00:00',
-                    'repeat_until' => '2000-06-08',
+                    'date_string' => '20:30, Tue 1st – Mon 7th August 2000',
+                    'start_at' => '2000-08-01T19:30:00+00:00',
+                    'repeat_until' => '2000-08-07',
                 ],
             ]
         ], $data);
@@ -177,7 +182,9 @@ class DiaryControllerTest extends RestTestCase
     {
         //View a particular "period" in the diary
 
-        $this->createShowWithDates("Test Show", -14, 2, '19:30');
+        $show = $this->createShowWithDates("Henry V", -14, 2, '19:30');
+        $this->assertEquals("2000-07-16 19:30:00 2000-07-17 19:30:00",
+            "{$show->getStartAt()->format('Y-m-d H:i:s')} {$show->getEndAt()->format('Y-m-d H:i:s')}");
 
         $period = new TimePeriod();
         $period->setName("Test Period")
@@ -189,21 +196,21 @@ class DiaryControllerTest extends RestTestCase
         $this->entityManager->flush();
 
         $crawler = $this->client->request('GET', '/diary/2000/test-period');
-        $this->assertEquals($crawler->filter('#diary:contains("Test Show")')->count(), 1);
-        $this->assertEquals($crawler->filter('.diary-period-label:contains("Test Period")')->count(), 1);
+        $this->assertCrawlerHasN('#diary:contains("Henry V")', 1, $crawler);
+        $this->assertCrawlerHasN('.diary-period-label:contains("Test Period")', 1, $crawler);
 
         $data = $this->doJsonRequest('/diary/2000.json?end=2000-12-30');
         $this->assertEquals(1, count($data['events']));
         $this->assertArraySubset([
             'events' => [
                 [
-                    'show' => ['name' => 'Test Show'],
+                    'show' => ['name' => 'Henry V'],
                     '_links' => [
-                        'show' => '/shows/2000-test-show',
+                        'show' => '/shows/2000-henry-v',
                     ],
-                    'date_string' => '20:30, Sun 18th – Mon 19th June 2000',
-                    'start_at' => '2000-06-18T19:30:00+00:00',
-                    'repeat_until' => '2000-06-19',
+                    'date_string' => '20:30, Sun 16th – Mon 17th July 2000',
+                    'start_at' => '2000-07-16T19:30:00+00:00',
+                    'repeat_until' => '2000-07-17',
                 ],
             ],
             'labels' => [
