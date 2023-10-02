@@ -1,3 +1,20 @@
+{%- if did_you_forget -%}
+<div class="panel">
+    <h6>Have you forgotten...?</h6>
+    <ul>
+    {%- for entry in did_you_forget -%}
+        {%- if entry == "tickets" -%}
+            <li>Specifying the ticket URL and prices allows visitors to buy tickets. (Alternatively write free/on the door in the price field.)</li>
+        {%- elseif entry == "venue" -%}
+            <li>Specifying the venue that each performance is at helps visitors find it.</li>
+        {%- else -%}
+            <li>{{entry}}</li>
+        {%- endif -%}
+    {%- endfor -%}
+    </ul>
+</div>
+{%- endif -%}
+
 {% if is_granted('EDIT', show) %}
 <div class="admin-panel">
     <h6 class="split-header">
