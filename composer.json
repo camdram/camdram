@@ -65,7 +65,7 @@
         "friendsofsymfony/rest-bundle": "^3.3",
         "hwi/oauth-bundle": "~1.4.2",
         "incenteev/composer-parameter-handler": "^2.1",
-        "jms/serializer-bundle": "^4.0.1",
+        "jms/serializer-bundle": "^5.3.1",
         "knplabs/github-api": "^3.0",
         "laminas/laminas-code": "^4.12",
         "laminas/laminas-escaper": "^2.12",
