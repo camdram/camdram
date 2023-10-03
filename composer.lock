@@ -13989,38 +13989,33 @@
         },
         {
             "name": "symfony/debug-bundle",
-            "version": "v5.4.26",
+            "version": "v6.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug-bundle.git",
-                "reference": "17c372891d4554d5d2f5cf602aef02c859ad52d8"
+                "reference": "3f04a578e1a9f1d7da84a87b690c03123e5d8c31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/17c372891d4554d5d2f5cf602aef02c859ad52d8",
-                "reference": "17c372891d4554d5d2f5cf602aef02c859ad52d8",
+                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/3f04a578e1a9f1d7da84a87b690c03123e5d8c31",
+                "reference": "3f04a578e1a9f1d7da84a87b690c03123e5d8c31",
                 "shasum": ""
             },
             "require": {
                 "ext-xml": "*",
-                "php": ">=7.2.5",
-                "symfony/http-kernel": "^4.4|^5.0|^6.0",
-                "symfony/polyfill-php80": "^1.16",
-                "symfony/twig-bridge": "^4.4|^5.0|^6.0",
-                "symfony/var-dumper": "^4.4|^5.0|^6.0"
+                "php": ">=8.1",
+                "symfony/dependency-injection": "^5.4|^6.0",
+                "symfony/http-kernel": "^5.4|^6.0",
+                "symfony/twig-bridge": "^5.4|^6.0",
+                "symfony/var-dumper": "^5.4|^6.0"
             },
             "conflict": {
-                "symfony/config": "<4.4",
-                "symfony/dependency-injection": "<5.2"
+                "symfony/config": "<5.4",
+                "symfony/dependency-injection": "<5.4"
             },
             "require-dev": {
-                "symfony/config": "^4.4|^5.0|^6.0",
-                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
-                "symfony/web-profiler-bundle": "^4.4|^5.0|^6.0"
-            },
-            "suggest": {
-                "symfony/config": "For service container configuration",
-                "symfony/dependency-injection": "For using as a service from the container"
+                "symfony/config": "^5.4|^6.0",
+                "symfony/web-profiler-bundle": "^5.4|^6.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -14048,7 +14043,7 @@
             "description": "Provides a tight integration of the Symfony VarDumper component and the ServerLogCommand from MonologBridge into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/debug-bundle/tree/v5.4.26"
+                "source": "https://github.com/symfony/debug-bundle/tree/v6.3.2"
             },
             "funding": [
                 {
@@ -14064,7 +14059,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-11T21:42:03+00:00"
+            "time": "2023-07-13T14:29:38+00:00"
         },
         {
             "name": "symfony/dom-crawler",
