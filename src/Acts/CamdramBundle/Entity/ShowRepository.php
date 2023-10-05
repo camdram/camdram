@@ -131,7 +131,7 @@ class ShowRepository extends EntityRepository
     private function queryByPerson(\DateTime $now, Person $person)
     {
         return $this->createQueryBuilder('s')
-            ->select('s, r, p')
+            ->select('s, p')
             ->join('s.roles', 'r')
             ->leftJoin('s.performances', 'p')
             ->where('s.authorised = true')
