@@ -13365,16 +13365,16 @@
     "packages-dev": [
         {
             "name": "brianium/paratest",
-            "version": "v6.10.0",
+            "version": "v6.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "c2243b20bcd99c3f651018d1447144372f39b4fa"
+                "reference": "d6f32a91302b74458e8ef5d132bb2215a5edb34b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/c2243b20bcd99c3f651018d1447144372f39b4fa",
-                "reference": "c2243b20bcd99c3f651018d1447144372f39b4fa",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/d6f32a91302b74458e8ef5d132bb2215a5edb34b",
+                "reference": "d6f32a91302b74458e8ef5d132bb2215a5edb34b",
                 "shasum": ""
             },
             "require": {
@@ -13441,7 +13441,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paratestphp/paratest/issues",
-                "source": "https://github.com/paratestphp/paratest/tree/v6.10.0"
+                "source": "https://github.com/paratestphp/paratest/tree/v6.10.1"
             },
             "funding": [
                 {
@@ -13453,7 +13453,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2023-05-25T13:47:58+00:00"
+            "time": "2023-10-04T13:33:07+00:00"
         },
         {
             "name": "dama/doctrine-test-bundle",
