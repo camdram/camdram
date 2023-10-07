@@ -24,3 +24,4 @@ jobs:
       with:
         private-key: ${{ secrets.ANTIGONE_PRIVATE_KEY }}
         dep: deploy production --tag ${{ steps.get_tag.outputs.TAG }}
+        deployer-version: "7.3"

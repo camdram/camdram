@@ -22,3 +22,4 @@ jobs:
       with:
         private-key: ${{ secrets.ANTIGONE_PRIVATE_KEY }}
         dep: deploy development --branch ${{ steps.get_branch.outputs.BRANCH }}
+        deployer-version: "7.3"
