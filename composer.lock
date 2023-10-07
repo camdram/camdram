@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32515176b32bd272a9f4c4fc9202ff70",
+    "content-hash": "7fce7d4753d65a1bf06cffcdff5fb5ce",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -4203,29 +4203,29 @@
         },
         {
             "name": "oneup/uploader-bundle",
-            "version": "3.1.3",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupUploaderBundle.git",
-                "reference": "9a207fa8b2f273fec8086341eb9b4ca51d672f8c"
+                "reference": "34d22041d40ff45f87de56cd617a580d48cbdd8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/9a207fa8b2f273fec8086341eb9b4ca51d672f8c",
-                "reference": "9a207fa8b2f273fec8086341eb9b4ca51d672f8c",
+                "url": "https://api.github.com/repos/1up-lab/OneupUploaderBundle/zipball/34d22041d40ff45f87de56cd617a580d48cbdd8c",
+                "reference": "34d22041d40ff45f87de56cd617a580d48cbdd8c",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5 || ^8.0",
-                "symfony/asset": "^4.4 || ^5.0",
-                "symfony/event-dispatcher-contracts": "^1.0 || ^2.0",
-                "symfony/finder": "^4.4 || ^5.0",
-                "symfony/framework-bundle": "^4.4 || ^5.0",
-                "symfony/mime": "^4.4 || ^5.0",
-                "symfony/templating": "^4.4 || ^5.0",
-                "symfony/translation": "^4.4 || ^5.0",
-                "symfony/translation-contracts": "^1.0 || ^2.0",
-                "symfony/yaml": "^4.4 || ^5.0",
+                "php": "^7.4 || ^8.0",
+                "symfony/asset": "^4.4 || ^5.4 || ^6.0",
+                "symfony/event-dispatcher-contracts": "^1.0 || ^2.0 || ^3.0",
+                "symfony/finder": "^4.4 || ^5.4 || ^6.0",
+                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.0",
+                "symfony/mime": "^4.4 || ^5.4 || ^6.0",
+                "symfony/templating": "^4.4 || ^5.4 || ^6.0",
+                "symfony/translation": "^4.4 || ^5.4 || ^6.0",
+                "symfony/translation-contracts": "^1.0 || ^2.0 || ^3.0",
+                "symfony/yaml": "^4.4 || ^5.4 || ^6.0",
                 "twig/twig": "^2.4 || ^3.0"
             },
             "require-dev": {
@@ -4234,20 +4234,21 @@
                 "doctrine/doctrine-bundle": "^2.4",
                 "friendsofphp/php-cs-fixer": "^2.16",
                 "knplabs/gaufrette": "^0.9",
-                "oneup/flysystem-bundle": "^1.2 || ^2.0 || ^3.0",
+                "m2mtech/flysystem-stream-wrapper": "^1.0",
+                "oneup/flysystem-bundle": "^4.1",
                 "phpstan/phpstan": "^0.12.10",
-                "phpunit/phpunit": "^8.5",
+                "phpunit/phpunit": "^9.5",
                 "sensio/framework-extra-bundle": "^5.0 || ^6.0",
-                "symfony/browser-kit": "^4.4 || ^5.0",
-                "symfony/phpunit-bridge": "^5.0",
-                "symfony/security-bundle": "^4.4 || ^5.0",
-                "symfony/var-dumper": "^4.4 || ^5.0",
+                "symfony/browser-kit": "^4.4 || ^5.4 || ^6.0",
+                "symfony/phpunit-bridge": "^5.4",
+                "symfony/security-bundle": "^4.4 || ^5.4 || ^6.0",
+                "symfony/var-dumper": "^4.4 || ^5.4 || ^6.0",
                 "twistor/flysystem-stream-wrapper": "^1.0"
             },
             "suggest": {
                 "knplabs/knp-gaufrette-bundle": "0.1.*",
-                "oneup/flysystem-bundle": "^3.0",
-                "twistor/flysystem-stream-wrapper": "^1.0 (Required when using Flysystem)"
+                "m2mtech/flysystem-stream-wrapper": "^1.0 (Required when using Flysystem)",
+                "oneup/flysystem-bundle": "^3.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -4290,9 +4291,9 @@
             ],
             "support": {
                 "issues": "https://github.com/1up-lab/OneupUploaderBundle/issues",
-                "source": "https://github.com/1up-lab/OneupUploaderBundle/tree/3.1.3"
+                "source": "https://github.com/1up-lab/OneupUploaderBundle/tree/4.0.1"
             },
-            "time": "2021-08-04T11:29:51+00:00"
+            "time": "2022-07-25T07:51:47+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -14373,5 +14374,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
