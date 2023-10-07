@@ -15,7 +15,7 @@ jobs:
 
     - name: Extract branch name
       id: get_branch
-      run: echo ::set-output name=BRANCH::${GITHUB_REF#refs/*/}
+      run: echo "BRANCH=${GITHUB_REF#refs/*/}" >> "$GITHUB_OUTPUT"
 
     - name: Deploy
       uses: deployphp/action@v1

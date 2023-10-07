@@ -10,7 +10,7 @@ require 'recipe/symfony.php';
 set('application', 'camdram');
 
 // Project repository
-set('repository', 'git@github.com:camdram/camdram.git');
+set('repository', 'https://github.com/camdram/camdram.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', false);
