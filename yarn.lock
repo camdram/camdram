@@ -989,10 +989,10 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
-"@github/hotkey@^2.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-2.0.1.tgz#24ad6b49313cee5b98368174eab16a4b53a08ec7"
-  integrity sha512-qKXjAJjtheJbf4ie3hi8IwrHWJZHB5qdojR6JGo6jvQNPpsdUbk/NIdU8sxu4PW41CjW80vfciDMu3MAP3j2Fg==
+"@github/hotkey@^2.2":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@github/hotkey/-/hotkey-2.2.0.tgz#1b1a1611c80fea40cdd9dbc447fbfe9d42af0673"
+  integrity sha512-PPDv5LG1xWaq9q8Cu+SX6PdR9943wnKdyCmxsQHhgh2FeCUeEWm542CibzYSaoHqgvZeM3+VSpdH5icvqCi+NQ==
 
 "@humanwhocodes/config-array@^0.11.11":
   version "0.11.11"
