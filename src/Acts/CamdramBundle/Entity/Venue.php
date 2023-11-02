@@ -156,13 +156,6 @@ class Venue extends Organisation implements VenueInterface
     private $slug;
 
     /**
-     * @var Collection<int|string,News>
-     * @ORM\OneToMany(targetEntity="News", mappedBy="venue")
-     * @Api\Link(route="acts_camdram_venue_getnews", params={"identifier": "object.getSlug()"})
-     */
-    private $news;
-
-    /**
      * @var Collection<int|string,Advert>
      *
      * @ORM\OneToMany(targetEntity="Advert", mappedBy="venue")
@@ -313,57 +306,13 @@ class Venue extends Organisation implements VenueInterface
         return $this->slug;
     }
 
-    public function addNew(\Acts\CamdramBundle\Entity\News $news): self
-    {
-        $this->news[] = $news;
-
-        return $this;
-    }
-
-    /**
-     * Remove news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     */
-    public function removeNew(\Acts\CamdramBundle\Entity\News $news): void
-    {
-        $this->news->removeElement($news);
-    }
-
-    /**
-     * Get news
-     *
-     * @return Collection<int|string,News>
-     */
-    public function getNews()
-    {
-        return $this->news;
-    }
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->news = new \Doctrine\Common\Collections\ArrayCollection();
         $this->performances = new ArrayCollection();
         $this->adverts = new ArrayCollection();
-    }
-
-    public function addNews(\Acts\CamdramBundle\Entity\News $news): self
-    {
-        $this->news[] = $news;
-
-        return $this;
-    }
-
-    /**
-     * Remove news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     */
-    public function removeNews(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news->removeElement($news);
     }
 
     public static function getAceType() : string

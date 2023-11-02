@@ -50,17 +50,6 @@ abstract class OrganisationController extends AbstractRestController
         );
     }
 
-    /**
-     * @Route("/{identifier}/news.{_format}", format="html", methods={"GET"})
-     */
-    public function getNewsAction($identifier)
-    {
-        $org = $this->getEntity($identifier);
-        $news_repo = $this->getDoctrine()->getRepository(Entity\News::class);
-
-        return $this->show('organisation/news.html.twig', 'news', $news_repo->getRecentByOrganisation($org, 30));
-    }
-
     /** @return iterable<Entity\Performance> */
     abstract protected function getPerformances(string $slug, \DateTime $from, \DateTime $to);
     /** @return iterable<Entity\Show> */

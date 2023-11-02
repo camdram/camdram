@@ -151,7 +151,7 @@ class AclProviderTest extends RepositoryTestCase
     public function testGetEntityIdsByUser_NonOwnableClass()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->aclProvider->getEntityIdsByUser($this->user, '\\Acts\\CamdramBundle\\Entity\\News');
+        $this->aclProvider->getEntityIdsByUser($this->user, '\\Acts\\CamdramBundle\\Entity\\Position');
     }
 
     public function testGetEntityIdsByUser()

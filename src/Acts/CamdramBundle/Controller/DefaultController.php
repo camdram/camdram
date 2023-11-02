@@ -26,9 +26,6 @@ class DefaultController extends AbstractController
      */
     public function indexAction(WeekManager $week_manager)
     {
-        $news_repo = $this->getDoctrine()->getRepository(Entity\News::class);
-        $news = $news_repo->getRecent(20);
-
         $now = new \DateTime;
         $start = clone $now;
         $start->modify('-4 weeks');
@@ -38,7 +35,6 @@ class DefaultController extends AbstractController
         $current_week = $week_manager->findAt($now);
 
         return $this->render('home/index.html.twig', array(
-            'news' => $news,
             'weeks' => $weeks,
             'current_week' => $current_week,
         ));
