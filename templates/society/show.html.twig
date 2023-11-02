@@ -16,7 +16,19 @@
     {% endif %}
 
 <div class="row panel" itemscope="" itemtype="http://schema.org/TheaterGroup">
-    <h2><span itemprop="name">{{ society.name }}</span>&emsp;<small itemprop="alternateName">{{ society.shortname }}</small></h2>
+    <div class="split-header">
+        <h2><span itemprop="name">{{ society.name }}</span>&emsp;<small itemprop="alternateName">{{ society.shortname }}</small></h2>
+        <ul>
+            {% if society.facebookId %}<li>
+                <a href="{{ society.getFacebookUrl() }}" target="_blank" class="icon-link">
+                    <img src="{{ asset('images/service/facebook.png') }}" srcset="{{ asset('images/service/facebook.png') }}, {{ asset('images/service/facebook-29.png') }} 1.5x, {{ asset('images/service/facebook-38.png') }} 2x, {{ asset('images/service/facebook-76.png') }} 4x" alt="Facebook"/></a>
+                </li>{% endif %}
+            {% if society.twitterId %}<li>
+                <a href="{{ society.getTwitterUrl() }}" target="_blank" class="icon-link">
+                    <img src="{{ asset('images/service/twitter.png') }}" srcset="{{ asset('images/service/twitter.png') }}, {{ asset('images/service/twitter-29.png') }} 1.5x, {{ asset('images/service/twitter-38.png') }} 2x, {{ asset('images/service/twitter-76.png') }} 4x" alt="Twitter"/></a>
+                </li>{% endif %}
+        </ul>
+    </div>
 
     {% if society.image %}
     <div class="entity-image-container" itemprop="image">
@@ -49,31 +61,8 @@
 </div>
 
 <div class="organisation-social row">
-    {%- if society.hasSocialId -%}
-    <div class="newsfeed-left-aside">
-    {%- else -%}
-    <div>
-    {%- endif -%}
-        {{ render(controller('Acts\\CamdramBundle\\Controller\\SocietyController::getVacanciesAction', {identifier: society.slug}), {'strategy': 'esi'}) }}
-        <p>You can also see <a href="{{ path('acts_camdram_event_bysociety', {slug: society.slug}) }}">all events</a> that have been put on by this society.</p>
-    </div>
-    {%- if society.hasSocialId -%}
-        <div class="split-header">
-            <h5>News</h5>
-            <ul>
-                {% if society.facebookId %}<li>
-                    <a href="{{ society.getFacebookUrl() }}" target="_blank" class="icon-link">
-                        <img src="{{ asset('images/service/facebook.png') }}" srcset="{{ asset('images/service/facebook.png') }}, {{ asset('images/service/facebook-29.png') }} 1.5x, {{ asset('images/service/facebook-38.png') }} 2x, {{ asset('images/service/facebook-76.png') }} 4x" alt=""/> Facebook</a>
-                    </li>{% endif %}
-                {% if society.twitterId %}<li>
-                    <a href="{{ society.getTwitterUrl() }}" target="_blank" class="icon-link">
-                        <img src="{{ asset('images/service/twitter.png') }}" srcset="{{ asset('images/service/twitter.png') }}, {{ asset('images/service/twitter-29.png') }} 1.5x, {{ asset('images/service/twitter-38.png') }} 2x, {{ asset('images/service/twitter-76.png') }} 4x" alt=""/> Twitter</a>
-                    </li>{% endif %}
-            </ul>
-        </div>
-
-        {{ render(controller('Acts\\CamdramBundle\\Controller\\SocietyController::getNewsAction', {identifier: society.slug}), {'strategy': 'esi'}) }}
-    {% endif %}
+    {{- render(controller('Acts\\CamdramBundle\\Controller\\SocietyController::getVacanciesAction', {identifier: society.slug}), {'strategy': 'esi'}) -}}
+    <p>You can also see <a href="{{ path('acts_camdram_event_bysociety', {slug: society.slug}) }}">all events</a> that have been put on by this society.</p>
 </div>
 
 <div class="row">

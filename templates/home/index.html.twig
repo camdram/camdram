@@ -55,35 +55,28 @@
 {% endif %}
 
 <div class="row" id="home_news_container">
-    <div class="newsfeed-left-aside">
-        {% if not shutdown_notice %}
-        <div id="home_statistics">
-            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::statisticsAction'), {'strategy': 'esi'}) }}
-        </div>
-        <hr />
-        {% endif %}
-
-        <div id="home_vacancies">
-            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::vacanciesAction'), {'strategy': 'esi'}) }}
+    <div class="newsfeed-right-aside">
+        <div id="home_historic">
+            {{- render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::historicDataAction'), {'strategy': 'esi'}) -}}
         </div>
         <hr />
 
         <div id="home_wiki">
-            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::wikiAction'), {'strategy': 'esi'}) }}
-        </div>
-        <hr />
-
-        <div id="home_historic">
-            {{ render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::historicDataAction'), {'strategy': 'esi'}) }}
+            {{- render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::wikiAction'), {'strategy': 'esi'}) -}}
         </div>
         <hr />
     </div>
 
-    <h4>News</h4>
-    {% for item in news %}
-        {% include 'news/item.html.twig' %}
-    {% endfor %}
-</div>
+    {%- if not shutdown_notice -%}
+    <div id="home_statistics">
+        {{- render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::statisticsAction'), {'strategy': 'esi'}) -}}
+    </div>
+    <hr />
+    {%- endif -%}
 
+    <div id="home_vacancies">
+        {{- render(controller('Acts\\CamdramBundle\\Controller\\DefaultController::vacanciesAction'), {'strategy': 'esi'}) -}}
+    </div>
+</div>
 
 {% endblock %}

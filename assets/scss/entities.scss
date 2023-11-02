@@ -81,16 +81,6 @@
   }
 }
 
-.news-link {
-  @include panel(rgb(230,230,230), 1em);
-  margin-bottom:10px;
-  font-size:0.8em;
-
-  h6 {
-    margin:0;
-  }
-}
-
 .entity-image-container {
   max-width: 240px;
   float: left;
@@ -147,16 +137,6 @@
       }
     }
   }
-}
-
-.organisation-social > .split-header + .news-item::before {
-  /* Adds a virtual <hr> to the top of the news container. */
-  display: block;
-  margin: 1.25em 0 1.1875em;
-  border: solid #ddd;
-  border-width: 1px 0 0;
-  content: "";
-  height: 0;
 }
 
 .historic-show-list {

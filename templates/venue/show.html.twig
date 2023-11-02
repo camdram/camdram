@@ -16,7 +16,19 @@
     {% endif %}
 
     <div class="row panel" itemscope="" itemtype="http://schema.org/PerformingArtsTheater">
-        <h2 itemprop="name">{{ venue.name }}</h2>
+        <div class="split-header">
+            <h2 itemprop="name">{{ venue.name }}</h2>
+            <ul>
+                {% if venue.facebookId %}<li>
+                    <a href="{{ venue.getFacebookUrl() }}" target="_blank" class="icon-link">
+                        <img src="{{ asset('images/service/facebook.png') }}" srcset="{{ asset('images/service/facebook.png') }}, {{ asset('images/service/facebook-29.png') }} 1.5x, {{ asset('images/service/facebook-38.png') }} 2x, {{ asset('images/service/facebook-76.png') }} 4x" alt="Facebook"/></a>
+                    </li>{% endif %}
+                {% if venue.twitterId %}<li>
+                    <a href="{{ venue.getTwitterUrl() }}" target="_blank" class="icon-link">
+                        <img src="{{ asset('images/service/twitter.png') }}" srcset="{{ asset('images/service/twitter.png') }}, {{ asset('images/service/twitter-29.png') }} 1.5x, {{ asset('images/service/twitter-38.png') }} 2x, {{ asset('images/service/twitter-76.png') }} 4x" alt="Twitter"/></a>
+                    </li>{% endif %}
+            </ul>
+        </div>
         <h5 itemprop="address">{% if venue.address %}{{ venue.address }}{% endif %}</h5>
 
         {%- if venue.college %}<p>College: {{ venue.college }}</p>{% endif -%}
@@ -59,29 +71,7 @@
     </div>
 
     <div class="row organisation-social">
-        {%- if venue.hasSocialId -%}
-        <div class="newsfeed-left-aside">
-        {%- else -%}
-        <div>
-        {%- endif -%}
-          {{ render(controller('Acts\\CamdramBundle\\Controller\\VenueController::getVacanciesAction', {identifier: venue.slug}), {'strategy': 'esi'}) }}
-        </div>
-        {% if venue.hasSocialId %}
-        <div class="split-header">
-            <h5>News</h5>
-            <ul>
-                {% if venue.facebookId %}<li>
-                    <a href="{{ venue.getFacebookUrl() }}" target="_blank" class="icon-link">
-                        <img src="{{ asset('images/service/facebook.png') }}" srcset="{{ asset('images/service/facebook.png') }}, {{ asset('images/service/facebook-29.png') }} 1.5x, {{ asset('images/service/facebook-38.png') }} 2x, {{ asset('images/service/facebook-76.png') }} 4x" alt=""/> Facebook</a>
-                    </li>{% endif %}
-                {% if venue.twitterId %}<li>
-                    <a href="{{ venue.getTwitterUrl() }}" target="_blank" class="icon-link">
-                        <img src="{{ asset('images/service/twitter.png') }}" srcset="{{ asset('images/service/twitter.png') }}, {{ asset('images/service/twitter-29.png') }} 1.5x, {{ asset('images/service/twitter-38.png') }} 2x, {{ asset('images/service/twitter-76.png') }} 4x" alt=""/> Twitter</a>
-                    </li>{% endif %}
-            </ul>
-        </div>
-        {{ render(controller('Acts\\CamdramBundle\\Controller\\VenueController::getNewsAction', {identifier: venue.slug}), {'strategy': 'esi'}) }}
-        {% endif %}
+        {{- render(controller('Acts\\CamdramBundle\\Controller\\VenueController::getVacanciesAction', {identifier: venue.slug}), {'strategy': 'esi'}) -}}
     </div>
 
     <div class="row">

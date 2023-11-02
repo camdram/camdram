@@ -16,5 +16,4 @@ import "../scss/entities.scss";
 import "../scss/forms.scss";
 import "../scss/framework.scss";
 import "../scss/home.scss";
-import "../scss/news.scss";
 import "../scss/wiki.scss";

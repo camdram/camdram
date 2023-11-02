@@ -133,12 +133,6 @@ class Society extends Organisation
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="News", mappedBy="society")
-     * @Api\Link(route="acts_camdram_society_getnews", params={"identifier": "object.getSlug()"})
-     */
-    private $news;
-
-    /**
      * @ORM\OneToMany(targetEntity="Advert", mappedBy="society")
      */
     private $adverts;
@@ -298,71 +292,13 @@ class Society extends Organisation
     }
 
     /**
-     * Add news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     *
-     * @return Organisation
-     */
-    public function addNew(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news[] = $news;
-
-        return $this;
-    }
-
-    /**
-     * Remove news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     */
-    public function removeNew(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news->removeElement($news);
-    }
-
-    /**
-     * Get news
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getNews()
-    {
-        return $this->news;
-    }
-    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->news = new \Doctrine\Common\Collections\ArrayCollection();
         $this->adverts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->events = new \Doctrine\Common\Collections\ArrayCollection();
         $this->shows = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     *
-     * @return Organisation
-     */
-    public function addNews(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news[] = $news;
-
-        return $this;
-    }
-
-    /**
-     * Remove news
-     *
-     * @param \Acts\CamdramBundle\Entity\News $news
-     */
-    public function removeNews(\Acts\CamdramBundle\Entity\News $news)
-    {
-        $this->news->removeElement($news);
     }
 
     public static function getAceType() : string
