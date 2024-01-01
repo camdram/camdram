@@ -60,7 +60,7 @@
         "doctrine/orm": "^2.7",
         "erusev/parsedown": "^1.7",
         "excelwebzone/recaptcha-bundle": "^1.5",
-        "friendsofsymfony/jsrouting-bundle": "^2.5.3",
+        "friendsofsymfony/jsrouting-bundle": "^3.4.1",
         "friendsofsymfony/oauth-server-bundle": "dev-master#72c5e4041c35555f001cd1c74ee716050a99e929",
         "friendsofsymfony/rest-bundle": "^3.3",
         "hwi/oauth-bundle": "~1.4.2",
