@@ -8009,16 +8009,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v5.4.31",
+            "version": "v5.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "dd5ea39de228813aba0c23c3a4153da2a4cf3cd9"
+                "reference": "6b763438a22a4f20885e994ad6702f6a3f25430e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/dd5ea39de228813aba0c23c3a4153da2a4cf3cd9",
-                "reference": "dd5ea39de228813aba0c23c3a4153da2a4cf3cd9",
+                "url": "https://api.github.com/repos/symfony/config/zipball/6b763438a22a4f20885e994ad6702f6a3f25430e",
+                "reference": "6b763438a22a4f20885e994ad6702f6a3f25430e",
                 "shasum": ""
             },
             "require": {
@@ -8068,7 +8068,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v5.4.31"
+                "source": "https://github.com/symfony/config/tree/v5.4.35"
             },
             "funding": [
                 {
@@ -8084,7 +8084,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-09T08:22:43+00:00"
+            "time": "2024-01-23T13:51:25+00:00"
         },
         {
             "name": "symfony/console",
@@ -8530,16 +8530,16 @@
         },
         {
             "name": "symfony/error-handler",
-            "version": "v5.4.29",
+            "version": "v5.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/error-handler.git",
-                "reference": "328c6fcfd2f90b64c16efaf0ea67a311d672f078"
+                "reference": "39225b1e47fdd91a6924b1e7d7a4523da2e1894b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/328c6fcfd2f90b64c16efaf0ea67a311d672f078",
-                "reference": "328c6fcfd2f90b64c16efaf0ea67a311d672f078",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/39225b1e47fdd91a6924b1e7d7a4523da2e1894b",
+                "reference": "39225b1e47fdd91a6924b1e7d7a4523da2e1894b",
                 "shasum": ""
             },
             "require": {
@@ -8581,7 +8581,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/error-handler/tree/v5.4.29"
+                "source": "https://github.com/symfony/error-handler/tree/v5.4.35"
             },
             "funding": [
                 {
@@ -8597,7 +8597,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-06T21:54:06+00:00"
+            "time": "2024-01-23T13:51:25+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -9371,16 +9371,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v5.4.34",
+            "version": "v5.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "4da1713e88cf9c44bd4bf65f54772681222fcbec"
+                "reference": "f2ab692a22aef1cd54beb893aa0068bdfb093928"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/4da1713e88cf9c44bd4bf65f54772681222fcbec",
-                "reference": "4da1713e88cf9c44bd4bf65f54772681222fcbec",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/f2ab692a22aef1cd54beb893aa0068bdfb093928",
+                "reference": "f2ab692a22aef1cd54beb893aa0068bdfb093928",
                 "shasum": ""
             },
             "require": {
@@ -9427,7 +9427,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v5.4.34"
+                "source": "https://github.com/symfony/http-foundation/tree/v5.4.35"
             },
             "funding": [
                 {
@@ -9443,20 +9443,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-27T11:45:35+00:00"
+            "time": "2024-01-23T13:51:25+00:00"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v5.4.34",
+            "version": "v5.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "f2b00c66d1c7ef12f3fc625af2a0bc5d5857db7b"
+                "reference": "949bc7721c83fa9f81fc6c9697db0aa340c64f4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/f2b00c66d1c7ef12f3fc625af2a0bc5d5857db7b",
-                "reference": "f2b00c66d1c7ef12f3fc625af2a0bc5d5857db7b",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/949bc7721c83fa9f81fc6c9697db0aa340c64f4d",
+                "reference": "949bc7721c83fa9f81fc6c9697db0aa340c64f4d",
                 "shasum": ""
             },
             "require": {
@@ -9539,7 +9539,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v5.4.34"
+                "source": "https://github.com/symfony/http-kernel/tree/v5.4.35"
             },
             "funding": [
                 {
@@ -9555,7 +9555,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-30T13:02:02+00:00"
+            "time": "2024-01-30T20:00:46+00:00"
         },
         {
             "name": "symfony/intl",
@@ -12523,16 +12523,16 @@
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v5.4.31",
+            "version": "v5.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
-                "reference": "fc6ee0a3b672ea12ca1f26592d257bfc7f4ee942"
+                "reference": "e6ae362b7c4f1d6e99f61f59b0c93b9f027b4c73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/fc6ee0a3b672ea12ca1f26592d257bfc7f4ee942",
-                "reference": "fc6ee0a3b672ea12ca1f26592d257bfc7f4ee942",
+                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/e6ae362b7c4f1d6e99f61f59b0c93b9f027b4c73",
+                "reference": "e6ae362b7c4f1d6e99f61f59b0c93b9f027b4c73",
                 "shasum": ""
             },
             "require": {
@@ -12572,7 +12572,7 @@
                 "symfony/security-core": "^4.4|^5.0|^6.0",
                 "symfony/security-csrf": "^4.4|^5.0|^6.0",
                 "symfony/security-http": "^4.4|^5.0|^6.0",
-                "symfony/serializer": "^5.2|^6.0",
+                "symfony/serializer": "^5.4.35|~6.3.12|^6.4.3",
                 "symfony/stopwatch": "^4.4|^5.0|^6.0",
                 "symfony/translation": "^5.2|^6.0",
                 "symfony/web-link": "^4.4|^5.0|^6.0",
@@ -12624,7 +12624,7 @@
             "description": "Provides integration for Twig with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bridge/tree/v5.4.31"
+                "source": "https://github.com/symfony/twig-bridge/tree/v5.4.35"
             },
             "funding": [
                 {
@@ -12640,20 +12640,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-09T21:19:08+00:00"
+            "time": "2024-01-30T08:00:51+00:00"
         },
         {
             "name": "symfony/twig-bundle",
-            "version": "v5.4.31",
+            "version": "v5.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bundle.git",
-                "reference": "62e3505a62f482a577f55ba08747dc6a3b7463b3"
+                "reference": "f59b91e23c7c790e71a187c3fa4aefdc5391d682"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bundle/zipball/62e3505a62f482a577f55ba08747dc6a3b7463b3",
-                "reference": "62e3505a62f482a577f55ba08747dc6a3b7463b3",
+                "url": "https://api.github.com/repos/symfony/twig-bundle/zipball/f59b91e23c7c790e71a187c3fa4aefdc5391d682",
+                "reference": "f59b91e23c7c790e71a187c3fa4aefdc5391d682",
                 "shasum": ""
             },
             "require": {
@@ -12714,7 +12714,7 @@
             "description": "Provides a tight integration of Twig into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bundle/tree/v5.4.31"
+                "source": "https://github.com/symfony/twig-bundle/tree/v5.4.35"
             },
             "funding": [
                 {
@@ -12730,7 +12730,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-31T07:58:33+00:00"
+            "time": "2024-01-23T13:51:25+00:00"
         },
         {
             "name": "symfony/validator",
