@@ -51,7 +51,7 @@
     },
     "require": {
         "php": "~8.2.0",
-        "abraham/twitteroauth": "^3",
+        "abraham/twitteroauth": "^7",
         "dms/phpunit-arraysubset-asserts": "^0.5.0",
         "doctrine/dbal": "^3.2",
         "doctrine/doctrine-bundle": "^2",
