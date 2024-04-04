@@ -7841,16 +7841,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.4.36",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "a30f316214d908cf5874f700f3f3fb29ceee91ba"
+                "reference": "223c3afac82e003a76931b71d77db408636a0de8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/a30f316214d908cf5874f700f3f3fb29ceee91ba",
-                "reference": "a30f316214d908cf5874f700f3f3fb29ceee91ba",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/223c3afac82e003a76931b71d77db408636a0de8",
+                "reference": "223c3afac82e003a76931b71d77db408636a0de8",
                 "shasum": ""
             },
             "require": {
@@ -7918,7 +7918,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v5.4.36"
+                "source": "https://github.com/symfony/cache/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -7934,7 +7934,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-19T13:08:14+00:00"
+            "time": "2024-03-19T09:55:32+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -9060,16 +9060,16 @@
         },
         {
             "name": "symfony/framework-bundle",
-            "version": "v5.4.36",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/framework-bundle.git",
-                "reference": "224f69093099a507cf84d8c48ceb29e8653a5896"
+                "reference": "322b40a1235d85e93b3440cad59c67d73cdb5d9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/framework-bundle/zipball/224f69093099a507cf84d8c48ceb29e8653a5896",
-                "reference": "224f69093099a507cf84d8c48ceb29e8653a5896",
+                "url": "https://api.github.com/repos/symfony/framework-bundle/zipball/322b40a1235d85e93b3440cad59c67d73cdb5d9f",
+                "reference": "322b40a1235d85e93b3440cad59c67d73cdb5d9f",
                 "shasum": ""
             },
             "require": {
@@ -9190,7 +9190,7 @@
             "description": "Provides a tight integration between Symfony components and the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/framework-bundle/tree/v5.4.36"
+                "source": "https://github.com/symfony/framework-bundle/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -9206,7 +9206,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-20T14:48:43+00:00"
+            "time": "2024-03-15T07:39:49+00:00"
         },
         {
             "name": "symfony/http-client",
