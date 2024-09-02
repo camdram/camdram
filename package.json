@@ -13,7 +13,7 @@
     "leaflet": "^1.7.1",
     "node-sass": "^9.0.0",
     "sass-loader": "^13",
-    "sortablejs": "^1.15.2",
+    "sortablejs": "^1.15.3",
     "webpack-notifier": "^1.15.0"
   },
   "scripts": {
