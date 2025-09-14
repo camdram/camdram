@@ -106,7 +106,7 @@ class CamdramExtension extends AbstractExtension
             } else if ($scope == 'user_orgs') {
                 $out[] = "read the list of the societies and venues you administrate on Camdram";
             } else if ($scope != '') {
-                $out[] = "use the privilege “${scope}”";
+                $out[] = "use the privilege “{$scope}”";
             }
         }
         return $out;
