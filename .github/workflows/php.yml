@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v4
@@ -32,6 +32,9 @@ jobs:
 
     - name: Install dependencies
       run: |
+        sudo add-apt-repository ppa:ondrej/php
+        sudo apt-get update
+        sudo apt install php8.2 php8.2-curl php8.2-mbstring php8.2-mysql php8.2-pdo php8.2-sqlite3 php8.2-xml php8.2-zip
         sudo systemctl start mysql.service
         # composer install has to run even if the packages are cached
         composer install --prefer-dist --no-progress
