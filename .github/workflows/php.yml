@@ -56,7 +56,7 @@ jobs:
       run: |
         rm -rf app/cache/test
 
-        echo "SHOW TABLES;" | mysql -u root --password=root camdram_test
+        echo "SELECT version();" | mysql -u root --password=root | cat
 
         yarn build
 
