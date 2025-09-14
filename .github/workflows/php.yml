@@ -55,8 +55,6 @@ jobs:
 
       run: |
         rm -rf app/cache/test
-        MYSQLD_VERSION=$(echo "SELECT version();" | mysql -u root --password=root | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | head -n 1)
-        sed -i $'/DATABASE_URL/ a\\\n                server_version: "'$MYSQLD_VERSION'"' app/config/config.yml
 
         yarn build
 
