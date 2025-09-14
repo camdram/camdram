@@ -20,7 +20,12 @@ if (!file_exists($testDbPath) || filesize($testDbPath) == 0) {
     $process = new Process([$phpPath, 'app/console', 'doctrine:schema:create']);
     $process->run();
     if (!$process->isSuccessful()) {
-        throw new \RuntimeException('An error occurred generate the test DB schema');
+        echo "STDOUT:\n";
+        echo $process->getOutput();
+        echo "\nSTDERR:\n";
+        echo $process->getErrorOutput();
+        echo "\n";
+        throw new \RuntimeException('An error occurred generating the test DB schema');
     }
 }
 
