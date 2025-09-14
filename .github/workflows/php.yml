@@ -56,6 +56,8 @@ jobs:
       run: |
         rm -rf app/cache/test
 
+        echo "SHOW TABLES;" | mysql -u root camdram_test
+
         yarn build
 
         if [ "$GITHUB_EVENT_NAME" == push -a "$GITHUB_REF" == refs/heads/master ]; then
