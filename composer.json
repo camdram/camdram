@@ -63,7 +63,7 @@
         "friendsofsymfony/jsrouting-bundle": "^2.5.3",
         "friendsofsymfony/oauth-server-bundle": "dev-master#72c5e4041c35555f001cd1c74ee716050a99e929",
         "friendsofsymfony/rest-bundle": "^3.3",
-        "hwi/oauth-bundle": "~1.4.2",
+        "hwi/oauth-bundle": "~2.4.0",
         "incenteev/composer-parameter-handler": "^2.1",
         "jms/serializer-bundle": "^5.3.1",
         "knplabs/github-api": "^3.0",
