@@ -46,7 +46,7 @@ host('development')
 
 // Yarn tasks
 set('bin/yarn', function () {
-    return run('which yarn');
+    return run('. ~/.nvm/nvm.sh; which yarn');
 });
 
 task('yarn:install', function () {
@@ -55,11 +55,11 @@ task('yarn:install', function () {
             run('cp -R {{previous_release}}/node_modules {{release_path}}');
         }
     }
-    run("cd {{release_path}} && {{bin/yarn}}");
+    run(". ~/.nvm/nvm.sh; cd {{release_path}} && {{bin/yarn}}");
 })->desc('Install Yarn packages');
 
 task('yarn:build', function () {
-    run("cd {{release_path}} && {{bin/yarn}} build");
+    run(". ~/.nvm/nvm.sh; cd {{release_path}} && {{bin/yarn}} build");
 })->desc('Build assets');
 
 // Database Tasks
