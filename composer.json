@@ -94,7 +94,7 @@
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
-        "symfony/webpack-encore-bundle": "^1.14",
+        "symfony/webpack-encore-bundle": "^2.3",
         "twig/twig": "^3"
     },
     "require-dev": {
