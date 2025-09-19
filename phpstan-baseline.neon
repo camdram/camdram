@@ -121,11 +121,6 @@ parameters:
 			path: src/Acts/CamdramBundle/Form/Type/EntitySearchType.php
 
 		-
-			message: "#^Parameter \\#1 \\$func of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<\\(int\\|string\\),mixed\\>\\:\\:map\\(\\) expects Closure\\(mixed\\=\\)\\: mixed, Closure\\(mixed\\)\\: mixed given\\.$#"
-			count: 1
-			path: src/Acts/CamdramBundle/Service/EmailDispatcher.php
-
-		-
 			message: "#^Parameter \\#1 \\$user of method Acts\\\\CamdramSecurityBundle\\\\Security\\\\Acl\\\\AclProvider\\:\\:getOrganisationsByUser\\(\\) expects Acts\\\\CamdramSecurityBundle\\\\Entity\\\\User, Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null given\\.$#"
 			count: 1
 			path: src/Acts/CamdramBundle/Service/ModerationManager.php
@@ -161,11 +156,6 @@ parameters:
 			path: src/Acts/CamdramSecurityBundle/EventListener/LastLoginTimeListener.php
 
 		-
-			message: "#^Parameter \\#1 \\$func of method Doctrine\\\\Common\\\\Collections\\\\Collection\\<\\(int\\|string\\),mixed\\>\\:\\:map\\(\\) expects Closure\\(mixed\\=\\)\\: mixed, Closure\\(mixed\\)\\: mixed given\\.$#"
-			count: 1
-			path: src/Acts/CamdramSecurityBundle/Security/Acl/AclProvider.php
-
-		-
 			message: "#^Variable \\$ptags might not be defined\\.$#"
 			count: 1
 			path: src/Acts/CamdramSecurityBundle/Security/RavenResourceOwner.php
@@ -179,4 +169,3 @@ parameters:
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: src/Acts/DiaryBundle/Diary/Renderer/ICalRenderer.php
-
