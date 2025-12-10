@@ -9,7 +9,7 @@ Camdram is an [open source](http://opensource.org/docs/osd) project developed by
 
 The steps required to set up a development checkout of Camdram are detailed below. For the sake of brevity, these instructions assume that the reader is familiar with a number of technologies, such as developing on a Linux based platform, using Git and GitHub.
 
-New releases are made on the `master` branch every so often using the GitHub interface. This automatically generates a changelog and pushes the new release into production at https://www.camdram.net/. The latest changes can be seen at https://development.camdram.net/ which always reflects the `HEAD` state of this repository.
+New releases are made on the `master` branch every so often using the GitHub interface. This automatically generates a changelog and pushes the new release into production at https://www.camdram.net/. The latest changes can be seen [here](https://www.camdram.net/development/) which always reflects the `HEAD` state of this repository.
 
 If you encounter any problems with the instructions below, please [create a GitHub issue]( https://github.com/camdram/camdram/issues/new) or send an e-mail to support@camdram.net. We also have a [live chat hosted on Gitter](https://gitter.im/camdram/development) which you can use to quickly and informally get in touch with the development team.
 
