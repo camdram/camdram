@@ -51,7 +51,7 @@ dedicated MySQL database instead.
 Visit https://github.com/camdram/camdram/wiki/Setting-up-a-MySQL-database to find out more
 
 <options=bold;fg=yellow>Javascript/CSS</>
-Minified assets have been downloaded from https://development.camdram.net/.
+Minified assets have been downloaded from https://www.camdram.net/.
 If you are planning on doing frontend development you will need to configure the Webpack toolchain.
 Visit https://github.com/camdram/camdram/wiki/Webpack-setup-guide to find out more
 
