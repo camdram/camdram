@@ -42,7 +42,7 @@ class DownloadAssetsCommand extends Command
     }
 
     protected static $defaultName = 'camdram:assets:download';
-    private const defaultDomain = 'https://development.camdram.net';
+    private const defaultDomain = 'https://www.camdram.net';
     private const outputDirectory = __DIR__.'/../../../../web/';
 
     protected function configure(): void
