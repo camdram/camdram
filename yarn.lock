@@ -2351,10 +2351,12 @@ domutils@^2.5.2, domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
-dropzone@^5.9.2:
-  version "5.9.3"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.9.3.tgz#b3070ae090fa48cbc04c17535635537ca72d70d6"
-  integrity sha512-Azk8kD/2/nJIuVPK+zQ9sjKMRIpRvNyqn9XwbBHNq+iNuSccbJS6hwm1Woy0pMST0erSo0u4j+KJaodndDk4vA==
+dropzone@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-6.1.0.tgz#42b14812b8fd331dcb18c0c6d9a8128ea72b1e29"
+  integrity sha512-IJ8AdVeogaN9q3SOoAmaJ3md76UkU3pI/pcnC0FkBaM78XGUI8Rf/Xqysm96yFr0b9NuFzItqJRJgO4Rl4Q8BA==
+  dependencies:
+    just-extend "^5.0.0"
 
 dunder-proto@^1.0.1:
   version "1.0.1"
@@ -3456,6 +3458,11 @@ json5@^2.1.2, json5@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
   integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
+
+just-extend@^5.0.0:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/just-extend/-/just-extend-5.1.1.tgz#4f33b1fc719964f816df55acc905776694b713ab"
+  integrity sha512-b+z6yF1d4EOyDgylzQo5IminlUmzSeqR1hs/bzjBNjuGras4FXq/6TrzjxfN0j+TmI0ltJzTNlqXUMCniciwKQ==
 
 keyv@^4.5.4:
   version "4.5.4"
