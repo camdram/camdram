@@ -14,7 +14,7 @@
     "node-sass": "^9.0.0",
     "sass-loader": "^16",
     "sortablejs": "^1.15.7",
-    "webpack-notifier": "^1.15.0"
+    "webpack-notifier": "^1.17.0"
   },
   "scripts": {
     "js-routing": "php app/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json",
