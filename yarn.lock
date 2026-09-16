@@ -2351,10 +2351,10 @@ domutils@^2.5.2, domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
-dropzone@^5.9.2:
-  version "5.9.3"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.9.3.tgz#b3070ae090fa48cbc04c17535635537ca72d70d6"
-  integrity sha512-Azk8kD/2/nJIuVPK+zQ9sjKMRIpRvNyqn9XwbBHNq+iNuSccbJS6hwm1Woy0pMST0erSo0u4j+KJaodndDk4vA==
+dropzone@^6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-6.2.1.tgz#326344a1c6d9748cc8fdf1d34fcc4c50363662e4"
+  integrity sha512-cqpcwkaXGYP1AT9eh9HXoQaQn1xeCYeQr4wQ7gIsq51rj7KJ5dNSOvctdppLsvSAiUMgKd6vprHLMLA/klnB4Q==
 
 dunder-proto@^1.0.1:
   version "1.0.1"
